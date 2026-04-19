@@ -1,0 +1,105 @@
+{
+  "start": {
+    "title": "行军起点",
+    "kind": "start",
+    "next": [
+      "battle_raider",
+      "camp_0"
+    ]
+  },
+  "battle_raider": {
+    "title": "遭遇战",
+    "kind": "battle",
+    "next": [
+      "school_1",
+      "order_1"
+    ],
+    "enemy_id": "raider",
+    "map_length": 9,
+    "initial_distance": 2
+  },
+  "camp_0": {
+    "title": "行营",
+    "kind": "camp",
+    "next": [
+      "battle_militia",
+      "order_1"
+    ],
+    "heal": 12
+  },
+  "battle_militia": {
+    "title": "遭遇战",
+    "kind": "battle",
+    "next": [
+      "school_1",
+      "battle_shield"
+    ],
+    "enemy_id": "militia_spear",
+    "map_length": 9,
+    "initial_distance": 2
+  },
+  "school_1": {
+    "title": "校场",
+    "kind": "school",
+    "next": [
+      "battle_shield",
+      "elite_dual"
+    ]
+  },
+  "order_1": {
+    "title": "军令",
+    "kind": "order",
+    "next": [
+      "battle_shield",
+      "elite_fire"
+    ]
+  },
+  "battle_shield": {
+    "title": "遭遇战",
+    "kind": "battle",
+    "next": [
+      "camp_1",
+      "elite_dual"
+    ],
+    "enemy_id": "shield_blade",
+    "map_length": 9,
+    "initial_distance": 2
+  },
+  "camp_1": {
+    "title": "行营",
+    "kind": "camp",
+    "next": [
+      "elite_fire",
+      "boss_final"
+    ],
+    "heal": 10
+  },
+  "elite_dual": {
+    "title": "精英战",
+    "kind": "battle",
+    "next": [
+      "boss_final"
+    ],
+    "enemy_id": "dual_ronin",
+    "map_length": 9,
+    "initial_distance": 2
+  },
+  "elite_fire": {
+    "title": "精英战",
+    "kind": "battle",
+    "next": [
+      "boss_final"
+    ],
+    "enemy_id": "firearms_officer",
+    "map_length": 9,
+    "initial_distance": 2
+  },
+  "boss_final": {
+    "title": "头目战",
+    "kind": "battle",
+    "next": [],
+    "enemy_id": "captain_boss",
+    "map_length": 9,
+    "initial_distance": 2
+  }
+}

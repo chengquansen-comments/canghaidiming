@@ -1,0 +1,282 @@
+[
+  {
+    "id": "captain_boss",
+    "name": "百户枪官",
+    "title": "Boss",
+    "max_hp": 72,
+    "max_momentum": 10,
+    "start_distance": 2,
+    "preferred_ranges": [
+      2,
+      3
+    ],
+    "passive": "优势距离开始回合时 +1 势；崩塌后下回合额外恢复 1 势。",
+    "intents": [
+      {
+        "name": "拦拿连封",
+        "cost": 5,
+        "damage": 9,
+        "momentum_damage": 2,
+        "range_bonus": [
+          2,
+          3
+        ],
+        "tags": [
+          "压势",
+          "长兵"
+        ]
+      },
+      {
+        "name": "中平迫杀",
+        "cost": 6,
+        "damage": 14,
+        "momentum_damage": 1,
+        "range_bonus": [
+          2,
+          3
+        ],
+        "tags": [
+          "重击"
+        ]
+      },
+      {
+        "name": "逼退整列",
+        "cost": 3,
+        "move_delta": 1,
+        "damage": 5,
+        "momentum_damage": 1,
+        "guard": 5,
+        "tags": [
+          "控距",
+          "整列"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dual_ronin",
+    "name": "双刀浪人",
+    "title": "精英敌人",
+    "max_hp": 50,
+    "max_momentum": 10,
+    "start_distance": 2,
+    "preferred_ranges": [
+      1,
+      2
+    ],
+    "passive": "每回合恢复 4 势，且被打断后下回合额外抽招。",
+    "intents": [
+      {
+        "name": "双影连斩",
+        "cost": 5,
+        "move_delta": -1,
+        "damage": 12,
+        "momentum_damage": 1,
+        "tags": [
+          "连击",
+          "突进"
+        ]
+      },
+      {
+        "name": "虚实换手",
+        "cost": 3,
+        "damage": 7,
+        "momentum_damage": 2,
+        "tags": [
+          "变招"
+        ]
+      },
+      {
+        "name": "压迫追斩",
+        "cost": 4,
+        "damage": 9,
+        "momentum_damage": 1,
+        "tags": [
+          "连压"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "firearms_officer",
+    "name": "哨官火器队",
+    "title": "精英敌人",
+    "max_hp": 48,
+    "max_momentum": 10,
+    "start_distance": 2,
+    "preferred_ranges": [
+      3
+    ],
+    "passive": "若保持远距，攻击伤害 +2。",
+    "intents": [
+      {
+        "name": "火铳齐发",
+        "cost": 5,
+        "damage": 13,
+        "momentum_damage": 0,
+        "range_bonus": [
+          3
+        ],
+        "tags": [
+          "蓄招",
+          "远程"
+        ]
+      },
+      {
+        "name": "换装压阵",
+        "cost": 3,
+        "damage": 6,
+        "momentum_damage": 1,
+        "guard": 4,
+        "tags": [
+          "整队"
+        ]
+      },
+      {
+        "name": "枪叉顶住",
+        "cost": 2,
+        "move_delta": 1,
+        "damage": 4,
+        "momentum_damage": 1,
+        "tags": [
+          "拒近"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "militia_spear",
+    "name": "乡勇枪兵",
+    "title": "普通敌人",
+    "max_hp": 38,
+    "max_momentum": 9,
+    "start_distance": 2,
+    "preferred_ranges": [
+      2,
+      3
+    ],
+    "passive": "在优势距离开始回合时额外 +1 势。",
+    "intents": [
+      {
+        "name": "中平压阵",
+        "cost": 4,
+        "damage": 8,
+        "momentum_damage": 1,
+        "range_bonus": [
+          2,
+          3
+        ],
+        "tags": [
+          "长兵"
+        ]
+      },
+      {
+        "name": "拦拿",
+        "cost": 3,
+        "damage": 5,
+        "momentum_damage": 2,
+        "tags": [
+          "压势"
+        ]
+      },
+      {
+        "name": "逼退",
+        "cost": 2,
+        "move_delta": 1,
+        "damage": 4,
+        "momentum_damage": 0,
+        "tags": [
+          "控距"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "raider",
+    "name": "倭寇短刀手",
+    "title": "普通敌人",
+    "max_hp": 34,
+    "max_momentum": 8,
+    "start_distance": 2,
+    "preferred_ranges": [
+      1
+    ],
+    "passive": "势恢复额外 +1，擅长贴身连斩。",
+    "intents": [
+      {
+        "name": "燕返",
+        "cost": 4,
+        "move_delta": -1,
+        "damage": 9,
+        "momentum_damage": 0,
+        "tags": [
+          "突进",
+          "流血"
+        ]
+      },
+      {
+        "name": "乱斩",
+        "cost": 3,
+        "damage": 6,
+        "momentum_damage": 0,
+        "tags": [
+          "连击"
+        ]
+      },
+      {
+        "name": "逼步抢身",
+        "cost": 2,
+        "move_delta": -1,
+        "damage": 4,
+        "momentum_damage": 1,
+        "tags": [
+          "抢距"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "shield_blade",
+    "name": "牌刀兵",
+    "title": "普通敌人",
+    "max_hp": 42,
+    "max_momentum": 9,
+    "start_distance": 2,
+    "preferred_ranges": [
+      1
+    ],
+    "passive": "格挡完成度高，容易打出完美格挡。",
+    "intents": [
+      {
+        "name": "顶架逼身",
+        "cost": 3,
+        "move_delta": -1,
+        "damage": 5,
+        "momentum_damage": 0,
+        "guard": 6,
+        "tags": [
+          "格挡",
+          "逼身"
+        ]
+      },
+      {
+        "name": "顺势反切",
+        "cost": 4,
+        "damage": 10,
+        "momentum_damage": 0,
+        "tags": [
+          "反击"
+        ]
+      },
+      {
+        "name": "压刀",
+        "cost": 2,
+        "damage": 4,
+        "momentum_damage": 1,
+        "tags": [
+          "压势"
+        ]
+      }
+    ]
+  }
+]
