@@ -10,6 +10,7 @@ const FeintData = preload("res://scripts/feint_data.gd")
 const HiddenMoveData = preload("res://scripts/hidden_move_data.gd")
 
 const HAND_SIZE := 4
+const ENEMY_SESSION_REALM := 2
 
 enum PlayerSelectionMode {
 	NORMAL,
@@ -304,8 +305,7 @@ func _start_session(role_id: String) -> void:
 	var enemy_role_id := "blademaster" if role_id == "spearman" else "spearman"
 	player = Fighter.new(_copy_fighter_data(fighter_catalog[role_id]))
 	enemy = Fighter.new(_copy_fighter_data(fighter_catalog[enemy_role_id]))
-	enemy.realm = 2
-	enemy.data.starting_realm = 2
+	enemy.set_session_realm(ENEMY_SESSION_REALM)
 	battle_count = 0
 	node_pick_count = 0
 	battle_active = false
@@ -380,7 +380,7 @@ func _apply_enlighten() -> void:
 	if player == null:
 		return
 	if player.upgrade_realm():
-		_log("你通过【点化】将武境提升到 %d。" % player.realm)
+		_log("你通过【点化】将会话武境提升到 %d。" % player.session_realm)
 	else:
 		_log("你的武境已达当前原型上限 3。")
 	_refresh_ui()
@@ -393,7 +393,6 @@ func _start_battle() -> void:
 	battle_count += 1
 	player.reset_for_battle(HAND_SIZE)
 	enemy.reset_for_battle(HAND_SIZE)
-	enemy.realm = enemy.data.starting_realm
 	state_machine.begin_battle(2)
 	player_intent = null
 	enemy_intent = null
@@ -401,7 +400,7 @@ func _start_battle() -> void:
 	declaration_index = 0
 	selection_mode = PlayerSelectionMode.NORMAL
 	pending_visible_card = null
-	_log("[b]演武开始。[/b] 第 %d 场，对距固定从 2 开始。" % battle_count)
+	_log("[b]演武开始。[/b] 第 %d 场，对距固定从 2 开始。玩家会话武境 %d，敌方会话武境 %d。" % [battle_count, player.session_realm, enemy.session_realm])
 	_show_node_buttons()
 	_begin_round()
 
@@ -618,7 +617,7 @@ func _refresh_ui() -> void:
 func _fighter_status_text(fighter: Fighter) -> String:
 	if fighter == null:
 		return "未初始化。"
-	return "[b]%s[/b]｜%s\n生命：%d/%d\n势：%d/%d\n武境：%d\n优势距离：%s\n牌库：%d｜手牌：%d" % [
+	return "[b]%s[/b]｜%s\n生命：%d/%d\n势：%d/%d\n当前武境：%d\n会话武境：%d\n优势距离：%s\n牌库：%d｜手牌：%d" % [
 		fighter.data.display_name,
 		fighter.data.weapon_name,
 		fighter.hp,
@@ -626,6 +625,7 @@ func _fighter_status_text(fighter: Fighter) -> String:
 		fighter.momentum,
 		fighter.data.max_momentum,
 		fighter.realm,
+		fighter.session_realm,
 		fighter.preferred_text(),
 		fighter.draw_pile.size(),
 		fighter.hand.size()
