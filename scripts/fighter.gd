@@ -57,6 +57,25 @@ func add_card_to_deck(card: CardData) -> void:
 	data.starting_deck.append(card.duplicate_card())
 
 
+func get_session_deck() -> Array[CardData]:
+	return data.clone_deck()
+
+
+func replace_cards_in_session_deck(first_index: int, second_index: int, replacement: CardData) -> bool:
+	if first_index == second_index:
+		return false
+	if first_index < 0 or second_index < 0:
+		return false
+	if first_index >= data.starting_deck.size() or second_index >= data.starting_deck.size():
+		return false
+	var lower := mini(first_index, second_index)
+	var upper := maxi(first_index, second_index)
+	data.starting_deck.remove_at(upper)
+	data.starting_deck.remove_at(lower)
+	data.starting_deck.append(replacement.duplicate_card())
+	return true
+
+
 func upgrade_realm() -> bool:
 	if session_realm >= 3:
 		return false
