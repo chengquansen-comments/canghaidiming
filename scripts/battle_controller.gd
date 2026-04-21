@@ -53,6 +53,8 @@ var overlay_panel: PanelContainer
 var overlay_title: Label
 var overlay_body: RichTextLabel
 var overlay_actions: VBoxContainer
+var combat_banner: PanelContainer
+var combat_banner_label: Label
 
 
 func _ready() -> void:
@@ -251,6 +253,27 @@ func _build_ui() -> void:
 	log_label.scroll_following = true
 	log_panel.add_child(log_label)
 
+	combat_banner = PanelContainer.new()
+	combat_banner.visible = false
+	combat_banner.anchor_left = 0.5
+	combat_banner.anchor_top = 0.02
+	combat_banner.anchor_right = 0.5
+	combat_banner.anchor_bottom = 0.02
+	combat_banner.offset_left = -240
+	combat_banner.offset_right = 240
+	combat_banner.offset_top = 0
+	combat_banner.offset_bottom = 72
+	combat_banner.modulate = Color(1, 1, 1, 0)
+	combat_banner.add_theme_stylebox_override("panel", _make_panel_style(Color("3a1f14"), Color("ffd479")))
+	add_child(combat_banner)
+
+	combat_banner_label = Label.new()
+	combat_banner_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	combat_banner_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	combat_banner_label.add_theme_font_size_override("font_size", 28)
+	combat_banner_label.text = ""
+	combat_banner.add_child(combat_banner_label)
+
 	overlay_scrim = ColorRect.new()
 	overlay_scrim.visible = false
 	overlay_scrim.color = Color(0.01, 0.02, 0.03, 0.72)
@@ -319,6 +342,33 @@ func _make_panel_style(fill: Color, border: Color) -> StyleBoxFlat:
 	style.content_margin_top = 12
 	style.content_margin_bottom = 12
 	return style
+
+
+func _show_combat_banner(text: String, fill_color: Color, border_color: Color = Color("ffd479")) -> void:
+	if combat_banner == null or combat_banner_label == null:
+		return
+	combat_banner.visible = true
+	combat_banner_label.text = text
+	combat_banner_label.modulate = Color.WHITE
+	combat_banner.add_theme_stylebox_override("panel", _make_panel_style(fill_color, border_color))
+	combat_banner.scale = Vector2(0.92, 0.92)
+	combat_banner.modulate = Color(1, 1, 1, 0)
+	var tween := create_tween()
+	tween.tween_property(combat_banner, "modulate", Color(1, 1, 1, 1), 0.08)
+	tween.parallel().tween_property(combat_banner, "scale", Vector2.ONE, 0.08)
+	tween.tween_interval(0.28)
+	tween.tween_property(combat_banner, "modulate", Color(1, 1, 1, 0), 0.18)
+	tween.finished.connect(func() -> void:
+		combat_banner.visible = false
+	)
+
+
+func _flash_label(target_label: RichTextLabel, color: Color) -> void:
+	if target_label == null:
+		return
+	target_label.modulate = color
+	var tween := create_tween()
+	tween.tween_property(target_label, "modulate", Color.WHITE, 0.22)
 
 
 func _combo_chains_for_profession(profession_id: String) -> Array:
@@ -656,6 +706,8 @@ func _advance_declaration() -> void:
 		if actor_id == player.data.id:
 			if player.is_broken():
 				player_intent = IntentData.from_card(player, _stagger_card())
+				_show_combat_banner("玩家崩势", Color("4a1f24"), Color("ff6b6b"))
+				_flash_label(player_label, Color("ff9f9f"))
 				_log("玩家崩势未稳，本回合无法行动。")
 				declaration_index += 1
 				continue
@@ -665,6 +717,8 @@ func _advance_declaration() -> void:
 			return
 		if enemy.is_broken():
 			enemy_intent = IntentData.from_card(enemy, _stagger_card())
+			_show_combat_banner("敌方崩势", Color("4a1f24"), Color("ff6b6b"))
+			_flash_label(enemy_label, Color("ff9f9f"))
 			_log("敌方崩势未稳，本回合无法行动。")
 			declaration_index += 1
 			continue
@@ -766,6 +820,8 @@ func _resolve_combo_chain_if_any(actor: Fighter, target: Fighter, intent: Intent
 	if combo.is_empty():
 		lines.append("[color=#7f8c8d]%s 未衔接到已解锁连招，本次连招窗口消散。[/color]" % actor.data.display_name)
 		return lines
+	_show_combat_banner("连招启动：%s" % combo.get("display_name", ""), Color("3f2916"), Color("ffd479"))
+	_flash_label(player_label if actor.data.id == player.data.id else enemy_label, Color("ffe39c"))
 	lines.append("[color=#ffd479][b]>>> 连招启动：%s · %s <<<[/b][/color]" % [actor.data.display_name, combo.get("display_name", "")])
 	for idx in range(combo.get("followups", []).size()):
 		if target.hp <= 0:
@@ -784,10 +840,13 @@ func _resolve_combo_chain_if_any(actor: Fighter, target: Fighter, intent: Intent
 			lines.append("%s 被格挡化去 %d。" % [segment_name, blocked])
 		if remaining_damage > 0:
 			target.hp = maxi(target.hp - remaining_damage, 0)
+			_flash_label(enemy_label if target.data.id == enemy.data.id else player_label, Color("ffb3b3"))
 			lines.append("%s %s 命中，造成 %d 伤害。" % [header, actor.data.display_name, remaining_damage])
 		else:
 			lines.append("%s 被完全格挡。" % header)
 		if bool(segment.get("is_finisher", false)):
+			_show_combat_banner("终结：%s" % segment_name, Color("4a1626"), Color("ff4d6d"))
+			_flash_label(enemy_label if target.data.id == enemy.data.id else player_label, Color("ff7a7a"))
 			lines.append("[color=#ff4d6d][b]!!! %s 以 %s 完成终结 !!![/b][/color]" % [actor.data.display_name, segment_name])
 	return lines
 
@@ -799,7 +858,11 @@ func _resolve_round() -> void:
 	for intent in order:
 		var actor := player if intent.actor_id == player.data.id else enemy
 		var target := enemy if intent.actor_id == player.data.id else player
+		var target_was_pending_broken := target.pending_control_state == Fighter.CONTROL_BROKEN
 		var lines := state_machine.resolve_intent(intent, actor, target)
+		if not target_was_pending_broken and target.pending_control_state == Fighter.CONTROL_BROKEN:
+			_show_combat_banner("崩势", Color("4a1f24"), Color("ff6b6b"))
+			_flash_label(enemy_label if target.data.id == enemy.data.id else player_label, Color("ff8a8a"))
 		for line in lines:
 			_log(line)
 		var combo_lines := _resolve_combo_chain_if_any(actor, target, intent)
@@ -828,6 +891,7 @@ func _finish_battle() -> void:
 	var result_text := "玩家落败。"
 	if enemy.hp <= 0:
 		result_text = "玩家获胜。"
+	_show_combat_banner(result_text, Color("1f3f2a") if enemy.hp <= 0 else Color("4a1f24"), Color("8be28b") if enemy.hp <= 0 else Color("ff8a8a"))
 	_log("[b]演武结束。[/b] %s" % result_text)
 	_show_node_buttons()
 	_refresh_ui()
