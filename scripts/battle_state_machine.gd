@@ -5,9 +5,6 @@ const Fighter = preload("res://scripts/fighter.gd")
 const IntentData = preload("res://scripts/intent_data.gd")
 const CardData = preload("res://scripts/card_data.gd")
 
-const SUPPRESSED_GAP := 2
-const BROKEN_GAP := 4
-
 enum BattlePhase {
 	NODE_SELECTION,
 	DECLARE,
@@ -39,10 +36,6 @@ func get_declaration_order(player: Fighter, enemy: Fighter) -> PackedStringArray
 		return PackedStringArray([player.data.id, enemy.data.id])
 	if enemy.is_broken() and not player.is_broken():
 		return PackedStringArray([enemy.data.id, player.data.id])
-	if player.is_suppressed() and not enemy.is_suppressed():
-		return PackedStringArray([player.data.id, enemy.data.id])
-	if enemy.is_suppressed() and not player.is_suppressed():
-		return PackedStringArray([enemy.data.id, player.data.id])
 	if player.realm < enemy.realm:
 		return PackedStringArray([player.data.id, enemy.data.id])
 	if player.realm > enemy.realm:
@@ -60,10 +53,6 @@ func get_resolution_order(player: Fighter, enemy: Fighter, player_intent: Intent
 	if player.is_broken() and not enemy.is_broken():
 		return [enemy_intent, player_intent]
 	if enemy.is_broken() and not player.is_broken():
-		return [player_intent, enemy_intent]
-	if player.is_suppressed() and not enemy.is_suppressed():
-		return [enemy_intent, player_intent]
-	if enemy.is_suppressed() and not player.is_suppressed():
 		return [player_intent, enemy_intent]
 	if player.realm > enemy.realm:
 		return [player_intent, enemy_intent]
@@ -93,6 +82,9 @@ func resolve_intent(intent: IntentData, actor: Fighter, target: Fighter) -> Arra
 		var gained := actor.recover_momentum(1)
 		lines.append("%s 回观收势，恢复 %d 势。" % [actor.data.display_name, gained])
 		return lines
+	if card.id == "staggered":
+		lines.append("%s 崩势未稳，本回合无法行动。" % actor.data.display_name)
+		return lines
 
 	if card.is_momentum_card():
 		if card.gain_momentum > 0:
@@ -101,7 +93,12 @@ func resolve_intent(intent: IntentData, actor: Fighter, target: Fighter) -> Arra
 		if card.break_momentum > 0:
 			var before_break := target.momentum
 			target.momentum = maxi(target.momentum - card.break_momentum, 0)
-			lines.append("%s 削敌势 %d。" % [card.display_name, before_break - target.momentum])
+			var actual_break := before_break - target.momentum
+			lines.append("%s 削敌势 %d。" % [card.display_name, actual_break])
+			if before_break > 0 and target.momentum == 0:
+				target.queue_broken_state()
+				actor.queue_combo_window()
+				lines.append("%s 的势被打到 0，下回合将崩势硬直！" % target.data.display_name)
 		return lines
 
 	if card.is_guard_card():
@@ -134,37 +131,27 @@ func finish_round(player: Fighter, enemy: Fighter) -> void:
 	phase = BattlePhase.DECLARE if player.hp > 0 and enemy.hp > 0 else BattlePhase.RESULT
 	player.reset_guard()
 	enemy.reset_guard()
-	_apply_pressure_states(player, enemy)
+	player.activate_pending_round_state()
+	enemy.activate_pending_round_state()
 	if player.realm == enemy.realm:
 		player_tie_advantage = not player_tie_advantage
 	round_index += 1
 
 
-func _apply_pressure_states(player: Fighter, enemy: Fighter) -> void:
-	player.set_control_state(Fighter.CONTROL_NONE)
-	enemy.set_control_state(Fighter.CONTROL_NONE)
-	var gap := player.momentum - enemy.momentum
-	if gap >= BROKEN_GAP:
-		enemy.set_control_state(Fighter.CONTROL_BROKEN)
-	elif gap <= -BROKEN_GAP:
-		player.set_control_state(Fighter.CONTROL_BROKEN)
-	elif gap >= SUPPRESSED_GAP:
-		enemy.set_control_state(Fighter.CONTROL_SUPPRESSED)
-	elif gap <= -SUPPRESSED_GAP:
-		player.set_control_state(Fighter.CONTROL_SUPPRESSED)
-
-
 func pressure_state_text(player: Fighter, enemy: Fighter) -> String:
-	var gap := player.momentum - enemy.momentum
+	if player.is_broken() and enemy.combo_window_active:
+		return "玩家崩势：本回合无法行动，且受击伤害翻倍；敌方拥有连招窗口。"
+	if enemy.is_broken() and player.combo_window_active:
+		return "敌方崩势：本回合无法行动，且受击伤害翻倍；玩家拥有连招窗口。"
 	if player.is_broken():
-		return "势差 %d：玩家崩势，敌方获得释放窗口。" % gap
+		return "玩家崩势：本回合无法行动，且受击伤害翻倍。"
 	if enemy.is_broken():
-		return "势差 %d：敌方崩势，玩家获得释放窗口。" % gap
-	if player.is_suppressed():
-		return "势差 %d：玩家受压制，下回合失去先机优势。" % gap
-	if enemy.is_suppressed():
-		return "势差 %d：敌方受压制，下回合失去先机优势。" % gap
-	return "势差 %d：双方均势，无额外控制。" % gap
+		return "敌方崩势：本回合无法行动，且受击伤害翻倍。"
+	if player.combo_window_active:
+		return "玩家持有连招窗口：下一招若符合已解锁套路，将自动连招。"
+	if enemy.combo_window_active:
+		return "敌方持有连招窗口：下一招若符合已解锁套路，将自动连招。"
+	return "当前无人崩势，未出现释放窗口。"
 
 
 func tie_rule_text(player: Fighter, enemy: Fighter) -> String:
