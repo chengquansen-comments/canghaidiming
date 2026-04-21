@@ -92,76 +92,24 @@ func _ready_card(
 
 
 func _build_catalog() -> void:
-	# 数值规则：增己势*2 + 削敌势*2 + 伤害 + 格挡 = 耗势*4
-	# 且严格区分势牌、伤害牌、格挡牌，不允许复合效果。
-	var spear_read := _ready_card(
-		"spear_read", "探锋", "枪手试探，专注立势。", 2, 3, 1,
-		CardData.ROLE_MOMENTUM, 2, 0, 0, 0
-	)
-	var spear_break := _ready_card(
-		"spear_break", "压枪", "压住来路，削弱对方势头。", 2, 3, 1,
-		CardData.ROLE_MOMENTUM, 0, 2, 0, 0
-	)
-	var spear_senki := _ready_card(
-		"spear_senki", "截势先机", "先发争先，只争势不取伤。", 1, 2, 2,
-		CardData.ROLE_MOMENTUM, 2, 2, 0, 0, PackedStringArray(["先机"])
-	)
-	var spear_mid := _ready_card(
-		"spear_mid", "中平枪", "标准中段枪刺。", 2, 3, 1,
-		CardData.ROLE_DAMAGE, 0, 0, 4, 0
-	)
-	var spear_heavy := _ready_card(
-		"spear_heavy", "龙脊重刺", "大开大合的重刺。", 2, 3, 2,
-		CardData.ROLE_DAMAGE, 0, 0, 8, 0
-	)
-	var spear_guard := _ready_card(
-		"spear_guard", "回圆架", "回枪成圆，以守化险。", 1, 3, 1,
-		CardData.ROLE_GUARD, 0, 0, 0, 4
-	)
-	var spear_wall := _ready_card(
-		"spear_wall", "封门守", "稳固门户，重守待机。", 1, 3, 2,
-		CardData.ROLE_GUARD, 0, 0, 0, 8
-	)
+	var spear_read := _ready_card("spear_read", "探锋", "枪手试探，专注立势。", 2, 3, 1, CardData.ROLE_MOMENTUM, 2, 0, 0, 0)
+	var spear_break := _ready_card("spear_break", "压枪", "压住来路，削弱对方势头。", 2, 3, 1, CardData.ROLE_MOMENTUM, 0, 2, 0, 0)
+	var spear_senki := _ready_card("spear_senki", "截势先机", "先发争先，只争势不取伤。", 1, 2, 2, CardData.ROLE_MOMENTUM, 2, 2, 0, 0, PackedStringArray(["先机"]))
+	var spear_mid := _ready_card("spear_mid", "中平枪", "标准中段枪刺。", 2, 3, 1, CardData.ROLE_DAMAGE, 0, 0, 4, 0)
+	var spear_heavy := _ready_card("spear_heavy", "龙脊重刺", "大开大合的重刺。", 2, 3, 2, CardData.ROLE_DAMAGE, 0, 0, 8, 0)
+	var spear_guard := _ready_card("spear_guard", "回圆架", "回枪成圆，以守化险。", 1, 3, 1, CardData.ROLE_GUARD, 0, 0, 0, 4)
+	var spear_wall := _ready_card("spear_wall", "封门守", "稳固门户，重守待机。", 1, 3, 2, CardData.ROLE_GUARD, 0, 0, 0, 8)
 
-	var blade_probe := _ready_card(
-		"blade_probe", "探步", "刀客试探，专注抢势。", 1, 2, 1,
-		CardData.ROLE_MOMENTUM, 2, 0, 0, 0
-	)
-	var blade_press := _ready_card(
-		"blade_press", "逼刀", "压迫敌方，专破其势。", 1, 2, 1,
-		CardData.ROLE_MOMENTUM, 0, 2, 0, 0
-	)
-	var blade_senki := _ready_card(
-		"blade_senki", "燕返先机", "以快争先，先夺局势。", 1, 1, 2,
-		CardData.ROLE_MOMENTUM, 2, 2, 0, 0, PackedStringArray(["先机"])
-	)
-	var blade_cut := _ready_card(
-		"blade_cut", "赶步斩", "迅捷标准斩击。", 1, 2, 1,
-		CardData.ROLE_DAMAGE, 0, 0, 4, 0
-	)
-	var blade_heavy := _ready_card(
-		"blade_heavy", "断流重斩", "势大力沉的压胜一斩。", 1, 2, 2,
-		CardData.ROLE_DAMAGE, 0, 0, 8, 0
-	)
-	var blade_guard := _ready_card(
-		"blade_guard", "藏锋格", "低身藏锋，以格挡化险。", 1, 3, 1,
-		CardData.ROLE_GUARD, 0, 0, 0, 4
-	)
-	var blade_wall := _ready_card(
-		"blade_wall", "锁门架", "以刀封门，强守不退。", 1, 3, 2,
-		CardData.ROLE_GUARD, 0, 0, 0, 8
-	)
+	var blade_probe := _ready_card("blade_probe", "探步", "刀客试探，专注抢势。", 1, 2, 1, CardData.ROLE_MOMENTUM, 2, 0, 0, 0)
+	var blade_press := _ready_card("blade_press", "逼刀", "压迫敌方，专破其势。", 1, 2, 1, CardData.ROLE_MOMENTUM, 0, 2, 0, 0)
+	var blade_senki := _ready_card("blade_senki", "燕返先机", "以快争先，先夺局势。", 1, 1, 2, CardData.ROLE_MOMENTUM, 2, 2, 0, 0, PackedStringArray(["先机"]))
+	var blade_cut := _ready_card("blade_cut", "赶步斩", "迅捷标准斩击。", 1, 2, 1, CardData.ROLE_DAMAGE, 0, 0, 4, 0)
+	var blade_heavy := _ready_card("blade_heavy", "断流重斩", "势大力沉的压胜一斩。", 1, 2, 2, CardData.ROLE_DAMAGE, 0, 0, 8, 0)
+	var blade_guard := _ready_card("blade_guard", "藏锋格", "低身藏锋，以格挡化险。", 1, 3, 1, CardData.ROLE_GUARD, 0, 0, 0, 4)
+	var blade_wall := _ready_card("blade_wall", "锁门架", "以刀封门，强守不退。", 1, 3, 2, CardData.ROLE_GUARD, 0, 0, 0, 8)
 
-	var spear_deck: Array[CardData] = [
-		spear_read, spear_break, spear_senki,
-		spear_mid, spear_heavy,
-		spear_guard, spear_wall
-	]
-	var blade_deck: Array[CardData] = [
-		blade_probe, blade_press, blade_senki,
-		blade_cut, blade_heavy,
-		blade_guard, blade_wall
-	]
+	var spear_deck: Array[CardData] = [spear_read, spear_break, spear_senki, spear_mid, spear_heavy, spear_guard, spear_wall]
+	var blade_deck: Array[CardData] = [blade_probe, blade_press, blade_senki, blade_cut, blade_heavy, blade_guard, blade_wall]
 
 	fighter_catalog["spearman"] = FighterData.new("spearman", "枪手", "长枪", 24, 6, 5, 1, PackedInt32Array([2, 3]), spear_deck)
 	fighter_catalog["blademaster"] = FighterData.new("blademaster", "刀客", "单刀", 22, 6, 5, 2, PackedInt32Array([1, 2]), blade_deck)
@@ -177,7 +125,6 @@ func _build_catalog() -> void:
 
 func _build_ui() -> void:
 	set_anchors_and_offsets_preset(PRESET_FULL_RECT)
-
 	var background := ColorRect.new()
 	background.color = Color("10151d")
 	background.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
@@ -202,7 +149,7 @@ func _build_ui() -> void:
 	root.add_child(title_label)
 
 	subtitle_label = Label.new()
-	subtitle_label.text = "测试武境先后、先机优先，以及战前合成藏招与牌库管理。"
+	subtitle_label.text = "势差会自然触发压制与崩势；崩势方下一回合将被迫用轻招、守招或回势。"
 	subtitle_label.modulate = Color("b8c0cc")
 	root.add_child(subtitle_label)
 
@@ -229,7 +176,6 @@ func _build_ui() -> void:
 	battle_panels.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	battle_panels.add_theme_constant_override("separation", 12)
 	root.add_child(battle_panels)
-
 	player_label = _build_rich_panel(battle_panels, "玩家状态")
 	status_label = _build_rich_panel(battle_panels, "战斗摘要")
 	enemy_label = _build_rich_panel(battle_panels, "敌方状态")
@@ -244,17 +190,14 @@ func _build_ui() -> void:
 	var control_bar := HBoxContainer.new()
 	control_bar.add_theme_constant_override("separation", 10)
 	root.add_child(control_bar)
-
 	deck_button = Button.new()
 	deck_button.text = "查看牌库"
 	deck_button.pressed.connect(_open_deck_view)
 	control_bar.add_child(deck_button)
-
 	reset_pick_button = Button.new()
 	reset_pick_button.text = "重选招式"
 	reset_pick_button.pressed.connect(_reset_draft_intent)
 	control_bar.add_child(reset_pick_button)
-
 	confirm_button = Button.new()
 	confirm_button.text = "确认出招"
 	confirm_button.pressed.connect(_confirm_player_intent)
@@ -264,7 +207,7 @@ func _build_ui() -> void:
 	hand_panel.add_theme_stylebox_override("panel", _make_panel_style(Color("18212a"), Color("52606d")))
 	hand_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	root.add_child(hand_panel)
-
+	
 	hand_flow = HFlowContainer.new()
 	hand_flow.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	hand_flow.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -276,7 +219,6 @@ func _build_ui() -> void:
 	log_panel.add_theme_stylebox_override("panel", _make_panel_style(Color("18212a"), Color("52606d")))
 	log_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	root.add_child(log_panel)
-
 	log_label = RichTextLabel.new()
 	log_label.bbcode_enabled = true
 	log_label.fit_content = true
@@ -288,7 +230,6 @@ func _build_ui() -> void:
 	overlay_scrim.color = Color(0.01, 0.02, 0.03, 0.72)
 	overlay_scrim.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	add_child(overlay_scrim)
-
 	overlay_panel = PanelContainer.new()
 	overlay_panel.visible = false
 	overlay_panel.anchor_left = 0.5
@@ -306,20 +247,16 @@ func _build_ui() -> void:
 	overlay_margin.add_theme_constant_override("margin_top", 18)
 	overlay_margin.add_theme_constant_override("margin_bottom", 18)
 	overlay_panel.add_child(overlay_margin)
-
 	var overlay_box := VBoxContainer.new()
 	overlay_box.add_theme_constant_override("separation", 10)
 	overlay_margin.add_child(overlay_box)
-
 	overlay_title = Label.new()
 	overlay_title.add_theme_font_size_override("font_size", 24)
 	overlay_box.add_child(overlay_title)
-
 	overlay_body = RichTextLabel.new()
 	overlay_body.bbcode_enabled = true
 	overlay_body.fit_content = true
 	overlay_box.add_child(overlay_body)
-
 	overlay_actions = VBoxContainer.new()
 	overlay_actions.add_theme_constant_override("separation", 8)
 	overlay_box.add_child(overlay_actions)
@@ -330,16 +267,13 @@ func _build_rich_panel(parent: Control, heading: String) -> RichTextLabel:
 	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	panel.add_theme_stylebox_override("panel", _make_panel_style(Color("18212a"), Color("52606d")))
 	parent.add_child(panel)
-
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation", 8)
 	panel.add_child(box)
-
 	var title := Label.new()
 	title.text = heading
 	title.add_theme_font_size_override("font_size", 20)
 	box.add_child(title)
-
 	var rich := RichTextLabel.new()
 	rich.bbcode_enabled = true
 	rich.fit_content = true
@@ -361,10 +295,39 @@ func _make_panel_style(fill: Color, border: Color) -> StyleBoxFlat:
 	return style
 
 
+func _card_role_prefix(card: CardData) -> String:
+	if card.is_momentum_card():
+		return "【势牌】"
+	if card.is_guard_card():
+		return "【格挡牌】"
+	return "【伤害牌】"
+
+
+func _card_restriction_reason(fighter: Fighter, card: CardData) -> String:
+	if fighter == null or card.id == "idle":
+		return ""
+	if fighter.is_broken():
+		if card.has_tag("先机"):
+			return "崩势中不可用先机牌"
+		if card.momentum_cost > 1:
+			return "崩势中不可用2费以上招式"
+	if fighter.is_suppressed() and card.has_tag("先机"):
+		return "压制中不可用先机牌"
+	return ""
+
+
+func _can_play_card(fighter: Fighter, card: CardData) -> bool:
+	if fighter == null:
+		return false
+	if card.momentum_cost > fighter.momentum:
+		return false
+	return _card_restriction_reason(fighter, card) == ""
+
+
 func _show_role_selection() -> void:
 	_show_overlay(
 		"选择角色",
-		"[b]这版原型只做枪手与刀客。[/b]\n\n当前规则：敌方默认武境 2。战前可以查看牌库，并将两张已有招式合成为一张更强的藏招。",
+		"[b]这版原型只做枪手与刀客。[/b]\n\n当前规则：敌方默认武境 2。战前可以查看牌库，并将两张已有招式合成为一张更强的藏招。势差会在战后自动生成压制或崩势。",
 		[
 			{"text": "枪手开局", "callback": Callable(self, "_start_session").bind("spearman")},
 			{"text": "刀客开局", "callback": Callable(self, "_start_session").bind("blademaster")}
@@ -394,17 +357,7 @@ func _start_session(role_id: String) -> void:
 
 
 func _copy_fighter_data(data: FighterData) -> FighterData:
-	return FighterData.new(
-		data.id,
-		data.display_name,
-		data.weapon_name,
-		data.max_hp,
-		data.max_momentum,
-		data.starting_momentum,
-		data.starting_realm,
-		data.preferred_distances,
-		data.clone_deck()
-	)
+	return FighterData.new(data.id, data.display_name, data.weapon_name, data.max_hp, data.max_momentum, data.starting_momentum, data.starting_realm, data.preferred_distances, data.clone_deck())
 
 
 func _show_node_buttons() -> void:
@@ -532,35 +485,10 @@ func _build_hidden_fusion_card(first_card: CardData, second_card: CardData) -> C
 	var tags := PackedStringArray(["藏招"])
 	var fused_cost := first_card.momentum_cost + second_card.momentum_cost
 	if first_card.is_momentum_card() and second_card.is_momentum_card():
-		return _ready_card(
-			"hidden_%s_%s" % [first_card.id, second_card.id],
-			"藏招·%s/%s" % [first_card.display_name, second_card.display_name],
-			"双势并举的藏招。", 1, 3, fused_cost,
-			CardData.ROLE_MOMENTUM,
-			first_card.gain_momentum + second_card.gain_momentum,
-			first_card.break_momentum + second_card.break_momentum,
-			0, 0, tags
-		)
+		return _ready_card("hidden_%s_%s" % [first_card.id, second_card.id], "藏招·%s/%s" % [first_card.display_name, second_card.display_name], "双势并举的藏招。", 1, 3, fused_cost, CardData.ROLE_MOMENTUM, first_card.gain_momentum + second_card.gain_momentum, first_card.break_momentum + second_card.break_momentum, 0, 0, tags)
 	if first_card.is_guard_card() and second_card.is_guard_card():
-		return _ready_card(
-			"hidden_%s_%s" % [first_card.id, second_card.id],
-			"藏招·%s/%s" % [first_card.display_name, second_card.display_name],
-			"双守并立的藏招。", 1, 3, fused_cost,
-			CardData.ROLE_GUARD,
-			0, 0, 0,
-			first_card.guard + second_card.guard,
-			tags
-		)
-	return _ready_card(
-		"hidden_%s_%s" % [first_card.id, second_card.id],
-		"藏招·%s/%s" % [first_card.display_name, second_card.display_name],
-		"双重杀伤的藏招。", 1, 3, fused_cost,
-		CardData.ROLE_DAMAGE,
-		0, 0,
-		first_card.damage + second_card.damage,
-		0,
-		tags
-	)
+		return _ready_card("hidden_%s_%s" % [first_card.id, second_card.id], "藏招·%s/%s" % [first_card.display_name, second_card.display_name], "双守并立的藏招。", 1, 3, fused_cost, CardData.ROLE_GUARD, 0, 0, 0, first_card.guard + second_card.guard, tags)
+	return _ready_card("hidden_%s_%s" % [first_card.id, second_card.id], "藏招·%s/%s" % [first_card.display_name, second_card.display_name], "双重杀伤的藏招。", 1, 3, fused_cost, CardData.ROLE_DAMAGE, 0, 0, first_card.damage + second_card.damage, 0, tags)
 
 
 func _open_deck_view() -> void:
@@ -621,6 +549,8 @@ func _begin_round() -> void:
 		var enemy_gain := enemy.recover_momentum(1)
 		if player_gain > 0 or enemy_gain > 0:
 			_log("[b]回合调息。[/b] 玩家 +%d 势，敌方 +%d 势。" % [player_gain, enemy_gain])
+	if player.control_state != Fighter.CONTROL_NONE or enemy.control_state != Fighter.CONTROL_NONE:
+		_log("[b]当前势态：[/b] %s" % state_machine.pressure_state_text(player, enemy))
 	declaration_order = state_machine.get_declaration_order(player, enemy)
 	declaration_index = 0
 	awaiting_player_input = false
@@ -659,10 +589,13 @@ func _refresh_hand_buttons() -> void:
 		return
 	for i in range(player.hand.size()):
 		var card: CardData = player.hand[i]
+		var reason := _card_restriction_reason(player, card)
 		var button := Button.new()
-		button.custom_minimum_size = Vector2(220, 124)
-		button.text = card.short_summary() + "\n" + card.description
-		button.disabled = not awaiting_player_input or card.momentum_cost > player.momentum
+		button.custom_minimum_size = Vector2(220, 130)
+		button.text = "%s %s\n%s\n%s" % [_card_role_prefix(card), card.display_name, card.short_summary(), card.description]
+		if reason != "":
+			button.text += "\n限制：%s" % reason
+		button.disabled = not awaiting_player_input or not _can_play_card(player, card)
 		button.pressed.connect(_on_player_card_pressed.bind(card))
 		if _draft_uses_card(card):
 			button.text = "[已选] " + button.text
@@ -670,8 +603,8 @@ func _refresh_hand_buttons() -> void:
 
 	if awaiting_player_input:
 		var idle_button := Button.new()
-		idle_button.custom_minimum_size = Vector2(220, 124)
-		idle_button.text = "观势｜距1-3｜耗势 0\n不主动进击，回 1 势。"
+		idle_button.custom_minimum_size = Vector2(220, 130)
+		idle_button.text = "【势牌】 观势\n观势｜势牌｜距1-3｜耗势 0｜增己势 1\n不主动进击，回 1 势。"
 		idle_button.pressed.connect(_on_player_card_pressed.bind(_idle_card()))
 		hand_flow.add_child(idle_button)
 
@@ -679,11 +612,15 @@ func _refresh_hand_buttons() -> void:
 func _on_player_card_pressed(card: CardData) -> void:
 	if not awaiting_player_input:
 		return
+	var reason := _card_restriction_reason(player, card)
+	if reason != "":
+		_log(reason)
+		return
 	if card.momentum_cost > player.momentum:
 		_log("势不足，无法选用 %s。" % card.display_name)
 		return
 	draft_player_intent = IntentData.from_card(player, card)
-	_log("已选定招式 [color=#95e1d3]%s[/color]，请确认出招。" % card.display_name)
+	_log("已选定%s [color=#95e1d3]%s[/color]，请确认出招。" % [_card_role_prefix(card), card.display_name])
 	_refresh_ui()
 
 
@@ -725,19 +662,18 @@ func _resolve_round() -> void:
 	enemy.discard_cards(enemy_intent.get_consumed_cards())
 	player.draw_to(HAND_SIZE)
 	enemy.draw_to(HAND_SIZE)
-
 	if player.hp <= 0 or enemy.hp <= 0:
 		_finish_battle()
 		return
-
 	state_machine.finish_round(player, enemy)
+	_log("[b]回合势态：[/b] %s" % state_machine.pressure_state_text(player, enemy))
 	_begin_round()
 
 
 func _finish_battle() -> void:
 	battle_active = false
 	awaiting_player_input = false
-	state_machine.phase = BattleStateMachine.BattlePhase.RESULT
+	state_machine.phase = BattlePhase.RESULT
 	var result_text := "玩家落败。"
 	if enemy.hp <= 0:
 		result_text = "玩家获胜。"
@@ -783,21 +719,7 @@ func _fighter_status_text(fighter: Fighter) -> String:
 	if fighter == null:
 		return "未初始化。"
 	var session_deck_size := fighter.get_session_deck().size()
-	return "[b]%s[/b]｜%s\n生命：%d/%d\n势：%d/%d\n当前武境：%d\n会话武境：%d\n优势距离：%s\n会话牌库：%d\n抽牌堆：%d｜手牌：%d｜弃牌堆：%d" % [
-		fighter.data.display_name,
-		fighter.data.weapon_name,
-		fighter.hp,
-		fighter.data.max_hp,
-		fighter.momentum,
-		fighter.data.max_momentum,
-		fighter.realm,
-		fighter.session_realm,
-		fighter.preferred_text(),
-		session_deck_size,
-		fighter.draw_pile.size(),
-		fighter.hand.size(),
-		fighter.discard_pile.size()
-	]
+	return "[b]%s[/b]｜%s\n生命：%d/%d\n势：%d/%d\n护值：%d\n状态：%s\n当前武境：%d\n会话武境：%d\n优势距离：%s\n会话牌库：%d\n抽牌堆：%d｜手牌：%d｜弃牌堆：%d" % [fighter.data.display_name, fighter.data.weapon_name, fighter.hp, fighter.data.max_hp, fighter.momentum, fighter.data.max_momentum, fighter.guard_points, fighter.control_label(), fighter.realm, fighter.session_realm, fighter.preferred_text(), session_deck_size, fighter.draw_pile.size(), fighter.hand.size(), fighter.discard_pile.size()]
 
 
 func _intent_panel_text(intent: IntentData, viewer: Fighter, is_player: bool) -> String:
@@ -817,18 +739,19 @@ func _status_text() -> String:
 		return "等待选择角色。"
 	var lines: Array[String] = []
 	lines.append("[b]规则测试点[/b]")
-	lines.append("- 高武境后定招，并通常先结算")
-	lines.append("- 带【先机】标签的招式先于武境顺序")
 	lines.append("- 招式严格区分为势牌、伤害牌、格挡牌")
+	lines.append("- 势差 2 触发压制：受压制方失去先机牌")
+	lines.append("- 势差 4 触发崩势：受崩势方不可用先机与 2 费以上牌")
 	lines.append("- 招式数值统一遵循：增己势*2 + 削敌势*2 + 伤害 + 格挡 = 耗势*4")
 	lines.append("- %s" % state_machine.tie_rule_text(player, enemy))
+	lines.append("- %s" % state_machine.pressure_state_text(player, enemy))
 	if awaiting_player_input:
 		lines.append("")
 		lines.append("[b]当前操作[/b]")
 		if draft_player_intent != null:
 			lines.append("已选好招式，点击【确认出招】锁定动作。")
 		else:
-			lines.append("请选择一张手牌，或查看牌库后再决定。")
+			lines.append("请选择一张手牌。若你被压制或崩势，部分牌会被直接禁用。")
 	return "\n".join(lines)
 
 
@@ -847,7 +770,6 @@ func _simulate_preview(player_preview_intent: IntentData, enemy_preview_intent: 
 	var enemy_hp := enemy.hp
 	var player_momentum := player.momentum
 	var enemy_momentum := enemy.momentum
-	var preview_distance := state_machine.current_distance
 	var lines: Array[String] = []
 	var order := state_machine.get_resolution_order(player, enemy, player_preview_intent, enemy_preview_intent)
 	lines.append("[b]确认后预览[/b]")
@@ -887,7 +809,7 @@ func _simulate_preview(player_preview_intent: IntentData, enemy_preview_intent: 
 					player_momentum = maxi(player_momentum - card.break_momentum, 0)
 					lines.append("敌方削敌势 %d，玩家势将变为 %d。" % [card.break_momentum, player_momentum])
 		elif card.is_damage_card() and card.damage > 0:
-			if card.is_usable_at(preview_distance):
+			if card.is_usable_at(state_machine.current_distance):
 				if intent.actor_id == player.data.id:
 					enemy_hp = maxi(enemy_hp - card.damage, 0)
 					lines.append("命中敌方，敌方生命将变为 %d。" % enemy_hp)
@@ -895,10 +817,10 @@ func _simulate_preview(player_preview_intent: IntentData, enemy_preview_intent: 
 					player_hp = maxi(player_hp - card.damage, 0)
 					lines.append("命中玩家，玩家生命将变为 %d。" % player_hp)
 			else:
-				lines.append("因距离 %d 不合式，将落空。" % preview_distance)
+				lines.append("因距离 %d 不合式，将落空。" % state_machine.current_distance)
 		elif card.is_guard_card() and card.guard > 0:
 			lines.append("本回合作为格挡牌，提供 %d 格挡。" % card.guard)
-	lines.append("最终预览：玩家 %d 血 %d 势 / 敌方 %d 血 %d 势 / 距离 %d" % [player_hp, player_momentum, enemy_hp, enemy_momentum, preview_distance])
+	lines.append("最终预览：玩家 %d 血 %d 势 / 敌方 %d 血 %d 势" % [player_hp, player_momentum, enemy_hp, enemy_momentum])
 	return "\n".join(lines)
 
 
