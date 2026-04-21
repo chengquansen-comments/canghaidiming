@@ -9,6 +9,7 @@ var hp: int
 var momentum: int
 var realm: int
 var session_realm: int
+var guard_points: int
 var draw_pile: Array[CardData] = []
 var discard_pile: Array[CardData] = []
 var hand: Array[CardData] = []
@@ -20,6 +21,7 @@ func _init(p_data: FighterData) -> void:
 	momentum = data.starting_momentum
 	session_realm = data.starting_realm
 	realm = session_realm
+	guard_points = 0
 	reset_for_battle()
 
 
@@ -27,6 +29,7 @@ func reset_for_battle(hand_size: int = 4) -> void:
 	hp = data.max_hp
 	momentum = data.starting_momentum
 	realm = session_realm
+	guard_points = 0
 	draw_pile = data.clone_deck()
 	draw_pile.shuffle()
 	discard_pile.clear()
@@ -87,6 +90,22 @@ func upgrade_realm() -> bool:
 func set_session_realm(value: int) -> void:
 	session_realm = maxi(value, 1)
 	realm = session_realm
+
+
+func reset_guard() -> void:
+	guard_points = 0
+
+
+func add_guard(amount: int) -> int:
+	guard_points += maxi(amount, 0)
+	return guard_points
+
+
+func absorb_damage(amount: int) -> int:
+	var incoming := maxi(amount, 0)
+	var absorbed := mini(guard_points, incoming)
+	guard_points -= absorbed
+	return incoming - absorbed
 
 
 func recover_momentum(amount: int) -> int:
