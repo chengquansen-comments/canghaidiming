@@ -111,8 +111,12 @@ func resolve_intent(intent: IntentData, actor: Fighter, target: Fighter) -> Arra
 
 	if card.damage > 0:
 		if card.is_usable_at(current_distance):
-			var remaining_damage := target.absorb_damage(card.damage)
-			var blocked := card.damage - remaining_damage
+			var effective_damage := card.damage
+			if target.is_broken():
+				effective_damage *= 2
+				lines.append("%s 处于崩势，所受伤害翻倍至 %d。" % [target.data.display_name, effective_damage])
+			var remaining_damage := target.absorb_damage(effective_damage)
+			var blocked := effective_damage - remaining_damage
 			if blocked > 0:
 				lines.append("%s 被格挡化去 %d。" % [card.display_name, blocked])
 			if remaining_damage > 0:
