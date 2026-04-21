@@ -96,16 +96,16 @@ func _build_catalog() -> void:
 	var spear_read := _ready_card("spear_read", "探锋", "枪手试探，专注立势。", 2, 3, 1, CardData.ROLE_MOMENTUM, 2, 0, 0, 0)
 	var spear_break := _ready_card("spear_break", "压枪", "压住来路，削弱对方势头。", 2, 3, 1, CardData.ROLE_MOMENTUM, 0, 2, 0, 0)
 	var spear_senki := _ready_card("spear_senki", "截势先机", "先发争先，只争势不取伤。", 1, 2, 2, CardData.ROLE_MOMENTUM, 2, 2, 0, 0, PackedStringArray(["先机"]))
-	var spear_mid := _ready_card("spear_mid", "中平枪", "标准中段枪刺。", 2, 3, 1, CardData.ROLE_DAMAGE, 0, 0, 4, 0, PackedStringArray(["连招起手"]))
-	var spear_heavy := _ready_card("spear_heavy", "龙脊重刺", "大开大合的重刺。", 2, 3, 2, CardData.ROLE_DAMAGE, 0, 0, 8, 0)
+	var spear_mid := _ready_card("spear_mid", "中平枪", "标准中段枪刺。", 2, 3, 1, CardData.ROLE_DAMAGE, 0, 0, 4, 0, PackedStringArray(["连招起手", "起手"]))
+	var spear_heavy := _ready_card("spear_heavy", "龙脊重刺", "大开大合的重刺。", 2, 3, 2, CardData.ROLE_DAMAGE, 0, 0, 8, 0, PackedStringArray(["终结"]))
 	var spear_guard := _ready_card("spear_guard", "回圆架", "回枪成圆，以守化险。", 1, 3, 1, CardData.ROLE_GUARD, 0, 0, 0, 4)
 	var spear_wall := _ready_card("spear_wall", "封门守", "稳固门户，重守待机。", 1, 3, 2, CardData.ROLE_GUARD, 0, 0, 0, 8)
 
 	var blade_probe := _ready_card("blade_probe", "探步", "刀客试探，专注抢势。", 1, 2, 1, CardData.ROLE_MOMENTUM, 2, 0, 0, 0)
 	var blade_press := _ready_card("blade_press", "逼刀", "压迫敌方，专破其势。", 1, 2, 1, CardData.ROLE_MOMENTUM, 0, 2, 0, 0)
 	var blade_senki := _ready_card("blade_senki", "燕返先机", "以快争先，先夺局势。", 1, 1, 2, CardData.ROLE_MOMENTUM, 2, 2, 0, 0, PackedStringArray(["先机"]))
-	var blade_cut := _ready_card("blade_cut", "赶步斩", "迅捷标准斩击。", 1, 2, 1, CardData.ROLE_DAMAGE, 0, 0, 4, 0, PackedStringArray(["连招起手"]))
-	var blade_heavy := _ready_card("blade_heavy", "断流重斩", "势大力沉的压胜一斩。", 1, 2, 2, CardData.ROLE_DAMAGE, 0, 0, 8, 0)
+	var blade_cut := _ready_card("blade_cut", "赶步斩", "迅捷标准斩击。", 1, 2, 1, CardData.ROLE_DAMAGE, 0, 0, 4, 0, PackedStringArray(["连招起手", "起手"]))
+	var blade_heavy := _ready_card("blade_heavy", "断流重斩", "势大力沉的压胜一斩。", 1, 2, 2, CardData.ROLE_DAMAGE, 0, 0, 8, 0, PackedStringArray(["终结"]))
 	var blade_guard := _ready_card("blade_guard", "藏锋格", "低身藏锋，以格挡化险。", 1, 3, 1, CardData.ROLE_GUARD, 0, 0, 0, 4)
 	var blade_wall := _ready_card("blade_wall", "锁门架", "以刀封门，强守不退。", 1, 3, 2, CardData.ROLE_GUARD, 0, 0, 0, 8)
 
@@ -119,7 +119,7 @@ func _build_catalog() -> void:
 		_ready_card("reward_momentum_up", "聚势", "专注提振自身势头。", 1, 3, 1, CardData.ROLE_MOMENTUM, 2, 0, 0, 0),
 		_ready_card("reward_momentum_break", "断势", "专注削弱敌方势头。", 1, 3, 1, CardData.ROLE_MOMENTUM, 0, 2, 0, 0),
 		_ready_card("reward_senki", "争先", "以先机抢夺势头。", 1, 2, 2, CardData.ROLE_MOMENTUM, 2, 2, 0, 0, PackedStringArray(["先机"])),
-		_ready_card("reward_damage", "重手", "纯粹追求压倒性伤害。", 1, 3, 2, CardData.ROLE_DAMAGE, 0, 0, 8, 0),
+		_ready_card("reward_damage", "重手", "纯粹追求压倒性伤害。", 1, 3, 2, CardData.ROLE_DAMAGE, 0, 0, 8, 0, PackedStringArray(["追击"])),
 		_ready_card("reward_guard", "铁壁", "纯粹追求稳固格挡。", 1, 3, 2, CardData.ROLE_GUARD, 0, 0, 0, 8)
 	]
 
@@ -130,8 +130,8 @@ func _build_catalog() -> void:
 			"starter_card_id": "spear_mid",
 			"required_card_ids": PackedStringArray(["spear_mid", "spear_heavy"]),
 			"followups": [
-				{"name": "追喉刺", "base_damage": 2},
-				{"name": "龙脊送枪", "base_damage": 4, "is_finisher": true}
+				{"name": "追喉刺", "base_damage": 2, "segment_type": "追击"},
+				{"name": "龙脊送枪", "base_damage": 4, "segment_type": "终结", "is_finisher": true}
 			]
 		}
 	]
@@ -142,8 +142,8 @@ func _build_catalog() -> void:
 			"starter_card_id": "blade_cut",
 			"required_card_ids": PackedStringArray(["blade_cut", "blade_heavy"]),
 			"followups": [
-				{"name": "回身快斩", "base_damage": 2},
-				{"name": "断流收刀", "base_damage": 5, "is_finisher": true}
+				{"name": "回身快斩", "base_damage": 2, "segment_type": "追击"},
+				{"name": "断流收刀", "base_damage": 5, "segment_type": "终结", "is_finisher": true}
 			]
 		}
 	]
@@ -175,7 +175,7 @@ func _build_ui() -> void:
 	root.add_child(title_label)
 
 	subtitle_label = Label.new()
-	subtitle_label.text = "势被打到 0 将在下回合崩势硬直；击崩后打出的下一招，若接上已解锁套路，会自动触发职业连招。"
+	subtitle_label.text = "势被打到 0 将在下回合崩势硬直；击崩后打出的下一招，若接上已解锁套路，会自动触发职业连招。伤害牌已区分为起手 / 追击 / 终结。"
 	subtitle_label.modulate = Color("b8c0cc")
 	root.add_child(subtitle_label)
 
@@ -358,6 +358,16 @@ func _get_triggerable_combo(fighter: Fighter, card: CardData) -> Dictionary:
 	return combo
 
 
+func _damage_stage_tag(card: CardData) -> String:
+	if card.has_tag("终结"):
+		return "终结"
+	if card.has_tag("追击"):
+		return "追击"
+	if card.has_tag("起手"):
+		return "起手"
+	return ""
+
+
 func _combo_marker_text(fighter: Fighter, card: CardData) -> String:
 	var combo := _combo_for_starter(fighter.data.id, card.id)
 	if combo.is_empty():
@@ -374,6 +384,9 @@ func _card_role_prefix(card: CardData) -> String:
 		return "【势牌】"
 	if card.is_guard_card():
 		return "【格挡牌】"
+	var stage := _damage_stage_tag(card)
+	if stage != "":
+		return "【伤害牌/%s】" % stage
 	return "【伤害牌】"
 
 
@@ -557,6 +570,7 @@ func _build_hidden_fusion_card(first_card: CardData, second_card: CardData) -> C
 		return _ready_card("hidden_%s_%s" % [first_card.id, second_card.id], "藏招·%s/%s" % [first_card.display_name, second_card.display_name], "双势并举的藏招。", 1, 3, fused_cost, CardData.ROLE_MOMENTUM, first_card.gain_momentum + second_card.gain_momentum, first_card.break_momentum + second_card.break_momentum, 0, 0, tags)
 	if first_card.is_guard_card() and second_card.is_guard_card():
 		return _ready_card("hidden_%s_%s" % [first_card.id, second_card.id], "藏招·%s/%s" % [first_card.display_name, second_card.display_name], "双守并立的藏招。", 1, 3, fused_cost, CardData.ROLE_GUARD, 0, 0, 0, first_card.guard + second_card.guard, tags)
+	tags.append("终结")
 	return _ready_card("hidden_%s_%s" % [first_card.id, second_card.id], "藏招·%s/%s" % [first_card.display_name, second_card.display_name], "双重杀伤的藏招。", 1, 3, fused_cost, CardData.ROLE_DAMAGE, 0, 0, first_card.damage + second_card.damage, 0, tags)
 
 
@@ -679,7 +693,7 @@ func _refresh_hand_buttons() -> void:
 		var reason := _card_restriction_reason(player, card)
 		var marker := _combo_marker_text(player, card)
 		var button := Button.new()
-		button.custom_minimum_size = Vector2(220, 142)
+		button.custom_minimum_size = Vector2(220, 150)
 		button.text = "%s %s\n%s\n%s" % [_card_role_prefix(card), card.display_name, card.short_summary(), card.description]
 		if marker != "":
 			button.text += "\n%s" % marker
@@ -693,7 +707,7 @@ func _refresh_hand_buttons() -> void:
 
 	if awaiting_player_input:
 		var idle_button := Button.new()
-		idle_button.custom_minimum_size = Vector2(220, 142)
+		idle_button.custom_minimum_size = Vector2(220, 150)
 		idle_button.text = "【势牌】 观势\n观势｜势牌｜距1-3｜耗势 0｜增己势 1\n不主动进击，回 1 势。"
 		idle_button.pressed.connect(_on_player_card_pressed.bind(_idle_card()))
 		hand_flow.add_child(idle_button)
@@ -750,28 +764,31 @@ func _resolve_combo_chain_if_any(actor: Fighter, target: Fighter, intent: Intent
 	actor.consume_combo_window()
 	var combo := _get_triggerable_combo(actor, card)
 	if combo.is_empty():
-		lines.append("%s 未衔接到已解锁连招，本次连招窗口消散。" % actor.data.display_name)
+		lines.append("[color=#7f8c8d]%s 未衔接到已解锁连招，本次连招窗口消散。[/color]" % actor.data.display_name)
 		return lines
-	lines.append("[b]%s 启动连招：%s！[/b]" % [actor.data.display_name, combo.get("display_name", "")])
-	for segment in combo.get("followups", []):
+	lines.append("[color=#ffd479][b]>>> 连招启动：%s · %s <<<[/b][/color]" % [actor.data.display_name, combo.get("display_name", "")])
+	for idx in range(combo.get("followups", []).size()):
 		if target.hp <= 0:
 			break
+		var segment: Dictionary = combo.get("followups", [])[idx]
 		var segment_name: String = segment.get("name", "追击")
+		var segment_type: String = segment.get("segment_type", "追击")
 		var effective_damage: int = int(segment.get("base_damage", 0))
 		if target.is_broken():
 			effective_damage *= 2
-			lines.append("%s 处于崩势，%s 伤害翻倍至 %d。" % [target.data.display_name, segment_name, effective_damage])
+			lines.append("[color=#ff8c42]%s 处于崩势，%s伤害翻倍至 %d。[/color]" % [target.data.display_name, segment_name, effective_damage])
 		var remaining_damage := target.absorb_damage(effective_damage)
 		var blocked := effective_damage - remaining_damage
+		var header := "[b][%d/%d][%s]%s[/%s][/b]" % [idx + 1, combo.get("followups", []).size(), segment_type, segment_name, segment_type]
 		if blocked > 0:
 			lines.append("%s 被格挡化去 %d。" % [segment_name, blocked])
 		if remaining_damage > 0:
 			target.hp = maxi(target.hp - remaining_damage, 0)
-			lines.append("%s 连招命中，造成 %d 伤害。" % [segment_name, remaining_damage])
+			lines.append("%s %s 命中，造成 %d 伤害。" % [header, actor.data.display_name, remaining_damage])
 		else:
-			lines.append("%s 被完全格挡。" % segment_name)
+			lines.append("%s 被完全格挡。" % header)
 		if bool(segment.get("is_finisher", false)):
-			lines.append("[b]%s 以 %s 终结收势！[/b]" % [actor.data.display_name, segment_name])
+			lines.append("[color=#ff4d6d][b]!!! %s 以 %s 完成终结 !!![/b][/color]" % [actor.data.display_name, segment_name])
 	return lines
 
 
@@ -830,6 +847,10 @@ func _update_phase_label() -> void:
 			declare_names.append(actor_id)
 	var declare_text := " -> ".join(declare_names)
 	phase_label.text = "回合 %d｜定招顺序：%s" % [state_machine.round_index, declare_text]
+	if player != null and player.combo_window_active:
+		phase_label.text += "｜玩家连招窗口开启"
+	elif enemy != null and enemy.combo_window_active:
+		phase_label.text += "｜敌方连招窗口开启"
 
 
 func _refresh_ui() -> void:
@@ -874,6 +895,7 @@ func _status_text() -> String:
 	var lines: Array[String] = []
 	lines.append("[b]规则测试点[/b]")
 	lines.append("- 招式严格区分为势牌、伤害牌、格挡牌")
+	lines.append("- 伤害牌进一步区分为：起手 / 追击 / 终结")
 	lines.append("- 本回合势被削到 0：下回合崩势，无法行动且受击伤害翻倍")
 	lines.append("- 打崩对手的一方获得连招窗口：下一招若为已解锁套路起手，则自动连段")
 	lines.append("- Demo 连招：枪手【穿云三刺】；刀客【断流三斩】")
@@ -981,7 +1003,7 @@ func _simulate_preview(player_preview_intent: IntentData, enemy_preview_intent: 
 								enemy_hp = maxi(enemy_hp - seg_damage, 0)
 							else:
 								player_hp = maxi(player_hp - seg_damage, 0)
-							lines.append("连招段 %s 预计造成 %d。" % [segment.get("name", "追击"), seg_damage])
+							lines.append("连招段 [%s]%s 预计造成 %d。" % [segment.get("segment_type", "追击"), segment.get("name", "追击"), seg_damage])
 			else:
 				lines.append("因距离 %d 不合式，将落空。" % state_machine.current_distance)
 		elif card.is_guard_card() and card.guard > 0:
