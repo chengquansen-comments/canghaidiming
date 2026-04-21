@@ -8,6 +8,9 @@ const HiddenMoveData = preload("res://scripts/hidden_move_data.gd")
 const FeintData = preload("res://scripts/feint_data.gd")
 
 func choose_intent(enemy: Fighter, opponent: Fighter, current_distance: int, opponent_visible_intent: IntentData) -> IntentData:
+	if enemy.is_broken():
+		return IntentData.from_card(enemy, CardData.new("staggered", "崩势硬直", "崩势未稳，无法行动", 1, 3, 0, CardData.ROLE_MOMENTUM, 0, 0, 0, 0))
+
 	var chosen: CardData = _pick_best_card(enemy, enemy.hand, enemy.momentum, current_distance, opponent_visible_intent)
 	if chosen == null and not enemy.hand.is_empty():
 		for fallback in enemy.hand:
@@ -17,7 +20,7 @@ func choose_intent(enemy: Fighter, opponent: Fighter, current_distance: int, opp
 	if chosen == null:
 		return IntentData.from_card(enemy, CardData.new("idle", "观势", "收束架势，回观来路", 1, 3, 0, CardData.ROLE_MOMENTUM, 1, 0, 0, 0))
 
-	if enemy.realm > opponent.realm and enemy.hand.size() >= 2 and not enemy.is_suppressed() and not enemy.is_broken():
+	if enemy.realm > opponent.realm and enemy.hand.size() >= 2:
 		var hidden := _build_simple_hidden_move(enemy, enemy.hand, enemy.momentum, chosen)
 		if hidden != null:
 			return IntentData.from_hidden_move(enemy, hidden, [hidden.feint.display_card, hidden.real_card])
@@ -26,13 +29,7 @@ func choose_intent(enemy: Fighter, opponent: Fighter, current_distance: int, opp
 
 
 func _can_play_card(fighter: Fighter, card: CardData) -> bool:
-	if card.momentum_cost > fighter.momentum:
-		return false
-	if fighter.is_broken() and (card.has_tag("先机") or card.momentum_cost > 1):
-		return false
-	if fighter.is_suppressed() and card.has_tag("先机"):
-		return false
-	return true
+	return card.momentum_cost <= fighter.momentum
 
 
 func _pick_best_card(enemy: Fighter, cards: Array[CardData], current_momentum: int, current_distance: int, opponent_visible_intent: IntentData) -> CardData:
@@ -58,11 +55,6 @@ func _pick_best_card(enemy: Fighter, cards: Array[CardData], current_momentum: i
 			score += 3
 		if opponent_visible_intent != null and opponent_visible_intent.has_senki() and card.has_tag("先机"):
 			score += 2
-		if enemy.is_broken():
-			if card.is_guard_card():
-				score += 4
-			elif card.is_momentum_card():
-				score += 1
 		if score > best_score:
 			best_score = score
 			best_card = card
