@@ -4,12 +4,17 @@ class_name Fighter
 const FighterData = preload("res://scripts/fighter_data.gd")
 const CardData = preload("res://scripts/card_data.gd")
 
+const CONTROL_NONE := "none"
+const CONTROL_SUPPRESSED := "suppressed"
+const CONTROL_BROKEN := "broken_posture"
+
 var data: FighterData
 var hp: int
 var momentum: int
 var realm: int
 var session_realm: int
 var guard_points: int
+var control_state: String
 var draw_pile: Array[CardData] = []
 var discard_pile: Array[CardData] = []
 var hand: Array[CardData] = []
@@ -22,6 +27,7 @@ func _init(p_data: FighterData) -> void:
 	session_realm = data.starting_realm
 	realm = session_realm
 	guard_points = 0
+	control_state = CONTROL_NONE
 	reset_for_battle()
 
 
@@ -30,6 +36,7 @@ func reset_for_battle(hand_size: int = 4) -> void:
 	momentum = data.starting_momentum
 	realm = session_realm
 	guard_points = 0
+	control_state = CONTROL_NONE
 	draw_pile = data.clone_deck()
 	draw_pile.shuffle()
 	discard_pile.clear()
@@ -90,6 +97,28 @@ func upgrade_realm() -> bool:
 func set_session_realm(value: int) -> void:
 	session_realm = maxi(value, 1)
 	realm = session_realm
+
+
+func set_control_state(value: String) -> void:
+	control_state = value
+
+
+func is_suppressed() -> bool:
+	return control_state == CONTROL_SUPPRESSED
+
+
+func is_broken() -> bool:
+	return control_state == CONTROL_BROKEN
+
+
+func control_label() -> String:
+	match control_state:
+		CONTROL_SUPPRESSED:
+			return "压制"
+		CONTROL_BROKEN:
+			return "崩势"
+		_:
+			return "无"
 
 
 func reset_guard() -> void:
