@@ -5,6 +5,9 @@ const Fighter = preload("res://scripts/fighter.gd")
 const IntentData = preload("res://scripts/intent_data.gd")
 const CardData = preload("res://scripts/card_data.gd")
 
+const SUPPRESSED_GAP := 2
+const BROKEN_GAP := 4
+
 enum BattlePhase {
 	NODE_SELECTION,
 	DECLARE,
@@ -32,6 +35,14 @@ func begin_battle(initial_distance: int = 2) -> void:
 
 
 func get_declaration_order(player: Fighter, enemy: Fighter) -> PackedStringArray:
+	if player.is_broken() and not enemy.is_broken():
+		return PackedStringArray([player.data.id, enemy.data.id])
+	if enemy.is_broken() and not player.is_broken():
+		return PackedStringArray([enemy.data.id, player.data.id])
+	if player.is_suppressed() and not enemy.is_suppressed():
+		return PackedStringArray([player.data.id, enemy.data.id])
+	if enemy.is_suppressed() and not player.is_suppressed():
+		return PackedStringArray([enemy.data.id, player.data.id])
 	if player.realm < enemy.realm:
 		return PackedStringArray([player.data.id, enemy.data.id])
 	if player.realm > enemy.realm:
@@ -46,6 +57,14 @@ func get_resolution_order(player: Fighter, enemy: Fighter, player_intent: Intent
 		return [player_intent, enemy_intent]
 	if enemy_intent.has_senki() and not player_intent.has_senki():
 		return [enemy_intent, player_intent]
+	if player.is_broken() and not enemy.is_broken():
+		return [enemy_intent, player_intent]
+	if enemy.is_broken() and not player.is_broken():
+		return [player_intent, enemy_intent]
+	if player.is_suppressed() and not enemy.is_suppressed():
+		return [enemy_intent, player_intent]
+	if enemy.is_suppressed() and not player.is_suppressed():
+		return [player_intent, enemy_intent]
 	if player.realm > enemy.realm:
 		return [player_intent, enemy_intent]
 	if enemy.realm > player.realm:
@@ -111,9 +130,37 @@ func finish_round(player: Fighter, enemy: Fighter) -> void:
 	phase = BattlePhase.DECLARE if player.hp > 0 and enemy.hp > 0 else BattlePhase.RESULT
 	player.reset_guard()
 	enemy.reset_guard()
+	_apply_pressure_states(player, enemy)
 	if player.realm == enemy.realm:
 		player_tie_advantage = not player_tie_advantage
 	round_index += 1
+
+
+func _apply_pressure_states(player: Fighter, enemy: Fighter) -> void:
+	player.set_control_state(Fighter.CONTROL_NONE)
+	enemy.set_control_state(Fighter.CONTROL_NONE)
+	var gap := player.momentum - enemy.momentum
+	if gap >= BROKEN_GAP:
+		enemy.set_control_state(Fighter.CONTROL_BROKEN)
+	elif gap <= -BROKEN_GAP:
+		player.set_control_state(Fighter.CONTROL_BROKEN)
+	elif gap >= SUPPRESSED_GAP:
+		enemy.set_control_state(Fighter.CONTROL_SUPPRESSED)
+	elif gap <= -SUPPRESSED_GAP:
+		player.set_control_state(Fighter.CONTROL_SUPPRESSED)
+
+
+func pressure_state_text(player: Fighter, enemy: Fighter) -> String:
+	var gap := player.momentum - enemy.momentum
+	if player.is_broken():
+		return "势差 %d：玩家崩势，敌方获得释放窗口。" % gap
+	if enemy.is_broken():
+		return "势差 %d：敌方崩势，玩家获得释放窗口。" % gap
+	if player.is_suppressed():
+		return "势差 %d：玩家受压制，下回合失去先机优势。" % gap
+	if enemy.is_suppressed():
+		return "势差 %d：敌方受压制，下回合失去先机优势。" % gap
+	return "势差 %d：双方均势，无额外控制。" % gap
 
 
 func tie_rule_text(player: Fighter, enemy: Fighter) -> String:
