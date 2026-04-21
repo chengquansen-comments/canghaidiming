@@ -8,28 +8,38 @@ const HiddenMoveData = preload("res://scripts/hidden_move_data.gd")
 const FeintData = preload("res://scripts/feint_data.gd")
 
 func choose_intent(enemy: Fighter, opponent: Fighter, current_distance: int, opponent_visible_intent: IntentData) -> IntentData:
-	var chosen: CardData = _pick_best_card(enemy.hand, enemy.momentum, current_distance, opponent_visible_intent)
+	var chosen: CardData = _pick_best_card(enemy, enemy.hand, enemy.momentum, current_distance, opponent_visible_intent)
 	if chosen == null and not enemy.hand.is_empty():
 		for fallback in enemy.hand:
-			if fallback.momentum_cost <= enemy.momentum:
+			if _can_play_card(enemy, fallback):
 				chosen = fallback
 				break
 	if chosen == null:
 		return IntentData.from_card(enemy, CardData.new("idle", "观势", "收束架势，回观来路", 1, 3, 0, CardData.ROLE_MOMENTUM, 1, 0, 0, 0))
 
-	if enemy.realm > opponent.realm and enemy.hand.size() >= 2:
-		var hidden := _build_simple_hidden_move(enemy.hand, enemy.momentum, chosen)
+	if enemy.realm > opponent.realm and enemy.hand.size() >= 2 and not enemy.is_suppressed() and not enemy.is_broken():
+		var hidden := _build_simple_hidden_move(enemy, enemy.hand, enemy.momentum, chosen)
 		if hidden != null:
 			return IntentData.from_hidden_move(enemy, hidden, [hidden.feint.display_card, hidden.real_card])
 
 	return IntentData.from_card(enemy, chosen)
 
 
-func _pick_best_card(cards: Array[CardData], current_momentum: int, current_distance: int, opponent_visible_intent: IntentData) -> CardData:
+func _can_play_card(fighter: Fighter, card: CardData) -> bool:
+	if card.momentum_cost > fighter.momentum:
+		return false
+	if fighter.is_broken() and (card.has_tag("先机") or card.momentum_cost > 1):
+		return false
+	if fighter.is_suppressed() and card.has_tag("先机"):
+		return false
+	return true
+
+
+func _pick_best_card(enemy: Fighter, cards: Array[CardData], current_momentum: int, current_distance: int, opponent_visible_intent: IntentData) -> CardData:
 	var best_card: CardData = null
 	var best_score := -9999
 	for card in cards:
-		if card.momentum_cost > current_momentum:
+		if card.momentum_cost > current_momentum or not _can_play_card(enemy, card):
 			continue
 		var score := 0
 		if card.is_momentum_card():
@@ -48,15 +58,20 @@ func _pick_best_card(cards: Array[CardData], current_momentum: int, current_dist
 			score += 3
 		if opponent_visible_intent != null and opponent_visible_intent.has_senki() and card.has_tag("先机"):
 			score += 2
+		if enemy.is_broken():
+			if card.is_guard_card():
+				score += 4
+			elif card.is_momentum_card():
+				score += 1
 		if score > best_score:
 			best_score = score
 			best_card = card
 	return best_card
 
 
-func _build_simple_hidden_move(cards: Array[CardData], current_momentum: int, actual_card: CardData) -> HiddenMoveData:
+func _build_simple_hidden_move(enemy: Fighter, cards: Array[CardData], current_momentum: int, actual_card: CardData) -> HiddenMoveData:
 	for candidate in cards:
-		if candidate != actual_card and candidate.id != actual_card.id and candidate.momentum_cost <= current_momentum and candidate.role == actual_card.role:
+		if candidate != actual_card and candidate.id != actual_card.id and candidate.momentum_cost <= current_momentum and candidate.role == actual_card.role and _can_play_card(enemy, candidate):
 			var feint := FeintData.new(candidate)
 			var hidden := HiddenMoveData.new(feint, actual_card)
 			if hidden.is_valid():
