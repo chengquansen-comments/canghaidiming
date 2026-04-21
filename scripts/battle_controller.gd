@@ -131,8 +131,6 @@ func _build_ui() -> void:
 	phase_label.text = "待选流派"
 	phase_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	phase_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	add_child(top_info)
-	# The prior line intentionally added the node; keep assignment below.
 	top_info.add_child(phase_label)
 
 	node_buttons_box = HBoxContainer.new()
@@ -251,7 +249,7 @@ func _build_rich_panel(parent: Control, heading: String) -> RichTextLabel:
 
 	var title := Label.new()
 	title.text = heading
-		title.add_theme_font_size_override("font_size", 20)
+	title.add_theme_font_size_override("font_size", 20)
 	box.add_child(title)
 
 	var rich := RichTextLabel.new()
