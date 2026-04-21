@@ -6,17 +6,9 @@ const FighterData = preload("res://scripts/fighter_data.gd")
 const Fighter = preload("res://scripts/fighter.gd")
 const CardData = preload("res://scripts/card_data.gd")
 const IntentData = preload("res://scripts/intent_data.gd")
-const FeintData = preload("res://scripts/feint_data.gd")
-const HiddenMoveData = preload("res://scripts/hidden_move_data.gd")
 
 const HAND_SIZE := 4
 const ENEMY_SESSION_REALM := 2
-
-enum PlayerSelectionMode {
-	NORMAL,
-	HIDDEN_PICK_VISIBLE,
-	HIDDEN_PICK_REAL
-}
 
 var state_machine := BattleStateMachine.new()
 var enemy_ai := EnemyAI.new()
@@ -36,8 +28,8 @@ var enemy_intent: IntentData
 var draft_player_intent: IntentData
 var declaration_order: PackedStringArray = PackedStringArray()
 var declaration_index := 0
-var selection_mode: PlayerSelectionMode = PlayerSelectionMode.NORMAL
-var pending_visible_card: CardData
+
+var fusion_first_index := -1
 
 var title_label: Label
 var subtitle_label: Label
@@ -52,9 +44,8 @@ var preview_label: RichTextLabel
 var hand_flow: HFlowContainer
 var log_label: RichTextLabel
 var node_buttons_box: HBoxContainer
-var normal_button: Button
-var hidden_button: Button
-var cancel_hidden_button: Button
+var deck_button: Button
+var reset_pick_button: Button
 var confirm_button: Button
 var overlay_scrim: ColorRect
 var overlay_panel: PanelContainer
@@ -71,7 +62,6 @@ func _ready() -> void:
 
 
 func _build_catalog() -> void:
-	# Phase 1: minimal typed data catalog for the symmetry prototype.
 	var spear_mid := CardData.new("spear_mid", "中平枪", "标准枪式", 2, 3, 6, 0, 1)
 	var spear_senki := CardData.new("spear_senki", "截势先机", "抢先压枪", 1, 2, 4, 0, 2, PackedStringArray(["先机"]))
 	var spear_press := CardData.new("spear_press", "逼步拿势", "贴一步再刺", 1, 2, 5, -1, 1)
@@ -124,7 +114,7 @@ func _build_ui() -> void:
 	root.add_child(title_label)
 
 	subtitle_label = Label.new()
-	subtitle_label.text = "测试武境先后、先机优先、藏招可见意图与识机权轮流。"
+	subtitle_label.text = "测试武境先后、先机优先，以及战前合成藏招与牌库管理。"
 	subtitle_label.modulate = Color("b8c0cc")
 	root.add_child(subtitle_label)
 
@@ -141,6 +131,8 @@ func _build_ui() -> void:
 	phase_label.text = "待选流派"
 	phase_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	phase_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	add_child(top_info)
+	# The prior line intentionally added the node; keep assignment below.
 	top_info.add_child(phase_label)
 
 	node_buttons_box = HBoxContainer.new()
@@ -167,20 +159,15 @@ func _build_ui() -> void:
 	control_bar.add_theme_constant_override("separation", 10)
 	root.add_child(control_bar)
 
-	normal_button = Button.new()
-	normal_button.text = "常态出招"
-	normal_button.pressed.connect(_set_normal_mode)
-	control_bar.add_child(normal_button)
+	deck_button = Button.new()
+	deck_button.text = "查看牌库"
+	deck_button.pressed.connect(_open_deck_view)
+	control_bar.add_child(deck_button)
 
-	hidden_button = Button.new()
-	hidden_button.text = "藏招模式"
-	hidden_button.pressed.connect(_begin_hidden_mode)
-	control_bar.add_child(hidden_button)
-
-	cancel_hidden_button = Button.new()
-	cancel_hidden_button.text = "取消藏招"
-	cancel_hidden_button.pressed.connect(_cancel_hidden_mode)
-	control_bar.add_child(cancel_hidden_button)
+	reset_pick_button = Button.new()
+	reset_pick_button.text = "重选招式"
+	reset_pick_button.pressed.connect(_reset_draft_intent)
+	control_bar.add_child(reset_pick_button)
 
 	confirm_button = Button.new()
 	confirm_button.text = "确认出招"
@@ -222,8 +209,8 @@ func _build_ui() -> void:
 	overlay_panel.anchor_top = 0.12
 	overlay_panel.anchor_right = 0.5
 	overlay_panel.anchor_bottom = 0.12
-	overlay_panel.offset_left = -320
-	overlay_panel.offset_right = 320
+	overlay_panel.offset_left = -340
+	overlay_panel.offset_right = 340
 	overlay_panel.add_theme_stylebox_override("panel", _make_panel_style(Color("2a2018"), Color("cfb889")))
 	add_child(overlay_panel)
 
@@ -264,7 +251,7 @@ func _build_rich_panel(parent: Control, heading: String) -> RichTextLabel:
 
 	var title := Label.new()
 	title.text = heading
-	title.add_theme_font_size_override("font_size", 20)
+		title.add_theme_font_size_override("font_size", 20)
 	box.add_child(title)
 
 	var rich := RichTextLabel.new()
@@ -291,7 +278,7 @@ func _make_panel_style(fill: Color, border: Color) -> StyleBoxFlat:
 func _show_role_selection() -> void:
 	_show_overlay(
 		"选择角色",
-		"[b]这版原型只做枪手与刀客。[/b]\n\n当前规则：敌方默认武境 2，玩家初始武境按角色起始值进入。你可以通过【点化】拉到同武境或更高武境，专门测试识机权与先发权。",
+		"[b]这版原型只做枪手与刀客。[/b]\n\n当前规则：敌方默认武境 2。战前可以查看牌库，并将两张已有招式合成为一张藏招。",
 		[
 			{"text": "枪手开局", "callback": Callable(self, "_start_session").bind("spearman")},
 			{"text": "刀客开局", "callback": Callable(self, "_start_session").bind("blademaster")}
@@ -313,8 +300,7 @@ func _start_session(role_id: String) -> void:
 	enemy_intent = null
 	draft_player_intent = null
 	declaration_order = PackedStringArray()
-	selection_mode = PlayerSelectionMode.NORMAL
-	pending_visible_card = null
+	fusion_first_index = -1
 	_hide_overlay()
 	_log("[b]新会话开始。[/b] 玩家使用 %s，对手使用 %s。" % [player.data.display_name, enemy.data.display_name])
 	_show_node_buttons()
@@ -338,7 +324,12 @@ func _copy_fighter_data(data: FighterData) -> FighterData:
 func _show_node_buttons() -> void:
 	for child in node_buttons_box.get_children():
 		child.queue_free()
+	if battle_active:
+		node_buttons_box.visible = false
+		return
 	for spec in [
+		{"label": "查看牌库", "callback": Callable(self, "_open_deck_view")},
+		{"label": "合成藏招", "callback": Callable(self, "_begin_hidden_fusion")},
 		{"label": "得招", "callback": Callable(self, "_open_gain_move")},
 		{"label": "点化", "callback": Callable(self, "_apply_enlighten")},
 		{"label": "演武", "callback": Callable(self, "_start_battle")}
@@ -347,7 +338,7 @@ func _show_node_buttons() -> void:
 		button.text = spec["label"]
 		button.pressed.connect(spec["callback"])
 		node_buttons_box.add_child(button)
-	node_buttons_box.visible = not battle_active
+	node_buttons_box.visible = true
 
 
 func _open_gain_move() -> void:
@@ -358,6 +349,7 @@ func _open_gain_move() -> void:
 	var actions := []
 	for card in picks:
 		actions.append({"text": card.short_summary(), "callback": Callable(self, "_pick_reward_card").bind(card)})
+	actions.append({"text": "取消", "callback": Callable(self, "_hide_overlay")})
 	_show_overlay("得招", "从 3 张招式里选 1 张加入牌池。为了便于测试，允许跨流派混搭。", actions)
 
 
@@ -386,6 +378,122 @@ func _apply_enlighten() -> void:
 	_refresh_ui()
 
 
+func _begin_hidden_fusion() -> void:
+	if player == null:
+		return
+	var deck := player.get_session_deck()
+	if deck.size() < 2:
+		_log("牌库少于 2 张，无法合成藏招。")
+		return
+	fusion_first_index = -1
+	_show_fusion_pick_overlay()
+
+
+func _show_fusion_pick_overlay() -> void:
+	if player == null:
+		return
+	var deck := player.get_session_deck()
+	var actions := []
+	var title := "合成藏招"
+	var body := "从当前牌库中选择两张已有招式，合成为一张更强的藏招。合成后原两张移出牌库，新牌加入牌库末尾。"
+	if fusion_first_index >= 0 and fusion_first_index < deck.size():
+		title = "选择第二张牌"
+		body = "已选第一张：[b]%s[/b]\n再选一张不同的牌完成合成。" % deck[fusion_first_index].short_summary()
+	for i in range(deck.size()):
+		var card: CardData = deck[i]
+		var prefix := ""
+		if i == fusion_first_index:
+			prefix = "[已选] "
+		actions.append({"text": "%s%d. %s" % [prefix, i + 1, card.short_summary()], "callback": Callable(self, "_on_fusion_pick").bind(i)})
+	if fusion_first_index >= 0:
+		actions.append({"text": "取消本次合成", "callback": Callable(self, "_cancel_hidden_fusion")})
+	else:
+		actions.append({"text": "关闭", "callback": Callable(self, "_hide_overlay")})
+	_show_overlay(title, body, actions)
+
+
+func _on_fusion_pick(index: int) -> void:
+	if player == null:
+		return
+	if fusion_first_index < 0:
+		fusion_first_index = index
+		_show_fusion_pick_overlay()
+		return
+	if index == fusion_first_index:
+		_log("合成藏招需要两张不同的牌。")
+		return
+	var deck := player.get_session_deck()
+	if fusion_first_index >= deck.size() or index >= deck.size():
+		fusion_first_index = -1
+		_hide_overlay()
+		return
+	var first_card: CardData = deck[fusion_first_index]
+	var second_card: CardData = deck[index]
+	var fused := _build_hidden_fusion_card(first_card, second_card)
+	if player.replace_cards_in_session_deck(fusion_first_index, index, fused):
+		_log("你将 [color=#95e1d3]%s[/color] 与 [color=#95e1d3]%s[/color] 合成为藏招 [color=#ffd479]%s[/color]。" % [first_card.display_name, second_card.display_name, fused.display_name])
+	fusion_first_index = -1
+	_hide_overlay()
+	_refresh_ui()
+
+
+func _cancel_hidden_fusion() -> void:
+	fusion_first_index = -1
+	_hide_overlay()
+
+
+func _build_hidden_fusion_card(first_card: CardData, second_card: CardData) -> CardData:
+	var tags := PackedStringArray()
+	for tag in first_card.tags:
+		if not tags.has(tag):
+			tags.append(tag)
+	for tag in second_card.tags:
+		if not tags.has(tag):
+			tags.append(tag)
+	if not tags.has("藏招"):
+		tags.append("藏招")
+	var fused_id := "hidden_%s_%s" % [first_card.id, second_card.id]
+	var fused_name := "藏招·%s/%s" % [first_card.display_name, second_card.display_name]
+	var fused_desc := "由 %s 与 %s 合成。双式并发，作为一张重手牌使用。" % [first_card.display_name, second_card.display_name]
+	var fused_min := mini(first_card.min_distance, second_card.min_distance)
+	var fused_max := maxi(first_card.max_distance, second_card.max_distance)
+	var fused_damage := first_card.damage + second_card.damage
+	var fused_delta := clampi(first_card.distance_delta + second_card.distance_delta, -2, 2)
+	var fused_cost := mini(maxi(first_card.momentum_cost, second_card.momentum_cost) + 1, 4)
+	return CardData.new(fused_id, fused_name, fused_desc, fused_min, fused_max, fused_damage, fused_delta, fused_cost, tags)
+
+
+func _open_deck_view() -> void:
+	if player == null:
+		return
+	var body := _build_deck_view_text()
+	_show_overlay("查看牌库", body, [{"text": "关闭", "callback": Callable(self, "_hide_overlay")}])
+
+
+func _build_deck_view_text() -> String:
+	if player == null:
+		return "尚未初始化。"
+	var lines: Array[String] = []
+	if not battle_active:
+		lines.append("[b]战前牌库[/b]")
+		var deck := player.get_session_deck()
+		for i in range(deck.size()):
+			lines.append("%d. %s" % [i + 1, deck[i].short_summary()])
+		return "\n".join(lines)
+	lines.append("[b]当前手牌[/b]")
+	for i in range(player.hand.size()):
+		lines.append("%d. %s" % [i + 1, player.hand[i].short_summary()])
+	lines.append("")
+	lines.append("[b]抽牌堆[/b]")
+	for i in range(player.draw_pile.size()):
+		lines.append("%d. %s" % [i + 1, player.draw_pile[i].short_summary()])
+	lines.append("")
+	lines.append("[b]弃牌堆[/b]")
+	for i in range(player.discard_pile.size()):
+		lines.append("%d. %s" % [i + 1, player.discard_pile[i].short_summary()])
+	return "\n".join(lines)
+
+
 func _start_battle() -> void:
 	if player == null or enemy == null:
 		return
@@ -398,8 +506,7 @@ func _start_battle() -> void:
 	enemy_intent = null
 	draft_player_intent = null
 	declaration_index = 0
-	selection_mode = PlayerSelectionMode.NORMAL
-	pending_visible_card = null
+	fusion_first_index = -1
 	_log("[b]演武开始。[/b] 第 %d 场，对距固定从 2 开始。玩家会话武境 %d，敌方会话武境 %d。" % [battle_count, player.session_realm, enemy.session_realm])
 	_show_node_buttons()
 	_begin_round()
@@ -414,7 +521,6 @@ func _begin_round() -> void:
 		var enemy_gain := enemy.recover_momentum(1)
 		if player_gain > 0 or enemy_gain > 0:
 			_log("[b]回合调息。[/b] 玩家 +%d 势，敌方 +%d 势。" % [player_gain, enemy_gain])
-	# Phase 2: refresh declaration order every round so realm changes and tie swaps both take effect.
 	declaration_order = state_machine.get_declaration_order(player, enemy)
 	declaration_index = 0
 	awaiting_player_input = false
@@ -441,24 +547,7 @@ func _advance_declaration() -> void:
 	_resolve_round()
 
 
-func _set_normal_mode() -> void:
-	selection_mode = PlayerSelectionMode.NORMAL
-	pending_visible_card = null
-	_refresh_ui()
-
-
-func _begin_hidden_mode() -> void:
-	if not awaiting_player_input or player == null or _count_affordable_hand_cards() < 2:
-		_log("当前可用势不足，两张不同招式都无法成藏招。")
-		return
-	selection_mode = PlayerSelectionMode.HIDDEN_PICK_VISIBLE
-	pending_visible_card = null
-	_refresh_ui()
-
-
-func _cancel_hidden_mode() -> void:
-	selection_mode = PlayerSelectionMode.NORMAL
-	pending_visible_card = null
+func _reset_draft_intent() -> void:
 	draft_player_intent = null
 	_refresh_ui()
 
@@ -475,13 +564,11 @@ func _refresh_hand_buttons() -> void:
 		button.text = card.short_summary() + "\n" + card.description
 		button.disabled = not awaiting_player_input or card.momentum_cost > player.momentum
 		button.pressed.connect(_on_player_card_pressed.bind(card))
-		if pending_visible_card == card:
-			button.text = "[表招] " + button.text
-		elif _draft_uses_card(card):
+		if _draft_uses_card(card):
 			button.text = "[已选] " + button.text
 		hand_flow.add_child(button)
 
-	if awaiting_player_input and selection_mode == PlayerSelectionMode.NORMAL:
+	if awaiting_player_input:
 		var idle_button := Button.new()
 		idle_button.custom_minimum_size = Vector2(220, 124)
 		idle_button.text = "观势｜距1-3｜耗势 0\n不主动进击，回 1 势。"
@@ -492,30 +579,12 @@ func _refresh_hand_buttons() -> void:
 func _on_player_card_pressed(card: CardData) -> void:
 	if not awaiting_player_input:
 		return
-	if card.id == "idle" and selection_mode != PlayerSelectionMode.NORMAL:
-		return
 	if card.momentum_cost > player.momentum:
 		_log("势不足，无法选用 %s。" % card.display_name)
 		return
-	match selection_mode:
-		PlayerSelectionMode.NORMAL:
-			draft_player_intent = IntentData.from_card(player, card)
-			_log("已选定常态招式 [color=#95e1d3]%s[/color]，请确认出招。" % card.display_name)
-			_refresh_ui()
-		PlayerSelectionMode.HIDDEN_PICK_VISIBLE:
-			pending_visible_card = card
-			draft_player_intent = null
-			selection_mode = PlayerSelectionMode.HIDDEN_PICK_REAL
-			_log("已选表招 [color=#95e1d3]%s[/color]，请再选里招。" % card.display_name)
-			_refresh_ui()
-		PlayerSelectionMode.HIDDEN_PICK_REAL:
-			if pending_visible_card == null or pending_visible_card == card or pending_visible_card.id == card.id:
-				_log("藏招需要两张不同的招式牌。")
-				return
-			var hidden := HiddenMoveData.new(FeintData.new(pending_visible_card), card)
-			draft_player_intent = IntentData.from_hidden_move(player, hidden, [pending_visible_card, card])
-			_log("已组好藏招：表招 [color=#95e1d3]%s[/color] / 里招 [color=#95e1d3]%s[/color]，请确认出招。" % [pending_visible_card.display_name, card.display_name])
-			_refresh_ui()
+	draft_player_intent = IntentData.from_card(player, card)
+	_log("已选定招式 [color=#95e1d3]%s[/color]，请确认出招。" % card.display_name)
+	_refresh_ui()
 
 
 func _confirm_player_intent() -> void:
@@ -532,8 +601,6 @@ func _confirm_player_intent() -> void:
 
 func _finish_player_declaration() -> void:
 	awaiting_player_input = false
-	selection_mode = PlayerSelectionMode.NORMAL
-	pending_visible_card = null
 	declaration_index += 1
 	_log("玩家定招：%s。" % state_machine.get_visible_intent_text(player_intent, enemy))
 	_advance_declaration()
@@ -542,7 +609,6 @@ func _finish_player_declaration() -> void:
 
 func _resolve_round() -> void:
 	state_machine.phase = BattleStateMachine.BattlePhase.RESOLUTION
-	# Phase 3: resolve after both intents are locked, preserving senki and realm priority rules.
 	var order := state_machine.get_resolution_order(player, enemy, player_intent, enemy_intent)
 	_log("[b]结算顺序：[/b] %s -> %s" % [order[0].get_actual_name(), order[1].get_actual_name()])
 	for intent in order:
@@ -582,7 +648,7 @@ func _finish_battle() -> void:
 
 func _update_phase_label() -> void:
 	if not battle_active:
-		phase_label.text = "节点阶段：得招 / 点化 / 演武"
+		phase_label.text = "节点阶段：查看牌库 / 合成藏招 / 得招 / 点化 / 演武"
 		return
 	var declare_names: Array[String] = []
 	for actor_id in declaration_order:
@@ -608,16 +674,16 @@ func _refresh_ui() -> void:
 	_refresh_hand_buttons()
 	_refresh_log()
 	_show_node_buttons()
-	normal_button.disabled = not awaiting_player_input
-	hidden_button.disabled = not awaiting_player_input or _count_affordable_hand_cards() < 2
-	cancel_hidden_button.disabled = not awaiting_player_input or selection_mode == PlayerSelectionMode.NORMAL
+	deck_button.disabled = player == null
+	reset_pick_button.disabled = not awaiting_player_input or draft_player_intent == null
 	confirm_button.disabled = not awaiting_player_input or draft_player_intent == null
 
 
 func _fighter_status_text(fighter: Fighter) -> String:
 	if fighter == null:
 		return "未初始化。"
-	return "[b]%s[/b]｜%s\n生命：%d/%d\n势：%d/%d\n当前武境：%d\n会话武境：%d\n优势距离：%s\n牌库：%d｜手牌：%d" % [
+	var session_deck_size := fighter.get_session_deck().size()
+	return "[b]%s[/b]｜%s\n生命：%d/%d\n势：%d/%d\n当前武境：%d\n会话武境：%d\n优势距离：%s\n会话牌库：%d\n抽牌堆：%d｜手牌：%d｜弃牌堆：%d" % [
 		fighter.data.display_name,
 		fighter.data.weapon_name,
 		fighter.hp,
@@ -627,8 +693,10 @@ func _fighter_status_text(fighter: Fighter) -> String:
 		fighter.realm,
 		fighter.session_realm,
 		fighter.preferred_text(),
+		session_deck_size,
 		fighter.draw_pile.size(),
-		fighter.hand.size()
+		fighter.hand.size(),
+		fighter.discard_pile.size()
 	]
 
 
@@ -640,9 +708,7 @@ func _intent_panel_text(intent: IntentData, viewer: Fighter, is_player: bool) ->
 	if intent == null:
 		return "尚未定招。"
 	var visible := state_machine.get_visible_intent_text(intent, viewer)
-	var actual := intent.get_actual_name() if not intent.is_hidden() else "（里招隐藏）"
-	if intent.is_hidden() and viewer != null and intent.source_fighter == viewer:
-		actual = intent.get_actual_name()
+	var actual := intent.get_actual_name()
 	return "[b]%s[/b]\n可见：%s\n实际：%s" % [owner, visible, actual]
 
 
@@ -653,32 +719,27 @@ func _status_text() -> String:
 	lines.append("[b]规则测试点[/b]")
 	lines.append("- 高武境后定招，并通常先结算")
 	lines.append("- 带【先机】标签的招式先于武境顺序")
-	lines.append("- 藏招只暴露表招，里招仍然隐藏")
+	lines.append("- 藏招改为战前将两张牌合成为一张更强的牌")
+	lines.append("- 战前与战中都可查看自己的牌库状态")
 	lines.append("- 招式会耗势，每回合开始自动回 1 势")
 	lines.append("- %s" % state_machine.tie_rule_text(player, enemy))
 	if awaiting_player_input:
 		lines.append("")
 		lines.append("[b]当前操作[/b]")
-		if selection_mode == PlayerSelectionMode.HIDDEN_PICK_VISIBLE:
-			lines.append("请选择一张表招。")
-		elif selection_mode == PlayerSelectionMode.HIDDEN_PICK_REAL:
-			lines.append("请选择一张不同的里招。")
-		elif draft_player_intent != null:
+		if draft_player_intent != null:
 			lines.append("已选好招式，点击【确认出招】锁定动作。")
 		else:
-			lines.append("请选择常态出招，或切到藏招模式。")
+			lines.append("请选择一张手牌，或查看牌库后再决定。")
 	return "\n".join(lines)
 
 
 func _preview_text() -> String:
 	if not battle_active:
-		return "进入演武后，这里会显示可见意图下的结果预览。"
+		return "战前可查看牌库并合成藏招；进入演武后，这里显示本回合预览。"
 	if awaiting_player_input and draft_player_intent == null:
-		return "选择招式后，若敌方真意图可见，这里会显示双方出招后的结果预览。"
+		return "选择招式后，这里会显示双方出招后的结果预览。"
 	if draft_player_intent == null or enemy_intent == null:
 		return "等待双方意图。"
-	if enemy_intent.is_hidden() and not enemy_intent.can_hidden_be_read(player):
-		return "敌方当前只暴露表招，尚不能预览完整结果。"
 	return _simulate_preview(draft_player_intent, enemy_intent)
 
 
@@ -743,16 +804,6 @@ func _draft_uses_card(card: CardData) -> bool:
 
 func _idle_card() -> CardData:
 	return CardData.new("idle", "观势", "不主动进击，收束架势并回 1 势", 1, 3, 0, 0, 0)
-
-
-func _count_affordable_hand_cards() -> int:
-	if player == null:
-		return 0
-	var count := 0
-	for card in player.hand:
-		if card.momentum_cost <= player.momentum:
-			count += 1
-	return count
 
 
 func _refresh_log() -> void:
