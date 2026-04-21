@@ -61,29 +61,117 @@ func _ready() -> void:
 	_show_role_selection()
 
 
+func _ready_card(
+	p_id: String,
+	p_name: String,
+	p_desc: String,
+	p_min_distance: int,
+	p_max_distance: int,
+	p_cost: int,
+	p_role: String,
+	p_gain_momentum: int,
+	p_break_momentum: int,
+	p_damage: int,
+	p_guard: int,
+	p_tags: PackedStringArray = PackedStringArray()
+) -> CardData:
+	return CardData.new(
+		p_id,
+		p_name,
+		p_desc,
+		p_min_distance,
+		p_max_distance,
+		p_cost,
+		p_role,
+		p_gain_momentum,
+		p_break_momentum,
+		p_damage,
+		p_guard,
+		p_tags
+	)
+
+
 func _build_catalog() -> void:
-	var spear_mid := CardData.new("spear_mid", "中平枪", "标准枪式", 2, 3, 6, 0, 1)
-	var spear_senki := CardData.new("spear_senki", "截势先机", "抢先压枪", 1, 2, 4, 0, 2, PackedStringArray(["先机"]))
-	var spear_press := CardData.new("spear_press", "逼步拿势", "贴一步再刺", 1, 2, 5, -1, 1)
-	var spear_reset := CardData.new("spear_reset", "撤枪回圆", "拉开再守", 2, 3, 3, 1, 0)
+	# 数值规则：增己势*2 + 削敌势*2 + 伤害 + 格挡 = 耗势*4
+	# 且严格区分势牌、伤害牌、格挡牌，不允许复合效果。
+	var spear_read := _ready_card(
+		"spear_read", "探锋", "枪手试探，专注立势。", 2, 3, 1,
+		CardData.ROLE_MOMENTUM, 2, 0, 0, 0
+	)
+	var spear_break := _ready_card(
+		"spear_break", "压枪", "压住来路，削弱对方势头。", 2, 3, 1,
+		CardData.ROLE_MOMENTUM, 0, 2, 0, 0
+	)
+	var spear_senki := _ready_card(
+		"spear_senki", "截势先机", "先发争先，只争势不取伤。", 1, 2, 2,
+		CardData.ROLE_MOMENTUM, 2, 2, 0, 0, PackedStringArray(["先机"])
+	)
+	var spear_mid := _ready_card(
+		"spear_mid", "中平枪", "标准中段枪刺。", 2, 3, 1,
+		CardData.ROLE_DAMAGE, 0, 0, 4, 0
+	)
+	var spear_heavy := _ready_card(
+		"spear_heavy", "龙脊重刺", "大开大合的重刺。", 2, 3, 2,
+		CardData.ROLE_DAMAGE, 0, 0, 8, 0
+	)
+	var spear_guard := _ready_card(
+		"spear_guard", "回圆架", "回枪成圆，以守化险。", 1, 3, 1,
+		CardData.ROLE_GUARD, 0, 0, 0, 4
+	)
+	var spear_wall := _ready_card(
+		"spear_wall", "封门守", "稳固门户，重守待机。", 1, 3, 2,
+		CardData.ROLE_GUARD, 0, 0, 0, 8
+	)
 
-	var blade_dash := CardData.new("blade_dash", "赶步斩", "逼近抢身", 1, 2, 5, -1, 1)
-	var blade_senki := CardData.new("blade_senki", "燕返", "刀客快先手", 1, 1, 4, 0, 2, PackedStringArray(["先机"]))
-	var blade_sweep := CardData.new("blade_sweep", "掠地反撩", "一步半再撩", 2, 3, 6, 0, 1)
-	var blade_backstep := CardData.new("blade_backstep", "藏锋退步", "退一步蓄势", 1, 3, 3, 1, 0)
+	var blade_probe := _ready_card(
+		"blade_probe", "探步", "刀客试探，专注抢势。", 1, 2, 1,
+		CardData.ROLE_MOMENTUM, 2, 0, 0, 0
+	)
+	var blade_press := _ready_card(
+		"blade_press", "逼刀", "压迫敌方，专破其势。", 1, 2, 1,
+		CardData.ROLE_MOMENTUM, 0, 2, 0, 0
+	)
+	var blade_senki := _ready_card(
+		"blade_senki", "燕返先机", "以快争先，先夺局势。", 1, 1, 2,
+		CardData.ROLE_MOMENTUM, 2, 2, 0, 0, PackedStringArray(["先机"])
+	)
+	var blade_cut := _ready_card(
+		"blade_cut", "赶步斩", "迅捷标准斩击。", 1, 2, 1,
+		CardData.ROLE_DAMAGE, 0, 0, 4, 0
+	)
+	var blade_heavy := _ready_card(
+		"blade_heavy", "断流重斩", "势大力沉的压胜一斩。", 1, 2, 2,
+		CardData.ROLE_DAMAGE, 0, 0, 8, 0
+	)
+	var blade_guard := _ready_card(
+		"blade_guard", "藏锋格", "低身藏锋，以格挡化险。", 1, 3, 1,
+		CardData.ROLE_GUARD, 0, 0, 0, 4
+	)
+	var blade_wall := _ready_card(
+		"blade_wall", "锁门架", "以刀封门，强守不退。", 1, 3, 2,
+		CardData.ROLE_GUARD, 0, 0, 0, 8
+	)
 
-	var spear_deck: Array[CardData] = [spear_mid, spear_mid, spear_senki, spear_press, spear_reset]
-	var blade_deck: Array[CardData] = [blade_dash, blade_dash, blade_senki, blade_sweep, blade_backstep]
+	var spear_deck: Array[CardData] = [
+		spear_read, spear_break, spear_senki,
+		spear_mid, spear_heavy,
+		spear_guard, spear_wall
+	]
+	var blade_deck: Array[CardData] = [
+		blade_probe, blade_press, blade_senki,
+		blade_cut, blade_heavy,
+		blade_guard, blade_wall
+	]
 
 	fighter_catalog["spearman"] = FighterData.new("spearman", "枪手", "长枪", 24, 6, 5, 1, PackedInt32Array([2, 3]), spear_deck)
 	fighter_catalog["blademaster"] = FighterData.new("blademaster", "刀客", "单刀", 22, 6, 5, 2, PackedInt32Array([1, 2]), blade_deck)
 
 	reward_pool = [
-		CardData.new("reward_spear_long", "龙脊长拿", "拉远后重击", 2, 3, 7, 1, 2),
-		CardData.new("reward_spear_senki", "枪影先机", "枪手先发抢点", 1, 2, 5, 0, 2, PackedStringArray(["先机"])),
-		CardData.new("reward_blade_close", "切步贴身", "逼近再斩", 1, 2, 6, -1, 1),
-		CardData.new("reward_blade_senki", "追命先机", "刀客快斩", 1, 2, 5, 0, 2, PackedStringArray(["先机"])),
-		CardData.new("reward_generic_read", "回身试探", "轻伤并调距", 1, 3, 3, 1, 0)
+		_ready_card("reward_momentum_up", "聚势", "专注提振自身势头。", 1, 3, 1, CardData.ROLE_MOMENTUM, 2, 0, 0, 0),
+		_ready_card("reward_momentum_break", "断势", "专注削弱敌方势头。", 1, 3, 1, CardData.ROLE_MOMENTUM, 0, 2, 0, 0),
+		_ready_card("reward_senki", "争先", "以先机抢夺势头。", 1, 2, 2, CardData.ROLE_MOMENTUM, 2, 2, 0, 0, PackedStringArray(["先机"])),
+		_ready_card("reward_damage", "重手", "纯粹追求压倒性伤害。", 1, 3, 2, CardData.ROLE_DAMAGE, 0, 0, 8, 0),
+		_ready_card("reward_guard", "铁壁", "纯粹追求稳固格挡。", 1, 3, 2, CardData.ROLE_GUARD, 0, 0, 0, 8)
 	]
 
 
@@ -276,7 +364,7 @@ func _make_panel_style(fill: Color, border: Color) -> StyleBoxFlat:
 func _show_role_selection() -> void:
 	_show_overlay(
 		"选择角色",
-		"[b]这版原型只做枪手与刀客。[/b]\n\n当前规则：敌方默认武境 2。战前可以查看牌库，并将两张已有招式合成为一张藏招。",
+		"[b]这版原型只做枪手与刀客。[/b]\n\n当前规则：敌方默认武境 2。战前可以查看牌库，并将两张已有招式合成为一张更强的藏招。",
 		[
 			{"text": "枪手开局", "callback": Callable(self, "_start_session").bind("spearman")},
 			{"text": "刀客开局", "callback": Callable(self, "_start_session").bind("blademaster")}
@@ -441,24 +529,38 @@ func _cancel_hidden_fusion() -> void:
 
 
 func _build_hidden_fusion_card(first_card: CardData, second_card: CardData) -> CardData:
-	var tags := PackedStringArray()
-	for tag in first_card.tags:
-		if not tags.has(tag):
-			tags.append(tag)
-	for tag in second_card.tags:
-		if not tags.has(tag):
-			tags.append(tag)
-	if not tags.has("藏招"):
-		tags.append("藏招")
-	var fused_id := "hidden_%s_%s" % [first_card.id, second_card.id]
-	var fused_name := "藏招·%s/%s" % [first_card.display_name, second_card.display_name]
-	var fused_desc := "由 %s 与 %s 合成。双式并发，作为一张重手牌使用。" % [first_card.display_name, second_card.display_name]
-	var fused_min := mini(first_card.min_distance, second_card.min_distance)
-	var fused_max := maxi(first_card.max_distance, second_card.max_distance)
-	var fused_damage := first_card.damage + second_card.damage
-	var fused_delta := clampi(first_card.distance_delta + second_card.distance_delta, -2, 2)
-	var fused_cost := mini(maxi(first_card.momentum_cost, second_card.momentum_cost) + 1, 4)
-	return CardData.new(fused_id, fused_name, fused_desc, fused_min, fused_max, fused_damage, fused_delta, fused_cost, tags)
+	var tags := PackedStringArray(["藏招"])
+	var fused_cost := first_card.momentum_cost + second_card.momentum_cost
+	if first_card.is_momentum_card() and second_card.is_momentum_card():
+		return _ready_card(
+			"hidden_%s_%s" % [first_card.id, second_card.id],
+			"藏招·%s/%s" % [first_card.display_name, second_card.display_name],
+			"双势并举的藏招。", 1, 3, fused_cost,
+			CardData.ROLE_MOMENTUM,
+			first_card.gain_momentum + second_card.gain_momentum,
+			first_card.break_momentum + second_card.break_momentum,
+			0, 0, tags
+		)
+	if first_card.is_guard_card() and second_card.is_guard_card():
+		return _ready_card(
+			"hidden_%s_%s" % [first_card.id, second_card.id],
+			"藏招·%s/%s" % [first_card.display_name, second_card.display_name],
+			"双守并立的藏招。", 1, 3, fused_cost,
+			CardData.ROLE_GUARD,
+			0, 0, 0,
+			first_card.guard + second_card.guard,
+			tags
+		)
+	return _ready_card(
+		"hidden_%s_%s" % [first_card.id, second_card.id],
+		"藏招·%s/%s" % [first_card.display_name, second_card.display_name],
+		"双重杀伤的藏招。", 1, 3, fused_cost,
+		CardData.ROLE_DAMAGE,
+		0, 0,
+		first_card.damage + second_card.damage,
+		0,
+		tags
+	)
 
 
 func _open_deck_view() -> void:
@@ -717,9 +819,8 @@ func _status_text() -> String:
 	lines.append("[b]规则测试点[/b]")
 	lines.append("- 高武境后定招，并通常先结算")
 	lines.append("- 带【先机】标签的招式先于武境顺序")
-	lines.append("- 藏招改为战前将两张牌合成为一张更强的牌")
-	lines.append("- 战前与战中都可查看自己的牌库状态")
-	lines.append("- 招式会耗势，每回合开始自动回 1 势")
+	lines.append("- 招式严格区分为势牌、伤害牌、格挡牌")
+	lines.append("- 招式数值统一遵循：增己势*2 + 削敌势*2 + 伤害 + 格挡 = 耗势*4")
 	lines.append("- %s" % state_machine.tie_rule_text(player, enemy))
 	if awaiting_player_input:
 		lines.append("")
@@ -770,14 +871,22 @@ func _simulate_preview(player_preview_intent: IntentData, enemy_preview_intent: 
 				enemy_momentum = mini(enemy_momentum + 1, enemy.data.max_momentum)
 				lines.append("敌方回观收势，势将恢复到 %d。" % enemy_momentum)
 			continue
-		if card.distance_delta != 0:
-			var old_distance := preview_distance
-			preview_distance = clampi(preview_distance + card.distance_delta, 1, 3)
-			if old_distance == preview_distance:
-				lines.append("距离到边界，位移未生效。")
-			else:
-				lines.append("距离 %+d，变为 %d。" % [card.distance_delta, preview_distance])
-		if card.damage > 0:
+		if card.is_momentum_card():
+			if card.gain_momentum > 0:
+				if intent.actor_id == player.data.id:
+					player_momentum = mini(player_momentum + card.gain_momentum, player.data.max_momentum)
+					lines.append("玩家增己势 %d，势将变为 %d。" % [card.gain_momentum, player_momentum])
+				else:
+					enemy_momentum = mini(enemy_momentum + card.gain_momentum, enemy.data.max_momentum)
+					lines.append("敌方增己势 %d，势将变为 %d。" % [card.gain_momentum, enemy_momentum])
+			if card.break_momentum > 0:
+				if intent.actor_id == player.data.id:
+					enemy_momentum = maxi(enemy_momentum - card.break_momentum, 0)
+					lines.append("玩家削敌势 %d，敌方势将变为 %d。" % [card.break_momentum, enemy_momentum])
+				else:
+					player_momentum = maxi(player_momentum - card.break_momentum, 0)
+					lines.append("敌方削敌势 %d，玩家势将变为 %d。" % [card.break_momentum, player_momentum])
+		elif card.is_damage_card() and card.damage > 0:
 			if card.is_usable_at(preview_distance):
 				if intent.actor_id == player.data.id:
 					enemy_hp = maxi(enemy_hp - card.damage, 0)
@@ -787,6 +896,8 @@ func _simulate_preview(player_preview_intent: IntentData, enemy_preview_intent: 
 					lines.append("命中玩家，玩家生命将变为 %d。" % player_hp)
 			else:
 				lines.append("因距离 %d 不合式，将落空。" % preview_distance)
+		elif card.is_guard_card() and card.guard > 0:
+			lines.append("本回合作为格挡牌，提供 %d 格挡。" % card.guard)
 	lines.append("最终预览：玩家 %d 血 %d 势 / 敌方 %d 血 %d 势 / 距离 %d" % [player_hp, player_momentum, enemy_hp, enemy_momentum, preview_distance])
 	return "\n".join(lines)
 
@@ -801,7 +912,7 @@ func _draft_uses_card(card: CardData) -> bool:
 
 
 func _idle_card() -> CardData:
-	return CardData.new("idle", "观势", "不主动进击，收束架势并回 1 势", 1, 3, 0, 0, 0)
+	return _ready_card("idle", "观势", "不主动进击，收束架势并回 1 势", 1, 3, 0, CardData.ROLE_MOMENTUM, 1, 0, 0, 0)
 
 
 func _refresh_log() -> void:
