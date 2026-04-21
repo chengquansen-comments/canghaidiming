@@ -149,7 +149,7 @@ func _build_ui() -> void:
 	root.add_child(title_label)
 
 	subtitle_label = Label.new()
-	subtitle_label.text = "势差会自然触发压制与崩势；崩势方下一回合将被迫用轻招、守招或回势。"
+	subtitle_label.text = "势差会自然触发压制与崩势；崩势方下一回合将被迫用轻招、守招或回势，并承受伤害翻倍。"
 	subtitle_label.modulate = Color("b8c0cc")
 	root.add_child(subtitle_label)
 
@@ -645,7 +645,7 @@ func _finish_player_declaration() -> void:
 
 
 func _resolve_round() -> void:
-	state_machine.phase = BattleStateMachine.BattlePhase.RESOLUTION
+	state_machine.phase = BattlePhase.RESOLUTION
 	var order := state_machine.get_resolution_order(player, enemy, player_intent, enemy_intent)
 	_log("[b]结算顺序：[/b] %s -> %s" % [order[0].get_actual_name(), order[1].get_actual_name()])
 	for intent in order:
@@ -742,6 +742,7 @@ func _status_text() -> String:
 	lines.append("- 招式严格区分为势牌、伤害牌、格挡牌")
 	lines.append("- 势差 2 触发压制：受压制方失去先机牌")
 	lines.append("- 势差 4 触发崩势：受崩势方不可用先机与 2 费以上牌")
+	lines.append("- 崩势目标受到伤害牌时，伤害翻倍")
 	lines.append("- 招式数值统一遵循：增己势*2 + 削敌势*2 + 伤害 + 格挡 = 耗势*4")
 	lines.append("- %s" % state_machine.tie_rule_text(player, enemy))
 	lines.append("- %s" % state_machine.pressure_state_text(player, enemy))
@@ -810,11 +811,18 @@ func _simulate_preview(player_preview_intent: IntentData, enemy_preview_intent: 
 					lines.append("敌方削敌势 %d，玩家势将变为 %d。" % [card.break_momentum, player_momentum])
 		elif card.is_damage_card() and card.damage > 0:
 			if card.is_usable_at(state_machine.current_distance):
+				var effective_damage := card.damage
+				if intent.actor_id == player.data.id and enemy.is_broken():
+					effective_damage *= 2
+					lines.append("敌方处于崩势，所受伤害翻倍至 %d。" % effective_damage)
+				if intent.actor_id == enemy.data.id and player.is_broken():
+					effective_damage *= 2
+					lines.append("玩家处于崩势，所受伤害翻倍至 %d。" % effective_damage)
 				if intent.actor_id == player.data.id:
-					enemy_hp = maxi(enemy_hp - card.damage, 0)
+					enemy_hp = maxi(enemy_hp - effective_damage, 0)
 					lines.append("命中敌方，敌方生命将变为 %d。" % enemy_hp)
 				else:
-					player_hp = maxi(player_hp - card.damage, 0)
+					player_hp = maxi(player_hp - effective_damage, 0)
 					lines.append("命中玩家，玩家生命将变为 %d。" % player_hp)
 			else:
 				lines.append("因距离 %d 不合式，将落空。" % state_machine.current_distance)
