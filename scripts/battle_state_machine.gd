@@ -32,7 +32,6 @@ func begin_battle(initial_distance: int = 2) -> void:
 
 
 func get_declaration_order(player: Fighter, enemy: Fighter) -> PackedStringArray:
-	# Phase 2: lower realm declares first, higher realm reads visible intent and declares later.
 	if player.realm < enemy.realm:
 		return PackedStringArray([player.data.id, enemy.data.id])
 	if player.realm > enemy.realm:
@@ -43,7 +42,6 @@ func get_declaration_order(player: Fighter, enemy: Fighter) -> PackedStringArray
 
 
 func get_resolution_order(player: Fighter, enemy: Fighter, player_intent: IntentData, enemy_intent: IntentData) -> Array[IntentData]:
-	# Phase 3: 先机 overrides realm order, then same-realm alternates by tie advantage.
 	if player_intent.has_senki() and not enemy_intent.has_senki():
 		return [player_intent, enemy_intent]
 	if enemy_intent.has_senki() and not player_intent.has_senki():
@@ -77,18 +75,32 @@ func resolve_intent(intent: IntentData, actor: Fighter, target: Fighter) -> Arra
 		lines.append("%s 回观收势，恢复 %d 势。" % [actor.data.display_name, gained])
 		return lines
 
-	if card.distance_delta != 0:
-		var old_distance := current_distance
-		current_distance = clampi(current_distance + card.distance_delta, 1, 3)
-		if current_distance == old_distance:
-			lines.append("距离已到边界，无法继续后退或逼近。")
-		else:
-			lines.append("距离 %+d，变为 %d。" % [card.distance_delta, current_distance])
+	if card.is_momentum_card():
+		if card.gain_momentum > 0:
+			var gained_momentum := actor.recover_momentum(card.gain_momentum)
+			lines.append("%s 增己势 %d。" % [card.display_name, gained_momentum])
+		if card.break_momentum > 0:
+			var before_break := target.momentum
+			target.momentum = maxi(target.momentum - card.break_momentum, 0)
+			lines.append("%s 削敌势 %d。" % [card.display_name, before_break - target.momentum])
+		return lines
+
+	if card.is_guard_card():
+		var guard_total := actor.add_guard(card.guard)
+		lines.append("%s 立起 %d 格挡，当前护值 %d。" % [card.display_name, card.guard, guard_total])
+		return lines
 
 	if card.damage > 0:
 		if card.is_usable_at(current_distance):
-			target.hp = maxi(target.hp - card.damage, 0)
-			lines.append("%s 命中，造成 %d 伤害。" % [card.display_name, card.damage])
+			var remaining_damage := target.absorb_damage(card.damage)
+			var blocked := card.damage - remaining_damage
+			if blocked > 0:
+				lines.append("%s 被格挡化去 %d。" % [card.display_name, blocked])
+			if remaining_damage > 0:
+				target.hp = maxi(target.hp - remaining_damage, 0)
+				lines.append("%s 命中，造成 %d 伤害。" % [card.display_name, remaining_damage])
+			else:
+				lines.append("%s 被完全格挡。" % card.display_name)
 		else:
 			lines.append("%s 因距离 %d 不合式，未能命中。" % [card.display_name, current_distance])
 
@@ -97,6 +109,8 @@ func resolve_intent(intent: IntentData, actor: Fighter, target: Fighter) -> Arra
 
 func finish_round(player: Fighter, enemy: Fighter) -> void:
 	phase = BattlePhase.DECLARE if player.hp > 0 and enemy.hp > 0 else BattlePhase.RESULT
+	player.reset_guard()
+	enemy.reset_guard()
 	if player.realm == enemy.realm:
 		player_tie_advantage = not player_tie_advantage
 	round_index += 1
