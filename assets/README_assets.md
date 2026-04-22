@@ -17,3 +17,6 @@ This pack is prepared for the `feature/symmetry-gameplay` branch.
 - sheets: 576x192
 - portraits: 128x128
 - fx: 256x128 / 256x64 / 128x128
+
+## Note
+- Binary PNG asset drop is staged after this note commit so later blob/tree commits can safely attach to the current branch head.
