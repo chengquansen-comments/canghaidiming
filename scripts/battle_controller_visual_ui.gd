@@ -48,3 +48,40 @@ func _compact_button_text(card: CardData, marker: String, reason: String) -> Str
 
 func _card_detail_text(card: CardData) -> String:
 	return BattleHudHelper.card_detail_text(card)
+
+func _focused_card_for_detail() -> CardData:
+	return BattleHudHelper.focused_card(draft_player_intent, player_intent, awaiting_player_input)
+
+func _refresh_card_detail_panel() -> void:
+	if card_detail_label == null:
+		return
+	card_detail_label.add_theme_color_override("default_color", Color("35281c"))
+	var focused_card := _focused_card_for_detail()
+	if focused_card == null:
+		card_detail_label.text = BattleHudHelper.empty_detail_text()
+		return
+	card_detail_label.text = _card_detail_text(focused_card)
+
+func _refresh_hand_buttons() -> void:
+	for child in hand_flow.get_children():
+		child.queue_free()
+	if player == null:
+		return
+	for i in range(player.hand.size()):
+		var card: CardData = player.hand[i]
+		var reason := _card_restriction_reason(player, card)
+		var marker := _combo_marker_text(player, card)
+		var button := Button.new()
+		button.custom_minimum_size = Vector2(188, 112)
+		button.text = _compact_button_text(card, marker, reason)
+		button.disabled = not awaiting_player_input or not _can_play_card(player, card)
+		button.pressed.connect(_on_player_card_pressed.bind(card))
+		hand_flow.add_child(button)
+
+	if awaiting_player_input:
+		var idle_card := _idle_card()
+		var idle_button := Button.new()
+		idle_button.custom_minimum_size = Vector2(188, 112)
+		idle_button.text = BattleHudHelper.compact_button_text(idle_card, "[势牌]", "", false)
+		idle_button.pressed.connect(_on_player_card_pressed.bind(idle_card))
+		hand_flow.add_child(idle_button)
