@@ -97,3 +97,61 @@ func _refresh_hand_buttons() -> void:
 		idle_button.text = BattleHudHelper.compact_button_text(idle_card, "[势牌]", "", false)
 		idle_button.pressed.connect(_on_player_card_pressed.bind(idle_card))
 		hand_flow.add_child(idle_button)
+
+func _refresh_stage_grid() -> void:
+	if stage_grid_cells.is_empty():
+		return
+	var positions := _current_grid_positions()
+	var player_slot: int = positions.get("player", 0)
+	var enemy_slot: int = positions.get("enemy", 0)
+	var player_preview_card := _player_preview_card()
+	var enemy_preview_card := _enemy_preview_card()
+	var player_target_slot := _target_slot_for_preview(true, player_slot, enemy_slot, player_preview_card)
+	var enemy_target_slot := _target_slot_for_preview(false, player_slot, enemy_slot, enemy_preview_card)
+	var player_range := _attack_range_slots(true, player_target_slot, player_preview_card)
+	var enemy_range := _attack_range_slots(false, enemy_target_slot, enemy_preview_card)
+	for i in range(GRID_SLOT_COUNT):
+		var fill := GRID_BASE_COLOR
+		if player_range.has(i) and enemy_range.has(i):
+			fill = RANGE_OVERLAP_COLOR
+		elif player_range.has(i):
+			fill = PLAYER_RANGE_COLOR
+		elif enemy_range.has(i):
+			fill = ENEMY_RANGE_COLOR
+		if i == player_slot:
+			fill = PLAYER_POS_COLOR
+		if i == enemy_slot:
+			fill = ENEMY_POS_COLOR
+		stage_grid_cells[i].add_theme_stylebox_override("panel", _make_grid_cell_style(fill))
+		if i == player_slot and i == enemy_slot:
+			stage_grid_labels[i].text = "我/敌"
+			stage_grid_labels[i].add_theme_color_override("font_color", Color("ffffff"))
+		elif i == player_slot:
+			stage_grid_labels[i].text = "我"
+			stage_grid_labels[i].add_theme_color_override("font_color", Color("eef6ff"))
+		elif i == enemy_slot:
+			stage_grid_labels[i].text = "敌"
+			stage_grid_labels[i].add_theme_color_override("font_color", Color("fff2ef"))
+		else:
+			stage_grid_labels[i].text = ""
+
+func _refresh_stage_actor_positions() -> void:
+	if player_sprite == null or enemy_sprite == null:
+		return
+	var positions := _current_grid_positions()
+	var player_slot: int = positions.get("player", 0)
+	var enemy_slot: int = positions.get("enemy", 0)
+	var player_card := _player_preview_card()
+	var enemy_card := _enemy_preview_card()
+	var player_preview := _should_preview_card(player_card)
+	var enemy_preview := _should_preview_card(enemy_card)
+	var player_target_slot := _target_slot_for_preview(true, player_slot, enemy_slot, player_card)
+	var enemy_target_slot := _target_slot_for_preview(false, player_slot, enemy_slot, enemy_card)
+	var player_top_left := _animated_actor_top_left(true, player_slot, player_target_slot, player_preview)
+	var enemy_top_left := _animated_actor_top_left(false, enemy_slot, enemy_target_slot, enemy_preview)
+	player_sprite.position = player_top_left
+	enemy_sprite.position = enemy_top_left
+	player_fallback_actor.position = player_top_left
+	enemy_fallback_actor.position = enemy_top_left
+	_set_actor_sheet_frame(player, _preview_frame_for_card(player_card, player_preview))
+	_set_actor_sheet_frame(enemy, _preview_frame_for_card(enemy_card, enemy_preview))
