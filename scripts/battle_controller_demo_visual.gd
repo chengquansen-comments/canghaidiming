@@ -3,15 +3,7 @@ extends "res://scripts/battle_controller.gd"
 # Demo visual controller scaffold.
 # This file adds a stage layout, character presentation, top HUD bars,
 # and simple sprite-driven reactions while keeping the parent battle logic intact.
-#
-# Expected assets (optional placeholders are handled gracefully if missing):
-# res://assets/pixel_battle/backgrounds/moon_courtyard.png|svg
-# res://assets/pixel_battle/sheets/spearman_sheet.png|svg
-# res://assets/pixel_battle/sheets/blademaster_sheet.png|svg
-# res://assets/pixel_battle/sheets/enemy_spearman_sheet.png|svg
-# res://assets/pixel_battle/sheets/enemy_blademaster_sheet.png|svg
-# res://assets/pixel_battle/portraits/spearman_portrait.png|svg
-# res://assets/pixel_battle/portraits/blademaster_portrait.png|svg
+# If external image assets are missing, built-in fallback silhouettes and avatar blocks are shown.
 
 const FRAME_SIZE := Vector2i(384, 384)
 const HUD_BAR_WIDTH := 240.0
@@ -21,6 +13,8 @@ var background_texture: TextureRect
 var player_sprite: TextureRect
 var enemy_sprite: TextureRect
 var center_fx_layer: Control
+var player_fallback_actor: Control
+var enemy_fallback_actor: Control
 
 var top_hud: HBoxContainer
 var player_hud: PanelContainer
@@ -30,6 +24,8 @@ var battle_log_strip: Label
 
 var player_avatar: TextureRect
 var enemy_avatar: TextureRect
+var player_avatar_fallback: ColorRect
+var enemy_avatar_fallback: ColorRect
 var player_hp_fill: ColorRect
 var player_momentum_fill: ColorRect
 var enemy_hp_fill: ColorRect
@@ -51,18 +47,17 @@ func _build_stage_layer() -> void:
 	stage_layer.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	add_child(stage_layer)
 
+	var fallback := ColorRect.new()
+	fallback.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+	fallback.color = Color("10151d")
+	stage_layer.add_child(fallback)
+
 	background_texture = TextureRect.new()
 	background_texture.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	background_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	background_texture.stretch_mode = TextureRect.STRETCH_SCALE
 	background_texture.texture = _safe_load_texture("res://assets/pixel_battle/backgrounds/moon_courtyard.png")
 	stage_layer.add_child(background_texture)
-	if background_texture.texture == null:
-		var fallback := ColorRect.new()
-		fallback.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
-		fallback.color = Color("10151d")
-		stage_layer.add_child(fallback)
-		stage_layer.move_child(fallback, 0)
 
 	player_sprite = TextureRect.new()
 	player_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -71,6 +66,9 @@ func _build_stage_layer() -> void:
 	player_sprite.custom_minimum_size = Vector2(320, 320)
 	player_sprite.position = Vector2(120, 260)
 	stage_layer.add_child(player_sprite)
+	player_fallback_actor = _build_actor_fallback(Color("5c86b2"), Color("9fdcff"), false)
+	player_fallback_actor.position = player_sprite.position
+	stage_layer.add_child(player_fallback_actor)
 
 	enemy_sprite = TextureRect.new()
 	enemy_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -79,10 +77,54 @@ func _build_stage_layer() -> void:
 	enemy_sprite.custom_minimum_size = Vector2(320, 320)
 	enemy_sprite.position = Vector2(980, 240)
 	stage_layer.add_child(enemy_sprite)
+	enemy_fallback_actor = _build_actor_fallback(Color("8a4f47"), Color("ffb18b"), true)
+	enemy_fallback_actor.position = enemy_sprite.position
+	stage_layer.add_child(enemy_fallback_actor)
 
 	center_fx_layer = Control.new()
 	center_fx_layer.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	stage_layer.add_child(center_fx_layer)
+
+func _build_actor_fallback(body_color: Color, weapon_color: Color, flip: bool) -> Control:
+	var root := Control.new()
+	root.custom_minimum_size = Vector2(320, 320)
+	var torso := ColorRect.new()
+	torso.color = body_color
+	torso.position = Vector2(120, 90)
+	torso.size = Vector2(84, 126)
+	root.add_child(torso)
+	var head := ColorRect.new()
+	head.color = Color("f0d1b0")
+	head.position = Vector2(132, 46)
+	head.size = Vector2(58, 50)
+	root.add_child(head)
+	var leg_l := ColorRect.new()
+	leg_l.color = body_color.darkened(0.2)
+	leg_l.position = Vector2(126, 216)
+	leg_l.size = Vector2(26, 78)
+	root.add_child(leg_l)
+	var leg_r := ColorRect.new()
+	leg_r.color = body_color.darkened(0.1)
+	leg_r.position = Vector2(172, 216)
+	leg_r.size = Vector2(26, 78)
+	root.add_child(leg_r)
+	var arm := ColorRect.new()
+	arm.color = body_color.lightened(0.1)
+	arm.position = Vector2(88 if not flip else 204, 112)
+	arm.size = Vector2(34, 18)
+	root.add_child(arm)
+	var weapon := ColorRect.new()
+	weapon.color = weapon_color
+	weapon.position = Vector2(44 if not flip else 230, 84)
+	weapon.size = Vector2(12, 156)
+	weapon.rotation_degrees = -18 if not flip else 18
+	root.add_child(weapon)
+	var ground_shadow := ColorRect.new()
+	ground_shadow.color = Color(0, 0, 0, 0.25)
+	ground_shadow.position = Vector2(104, 292)
+	ground_shadow.size = Vector2(112, 14)
+	root.add_child(ground_shadow)
+	return root
 
 func _build_top_hud() -> void:
 	top_hud = HBoxContainer.new()
@@ -125,12 +167,21 @@ func _build_actor_hud(is_player: bool) -> PanelContainer:
 	row.add_theme_constant_override("separation", 10)
 	margin.add_child(row)
 
+	var avatar_wrap := Control.new()
+	avatar_wrap.custom_minimum_size = Vector2(72, 72)
+	row.add_child(avatar_wrap)
+
 	var avatar := TextureRect.new()
 	avatar.custom_minimum_size = Vector2(72, 72)
 	avatar.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	avatar.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	avatar.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	row.add_child(avatar)
+	avatar_wrap.add_child(avatar)
+
+	var avatar_fallback := ColorRect.new()
+	avatar_fallback.custom_minimum_size = Vector2(72, 72)
+	avatar_fallback.color = Color("3e5875") if is_player else Color("7a4d45")
+	avatar_wrap.add_child(avatar_fallback)
 
 	var box := VBoxContainer.new()
 	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -163,11 +214,13 @@ func _build_actor_hud(is_player: bool) -> PanelContainer:
 
 	if is_player:
 		player_avatar = avatar
+		player_avatar_fallback = avatar_fallback
 		player_hp_fill = hp_fill
 		player_momentum_fill = mo_fill
 		player_name_label = name_label
 	else:
 		enemy_avatar = avatar
+		enemy_avatar_fallback = avatar_fallback
 		enemy_hp_fill = hp_fill
 		enemy_momentum_fill = mo_fill
 		enemy_name_label = name_label
@@ -341,14 +394,26 @@ func _refresh_log_strip() -> void:
 		battle_log_strip.text = logs[logs.size() - 1].replace("[b]", "").replace("[/b]", "")
 
 func _refresh_character_visuals() -> void:
+	var player_sheet := _sheet_texture_for(player, false)
+	var enemy_sheet := _sheet_texture_for(enemy, true)
 	if player_sprite != null:
-		player_sprite.texture = _sheet_texture_for(player, false)
+		player_sprite.texture = player_sheet
 	if enemy_sprite != null:
-		enemy_sprite.texture = _sheet_texture_for(enemy, true)
+		enemy_sprite.texture = enemy_sheet
+	if player_fallback_actor != null:
+		player_fallback_actor.visible = player_sheet == null
+	if enemy_fallback_actor != null:
+		enemy_fallback_actor.visible = enemy_sheet == null
+	var player_portrait := _portrait_texture_for(player)
+	var enemy_portrait := _portrait_texture_for(enemy)
 	if player_avatar != null:
-		player_avatar.texture = _portrait_texture_for(player)
+		player_avatar.texture = player_portrait
 	if enemy_avatar != null:
-		enemy_avatar.texture = _portrait_texture_for(enemy)
+		enemy_avatar.texture = enemy_portrait
+	if player_avatar_fallback != null:
+		player_avatar_fallback.visible = player_portrait == null
+	if enemy_avatar_fallback != null:
+		enemy_avatar_fallback.visible = enemy_portrait == null
 	if player_name_label != null:
 		player_name_label.text = player.data.display_name if player != null else "玩家"
 	if enemy_name_label != null:
@@ -383,11 +448,11 @@ func _safe_load_texture(path: String) -> Texture2D:
 	return null
 
 func _animate_attacker_sprite(actor: Fighter, profession_id: String, is_finisher: bool = false) -> void:
-	var sprite := player_sprite if actor != null and player != null and actor.data.id == player.data.id else enemy_sprite
+	var sprite := player_fallback_actor if actor != null and player != null and actor.data.id == player.data.id and player_fallback_actor != null and player_fallback_actor.visible else enemy_fallback_actor if actor != null and enemy != null and actor.data.id == enemy.data.id and enemy_fallback_actor != null and enemy_fallback_actor.visible else player_sprite if actor != null and player != null and actor.data.id == player.data.id else enemy_sprite
 	if sprite == null:
 		return
 	var start := sprite.position
-	var dir := 1.0 if sprite == player_sprite else -1.0
+	var dir := 1.0 if sprite == player_sprite or sprite == player_fallback_actor else -1.0
 	var tween := create_tween()
 	if profession_id == "spearman":
 		tween.tween_property(sprite, "position", start + Vector2((28 if not is_finisher else 40) * dir, 0), 0.04)
