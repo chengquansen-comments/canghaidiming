@@ -233,3 +233,87 @@ func _refresh_stage_actor_positions() -> void:
 	enemy_fallback_actor.position = enemy_top_left
 	_set_actor_sheet_frame(player, _preview_frame_for_card(player_card, player_preview))
 	_set_actor_sheet_frame(enemy, _preview_frame_for_card(enemy_card, enemy_preview))
+
+func _process(delta: float) -> void:
+	preview_anim_time += delta
+	if battle_active:
+		_refresh_stage_grid()
+		_refresh_stage_actor_positions()
+
+func _player_preview_card() -> CardData:
+	if draft_player_intent != null and draft_player_intent.actual_card != null:
+		return draft_player_intent.actual_card
+	return null
+
+func _enemy_preview_card() -> CardData:
+	if enemy_intent == null:
+		return null
+	if enemy_intent.is_hidden() and player != null and not enemy_intent.can_hidden_be_read(player):
+		return enemy_intent.visible_card
+	return enemy_intent.actual_card
+
+func _should_preview_card(card: CardData) -> bool:
+	return battle_active and card != null and state_machine != null and state_machine.phase == BattleStateMachine.BattlePhase.DECLARE
+
+func _sheet_source_for(fighter: Fighter, is_enemy: bool) -> Texture2D:
+	if fighter == null:
+		return null
+	var prefix := "enemy_" if is_enemy else ""
+	var role := fighter.data.id
+	return _safe_load_texture("res://assets/pixel_battle/sheets/%s%s_sheet.png" % [prefix, role])
+
+func _sheet_frame_texture(source: Texture2D, frame_index: int) -> Texture2D:
+	if source == null:
+		return null
+	var frame_width := maxi(source.get_width() / SHEET_FRAME_COUNT, 1)
+	var atlas := AtlasTexture.new()
+	atlas.atlas = source
+	atlas.region = Rect2(frame_width * clampi(frame_index, 0, SHEET_FRAME_COUNT - 1), 0, frame_width, source.get_height())
+	return atlas
+
+func _portrait_texture_for(fighter: Fighter) -> Texture2D:
+	if fighter == null:
+		return null
+	return _safe_load_texture("res://assets/pixel_battle/portraits/%s_portrait.png" % fighter.data.id)
+
+func _set_actor_sheet_frame(actor: Fighter, frame_index: int) -> void:
+	if actor == null:
+		return
+	if player != null and actor.data.id == player.data.id and player_sprite != null and player_sheet_source != null:
+		player_sprite.texture = _sheet_frame_texture(player_sheet_source, frame_index)
+		return
+	if enemy != null and actor.data.id == enemy.data.id and enemy_sprite != null and enemy_sheet_source != null:
+		enemy_sprite.texture = _sheet_frame_texture(enemy_sheet_source, frame_index)
+
+func _pulse_actor_sheet_frame(actor: Fighter, frame_index: int, duration: float = 0.14) -> void:
+	_set_actor_sheet_frame(actor, frame_index)
+	var timer := get_tree().create_timer(duration)
+	timer.timeout.connect(func() -> void:
+		_set_actor_sheet_frame(actor, 0)
+	)
+
+func _animate_attacker_sprite(actor: Fighter, profession_id: String, is_finisher: bool = false) -> void:
+	var sprite := player_fallback_actor if actor != null and player != null and actor.data.id == player.data.id and player_fallback_actor != null and player_fallback_actor.visible else enemy_fallback_actor if actor != null and enemy != null and actor.data.id == enemy.data.id and enemy_fallback_actor != null and enemy_fallback_actor.visible else player_sprite if actor != null and player != null and actor.data.id == player.data.id else enemy_sprite
+	if sprite == null:
+		return
+	_pulse_actor_sheet_frame(actor, 1, 0.16 if is_finisher else 0.12)
+	var start := sprite.position
+	var dir := 1.0 if sprite == player_sprite or sprite == player_fallback_actor else -1.0
+	var tween := create_tween()
+	if profession_id == "spearman":
+		tween.tween_property(sprite, "position", start + Vector2((28 if not is_finisher else 40) * dir, 0), 0.04)
+		tween.tween_property(sprite, "position", start, 0.06)
+	else:
+		tween.tween_property(sprite, "position", start + Vector2((20 if not is_finisher else 30) * dir, -10), 0.04)
+		tween.tween_property(sprite, "position", start, 0.07)
+
+func _resolve_combo_chain_if_any(actor: Fighter, target: Fighter, intent: IntentData) -> Array[String]:
+	var lines := super._resolve_combo_chain_if_any(actor, target, intent)
+	if actor != null and intent != null and intent.actual_card != null and intent.actual_card.id != "staggered":
+		var is_finisher := intent.actual_card.has_tag("终结")
+		_animate_attacker_sprite(actor, actor.data.id, is_finisher)
+	return lines
+
+func _show_target_receive_feedback(target: Fighter, profession_id: String, color: Color, is_finisher: bool = false) -> void:
+	super(target, profession_id, color, is_finisher)
+	_pulse_actor_sheet_frame(target, 2, 0.16 if is_finisher else 0.12)
