@@ -24,6 +24,9 @@ func _grid_total_width() -> float:
 func _slot_center_x(slot: int) -> float:
 	return BattleStageHelper.slot_center_x(size.x, slot, GRID_SLOT_COUNT, GRID_SLOT_WIDTH, GRID_SLOT_GAP)
 
+func _slot_top_left(slot: int, is_player: bool) -> Vector2:
+	return BattleStageHelper.slot_top_left(size.x, slot, is_player, GRID_SLOT_COUNT, GRID_SLOT_WIDTH, GRID_SLOT_GAP, STAGE_GROUND_Y, player_sprite.size.y, PLAYER_FOOT_OFFSET_X, ENEMY_FOOT_OFFSET_X)
+
 func _current_grid_positions() -> Dictionary:
 	var distance := state_machine.current_distance if state_machine != null else 2
 	return BattleStageHelper.current_grid_positions(distance, GRID_RIGHT_ANCHOR_SLOT, GRID_SLOT_COUNT)
@@ -33,6 +36,15 @@ func _target_slot_for_preview(is_player: bool, player_slot: int, enemy_slot: int
 
 func _attack_range_slots(is_player: bool, origin_slot: int, card: CardData) -> Array[int]:
 	return BattleStageHelper.attack_range_slots(is_player, origin_slot, card, GRID_SLOT_COUNT)
+
+func _preview_cycle_phase() -> float:
+	return BattleStageHelper.preview_cycle_phase(preview_anim_time, PREVIEW_CYCLE_DURATION)
+
+func _preview_frame_for_card(card: CardData, active: bool) -> int:
+	return BattleStageHelper.preview_frame_for_card(card, active, _preview_cycle_phase())
+
+func _animated_actor_top_left(is_player: bool, start_slot: int, target_slot: int, active: bool) -> Vector2:
+	return BattleStageHelper.animated_actor_top_left(size.x, is_player, start_slot, target_slot, active, _preview_cycle_phase(), GRID_SLOT_COUNT, GRID_SLOT_WIDTH, GRID_SLOT_GAP, STAGE_GROUND_Y, player_sprite.size.y, PLAYER_FOOT_OFFSET_X, ENEMY_FOOT_OFFSET_X)
 
 func _ease_preview(value: float) -> float:
 	return BattleStageHelper.ease_preview(value)
