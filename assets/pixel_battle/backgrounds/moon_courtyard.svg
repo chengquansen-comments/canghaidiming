@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a1020"/>
+      <stop offset="100%" stop-color="#182133"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#sky)"/>
+  <circle cx="1450" cy="180" r="90" fill="#f4f0cf" opacity="0.95"/>
+  <rect x="0" y="760" width="1920" height="320" fill="#24211d"/>
+  <rect x="0" y="840" width="1920" height="240" fill="#3d3830"/>
+  <rect x="280" y="300" width="130" height="420" fill="#221b16"/>
+  <rect x="1510" y="300" width="130" height="420" fill="#221b16"/>
+  <rect x="360" y="330" width="40" height="360" fill="#4e4234"/>
+  <rect x="1550" y="330" width="40" height="360" fill="#4e4234"/>
+  <rect x="690" y="600" width="540" height="40" fill="#5f5647" opacity="0.55"/>
+  <text x="960" y="950" text-anchor="middle" font-size="42" fill="#d7c7a0" font-family="monospace">月下演武场</text>
+</svg>
