@@ -1,4 +1,4 @@
-extends "res://scripts/battle_controller.gd"
+extends "res://scripts/battle_controller_core.gd"
 
 # Demo visual controller scaffold.
 # This file adds a stage layout, character presentation, top HUD bars,
