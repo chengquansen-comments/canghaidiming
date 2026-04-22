@@ -5,13 +5,13 @@ extends "res://scripts/battle_controller.gd"
 # and simple sprite-driven reactions while keeping the parent battle logic intact.
 #
 # Expected assets (optional placeholders are handled gracefully if missing):
-# res://assets/pixel_battle/backgrounds/moon_courtyard.png
-# res://assets/pixel_battle/sheets/spearman_sheet.png
-# res://assets/pixel_battle/sheets/blademaster_sheet.png
-# res://assets/pixel_battle/sheets/enemy_spearman_sheet.png
-# res://assets/pixel_battle/sheets/enemy_blademaster_sheet.png
-# res://assets/pixel_battle/portraits/spearman_portrait.png
-# res://assets/pixel_battle/portraits/blademaster_portrait.png
+# res://assets/pixel_battle/backgrounds/moon_courtyard.png|svg
+# res://assets/pixel_battle/sheets/spearman_sheet.png|svg
+# res://assets/pixel_battle/sheets/blademaster_sheet.png|svg
+# res://assets/pixel_battle/sheets/enemy_spearman_sheet.png|svg
+# res://assets/pixel_battle/sheets/enemy_blademaster_sheet.png|svg
+# res://assets/pixel_battle/portraits/spearman_portrait.png|svg
+# res://assets/pixel_battle/portraits/blademaster_portrait.png|svg
 
 const FRAME_SIZE := Vector2i(384, 384)
 const HUD_BAR_WIDTH := 240.0
@@ -377,6 +377,9 @@ func _portrait_texture_for(fighter: Fighter) -> Texture2D:
 func _safe_load_texture(path: String) -> Texture2D:
 	if ResourceLoader.exists(path):
 		return load(path)
+	var svg_path := path.get_basename() + ".svg"
+	if ResourceLoader.exists(svg_path):
+		return load(svg_path)
 	return null
 
 func _animate_attacker_sprite(actor: Fighter, profession_id: String, is_finisher: bool = false) -> void:
