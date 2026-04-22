@@ -49,3 +49,13 @@ static func card_detail_text(card: Object) -> String:
 	lines.append("效果：%s" % " ".join(effect_lines))
 	lines.append("说明：%s" % card.description)
 	return "\n".join(lines)
+
+static func empty_detail_text() -> String:
+	return "[b]招式详情[/b]\n点击下方手牌后，这里会显示完整效果、距离、耗势与标签说明。"
+
+static func focused_card(draft_player_intent: Object, player_intent: Object, awaiting_player_input: bool) -> Object:
+	if draft_player_intent != null and draft_player_intent.actual_card != null:
+		return draft_player_intent.actual_card
+	if player_intent != null and player_intent.actual_card != null and awaiting_player_input:
+		return player_intent.actual_card
+	return null
