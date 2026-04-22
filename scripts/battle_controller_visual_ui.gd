@@ -314,6 +314,106 @@ func _resolve_combo_chain_if_any(actor: Fighter, target: Fighter, intent: Intent
 		_animate_attacker_sprite(actor, actor.data.id, is_finisher)
 	return lines
 
+func _spawn_fx_texture(path: String, draw_size: Vector2, at_position: Vector2, tint: Color, rotation_deg: float = 0.0, start_scale: Vector2 = Vector2.ONE) -> TextureRect:
+	var texture := _safe_load_texture(path)
+	if texture == null:
+		return null
+	var fx := TextureRect.new()
+	fx.texture = texture
+	fx.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	fx.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	fx.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	fx.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	fx.custom_minimum_size = draw_size
+	fx.size = draw_size
+	fx.position = at_position - draw_size * 0.5
+	fx.rotation_degrees = rotation_deg
+	fx.scale = start_scale
+	fx.modulate = Color(tint.r, tint.g, tint.b, 0.0)
+	if center_fx_layer != null:
+		center_fx_layer.add_child(fx)
+	else:
+		add_child(fx)
+	return fx
+
+func _actor_fx_anchor(target_is_enemy: bool) -> Vector2:
+	var sprite := enemy_sprite if target_is_enemy else player_sprite
+	if sprite != null:
+		return sprite.position + sprite.size * 0.5
+	var fallback := enemy_fallback_actor if target_is_enemy else player_fallback_actor
+	if fallback != null:
+		return fallback.position + fallback.custom_minimum_size * 0.5
+	return size * 0.5
+
+func _show_pierce_line(color: Color, is_finisher: bool = false) -> void:
+	var fx := _spawn_fx_texture(
+		"res://assets/pixel_battle/fx/pierce_streak.png",
+		Vector2(320 if not is_finisher else 380, 72 if not is_finisher else 88),
+		Vector2(size.x * 0.5, size.y * 0.5),
+		color,
+		0.0,
+		Vector2(0.78, 1.0)
+	)
+	if fx == null:
+		super(color, is_finisher)
+		return
+	var start_pos := fx.position + Vector2(-220 if not is_finisher else -280, 0)
+	var end_pos := fx.position + Vector2(220 if not is_finisher else 280, 0)
+	fx.position = start_pos
+	var tween := create_tween()
+	tween.tween_property(fx, "modulate", Color(color.r, color.g, color.b, 0.96), 0.03)
+	tween.parallel().tween_property(fx, "position", end_pos, 0.09 if not is_finisher else 0.12)
+	tween.parallel().tween_property(fx, "scale", Vector2(1.08 if not is_finisher else 1.22, 1.0 if not is_finisher else 1.16), 0.06)
+	tween.tween_property(fx, "modulate", Color(color.r, color.g, color.b, 0.0), 0.09)
+	tween.finished.connect(func() -> void:
+		fx.queue_free()
+	)
+
+func _show_slash_cut(color: Color, is_finisher: bool = false) -> void:
+	var fx := _spawn_fx_texture(
+		"res://assets/pixel_battle/fx/slash_arc.png",
+		Vector2(260 if not is_finisher else 320, 160 if not is_finisher else 200),
+		Vector2(size.x * 0.5, size.y * 0.5),
+		color,
+		-16.0,
+		Vector2(0.84, 0.84)
+	)
+	if fx == null:
+		super(color, is_finisher)
+		return
+	var tween := create_tween()
+	tween.tween_property(fx, "modulate", Color(color.r, color.g, color.b, 0.88), 0.03)
+	tween.parallel().tween_property(fx, "scale", Vector2(1.02 if not is_finisher else 1.16, 1.02 if not is_finisher else 1.16), 0.06)
+	tween.parallel().tween_property(fx, "position", fx.position + Vector2(84, 18), 0.06)
+	if is_finisher:
+		tween.tween_property(fx, "modulate", Color(color.r, color.g, color.b, 0.98), 0.02)
+		tween.parallel().tween_property(fx, "position", fx.position + Vector2(-36, -6), 0.04)
+	tween.tween_property(fx, "modulate", Color(color.r, color.g, color.b, 0.0), 0.1)
+	tween.finished.connect(func() -> void:
+		fx.queue_free()
+	)
+
+func _show_target_hit_mark(target_is_enemy: bool, color: Color, profession_id: String, is_finisher: bool = false) -> void:
+	var fx := _spawn_fx_texture(
+		"res://assets/pixel_battle/fx/hit_spark.png",
+		Vector2(128 if not is_finisher else 156, 128 if not is_finisher else 156),
+		_actor_fx_anchor(target_is_enemy) + Vector2(12 if target_is_enemy else -12, -24),
+		color,
+		0.0,
+		Vector2(0.72, 0.72)
+	)
+	if fx == null:
+		super(target_is_enemy, color, profession_id, is_finisher)
+		return
+	var tween := create_tween()
+	tween.tween_property(fx, "modulate", Color(color.r, color.g, color.b, 0.9 if is_finisher else 0.72), 0.03)
+	tween.parallel().tween_property(fx, "scale", Vector2(1.0 if not is_finisher else 1.18, 1.0 if not is_finisher else 1.18), 0.05)
+	tween.parallel().tween_property(fx, "rotation_degrees", 14.0 if profession_id == "spearman" else -18.0, 0.05)
+	tween.tween_property(fx, "modulate", Color(color.r, color.g, color.b, 0.0), 0.1)
+	tween.finished.connect(func() -> void:
+		fx.queue_free()
+	)
+
 func _show_target_receive_feedback(target: Fighter, profession_id: String, color: Color, is_finisher: bool = false) -> void:
 	super(target, profession_id, color, is_finisher)
 	_pulse_actor_sheet_frame(target, 2, 0.16 if is_finisher else 0.12)
