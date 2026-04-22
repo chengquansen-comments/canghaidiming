@@ -18,6 +18,84 @@ func _make_demo_panel_style(fill: Color, border: Color) -> StyleBox:
 func _make_button_style(tint: Color) -> StyleBox:
 	return BattleSkinHelper.make_button_style(tint, BUTTON_FRAME_PATH, PANEL_FRAME_PATH)
 
+func _refresh_ui() -> void:
+	super()
+	_refresh_visual_ui()
+
+func _refresh_visual_ui() -> void:
+	_refresh_character_visuals()
+	_refresh_hud_bars()
+	_refresh_center_labels()
+	_refresh_stage_grid()
+	_refresh_stage_actor_positions()
+	_refresh_card_detail_panel()
+	_refresh_log_strip()
+	_apply_button_styles()
+
+func _refresh_center_labels() -> void:
+	if round_label != null:
+		round_label.text = "演武 %d｜距离 %d" % [battle_count, state_machine.current_distance]
+	if phase_label != null:
+		if battle_active:
+			phase_label.text = "回合 %d｜%s" % [state_machine.round_index, state_machine.pressure_state_text(player, enemy)]
+		else:
+			phase_label.text = "节点阶段：查看牌库 / 合成藏招 / 得招 / 点化 / 演武"
+
+func _refresh_log_strip() -> void:
+	if battle_log_strip == null:
+		return
+	var logs := _recent_logs()
+	if logs.is_empty():
+		battle_log_strip.text = "日志待命"
+	else:
+		battle_log_strip.text = logs[logs.size() - 1].replace("[b]", "").replace("[/b]", "")
+
+func _refresh_character_visuals() -> void:
+	player_sheet_source = _sheet_source_for(player, false)
+	enemy_sheet_source = _sheet_source_for(enemy, true)
+	var player_sheet := _sheet_frame_texture(player_sheet_source, 0)
+	var enemy_sheet := _sheet_frame_texture(enemy_sheet_source, 0)
+	if player_sprite != null:
+		player_sprite.texture = player_sheet
+	if enemy_sprite != null:
+		enemy_sprite.texture = enemy_sheet
+	if player_fallback_actor != null:
+		player_fallback_actor.visible = player_sheet == null
+	if enemy_fallback_actor != null:
+		enemy_fallback_actor.visible = enemy_sheet == null
+	var player_portrait := _portrait_texture_for(player)
+	var enemy_portrait := _portrait_texture_for(enemy)
+	if player_avatar != null:
+		player_avatar.texture = player_portrait
+	if enemy_avatar != null:
+		enemy_avatar.texture = enemy_portrait
+	if player_avatar_fallback != null:
+		player_avatar_fallback.visible = player_portrait == null
+	if enemy_avatar_fallback != null:
+		enemy_avatar_fallback.visible = enemy_portrait == null
+	if player_name_label != null:
+		player_name_label.text = player.data.display_name if player != null else "玩家"
+	if enemy_name_label != null:
+		enemy_name_label.text = enemy.data.display_name if enemy != null else "敌方"
+
+func _refresh_hud_bars() -> void:
+	if player != null and player_hp_fill != null and player_hp_bg != null:
+		var player_hp_width := player_hp_bg.size.x if player_hp_bg.size.x > 1.0 else HUD_BAR_WIDTH
+		player_hp_fill.size = Vector2(player_hp_width * clamp(float(player.hp) / max(1.0, float(player.data.max_hp)), 0.0, 1.0), player_hp_bg.size.y if player_hp_bg.size.y > 0.0 else 14.0)
+		if player_hp_value_label != null:
+			player_hp_value_label.text = "%d / %d" % [player.hp, player.data.max_hp]
+	if player != null and player_momentum_fill != null and player_momentum_bg != null:
+		var player_momentum_width := player_momentum_bg.size.x if player_momentum_bg.size.x > 1.0 else HUD_BAR_WIDTH
+		player_momentum_fill.size = Vector2(player_momentum_width * clamp(float(player.momentum) / max(1.0, float(player.data.max_momentum)), 0.0, 1.0), player_momentum_bg.size.y if player_momentum_bg.size.y > 0.0 else 10.0)
+	if enemy != null and enemy_hp_fill != null and enemy_hp_bg != null:
+		var enemy_hp_width := enemy_hp_bg.size.x if enemy_hp_bg.size.x > 1.0 else HUD_BAR_WIDTH
+		enemy_hp_fill.size = Vector2(enemy_hp_width * clamp(float(enemy.hp) / max(1.0, float(enemy.data.max_hp)), 0.0, 1.0), enemy_hp_bg.size.y if enemy_hp_bg.size.y > 0.0 else 14.0)
+		if enemy_hp_value_label != null:
+			enemy_hp_value_label.text = "%d / %d" % [enemy.hp, enemy.data.max_hp]
+	if enemy != null and enemy_momentum_fill != null and enemy_momentum_bg != null:
+		var enemy_momentum_width := enemy_momentum_bg.size.x if enemy_momentum_bg.size.x > 1.0 else HUD_BAR_WIDTH
+		enemy_momentum_fill.size = Vector2(enemy_momentum_width * clamp(float(enemy.momentum) / max(1.0, float(enemy.data.max_momentum)), 0.0, 1.0), enemy_momentum_bg.size.y if enemy_momentum_bg.size.y > 0.0 else 10.0)
+
 func _grid_total_width() -> float:
 	return BattleStageHelper.grid_total_width(GRID_SLOT_COUNT, GRID_SLOT_WIDTH, GRID_SLOT_GAP)
 
