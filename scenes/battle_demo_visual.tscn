@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://scripts/battle_controller_demo_visual.gd" id="1_demo_visual"]
+[ext_resource type="Script" path="res://scripts/battle_controller_visual_ui.gd" id="1_demo_visual"]
 
 [node name="BattleDemoVisual" type="Control"]
 layout_mode = 3
