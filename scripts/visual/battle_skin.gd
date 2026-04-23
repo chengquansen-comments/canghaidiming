@@ -2,6 +2,7 @@ extends RefCounted
 class_name BattleSkinHelper
 
 static var _texture_cache: Dictionary = {}
+static var _atlas_cache: Dictionary = {}
 
 static func load_texture_or_svg(path: String) -> Texture2D:
 	if path == "":
@@ -25,8 +26,22 @@ static func load_texture_or_svg(path: String) -> Texture2D:
 	_texture_cache[path] = null
 	return null
 
+static func atlas_frame(source: Texture2D, frame_size: Vector2i, frame: int) -> Texture2D:
+	if source == null:
+		return null
+	var safe_frame := maxi(frame, 0)
+	var key := "%s|%d|%d|%d" % [source.resource_path, frame_size.x, frame_size.y, safe_frame]
+	if _atlas_cache.has(key):
+		return _atlas_cache[key]
+	var atlas := AtlasTexture.new()
+	atlas.atlas = source
+	atlas.region = Rect2(Vector2(frame_size.x * safe_frame, 0), Vector2(frame_size.x, frame_size.y))
+	_atlas_cache[key] = atlas
+	return atlas
+
 static func clear_texture_cache() -> void:
 	_texture_cache.clear()
+	_atlas_cache.clear()
 
 static func make_panel_style(fill: Color, border: Color) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
