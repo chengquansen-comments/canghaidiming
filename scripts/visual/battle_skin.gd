@@ -3,6 +3,7 @@ class_name BattleSkinHelper
 
 static var _texture_cache: Dictionary = {}
 static var _atlas_cache: Dictionary = {}
+static var _style_cache: Dictionary = {}
 
 static func load_texture_or_svg(path: String) -> Texture2D:
 	if path == "":
@@ -30,7 +31,8 @@ static func atlas_frame(source: Texture2D, frame_size: Vector2i, frame: int) -> 
 	if source == null:
 		return null
 	var safe_frame := maxi(frame, 0)
-	var key := "%s|%d|%d|%d" % [source.resource_path, frame_size.x, frame_size.y, safe_frame]
+	var source_key := source.resource_path if source.resource_path != "" else str(source.get_instance_id())
+	var key := "%s|%d|%d|%d" % [source_key, frame_size.x, frame_size.y, safe_frame]
 	if _atlas_cache.has(key):
 		return _atlas_cache[key]
 	var atlas := AtlasTexture.new()
@@ -42,8 +44,12 @@ static func atlas_frame(source: Texture2D, frame_size: Vector2i, frame: int) -> 
 static func clear_texture_cache() -> void:
 	_texture_cache.clear()
 	_atlas_cache.clear()
+	_style_cache.clear()
 
 static func make_panel_style(fill: Color, border: Color) -> StyleBoxFlat:
+	var key := "panel|%s|%s" % [fill.to_html(), border.to_html()]
+	if _style_cache.has(key):
+		return _style_cache[key]
 	var style := StyleBoxFlat.new()
 	style.bg_color = fill
 	style.border_color = border
@@ -53,9 +59,13 @@ static func make_panel_style(fill: Color, border: Color) -> StyleBoxFlat:
 	style.content_margin_right = 14
 	style.content_margin_top = 12
 	style.content_margin_bottom = 12
+	_style_cache[key] = style
 	return style
 
 static func make_visual_panel_style(fill: Color, border: Color, panel_frame_path: String) -> StyleBox:
+	var key := "visual_panel|%s|%s|%s" % [fill.to_html(), border.to_html(), panel_frame_path]
+	if _style_cache.has(key):
+		return _style_cache[key]
 	var style := StyleBoxFlat.new()
 	style.bg_color = fill
 	style.border_color = border
@@ -68,9 +78,13 @@ static func make_visual_panel_style(fill: Color, border: Color, panel_frame_path
 	style.content_margin_top = 14
 	style.content_margin_right = 18
 	style.content_margin_bottom = 14
+	_style_cache[key] = style
 	return style
 
 static func make_button_style(tint: Color, button_frame_path: String, panel_frame_path: String) -> StyleBox:
+	var key := "button|%s|%s|%s" % [tint.to_html(), button_frame_path, panel_frame_path]
+	if _style_cache.has(key):
+		return _style_cache[key]
 	var style := StyleBoxFlat.new()
 	style.bg_color = tint
 	style.border_color = Color("b8a270")
@@ -80,4 +94,5 @@ static func make_button_style(tint: Color, button_frame_path: String, panel_fram
 	style.content_margin_top = 8
 	style.content_margin_right = 14
 	style.content_margin_bottom = 8
+	_style_cache[key] = style
 	return style
