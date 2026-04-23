@@ -1,6 +1,9 @@
 extends Control
 
 func _ready() -> void:
+	if OS.has_feature("web"):
+		get_tree().change_scene_to_file("res://scenes/MainWeb.tscn")
+		return
 	_build_ui()
 
 func _build_ui() -> void:
