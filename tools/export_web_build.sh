@@ -6,6 +6,7 @@ OUTPUT_DIR="${1:-$PROJECT_ROOT/build/web}"
 PRESET_NAME="Web"
 INDEX_NAME="index.html"
 EXPORT_PRESETS_FILE="$PROJECT_ROOT/export_presets.cfg"
+CUSTOM_SHELL_FILE="$PROJECT_ROOT/web_shell.html"
 
 mkdir -p "$OUTPUT_DIR"
 
@@ -18,6 +19,10 @@ if [[ ! -f "$EXPORT_PRESETS_FILE" ]]; then
 fi
 if ! grep -q 'name="Web"' "$EXPORT_PRESETS_FILE"; then
   echo "[web-export] ERROR: export preset 'Web' not found in export_presets.cfg" >&2
+  exit 1
+fi
+if grep -q 'html/custom_html_shell="res://web_shell.html"' "$EXPORT_PRESETS_FILE" && [[ ! -f "$CUSTOM_SHELL_FILE" ]]; then
+  echo "[web-export] ERROR: custom web shell file missing: $CUSTOM_SHELL_FILE" >&2
   exit 1
 fi
 if ! command -v godot >/dev/null 2>&1 && ! command -v godot4 >/dev/null 2>&1; then
