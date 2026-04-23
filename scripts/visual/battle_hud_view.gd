@@ -1,7 +1,34 @@
 extends RefCounted
 class_name BattleHudHelper
 
+static var _summary_cache: Dictionary = {}
+static var _button_text_cache: Dictionary = {}
+static var _detail_cache: Dictionary = {}
+static var _empty_detail_cache := ""
+
+static func _card_key(card: Object) -> String:
+	if card == null:
+		return "null"
+	var tags := []
+	if "tags" in card and card.tags != null:
+		tags = card.tags
+	return "%s|%s|%d|%d|%d|%d|%d|%d|%s|%s" % [
+		str(card.get("id", "")),
+		str(card.get("display_name", "")),
+		int(card.get("momentum_cost", 0)),
+		int(card.get("min_distance", 0)),
+		int(card.get("max_distance", 0)),
+		int(card.get("damage", 0)),
+		int(card.get("guard", 0)),
+		int(card.get("gain_momentum", 0)),
+		str(card.get("break_momentum", 0)),
+		"/".join(tags)
+	]
+
 static func compact_effect_summary(card: Object) -> String:
+	var key := _card_key(card)
+	if _summary_cache.has(key):
+		return _summary_cache[key]
 	var pieces: Array[String] = []
 	pieces.append("耗势 %d  距 %d-%d" % [card.momentum_cost, card.min_distance, card.max_distance])
 	if card.damage > 0:
@@ -15,18 +42,28 @@ static func compact_effect_summary(card: Object) -> String:
 		if card.break_momentum > 0:
 			momentum_parts.append("削势 %d" % card.break_momentum)
 		pieces.append(" / ".join(momentum_parts))
-	return "\n".join(pieces)
+	var summary := "\n".join(pieces)
+	_summary_cache[key] = summary
+	return summary
 
 static func compact_button_text(card: Object, card_role_prefix: String, marker: String, is_drafted: bool) -> String:
+	var cache_key := "%s|%s|%s|%s" % [_card_key(card), card_role_prefix, marker, str(is_drafted)]
+	if _button_text_cache.has(cache_key):
+		return _button_text_cache[cache_key]
 	var title := "%s %s" % [card_role_prefix, card.display_name]
 	if is_drafted:
 		title = "[已选] " + title
 	var lines: Array[String] = [title, compact_effect_summary(card)]
 	if marker != "":
 		lines.append(marker)
-	return "\n".join(lines)
+	var text := "\n".join(lines)
+	_button_text_cache[cache_key] = text
+	return text
 
 static func card_detail_text(card: Object) -> String:
+	var key := _card_key(card)
+	if _detail_cache.has(key):
+		return _detail_cache[key]
 	var lines: Array[String] = []
 	lines.append("[font_size=30][b]%s[/b][/font_size]" % card.display_name)
 	lines.append("[color=#7f261d]%s[/color]" % card.type_label())
@@ -52,10 +89,15 @@ static func card_detail_text(card: Object) -> String:
 	lines.append("")
 	lines.append("[b]招式描述[/b]")
 	lines.append(card.description)
-	return "\n".join(lines)
+	var detail := "\n".join(lines)
+	_detail_cache[key] = detail
+	return detail
 
 static func empty_detail_text() -> String:
-	return "[font_size=28][b]招式详情[/b][/font_size]\n\n从左侧选择一张招式牌，这里会显示完整说明、势力消耗、范围与效果。"
+	if _empty_detail_cache != "":
+		return _empty_detail_cache
+	_empty_detail_cache = "[font_size=28][b]招式详情[/b][/font_size]\n\n从左侧选择一张招式牌，这里会显示完整说明、势力消耗、范围与效果。"
+	return _empty_detail_cache
 
 static func focused_card(draft_player_intent: Object, player_intent: Object, awaiting_player_input: bool) -> Object:
 	if draft_player_intent != null and draft_player_intent.actual_card != null:
@@ -63,3 +105,9 @@ static func focused_card(draft_player_intent: Object, player_intent: Object, awa
 	if player_intent != null and player_intent.actual_card != null and awaiting_player_input:
 		return player_intent.actual_card
 	return null
+
+static func clear_text_cache() -> void:
+	_summary_cache.clear()
+	_button_text_cache.clear()
+	_detail_cache.clear()
+	_empty_detail_cache = ""
