@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>$GODOT_PROJECT_NAME</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: #0f141d;
+      color: #f1e6c8;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow: hidden;
+    }
+    #app {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #202c3c 0%, #0f141d 62%);
+    }
+    #boot {
+      width: min(92vw, 720px);
+      border: 2px solid #c8a768;
+      border-radius: 18px;
+      background: rgba(24, 34, 49, 0.94);
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.38);
+      padding: 28px 30px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    #title {
+      font-size: 30px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    #subtitle {
+      color: #c9d2df;
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+    #status {
+      color: #d7ccac;
+      margin: 8px 0 16px;
+      min-height: 24px;
+    }
+    #progress-wrap {
+      width: 100%;
+      height: 14px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 18px;
+      border: 1px solid rgba(216,178,110,0.28);
+    }
+    #progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #7ca6d4 0%, #d8b26e 100%);
+      transition: width 120ms linear;
+    }
+    #actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    button {
+      min-width: 180px;
+      height: 44px;
+      border-radius: 10px;
+      border: 1px solid #c8a768;
+      background: #243446;
+      color: #f1e6c8;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    button:hover { background: #2d4259; }
+    #canvas {
+      display: none;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div id="boot">
+      <div id="title">沧海嘀鸣 · Web 版</div>
+      <div id="subtitle">首次加载需要少量时间。建议使用 Chrome / Edge / Firefox 桌面浏览器，并通过本地服务器或静态站点打开。</div>
+      <div id="status">准备加载引擎…</div>
+      <div id="progress-wrap"><div id="progress-bar"></div></div>
+      <div id="actions">
+        <button id="start-btn">开始加载</button>
+        <button id="reload-btn" type="button">重新加载</button>
+      </div>
+    </div>
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <script src="$GODOT_URL"></script>
+  <script>
+    const app = document.getElementById('app');
+    const boot = document.getElementById('boot');
+    const canvas = document.getElementById('canvas');
+    const statusEl = document.getElementById('status');
+    const progressBar = document.getElementById('progress-bar');
+    const startBtn = document.getElementById('start-btn');
+    const reloadBtn = document.getElementById('reload-btn');
+
+    let started = false;
+
+    function setStatus(text) {
+      statusEl.textContent = text;
+    }
+
+    function setProgress(value) {
+      const safe = Math.max(0, Math.min(1, value || 0));
+      progressBar.style.width = (safe * 100).toFixed(1) + '%';
+    }
+
+    function showCanvas() {
+      boot.style.display = 'none';
+      canvas.style.display = 'block';
+    }
+
+    async function startGame() {
+      if (started) return;
+      started = true;
+      startBtn.disabled = true;
+      setStatus('正在启动 Web 构建…');
+
+      const engine = new Engine($GODOT_CONFIG);
+      try {
+        await engine.startGame({
+          canvas,
+          onProgress(current, total) {
+            if (typeof current === 'number' && typeof total === 'number' && total > 0) {
+              setProgress(current / total);
+            }
+          }
+        });
+        showCanvas();
+      } catch (error) {
+        console.error(error);
+        setStatus('启动失败：请打开浏览器控制台查看详细错误。');
+        startBtn.disabled = false;
+        started = false;
+      }
+    }
+
+    startBtn.addEventListener('click', startGame);
+    reloadBtn.addEventListener('click', () => window.location.reload());
+  </script>
+</body>
+</html>
