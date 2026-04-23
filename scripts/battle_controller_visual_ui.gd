@@ -34,12 +34,12 @@ func _refresh_visual_ui() -> void:
 
 func _refresh_center_labels() -> void:
 	if round_label != null:
-		round_label.text = "演武 %d｜距离 %d" % [battle_count, state_machine.current_distance]
+		round_label.text = "师门决斗"
 	if phase_label != null:
 		if battle_active:
-			phase_label.text = "回合 %d｜%s" % [state_machine.round_index, state_machine.pressure_state_text(player, enemy)]
+			phase_label.text = "第 %d 回合" % state_machine.round_index
 		else:
-			phase_label.text = "节点阶段：查看牌库 / 合成藏招 / 得招 / 点化 / 演武"
+			phase_label.text = "月下试剑"
 
 func _refresh_log_strip() -> void:
 	if battle_log_strip == null:
@@ -57,12 +57,16 @@ func _refresh_character_visuals() -> void:
 	var enemy_sheet := _sheet_frame_texture(enemy_sheet_source, 0)
 	if player_sprite != null:
 		player_sprite.texture = player_sheet
+		player_sprite.modulate = Color(0.92, 0.95, 1.0, 0.96)
 	if enemy_sprite != null:
 		enemy_sprite.texture = enemy_sheet
+		enemy_sprite.modulate = Color(0.78, 0.82, 0.92, 0.94)
 	if player_fallback_actor != null:
 		player_fallback_actor.visible = player_sheet == null
+		player_fallback_actor.modulate = Color(0.88, 0.92, 1.0, 0.94)
 	if enemy_fallback_actor != null:
 		enemy_fallback_actor.visible = enemy_sheet == null
+		enemy_fallback_actor.modulate = Color(0.7, 0.75, 0.88, 0.92)
 	var player_portrait := _portrait_texture_for(player)
 	var enemy_portrait := _portrait_texture_for(enemy)
 	if player_avatar != null:
@@ -77,6 +81,10 @@ func _refresh_character_visuals() -> void:
 		player_name_label.text = player.data.display_name if player != null else "玩家"
 	if enemy_name_label != null:
 		enemy_name_label.text = enemy.data.display_name if enemy != null else "敌方"
+	if player_school_label != null:
+		player_school_label.text = SCHOOL_NAME if player != null else ""
+	if enemy_school_label != null:
+		enemy_school_label.text = SCHOOL_NAME if enemy != null else ""
 
 func _refresh_hud_bars() -> void:
 	if player != null and player_hp_fill != null and player_hp_bg != null:
@@ -84,17 +92,15 @@ func _refresh_hud_bars() -> void:
 		player_hp_fill.size = Vector2(player_hp_width * clamp(float(player.hp) / max(1.0, float(player.data.max_hp)), 0.0, 1.0), player_hp_bg.size.y if player_hp_bg.size.y > 0.0 else 14.0)
 		if player_hp_value_label != null:
 			player_hp_value_label.text = "%d / %d" % [player.hp, player.data.max_hp]
-	if player != null and player_momentum_fill != null and player_momentum_bg != null:
-		var player_momentum_width := player_momentum_bg.size.x if player_momentum_bg.size.x > 1.0 else HUD_BAR_WIDTH
-		player_momentum_fill.size = Vector2(player_momentum_width * clamp(float(player.momentum) / max(1.0, float(player.data.max_momentum)), 0.0, 1.0), player_momentum_bg.size.y if player_momentum_bg.size.y > 0.0 else 10.0)
+		if player_momentum_label != null:
+			player_momentum_label.text = str(player.momentum)
 	if enemy != null and enemy_hp_fill != null and enemy_hp_bg != null:
 		var enemy_hp_width := enemy_hp_bg.size.x if enemy_hp_bg.size.x > 1.0 else HUD_BAR_WIDTH
 		enemy_hp_fill.size = Vector2(enemy_hp_width * clamp(float(enemy.hp) / max(1.0, float(enemy.data.max_hp)), 0.0, 1.0), enemy_hp_bg.size.y if enemy_hp_bg.size.y > 0.0 else 14.0)
 		if enemy_hp_value_label != null:
 			enemy_hp_value_label.text = "%d / %d" % [enemy.hp, enemy.data.max_hp]
-	if enemy != null and enemy_momentum_fill != null and enemy_momentum_bg != null:
-		var enemy_momentum_width := enemy_momentum_bg.size.x if enemy_momentum_bg.size.x > 1.0 else HUD_BAR_WIDTH
-		enemy_momentum_fill.size = Vector2(enemy_momentum_width * clamp(float(enemy.momentum) / max(1.0, float(enemy.data.max_momentum)), 0.0, 1.0), enemy_momentum_bg.size.y if enemy_momentum_bg.size.y > 0.0 else 10.0)
+		if enemy_momentum_label != null:
+			enemy_momentum_label.text = str(enemy.momentum)
 
 func _grid_total_width() -> float:
 	return BattleStageHelper.grid_total_width(GRID_SLOT_COUNT, GRID_SLOT_WIDTH, GRID_SLOT_GAP)
@@ -145,7 +151,7 @@ func _focused_card_for_detail() -> CardData:
 func _refresh_card_detail_panel() -> void:
 	if card_detail_label == null:
 		return
-	card_detail_label.add_theme_color_override("default_color", Color("35281c"))
+	card_detail_label.add_theme_color_override("default_color", Color("2f2821"))
 	var focused_card := _focused_card_for_detail()
 	if focused_card == null:
 		card_detail_label.text = BattleHudHelper.empty_detail_text()
@@ -157,24 +163,186 @@ func _refresh_hand_buttons() -> void:
 		child.queue_free()
 	if player == null:
 		return
+	if player.hand.is_empty():
+		var empty_label := Label.new()
+		empty_label.custom_minimum_size = Vector2(420, 180)
+		empty_label.text = "暂无招式牌\n进入演武后会在这里显示本回合招式。"
+		empty_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		empty_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		empty_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		empty_label.add_theme_font_size_override("font_size", 18)
+		empty_label.add_theme_color_override("font_color", Color("9f9277"))
+		hand_flow.add_child(empty_label)
+		return
 	for i in range(player.hand.size()):
 		var card: CardData = player.hand[i]
 		var reason := _card_restriction_reason(player, card)
 		var marker := _combo_marker_text(player, card)
 		var button := Button.new()
-		button.custom_minimum_size = Vector2(188, 112)
-		button.text = _compact_button_text(card, marker, reason)
+		button.custom_minimum_size = Vector2(176, 204)
+		button.text = ""
+		button.tooltip_text = _compact_button_text(card, marker, reason)
+		button.autowrap_mode = TextServer.AUTOWRAP_OFF
+		button.clip_text = true
+		button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		button.add_theme_font_size_override("font_size", 12)
 		button.disabled = not awaiting_player_input or not _can_play_card(player, card)
+		_apply_card_button_style(button, card, _draft_uses_card(card), button.disabled)
+		_build_card_button_face(button, card, marker, reason)
 		button.pressed.connect(_on_player_card_pressed.bind(card))
 		hand_flow.add_child(button)
 
-	if awaiting_player_input:
-		var idle_card := _idle_card()
-		var idle_button := Button.new()
-		idle_button.custom_minimum_size = Vector2(188, 112)
-		idle_button.text = BattleHudHelper.compact_button_text(idle_card, "[势牌]", "", false)
-		idle_button.pressed.connect(_on_player_card_pressed.bind(idle_card))
-		hand_flow.add_child(idle_button)
+func _apply_card_button_style(button: Button, card: CardData, selected: bool, disabled: bool) -> void:
+	var base := Color("141a20")
+	var border := Color("8a7856")
+	if card.is_guard_card():
+		border = Color("637d91")
+	elif card.is_momentum_card():
+		border = Color("6f8d76")
+	if selected:
+		border = Color("e2c066")
+	var normal := _make_flat_card_style(base, border, 2 if not selected else 3)
+	var hover := _make_flat_card_style(base.lightened(0.08), border.lightened(0.15), 3)
+	var pressed := _make_flat_card_style(base.lightened(0.14), Color("e6c36a"), 3)
+	var disabled_style := _make_flat_card_style(Color("111418"), Color("4d4a42"), 1)
+	button.add_theme_stylebox_override("normal", disabled_style if disabled else normal)
+	button.add_theme_stylebox_override("hover", hover)
+	button.add_theme_stylebox_override("pressed", pressed)
+	button.add_theme_stylebox_override("focus", _make_flat_card_style(base.lightened(0.04), Color("efd382"), 3))
+	button.add_theme_stylebox_override("disabled", disabled_style)
+	button.add_theme_color_override("font_color", Color(1, 1, 1, 0))
+	button.add_theme_color_override("font_disabled_color", Color(1, 1, 1, 0))
+
+func _make_flat_card_style(fill: Color, border: Color, border_width: int) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = fill
+	style.border_color = border
+	style.set_border_width_all(border_width)
+	style.set_corner_radius_all(8)
+	style.content_margin_left = 0
+	style.content_margin_right = 0
+	style.content_margin_top = 0
+	style.content_margin_bottom = 0
+	return style
+
+func _build_card_button_face(button: Button, card: CardData, marker: String, reason: String) -> void:
+	var face := MarginContainer.new()
+	face.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	face.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	face.add_theme_constant_override("margin_left", 10)
+	face.add_theme_constant_override("margin_right", 10)
+	face.add_theme_constant_override("margin_top", 10)
+	face.add_theme_constant_override("margin_bottom", 10)
+	button.add_child(face)
+
+	var box := VBoxContainer.new()
+	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	box.add_theme_constant_override("separation", 7)
+	face.add_child(box)
+
+	var title_row := HBoxContainer.new()
+	title_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	title_row.add_theme_constant_override("separation", 8)
+	box.add_child(title_row)
+
+	var cost_badge := PanelContainer.new()
+	cost_badge.custom_minimum_size = Vector2(34, 34)
+	cost_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	cost_badge.add_theme_stylebox_override("panel", _make_badge_style(true))
+	title_row.add_child(cost_badge)
+	var cost_label := Label.new()
+	cost_label.text = str(card.momentum_cost)
+	cost_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	cost_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	cost_label.add_theme_font_size_override("font_size", 18)
+	cost_label.add_theme_color_override("font_color", Color("f5efe1"))
+	cost_badge.add_child(cost_label)
+
+	var title_label := Label.new()
+	title_label.text = card.display_name
+	title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title_label.add_theme_font_size_override("font_size", 18)
+	title_label.add_theme_color_override("font_color", Color("f0e4c4"))
+	title_label.clip_text = true
+	title_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	title_row.add_child(title_label)
+
+	var tag := Label.new()
+	tag.text = _short_card_type_tag(card)
+	tag.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	tag.custom_minimum_size = Vector2(28, 28)
+	tag.add_theme_font_size_override("font_size", 14)
+	tag.add_theme_color_override("font_color", Color("f7ead0"))
+	tag.add_theme_stylebox_override("normal", _make_type_tag_style(card))
+	title_row.add_child(tag)
+
+	var art_box := PanelContainer.new()
+	art_box.custom_minimum_size = Vector2(0, 54)
+	art_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	art_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	art_box.add_theme_stylebox_override("panel", _make_card_art_style(card))
+	box.add_child(art_box)
+	var art_label := Label.new()
+	art_label.text = _card_art_glyph(card)
+	art_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	art_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	art_label.add_theme_font_size_override("font_size", 22)
+	art_label.add_theme_color_override("font_color", Color("ced8dd"))
+	art_box.add_child(art_label)
+
+	var summary := Label.new()
+	summary.text = _compact_effect_summary(card)
+	if marker != "":
+		summary.text += "\n%s" % marker
+	if reason != "":
+		summary.text += "\n限制：%s" % reason
+	summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	summary.clip_text = true
+	summary.max_lines_visible = 3
+	summary.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	summary.add_theme_font_size_override("font_size", 13)
+	summary.add_theme_color_override("font_color", Color("d9d2bf") if reason == "" else Color("a79881"))
+	box.add_child(summary)
+
+func _short_card_type_tag(card: CardData) -> String:
+	if card.is_guard_card():
+		return "防"
+	if card.is_momentum_card():
+		return "身"
+	return "攻"
+
+func _make_type_tag_style(card: CardData) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("6f2824")
+	if card.is_guard_card():
+		style.bg_color = Color("29495f")
+	elif card.is_momentum_card():
+		style.bg_color = Color("355d46")
+	style.border_color = Color("c7b181")
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(4)
+	return style
+
+func _make_card_art_style(card: CardData) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("202934")
+	if card.is_guard_card():
+		style.bg_color = Color("243443")
+	elif card.is_momentum_card():
+		style.bg_color = Color("24382e")
+	style.border_color = Color("403b31")
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(5)
+	return style
+
+func _card_art_glyph(card: CardData) -> String:
+	if card.is_guard_card():
+		return "守"
+	if card.is_momentum_card():
+		return "行"
+	if card.max_distance >= 3:
+		return "气"
+	return "斩"
 
 func _refresh_stage_grid() -> void:
 	if stage_grid_cells.is_empty():
@@ -184,34 +352,26 @@ func _refresh_stage_grid() -> void:
 	var enemy_slot: int = positions.get("enemy", 0)
 	var player_preview_card := _player_preview_card()
 	var enemy_preview_card := _enemy_preview_card()
-	var player_target_slot := _target_slot_for_preview(true, player_slot, enemy_slot, player_preview_card)
-	var enemy_target_slot := _target_slot_for_preview(false, player_slot, enemy_slot, enemy_preview_card)
-	var player_range := _attack_range_slots(true, player_target_slot, player_preview_card)
-	var enemy_range := _attack_range_slots(false, enemy_target_slot, enemy_preview_card)
+	var player_range := _attack_range_slots(true, player_slot, player_preview_card)
+	var enemy_range := _attack_range_slots(false, enemy_slot, enemy_preview_card)
 	for i in range(GRID_SLOT_COUNT):
+		var in_player_range := player_range.has(i)
+		var in_enemy_range := enemy_range.has(i)
+		var has_player := i == player_slot
+		var has_enemy := i == enemy_slot
 		var fill := GRID_BASE_COLOR
-		if player_range.has(i) and enemy_range.has(i):
+		if in_player_range and in_enemy_range:
 			fill = RANGE_OVERLAP_COLOR
-		elif player_range.has(i):
+		elif in_player_range:
 			fill = PLAYER_RANGE_COLOR
-		elif enemy_range.has(i):
+		elif in_enemy_range:
 			fill = ENEMY_RANGE_COLOR
-		if i == player_slot:
+		if has_player:
 			fill = PLAYER_POS_COLOR
-		if i == enemy_slot:
+		if has_enemy:
 			fill = ENEMY_POS_COLOR
-		stage_grid_cells[i].add_theme_stylebox_override("panel", _make_grid_cell_style(fill))
-		if i == player_slot and i == enemy_slot:
-			stage_grid_labels[i].text = "我/敌"
-			stage_grid_labels[i].add_theme_color_override("font_color", Color("ffffff"))
-		elif i == player_slot:
-			stage_grid_labels[i].text = "我"
-			stage_grid_labels[i].add_theme_color_override("font_color", Color("eef6ff"))
-		elif i == enemy_slot:
-			stage_grid_labels[i].text = "敌"
-			stage_grid_labels[i].add_theme_color_override("font_color", Color("fff2ef"))
-		else:
-			stage_grid_labels[i].text = ""
+		stage_grid_cells[i].add_theme_stylebox_override("panel", _make_grid_cell_style(fill, i, has_player, has_enemy, in_player_range, in_enemy_range))
+		stage_grid_labels[i].text = ""
 
 func _refresh_stage_actor_positions() -> void:
 	if player_sprite == null or enemy_sprite == null:
@@ -309,10 +469,28 @@ func _animate_attacker_sprite(actor: Fighter, profession_id: String, is_finisher
 
 func _resolve_combo_chain_if_any(actor: Fighter, target: Fighter, intent: IntentData) -> Array[String]:
 	var lines := super._resolve_combo_chain_if_any(actor, target, intent)
-	if actor != null and intent != null and intent.actual_card != null and intent.actual_card.id != "staggered":
+	if not lines.is_empty() and actor != null and intent != null and intent.actual_card != null and intent.actual_card.damage > 0:
 		var is_finisher := intent.actual_card.has_tag("终结")
 		_animate_attacker_sprite(actor, actor.data.id, is_finisher)
 	return lines
+
+func _on_intent_resolved(actor: Fighter, target: Fighter, intent: IntentData, feedback: Dictionary) -> void:
+	if actor == null or target == null or intent == null or intent.actual_card == null:
+		return
+	if not bool(feedback.get("is_attack", false)):
+		return
+	var card: CardData = intent.actual_card
+	var is_finisher := card.has_tag("终结")
+	var effect_color := _strike_feedback_color(actor.data.id, bool(feedback.get("connected", false)))
+	_animate_attacker_sprite(actor, actor.data.id, is_finisher)
+	_play_profession_shape_feedback(actor.data.id, effect_color, is_finisher, false)
+	if bool(feedback.get("connected", false)):
+		_show_target_receive_feedback(target, actor.data.id, effect_color, is_finisher)
+
+func _strike_feedback_color(profession_id: String, connected: bool) -> Color:
+	if profession_id == "spearman":
+		return Color("8fd3ff") if connected else Color("6f94ad")
+	return Color("ffb28f") if connected else Color("b68268")
 
 func _spawn_fx_texture(path: String, draw_size: Vector2, at_position: Vector2, tint: Color, rotation_deg: float = 0.0, start_scale: Vector2 = Vector2.ONE) -> TextureRect:
 	var texture := _safe_load_texture(path)
@@ -320,7 +498,7 @@ func _spawn_fx_texture(path: String, draw_size: Vector2, at_position: Vector2, t
 		return null
 	var fx := TextureRect.new()
 	fx.texture = texture
-	fx.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	fx.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	fx.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	fx.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	fx.mouse_filter = Control.MOUSE_FILTER_IGNORE

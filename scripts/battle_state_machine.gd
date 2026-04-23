@@ -79,14 +79,17 @@ func resolve_intent(intent: IntentData, actor: Fighter, target: Fighter) -> Arra
 	var card: CardData = intent.actual_card
 	lines.append("%s 施展 [b]%s[/b]。" % [actor.data.display_name, card.display_name])
 	if card.id == "idle":
-		var gained := actor.recover_momentum(1)
-		lines.append("%s 回观收势，恢复 %d 势。" % [actor.data.display_name, gained])
+		lines.append("%s 本回合不出招。" % actor.data.display_name)
 		return lines
 	if card.id == "staggered":
 		lines.append("%s 崩势未稳，本回合无法行动。" % actor.data.display_name)
 		return lines
 
 	if card.is_momentum_card():
+		if not card.is_usable_at(current_distance):
+			lines.append("%s 因距离 %d 不合式，未能命中。" % [card.display_name, current_distance])
+			return lines
+		lines.append("%s 命中。" % card.display_name)
 		if card.gain_momentum > 0:
 			var gained_momentum := actor.recover_momentum(card.gain_momentum)
 			lines.append("%s 增己势 %d。" % [card.display_name, gained_momentum])

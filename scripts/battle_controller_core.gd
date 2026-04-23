@@ -42,7 +42,7 @@ var player_visible_label: RichTextLabel
 var enemy_visible_label: RichTextLabel
 var status_label: RichTextLabel
 var preview_label: RichTextLabel
-var hand_flow: HFlowContainer
+var hand_flow: Container
 var log_label: RichTextLabel
 var node_buttons_box: HBoxContainer
 var deck_button: Button
@@ -676,11 +676,19 @@ func _show_node_buttons() -> void:
 		return
 	for child in node_buttons_box.get_children():
 		child.queue_free()
+	var summary_button := Button.new()
+	summary_button.text = "战斗摘要"
+	summary_button.pressed.connect(_open_battle_summary)
+	node_buttons_box.add_child(summary_button)
+	deck_button = Button.new()
+	deck_button.text = "查看牌库"
+	deck_button.pressed.connect(_open_deck_view)
+	deck_button.disabled = player == null
+	node_buttons_box.add_child(deck_button)
 	if battle_active:
-		node_buttons_box.visible = false
+		node_buttons_box.visible = true
 		return
 	for spec in [
-		{"label": "查看牌库", "callback": Callable(self, "_open_deck_view")},
 		{"label": "合成藏招", "callback": Callable(self, "_begin_hidden_fusion")},
 		{"label": "得招", "callback": Callable(self, "_open_gain_move")},
 		{"label": "点化", "callback": Callable(self, "_apply_enlighten")},
@@ -691,6 +699,10 @@ func _show_node_buttons() -> void:
 		button.pressed.connect(spec["callback"])
 		node_buttons_box.add_child(button)
 	node_buttons_box.visible = true
+
+
+func _open_battle_summary() -> void:
+	_show_overlay("战斗摘要", _status_text(), [{"text": "关闭", "callback": Callable(self, "_hide_overlay")}])
 
 
 func _open_gain_move() -> void:
@@ -1031,15 +1043,47 @@ func _resolve_combo_chain_if_any(actor: Fighter, target: Fighter, intent: Intent
 			lines.append("%s %s 命中，造成 %d 伤害。%s。" % [header, actor.data.display_name, remaining_damage, fx.get("segment_flair", "气势压上")])
 		else:
 			lines.append("%s 被完全格挡。" % header)
-		if is_finisher:
-			_show_combat_banner(
-				"%s：%s" % [fx.get("finisher_banner", "终结"), segment_name],
-				fx.get("finisher_fill", Color("4a1626")),
-				fx.get("finisher_border", Color("ff4d6d"))
-			)
-			_flash_label(enemy_label if target.data.id == enemy.data.id else player_label, fx.get("label_color", Color("ff7a7a")))
-			lines.append("[color=#ff4d6d][b]!!! %s 以 %s 完成终结 · %s !!![/b][/color]" % [actor.data.display_name, segment_name, fx.get("log_flair", "")])
+			if is_finisher:
+				_show_combat_banner(
+					"%s：%s" % [fx.get("finisher_banner", "终结"), segment_name],
+					fx.get("finisher_fill", Color("4a1626")),
+					fx.get("finisher_border", Color("ff4d6d"))
+				)
+				_flash_label(enemy_label if target.data.id == enemy.data.id else player_label, fx.get("label_color", Color("ff7a7a")))
+				lines.append("[color=#ff4d6d][b]!!! %s 以 %s 完成终结 · %s !!![/b][/color]" % [actor.data.display_name, segment_name, fx.get("log_flair", "")])
 	return lines
+
+
+func _build_intent_feedback(actor: Fighter, target: Fighter, intent: IntentData, resolution_distance: int, target_hp_before: int, target_guard_before: int) -> Dictionary:
+	var feedback := {
+		"is_attack": false,
+		"was_in_range": false,
+		"connected": false,
+		"blocked_only": false,
+		"missed": false,
+		"hp_damage": 0,
+		"guard_damage": 0
+	}
+	if actor == null or target == null or intent == null or intent.actual_card == null:
+		return feedback
+	var card: CardData = intent.actual_card
+	if card.damage <= 0:
+		return feedback
+	var hp_damage := maxi(target_hp_before - target.hp, 0)
+	var guard_damage := maxi(target_guard_before - target.guard_points, 0)
+	var was_in_range := card.is_usable_at(resolution_distance)
+	feedback["is_attack"] = true
+	feedback["was_in_range"] = was_in_range
+	feedback["connected"] = was_in_range and (hp_damage > 0 or guard_damage > 0)
+	feedback["blocked_only"] = was_in_range and hp_damage == 0 and guard_damage > 0
+	feedback["missed"] = not was_in_range
+	feedback["hp_damage"] = hp_damage
+	feedback["guard_damage"] = guard_damage
+	return feedback
+
+
+func _on_intent_resolved(_actor: Fighter, _target: Fighter, _intent: IntentData, _feedback: Dictionary) -> void:
+	pass
 
 
 func _resolve_round() -> void:
@@ -1049,14 +1093,19 @@ func _resolve_round() -> void:
 	for intent in order:
 		var actor := player if intent.actor_id == player.data.id else enemy
 		var target := enemy if intent.actor_id == player.data.id else player
+		var resolution_distance := state_machine.current_distance
+		var target_hp_before := target.hp
+		var target_guard_before := target.guard_points
 		var target_was_pending_broken := target.pending_control_state == Fighter.CONTROL_BROKEN
 		var lines := state_machine.resolve_intent(intent, actor, target)
+		var feedback := _build_intent_feedback(actor, target, intent, resolution_distance, target_hp_before, target_guard_before)
 		if not target_was_pending_broken and target.pending_control_state == Fighter.CONTROL_BROKEN:
 			_show_combat_banner("崩势", Color("4a1f24"), Color("ff6b6b"))
 			_impact_feedback(Color("ff6b6b"), 8.0)
 			_flash_label(enemy_label if target.data.id == enemy.data.id else player_label, Color("ff8a8a"))
 		for line in lines:
 			_log(line)
+		_on_intent_resolved(actor, target, intent, feedback)
 		var combo_lines := _resolve_combo_chain_if_any(actor, target, intent)
 		for line in combo_lines:
 			_log(line)
@@ -1098,7 +1147,7 @@ func _update_phase_label() -> void:
 	if phase_label == null:
 		return
 	if not battle_active:
-		phase_label.text = "节点阶段：查看牌库 / 合成藏招 / 得招 / 点化 / 演武"
+		phase_label.text = "节点阶段：战斗摘要 / 查看牌库 / 合成藏招 / 得招 / 点化 / 演武"
 		return
 	var declare_names: Array[String] = []
 	for actor_id in declaration_order:
@@ -1143,7 +1192,18 @@ func _intent_panel_text(intent: IntentData, viewer: Fighter, is_player: bool) ->
 
 
 func _status_text() -> String:
-	return ""
+	if player == null or enemy == null:
+		return "等待选择角色。"
+	var lines: Array[String] = []
+	lines.append("[b]当前概况[/b]")
+	lines.append("演武 %d｜距离 %d｜回合 %d" % [battle_count, state_machine.current_distance, state_machine.round_index])
+	lines.append("玩家：%s｜生命 %d/%d｜势 %d/%d｜护值 %d" % [player.data.display_name, player.hp, player.data.max_hp, player.momentum, player.data.max_momentum, player.guard_points])
+	lines.append("敌方：%s｜生命 %d/%d｜势 %d/%d｜护值 %d" % [enemy.data.display_name, enemy.hp, enemy.data.max_hp, enemy.momentum, enemy.data.max_momentum, enemy.guard_points])
+	lines.append("")
+	lines.append("[b]当前规则状态[/b]")
+	lines.append("- %s" % state_machine.tie_rule_text(player, enemy))
+	lines.append("- %s" % state_machine.pressure_state_text(player, enemy))
+	return "\n".join(lines)
 
 
 func _preview_text() -> String:
@@ -1164,7 +1224,11 @@ func _draft_uses_card(card: CardData) -> bool:
 
 
 func _idle_card() -> CardData:
-	return _ready_card("idle", "观势", "不主动进击，收束架势并回 1 势", 1, 3, 0, CardData.ROLE_MOMENTUM, 1, 0, 0, 0)
+	return _ready_card("idle", "不动", "本回合不出招，不产生额外效果。", 1, 3, 0, CardData.ROLE_GUARD, 0, 0, 0, 0)
+
+
+func _preview_wait_card() -> CardData:
+	return _ready_card("preview_wait", "待机", "仅用于预览：尚未选招时按什么都不做处理。", 1, 3, 0, CardData.ROLE_GUARD, 0, 0, 0, 0)
 
 
 func _stagger_card() -> CardData:

@@ -48,7 +48,7 @@ static func target_slot_for_preview(is_player: bool, player_slot: int, enemy_slo
 
 static func attack_range_slots(is_player: bool, origin_slot: int, card: Object, slot_count: int) -> Array[int]:
 	var result: Array[int] = []
-	if card == null or card.damage <= 0:
+	if card == null or not card.has_method("requires_hit_check") or not card.requires_hit_check():
 		return result
 	if is_player:
 		for distance in range(card.min_distance, card.max_distance + 1):
@@ -68,7 +68,7 @@ static func preview_cycle_phase(preview_anim_time: float, preview_cycle_duration
 static func preview_frame_for_card(card: Object, active: bool, phase: float) -> int:
 	if not active or card == null:
 		return 0
-	if card.damage > 0 and phase >= 0.38 and phase <= 0.68:
+	if card.has_method("requires_hit_check") and card.requires_hit_check() and phase >= 0.38 and phase <= 0.68:
 		return 1
 	return 0
 

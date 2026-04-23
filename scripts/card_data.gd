@@ -83,6 +83,9 @@ func is_damage_card() -> bool:
 func is_guard_card() -> bool:
 	return role == ROLE_GUARD
 
+func requires_hit_check() -> bool:
+	return not is_guard_card() and (damage > 0 or gain_momentum > 0 or break_momentum > 0)
+
 
 func effect_budget() -> int:
 	return gain_momentum * 2 + break_momentum * 2 + damage + guard

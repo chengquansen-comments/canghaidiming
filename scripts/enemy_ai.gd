@@ -18,7 +18,7 @@ func choose_intent(enemy: Fighter, opponent: Fighter, current_distance: int, opp
 				chosen = fallback
 				break
 	if chosen == null:
-		return IntentData.from_card(enemy, CardData.new("idle", "观势", "收束架势，回观来路", 1, 3, 0, CardData.ROLE_MOMENTUM, 1, 0, 0, 0))
+		return IntentData.from_card(enemy, CardData.new("idle", "不动", "没有合适的招式时保持架势。", 1, 3, 0, CardData.ROLE_GUARD, 0, 0, 0, 0))
 
 	if enemy.realm > opponent.realm and enemy.hand.size() >= 2:
 		var hidden := _build_simple_hidden_move(enemy, enemy.hand, enemy.momentum, chosen)

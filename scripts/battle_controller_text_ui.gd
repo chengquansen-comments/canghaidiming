@@ -3,6 +3,20 @@ extends "res://scripts/battle_controller_core.gd"
 # Dedicated pure-text battle controller entry.
 # Uses the legacy rich-text debug layout and owns the text-first UI shell.
 
+const BattleStageHelper = preload("res://scripts/visual/battle_stage_view.gd")
+
+const PREVIEW_SLOT_COUNT := 9
+const PREVIEW_RIGHT_ANCHOR_SLOT := 5
+const PREVIEW_EMPTY := "　"
+const PREVIEW_PLAYER := "我"
+const PREVIEW_ENEMY := "敌"
+const PREVIEW_PLAYER_RANGE := "〇"
+const PREVIEW_ENEMY_RANGE := "〇"
+const PREVIEW_MERGED := "合"
+const PREVIEW_PLAYER_COLOR := "8fd3ff"
+const PREVIEW_ENEMY_COLOR := "ff8a8a"
+const PREVIEW_MERGED_COLOR := "f6d47a"
+
 func _build_ui() -> void:
 	set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	var background := ColorRect.new()
@@ -18,10 +32,18 @@ func _build_ui() -> void:
 	margin.add_theme_constant_override("margin_bottom", 24)
 	add_child(margin)
 
+	var root_scroll := ScrollContainer.new()
+	root_scroll.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+	root_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	root_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	margin.add_child(root_scroll)
+
 	var root := VBoxContainer.new()
+	root.custom_minimum_size = Vector2(1380, 980)
 	root.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	root.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	root.add_theme_constant_override("separation", 12)
-	margin.add_child(root)
+	root_scroll.add_child(root)
 
 	title_label = Label.new()
 	title_label.text = "对称性战斗原型（字符版）"
@@ -52,28 +74,38 @@ func _build_ui() -> void:
 	node_buttons_box.add_theme_constant_override("separation", 10)
 	root.add_child(node_buttons_box)
 
-	var battle_panels := HBoxContainer.new()
-	battle_panels.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	battle_panels.add_theme_constant_override("separation", 12)
-	root.add_child(battle_panels)
-	player_label = _build_rich_panel(battle_panels, "玩家状态")
-	status_label = _build_rich_panel(battle_panels, "战斗摘要")
-	enemy_label = _build_rich_panel(battle_panels, "敌方状态")
+	var battle_preview_row := HBoxContainer.new()
+	battle_preview_row.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	battle_preview_row.add_theme_constant_override("separation", 12)
+	root.add_child(battle_preview_row)
 
-	var intent_panels := HBoxContainer.new()
-	intent_panels.add_theme_constant_override("separation", 12)
-	root.add_child(intent_panels)
-	player_visible_label = _build_rich_panel(intent_panels, "玩家可见意图")
-	preview_label = _build_rich_panel(intent_panels, "结果预览")
-	enemy_visible_label = _build_rich_panel(intent_panels, "敌方可见意图")
+	var left_column := VBoxContainer.new()
+	left_column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	left_column.add_theme_constant_override("separation", 12)
+	battle_preview_row.add_child(left_column)
+	player_label = _build_rich_panel(left_column, "玩家状态")
+	player_visible_label = _build_rich_panel(left_column, "玩家可见意图")
+
+	preview_label = _build_rich_panel(battle_preview_row, "结果预览")
+	var preview_panel := preview_label.get_parent().get_parent() as PanelContainer
+	if preview_panel != null:
+		preview_panel.custom_minimum_size = Vector2(0, 452)
+		preview_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		preview_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+
+	var right_column := VBoxContainer.new()
+	right_column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	right_column.add_theme_constant_override("separation", 12)
+	battle_preview_row.add_child(right_column)
+	enemy_label = _build_rich_panel(right_column, "敌方状态")
+	enemy_visible_label = _build_rich_panel(right_column, "敌方可见意图")
+
+	status_label = RichTextLabel.new()
+	status_label.bbcode_enabled = true
 
 	var control_bar := HBoxContainer.new()
 	control_bar.add_theme_constant_override("separation", 10)
 	root.add_child(control_bar)
-	deck_button = Button.new()
-	deck_button.text = "查看牌库"
-	deck_button.pressed.connect(_open_deck_view)
-	control_bar.add_child(deck_button)
 	reset_pick_button = Button.new()
 	reset_pick_button.text = "重选招式"
 	reset_pick_button.pressed.connect(_reset_draft_intent)
@@ -85,24 +117,33 @@ func _build_ui() -> void:
 
 	var hand_panel := PanelContainer.new()
 	hand_panel.add_theme_stylebox_override("panel", _make_panel_style(Color("18212a"), Color("52606d")))
-	hand_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	hand_panel.custom_minimum_size = Vector2(0, 220)
+	hand_panel.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	root.add_child(hand_panel)
+
+	var hand_scroll := ScrollContainer.new()
+	hand_scroll.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+	hand_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	hand_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	hand_panel.add_child(hand_scroll)
 
 	hand_flow = HFlowContainer.new()
 	hand_flow.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	hand_flow.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	hand_flow.add_theme_constant_override("h_separation", 10)
 	hand_flow.add_theme_constant_override("v_separation", 10)
-	hand_panel.add_child(hand_flow)
+	hand_scroll.add_child(hand_flow)
 
 	var log_panel := PanelContainer.new()
 	log_panel.add_theme_stylebox_override("panel", _make_panel_style(Color("18212a"), Color("52606d")))
-	log_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	log_panel.custom_minimum_size = Vector2(0, 220)
+	log_panel.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	root.add_child(log_panel)
 	log_label = RichTextLabel.new()
 	log_label.bbcode_enabled = true
-	log_label.fit_content = true
+	log_label.fit_content = false
+	log_label.scroll_active = true
 	log_label.scroll_following = true
+	log_label.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	log_panel.add_child(log_label)
 
 	combat_banner = PanelContainer.new()
@@ -213,7 +254,9 @@ func _build_ui() -> void:
 	overlay_box.add_child(overlay_title)
 	overlay_body = RichTextLabel.new()
 	overlay_body.bbcode_enabled = true
-	overlay_body.fit_content = true
+	overlay_body.fit_content = false
+	overlay_body.scroll_active = true
+	overlay_body.custom_minimum_size = Vector2(0, 320)
 	overlay_box.add_child(overlay_body)
 	overlay_actions = VBoxContainer.new()
 	overlay_actions.add_theme_constant_override("separation", 8)
@@ -222,9 +265,11 @@ func _build_ui() -> void:
 func _build_rich_panel(parent: Control, heading: String) -> RichTextLabel:
 	var panel := PanelContainer.new()
 	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	panel.custom_minimum_size = Vector2(0, 220)
 	panel.add_theme_stylebox_override("panel", _make_panel_style(Color("18212a"), Color("52606d")))
 	parent.add_child(panel)
 	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	box.add_theme_constant_override("separation", 8)
 	panel.add_child(box)
 	var title := Label.new()
@@ -233,8 +278,9 @@ func _build_rich_panel(parent: Control, heading: String) -> RichTextLabel:
 	box.add_child(title)
 	var rich := RichTextLabel.new()
 	rich.bbcode_enabled = true
-	rich.fit_content = true
-	rich.scroll_active = false
+	rich.fit_content = false
+	rich.scroll_active = true
+	rich.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	box.add_child(rich)
 	return rich
 
@@ -259,12 +305,6 @@ func _refresh_hand_buttons() -> void:
 		if _draft_uses_card(card):
 			button.text = "[已选] " + button.text
 		hand_flow.add_child(button)
-	if awaiting_player_input:
-		var idle_button := Button.new()
-		idle_button.custom_minimum_size = Vector2(220, 150)
-		idle_button.text = "【势牌】 观势\n观势｜势牌｜距1-3｜耗势 0｜增己势 1\n不主动进击，回 1 势。"
-		idle_button.pressed.connect(_on_player_card_pressed.bind(_idle_card()))
-		hand_flow.add_child(idle_button)
 
 func _refresh_ui() -> void:
 	round_label.text = "演武 %d｜距离 %d" % [battle_count, state_machine.current_distance]
@@ -328,11 +368,13 @@ func _status_text() -> String:
 func _preview_text() -> String:
 	if not battle_active:
 		return "战前可查看牌库、合成藏招，并检查职业连招是否解锁。"
-	if awaiting_player_input and draft_player_intent == null:
-		return "选择招式后，这里会显示双方出招后的结果预览。"
-	if draft_player_intent == null or enemy_intent == null:
-		return "等待双方意图。"
-	return _simulate_preview(draft_player_intent, enemy_intent)
+	var player_preview_intent := draft_player_intent
+	if player_preview_intent == null:
+		player_preview_intent = IntentData.from_card(player, _preview_wait_card())
+	var enemy_preview_intent := enemy_intent
+	if enemy_preview_intent == null:
+		enemy_preview_intent = IntentData.from_card(enemy, _preview_wait_card())
+	return _simulate_preview(player_preview_intent, enemy_preview_intent)
 
 func _simulate_preview(player_preview_intent: IntentData, enemy_preview_intent: IntentData) -> String:
 	var player_hp := player.hp
@@ -341,6 +383,20 @@ func _simulate_preview(player_preview_intent: IntentData, enemy_preview_intent: 
 	var enemy_momentum := enemy.momentum
 	var lines: Array[String] = []
 	var order := state_machine.get_resolution_order(player, enemy, player_preview_intent, enemy_preview_intent)
+	var player_preview_card: CardData = player_preview_intent.actual_card if player_preview_intent != null else null
+	var enemy_preview_card := _preview_card_for_viewer(enemy_preview_intent, player)
+	var initial_positions := _preview_positions()
+	var player_target_slot := _preview_target_slot(true, initial_positions.get("player", 0), initial_positions.get("enemy", 0), player_preview_card)
+	var enemy_target_slot := _preview_target_slot(false, initial_positions.get("player", 0), initial_positions.get("enemy", 0), enemy_preview_card)
+	var final_positions := {"player": player_target_slot, "enemy": enemy_target_slot}
+	lines.append(_position_lane_text("初位", initial_positions))
+	for intent in order:
+		if intent.actor_id == player.data.id:
+			lines.append(_attack_lane_text("我攻", player_target_slot, true, player_preview_card))
+		else:
+			lines.append(_attack_lane_text("敌攻", enemy_target_slot, false, enemy_preview_card))
+	lines.append(_position_lane_text("终位", final_positions))
+	lines.append("")
 	lines.append("[b]确认后预览[/b]")
 	lines.append("结算顺序：%s -> %s" % [order[0].get_actual_name(), order[1].get_actual_name()])
 	if player_preview_intent.actual_card.id != "idle" and player_preview_intent.actual_card.id != "staggered":
@@ -357,35 +413,34 @@ func _simulate_preview(player_preview_intent: IntentData, enemy_preview_intent: 
 			continue
 		lines.append("%s使用 %s。" % [actor_name, card.display_name])
 		if card.id == "idle":
-			if intent.actor_id == player.data.id:
-				player_momentum = mini(player_momentum + 1, player.data.max_momentum)
-				lines.append("玩家回观收势，势将恢复到 %d。" % player_momentum)
-			else:
-				enemy_momentum = mini(enemy_momentum + 1, enemy.data.max_momentum)
-				lines.append("敌方回观收势，势将恢复到 %d。" % enemy_momentum)
+			lines.append("%s 本回合不出招，站位与数值维持不变。" % actor_name)
 			continue
 		if card.id == "staggered":
 			lines.append("%s 崩势硬直，无法行动。" % actor_name)
 			continue
 		if card.is_momentum_card():
-			if card.gain_momentum > 0:
-				if intent.actor_id == player.data.id:
-					player_momentum = mini(player_momentum + card.gain_momentum, player.data.max_momentum)
-					lines.append("玩家增己势 %d，势将变为 %d。" % [card.gain_momentum, player_momentum])
-				else:
-					enemy_momentum = mini(enemy_momentum + card.gain_momentum, enemy.data.max_momentum)
-					lines.append("敌方增己势 %d，势将变为 %d。" % [card.gain_momentum, enemy_momentum])
-			if card.break_momentum > 0:
-				if intent.actor_id == player.data.id:
-					enemy_momentum = maxi(enemy_momentum - card.break_momentum, 0)
-					lines.append("玩家削敌势 %d，敌方势将变为 %d。" % [card.break_momentum, enemy_momentum])
-					if enemy_momentum == 0:
-						lines.append("敌方本回合势归零，下回合将崩势。")
-				else:
-					player_momentum = maxi(player_momentum - card.break_momentum, 0)
-					lines.append("敌方削敌势 %d，玩家势将变为 %d。" % [card.break_momentum, player_momentum])
-					if player_momentum == 0:
-						lines.append("玩家本回合势归零，下回合将崩势。")
+			if card.is_usable_at(state_machine.current_distance):
+				lines.append("此势招命中后才会增减势。")
+				if card.gain_momentum > 0:
+					if intent.actor_id == player.data.id:
+						player_momentum = mini(player_momentum + card.gain_momentum, player.data.max_momentum)
+						lines.append("玩家增己势 %d，势将变为 %d。" % [card.gain_momentum, player_momentum])
+					else:
+						enemy_momentum = mini(enemy_momentum + card.gain_momentum, enemy.data.max_momentum)
+						lines.append("敌方增己势 %d，势将变为 %d。" % [card.gain_momentum, enemy_momentum])
+				if card.break_momentum > 0:
+					if intent.actor_id == player.data.id:
+						enemy_momentum = maxi(enemy_momentum - card.break_momentum, 0)
+						lines.append("玩家削敌势 %d，敌方势将变为 %d。" % [card.break_momentum, enemy_momentum])
+						if enemy_momentum == 0:
+							lines.append("敌方本回合势归零，下回合将崩势。")
+					else:
+						player_momentum = maxi(player_momentum - card.break_momentum, 0)
+						lines.append("敌方削敌势 %d，玩家势将变为 %d。" % [card.break_momentum, player_momentum])
+						if player_momentum == 0:
+							lines.append("玩家本回合势归零，下回合将崩势。")
+			else:
+				lines.append("因距离 %d 不合式，此势招将落空，不能增减势。" % state_machine.current_distance)
 		elif card.is_damage_card() and card.damage > 0:
 			if card.is_usable_at(state_machine.current_distance):
 				var effective_damage := card.damage
@@ -422,3 +477,55 @@ func _simulate_preview(player_preview_intent: IntentData, enemy_preview_intent: 
 			lines.append("本回合作为格挡牌，提供 %d 格挡。" % card.guard)
 	lines.append("最终预览：玩家 %d 血 %d 势 / 敌方 %d 血 %d 势" % [player_hp, player_momentum, enemy_hp, enemy_momentum])
 	return "\n".join(lines)
+
+func _preview_positions() -> Dictionary:
+	return BattleStageHelper.current_grid_positions(state_machine.current_distance, PREVIEW_RIGHT_ANCHOR_SLOT, PREVIEW_SLOT_COUNT)
+
+func _preview_card_for_viewer(intent: IntentData, viewer: Fighter) -> CardData:
+	if intent == null:
+		return null
+	if intent.is_hidden() and viewer != null and not intent.can_hidden_be_read(viewer):
+		return intent.visible_card
+	return intent.actual_card
+
+func _preview_target_slot(is_player: bool, player_slot: int, enemy_slot: int, card: CardData) -> int:
+	return BattleStageHelper.target_slot_for_preview(is_player, player_slot, enemy_slot, card, PREVIEW_SLOT_COUNT)
+
+func _attack_slots_for_preview(origin_slot: int, is_player: bool, card: CardData) -> Array[int]:
+	return BattleStageHelper.attack_range_slots(is_player, origin_slot, card, PREVIEW_SLOT_COUNT)
+
+func _lane_text(prefix: String, cells: Array[String]) -> String:
+	return "%s｜%s" % [prefix, "｜".join(cells)]
+
+func _color_cell(symbol: String, color_hex: String) -> String:
+	return "[color=#%s]%s[/color]" % [color_hex, symbol]
+
+func _position_lane_text(prefix: String, positions: Dictionary) -> String:
+	var player_slot: int = positions.get("player", 0)
+	var enemy_slot: int = positions.get("enemy", 0)
+	var cells: Array[String] = []
+	for i in range(PREVIEW_SLOT_COUNT):
+		var cell := PREVIEW_EMPTY
+		if i == player_slot and i == enemy_slot:
+			cell = _color_cell(PREVIEW_MERGED, PREVIEW_MERGED_COLOR)
+		elif i == player_slot:
+			cell = _color_cell(PREVIEW_PLAYER, PREVIEW_PLAYER_COLOR)
+		elif i == enemy_slot:
+			cell = _color_cell(PREVIEW_ENEMY, PREVIEW_ENEMY_COLOR)
+		cells.append(cell)
+	return _lane_text(prefix, cells)
+
+func _attack_lane_text(prefix: String, actor_slot: int, is_player: bool, card: CardData) -> String:
+	var cells: Array[String] = []
+	var attack_slots := _attack_slots_for_preview(actor_slot, is_player, card)
+	var actor_symbol := PREVIEW_PLAYER if is_player else PREVIEW_ENEMY
+	var range_symbol := PREVIEW_PLAYER_RANGE if is_player else PREVIEW_ENEMY_RANGE
+	var color_hex := PREVIEW_PLAYER_COLOR if is_player else PREVIEW_ENEMY_COLOR
+	for i in range(PREVIEW_SLOT_COUNT):
+		var cell := PREVIEW_EMPTY
+		if i == actor_slot:
+			cell = _color_cell(actor_symbol, color_hex)
+		elif attack_slots.has(i):
+			cell = _color_cell(range_symbol, color_hex)
+		cells.append(cell)
+	return _lane_text(prefix, cells)

@@ -10,28 +10,45 @@ const HUD_BAR_WIDTH := 208.0
 const SHEET_FRAME_COUNT := 3
 const PANEL_FRAME_PATH := "res://assets/pixel_battle/ui/panel_frame.png"
 const BUTTON_FRAME_PATH := "res://assets/pixel_battle/ui/button_frame.png"
+const SCHOOL_NAME := "清风剑阁"
 const GRID_SLOT_COUNT := 9
-const GRID_SLOT_WIDTH := 88.0
-const GRID_SLOT_HEIGHT := 44.0
-const GRID_SLOT_GAP := 10.0
-const GRID_STAGE_Y := 606.0
+const GRID_SLOT_WIDTH := 126.0
+const GRID_SLOT_HEIGHT := 48.0
+const GRID_SLOT_GAP := 6.0
+const GRID_STAGE_Y := 468.0
 const GRID_RIGHT_ANCHOR_SLOT := 5
-const STAGE_GROUND_Y := 700.0
-const PLAYER_FOOT_OFFSET_X := 206.0
-const ENEMY_FOOT_OFFSET_X := 124.0
+const STAGE_GROUND_Y := 562.0
+const STAGE_AREA_TOP := 168.0
+const STAGE_AREA_BOTTOM := 618.0
+const BOTTOM_AREA_TOP := 638.0
+const BOTTOM_AREA_BOTTOM_MARGIN := 24.0
+const ACTOR_DISPLAY_SIZE := Vector2(228, 228)
+const ACTOR_FALLBACK_BASE_SIZE := 320.0
+const PLAYER_FOOT_OFFSET_X := 114.0
+const ENEMY_FOOT_OFFSET_X := 114.0
 const PREVIEW_CYCLE_DURATION := 1.7
-const PLAYER_POS_COLOR := Color(0.27, 0.53, 0.96, 0.86)
-const ENEMY_POS_COLOR := Color(0.93, 0.38, 0.38, 0.86)
-const PLAYER_RANGE_COLOR := Color(0.32, 0.82, 0.47, 0.55)
-const ENEMY_RANGE_COLOR := Color(0.98, 0.55, 0.34, 0.55)
-const RANGE_OVERLAP_COLOR := Color(0.83, 0.71, 0.31, 0.6)
-const GRID_BASE_COLOR := Color(0.07, 0.08, 0.11, 0.36)
+const PLAYER_POS_COLOR := Color(0.87, 0.9, 0.98, 0.12)
+const ENEMY_POS_COLOR := Color(0.98, 0.86, 0.8, 0.12)
+const PLAYER_RANGE_COLOR := Color(0.45, 0.78, 0.96, 0.12)
+const ENEMY_RANGE_COLOR := Color(0.92, 0.47, 0.36, 0.12)
+const RANGE_OVERLAP_COLOR := Color(0.96, 0.82, 0.48, 0.14)
+const GRID_BASE_COLOR := Color(0.06, 0.08, 0.1, 0.12)
+const GRID_NEUTRAL_BORDER_COLOR := Color(0.92, 0.88, 0.78, 0.62)
+const GRID_PLAYER_BORDER_COLOR := Color(0.78, 0.89, 1.0, 0.95)
+const GRID_ENEMY_BORDER_COLOR := Color(1.0, 0.79, 0.67, 0.95)
+const GRID_PLAYER_RANGE_BORDER_COLOR := Color(0.63, 0.88, 1.0, 0.86)
+const GRID_ENEMY_RANGE_BORDER_COLOR := Color(0.96, 0.62, 0.48, 0.86)
+const GRID_OVERLAP_BORDER_COLOR := Color(0.97, 0.88, 0.64, 0.94)
+const SLOT_LABELS := ["一位", "二位", "三位", "四位", "五位", "六位", "七位", "八位", "九位"]
 
 var stage_layer: Control
 var background_texture: TextureRect
+var stage_area_frame: PanelContainer
 var stage_grid_box: HBoxContainer
 var stage_grid_cells: Array[PanelContainer] = []
 var stage_grid_labels: Array[Label] = []
+var stage_slot_label_box: HBoxContainer
+var stage_slot_name_labels: Array[Label] = []
 var player_sprite: TextureRect
 var enemy_sprite: TextureRect
 var center_fx_layer: Control
@@ -64,7 +81,74 @@ var player_hp_value_label: Label
 var enemy_hp_value_label: Label
 var player_name_label: Label
 var enemy_name_label: Label
+var player_school_label: Label
+var enemy_school_label: Label
+var player_momentum_label: Label
+var enemy_momentum_label: Label
 var preview_anim_time := 0.0
+
+func _set_single_line_ellipsis(label: Label) -> void:
+	label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	label.clip_text = true
+	label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+
+func _set_wrapped_label(label: Label, max_lines: int = 2) -> void:
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.clip_text = true
+	label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	label.max_lines_visible = max_lines
+
+func _make_hud_panel_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0, 0, 0, 0.08)
+	style.border_color = Color(0, 0, 0, 0)
+	style.set_border_width_all(0)
+	style.content_margin_left = 0
+	style.content_margin_right = 0
+	style.content_margin_top = 0
+	style.content_margin_bottom = 0
+	return style
+
+func _make_badge_style(is_player: bool) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("446b6e") if is_player else Color("3f5370")
+	style.border_color = Color("d7c49b")
+	style.set_border_width_all(2)
+	style.set_corner_radius_all(18)
+	style.content_margin_left = 0
+	style.content_margin_right = 0
+	style.content_margin_top = 0
+	style.content_margin_bottom = 0
+	return style
+
+func _make_detail_panel_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("d7d0c3")
+	style.border_color = Color("6f624e")
+	style.set_border_width_all(2)
+	style.set_corner_radius_all(8)
+	style.shadow_color = Color(0, 0, 0, 0.42)
+	style.shadow_size = 10
+	style.shadow_offset = Vector2(0, 2)
+	style.content_margin_left = 18
+	style.content_margin_right = 18
+	style.content_margin_top = 18
+	style.content_margin_bottom = 18
+	return style
+
+func _make_stage_area_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.02, 0.03, 0.04, 0.1)
+	style.border_color = Color(0.82, 0.76, 0.62, 0.24)
+	style.border_width_top = 1
+	style.border_width_bottom = 1
+	style.border_width_left = 0
+	style.border_width_right = 0
+	style.corner_radius_top_left = 0
+	style.corner_radius_top_right = 0
+	style.corner_radius_bottom_left = 0
+	style.corner_radius_bottom_right = 0
+	return style
 
 func _build_ui() -> void:
 	set_anchors_and_offsets_preset(PRESET_FULL_RECT)
@@ -89,17 +173,18 @@ func _build_stage_layer() -> void:
 	background_texture = TextureRect.new()
 	background_texture.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	background_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	background_texture.stretch_mode = TextureRect.STRETCH_SCALE
+	background_texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	background_texture.texture = _safe_load_texture("res://assets/pixel_battle/backgrounds/moon_courtyard.png")
 	stage_layer.add_child(background_texture)
+	_build_stage_area_frame()
 	_build_stage_grid()
 
 	player_sprite = TextureRect.new()
-	player_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	player_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	player_sprite.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	player_sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	player_sprite.custom_minimum_size = Vector2(320, 320)
-	player_sprite.size = Vector2(320, 320)
+	player_sprite.custom_minimum_size = ACTOR_DISPLAY_SIZE
+	player_sprite.size = ACTOR_DISPLAY_SIZE
 	player_sprite.clip_contents = true
 	stage_layer.add_child(player_sprite)
 	player_fallback_actor = _build_actor_fallback(Color("5c86b2"), Color("9fdcff"), false)
@@ -107,11 +192,11 @@ func _build_stage_layer() -> void:
 	stage_layer.add_child(player_fallback_actor)
 
 	enemy_sprite = TextureRect.new()
-	enemy_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	enemy_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	enemy_sprite.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	enemy_sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	enemy_sprite.custom_minimum_size = Vector2(320, 320)
-	enemy_sprite.size = Vector2(320, 320)
+	enemy_sprite.custom_minimum_size = ACTOR_DISPLAY_SIZE
+	enemy_sprite.size = ACTOR_DISPLAY_SIZE
 	enemy_sprite.clip_contents = true
 	stage_layer.add_child(enemy_sprite)
 	enemy_fallback_actor = _build_actor_fallback(Color("8a4f47"), Color("ffb18b"), true)
@@ -121,6 +206,20 @@ func _build_stage_layer() -> void:
 	center_fx_layer = Control.new()
 	center_fx_layer.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	stage_layer.add_child(center_fx_layer)
+
+func _build_stage_area_frame() -> void:
+	stage_area_frame = PanelContainer.new()
+	stage_area_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	stage_area_frame.anchor_left = 0.0
+	stage_area_frame.anchor_right = 1.0
+	stage_area_frame.anchor_top = 0.0
+	stage_area_frame.anchor_bottom = 0.0
+	stage_area_frame.offset_left = 0.0
+	stage_area_frame.offset_right = 0.0
+	stage_area_frame.offset_top = STAGE_AREA_TOP
+	stage_area_frame.offset_bottom = STAGE_AREA_BOTTOM
+	stage_area_frame.add_theme_stylebox_override("panel", _make_stage_area_style())
+	stage_layer.add_child(stage_area_frame)
 
 func _build_stage_grid() -> void:
 	stage_grid_box = HBoxContainer.new()
@@ -146,12 +245,38 @@ func _build_stage_grid() -> void:
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		label.add_theme_font_size_override("font_size", 16)
+		label.add_theme_color_override("font_color", Color("f5efe1"))
 		cell.add_child(label)
 		stage_grid_labels.append(label)
 
+	stage_slot_label_box = HBoxContainer.new()
+	stage_slot_label_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	stage_slot_label_box.anchor_left = 0.5
+	stage_slot_label_box.anchor_right = 0.5
+	stage_slot_label_box.anchor_top = 0.0
+	stage_slot_label_box.anchor_bottom = 0.0
+	stage_slot_label_box.offset_left = -_grid_total_width() * 0.5
+	stage_slot_label_box.offset_right = _grid_total_width() * 0.5
+	stage_slot_label_box.offset_top = GRID_STAGE_Y + GRID_SLOT_HEIGHT + 8
+	stage_slot_label_box.offset_bottom = GRID_STAGE_Y + GRID_SLOT_HEIGHT + 40
+	stage_slot_label_box.add_theme_constant_override("separation", int(GRID_SLOT_GAP))
+	stage_layer.add_child(stage_slot_label_box)
+	for i in range(GRID_SLOT_COUNT):
+		var slot_box := CenterContainer.new()
+		slot_box.custom_minimum_size = Vector2(GRID_SLOT_WIDTH, 24)
+		stage_slot_label_box.add_child(slot_box)
+		var slot_label := Label.new()
+		slot_label.text = SLOT_LABELS[i]
+		slot_label.add_theme_font_size_override("font_size", 16)
+		slot_label.add_theme_color_override("font_color", Color("d9c39b"))
+		slot_box.add_child(slot_label)
+		stage_slot_name_labels.append(slot_label)
+
 func _build_actor_fallback(body_color: Color, weapon_color: Color, flip: bool) -> Control:
 	var root := Control.new()
-	root.custom_minimum_size = Vector2(320, 320)
+	root.custom_minimum_size = ACTOR_DISPLAY_SIZE
+	var fallback_scale := ACTOR_DISPLAY_SIZE.x / ACTOR_FALLBACK_BASE_SIZE
+	root.scale = Vector2.ONE * fallback_scale
 	var torso := ColorRect.new()
 	torso.color = body_color
 	torso.position = Vector2(120, 90)
@@ -196,10 +321,10 @@ func _build_top_hud() -> void:
 	top_hud.anchor_right = 1.0
 	top_hud.anchor_top = 0.0
 	top_hud.anchor_bottom = 0.0
-	top_hud.offset_left = 24
-	top_hud.offset_top = 20
-	top_hud.offset_right = -24
-	top_hud.offset_bottom = 140
+	top_hud.offset_left = 20
+	top_hud.offset_top = 18
+	top_hud.offset_right = -20
+	top_hud.offset_bottom = 150
 	top_hud.add_theme_constant_override("separation", 20)
 	add_child(top_hud)
 
@@ -217,98 +342,134 @@ func _build_top_hud() -> void:
 
 func _build_actor_hud(is_player: bool) -> PanelContainer:
 	var panel := PanelContainer.new()
-	panel.custom_minimum_size = Vector2(360, 120)
-	panel.clip_contents = true
-	panel.add_theme_stylebox_override("panel", _make_demo_panel_style(Color("161a22"), Color("9e8351")))
+	panel.custom_minimum_size = Vector2(430, 130)
+	panel.clip_contents = false
+	panel.add_theme_stylebox_override("panel", _make_hud_panel_style())
 
 	var margin := MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 12)
-	margin.add_theme_constant_override("margin_right", 12)
-	margin.add_theme_constant_override("margin_top", 10)
-	margin.add_theme_constant_override("margin_bottom", 10)
+	margin.add_theme_constant_override("margin_left", 8)
+	margin.add_theme_constant_override("margin_right", 8)
+	margin.add_theme_constant_override("margin_top", 8)
+	margin.add_theme_constant_override("margin_bottom", 8)
 	panel.add_child(margin)
 
 	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 10)
+	row.add_theme_constant_override("separation", 12)
 	margin.add_child(row)
 
 	var avatar_wrap := Control.new()
-	avatar_wrap.custom_minimum_size = Vector2(72, 72)
-	avatar_wrap.clip_contents = true
-	row.add_child(avatar_wrap)
+	avatar_wrap.custom_minimum_size = Vector2(96, 96)
+	avatar_wrap.clip_contents = false
 
 	var avatar := TextureRect.new()
-	avatar.custom_minimum_size = Vector2(72, 72)
+	avatar.custom_minimum_size = Vector2(96, 96)
+	avatar.size = Vector2(96, 96)
 	avatar.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	avatar.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	avatar.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	avatar.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	avatar_wrap.add_child(avatar)
 
 	var avatar_fallback := ColorRect.new()
-	avatar_fallback.custom_minimum_size = Vector2(72, 72)
+	avatar_fallback.custom_minimum_size = Vector2(96, 96)
 	avatar_fallback.color = Color("3e5875") if is_player else Color("7a4d45")
 	avatar_wrap.add_child(avatar_fallback)
 
 	var box := VBoxContainer.new()
 	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	box.add_theme_constant_override("separation", 6)
-	row.add_child(box)
+	box.add_theme_constant_override("separation", 4)
+	if is_player:
+		row.add_child(avatar_wrap)
+		row.add_child(box)
+	else:
+		row.add_child(box)
+		row.add_child(avatar_wrap)
 
 	var name_label := Label.new()
-	name_label.add_theme_font_size_override("font_size", 18)
-	name_label.add_theme_color_override("font_color", Color("4a3620"))
+	name_label.add_theme_font_size_override("font_size", 22)
+	name_label.add_theme_color_override("font_color", Color("f5e8c8"))
+	name_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.72))
+	name_label.add_theme_constant_override("shadow_offset_x", 1)
+	name_label.add_theme_constant_override("shadow_offset_y", 2)
+	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT if is_player else HORIZONTAL_ALIGNMENT_RIGHT
+	_set_single_line_ellipsis(name_label)
 	box.add_child(name_label)
 
+	var school_label := Label.new()
+	school_label.add_theme_font_size_override("font_size", 15)
+	school_label.add_theme_color_override("font_color", Color("bba98a"))
+	school_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.65))
+	school_label.add_theme_constant_override("shadow_offset_x", 1)
+	school_label.add_theme_constant_override("shadow_offset_y", 1)
+	school_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT if is_player else HORIZONTAL_ALIGNMENT_RIGHT
+	_set_single_line_ellipsis(school_label)
+	box.add_child(school_label)
+
 	var hp_bg := ColorRect.new()
-	hp_bg.custom_minimum_size = Vector2(HUD_BAR_WIDTH, 14)
+	hp_bg.custom_minimum_size = Vector2(HUD_BAR_WIDTH + 40, 16)
 	hp_bg.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	hp_bg.clip_contents = true
-	hp_bg.color = Color("3a1f24")
+	hp_bg.color = Color(0.14, 0.06, 0.06, 0.66)
 	box.add_child(hp_bg)
 
 	var hp_fill := ColorRect.new()
-	hp_fill.size = Vector2(HUD_BAR_WIDTH, 14)
-	hp_fill.color = Color("d95763")
+	hp_fill.size = Vector2(HUD_BAR_WIDTH + 40, 16)
+	hp_fill.color = Color("c44a3f")
 	hp_bg.add_child(hp_fill)
 
 	var hp_value := Label.new()
 	hp_value.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	hp_value.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	hp_value.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	hp_value.add_theme_font_size_override("font_size", 11)
-	hp_value.add_theme_color_override("font_color", Color("f8f1e2"))
+	hp_value.add_theme_font_size_override("font_size", 14)
+	hp_value.add_theme_color_override("font_color", Color("f6ead4"))
+	_set_single_line_ellipsis(hp_value)
 	hp_bg.add_child(hp_value)
 
-	var mo_bg := ColorRect.new()
-	mo_bg.custom_minimum_size = Vector2(HUD_BAR_WIDTH, 10)
-	mo_bg.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	mo_bg.clip_contents = true
-	mo_bg.color = Color("203142")
-	box.add_child(mo_bg)
+	var momentum_row := HBoxContainer.new()
+	momentum_row.add_theme_constant_override("separation", 8)
+	momentum_row.alignment = BoxContainer.ALIGNMENT_BEGIN if is_player else BoxContainer.ALIGNMENT_END
+	box.add_child(momentum_row)
 
-	var mo_fill := ColorRect.new()
-	mo_fill.size = Vector2(HUD_BAR_WIDTH, 10)
-	mo_fill.color = Color("73c7ff")
-	mo_bg.add_child(mo_fill)
+	var momentum_title := Label.new()
+	momentum_title.text = "势"
+	momentum_title.add_theme_font_size_override("font_size", 18)
+	momentum_title.add_theme_color_override("font_color", Color("f0e2bf"))
+	momentum_title.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.7))
+	momentum_title.add_theme_constant_override("shadow_offset_x", 1)
+	momentum_title.add_theme_constant_override("shadow_offset_y", 2)
+	momentum_row.add_child(momentum_title)
+
+	var momentum_badge := PanelContainer.new()
+	momentum_badge.custom_minimum_size = Vector2(36, 36)
+	momentum_badge.add_theme_stylebox_override("panel", _make_badge_style(is_player))
+	momentum_row.add_child(momentum_badge)
+
+	var momentum_label := Label.new()
+	momentum_label.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+	momentum_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	momentum_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	momentum_label.add_theme_font_size_override("font_size", 20)
+	momentum_label.add_theme_color_override("font_color", Color("f6f2e7"))
+	momentum_badge.add_child(momentum_label)
 
 	if is_player:
 		player_avatar = avatar
 		player_avatar_fallback = avatar_fallback
 		player_hp_bg = hp_bg
 		player_hp_fill = hp_fill
-		player_momentum_bg = mo_bg
-		player_momentum_fill = mo_fill
 		player_hp_value_label = hp_value
 		player_name_label = name_label
+		player_school_label = school_label
+		player_momentum_label = momentum_label
 	else:
 		enemy_avatar = avatar
 		enemy_avatar_fallback = avatar_fallback
 		enemy_hp_bg = hp_bg
 		enemy_hp_fill = hp_fill
-		enemy_momentum_bg = mo_bg
-		enemy_momentum_fill = mo_fill
 		enemy_hp_value_label = hp_value
 		enemy_name_label = name_label
+		enemy_school_label = school_label
+		enemy_momentum_label = momentum_label
 
 	return panel
 
@@ -317,14 +478,23 @@ func _build_center_info() -> void:
 		return
 	round_label = Label.new()
 	round_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	round_label.add_theme_font_size_override("font_size", 24)
-	round_label.add_theme_color_override("font_color", Color("f4ead0"))
-	round_label.text = "尚未开战"
+	round_label.add_theme_font_size_override("font_size", 34)
+	round_label.add_theme_color_override("font_color", Color("f2e2bf"))
+	round_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.82))
+	round_label.add_theme_constant_override("shadow_offset_x", 2)
+	round_label.add_theme_constant_override("shadow_offset_y", 3)
+	round_label.text = "师门决斗"
 	center_hud.add_child(round_label)
 
 	phase_label = Label.new()
 	phase_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	phase_label.add_theme_color_override("font_color", Color("c9d0dc"))
+	phase_label.add_theme_font_size_override("font_size", 18)
+	phase_label.add_theme_color_override("font_color", Color("d6c3a0"))
+	phase_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.72))
+	phase_label.add_theme_constant_override("shadow_offset_x", 1)
+	phase_label.add_theme_constant_override("shadow_offset_y", 2)
+	_set_single_line_ellipsis(phase_label)
+	phase_label.custom_minimum_size = Vector2(420, 28)
 	center_hud.add_child(phase_label)
 
 	combat_banner = PanelContainer.new()
@@ -334,33 +504,31 @@ func _build_center_info() -> void:
 	combat_banner.add_theme_stylebox_override("panel", _make_demo_panel_style(Color("332418"), Color("e1b86c")))
 	center_hud.add_child(combat_banner)
 	combat_banner_label = Label.new()
+	combat_banner_label.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	combat_banner_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	combat_banner_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	combat_banner_label.add_theme_font_size_override("font_size", 24)
 	combat_banner_label.add_theme_color_override("font_color", Color("f4e1b1"))
+	_set_single_line_ellipsis(combat_banner_label)
 	combat_banner.add_child(combat_banner_label)
 
 func _build_bottom_hand_area() -> void:
 	var bottom_root := VBoxContainer.new()
 	bottom_root.anchor_left = 0.0
 	bottom_root.anchor_right = 1.0
-	bottom_root.anchor_top = 1.0
+	bottom_root.anchor_top = 0.0
 	bottom_root.anchor_bottom = 1.0
 	bottom_root.offset_left = 24
 	bottom_root.offset_right = -24
-	bottom_root.offset_top = -280
-	bottom_root.offset_bottom = -24
-	bottom_root.add_theme_constant_override("separation", 10)
+	bottom_root.offset_top = BOTTOM_AREA_TOP
+	bottom_root.offset_bottom = -BOTTOM_AREA_BOTTOM_MARGIN
+	bottom_root.add_theme_constant_override("separation", 12)
 	add_child(bottom_root)
 
 	var control_bar := HBoxContainer.new()
+	control_bar.custom_minimum_size = Vector2(0, 44)
 	control_bar.add_theme_constant_override("separation", 10)
 	bottom_root.add_child(control_bar)
-
-	deck_button = Button.new()
-	deck_button.text = "查看牌库"
-	deck_button.pressed.connect(_open_deck_view)
-	control_bar.add_child(deck_button)
 
 	reset_pick_button = Button.new()
 	reset_pick_button.text = "重选招式"
@@ -374,45 +542,82 @@ func _build_bottom_hand_area() -> void:
 
 	node_buttons_box = HBoxContainer.new()
 	node_buttons_box.add_theme_constant_override("separation", 10)
+	node_buttons_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	control_bar.add_child(node_buttons_box)
 
-	var hand_panel := PanelContainer.new()
-	hand_panel.custom_minimum_size = Vector2(0, 170)
-	hand_panel.clip_contents = true
-	hand_panel.add_theme_stylebox_override("panel", _make_demo_panel_style(Color("161b24"), Color("5f6a78")))
-	bottom_root.add_child(hand_panel)
+	var bottom_panels := HBoxContainer.new()
+	bottom_panels.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	bottom_panels.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	bottom_panels.add_theme_constant_override("separation", 14)
+	bottom_root.add_child(bottom_panels)
 
-	hand_flow = HFlowContainer.new()
-	hand_flow.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	hand_flow.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	hand_flow.add_theme_constant_override("h_separation", 10)
-	hand_flow.add_theme_constant_override("v_separation", 10)
-	hand_panel.add_child(hand_flow)
+	var hand_panel := PanelContainer.new()
+	hand_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hand_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	hand_panel.size_flags_stretch_ratio = 2.0
+	hand_panel.clip_contents = true
+	hand_panel.add_theme_stylebox_override("panel", _make_demo_panel_style(Color("131720"), Color("7b6846")))
+	bottom_panels.add_child(hand_panel)
+
+	var hand_margin := MarginContainer.new()
+	hand_margin.add_theme_constant_override("margin_left", 16)
+	hand_margin.add_theme_constant_override("margin_right", 16)
+	hand_margin.add_theme_constant_override("margin_top", 12)
+	hand_margin.add_theme_constant_override("margin_bottom", 12)
+	hand_panel.add_child(hand_margin)
+
+	var hand_box := VBoxContainer.new()
+	hand_box.add_theme_constant_override("separation", 10)
+	hand_margin.add_child(hand_box)
+
+	var hand_title := Label.new()
+	hand_title.text = "招式牌"
+	hand_title.add_theme_font_size_override("font_size", 18)
+	hand_title.add_theme_color_override("font_color", Color("d9c39b"))
+	hand_box.add_child(hand_title)
+
+	var hand_scroll := ScrollContainer.new()
+	hand_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	hand_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	hand_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	hand_box.add_child(hand_scroll)
+
+	var hand_row := HBoxContainer.new()
+	hand_row.add_theme_constant_override("separation", 14)
+	hand_scroll.add_child(hand_row)
+	hand_flow = hand_row
 
 	card_detail_panel = PanelContainer.new()
-	card_detail_panel.custom_minimum_size = Vector2(0, 128)
+	card_detail_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	card_detail_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	card_detail_panel.size_flags_stretch_ratio = 1.0
 	card_detail_panel.clip_contents = true
-	card_detail_panel.add_theme_stylebox_override("panel", _make_demo_panel_style(Color("17151a"), Color("8c744c")))
-	bottom_root.add_child(card_detail_panel)
+	card_detail_panel.add_theme_stylebox_override("panel", _make_detail_panel_style())
+	bottom_panels.add_child(card_detail_panel)
 
 	var detail_margin := MarginContainer.new()
-	detail_margin.add_theme_constant_override("margin_left", 18)
-	detail_margin.add_theme_constant_override("margin_right", 18)
-	detail_margin.add_theme_constant_override("margin_top", 14)
-	detail_margin.add_theme_constant_override("margin_bottom", 14)
+	detail_margin.add_theme_constant_override("margin_left", 22)
+	detail_margin.add_theme_constant_override("margin_right", 22)
+	detail_margin.add_theme_constant_override("margin_top", 20)
+	detail_margin.add_theme_constant_override("margin_bottom", 18)
 	card_detail_panel.add_child(detail_margin)
 
 	card_detail_label = RichTextLabel.new()
 	card_detail_label.bbcode_enabled = true
-	card_detail_label.fit_content = true
-	card_detail_label.scroll_active = false
-	card_detail_label.custom_minimum_size = Vector2(0, 96)
+	card_detail_label.fit_content = false
+	card_detail_label.scroll_active = true
+	card_detail_label.scroll_following = false
+	card_detail_label.custom_minimum_size = Vector2(0, 260)
+	card_detail_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	card_detail_label.add_theme_color_override("default_color", Color("2f2821"))
 	detail_margin.add_child(card_detail_label)
 
 	battle_log_strip = Label.new()
 	battle_log_strip.text = "日志待命"
 	battle_log_strip.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_set_wrapped_label(battle_log_strip, 2)
 	battle_log_strip.add_theme_color_override("font_color", Color("e1d4b5"))
+	battle_log_strip.visible = false
 	bottom_root.add_child(battle_log_strip)
 
 	log_label = RichTextLabel.new()
@@ -468,11 +673,15 @@ func _build_overlay_layer() -> void:
 	overlay_title = Label.new()
 	overlay_title.add_theme_font_size_override("font_size", 24)
 	overlay_title.add_theme_color_override("font_color", Color("3d2d1a"))
+	_set_single_line_ellipsis(overlay_title)
 	overlay_box.add_child(overlay_title)
 	overlay_body = RichTextLabel.new()
 	overlay_body.bbcode_enabled = true
-	overlay_body.fit_content = true
+	overlay_body.fit_content = false
 	overlay_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	overlay_body.scroll_active = true
+	overlay_body.custom_minimum_size = Vector2(0, 320)
+	overlay_body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	overlay_body.add_theme_color_override("default_color", Color("34271b"))
 	overlay_box.add_child(overlay_body)
 	overlay_actions = VBoxContainer.new()
@@ -601,14 +810,46 @@ func _make_button_style(tint: Color) -> StyleBox:
 	style.modulate_color = tint
 	return style
 
-func _make_grid_cell_style(fill: Color) -> StyleBoxFlat:
+func _make_grid_cell_style(
+	fill: Color,
+	slot_index: int,
+	has_player: bool,
+	has_enemy: bool,
+	in_player_range: bool,
+	in_enemy_range: bool
+) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = fill
-	style.border_width_left = 2
+	# Draw shared edges only once so adjacent attack-range cells stay readable.
+	style.border_width_left = 2 if slot_index == 0 else 0
 	style.border_width_top = 2
 	style.border_width_right = 2
 	style.border_width_bottom = 2
-	style.border_color = Color(0.92, 0.84, 0.65, 0.75)
+	style.border_color = GRID_NEUTRAL_BORDER_COLOR
+	if in_player_range and in_enemy_range:
+		style.border_color = GRID_OVERLAP_BORDER_COLOR
+	elif in_player_range:
+		style.border_color = GRID_PLAYER_RANGE_BORDER_COLOR
+	elif in_enemy_range:
+		style.border_color = GRID_ENEMY_RANGE_BORDER_COLOR
+	if has_player and has_enemy:
+		style.border_color = GRID_OVERLAP_BORDER_COLOR
+		style.border_width_top = 3
+		style.border_width_right = 3
+		style.border_width_bottom = 3
+		style.border_width_left = 3 if slot_index == 0 else 0
+	elif has_player:
+		style.border_color = GRID_PLAYER_BORDER_COLOR
+		style.border_width_top = 3
+		style.border_width_right = 3
+		style.border_width_bottom = 3
+		style.border_width_left = 3 if slot_index == 0 else 0
+	elif has_enemy:
+		style.border_color = GRID_ENEMY_BORDER_COLOR
+		style.border_width_top = 3
+		style.border_width_right = 3
+		style.border_width_bottom = 3
+		style.border_width_left = 3 if slot_index == 0 else 0
 	style.corner_radius_top_left = 5
 	style.corner_radius_top_right = 5
 	style.corner_radius_bottom_left = 5
@@ -628,14 +869,14 @@ func _apply_button_styles() -> void:
 				_style_button(child)
 
 func _style_button(button: Button) -> void:
-	button.add_theme_stylebox_override("normal", _make_button_style(Color(0.88, 0.82, 0.72, 1.0)))
-	button.add_theme_stylebox_override("hover", _make_button_style(Color(1.0, 0.94, 0.8, 1.0)))
-	button.add_theme_stylebox_override("pressed", _make_button_style(Color(0.72, 0.62, 0.46, 1.0)))
-	button.add_theme_stylebox_override("focus", _make_button_style(Color(1.0, 0.9, 0.66, 1.0)))
-	button.add_theme_stylebox_override("disabled", _make_button_style(Color(0.48, 0.45, 0.42, 0.95)))
-	button.add_theme_color_override("font_color", Color("3c2a17"))
-	button.add_theme_color_override("font_hover_color", Color("2f2113"))
-	button.add_theme_color_override("font_pressed_color", Color("1c1610"))
-	button.add_theme_color_override("font_disabled_color", Color("6f6559"))
-	button.add_theme_font_size_override("font_size", 14)
+	button.add_theme_stylebox_override("normal", _make_button_style(Color(0.22, 0.24, 0.28, 0.98)))
+	button.add_theme_stylebox_override("hover", _make_button_style(Color(0.28, 0.29, 0.34, 1.0)))
+	button.add_theme_stylebox_override("pressed", _make_button_style(Color(0.36, 0.3, 0.2, 1.0)))
+	button.add_theme_stylebox_override("focus", _make_button_style(Color(0.45, 0.36, 0.2, 1.0)))
+	button.add_theme_stylebox_override("disabled", _make_button_style(Color(0.16, 0.17, 0.2, 0.88)))
+	button.add_theme_color_override("font_color", Color("eadfbe"))
+	button.add_theme_color_override("font_hover_color", Color("f6edcf"))
+	button.add_theme_color_override("font_pressed_color", Color("fff7db"))
+	button.add_theme_color_override("font_disabled_color", Color("938871"))
+	button.add_theme_font_size_override("font_size", 13)
 	button.custom_minimum_size = button.custom_minimum_size.max(Vector2(108, 44))
