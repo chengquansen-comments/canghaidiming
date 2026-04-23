@@ -5,12 +5,21 @@ PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUTPUT_DIR="${1:-$PROJECT_ROOT/build/web}"
 PRESET_NAME="Web"
 INDEX_NAME="index.html"
+EXPORT_PRESETS_FILE="$PROJECT_ROOT/export_presets.cfg"
 
 mkdir -p "$OUTPUT_DIR"
 
 echo "[web-export] project: $PROJECT_ROOT"
 echo "[web-export] output : $OUTPUT_DIR/$INDEX_NAME"
 
+if [[ ! -f "$EXPORT_PRESETS_FILE" ]]; then
+  echo "[web-export] ERROR: missing export_presets.cfg" >&2
+  exit 1
+fi
+if ! grep -q 'name="Web"' "$EXPORT_PRESETS_FILE"; then
+  echo "[web-export] ERROR: export preset 'Web' not found in export_presets.cfg" >&2
+  exit 1
+fi
 if ! command -v godot >/dev/null 2>&1 && ! command -v godot4 >/dev/null 2>&1; then
   echo "[web-export] ERROR: godot/godot4 command not found" >&2
   exit 1
