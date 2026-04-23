@@ -45,3 +45,11 @@ jobs:
         with:
           name: web-bundle-zip
           path: build/web.zip
+
+      - name: Upload web bundle metadata
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-bundle-metadata
+          path: |
+            build/web/manifest.json
+            build/web/checksums.txt
