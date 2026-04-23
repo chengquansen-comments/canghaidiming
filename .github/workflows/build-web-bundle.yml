@@ -1,0 +1,47 @@
+name: Build Web Bundle
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feature/symmetry-gameplay
+    paths:
+      - 'project.godot'
+      - 'export_presets.cfg'
+      - 'scenes/**'
+      - 'scripts/**'
+      - 'assets/**'
+      - 'tools/**'
+      - 'web_shell.html'
+      - '.github/workflows/build-web-bundle.yml'
+
+jobs:
+  build-web:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Godot
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.4.1
+          include-templates: true
+
+      - name: Prepare scripts
+        run: chmod +x tools/*.sh || true
+
+      - name: Build web bundle
+        run: tools/build_web_bundle.sh
+
+      - name: Upload web bundle directory
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-bundle-directory
+          path: build/web
+
+      - name: Upload web bundle zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-bundle-zip
+          path: build/web.zip
