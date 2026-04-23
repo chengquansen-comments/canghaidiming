@@ -1,18 +1,37 @@
 extends RefCounted
 class_name BattleStageHelper
 
+static var _grid_width_cache: Dictionary = {}
+static var _slot_center_cache: Dictionary = {}
+static var _slot_top_left_cache: Dictionary = {}
+
 static func grid_total_width(slot_count: int, slot_width: float, slot_gap: float) -> float:
-	return slot_count * slot_width + (slot_count - 1) * slot_gap
+	var key := "%d|%.3f|%.3f" % [slot_count, slot_width, slot_gap]
+	if _grid_width_cache.has(key):
+		return _grid_width_cache[key]
+	var width := slot_count * slot_width + (slot_count - 1) * slot_gap
+	_grid_width_cache[key] = width
+	return width
 
 static func slot_center_x(scene_width: float, slot: int, slot_count: int, slot_width: float, slot_gap: float) -> float:
+	var key := "%.3f|%d|%d|%.3f|%.3f" % [scene_width, slot, slot_count, slot_width, slot_gap]
+	if _slot_center_cache.has(key):
+		return _slot_center_cache[key]
 	var total_width := grid_total_width(slot_count, slot_width, slot_gap)
 	var left := (scene_width - total_width) * 0.5
-	return left + slot * (slot_width + slot_gap) + slot_width * 0.5
+	var center := left + slot * (slot_width + slot_gap) + slot_width * 0.5
+	_slot_center_cache[key] = center
+	return center
 
 static func slot_top_left(scene_width: float, slot: int, is_player: bool, slot_count: int, slot_width: float, slot_gap: float, stage_ground_y: float, actor_height: float, player_foot_offset_x: float, enemy_foot_offset_x: float) -> Vector2:
+	var key := "%.3f|%d|%s|%d|%.3f|%.3f|%.3f|%.3f|%.3f|%.3f" % [scene_width, slot, str(is_player), slot_count, slot_width, slot_gap, stage_ground_y, actor_height, player_foot_offset_x, enemy_foot_offset_x]
+	if _slot_top_left_cache.has(key):
+		return _slot_top_left_cache[key]
 	var center_x := slot_center_x(scene_width, slot, slot_count, slot_width, slot_gap)
 	var foot_offset := player_foot_offset_x if is_player else enemy_foot_offset_x
-	return Vector2(center_x - foot_offset, stage_ground_y - actor_height)
+	var result := Vector2(center_x - foot_offset, stage_ground_y - actor_height)
+	_slot_top_left_cache[key] = result
+	return result
 
 static func current_grid_positions(distance: int, right_anchor_slot: int, slot_count: int) -> Dictionary:
 	var enemy_slot := right_anchor_slot
@@ -91,3 +110,8 @@ static func animated_actor_top_left(scene_width: float, is_player: bool, start_s
 
 static func ease_preview(value: float) -> float:
 	return value * value * (3.0 - 2.0 * value)
+
+static func clear_geometry_cache() -> void:
+	_grid_width_cache.clear()
+	_slot_center_cache.clear()
+	_slot_top_left_cache.clear()
