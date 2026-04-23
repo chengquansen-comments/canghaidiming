@@ -4,6 +4,7 @@ set -euo pipefail
 PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUTPUT_DIR="${1:-$PROJECT_ROOT/build/web}"
 PORT="${2:-8060}"
+HOST="${3:-127.0.0.1}"
 
 "$PROJECT_ROOT/tools/export_web_build.sh" "$OUTPUT_DIR"
 
@@ -23,4 +24,5 @@ if [[ "$JS_COUNT" -lt 1 || "$WASM_COUNT" -lt 1 || "$PCK_COUNT" -lt 1 ]]; then
 fi
 
 echo "[web-preview] bundle validated: $OUTPUT_DIR"
-python3 "$PROJECT_ROOT/tools/run_web_preview.py" --dir "$OUTPUT_DIR" --port "$PORT"
+echo "[web-preview] opening at http://$HOST:$PORT"
+python3 "$PROJECT_ROOT/tools/run_web_preview.py" --dir "$OUTPUT_DIR" --host "$HOST" --port "$PORT"
