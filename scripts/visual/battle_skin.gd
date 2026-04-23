@@ -96,3 +96,66 @@ static func make_button_style(tint: Color, button_frame_path: String, panel_fram
 	style.content_margin_bottom = 8
 	_style_cache[key] = style
 	return style
+
+static func make_flat_card_style(fill: Color, border: Color, border_width: int) -> StyleBoxFlat:
+	var key := "flat_card|%s|%s|%d" % [fill.to_html(), border.to_html(), border_width]
+	if _style_cache.has(key):
+		return _style_cache[key]
+	var style := StyleBoxFlat.new()
+	style.bg_color = fill
+	style.border_color = border
+	style.set_border_width_all(border_width)
+	style.set_corner_radius_all(8)
+	style.content_margin_left = 0
+	style.content_margin_right = 0
+	style.content_margin_top = 0
+	style.content_margin_bottom = 0
+	_style_cache[key] = style
+	return style
+
+static func make_type_tag_style(is_guard: bool, is_momentum: bool) -> StyleBoxFlat:
+	var key := "type_tag|%s|%s" % [str(is_guard), str(is_momentum)]
+	if _style_cache.has(key):
+		return _style_cache[key]
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("6f2824")
+	if is_guard:
+		style.bg_color = Color("29495f")
+	elif is_momentum:
+		style.bg_color = Color("355d46")
+	style.border_color = Color("c7b181")
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(4)
+	_style_cache[key] = style
+	return style
+
+static func make_card_art_style(is_guard: bool, is_momentum: bool) -> StyleBoxFlat:
+	var key := "card_art|%s|%s" % [str(is_guard), str(is_momentum)]
+	if _style_cache.has(key):
+		return _style_cache[key]
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("202934")
+	if is_guard:
+		style.bg_color = Color("243443")
+	elif is_momentum:
+		style.bg_color = Color("24382e")
+	style.border_color = Color("403b31")
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(5)
+	_style_cache[key] = style
+	return style
+
+static func make_momentum_dot_style(filled: bool) -> StyleBoxFlat:
+	var key := "momentum_dot|%s" % str(filled)
+	if _style_cache.has(key):
+		return _style_cache[key]
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("d9b66c") if filled else Color(0.03, 0.035, 0.04, 0.72)
+	style.border_color = Color("f3ddb0") if filled else Color(0.72, 0.66, 0.55, 0.62)
+	style.set_border_width_all(2)
+	style.set_corner_radius_all(12)
+	style.shadow_color = Color(0, 0, 0, 0.45)
+	style.shadow_size = 3
+	style.shadow_offset = Vector2(0, 1)
+	_style_cache[key] = style
+	return style
