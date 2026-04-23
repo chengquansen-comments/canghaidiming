@@ -13,6 +13,7 @@ python3 "$PROJECT_ROOT/tools/report_web_bundle.py" "$OUTPUT_DIR"
 python3 "$PROJECT_ROOT/tools/write_web_bundle_manifest.py" "$OUTPUT_DIR"
 python3 "$PROJECT_ROOT/tools/package_web_bundle.py" "$OUTPUT_DIR" "$ZIP_PATH"
 python3 "$PROJECT_ROOT/tools/write_web_bundle_checksums.py" "$OUTPUT_DIR" --zip "$ZIP_PATH"
+python3 "$PROJECT_ROOT/tools/smoke_test_web_bundle.py" "$OUTPUT_DIR" --zip "$ZIP_PATH"
 
 echo "[web-preview] opening at http://$HOST:$PORT"
 python3 "$PROJECT_ROOT/tools/run_web_preview.py" --dir "$OUTPUT_DIR" --host "$HOST" --port "$PORT"
