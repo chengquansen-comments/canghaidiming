@@ -85,32 +85,17 @@ func resolve_intent(intent: IntentData, actor: Fighter, target: Fighter) -> Arra
 		lines.append("%s 崩势未稳，本回合无法行动。" % actor.data.display_name)
 		return lines
 
-	if card.is_momentum_card():
-		if not card.is_usable_at(current_distance):
-			lines.append("%s 因距离 %d 不合式，未能命中。" % [card.display_name, current_distance])
-			return lines
-		lines.append("%s 命中。" % card.display_name)
-		if card.gain_momentum > 0:
-			var gained_momentum := actor.recover_momentum(card.gain_momentum)
-			lines.append("%s 增己势 %d。" % [card.display_name, gained_momentum])
-		if card.break_momentum > 0:
-			var before_break := target.momentum
-			target.momentum = maxi(target.momentum - card.break_momentum, 0)
-			var actual_break := before_break - target.momentum
-			lines.append("%s 削敌势 %d。" % [card.display_name, actual_break])
-			if before_break > 0 and target.momentum == 0:
-				target.queue_broken_state()
-				actor.queue_combo_window()
-				lines.append("%s 的势被打到 0，下回合将崩势硬直！" % target.data.display_name)
-		return lines
-
 	if card.is_guard_card():
 		var guard_total := actor.add_guard(card.guard)
 		lines.append("%s 立起 %d 格挡，当前护值 %d。" % [card.display_name, card.guard, guard_total])
 		return lines
 
-	if card.damage > 0:
-		if card.is_usable_at(current_distance):
+	if card.requires_hit_check():
+		if not card.is_usable_at(current_distance):
+			lines.append("%s 因距离 %d 不合式，未能命中。" % [card.display_name, current_distance])
+			return lines
+
+		if card.damage > 0:
 			var effective_damage := card.damage
 			if target.is_broken():
 				effective_damage *= 2
@@ -125,7 +110,21 @@ func resolve_intent(intent: IntentData, actor: Fighter, target: Fighter) -> Arra
 			else:
 				lines.append("%s 被完全格挡。" % card.display_name)
 		else:
-			lines.append("%s 因距离 %d 不合式，未能命中。" % [card.display_name, current_distance])
+			lines.append("%s 命中。" % card.display_name)
+
+		# 增势 / 削势统一视为命中后的附加效果，支持高级牌多重效果。
+		if card.gain_momentum > 0:
+			var gained_momentum := actor.recover_momentum(card.gain_momentum)
+			lines.append("%s 增己势 %d。" % [card.display_name, gained_momentum])
+		if card.break_momentum > 0:
+			var before_break := target.momentum
+			target.momentum = maxi(target.momentum - card.break_momentum, 0)
+			var actual_break := before_break - target.momentum
+			lines.append("%s 削敌势 %d。" % [card.display_name, actual_break])
+			if before_break > 0 and target.momentum == 0:
+				target.queue_broken_state()
+				actor.queue_combo_window()
+				lines.append("%s 的势被打到 0，下回合将崩势硬直！" % target.data.display_name)
 
 	return lines
 

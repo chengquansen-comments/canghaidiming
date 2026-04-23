@@ -23,14 +23,52 @@ func _refresh_ui() -> void:
 	_refresh_visual_ui()
 
 func _refresh_visual_ui() -> void:
+	var has_session := player != null and enemy != null
+	_set_battle_chrome_visible(has_session)
+	if not has_session:
+		_clear_range_trapezoids()
+		_apply_button_styles()
+		return
 	_refresh_character_visuals()
 	_refresh_hud_bars()
 	_refresh_center_labels()
 	_refresh_stage_grid()
 	_refresh_stage_actor_positions()
+	_refresh_intent_bubbles()
 	_refresh_card_detail_panel()
+	_refresh_effect_preview_panel()
 	_refresh_log_strip()
 	_apply_button_styles()
+
+func _set_battle_chrome_visible(visible: bool) -> void:
+	if top_hud != null:
+		top_hud.visible = visible
+	if center_hud != null:
+		center_hud.visible = visible
+	if bottom_backdrop != null:
+		bottom_backdrop.visible = visible
+	if bottom_root != null:
+		bottom_root.visible = visible
+	if stage_area_frame != null:
+		stage_area_frame.visible = visible
+	if stage_grid_box != null:
+		stage_grid_box.visible = visible
+	if stage_slot_label_box != null:
+		stage_slot_label_box.visible = visible
+	if player_sprite != null:
+		player_sprite.visible = visible
+	if enemy_sprite != null:
+		enemy_sprite.visible = visible
+	if player_fallback_actor != null:
+		player_fallback_actor.visible = visible and player_fallback_actor.visible
+	if enemy_fallback_actor != null:
+		enemy_fallback_actor.visible = visible and enemy_fallback_actor.visible
+
+func _clear_range_trapezoids() -> void:
+	if range_overlay_layer == null:
+		return
+	for child in range_overlay_layer.get_children():
+		child.free()
 
 func _refresh_center_labels() -> void:
 	if round_label != null:
@@ -92,15 +130,30 @@ func _refresh_hud_bars() -> void:
 		player_hp_fill.size = Vector2(player_hp_width * clamp(float(player.hp) / max(1.0, float(player.data.max_hp)), 0.0, 1.0), player_hp_bg.size.y if player_hp_bg.size.y > 0.0 else 14.0)
 		if player_hp_value_label != null:
 			player_hp_value_label.text = "%d / %d" % [player.hp, player.data.max_hp]
-		if player_momentum_label != null:
-			player_momentum_label.text = str(player.momentum)
+		_refresh_momentum_dots(player_momentum_dots, player.momentum, player.data.max_momentum)
 	if enemy != null and enemy_hp_fill != null and enemy_hp_bg != null:
 		var enemy_hp_width := enemy_hp_bg.size.x if enemy_hp_bg.size.x > 1.0 else HUD_BAR_WIDTH
 		enemy_hp_fill.size = Vector2(enemy_hp_width * clamp(float(enemy.hp) / max(1.0, float(enemy.data.max_hp)), 0.0, 1.0), enemy_hp_bg.size.y if enemy_hp_bg.size.y > 0.0 else 14.0)
 		if enemy_hp_value_label != null:
 			enemy_hp_value_label.text = "%d / %d" % [enemy.hp, enemy.data.max_hp]
-		if enemy_momentum_label != null:
-			enemy_momentum_label.text = str(enemy.momentum)
+		_refresh_momentum_dots(enemy_momentum_dots, enemy.momentum, enemy.data.max_momentum)
+
+func _refresh_momentum_dots(container: HBoxContainer, current: int, maximum: int) -> void:
+	if container == null:
+		return
+	var safe_max := clampi(maximum, 1, 12)
+	if container.get_child_count() != safe_max:
+		for child in container.get_children():
+			child.free()
+		for i in range(safe_max):
+			var dot := PanelContainer.new()
+			dot.custom_minimum_size = Vector2(19, 19)
+			dot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			container.add_child(dot)
+	for i in range(container.get_child_count()):
+		var dot := container.get_child(i)
+		if dot is PanelContainer:
+			dot.add_theme_stylebox_override("panel", _make_momentum_dot_style(i < current))
 
 func _grid_total_width() -> float:
 	return BattleStageHelper.grid_total_width(GRID_SLOT_COUNT, GRID_SLOT_WIDTH, GRID_SLOT_GAP)
@@ -157,6 +210,151 @@ func _refresh_card_detail_panel() -> void:
 		card_detail_label.text = BattleHudHelper.empty_detail_text()
 		return
 	card_detail_label.text = _card_detail_text(focused_card)
+
+func _refresh_effect_preview_panel() -> void:
+	if effect_preview_label == null:
+		return
+	effect_preview_label.text = _effect_preview_text()
+
+func _effect_preview_text() -> String:
+	if player == null or enemy == null or state_machine == null:
+		return "[font_size=18][b]效果预览[/b][/font_size]\n等待战斗数据。"
+	var positions := _current_grid_positions()
+	var player_slot: int = positions.get("player", 0)
+	var enemy_slot: int = positions.get("enemy", 0)
+	var player_card := _player_preview_card()
+	var enemy_card := _enemy_preview_card()
+	var preview_card := player_card
+	var uses_wait := false
+	if preview_card == null:
+		preview_card = _preview_wait_card()
+		uses_wait = true
+	var player_target := _target_slot_for_preview(true, player_slot, enemy_slot, preview_card)
+	var enemy_target_for_preview := _target_slot_for_preview(false, player_slot, enemy_slot, enemy_card)
+	var player_range := _attack_range_slots(true, player_target, preview_card)
+	var hits_enemy := player_range.has(enemy_target_for_preview)
+	var damage := _preview_damage(preview_card, enemy, hits_enemy)
+	var hp_after := maxi(enemy.hp - damage, 0)
+	var self_momentum_after := clampi(player.momentum - preview_card.momentum_cost + (preview_card.gain_momentum if hits_enemy else 0), 0, player.data.max_momentum)
+	var enemy_momentum_after := clampi(enemy.momentum - (preview_card.break_momentum if hits_enemy else 0), 0, enemy.data.max_momentum)
+	var lines: Array[String] = []
+	lines.append("[font_size=18][b]效果预览[/b][/font_size]")
+	lines.append("当前：%s，距离 %d" % ["未选招，按不动预览" if uses_wait else preview_card.display_name, state_machine.current_distance])
+	lines.append("我方位置：%s → %s" % [_slot_label(player_slot), _slot_label(player_target)])
+	lines.append("影响格位：%s" % _slot_list_text(player_range))
+	lines.append("预计命中：%s" % ("敌方" if hits_enemy and preview_card.requires_hit_check() else "无"))
+	lines.append("预计伤害：%d" % damage)
+	if preview_card.gain_momentum > 0 or preview_card.break_momentum > 0 or preview_card.momentum_cost > 0:
+		lines.append("我方势：%d → %d" % [player.momentum, self_momentum_after])
+		lines.append("敌方势：%d → %d" % [enemy.momentum, enemy_momentum_after])
+	lines.append("敌方气血：%d/%d → %d/%d" % [enemy.hp, enemy.data.max_hp, hp_after, enemy.data.max_hp])
+	if enemy_card != null:
+		var enemy_target := enemy_target_for_preview
+		var enemy_range := _attack_range_slots(false, enemy_target, enemy_card)
+		var enemy_hits_player := enemy_range.has(player_target)
+		var enemy_damage := _preview_damage(enemy_card, player, enemy_hits_player)
+		var enemy_self_momentum_after := clampi(enemy.momentum - enemy_card.momentum_cost + (enemy_card.gain_momentum if enemy_hits_player else 0), 0, enemy.data.max_momentum)
+		var player_momentum_after := clampi(player.momentum - (enemy_card.break_momentum if enemy_hits_player else 0), 0, player.data.max_momentum)
+		var player_hp_after := maxi(player.hp - enemy_damage, 0)
+		lines.append("")
+		lines.append("[b]敌方可见意图[/b]：%s" % enemy_card.display_name)
+		lines.append("敌方位置：%s → %s" % [_slot_label(enemy_slot), _slot_label(enemy_target)])
+		lines.append("敌方影响格位：%s" % _slot_list_text(enemy_range))
+		lines.append("敌方预计命中：%s" % ("我方" if enemy_hits_player and enemy_card.requires_hit_check() else "无"))
+		lines.append("敌方预计伤害：%d" % enemy_damage)
+		if enemy_card.gain_momentum > 0 or enemy_card.break_momentum > 0 or enemy_card.momentum_cost > 0:
+			lines.append("敌方势：%d → %d" % [enemy.momentum, enemy_self_momentum_after])
+			lines.append("我方势：%d → %d" % [player.momentum, player_momentum_after])
+		lines.append("我方气血：%d/%d → %d/%d" % [player.hp, player.data.max_hp, player_hp_after, player.data.max_hp])
+	return "\n".join(lines)
+
+func _preview_damage(card: CardData, target: Fighter, hits_target: bool) -> int:
+	if card == null or not hits_target or card.damage <= 0:
+		return 0
+	var amount := card.damage
+	if target != null and target.is_broken():
+		amount *= 2
+	if target != null:
+		amount = maxi(amount - target.guard_points, 0)
+	return amount
+
+func _slot_label(slot: int) -> String:
+	if slot >= 0 and slot < SLOT_LABELS.size():
+		return SLOT_LABELS[slot]
+	return "未知"
+
+func _slot_list_text(slots: Array[int]) -> String:
+	if slots.is_empty():
+		return "无"
+	var parts: Array[String] = []
+	for slot in slots:
+		parts.append(_slot_label(slot))
+	return " / ".join(parts)
+
+func _refresh_intent_bubbles() -> void:
+	_refresh_single_intent_bubble(true)
+	_refresh_single_intent_bubble(false)
+
+func _refresh_single_intent_bubble(is_player: bool) -> void:
+	var bubble := player_intent_bubble if is_player else enemy_intent_bubble
+	var label := player_intent_bubble_label if is_player else enemy_intent_bubble_label
+	if bubble == null or label == null:
+		return
+	if not battle_active:
+		bubble.visible = false
+		return
+	var card := _player_preview_card() if is_player else _enemy_preview_card()
+	var positions := _current_grid_positions()
+	var player_slot: int = positions.get("player", 0)
+	var enemy_slot: int = positions.get("enemy", 0)
+	var actor_slot := player_slot if is_player else enemy_slot
+	var opponent_slot := enemy_slot if is_player else player_slot
+	var target_slot := _target_slot_for_preview(is_player, player_slot, enemy_slot, card)
+	label.text = _intent_bubble_text(card, actor_slot, opponent_slot, target_slot)
+	bubble.size = bubble.custom_minimum_size
+	bubble.visible = true
+	var sprite := player_sprite if is_player else enemy_sprite
+	if sprite == null:
+		return
+	var bubble_x := sprite.position.x + sprite.size.x * 0.5 - bubble.size.x * 0.5
+	var bubble_y := sprite.position.y - bubble.size.y - 12.0
+	bubble.position = Vector2(
+		clamp(bubble_x, 24.0, maxf(24.0, size.x - bubble.size.x - 24.0)),
+		maxf(STAGE_AREA_TOP + 8.0, bubble_y)
+	)
+
+func _intent_bubble_text(card: CardData, actor_slot: int, opponent_slot: int, target_slot: int) -> String:
+	if card == null:
+		return "观察中"
+	var parts: Array[String] = []
+	parts.append(_intent_move_text(actor_slot, opponent_slot, target_slot))
+	parts.append(card.display_name)
+	parts.append_array(_intent_effect_parts(card))
+	return "｜".join(parts)
+
+func _intent_move_text(actor_slot: int, opponent_slot: int, target_slot: int) -> String:
+	var delta := target_slot - actor_slot
+	if delta == 0:
+		return "原地"
+	var facing_dir := signi(opponent_slot - actor_slot)
+	if facing_dir == 0:
+		return "原地"
+	var steps := absi(delta)
+	return "进%d" % steps if signi(delta) == facing_dir else "退%d" % steps
+
+func _intent_effect_parts(card: CardData) -> Array[String]:
+	var parts: Array[String] = []
+	if card.guard > 0:
+		parts.append("格挡%d" % card.guard)
+	if card.gain_momentum > 0:
+		parts.append("势+%d" % card.gain_momentum)
+	if card.break_momentum > 0:
+		parts.append("势-%d" % card.break_momentum)
+	if card.damage > 0:
+		parts.append("伤害%d" % card.damage)
+	if parts.is_empty():
+		parts.append("无效果")
+	return parts
 
 func _refresh_hand_buttons() -> void:
 	for child in hand_flow.get_children():
@@ -352,26 +550,76 @@ func _refresh_stage_grid() -> void:
 	var enemy_slot: int = positions.get("enemy", 0)
 	var player_preview_card := _player_preview_card()
 	var enemy_preview_card := _enemy_preview_card()
-	var player_range := _attack_range_slots(true, player_slot, player_preview_card)
-	var enemy_range := _attack_range_slots(false, enemy_slot, enemy_preview_card)
+	var player_target_slot := _target_slot_for_preview(true, player_slot, enemy_slot, player_preview_card)
+	var enemy_target_slot := _target_slot_for_preview(false, player_slot, enemy_slot, enemy_preview_card)
+	var player_range := _attack_range_slots(true, player_target_slot, player_preview_card)
+	var enemy_range := _attack_range_slots(false, enemy_target_slot, enemy_preview_card)
+	_refresh_range_trapezoids(player_range, player_target_slot, enemy_range, enemy_target_slot)
 	for i in range(GRID_SLOT_COUNT):
 		var in_player_range := player_range.has(i)
 		var in_enemy_range := enemy_range.has(i)
-		var has_player := i == player_slot
-		var has_enemy := i == enemy_slot
+		var has_player := i == player_target_slot
+		var has_enemy := i == enemy_target_slot
 		var fill := GRID_BASE_COLOR
-		if in_player_range and in_enemy_range:
-			fill = RANGE_OVERLAP_COLOR
-		elif in_player_range:
-			fill = PLAYER_RANGE_COLOR
-		elif in_enemy_range:
-			fill = ENEMY_RANGE_COLOR
 		if has_player:
 			fill = PLAYER_POS_COLOR
 		if has_enemy:
 			fill = ENEMY_POS_COLOR
-		stage_grid_cells[i].add_theme_stylebox_override("panel", _make_grid_cell_style(fill, i, has_player, has_enemy, in_player_range, in_enemy_range))
-		stage_grid_labels[i].text = ""
+		stage_grid_cells[i].add_theme_stylebox_override("panel", _make_grid_cell_style(fill, i, has_player, has_enemy, false, false))
+		if (has_enemy and in_player_range) or (has_player and in_enemy_range):
+			stage_grid_labels[i].text = "×"
+		elif in_player_range or in_enemy_range:
+			stage_grid_labels[i].text = "·"
+		else:
+			stage_grid_labels[i].text = ""
+
+func _refresh_range_trapezoids(player_range: Array[int], player_origin_slot: int, enemy_range: Array[int], enemy_origin_slot: int) -> void:
+	if range_overlay_layer == null:
+		return
+	for child in range_overlay_layer.get_children():
+		child.free()
+	for slot in player_range:
+		_draw_range_trapezoid(slot, player_origin_slot, Color(0.25, 0.62, 1.0, 0.24), Color(0.62, 0.86, 1.0, 0.78))
+	for slot in enemy_range:
+		_draw_range_trapezoid(slot, enemy_origin_slot, Color(1.0, 0.32, 0.22, 0.23), Color(1.0, 0.67, 0.52, 0.78))
+
+func _draw_range_trapezoid(slot: int, origin_slot: int, fill_color: Color, outline_color: Color) -> void:
+	if range_overlay_layer == null:
+		return
+	var polygon := Polygon2D.new()
+	polygon.polygon = _range_trapezoid_points(slot, origin_slot)
+	polygon.color = fill_color
+	polygon.z_index = 2
+	range_overlay_layer.add_child(polygon)
+	var outline := Line2D.new()
+	outline.points = polygon.polygon
+	outline.closed = true
+	outline.width = 3.0
+	outline.default_color = outline_color
+	outline.joint_mode = Line2D.LINE_JOINT_ROUND
+	outline.z_index = 3
+	range_overlay_layer.add_child(outline)
+
+func _range_trapezoid_points(slot: int, origin_slot: int) -> PackedVector2Array:
+	var left := _slot_center_x(slot) - GRID_SLOT_WIDTH * 0.5
+	var right := _slot_center_x(slot) + GRID_SLOT_WIDTH * 0.5
+	var top_y := GRID_STAGE_Y - 18.0
+	var bottom_y := GRID_STAGE_Y + GRID_SLOT_HEIGHT + 8.0
+	var short_side_y_inset := 15.0
+	var long_outset := 10.0
+	if origin_slot <= slot:
+		return PackedVector2Array([
+			Vector2(left, top_y + short_side_y_inset),
+			Vector2(right + long_outset, top_y),
+			Vector2(right + long_outset, bottom_y),
+			Vector2(left, bottom_y - short_side_y_inset)
+		])
+	return PackedVector2Array([
+		Vector2(left - long_outset, top_y),
+		Vector2(right, top_y + short_side_y_inset),
+		Vector2(right, bottom_y - short_side_y_inset),
+		Vector2(left - long_outset, bottom_y)
+	])
 
 func _refresh_stage_actor_positions() -> void:
 	if player_sprite == null or enemy_sprite == null:
@@ -381,36 +629,73 @@ func _refresh_stage_actor_positions() -> void:
 	var enemy_slot: int = positions.get("enemy", 0)
 	var player_card := _player_preview_card()
 	var enemy_card := _enemy_preview_card()
-	var player_preview := _should_preview_card(player_card)
-	var enemy_preview := _should_preview_card(enemy_card)
 	var player_target_slot := _target_slot_for_preview(true, player_slot, enemy_slot, player_card)
 	var enemy_target_slot := _target_slot_for_preview(false, player_slot, enemy_slot, enemy_card)
-	var player_top_left := _animated_actor_top_left(true, player_slot, player_target_slot, player_preview)
-	var enemy_top_left := _animated_actor_top_left(false, enemy_slot, enemy_target_slot, enemy_preview)
+	var player_top_left := _slot_top_left(player_target_slot, true)
+	var enemy_top_left := _slot_top_left(enemy_target_slot, false)
 	player_sprite.position = player_top_left
 	enemy_sprite.position = enemy_top_left
 	player_fallback_actor.position = player_top_left
 	enemy_fallback_actor.position = enemy_top_left
-	_set_actor_sheet_frame(player, _preview_frame_for_card(player_card, player_preview))
-	_set_actor_sheet_frame(enemy, _preview_frame_for_card(enemy_card, enemy_preview))
+	_set_actor_sheet_frame(player, 0)
+	_set_actor_sheet_frame(enemy, 0)
+	_apply_actor_facing(player_target_slot, enemy_target_slot, player_top_left, enemy_top_left)
+
+func _apply_actor_facing(player_slot: int, enemy_slot: int, player_top_left: Vector2, enemy_top_left: Vector2) -> void:
+	# 当前素材默认朝右；根据预期站位动态翻转，让回合开始与预览阶段都面向对手。
+	var player_faces_left := player_slot > enemy_slot
+	var enemy_faces_left := enemy_slot > player_slot
+	_set_texture_actor_facing(player_sprite, player_faces_left)
+	_set_texture_actor_facing(enemy_sprite, enemy_faces_left)
+	_set_fallback_actor_facing(player_fallback_actor, player_faces_left, player_top_left)
+	_set_fallback_actor_facing(enemy_fallback_actor, enemy_faces_left, enemy_top_left)
+
+func _set_texture_actor_facing(sprite: TextureRect, faces_left: bool) -> void:
+	if sprite == null:
+		return
+	sprite.flip_h = faces_left
+
+func _set_fallback_actor_facing(actor: Control, faces_left: bool, top_left: Vector2) -> void:
+	if actor == null:
+		return
+	var fallback_scale := ACTOR_DISPLAY_SIZE.x / ACTOR_FALLBACK_BASE_SIZE
+	actor.scale = Vector2(-fallback_scale if faces_left else fallback_scale, fallback_scale)
+	actor.position = top_left + (Vector2(ACTOR_DISPLAY_SIZE.x, 0.0) if faces_left else Vector2.ZERO)
 
 func _process(delta: float) -> void:
 	preview_anim_time += delta
 	if battle_active:
+		_refresh_hud_bars()
 		_refresh_stage_grid()
 		_refresh_stage_actor_positions()
+		_refresh_intent_bubbles()
 
 func _player_preview_card() -> CardData:
 	if draft_player_intent != null and draft_player_intent.actual_card != null:
 		return draft_player_intent.actual_card
+	if player_intent != null and player_intent.actual_card != null and state_machine != null and state_machine.phase == BattleStateMachine.BattlePhase.DECLARE:
+		return player_intent.actual_card
 	return null
 
 func _enemy_preview_card() -> CardData:
-	if enemy_intent == null:
+	return _visible_card_for_intent(_enemy_preview_intent(), player)
+
+func _enemy_preview_intent() -> IntentData:
+	if enemy_intent != null:
+		return enemy_intent
+	if not battle_active or state_machine == null or state_machine.phase != BattleStateMachine.BattlePhase.DECLARE:
 		return null
-	if enemy_intent.is_hidden() and player != null and not enemy_intent.can_hidden_be_read(player):
-		return enemy_intent.visible_card
-	return enemy_intent.actual_card
+	if enemy_ai == null or enemy == null or player == null:
+		return null
+	var seen_intent := draft_player_intent if draft_player_intent != null else player_intent
+	return enemy_ai.choose_intent(enemy, player, state_machine.current_distance, seen_intent)
+
+func _visible_card_for_intent(intent: IntentData, viewer: Fighter) -> CardData:
+	if intent == null:
+		return null
+	if intent.is_hidden() and viewer != null and not intent.can_hidden_be_read(viewer):
+		return intent.visible_card
+	return intent.actual_card
 
 func _should_preview_card(card: CardData) -> bool:
 	return battle_active and card != null and state_machine != null and state_machine.phase == BattleStateMachine.BattlePhase.DECLARE
@@ -458,7 +743,7 @@ func _animate_attacker_sprite(actor: Fighter, profession_id: String, is_finisher
 		return
 	_pulse_actor_sheet_frame(actor, 1, 0.16 if is_finisher else 0.12)
 	var start := sprite.position
-	var dir := 1.0 if sprite == player_sprite or sprite == player_fallback_actor else -1.0
+	var dir := -1.0 if _actor_control_faces_left(sprite) else 1.0
 	var tween := create_tween()
 	if profession_id == "spearman":
 		tween.tween_property(sprite, "position", start + Vector2((28 if not is_finisher else 40) * dir, 0), 0.04)
@@ -466,6 +751,13 @@ func _animate_attacker_sprite(actor: Fighter, profession_id: String, is_finisher
 	else:
 		tween.tween_property(sprite, "position", start + Vector2((20 if not is_finisher else 30) * dir, -10), 0.04)
 		tween.tween_property(sprite, "position", start, 0.07)
+
+func _actor_control_faces_left(sprite: Control) -> bool:
+	if sprite == null:
+		return false
+	if sprite is TextureRect:
+		return (sprite as TextureRect).flip_h
+	return sprite.scale.x < 0.0
 
 func _resolve_combo_chain_if_any(actor: Fighter, target: Fighter, intent: IntentData) -> Array[String]:
 	var lines := super._resolve_combo_chain_if_any(actor, target, intent)

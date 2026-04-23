@@ -9,6 +9,7 @@ const IntentData = preload("res://scripts/intent_data.gd")
 
 const HAND_SIZE := 4
 const ENEMY_SESSION_REALM := 2
+const ROUND_MOMENTUM_RECOVERY := 2
 
 var state_machine := BattleStateMachine.new()
 var enemy_ai := EnemyAI.new()
@@ -676,6 +677,10 @@ func _show_node_buttons() -> void:
 		return
 	for child in node_buttons_box.get_children():
 		child.queue_free()
+	if player == null:
+		deck_button = null
+		node_buttons_box.visible = false
+		return
 	var summary_button := Button.new()
 	summary_button.text = "战斗摘要"
 	summary_button.pressed.connect(_open_battle_summary)
@@ -879,8 +884,8 @@ func _begin_round() -> void:
 	enemy_intent = null
 	draft_player_intent = null
 	if state_machine.round_index > 1:
-		var player_gain := player.recover_momentum(1)
-		var enemy_gain := enemy.recover_momentum(1)
+		var player_gain := player.recover_momentum(ROUND_MOMENTUM_RECOVERY)
+		var enemy_gain := enemy.recover_momentum(ROUND_MOMENTUM_RECOVERY)
 		if player_gain > 0 or enemy_gain > 0:
 			_log("[b]回合调息。[/b] 玩家 +%d 势，敌方 +%d 势。" % [player_gain, enemy_gain])
 	if player.control_state != Fighter.CONTROL_NONE or enemy.control_state != Fighter.CONTROL_NONE or player.combo_window_active or enemy.combo_window_active:
@@ -1270,6 +1275,8 @@ func _show_overlay(title: String, body: String, actions: Array) -> void:
 		overlay_actions.add_child(button)
 	overlay_scrim.visible = true
 	overlay_panel.visible = true
+	overlay_scrim.move_to_front()
+	overlay_panel.move_to_front()
 
 
 func _hide_overlay() -> void:

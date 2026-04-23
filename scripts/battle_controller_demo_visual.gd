@@ -17,10 +17,10 @@ const GRID_SLOT_HEIGHT := 48.0
 const GRID_SLOT_GAP := 6.0
 const GRID_STAGE_Y := 468.0
 const GRID_RIGHT_ANCHOR_SLOT := 5
-const STAGE_GROUND_Y := 562.0
+const STAGE_GROUND_Y := 510.0
 const STAGE_AREA_TOP := 168.0
-const STAGE_AREA_BOTTOM := 618.0
-const BOTTOM_AREA_TOP := 638.0
+const STAGE_AREA_BOTTOM := 592.0
+const BOTTOM_AREA_TOP := 604.0
 const BOTTOM_AREA_BOTTOM_MARGIN := 24.0
 const ACTOR_DISPLAY_SIZE := Vector2(228, 228)
 const ACTOR_FALLBACK_BASE_SIZE := 320.0
@@ -42,13 +42,20 @@ const GRID_OVERLAP_BORDER_COLOR := Color(0.97, 0.88, 0.64, 0.94)
 const SLOT_LABELS := ["一位", "二位", "三位", "四位", "五位", "六位", "七位", "八位", "九位"]
 
 var stage_layer: Control
+var stage_scene_clip: Control
 var background_texture: TextureRect
 var stage_area_frame: PanelContainer
+var bottom_backdrop: PanelContainer
+var range_overlay_layer: Node2D
 var stage_grid_box: HBoxContainer
 var stage_grid_cells: Array[PanelContainer] = []
 var stage_grid_labels: Array[Label] = []
 var stage_slot_label_box: HBoxContainer
 var stage_slot_name_labels: Array[Label] = []
+var player_intent_bubble: PanelContainer
+var enemy_intent_bubble: PanelContainer
+var player_intent_bubble_label: Label
+var enemy_intent_bubble_label: Label
 var player_sprite: TextureRect
 var enemy_sprite: TextureRect
 var center_fx_layer: Control
@@ -62,8 +69,11 @@ var player_hud: PanelContainer
 var enemy_hud: PanelContainer
 var center_hud: VBoxContainer
 var battle_log_strip: Label
+var bottom_root: VBoxContainer
 var card_detail_panel: PanelContainer
 var card_detail_label: RichTextLabel
+var effect_preview_panel: PanelContainer
+var effect_preview_label: RichTextLabel
 
 var player_avatar: TextureRect
 var enemy_avatar: TextureRect
@@ -85,6 +95,8 @@ var player_school_label: Label
 var enemy_school_label: Label
 var player_momentum_label: Label
 var enemy_momentum_label: Label
+var player_momentum_dots: HBoxContainer
+var enemy_momentum_dots: HBoxContainer
 var preview_anim_time := 0.0
 
 func _set_single_line_ellipsis(label: Label) -> void:
@@ -100,13 +112,14 @@ func _set_wrapped_label(label: Label, max_lines: int = 2) -> void:
 
 func _make_hud_panel_style() -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0, 0, 0, 0.08)
-	style.border_color = Color(0, 0, 0, 0)
-	style.set_border_width_all(0)
-	style.content_margin_left = 0
-	style.content_margin_right = 0
-	style.content_margin_top = 0
-	style.content_margin_bottom = 0
+	style.bg_color = Color(0.02, 0.025, 0.03, 0.24)
+	style.border_color = Color(0.76, 0.65, 0.45, 0.28)
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(8)
+	style.content_margin_left = 10
+	style.content_margin_right = 10
+	style.content_margin_top = 8
+	style.content_margin_bottom = 8
 	return style
 
 func _make_badge_style(is_player: bool) -> StyleBoxFlat:
@@ -150,6 +163,61 @@ func _make_stage_area_style() -> StyleBoxFlat:
 	style.corner_radius_bottom_right = 0
 	return style
 
+func _make_intent_bubble_style(is_player: bool) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.04, 0.055, 0.07, 0.86) if is_player else Color(0.13, 0.045, 0.035, 0.86)
+	style.border_color = Color("8fb4dc") if is_player else Color("d48566")
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(6)
+	style.shadow_color = Color(0, 0, 0, 0.5)
+	style.shadow_size = 7
+	style.shadow_offset = Vector2(0, 2)
+	style.content_margin_left = 12
+	style.content_margin_right = 12
+	style.content_margin_top = 8
+	style.content_margin_bottom = 8
+	return style
+
+func _make_bottom_backdrop_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("070a0f")
+	style.border_color = Color("6f6043")
+	style.border_width_top = 2
+	style.border_width_bottom = 0
+	style.border_width_left = 0
+	style.border_width_right = 0
+	style.corner_radius_top_left = 0
+	style.corner_radius_top_right = 0
+	style.corner_radius_bottom_left = 0
+	style.corner_radius_bottom_right = 0
+	return style
+
+func _make_momentum_dot_style(filled: bool) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("d9b66c") if filled else Color(0.03, 0.035, 0.04, 0.72)
+	style.border_color = Color("f3ddb0") if filled else Color(0.72, 0.66, 0.55, 0.62)
+	style.set_border_width_all(2)
+	style.set_corner_radius_all(12)
+	style.shadow_color = Color(0, 0, 0, 0.45)
+	style.shadow_size = 3
+	style.shadow_offset = Vector2(0, 1)
+	return style
+
+func _make_overlay_panel_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("d9d0bd")
+	style.border_color = Color("5d4d35")
+	style.set_border_width_all(2)
+	style.set_corner_radius_all(10)
+	style.shadow_color = Color(0, 0, 0, 0.5)
+	style.shadow_size = 18
+	style.shadow_offset = Vector2(0, 4)
+	style.content_margin_left = 22
+	style.content_margin_right = 22
+	style.content_margin_top = 20
+	style.content_margin_bottom = 20
+	return style
+
 func _build_ui() -> void:
 	set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	_build_stage_layer()
@@ -163,6 +231,8 @@ func _build_ui() -> void:
 func _build_stage_layer() -> void:
 	stage_layer = Control.new()
 	stage_layer.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+	stage_layer.z_as_relative = false
+	stage_layer.z_index = -100
 	add_child(stage_layer)
 
 	var fallback := ColorRect.new()
@@ -170,14 +240,28 @@ func _build_stage_layer() -> void:
 	fallback.color = Color("10151d")
 	stage_layer.add_child(fallback)
 
+	stage_scene_clip = Control.new()
+	stage_scene_clip.clip_contents = true
+	stage_scene_clip.anchor_left = 0.0
+	stage_scene_clip.anchor_right = 1.0
+	stage_scene_clip.anchor_top = 0.0
+	stage_scene_clip.anchor_bottom = 0.0
+	stage_scene_clip.offset_left = 0.0
+	stage_scene_clip.offset_right = 0.0
+	stage_scene_clip.offset_top = 0.0
+	stage_scene_clip.offset_bottom = STAGE_AREA_BOTTOM
+	stage_layer.add_child(stage_scene_clip)
+
 	background_texture = TextureRect.new()
 	background_texture.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	background_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	background_texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	background_texture.texture = _safe_load_texture("res://assets/pixel_battle/backgrounds/moon_courtyard.png")
-	stage_layer.add_child(background_texture)
+	stage_scene_clip.add_child(background_texture)
 	_build_stage_area_frame()
+	_build_range_overlay_layer()
 	_build_stage_grid()
+	_build_intent_bubbles()
 
 	player_sprite = TextureRect.new()
 	player_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
@@ -186,9 +270,11 @@ func _build_stage_layer() -> void:
 	player_sprite.custom_minimum_size = ACTOR_DISPLAY_SIZE
 	player_sprite.size = ACTOR_DISPLAY_SIZE
 	player_sprite.clip_contents = true
+	player_sprite.z_index = 8
 	stage_layer.add_child(player_sprite)
 	player_fallback_actor = _build_actor_fallback(Color("5c86b2"), Color("9fdcff"), false)
 	player_fallback_actor.position = player_sprite.position
+	player_fallback_actor.z_index = 8
 	stage_layer.add_child(player_fallback_actor)
 
 	enemy_sprite = TextureRect.new()
@@ -198,14 +284,55 @@ func _build_stage_layer() -> void:
 	enemy_sprite.custom_minimum_size = ACTOR_DISPLAY_SIZE
 	enemy_sprite.size = ACTOR_DISPLAY_SIZE
 	enemy_sprite.clip_contents = true
+	enemy_sprite.z_index = 8
 	stage_layer.add_child(enemy_sprite)
-	enemy_fallback_actor = _build_actor_fallback(Color("8a4f47"), Color("ffb18b"), true)
+	enemy_fallback_actor = _build_actor_fallback(Color("8a4f47"), Color("ffb18b"), false)
 	enemy_fallback_actor.position = enemy_sprite.position
+	enemy_fallback_actor.z_index = 8
 	stage_layer.add_child(enemy_fallback_actor)
 
 	center_fx_layer = Control.new()
 	center_fx_layer.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	stage_layer.add_child(center_fx_layer)
+
+func _build_range_overlay_layer() -> void:
+	range_overlay_layer = Node2D.new()
+	range_overlay_layer.z_index = 2
+	stage_layer.add_child(range_overlay_layer)
+
+func _build_intent_bubbles() -> void:
+	player_intent_bubble = _build_intent_bubble(true)
+	stage_layer.add_child(player_intent_bubble)
+	enemy_intent_bubble = _build_intent_bubble(false)
+	stage_layer.add_child(enemy_intent_bubble)
+
+func _build_intent_bubble(is_player: bool) -> PanelContainer:
+	var bubble := PanelContainer.new()
+	bubble.visible = false
+	bubble.z_index = 20
+	bubble.custom_minimum_size = Vector2(238, 54)
+	bubble.size = bubble.custom_minimum_size
+	bubble.clip_contents = true
+	bubble.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	bubble.add_theme_stylebox_override("panel", _make_intent_bubble_style(is_player))
+	var label := Label.new()
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.clip_text = true
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	label.max_lines_visible = 2
+	label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	label.add_theme_font_size_override("font_size", 15)
+	label.add_theme_color_override("font_color", Color("eadfc7"))
+	label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.8))
+	label.add_theme_constant_override("shadow_offset_x", 1)
+	label.add_theme_constant_override("shadow_offset_y", 1)
+	bubble.add_child(label)
+	if is_player:
+		player_intent_bubble_label = label
+	else:
+		enemy_intent_bubble_label = label
+	return bubble
 
 func _build_stage_area_frame() -> void:
 	stage_area_frame = PanelContainer.new()
@@ -233,6 +360,7 @@ func _build_stage_grid() -> void:
 	stage_grid_box.offset_top = GRID_STAGE_Y
 	stage_grid_box.offset_bottom = GRID_STAGE_Y + GRID_SLOT_HEIGHT
 	stage_grid_box.add_theme_constant_override("separation", int(GRID_SLOT_GAP))
+	stage_grid_box.z_index = 4
 	stage_layer.add_child(stage_grid_box)
 	for i in range(GRID_SLOT_COUNT):
 		var cell := PanelContainer.new()
@@ -246,6 +374,9 @@ func _build_stage_grid() -> void:
 		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		label.add_theme_font_size_override("font_size", 16)
 		label.add_theme_color_override("font_color", Color("f5efe1"))
+		label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.8))
+		label.add_theme_constant_override("shadow_offset_x", 1)
+		label.add_theme_constant_override("shadow_offset_y", 1)
 		cell.add_child(label)
 		stage_grid_labels.append(label)
 
@@ -260,6 +391,7 @@ func _build_stage_grid() -> void:
 	stage_slot_label_box.offset_top = GRID_STAGE_Y + GRID_SLOT_HEIGHT + 8
 	stage_slot_label_box.offset_bottom = GRID_STAGE_Y + GRID_SLOT_HEIGHT + 40
 	stage_slot_label_box.add_theme_constant_override("separation", int(GRID_SLOT_GAP))
+	stage_slot_label_box.z_index = 5
 	stage_layer.add_child(stage_slot_label_box)
 	for i in range(GRID_SLOT_COUNT):
 		var slot_box := CenterContainer.new()
@@ -267,8 +399,11 @@ func _build_stage_grid() -> void:
 		stage_slot_label_box.add_child(slot_box)
 		var slot_label := Label.new()
 		slot_label.text = SLOT_LABELS[i]
-		slot_label.add_theme_font_size_override("font_size", 16)
-		slot_label.add_theme_color_override("font_color", Color("d9c39b"))
+		slot_label.add_theme_font_size_override("font_size", 17)
+		slot_label.add_theme_color_override("font_color", Color("e3c889"))
+		slot_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.86))
+		slot_label.add_theme_constant_override("shadow_offset_x", 1)
+		slot_label.add_theme_constant_override("shadow_offset_y", 2)
 		slot_box.add_child(slot_label)
 		stage_slot_name_labels.append(slot_label)
 
@@ -317,6 +452,8 @@ func _build_actor_fallback(body_color: Color, weapon_color: Color, flip: bool) -
 
 func _build_top_hud() -> void:
 	top_hud = HBoxContainer.new()
+	top_hud.z_as_relative = false
+	top_hud.z_index = 100
 	top_hud.anchor_left = 0.0
 	top_hud.anchor_right = 1.0
 	top_hud.anchor_top = 0.0
@@ -439,18 +576,10 @@ func _build_actor_hud(is_player: bool) -> PanelContainer:
 	momentum_title.add_theme_constant_override("shadow_offset_y", 2)
 	momentum_row.add_child(momentum_title)
 
-	var momentum_badge := PanelContainer.new()
-	momentum_badge.custom_minimum_size = Vector2(36, 36)
-	momentum_badge.add_theme_stylebox_override("panel", _make_badge_style(is_player))
-	momentum_row.add_child(momentum_badge)
-
-	var momentum_label := Label.new()
-	momentum_label.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
-	momentum_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	momentum_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	momentum_label.add_theme_font_size_override("font_size", 20)
-	momentum_label.add_theme_color_override("font_color", Color("f6f2e7"))
-	momentum_badge.add_child(momentum_label)
+	var momentum_dots := HBoxContainer.new()
+	momentum_dots.add_theme_constant_override("separation", 5)
+	momentum_dots.alignment = BoxContainer.ALIGNMENT_BEGIN if is_player else BoxContainer.ALIGNMENT_END
+	momentum_row.add_child(momentum_dots)
 
 	if is_player:
 		player_avatar = avatar
@@ -460,7 +589,7 @@ func _build_actor_hud(is_player: bool) -> PanelContainer:
 		player_hp_value_label = hp_value
 		player_name_label = name_label
 		player_school_label = school_label
-		player_momentum_label = momentum_label
+		player_momentum_dots = momentum_dots
 	else:
 		enemy_avatar = avatar
 		enemy_avatar_fallback = avatar_fallback
@@ -469,7 +598,7 @@ func _build_actor_hud(is_player: bool) -> PanelContainer:
 		enemy_hp_value_label = hp_value
 		enemy_name_label = name_label
 		enemy_school_label = school_label
-		enemy_momentum_label = momentum_label
+		enemy_momentum_dots = momentum_dots
 
 	return panel
 
@@ -513,7 +642,24 @@ func _build_center_info() -> void:
 	combat_banner.add_child(combat_banner_label)
 
 func _build_bottom_hand_area() -> void:
-	var bottom_root := VBoxContainer.new()
+	bottom_backdrop = PanelContainer.new()
+	bottom_backdrop.z_as_relative = false
+	bottom_backdrop.z_index = 110
+	bottom_backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	bottom_backdrop.anchor_left = 0.0
+	bottom_backdrop.anchor_right = 1.0
+	bottom_backdrop.anchor_top = 0.0
+	bottom_backdrop.anchor_bottom = 1.0
+	bottom_backdrop.offset_left = 0.0
+	bottom_backdrop.offset_right = 0.0
+	bottom_backdrop.offset_top = BOTTOM_AREA_TOP - 12.0
+	bottom_backdrop.offset_bottom = 0.0
+	bottom_backdrop.add_theme_stylebox_override("panel", _make_bottom_backdrop_style())
+	add_child(bottom_backdrop)
+
+	bottom_root = VBoxContainer.new()
+	bottom_root.z_as_relative = false
+	bottom_root.z_index = 120
 	bottom_root.anchor_left = 0.0
 	bottom_root.anchor_right = 1.0
 	bottom_root.anchor_top = 0.0
@@ -556,7 +702,7 @@ func _build_bottom_hand_area() -> void:
 	hand_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	hand_panel.size_flags_stretch_ratio = 2.0
 	hand_panel.clip_contents = true
-	hand_panel.add_theme_stylebox_override("panel", _make_demo_panel_style(Color("131720"), Color("7b6846")))
+	hand_panel.add_theme_stylebox_override("panel", _make_demo_panel_style(Color("090d13"), Color("8a774f")))
 	bottom_panels.add_child(hand_panel)
 
 	var hand_margin := MarginContainer.new()
@@ -572,8 +718,11 @@ func _build_bottom_hand_area() -> void:
 
 	var hand_title := Label.new()
 	hand_title.text = "招式牌"
-	hand_title.add_theme_font_size_override("font_size", 18)
-	hand_title.add_theme_color_override("font_color", Color("d9c39b"))
+	hand_title.add_theme_font_size_override("font_size", 20)
+	hand_title.add_theme_color_override("font_color", Color("e0c789"))
+	hand_title.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.85))
+	hand_title.add_theme_constant_override("shadow_offset_x", 1)
+	hand_title.add_theme_constant_override("shadow_offset_y", 2)
 	hand_box.add_child(hand_title)
 
 	var hand_scroll := ScrollContainer.new()
@@ -607,10 +756,36 @@ func _build_bottom_hand_area() -> void:
 	card_detail_label.fit_content = false
 	card_detail_label.scroll_active = true
 	card_detail_label.scroll_following = false
-	card_detail_label.custom_minimum_size = Vector2(0, 260)
+	card_detail_label.custom_minimum_size = Vector2(0, 0)
 	card_detail_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	card_detail_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	card_detail_label.add_theme_color_override("default_color", Color("2f2821"))
 	detail_margin.add_child(card_detail_label)
+
+	effect_preview_panel = PanelContainer.new()
+	effect_preview_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	effect_preview_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	effect_preview_panel.size_flags_stretch_ratio = 1.0
+	effect_preview_panel.clip_contents = true
+	effect_preview_panel.add_theme_stylebox_override("panel", _make_demo_panel_style(Color("11151a"), Color("8a774f")))
+	bottom_panels.add_child(effect_preview_panel)
+
+	var preview_margin := MarginContainer.new()
+	preview_margin.add_theme_constant_override("margin_left", 16)
+	preview_margin.add_theme_constant_override("margin_right", 16)
+	preview_margin.add_theme_constant_override("margin_top", 12)
+	preview_margin.add_theme_constant_override("margin_bottom", 12)
+	effect_preview_panel.add_child(preview_margin)
+
+	effect_preview_label = RichTextLabel.new()
+	effect_preview_label.bbcode_enabled = true
+	effect_preview_label.fit_content = false
+	effect_preview_label.scroll_active = true
+	effect_preview_label.scroll_following = false
+	effect_preview_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	effect_preview_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	effect_preview_label.add_theme_color_override("default_color", Color("d8c8a4"))
+	preview_margin.add_child(effect_preview_label)
 
 	battle_log_strip = Label.new()
 	battle_log_strip.text = "日志待命"
@@ -638,6 +813,8 @@ func _build_bottom_hand_area() -> void:
 func _build_overlay_layer() -> void:
 	screen_flash = ColorRect.new()
 	screen_flash.visible = false
+	screen_flash.z_as_relative = false
+	screen_flash.z_index = 900
 	screen_flash.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	screen_flash.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	screen_flash.color = Color(1, 1, 1, 0)
@@ -645,12 +822,16 @@ func _build_overlay_layer() -> void:
 
 	overlay_scrim = ColorRect.new()
 	overlay_scrim.visible = false
+	overlay_scrim.z_as_relative = false
+	overlay_scrim.z_index = 1000
 	overlay_scrim.color = Color(0.01, 0.02, 0.03, 0.72)
 	overlay_scrim.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	add_child(overlay_scrim)
 
 	overlay_panel = PanelContainer.new()
 	overlay_panel.visible = false
+	overlay_panel.z_as_relative = false
+	overlay_panel.z_index = 1001
 	overlay_panel.clip_contents = true
 	overlay_panel.anchor_left = 0.5
 	overlay_panel.anchor_top = 0.12
@@ -658,7 +839,7 @@ func _build_overlay_layer() -> void:
 	overlay_panel.anchor_bottom = 0.12
 	overlay_panel.offset_left = -340
 	overlay_panel.offset_right = 340
-	overlay_panel.add_theme_stylebox_override("panel", _make_demo_panel_style(Color("2a2018"), Color("cfb889")))
+	overlay_panel.add_theme_stylebox_override("panel", _make_overlay_panel_style())
 	add_child(overlay_panel)
 
 	var overlay_margin := MarginContainer.new()
@@ -672,7 +853,7 @@ func _build_overlay_layer() -> void:
 	overlay_margin.add_child(overlay_box)
 	overlay_title = Label.new()
 	overlay_title.add_theme_font_size_override("font_size", 24)
-	overlay_title.add_theme_color_override("font_color", Color("3d2d1a"))
+	overlay_title.add_theme_color_override("font_color", Color("251b11"))
 	_set_single_line_ellipsis(overlay_title)
 	overlay_box.add_child(overlay_title)
 	overlay_body = RichTextLabel.new()
@@ -682,7 +863,7 @@ func _build_overlay_layer() -> void:
 	overlay_body.scroll_active = true
 	overlay_body.custom_minimum_size = Vector2(0, 320)
 	overlay_body.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	overlay_body.add_theme_color_override("default_color", Color("34271b"))
+	overlay_body.add_theme_color_override("default_color", Color("2d2419"))
 	overlay_box.add_child(overlay_body)
 	overlay_actions = VBoxContainer.new()
 	overlay_actions.add_theme_constant_override("separation", 8)
