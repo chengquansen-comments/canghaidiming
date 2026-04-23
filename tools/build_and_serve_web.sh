@@ -24,5 +24,6 @@ if [[ "$JS_COUNT" -lt 1 || "$WASM_COUNT" -lt 1 || "$PCK_COUNT" -lt 1 ]]; then
 fi
 
 echo "[web-preview] bundle validated: $OUTPUT_DIR"
+python3 "$PROJECT_ROOT/tools/report_web_bundle.py" "$OUTPUT_DIR"
 echo "[web-preview] opening at http://$HOST:$PORT"
 python3 "$PROJECT_ROOT/tools/run_web_preview.py" --dir "$OUTPUT_DIR" --host "$HOST" --port "$PORT"
