@@ -1,9 +1,6 @@
 extends Control
 
 func _ready() -> void:
-	if OS.has_feature("web"):
-		get_tree().change_scene_to_file("res://scenes/MainWeb.tscn")
-		return
 	_build_ui()
 
 func _build_ui() -> void:
@@ -40,14 +37,16 @@ func _build_ui() -> void:
 	panel.add_child(box)
 
 	var title := Label.new()
-	title.text = "沧海嘀鸣 · 战斗模式入口"
+	title.text = "沧海嘀鸣 · 开发入口"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 28)
 	box.add_child(title)
 
 	var subtitle := Label.new()
-	subtitle.text = "字符版适合调规则，视觉版适合看演示。"
+	subtitle.text = "字符版适合调规则，视觉版适合看演示。Web 正式入口已从总入口独立。"
 	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	subtitle.custom_minimum_size = Vector2(420, 0)
 	subtitle.modulate = Color("c9d2df")
 	box.add_child(subtitle)
 
