@@ -9,7 +9,7 @@ ZIP_PATH="${OUTPUT_DIR%/}.zip"
 
 "$PROJECT_ROOT/tools/export_web_build.sh" "$OUTPUT_DIR"
 python3 "$PROJECT_ROOT/tools/report_web_bundle.py" "$OUTPUT_DIR"
-"$PROJECT_ROOT/tools/package_web_bundle.sh" "$OUTPUT_DIR" "$ZIP_PATH"
+python3 "$PROJECT_ROOT/tools/package_web_bundle.py" "$OUTPUT_DIR" "$ZIP_PATH"
 
 echo "[web-preview] opening at http://$HOST:$PORT"
 python3 "$PROJECT_ROOT/tools/run_web_preview.py" --dir "$OUTPUT_DIR" --host "$HOST" --port "$PORT"
