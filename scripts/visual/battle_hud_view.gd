@@ -63,6 +63,68 @@ static func _intent_effect_parts(card: CardData) -> Array[String]:
 		parts.append("无效果")
 	return parts
 
+static func build_effect_preview_context(input: Dictionary) -> Dictionary:
+	if input.is_empty() or not bool(input.get("has_data", false)):
+		return {"has_data": false}
+	var preview_card: CardData = input.get("preview_card", null) as CardData
+	var enemy_card: CardData = input.get("enemy_card", null) as CardData
+	var hits_enemy: bool = bool(input.get("hits_enemy", false))
+	var enemy_hits_player: bool = bool(input.get("enemy_hits_player", false))
+	var player_momentum: int = int(input.get("player_momentum", 0))
+	var player_max_momentum: int = int(input.get("player_max_momentum", 0))
+	var enemy_momentum: int = int(input.get("enemy_momentum", 0))
+	var enemy_max_momentum: int = int(input.get("enemy_max_momentum", 0))
+	var player_hp: int = int(input.get("player_hp", 0))
+	var player_max_hp: int = int(input.get("player_max_hp", 0))
+	var enemy_hp: int = int(input.get("enemy_hp", 0))
+	var enemy_max_hp: int = int(input.get("enemy_max_hp", 0))
+	var player_damage: int = int(input.get("player_damage", 0))
+	var enemy_damage: int = int(input.get("enemy_damage", 0))
+	var player_momentum_after: int = player_momentum
+	var enemy_momentum_after: int = enemy_momentum
+	var enemy_self_momentum_after: int = enemy_momentum
+	var player_momentum_after_enemy: int = player_momentum
+	if preview_card != null:
+		player_momentum_after = clampi(player_momentum - preview_card.momentum_cost + (preview_card.gain_momentum if hits_enemy else 0), 0, player_max_momentum)
+		enemy_momentum_after = clampi(enemy_momentum - (preview_card.break_momentum if hits_enemy else 0), 0, enemy_max_momentum)
+	if enemy_card != null:
+		enemy_self_momentum_after = clampi(enemy_momentum - enemy_card.momentum_cost + (enemy_card.gain_momentum if enemy_hits_player else 0), 0, enemy_max_momentum)
+		player_momentum_after_enemy = clampi(player_momentum - (enemy_card.break_momentum if enemy_hits_player else 0), 0, player_max_momentum)
+	var context: Dictionary = {
+		"has_data": true,
+		"current_card_name": input.get("current_card_name", "未选招，按不动预览"),
+		"distance": int(input.get("distance", 0)),
+		"player_slot_label": input.get("player_slot_label", "未知"),
+		"player_target_label": input.get("player_target_label", "未知"),
+		"player_range_text": input.get("player_range_text", "无"),
+		"player_hit_text": "敌方" if hits_enemy and preview_card != null and preview_card.requires_hit_check() else "无",
+		"player_damage": player_damage,
+		"show_player_momentum": preview_card != null and (preview_card.gain_momentum > 0 or preview_card.break_momentum > 0 or preview_card.momentum_cost > 0),
+		"player_momentum_before": player_momentum,
+		"player_momentum_after": player_momentum_after,
+		"enemy_momentum_before": enemy_momentum,
+		"enemy_momentum_after": enemy_momentum_after,
+		"enemy_hp_before": enemy_hp,
+		"enemy_max_hp": enemy_max_hp,
+		"enemy_hp_after": maxi(enemy_hp - player_damage, 0),
+		"has_enemy_card": enemy_card != null,
+		"player_hp_before": player_hp,
+		"player_max_hp": player_max_hp,
+		"player_hp_after": maxi(player_hp - enemy_damage, 0)
+	}
+	if enemy_card != null:
+		context["enemy_card_name"] = enemy_card.display_name
+		context["enemy_slot_label"] = input.get("enemy_slot_label", "未知")
+		context["enemy_target_label"] = input.get("enemy_target_label", "未知")
+		context["enemy_range_text"] = input.get("enemy_range_text", "无")
+		context["enemy_hit_text"] = "我方" if enemy_hits_player and enemy_card.requires_hit_check() else "无"
+		context["enemy_damage"] = enemy_damage
+		context["show_enemy_momentum"] = enemy_card.gain_momentum > 0 or enemy_card.break_momentum > 0 or enemy_card.momentum_cost > 0
+		context["enemy_self_momentum_before"] = enemy_momentum
+		context["enemy_self_momentum_after"] = enemy_self_momentum_after
+		context["player_momentum_after_enemy"] = player_momentum_after_enemy
+	return context
+
 static func effect_preview_text(context: Dictionary) -> String:
 	var key: String = str(context)
 	if _effect_preview_cache.has(key):
