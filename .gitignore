@@ -9,6 +9,12 @@ export_presets.cfg
 build/
 dist/
 
+# Local font copied from the developer machine for Web CJK rendering.
+# Do not commit font binaries.
+assets/fonts/cjk_font.ttf
+assets/fonts/cjk_font.otf
+assets/fonts/cjk_font.ttc
+
 # macOS
 .DS_Store
 
