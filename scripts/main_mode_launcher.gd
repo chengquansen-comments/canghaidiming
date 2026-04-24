@@ -1,7 +1,13 @@
 extends Control
 
+const BattleFontHelper = preload("res://scripts/visual/battle_font_view.gd")
+
 func _ready() -> void:
 	_build_ui()
+	_force_cjk_font()
+
+func _force_cjk_font() -> void:
+	BattleFontHelper.enforce(self)
 
 func _build_ui() -> void:
 	set_anchors_and_offsets_preset(PRESET_FULL_RECT)
