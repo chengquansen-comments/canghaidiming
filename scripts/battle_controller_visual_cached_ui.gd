@@ -138,7 +138,7 @@ func _recycle_range_overlay_nodes() -> void:
 	_active_range_polygons.clear()
 	_active_range_lines.clear()
 
-func _refresh_stage_grid() -> void:
+func _refresh_stage_grid(show_ranges: bool = true) -> void:
 	if stage_grid_cells.is_empty():
 		return
 	var positions: Dictionary = _current_grid_positions()
@@ -148,8 +148,8 @@ func _refresh_stage_grid() -> void:
 	var enemy_preview_card: CardData = _enemy_preview_card()
 	var player_target_slot: int = _target_slot_for_preview(true, player_slot, enemy_slot, player_preview_card)
 	var enemy_target_slot: int = _target_slot_for_preview(false, player_slot, enemy_slot, enemy_preview_card)
-	var player_range: Array[int] = _attack_range_slots(true, player_target_slot, player_preview_card)
-	var enemy_range: Array[int] = _attack_range_slots(false, enemy_target_slot, enemy_preview_card)
+	var player_range: Array[int] = _attack_range_slots(true, player_target_slot, player_preview_card) if show_ranges else []
+	var enemy_range: Array[int] = _attack_range_slots(false, enemy_target_slot, enemy_preview_card) if show_ranges else []
 	_refresh_range_trapezoids(player_range, player_target_slot, enemy_range, enemy_target_slot)
 	var next_state: Dictionary = {}
 	for i in range(GRID_SLOT_COUNT):
