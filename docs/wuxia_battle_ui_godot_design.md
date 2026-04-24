@@ -240,9 +240,9 @@ bottom_root
 │   ├── 确认出招
 │   └── node_buttons_box
 └── bottom_panels
-    ├── hand_panel
-    ├── card_detail_panel
-    └── effect_preview_panel
+	├── hand_panel
+	├── card_detail_panel
+	└── effect_preview_panel
 ```
 
 ### 8.1 三栏比例

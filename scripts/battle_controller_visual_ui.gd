@@ -8,6 +8,30 @@ extends "res://scripts/battle_controller_demo_visual.gd"
 const BattleSkinHelper = preload("res://scripts/visual/battle_skin.gd")
 const BattleStageHelper = preload("res://scripts/visual/battle_stage_view.gd")
 const BattleHudHelper = preload("res://scripts/visual/battle_hud_view.gd")
+const BattleFxPool = preload("res://scripts/visual/battle_fx_pool.gd")
+const WebRuntimeFlags = preload("res://scripts/web_runtime_flags.gd")
+const WEB_SMOKE_BATTLE_FLAG := "smoke_battle"
+const VISUAL_POLL_REFRESH_INTERVAL := 0.12
+const BUTTON_STYLE_META := &"visual_button_style_applied"
+
+var _visual_poll_refresh_elapsed := 0.0
+var _fx_pool := BattleFxPool.new()
+var _stage_grid_signature := ""
+var _stage_actor_signature := ""
+var _hud_signature := ""
+var _player_intent_bubble_signature := ""
+var _enemy_intent_bubble_signature := ""
+var _range_trapezoid_pool: Array[Dictionary] = []
+var _hand_buttons_signature := ""
+var _node_buttons_signature := ""
+var _overlay_action_buttons: Array[Button] = []
+
+func _ready() -> void:
+	super()
+	_fx_pool.set_parent(center_fx_layer if center_fx_layer != null else self)
+	_mark_web_smoke_battle_state("visual-ready")
+	if WebRuntimeFlags.has_query_flag(WEB_SMOKE_BATTLE_FLAG):
+		call_deferred("_bootstrap_web_smoke_battle")
 
 func _safe_load_texture(path: String) -> Texture2D:
 	return BattleSkinHelper.load_texture_or_svg(path)
@@ -18,26 +42,127 @@ func _make_demo_panel_style(fill: Color, border: Color) -> StyleBox:
 func _make_button_style(tint: Color) -> StyleBox:
 	return BattleSkinHelper.make_button_style(tint, BUTTON_FRAME_PATH, PANEL_FRAME_PATH)
 
+func _bootstrap_web_smoke_battle() -> void:
+	if player == null:
+		_mark_web_smoke_battle_state("session-starting")
+		_start_session("spearman")
+	if not battle_active:
+		_mark_web_smoke_battle_state("battle-starting")
+		_start_battle()
+	_mark_web_smoke_battle_state("battle-ready")
+
+func _mark_web_smoke_battle_state(state: String) -> void:
+	WebRuntimeFlags.set_body_dataset("webSmokeBattle", state)
+
+func _build_catalog() -> void:
+	BattleHudHelper.clear_text_cache()
+	super()
+
 func _refresh_ui() -> void:
 	super()
 	_refresh_visual_ui()
+
+func _show_node_buttons() -> void:
+	var signature := _node_buttons_state_signature()
+	if signature == _node_buttons_signature:
+		return
+	_node_buttons_signature = signature
+	super()
+
+func _show_overlay(title: String, body: String, actions: Array) -> void:
+	if overlay_title == null or overlay_body == null or overlay_actions == null:
+		return
+	overlay_title.text = title
+	overlay_body.text = body
+	for i in range(actions.size()):
+		var action: Dictionary = actions[i]
+		var button := _overlay_action_button(i)
+		_disconnect_button_pressed(button)
+		button.text = str(action["text"]) if action.has("text") else ""
+		var callback: Callable = action["callback"] if action.has("callback") else Callable()
+		if callback.is_valid():
+			button.pressed.connect(callback)
+		button.disabled = false
+		button.visible = true
+	for i in range(actions.size(), _overlay_action_buttons.size()):
+		var button := _overlay_action_buttons[i]
+		_disconnect_button_pressed(button)
+		button.visible = false
+	if overlay_scrim != null:
+		overlay_scrim.visible = true
+		overlay_scrim.move_to_front()
+	if overlay_panel != null:
+		overlay_panel.visible = true
+		overlay_panel.move_to_front()
+	_apply_button_styles()
+
+func _overlay_action_button(index: int) -> Button:
+	while _overlay_action_buttons.size() <= index:
+		var button := Button.new()
+		button.visible = false
+		overlay_actions.add_child(button)
+		_overlay_action_buttons.append(button)
+	return _overlay_action_buttons[index]
+
+func _disconnect_button_pressed(button: Button) -> void:
+	for connection in button.pressed.get_connections():
+		var connection_data: Dictionary = connection
+		if not connection_data.has("callable"):
+			continue
+		var callable: Callable = connection_data["callable"]
+		if callable.is_valid() and button.pressed.is_connected(callable):
+			button.pressed.disconnect(callable)
+
+func _apply_button_styles() -> void:
+	var groups: Array = [
+		[deck_button, reset_pick_button, confirm_button],
+		node_buttons_box.get_children() if node_buttons_box != null else [],
+		overlay_actions.get_children() if overlay_actions != null else []
+	]
+	for group in groups:
+		for child in group:
+			if child is Button:
+				_style_plain_button_once(child)
+
+func _style_plain_button_once(button: Button) -> void:
+	if button.has_meta(BUTTON_STYLE_META):
+		return
+	_style_button(button)
+	button.set_meta(BUTTON_STYLE_META, true)
+
+func _start_session(role_id: String) -> void:
+	BattleHudHelper.clear_text_cache()
+	super(role_id)
+
+func _finish_battle() -> void:
+	BattleHudHelper.clear_text_cache()
+	super()
 
 func _refresh_visual_ui() -> void:
 	var has_session := player != null and enemy != null
 	_set_battle_chrome_visible(has_session)
 	if not has_session:
+		BattleHudHelper.clear_text_cache()
+		_stage_grid_signature = ""
+		_stage_actor_signature = ""
+		_hud_signature = ""
+		_player_intent_bubble_signature = ""
+		_enemy_intent_bubble_signature = ""
+		_hand_buttons_signature = ""
+		_node_buttons_signature = ""
 		_clear_range_trapezoids()
 		_apply_button_styles()
 		return
 	_refresh_character_visuals()
-	_refresh_hud_bars()
+	_refresh_hud_bars(true)
 	_refresh_center_labels()
-	_refresh_stage_grid()
-	_refresh_stage_actor_positions()
-	_refresh_intent_bubbles()
+	_refresh_stage_grid(true)
+	_refresh_stage_actor_positions(true)
+	_refresh_intent_bubbles(true)
 	_refresh_card_detail_panel()
 	_refresh_effect_preview_panel()
 	_refresh_log_strip()
+	_refresh_hand_buttons()
 	_apply_button_styles()
 
 func _set_battle_chrome_visible(visible: bool) -> void:
@@ -65,10 +190,16 @@ func _set_battle_chrome_visible(visible: bool) -> void:
 		enemy_fallback_actor.visible = visible and enemy_fallback_actor.visible
 
 func _clear_range_trapezoids() -> void:
+	_stage_grid_signature = ""
 	if range_overlay_layer == null:
 		return
-	for child in range_overlay_layer.get_children():
-		child.free()
+	for entry in _range_trapezoid_pool:
+		var polygon: Polygon2D = entry.get("polygon", null)
+		var outline: Line2D = entry.get("outline", null)
+		if polygon != null:
+			polygon.visible = false
+		if outline != null:
+			outline.visible = false
 
 func _refresh_center_labels() -> void:
 	if round_label != null:
@@ -124,7 +255,11 @@ func _refresh_character_visuals() -> void:
 	if enemy_school_label != null:
 		enemy_school_label.text = SCHOOL_NAME if enemy != null else ""
 
-func _refresh_hud_bars() -> void:
+func _refresh_hud_bars(force: bool = false) -> void:
+	var signature := _hud_state_signature()
+	if not force and signature == _hud_signature:
+		return
+	_hud_signature = signature
 	if player != null and player_hp_fill != null and player_hp_bg != null:
 		var player_hp_width := player_hp_bg.size.x if player_hp_bg.size.x > 1.0 else HUD_BAR_WIDTH
 		player_hp_fill.size = Vector2(player_hp_width * clamp(float(player.hp) / max(1.0, float(player.data.max_hp)), 0.0, 1.0), player_hp_bg.size.y if player_hp_bg.size.y > 0.0 else 14.0)
@@ -137,6 +272,24 @@ func _refresh_hud_bars() -> void:
 		if enemy_hp_value_label != null:
 			enemy_hp_value_label.text = "%d / %d" % [enemy.hp, enemy.data.max_hp]
 		_refresh_momentum_dots(enemy_momentum_dots, enemy.momentum, enemy.data.max_momentum)
+
+func _hud_state_signature() -> String:
+	if player == null or enemy == null:
+		return "no-session"
+	var player_hp_width := int(round(player_hp_bg.size.x)) if player_hp_bg != null else 0
+	var enemy_hp_width := int(round(enemy_hp_bg.size.x)) if enemy_hp_bg != null else 0
+	return "%d|%d|%d|%d|%d|%d|%d|%d|%d|%d" % [
+		player.hp,
+		player.data.max_hp,
+		player.momentum,
+		player.data.max_momentum,
+		player_hp_width,
+		enemy.hp,
+		enemy.data.max_hp,
+		enemy.momentum,
+		enemy.data.max_momentum,
+		enemy_hp_width
+	]
 
 func _refresh_momentum_dots(container: HBoxContainer, current: int, maximum: int) -> void:
 	if container == null:
@@ -199,7 +352,7 @@ func _card_detail_text(card: CardData) -> String:
 	return BattleHudHelper.card_detail_text(card)
 
 func _focused_card_for_detail() -> CardData:
-	return BattleHudHelper.focused_card(draft_player_intent, player_intent, awaiting_player_input)
+	return BattleHudHelper.focused_card(draft_player_intent, player_intent)
 
 func _refresh_card_detail_panel() -> void:
 	if card_detail_label == null:
@@ -291,17 +444,18 @@ func _slot_list_text(slots: Array[int]) -> String:
 		parts.append(_slot_label(slot))
 	return " / ".join(parts)
 
-func _refresh_intent_bubbles() -> void:
-	_refresh_single_intent_bubble(true)
-	_refresh_single_intent_bubble(false)
+func _refresh_intent_bubbles(force: bool = false) -> void:
+	_refresh_single_intent_bubble(true, force)
+	_refresh_single_intent_bubble(false, force)
 
-func _refresh_single_intent_bubble(is_player: bool) -> void:
+func _refresh_single_intent_bubble(is_player: bool, force: bool = false) -> void:
 	var bubble := player_intent_bubble if is_player else enemy_intent_bubble
 	var label := player_intent_bubble_label if is_player else enemy_intent_bubble_label
 	if bubble == null or label == null:
 		return
 	if not battle_active:
 		bubble.visible = false
+		_set_intent_bubble_signature(is_player, "")
 		return
 	var card := _player_preview_card() if is_player else _enemy_preview_card()
 	var positions := _current_grid_positions()
@@ -310,7 +464,12 @@ func _refresh_single_intent_bubble(is_player: bool) -> void:
 	var actor_slot := player_slot if is_player else enemy_slot
 	var opponent_slot := enemy_slot if is_player else player_slot
 	var target_slot := _target_slot_for_preview(is_player, player_slot, enemy_slot, card)
-	label.text = _intent_bubble_text(card, actor_slot, opponent_slot, target_slot)
+	var bubble_text := _intent_bubble_text(card, actor_slot, opponent_slot, target_slot)
+	var signature := _intent_bubble_state_signature(is_player, card, actor_slot, opponent_slot, target_slot, bubble_text)
+	if not force and signature == _intent_bubble_signature(is_player):
+		return
+	_set_intent_bubble_signature(is_player, signature)
+	label.text = bubble_text
 	bubble.size = bubble.custom_minimum_size
 	bubble.visible = true
 	var sprite := player_sprite if is_player else enemy_sprite
@@ -322,6 +481,29 @@ func _refresh_single_intent_bubble(is_player: bool) -> void:
 		clamp(bubble_x, 24.0, maxf(24.0, size.x - bubble.size.x - 24.0)),
 		maxf(STAGE_AREA_TOP + 8.0, bubble_y)
 	)
+
+func _intent_bubble_state_signature(is_player: bool, card: CardData, actor_slot: int, opponent_slot: int, target_slot: int, bubble_text: String) -> String:
+	var card_id := card.id if card != null else "-"
+	var bubble := player_intent_bubble if is_player else enemy_intent_bubble
+	var bubble_width := int(round(bubble.custom_minimum_size.x)) if bubble != null else 0
+	return "%s|%d|%d|%d|%s|%d|%d" % [
+		card_id,
+		actor_slot,
+		opponent_slot,
+		target_slot,
+		bubble_text,
+		bubble_width,
+		int(round(size.x))
+	]
+
+func _intent_bubble_signature(is_player: bool) -> String:
+	return _player_intent_bubble_signature if is_player else _enemy_intent_bubble_signature
+
+func _set_intent_bubble_signature(is_player: bool, signature: String) -> void:
+	if is_player:
+		_player_intent_bubble_signature = signature
+	else:
+		_enemy_intent_bubble_signature = signature
 
 func _intent_bubble_text(card: CardData, actor_slot: int, opponent_slot: int, target_slot: int) -> String:
 	if card == null:
@@ -357,6 +539,12 @@ func _intent_effect_parts(card: CardData) -> Array[String]:
 	return parts
 
 func _refresh_hand_buttons() -> void:
+	if hand_flow == null:
+		return
+	var signature := _hand_buttons_state_signature()
+	if signature == _hand_buttons_signature:
+		return
+	_hand_buttons_signature = signature
 	for child in hand_flow.get_children():
 		child.queue_free()
 	if player == null:
@@ -389,6 +577,50 @@ func _refresh_hand_buttons() -> void:
 		_build_card_button_face(button, card, marker, reason)
 		button.pressed.connect(_on_player_card_pressed.bind(card))
 		hand_flow.add_child(button)
+
+func _hand_buttons_state_signature() -> String:
+	if player == null:
+		return "no-player"
+	if player.hand.is_empty():
+		return "empty|%s|%d|%d" % [str(awaiting_player_input), int(round(hand_flow.size.x)) if hand_flow != null else 0, int(round(hand_flow.size.y)) if hand_flow != null else 0]
+	var parts: Array[String] = []
+	parts.append(str(awaiting_player_input))
+	parts.append(str(player.momentum))
+	parts.append(str(player.guard_points))
+	parts.append(str(state_machine.current_distance if state_machine != null else 0))
+	parts.append(str(state_machine.phase if state_machine != null else -1))
+	parts.append(_intent_card_id(draft_player_intent))
+	parts.append(_intent_card_id(player_intent))
+	parts.append(str(player.combo_window_active))
+	parts.append(str(player.control_state))
+	parts.append(str(int(round(hand_flow.size.x)) if hand_flow != null else 0))
+	for card in player.hand:
+		if card == null:
+			parts.append("<null>")
+			continue
+		var reason := _card_restriction_reason(player, card)
+		var marker := _combo_marker_text(player, card)
+		var disabled := not awaiting_player_input or not _can_play_card(player, card)
+		var selected := _draft_uses_card(card)
+		parts.append("%s:%d:%s:%s:%s:%s" % [card.id, card.momentum_cost, str(disabled), str(selected), reason, marker])
+	return "|".join(parts)
+
+func _node_buttons_state_signature() -> String:
+	if player == null:
+		return "no-player"
+	var parts: Array[String] = []
+	parts.append(player.data.id)
+	parts.append(str(battle_active))
+	parts.append(str(node_pick_count))
+	parts.append(str(awaiting_player_input))
+	parts.append(str(fusion_first_index))
+	parts.append(str(state_machine.phase if state_machine != null else -1))
+	return "|".join(parts)
+
+func _intent_card_id(intent: IntentData) -> String:
+	if intent == null or intent.actual_card == null:
+		return "-"
+	return intent.actual_card.id
 
 func _apply_card_button_style(button: Button, card: CardData, selected: bool, disabled: bool) -> void:
 	var base := Color("141a20")
@@ -542,7 +774,7 @@ func _card_art_glyph(card: CardData) -> String:
 		return "气"
 	return "斩"
 
-func _refresh_stage_grid() -> void:
+func _refresh_stage_grid(force: bool = false) -> void:
 	if stage_grid_cells.is_empty():
 		return
 	var positions := _current_grid_positions()
@@ -554,6 +786,10 @@ func _refresh_stage_grid() -> void:
 	var enemy_target_slot := _target_slot_for_preview(false, player_slot, enemy_slot, enemy_preview_card)
 	var player_range := _attack_range_slots(true, player_target_slot, player_preview_card)
 	var enemy_range := _attack_range_slots(false, enemy_target_slot, enemy_preview_card)
+	var signature := _stage_grid_state_signature(player_target_slot, enemy_target_slot, player_range, enemy_range, player_preview_card, enemy_preview_card)
+	if not force and signature == _stage_grid_signature:
+		return
+	_stage_grid_signature = signature
 	_refresh_range_trapezoids(player_range, player_target_slot, enemy_range, enemy_target_slot)
 	for i in range(GRID_SLOT_COUNT):
 		var in_player_range := player_range.has(i)
@@ -573,32 +809,86 @@ func _refresh_stage_grid() -> void:
 		else:
 			stage_grid_labels[i].text = ""
 
+func _stage_grid_state_signature(
+	player_target_slot: int,
+	enemy_target_slot: int,
+	player_range: Array[int],
+	enemy_range: Array[int],
+	player_preview_card: CardData,
+	enemy_preview_card: CardData
+) -> String:
+	var player_card_id := player_preview_card.id if player_preview_card != null else "-"
+	var enemy_card_id := enemy_preview_card.id if enemy_preview_card != null else "-"
+	return "%d|%d|%s|%s|%s|%s|%d" % [
+		player_target_slot,
+		enemy_target_slot,
+		_slot_array_key(player_range),
+		_slot_array_key(enemy_range),
+		player_card_id,
+		enemy_card_id,
+		int(round(size.x))
+	]
+
+func _slot_array_key(slots: Array[int]) -> String:
+	var parts: Array[String] = []
+	for slot in slots:
+		parts.append(str(slot))
+	return ",".join(parts)
+
 func _refresh_range_trapezoids(player_range: Array[int], player_origin_slot: int, enemy_range: Array[int], enemy_origin_slot: int) -> void:
 	if range_overlay_layer == null:
 		return
-	for child in range_overlay_layer.get_children():
-		child.free()
+	var used_count := 0
 	for slot in player_range:
-		_draw_range_trapezoid(slot, player_origin_slot, Color(0.25, 0.62, 1.0, 0.24), Color(0.62, 0.86, 1.0, 0.78))
+		_draw_range_trapezoid(used_count, slot, player_origin_slot, Color(0.25, 0.62, 1.0, 0.24), Color(0.62, 0.86, 1.0, 0.78))
+		used_count += 1
 	for slot in enemy_range:
-		_draw_range_trapezoid(slot, enemy_origin_slot, Color(1.0, 0.32, 0.22, 0.23), Color(1.0, 0.67, 0.52, 0.78))
+		_draw_range_trapezoid(used_count, slot, enemy_origin_slot, Color(1.0, 0.32, 0.22, 0.23), Color(1.0, 0.67, 0.52, 0.78))
+		used_count += 1
+	for i in range(used_count, _range_trapezoid_pool.size()):
+		var entry := _range_trapezoid_pool[i]
+		var polygon: Polygon2D = entry.get("polygon", null)
+		var outline: Line2D = entry.get("outline", null)
+		if polygon != null:
+			polygon.visible = false
+		if outline != null:
+			outline.visible = false
 
-func _draw_range_trapezoid(slot: int, origin_slot: int, fill_color: Color, outline_color: Color) -> void:
+func _draw_range_trapezoid(pool_index: int, slot: int, origin_slot: int, fill_color: Color, outline_color: Color) -> void:
 	if range_overlay_layer == null:
 		return
-	var polygon := Polygon2D.new()
+	var entry := _range_trapezoid_entry(pool_index)
+	var polygon: Polygon2D = entry.get("polygon", null)
+	var outline: Line2D = entry.get("outline", null)
+	if polygon == null or outline == null:
+		return
 	polygon.polygon = _range_trapezoid_points(slot, origin_slot)
 	polygon.color = fill_color
 	polygon.z_index = 2
-	range_overlay_layer.add_child(polygon)
-	var outline := Line2D.new()
+	polygon.visible = true
 	outline.points = polygon.polygon
 	outline.closed = true
 	outline.width = 3.0
 	outline.default_color = outline_color
 	outline.joint_mode = Line2D.LINE_JOINT_ROUND
 	outline.z_index = 3
-	range_overlay_layer.add_child(outline)
+	outline.visible = true
+
+func _range_trapezoid_entry(pool_index: int) -> Dictionary:
+	while _range_trapezoid_pool.size() <= pool_index:
+		var polygon := Polygon2D.new()
+		polygon.visible = false
+		polygon.z_index = 2
+		range_overlay_layer.add_child(polygon)
+		var outline := Line2D.new()
+		outline.visible = false
+		outline.closed = true
+		outline.width = 3.0
+		outline.joint_mode = Line2D.LINE_JOINT_ROUND
+		outline.z_index = 3
+		range_overlay_layer.add_child(outline)
+		_range_trapezoid_pool.append({"polygon": polygon, "outline": outline})
+	return _range_trapezoid_pool[pool_index]
 
 func _range_trapezoid_points(slot: int, origin_slot: int) -> PackedVector2Array:
 	var left := _slot_center_x(slot) - GRID_SLOT_WIDTH * 0.5
@@ -621,7 +911,7 @@ func _range_trapezoid_points(slot: int, origin_slot: int) -> PackedVector2Array:
 		Vector2(left - long_outset, bottom_y)
 	])
 
-func _refresh_stage_actor_positions() -> void:
+func _refresh_stage_actor_positions(force: bool = false) -> void:
 	if player_sprite == null or enemy_sprite == null:
 		return
 	var positions := _current_grid_positions()
@@ -631,6 +921,10 @@ func _refresh_stage_actor_positions() -> void:
 	var enemy_card := _enemy_preview_card()
 	var player_target_slot := _target_slot_for_preview(true, player_slot, enemy_slot, player_card)
 	var enemy_target_slot := _target_slot_for_preview(false, player_slot, enemy_slot, enemy_card)
+	var signature := _stage_actor_state_signature(player_target_slot, enemy_target_slot, player_card, enemy_card)
+	if not force and signature == _stage_actor_signature:
+		return
+	_stage_actor_signature = signature
 	var player_top_left := _slot_top_left(player_target_slot, true)
 	var enemy_top_left := _slot_top_left(enemy_target_slot, false)
 	player_sprite.position = player_top_left
@@ -640,6 +934,23 @@ func _refresh_stage_actor_positions() -> void:
 	_set_actor_sheet_frame(player, 0)
 	_set_actor_sheet_frame(enemy, 0)
 	_apply_actor_facing(player_target_slot, enemy_target_slot, player_top_left, enemy_top_left)
+
+func _stage_actor_state_signature(player_target_slot: int, enemy_target_slot: int, player_card: CardData, enemy_card: CardData) -> String:
+	var player_card_id := player_card.id if player_card != null else "-"
+	var enemy_card_id := enemy_card.id if enemy_card != null else "-"
+	var player_role := player.data.id if player != null else "-"
+	var enemy_role := enemy.data.id if enemy != null else "-"
+	return "%d|%d|%s|%s|%s|%s|%d|%d|%d" % [
+		player_target_slot,
+		enemy_target_slot,
+		player_card_id,
+		enemy_card_id,
+		player_role,
+		enemy_role,
+		int(round(size.x)),
+		int(round(player_sprite.size.y)),
+		int(round(enemy_sprite.size.y))
+	]
 
 func _apply_actor_facing(player_slot: int, enemy_slot: int, player_top_left: Vector2, enemy_top_left: Vector2) -> void:
 	# 当前素材默认朝右；根据预期站位动态翻转，让回合开始与预览阶段都面向对手。
@@ -664,11 +975,16 @@ func _set_fallback_actor_facing(actor: Control, faces_left: bool, top_left: Vect
 
 func _process(delta: float) -> void:
 	preview_anim_time += delta
-	if battle_active:
-		_refresh_hud_bars()
-		_refresh_stage_grid()
-		_refresh_stage_actor_positions()
-		_refresh_intent_bubbles()
+	if not battle_active:
+		return
+	_visual_poll_refresh_elapsed += delta
+	if _visual_poll_refresh_elapsed < VISUAL_POLL_REFRESH_INTERVAL:
+		return
+	_visual_poll_refresh_elapsed = 0.0
+	_refresh_hud_bars()
+	_refresh_stage_grid()
+	_refresh_stage_actor_positions()
+	_refresh_intent_bubbles()
 
 func _player_preview_card() -> CardData:
 	if draft_player_intent != null and draft_player_intent.actual_card != null:
@@ -788,23 +1104,10 @@ func _spawn_fx_texture(path: String, draw_size: Vector2, at_position: Vector2, t
 	var texture := _safe_load_texture(path)
 	if texture == null:
 		return null
-	var fx := TextureRect.new()
-	fx.texture = texture
-	fx.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	fx.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	fx.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	fx.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	fx.custom_minimum_size = draw_size
-	fx.size = draw_size
-	fx.position = at_position - draw_size * 0.5
-	fx.rotation_degrees = rotation_deg
-	fx.scale = start_scale
-	fx.modulate = Color(tint.r, tint.g, tint.b, 0.0)
-	if center_fx_layer != null:
-		center_fx_layer.add_child(fx)
-	else:
-		add_child(fx)
-	return fx
+	return _fx_pool.acquire(path, texture, draw_size, at_position, tint, rotation_deg, start_scale)
+
+func _release_fx_texture(path: String, fx: TextureRect) -> void:
+	_fx_pool.release(path, fx)
 
 func _actor_fx_anchor(target_is_enemy: bool) -> Vector2:
 	var sprite := enemy_sprite if target_is_enemy else player_sprite
@@ -816,8 +1119,9 @@ func _actor_fx_anchor(target_is_enemy: bool) -> Vector2:
 	return size * 0.5
 
 func _show_pierce_line(color: Color, is_finisher: bool = false) -> void:
+	var fx_path := "res://assets/pixel_battle/fx/pierce_streak.png"
 	var fx := _spawn_fx_texture(
-		"res://assets/pixel_battle/fx/pierce_streak.png",
+		fx_path,
 		Vector2(320 if not is_finisher else 380, 72 if not is_finisher else 88),
 		Vector2(size.x * 0.5, size.y * 0.5),
 		color,
@@ -836,12 +1140,13 @@ func _show_pierce_line(color: Color, is_finisher: bool = false) -> void:
 	tween.parallel().tween_property(fx, "scale", Vector2(1.08 if not is_finisher else 1.22, 1.0 if not is_finisher else 1.16), 0.06)
 	tween.tween_property(fx, "modulate", Color(color.r, color.g, color.b, 0.0), 0.09)
 	tween.finished.connect(func() -> void:
-		fx.queue_free()
+		_release_fx_texture(fx_path, fx)
 	)
 
 func _show_slash_cut(color: Color, is_finisher: bool = false) -> void:
+	var fx_path := "res://assets/pixel_battle/fx/slash_arc.png"
 	var fx := _spawn_fx_texture(
-		"res://assets/pixel_battle/fx/slash_arc.png",
+		fx_path,
 		Vector2(260 if not is_finisher else 320, 160 if not is_finisher else 200),
 		Vector2(size.x * 0.5, size.y * 0.5),
 		color,
@@ -860,12 +1165,13 @@ func _show_slash_cut(color: Color, is_finisher: bool = false) -> void:
 		tween.parallel().tween_property(fx, "position", fx.position + Vector2(-36, -6), 0.04)
 	tween.tween_property(fx, "modulate", Color(color.r, color.g, color.b, 0.0), 0.1)
 	tween.finished.connect(func() -> void:
-		fx.queue_free()
+		_release_fx_texture(fx_path, fx)
 	)
 
 func _show_target_hit_mark(target_is_enemy: bool, color: Color, profession_id: String, is_finisher: bool = false) -> void:
+	var fx_path := "res://assets/pixel_battle/fx/hit_spark.png"
 	var fx := _spawn_fx_texture(
-		"res://assets/pixel_battle/fx/hit_spark.png",
+		fx_path,
 		Vector2(128 if not is_finisher else 156, 128 if not is_finisher else 156),
 		_actor_fx_anchor(target_is_enemy) + Vector2(12 if target_is_enemy else -12, -24),
 		color,
@@ -881,7 +1187,7 @@ func _show_target_hit_mark(target_is_enemy: bool, color: Color, profession_id: S
 	tween.parallel().tween_property(fx, "rotation_degrees", 14.0 if profession_id == "spearman" else -18.0, 0.05)
 	tween.tween_property(fx, "modulate", Color(color.r, color.g, color.b, 0.0), 0.1)
 	tween.finished.connect(func() -> void:
-		fx.queue_free()
+		_release_fx_texture(fx_path, fx)
 	)
 
 func _show_target_receive_feedback(target: Fighter, profession_id: String, color: Color, is_finisher: bool = false) -> void:

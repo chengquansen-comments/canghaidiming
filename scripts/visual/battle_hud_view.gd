@@ -6,26 +6,24 @@ static var _button_text_cache: Dictionary = {}
 static var _detail_cache: Dictionary = {}
 static var _empty_detail_cache := ""
 
-static func _card_key(card: Object) -> String:
+static func _card_key(card: CardData) -> String:
 	if card == null:
 		return "null"
-	var tags := []
-	if "tags" in card and card.tags != null:
-		tags = card.tags
+	var tags: PackedStringArray = card.tags if card.tags != null else PackedStringArray()
 	return "%s|%s|%d|%d|%d|%d|%d|%d|%s|%s" % [
-		str(card.get("id", "")),
-		str(card.get("display_name", "")),
-		int(card.get("momentum_cost", 0)),
-		int(card.get("min_distance", 0)),
-		int(card.get("max_distance", 0)),
-		int(card.get("damage", 0)),
-		int(card.get("guard", 0)),
-		int(card.get("gain_momentum", 0)),
-		str(card.get("break_momentum", 0)),
+		card.id,
+		card.display_name,
+		card.momentum_cost,
+		card.min_distance,
+		card.max_distance,
+		card.damage,
+		card.guard,
+		card.gain_momentum,
+		str(card.break_momentum),
 		"/".join(tags)
 	]
 
-static func compact_effect_summary(card: Object) -> String:
+static func compact_effect_summary(card: CardData) -> String:
 	var key := _card_key(card)
 	if _summary_cache.has(key):
 		return _summary_cache[key]
@@ -46,7 +44,7 @@ static func compact_effect_summary(card: Object) -> String:
 	_summary_cache[key] = summary
 	return summary
 
-static func compact_button_text(card: Object, card_role_prefix: String, marker: String, is_drafted: bool) -> String:
+static func compact_button_text(card: CardData, card_role_prefix: String, marker: String, is_drafted: bool) -> String:
 	var cache_key := "%s|%s|%s|%s" % [_card_key(card), card_role_prefix, marker, str(is_drafted)]
 	if _button_text_cache.has(cache_key):
 		return _button_text_cache[cache_key]
@@ -60,7 +58,7 @@ static func compact_button_text(card: Object, card_role_prefix: String, marker: 
 	_button_text_cache[cache_key] = text
 	return text
 
-static func card_detail_text(card: Object) -> String:
+static func card_detail_text(card: CardData) -> String:
 	var key := _card_key(card)
 	if _detail_cache.has(key):
 		return _detail_cache[key]
@@ -99,10 +97,10 @@ static func empty_detail_text() -> String:
 	_empty_detail_cache = "[font_size=28][b]招式详情[/b][/font_size]\n\n从左侧选择一张招式牌，这里会显示完整说明、势力消耗、范围与效果。"
 	return _empty_detail_cache
 
-static func focused_card(draft_player_intent: Object, player_intent: Object, awaiting_player_input: bool) -> Object:
+static func focused_card(draft_player_intent: IntentData, player_intent: IntentData) -> CardData:
 	if draft_player_intent != null and draft_player_intent.actual_card != null:
 		return draft_player_intent.actual_card
-	if player_intent != null and player_intent.actual_card != null and awaiting_player_input:
+	if player_intent != null and player_intent.actual_card != null:
 		return player_intent.actual_card
 	return null
 

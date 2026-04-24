@@ -16,7 +16,7 @@ static func load_texture_or_svg(path: String) -> Texture2D:
 		return texture
 	var svg_path := path.get_basename() + ".svg"
 	if _texture_cache.has(svg_path):
-		var cached := _texture_cache[svg_path]
+		var cached: Texture2D = _texture_cache[svg_path] as Texture2D
 		_texture_cache[path] = cached
 		return cached
 	if ResourceLoader.exists(svg_path):

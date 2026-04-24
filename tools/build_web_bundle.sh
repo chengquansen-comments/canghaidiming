@@ -5,6 +5,8 @@ PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUTPUT_DIR="${1:-$PROJECT_ROOT/build/web}"
 ZIP_PATH="${2:-${OUTPUT_DIR%/}.zip}"
 
+godot --headless --path "$PROJECT_ROOT" --script "$PROJECT_ROOT/tools/smoke_battle_hud_helper.gd"
+godot --headless --path "$PROJECT_ROOT" --script "$PROJECT_ROOT/tools/smoke_battle_round_core.gd"
 "$PROJECT_ROOT/tools/export_web_build.sh" "$OUTPUT_DIR"
 python3 "$PROJECT_ROOT/tools/validate_web_bundle.py" "$OUTPUT_DIR"
 python3 "$PROJECT_ROOT/tools/report_web_bundle.py" "$OUTPUT_DIR"

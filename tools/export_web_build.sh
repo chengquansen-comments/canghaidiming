@@ -30,7 +30,15 @@ if ! command -v godot >/dev/null 2>&1 && ! command -v godot4 >/dev/null 2>&1; th
   exit 1
 fi
 
+if [[ -z "$OUTPUT_DIR" || "$OUTPUT_DIR" == "/" || "$OUTPUT_DIR" == "$PROJECT_ROOT" || "$OUTPUT_DIR" == "$PROJECT_ROOT/" ]]; then
+  echo "[web-export] ERROR: refusing to clear unsafe output directory: $OUTPUT_DIR" >&2
+  exit 1
+fi
+
 GODOT_BIN="$(command -v godot4 || command -v godot)"
+
+rm -rf -- "$OUTPUT_DIR"
+mkdir -p "$OUTPUT_DIR"
 
 "$GODOT_BIN" --headless --path "$PROJECT_ROOT" --export-release "$PRESET_NAME" "$OUTPUT_DIR/$INDEX_NAME"
 
