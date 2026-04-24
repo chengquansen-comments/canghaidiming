@@ -9,18 +9,18 @@ static func load_texture_or_svg(path: String) -> Texture2D:
 	if path == "":
 		return null
 	if _texture_cache.has(path):
-		return _texture_cache[path]
+		return _texture_cache[path] as Texture2D
 	if ResourceLoader.exists(path):
-		var texture := load(path)
+		var texture: Texture2D = load(path) as Texture2D
 		_texture_cache[path] = texture
 		return texture
-	var svg_path := path.get_basename() + ".svg"
+	var svg_path: String = path.get_basename() + ".svg"
 	if _texture_cache.has(svg_path):
 		var cached: Texture2D = _texture_cache[svg_path] as Texture2D
 		_texture_cache[path] = cached
 		return cached
 	if ResourceLoader.exists(svg_path):
-		var svg_texture := load(svg_path)
+		var svg_texture: Texture2D = load(svg_path) as Texture2D
 		_texture_cache[svg_path] = svg_texture
 		_texture_cache[path] = svg_texture
 		return svg_texture
@@ -30,11 +30,11 @@ static func load_texture_or_svg(path: String) -> Texture2D:
 static func atlas_frame(source: Texture2D, frame_size: Vector2i, frame: int) -> Texture2D:
 	if source == null:
 		return null
-	var safe_frame := maxi(frame, 0)
-	var source_key := source.resource_path if source.resource_path != "" else str(source.get_instance_id())
-	var key := "%s|%d|%d|%d" % [source_key, frame_size.x, frame_size.y, safe_frame]
+	var safe_frame: int = maxi(frame, 0)
+	var source_key: String = source.resource_path if source.resource_path != "" else str(source.get_instance_id())
+	var key: String = "%s|%d|%d|%d" % [source_key, frame_size.x, frame_size.y, safe_frame]
 	if _atlas_cache.has(key):
-		return _atlas_cache[key]
+		return _atlas_cache[key] as Texture2D
 	var atlas := AtlasTexture.new()
 	atlas.atlas = source
 	atlas.region = Rect2(Vector2(frame_size.x * safe_frame, 0), Vector2(frame_size.x, frame_size.y))
@@ -47,9 +47,9 @@ static func clear_texture_cache() -> void:
 	_style_cache.clear()
 
 static func make_panel_style(fill: Color, border: Color) -> StyleBoxFlat:
-	var key := "panel|%s|%s" % [fill.to_html(), border.to_html()]
+	var key: String = "panel|%s|%s" % [fill.to_html(), border.to_html()]
 	if _style_cache.has(key):
-		return _style_cache[key]
+		return _style_cache[key] as StyleBoxFlat
 	var style := StyleBoxFlat.new()
 	style.bg_color = fill
 	style.border_color = border
@@ -63,9 +63,9 @@ static func make_panel_style(fill: Color, border: Color) -> StyleBoxFlat:
 	return style
 
 static func make_visual_panel_style(fill: Color, border: Color, panel_frame_path: String) -> StyleBox:
-	var key := "visual_panel|%s|%s|%s" % [fill.to_html(), border.to_html(), panel_frame_path]
+	var key: String = "visual_panel|%s|%s|%s" % [fill.to_html(), border.to_html(), panel_frame_path]
 	if _style_cache.has(key):
-		return _style_cache[key]
+		return _style_cache[key] as StyleBox
 	var style := StyleBoxFlat.new()
 	style.bg_color = fill
 	style.border_color = border
@@ -82,9 +82,9 @@ static func make_visual_panel_style(fill: Color, border: Color, panel_frame_path
 	return style
 
 static func make_button_style(tint: Color, button_frame_path: String, panel_frame_path: String) -> StyleBox:
-	var key := "button|%s|%s|%s" % [tint.to_html(), button_frame_path, panel_frame_path]
+	var key: String = "button|%s|%s|%s" % [tint.to_html(), button_frame_path, panel_frame_path]
 	if _style_cache.has(key):
-		return _style_cache[key]
+		return _style_cache[key] as StyleBox
 	var style := StyleBoxFlat.new()
 	style.bg_color = tint
 	style.border_color = Color("b8a270")
@@ -98,9 +98,9 @@ static func make_button_style(tint: Color, button_frame_path: String, panel_fram
 	return style
 
 static func make_flat_card_style(fill: Color, border: Color, border_width: int) -> StyleBoxFlat:
-	var key := "flat_card|%s|%s|%d" % [fill.to_html(), border.to_html(), border_width]
+	var key: String = "flat_card|%s|%s|%d" % [fill.to_html(), border.to_html(), border_width]
 	if _style_cache.has(key):
-		return _style_cache[key]
+		return _style_cache[key] as StyleBoxFlat
 	var style := StyleBoxFlat.new()
 	style.bg_color = fill
 	style.border_color = border
@@ -114,9 +114,9 @@ static func make_flat_card_style(fill: Color, border: Color, border_width: int) 
 	return style
 
 static func make_type_tag_style(is_guard: bool, is_momentum: bool) -> StyleBoxFlat:
-	var key := "type_tag|%s|%s" % [str(is_guard), str(is_momentum)]
+	var key: String = "type_tag|%s|%s" % [str(is_guard), str(is_momentum)]
 	if _style_cache.has(key):
-		return _style_cache[key]
+		return _style_cache[key] as StyleBoxFlat
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color("6f2824")
 	if is_guard:
@@ -130,9 +130,9 @@ static func make_type_tag_style(is_guard: bool, is_momentum: bool) -> StyleBoxFl
 	return style
 
 static func make_card_art_style(is_guard: bool, is_momentum: bool) -> StyleBoxFlat:
-	var key := "card_art|%s|%s" % [str(is_guard), str(is_momentum)]
+	var key: String = "card_art|%s|%s" % [str(is_guard), str(is_momentum)]
 	if _style_cache.has(key):
-		return _style_cache[key]
+		return _style_cache[key] as StyleBoxFlat
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color("202934")
 	if is_guard:
@@ -146,9 +146,9 @@ static func make_card_art_style(is_guard: bool, is_momentum: bool) -> StyleBoxFl
 	return style
 
 static func make_momentum_dot_style(filled: bool) -> StyleBoxFlat:
-	var key := "momentum_dot|%s" % str(filled)
+	var key: String = "momentum_dot|%s" % str(filled)
 	if _style_cache.has(key):
-		return _style_cache[key]
+		return _style_cache[key] as StyleBoxFlat
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color("d9b66c") if filled else Color(0.03, 0.035, 0.04, 0.72)
 	style.border_color = Color("f3ddb0") if filled else Color(0.72, 0.66, 0.55, 0.62)
