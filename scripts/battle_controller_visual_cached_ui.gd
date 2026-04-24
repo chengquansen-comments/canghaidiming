@@ -1,6 +1,7 @@
 extends "res://scripts/battle_controller_visual_ui.gd"
 
 const BattleSkinHelper = preload("res://scripts/visual/battle_skin.gd")
+const BattleHudHelper = preload("res://scripts/visual/battle_hud_view.gd")
 
 var _last_stage_grid_state: Dictionary = {}
 var _range_polygon_pool: Array[Polygon2D] = []
@@ -22,6 +23,9 @@ func _make_card_art_style(card: CardData) -> StyleBoxFlat:
 
 func _make_momentum_dot_style(filled: bool) -> StyleBoxFlat:
 	return BattleSkinHelper.make_momentum_dot_style(filled)
+
+func _intent_bubble_text(card: CardData, actor_slot: int, opponent_slot: int, target_slot: int) -> String:
+	return BattleHudHelper.intent_bubble_text(card, actor_slot, opponent_slot, target_slot)
 
 func _clear_range_trapezoids() -> void:
 	_recycle_range_overlay_nodes()
