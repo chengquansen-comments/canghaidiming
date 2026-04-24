@@ -1,0 +1,66 @@
+{
+  "schema_version": "0.1",
+  "role_id": "spearman",
+  "display_name": "枪手",
+  "profession": "spear",
+  "frame_size": [512, 512],
+  "foot_anchor": [256, 500],
+  "body_center": [256, 300],
+  "head_anchor": [256, 150],
+  "default_facing": "right",
+  "scale": 1.0,
+  "animations": {
+    "idle": {
+      "file": "../../sheets/spearman_sheet.png",
+      "frames": 3,
+      "fps": 0.001,
+      "loop": true
+    },
+    "move_forward": {
+      "file": "../../sheets/spearman_sheet.png",
+      "frames": 3,
+      "fps": 8,
+      "loop": false,
+      "recovery_to": "idle"
+    },
+    "attack_light": {
+      "file": "../../sheets/spearman_sheet.png",
+      "frames": 3,
+      "fps": 8,
+      "loop": false,
+      "hit_frame": 1,
+      "phase_frames": {
+        "anticipation": [0, 0],
+        "strike": [1, 1],
+        "impact": [1, 1],
+        "recovery": [2, 2]
+      },
+      "fx": "pierce_streak",
+      "impact_offset": [120, -60],
+      "recovery_to": "idle"
+    },
+    "guard": {
+      "file": "../../sheets/spearman_sheet.png",
+      "frames": 3,
+      "fps": 6,
+      "loop": false,
+      "active_frame": 1,
+      "fx": "guard_flash",
+      "recovery_to": "idle"
+    },
+    "hit": {
+      "file": "../../sheets/spearman_sheet.png",
+      "frames": 3,
+      "fps": 8,
+      "loop": false,
+      "recovery_to": "idle"
+    },
+    "break": {
+      "file": "../../sheets/spearman_sheet.png",
+      "frames": 3,
+      "fps": 6,
+      "loop": false,
+      "recovery_to": "idle"
+    }
+  }
+}
