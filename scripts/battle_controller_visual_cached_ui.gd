@@ -91,28 +91,30 @@ func _refresh_range_trapezoids(player_range: Array[int], player_origin_slot: int
 	if range_overlay_layer == null:
 		return
 	_recycle_range_overlay_nodes()
+	var player_style: Dictionary = BattleStageHelper.range_overlay_style(true)
 	for slot in player_range:
-		_draw_range_trapezoid(slot, player_origin_slot, Color(0.25, 0.62, 1.0, 0.24), Color(0.62, 0.86, 1.0, 0.78))
+		_draw_range_trapezoid(slot, player_origin_slot, player_style)
+	var enemy_style: Dictionary = BattleStageHelper.range_overlay_style(false)
 	for slot in enemy_range:
-		_draw_range_trapezoid(slot, enemy_origin_slot, Color(1.0, 0.32, 0.22, 0.23), Color(1.0, 0.67, 0.52, 0.78))
+		_draw_range_trapezoid(slot, enemy_origin_slot, enemy_style)
 
-func _draw_range_trapezoid(slot: int, origin_slot: int, fill_color: Color, outline_color: Color) -> void:
+func _draw_range_trapezoid(slot: int, origin_slot: int, style: Dictionary) -> void:
 	if range_overlay_layer == null:
 		return
 	var points: PackedVector2Array = _range_trapezoid_points(slot, origin_slot)
 	var polygon: Polygon2D = _take_range_polygon()
 	polygon.polygon = points
-	polygon.color = fill_color
-	polygon.z_index = 2
+	polygon.color = style.get("fill_color", Color(1, 1, 1, 0.2)) as Color
+	polygon.z_index = int(style.get("polygon_z", 2))
 	polygon.visible = true
 	_active_range_polygons.append(polygon)
 	var outline: Line2D = _take_range_line()
 	outline.points = points
 	outline.closed = true
-	outline.width = 3.0
-	outline.default_color = outline_color
+	outline.width = float(style.get("line_width", 3.0))
+	outline.default_color = style.get("outline_color", Color(1, 1, 1, 0.7)) as Color
 	outline.joint_mode = Line2D.LINE_JOINT_ROUND
-	outline.z_index = 3
+	outline.z_index = int(style.get("line_z", 3))
 	outline.visible = true
 	_active_range_lines.append(outline)
 
