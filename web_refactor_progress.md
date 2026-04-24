@@ -23,26 +23,35 @@
 
 ---
 
-## 当前进行中（核心性能优化）
+## 已完成（性能关键路径）
 
 ### Stage 渲染
 - [x] grid 几何缓存
 - [x] grid 差量更新（仅更新变化 slot）
 
-👉 已避免每帧全量 repaint
+### Overlay
+- [x] range overlay 对象池（Polygon2D / Line2D 复用）
 
 ---
 
-## 下一阶段（高收益优化）
-
-### Overlay
-- [ ] range overlay 对象池（当前仍是 clear + new）
+## 当前进行中
 
 ### HUD
 - [ ] intent 文案完全下沉到 helper
 
 ### Controller
 - [ ] visual controller 只做绑定，不做构造
+
+---
+
+## 下一阶段（高收益优化）
+
+### HUD
+- [ ] intent 文案缓存化
+- [ ] effect preview 文案下沉
+
+### Controller
+- [ ] range/grid/HUD 进一步拆薄
 
 ---
 
@@ -57,4 +66,4 @@
 
 ## 当前结论
 
-👉 已进入性能关键优化阶段（Stage diff 已落地）
+👉 Stage diff 与 overlay pool 已落地，下一刀转向 HUD 文案下沉与 controller 瘦身。
