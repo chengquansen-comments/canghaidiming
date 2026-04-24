@@ -28,6 +28,73 @@ func _make_momentum_dot_style(filled: bool) -> StyleBoxFlat:
 func _intent_bubble_text(card: CardData, actor_slot: int, opponent_slot: int, target_slot: int) -> String:
 	return BattleHudHelper.intent_bubble_text(card, actor_slot, opponent_slot, target_slot)
 
+func _effect_preview_text() -> String:
+	return BattleHudHelper.effect_preview_text(_effect_preview_context())
+
+func _effect_preview_context() -> Dictionary:
+	if player == null or enemy == null or state_machine == null:
+		return {"has_data": false}
+	var positions: Dictionary = _current_grid_positions()
+	var player_slot: int = positions.get("player", 0)
+	var enemy_slot: int = positions.get("enemy", 0)
+	var player_card: CardData = _player_preview_card()
+	var enemy_card: CardData = _enemy_preview_card()
+	var preview_card: CardData = player_card
+	var uses_wait: bool = false
+	if preview_card == null:
+		preview_card = _preview_wait_card()
+		uses_wait = true
+	var player_target: int = _target_slot_for_preview(true, player_slot, enemy_slot, preview_card)
+	var enemy_target_for_preview: int = _target_slot_for_preview(false, player_slot, enemy_slot, enemy_card)
+	var player_range: Array[int] = _attack_range_slots(true, player_target, preview_card)
+	var hits_enemy: bool = player_range.has(enemy_target_for_preview)
+	var damage: int = _preview_damage(preview_card, enemy, hits_enemy)
+	var hp_after: int = maxi(enemy.hp - damage, 0)
+	var self_momentum_after: int = clampi(player.momentum - preview_card.momentum_cost + (preview_card.gain_momentum if hits_enemy else 0), 0, player.data.max_momentum)
+	var enemy_momentum_after: int = clampi(enemy.momentum - (preview_card.break_momentum if hits_enemy else 0), 0, enemy.data.max_momentum)
+	var context: Dictionary = {
+		"has_data": true,
+		"current_card_name": "未选招，按不动预览" if uses_wait else preview_card.display_name,
+		"distance": state_machine.current_distance,
+		"player_slot_label": _slot_label(player_slot),
+		"player_target_label": _slot_label(player_target),
+		"player_range_text": _slot_list_text(player_range),
+		"player_hit_text": "敌方" if hits_enemy and preview_card.requires_hit_check() else "无",
+		"player_damage": damage,
+		"show_player_momentum": preview_card.gain_momentum > 0 or preview_card.break_momentum > 0 or preview_card.momentum_cost > 0,
+		"player_momentum_before": player.momentum,
+		"player_momentum_after": self_momentum_after,
+		"enemy_momentum_before": enemy.momentum,
+		"enemy_momentum_after": enemy_momentum_after,
+		"enemy_hp_before": enemy.hp,
+		"enemy_max_hp": enemy.data.max_hp,
+		"enemy_hp_after": hp_after,
+		"has_enemy_card": enemy_card != null,
+		"player_hp_before": player.hp,
+		"player_max_hp": player.data.max_hp,
+		"player_hp_after": player.hp
+	}
+	if enemy_card != null:
+		var enemy_target: int = enemy_target_for_preview
+		var enemy_range: Array[int] = _attack_range_slots(false, enemy_target, enemy_card)
+		var enemy_hits_player: bool = enemy_range.has(player_target)
+		var enemy_damage: int = _preview_damage(enemy_card, player, enemy_hits_player)
+		var enemy_self_momentum_after: int = clampi(enemy.momentum - enemy_card.momentum_cost + (enemy_card.gain_momentum if enemy_hits_player else 0), 0, enemy.data.max_momentum)
+		var player_momentum_after: int = clampi(player.momentum - (enemy_card.break_momentum if enemy_hits_player else 0), 0, player.data.max_momentum)
+		var player_hp_after: int = maxi(player.hp - enemy_damage, 0)
+		context["enemy_card_name"] = enemy_card.display_name
+		context["enemy_slot_label"] = _slot_label(enemy_slot)
+		context["enemy_target_label"] = _slot_label(enemy_target)
+		context["enemy_range_text"] = _slot_list_text(enemy_range)
+		context["enemy_hit_text"] = "我方" if enemy_hits_player and enemy_card.requires_hit_check() else "无"
+		context["enemy_damage"] = enemy_damage
+		context["show_enemy_momentum"] = enemy_card.gain_momentum > 0 or enemy_card.break_momentum > 0 or enemy_card.momentum_cost > 0
+		context["enemy_self_momentum_before"] = enemy.momentum
+		context["enemy_self_momentum_after"] = enemy_self_momentum_after
+		context["player_momentum_after_enemy"] = player_momentum_after
+		context["player_hp_after"] = player_hp_after
+	return context
+
 func _clear_range_trapezoids() -> void:
 	_recycle_range_overlay_nodes()
 
