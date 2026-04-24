@@ -5,11 +5,12 @@ const BattleSkinHelper = preload("res://scripts/visual/battle_skin.gd")
 const BattleStageHelper = preload("res://scripts/visual/battle_stage_view.gd")
 
 # Visual actor tuning for the 1600x960 battle layout.
-# Grid lower edge is around y=516, so the actor foot point is kept slightly above it.
+# Grid slot is around y=468..516. Foot point is kept just above the lower slot edge,
+# so the actor reads as standing inside the selected grid cell.
 const ACTOR_RENDER_SIZE := Vector2(600, 600)
 const ACTOR_FOOT_OFFSET_X := 300.0
-const ACTOR_GROUND_Y := 508.0
-const SHEET_HEIGHT_TOLERANCE := 8
+const ACTOR_GROUND_Y := 512.0
+const MIN_HORIZONTAL_SHEET_RATIO := 2.35
 
 static func render_size() -> Vector2:
 	return ACTOR_RENDER_SIZE
@@ -38,11 +39,25 @@ static func frame_texture(source: Texture2D, frame: int, frame_size: Vector2i, s
 	var source_size: Vector2 = source.get_size()
 	var source_width: int = int(round(source_size.x))
 	var source_height: int = int(round(source_size.y))
-	var expected_width: int = frame_size.x * sheet_frame_count
-	var height_matches: bool = abs(source_height - frame_size.y) <= SHEET_HEIGHT_TOLERANCE
-	var width_matches: bool = source_width >= expected_width
-	if height_matches and width_matches:
+	if source_width <= 0 or source_height <= 0:
+		return source
+
+	# First handle the real production case: a horizontal multi-frame actor sheet.
+	# Do not require a fixed 384px height; otherwise tall sheets fall through and get
+	# displayed as three repeated actors in one TextureRect.
+	var safe_count: int = maxi(sheet_frame_count, 1)
+	var looks_like_horizontal_sheet: bool = safe_count > 1 and float(source_width) / float(source_height) >= MIN_HORIZONTAL_SHEET_RATIO
+	if looks_like_horizontal_sheet:
+		var dynamic_frame_width: int = int(round(float(source_width) / float(safe_count)))
+		var dynamic_frame_size := Vector2i(dynamic_frame_width, source_height)
+		var safe_frame: int = clampi(frame, 0, safe_count - 1)
+		return BattleSkinHelper.atlas_frame(source, dynamic_frame_size, safe_frame)
+
+	# Keep compatibility with old fixed-size 384x384 sheets.
+	var expected_width: int = frame_size.x * safe_count
+	if source_height == frame_size.y and source_width >= expected_width:
 		return BattleSkinHelper.atlas_frame(source, frame_size, frame)
+
 	return source
 
 static func slot_top_left(scene_width: float, slot: int, is_player: bool, slot_count: int, slot_width: float, slot_gap: float) -> Vector2:
