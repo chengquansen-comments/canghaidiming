@@ -2,26 +2,30 @@
 
 ## 当前阶段
 
-从“资产规范文档”推进到“可执行资产验收工具链”。
+已经从“资产规范文档”推进到两条硬链路：
 
-本轮重点不是继续改 UI 参数，而是先建立美术资产进入项目的硬闸门：
+```text
+资产验收工具链
+动画运行时骨架
+```
+
+当前重点不再是继续微调 UI，而是让项目具备完整角色动作包的接入能力：
 
 ```text
 actor meta
 → sheet 尺寸 / 透明通道 / 帧数校验
 → bundle 完整度评分
-→ 全局资产入口检查
+→ meta 运行时读取
+→ 按 fps 播放横向动作 sheet
+→ hit_frame 信号
+→ 动画结束回 idle
 ```
-
-后续任何完整角色动作包，都应该先通过这套工具，再进入 Godot 动画系统。
 
 ---
 
-## 本轮已完成
+## 已完成一：资产验收工具链
 
 ### 1. Actor Meta 校验
-
-新增：
 
 ```text
 tools/validate_actor_meta.py
@@ -51,8 +55,6 @@ python3 tools/validate_actor_meta.py assets/pixel_battle/actors/spearman
 ---
 
 ### 2. Actor Sheet 校验
-
-新增：
 
 ```text
 tools/validate_actor_sheet.py
@@ -85,8 +87,6 @@ python3 tools/validate_actor_sheet.py assets/pixel_battle/actors/spearman
 ---
 
 ### 3. Actor Bundle 校验
-
-新增：
 
 ```text
 tools/validate_actor_bundle.py
@@ -132,8 +132,6 @@ python3 tools/validate_actor_bundle.py assets/pixel_battle/actors/spearman
 
 ### 4. 全局美术资产入口
 
-新增：
-
 ```text
 tools/validate_art_assets.py
 ```
@@ -160,9 +158,64 @@ python3 tools/validate_art_assets.py --allow-empty
 
 ---
 
+## 已完成二：动画运行时骨架
+
+### 1. ActorAnimationMeta
+
+```text
+scripts/visual/actor_animation_meta.gd
+```
+
+职责：
+
+```text
+读取 actor meta.json；
+解析 role_id / frame_size / foot_anchor / body_center / head_anchor；
+解析 animations；
+提供 animation_frames / animation_fps / animation_hit_frame / animation_fx 等统一接口；
+提供 preferred_idle / first_animation_name 等回退接口。
+```
+
+### 2. ActorAnimationPlayer
+
+```text
+scripts/visual/actor_animation_player.gd
+```
+
+职责：
+
+```text
+绑定 ActorAnimationMeta 与 TextureRect；
+按 fps 播放横向 sprite sheet；
+根据 frame_size 裁 AtlasTexture；
+支持 loop / once；
+发出 frame_changed；
+在 hit_frame 发出 hit_frame_reached；
+动作结束后发出 animation_finished。
+```
+
+### 3. ActorAnimationRuntime
+
+```text
+scripts/visual/actor_animation_runtime.gd
+```
+
+职责：
+
+```text
+绑定 actor_key / meta_path / TextureRect；
+统一 play / play_idle / play_event；
+把事件名映射到动画名；
+转发 hit_frame_reached，并带出 fx_id / impact_offset；
+动画结束后根据 recovery_to 回 idle；
+meta 缺失或非法时发出 runtime_failed。
+```
+
+---
+
 ## 当前约束
 
-这套工具面向“新规范角色动画包”，也就是：
+新工具链面向“新规范角色动画包”：
 
 ```text
 assets/pixel_battle/actors/{role_id}/
@@ -175,13 +228,15 @@ assets/pixel_battle/actors/{role_id}/
   {role_id}.meta.json
 ```
 
-旧的三帧 sheet 仍然可以在游戏里兼容显示，但不作为正式动画包验收对象。
+旧三帧 sheet 仍然由当前 visual controller 兼容显示，但不作为正式动画包验收对象。
+
+动画运行时骨架已经可用，但还没有接入当前 `battle_controller_visual_cached_ui.gd` 主流程。
 
 ---
 
 ## 下一刀建议
 
-下一步不应该继续扩展文档，而应该进入“单角色闭环”。
+下一步进入“单角色闭环”，不要同时做双角色和全战斗接入。
 
 优先级：
 
@@ -189,27 +244,30 @@ assets/pixel_battle/actors/{role_id}/
 P0：创建 spearman 第一版 actor bundle 目录结构
 P1：补 spearman.meta.json 示例
 P2：用占位 PNG 生成最低动作集，先跑通校验
-P3：新增 ActorAnimationMeta / ActorAnimationPlayer / ActorAnimationRuntime
-P4：让 Godot 优先读取 actor meta；没有 meta 时再回退旧三帧 sheet
+P3：在 visual controller 中建立 player_actor_runtime / enemy_actor_runtime
+P4：有 meta 时优先走 ActorAnimationRuntime，没有 meta 时回退旧三帧 sheet
 P5：把 attack_light 的 hit_frame 接到现有 FX 触发链路
 ```
 
-建议从 spearman 开始，不要同时做 blademaster。先打通一个角色的完整生产与播放链路，再复制到第二个职业。
+建议从 spearman 开始，不要同时做 blademaster。先打通一个角色的完整生产、校验、播放、hit_frame 链路，再复制到第二个职业。
 
 ---
 
 ## 当前判断
 
-本轮已经完成从“规范”到“验收工具”的关键跨越。
-
-后续角色资产接入不再靠肉眼判断，而是先过工具：
+本轮完成了关键跨越：
 
 ```text
-meta 是否可读
-sheet 是否规范
-动作是否完整
-hit_frame 是否可用
-bundle 是否达到 A / S 级
+规范文档
+→ 资产验收工具
+→ 动画运行时骨架
 ```
 
-这一步完成后，项目已经具备继续推进完整动作动画系统的基础。下一轮应进入 ActorAnimationRuntime，而不是继续调整静态角色显示。
+项目现在已经具备接入完整动作动画包的工程基础。下一轮应集中在一个闭环：
+
+```text
+spearman meta + 占位动作 sheet
+→ 校验通过
+→ Godot runtime 播放
+→ hit_frame 触发 FX
+```
