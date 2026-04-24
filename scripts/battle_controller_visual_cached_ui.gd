@@ -3,6 +3,10 @@ extends "res://scripts/battle_controller_visual_ui.gd"
 const BattleSkinHelper = preload("res://scripts/visual/battle_skin.gd")
 
 var _last_stage_grid_state: Dictionary = {}
+var _range_polygon_pool: Array[Polygon2D] = []
+var _range_line_pool: Array[Line2D] = []
+var _active_range_polygons: Array[Polygon2D] = []
+var _active_range_lines: Array[Line2D] = []
 
 func _sheet_frame_texture(source: Texture2D, frame: int) -> Texture2D:
 	return BattleSkinHelper.atlas_frame(source, FRAME_SIZE, frame)
@@ -18,6 +22,62 @@ func _make_card_art_style(card: CardData) -> StyleBoxFlat:
 
 func _make_momentum_dot_style(filled: bool) -> StyleBoxFlat:
 	return BattleSkinHelper.make_momentum_dot_style(filled)
+
+func _clear_range_trapezoids() -> void:
+	_recycle_range_overlay_nodes()
+
+func _refresh_range_trapezoids(player_range: Array[int], player_origin_slot: int, enemy_range: Array[int], enemy_origin_slot: int) -> void:
+	if range_overlay_layer == null:
+		return
+	_recycle_range_overlay_nodes()
+	for slot in player_range:
+		_draw_range_trapezoid(slot, player_origin_slot, Color(0.25, 0.62, 1.0, 0.24), Color(0.62, 0.86, 1.0, 0.78))
+	for slot in enemy_range:
+		_draw_range_trapezoid(slot, enemy_origin_slot, Color(1.0, 0.32, 0.22, 0.23), Color(1.0, 0.67, 0.52, 0.78))
+
+func _draw_range_trapezoid(slot: int, origin_slot: int, fill_color: Color, outline_color: Color) -> void:
+	if range_overlay_layer == null:
+		return
+	var points: PackedVector2Array = _range_trapezoid_points(slot, origin_slot)
+	var polygon: Polygon2D = _take_range_polygon()
+	polygon.polygon = points
+	polygon.color = fill_color
+	polygon.z_index = 2
+	polygon.visible = true
+	_active_range_polygons.append(polygon)
+	var outline: Line2D = _take_range_line()
+	outline.points = points
+	outline.closed = true
+	outline.width = 3.0
+	outline.default_color = outline_color
+	outline.joint_mode = Line2D.LINE_JOINT_ROUND
+	outline.z_index = 3
+	outline.visible = true
+	_active_range_lines.append(outline)
+
+func _take_range_polygon() -> Polygon2D:
+	if not _range_polygon_pool.is_empty():
+		return _range_polygon_pool.pop_back()
+	var polygon := Polygon2D.new()
+	range_overlay_layer.add_child(polygon)
+	return polygon
+
+func _take_range_line() -> Line2D:
+	if not _range_line_pool.is_empty():
+		return _range_line_pool.pop_back()
+	var line := Line2D.new()
+	range_overlay_layer.add_child(line)
+	return line
+
+func _recycle_range_overlay_nodes() -> void:
+	for polygon in _active_range_polygons:
+		polygon.visible = false
+		_range_polygon_pool.append(polygon)
+	for line in _active_range_lines:
+		line.visible = false
+		_range_line_pool.append(line)
+	_active_range_polygons.clear()
+	_active_range_lines.clear()
 
 func _refresh_stage_grid() -> void:
 	if stage_grid_cells.is_empty():
