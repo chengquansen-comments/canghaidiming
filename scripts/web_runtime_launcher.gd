@@ -2,6 +2,7 @@ extends Control
 
 const WEB_VISUAL_SCENE := "res://scenes/MainVisual.tscn"
 const WebRuntimeFlags = preload("res://scripts/web_runtime_flags.gd")
+const BattleFontHelper = preload("res://scripts/visual/battle_font_view.gd")
 const SMOKE_BATTLE_FLAG := "smoke_battle"
 
 var _status_label: Label
@@ -11,10 +12,15 @@ func _ready() -> void:
 		get_tree().change_scene_to_file(WEB_VISUAL_SCENE)
 		return
 	_build_ui()
+	_force_cjk_font()
 	WebRuntimeFlags.set_body_dataset("webSmokeBattle", "launcher-ready")
 	if WebRuntimeFlags.has_query_flag(SMOKE_BATTLE_FLAG):
 		_status_label.text += "\nSmoke：自动进入战斗入口中。"
+		_force_cjk_font()
 		call_deferred("_auto_enter_visual_scene_for_smoke")
+
+func _force_cjk_font() -> void:
+	BattleFontHelper.enforce(self)
 
 func _build_ui() -> void:
 	set_anchors_and_offsets_preset(PRESET_FULL_RECT)
