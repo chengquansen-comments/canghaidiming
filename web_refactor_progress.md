@@ -1,6 +1,6 @@
 # Web 重构进度（持续更新）
 
-## 当前阶段：Milestone C → D（性能收口阶段）
+## 当前阶段：Milestone D（性能收口进行中）
 
 ---
 
@@ -19,31 +19,24 @@
 - [x] MainVisual 已接入 cached controller
 
 ### 稳定性
-- [x] 清理 BattleSkinHelper Variant 推断 warning
+- [x] 清理所有 Variant 推断 warning（可稳定编译）
 
 ---
 
-## 当前阻塞（必须优先清掉）
+## 当前进行中（核心性能优化）
 
-### 1. HUD / Stage 仍存在 Variant 推断风险
-- battle_hud_view.gd
-- battle_stage_view.gd
+### Stage 渲染
+- [x] grid 几何缓存
+- [x] grid 差量更新（仅更新变化 slot）
 
-👉 目标：所有 Dictionary / Object 访问必须显式类型
-
-### 2. Visual Controller 仍存在重复装配
-- style 构造仍部分存在 controller 内
-- grid 每帧全量刷新
+👉 已避免每帧全量 repaint
 
 ---
 
 ## 下一阶段（高收益优化）
 
-### Stage 渲染
-- [ ] grid 差量更新（只更新变化 slot）
-
 ### Overlay
-- [ ] range overlay 对象池（禁止 free + new）
+- [ ] range overlay 对象池（当前仍是 clear + new）
 
 ### HUD
 - [ ] intent 文案完全下沉到 helper
@@ -64,4 +57,4 @@
 
 ## 当前结论
 
-👉 已进入性能收口阶段，但仍需清理类型系统与重复构造
+👉 已进入性能关键优化阶段（Stage diff 已落地）
