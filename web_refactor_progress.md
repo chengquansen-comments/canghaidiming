@@ -13,7 +13,7 @@
 
 ### Visual 架构
 - [x] BattleStageHelper（几何缓存）
-- [x] BattleHudHelper（文本缓存）
+- [x] BattleHudHelper（文本缓存 / intent 文案缓存）
 - [x] BattleSkinHelper（texture / atlas / style cache）
 - [x] cached visual controller（wrapper）
 - [x] MainVisual 已接入 cached controller
@@ -28,18 +28,22 @@
 ### Stage 渲染
 - [x] grid 几何缓存
 - [x] grid 差量更新（仅更新变化 slot）
+- [x] grid slot 状态构造下沉到 BattleStageHelper
 
 ### Overlay
 - [x] range overlay 对象池（Polygon2D / Line2D 复用）
+
+### HUD
+- [x] intent 文案下沉到 BattleHudHelper
+- [x] intent 文案缓存化
 
 ---
 
 ## 当前进行中
 
-### HUD
-- [ ] intent 文案完全下沉到 helper
-
 ### Controller
+- [x] grid 状态判断从 cached controller 下沉
+- [ ] effect preview 文案下沉
 - [ ] visual controller 只做绑定，不做构造
 
 ---
@@ -47,11 +51,11 @@
 ## 下一阶段（高收益优化）
 
 ### HUD
-- [ ] intent 文案缓存化
-- [ ] effect preview 文案下沉
+- [ ] effect preview 文案下沉到 BattleHudHelper
 
 ### Controller
 - [ ] range/grid/HUD 进一步拆薄
+- [ ] cached visual controller 只保留绑定与 diff 应用
 
 ---
 
@@ -66,4 +70,4 @@
 
 ## 当前结论
 
-👉 Stage diff 与 overlay pool 已落地，下一刀转向 HUD 文案下沉与 controller 瘦身。
+👉 Stage diff、overlay pool、intent 文案下沉、grid 状态构造下沉已落地。下一刀聚焦 effect preview 文案下沉与 controller 继续瘦身。
