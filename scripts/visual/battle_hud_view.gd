@@ -4,7 +4,7 @@ class_name BattleHudHelper
 static var _summary_cache: Dictionary = {}
 static var _button_text_cache: Dictionary = {}
 static var _detail_cache: Dictionary = {}
-static var _empty_detail_cache := ""
+static var _empty_detail_cache: String = ""
 
 static func _card_key(card: CardData) -> String:
 	if card == null:
@@ -24,9 +24,9 @@ static func _card_key(card: CardData) -> String:
 	]
 
 static func compact_effect_summary(card: CardData) -> String:
-	var key := _card_key(card)
+	var key: String = _card_key(card)
 	if _summary_cache.has(key):
-		return _summary_cache[key]
+		return _summary_cache[key] as String
 	var pieces: Array[String] = []
 	pieces.append("耗势 %d  距 %d-%d" % [card.momentum_cost, card.min_distance, card.max_distance])
 	if card.damage > 0:
@@ -40,28 +40,28 @@ static func compact_effect_summary(card: CardData) -> String:
 		if card.break_momentum > 0:
 			momentum_parts.append("削势 %d" % card.break_momentum)
 		pieces.append(" / ".join(momentum_parts))
-	var summary := "\n".join(pieces)
+	var summary: String = "\n".join(pieces)
 	_summary_cache[key] = summary
 	return summary
 
 static func compact_button_text(card: CardData, card_role_prefix: String, marker: String, is_drafted: bool) -> String:
-	var cache_key := "%s|%s|%s|%s" % [_card_key(card), card_role_prefix, marker, str(is_drafted)]
+	var cache_key: String = "%s|%s|%s|%s" % [_card_key(card), card_role_prefix, marker, str(is_drafted)]
 	if _button_text_cache.has(cache_key):
-		return _button_text_cache[cache_key]
-	var title := "%s %s" % [card_role_prefix, card.display_name]
+		return _button_text_cache[cache_key] as String
+	var title: String = "%s %s" % [card_role_prefix, card.display_name]
 	if is_drafted:
 		title = "[已选] " + title
 	var lines: Array[String] = [title, compact_effect_summary(card)]
 	if marker != "":
 		lines.append(marker)
-	var text := "\n".join(lines)
+	var text: String = "\n".join(lines)
 	_button_text_cache[cache_key] = text
 	return text
 
 static func card_detail_text(card: CardData) -> String:
-	var key := _card_key(card)
+	var key: String = _card_key(card)
 	if _detail_cache.has(key):
-		return _detail_cache[key]
+		return _detail_cache[key] as String
 	var lines: Array[String] = []
 	lines.append("[font_size=30][b]%s[/b][/font_size]" % card.display_name)
 	lines.append("[color=#7f261d]%s[/color]" % card.type_label())
@@ -87,7 +87,7 @@ static func card_detail_text(card: CardData) -> String:
 	lines.append("")
 	lines.append("[b]招式描述[/b]")
 	lines.append(card.description)
-	var detail := "\n".join(lines)
+	var detail: String = "\n".join(lines)
 	_detail_cache[key] = detail
 	return detail
 
