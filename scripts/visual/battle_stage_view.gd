@@ -4,6 +4,7 @@ class_name BattleStageHelper
 static var _grid_width_cache: Dictionary = {}
 static var _slot_center_cache: Dictionary = {}
 static var _slot_top_left_cache: Dictionary = {}
+static var _slot_state_cache: Dictionary = {}
 
 static func grid_total_width(slot_count: int, slot_width: float, slot_gap: float) -> float:
 	var key: String = "%d|%.3f|%.3f" % [slot_count, slot_width, slot_gap]
@@ -33,7 +34,40 @@ static func slot_top_left(scene_width: float, slot: int, is_player: bool, slot_c
 	_slot_top_left_cache[key] = result
 	return result
 
+static func build_slot_state(i: int, player_slot: int, enemy_slot: int, player_range: Array[int], enemy_range: Array[int], grid_base_color: Color, player_color: Color, enemy_color: Color) -> Dictionary:
+	var key: String = "%d|%d|%d|%s|%s" % [i, player_slot, enemy_slot, str(player_range), str(enemy_range)]
+	if _slot_state_cache.has(key):
+		return _slot_state_cache[key] as Dictionary
+
+	var in_player_range: bool = player_range.has(i)
+	var in_enemy_range: bool = enemy_range.has(i)
+	var has_player: bool = i == player_slot
+	var has_enemy: bool = i == enemy_slot
+
+	var fill: Color = grid_base_color
+	if has_player:
+		fill = player_color
+	if has_enemy:
+		fill = enemy_color
+
+	var label_text: String = ""
+	if (has_enemy and in_player_range) or (has_player and in_enemy_range):
+		label_text = "×"
+	elif in_player_range or in_enemy_range:
+		label_text = "·"
+
+	var state: Dictionary = {
+		"fill": fill,
+		"label": label_text,
+		"has_player": has_player,
+		"has_enemy": has_enemy
+	}
+
+	_slot_state_cache[key] = state
+	return state
+
 static func clear_geometry_cache() -> void:
 	_grid_width_cache.clear()
 	_slot_center_cache.clear()
 	_slot_top_left_cache.clear()
+	_slot_state_cache.clear()
