@@ -1,6 +1,7 @@
 extends "res://scripts/battle_controller_visual_ui.gd"
 
 const BattleActorRenderHelper = preload("res://scripts/visual/battle_actor_view.gd")
+const BattleFontHelper = preload("res://scripts/visual/battle_font_view.gd")
 
 var _last_stage_grid_state: Dictionary = {}
 var _range_polygon_pool: Array[Polygon2D] = []
@@ -8,10 +9,26 @@ var _range_line_pool: Array[Line2D] = []
 var _active_range_polygons: Array[Polygon2D] = []
 var _active_range_lines: Array[Line2D] = []
 
+func _ready() -> void:
+	super()
+	_force_cjk_font()
+
+func _force_cjk_font() -> void:
+	BattleFontHelper.enforce(self)
+
+func _build_ui() -> void:
+	super()
+	_force_cjk_font()
+
+func _refresh_visual_ui() -> void:
+	super()
+	_force_cjk_font()
+
 func _build_stage_layer() -> void:
 	super()
 	BattleActorRenderHelper.apply_render_bounds(player_sprite, player_fallback_actor)
 	BattleActorRenderHelper.apply_render_bounds(enemy_sprite, enemy_fallback_actor)
+	_force_cjk_font()
 
 func _sheet_frame_texture(source: Texture2D, frame: int) -> Texture2D:
 	return BattleActorRenderHelper.frame_texture(source, frame, FRAME_SIZE, SHEET_FRAME_COUNT)
@@ -176,6 +193,7 @@ func _refresh_stage_grid(show_ranges: bool = true) -> void:
 		if not _last_stage_grid_state.has(i) or (_last_stage_grid_state[i] as Dictionary).get("key", "") != state_key:
 			_apply_stage_grid_slot(i, fill, has_player, has_enemy, label_text)
 	_last_stage_grid_state = next_state
+	_force_cjk_font()
 
 func _apply_stage_grid_slot(slot: int, fill: Color, has_player: bool, has_enemy: bool, label_text: String) -> void:
 	if slot < 0 or slot >= stage_grid_cells.size() or slot >= stage_grid_labels.size():
