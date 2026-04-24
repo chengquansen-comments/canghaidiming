@@ -6,6 +6,7 @@ static var _button_text_cache: Dictionary = {}
 static var _detail_cache: Dictionary = {}
 static var _empty_detail_cache: String = ""
 static var _intent_text_cache: Dictionary = {}
+static var _effect_preview_cache: Dictionary = {}
 
 static func _card_key(card: CardData) -> String:
 	if card == null:
@@ -26,29 +27,72 @@ static func _card_key(card: CardData) -> String:
 
 static func intent_bubble_text(card: CardData, actor_slot: int, opponent_slot: int, target_slot: int) -> String:
 	if card == null:
-		return ""
+		return "观察中"
 	var key: String = "%s|%d|%d|%d" % [_card_key(card), actor_slot, opponent_slot, target_slot]
 	if _intent_text_cache.has(key):
 		return _intent_text_cache[key] as String
-	var lines: Array[String] = []
-	var move_line: String = ""
-	if card.is_movement_card():
-		move_line = "位移至 %d" % target_slot
-	if move_line != "":
-		lines.append(move_line)
-	var effect_parts: Array[String] = []
-	if card.damage > 0:
-		effect_parts.append("伤害 %d" % card.damage)
-	if card.guard > 0:
-		effect_parts.append("格挡 %d" % card.guard)
-	if card.gain_momentum > 0:
-		effect_parts.append("增势 %d" % card.gain_momentum)
-	if card.break_momentum > 0:
-		effect_parts.append("削势 %d" % card.break_momentum)
-	if not effect_parts.is_empty():
-		lines.append(" / ".join(effect_parts))
-	var text: String = "\n".join(lines)
+	var parts: Array[String] = []
+	parts.append(_intent_move_text(actor_slot, opponent_slot, target_slot))
+	parts.append(card.display_name)
+	parts.append_array(_intent_effect_parts(card))
+	var text: String = "｜".join(parts)
 	_intent_text_cache[key] = text
+	return text
+
+static func _intent_move_text(actor_slot: int, opponent_slot: int, target_slot: int) -> String:
+	var delta: int = target_slot - actor_slot
+	if delta == 0:
+		return "原地"
+	var facing_dir: int = signi(opponent_slot - actor_slot)
+	if facing_dir == 0:
+		return "原地"
+	var steps: int = absi(delta)
+	return "进%d" % steps if signi(delta) == facing_dir else "退%d" % steps
+
+static func _intent_effect_parts(card: CardData) -> Array[String]:
+	var parts: Array[String] = []
+	if card.guard > 0:
+		parts.append("格挡%d" % card.guard)
+	if card.gain_momentum > 0:
+		parts.append("势+%d" % card.gain_momentum)
+	if card.break_momentum > 0:
+		parts.append("势-%d" % card.break_momentum)
+	if card.damage > 0:
+		parts.append("伤害%d" % card.damage)
+	if parts.is_empty():
+		parts.append("无效果")
+	return parts
+
+static func effect_preview_text(context: Dictionary) -> String:
+	var key: String = str(context)
+	if _effect_preview_cache.has(key):
+		return _effect_preview_cache[key] as String
+	if context.is_empty() or not context.get("has_data", false):
+		return "[font_size=18][b]效果预览[/b][/font_size]\n等待战斗数据。"
+	var lines: Array[String] = []
+	lines.append("[font_size=18][b]效果预览[/b][/font_size]")
+	lines.append("当前：%s，距离 %d" % [context.get("current_card_name", "未选招，按不动预览"), int(context.get("distance", 0))])
+	lines.append("我方位置：%s → %s" % [context.get("player_slot_label", "未知"), context.get("player_target_label", "未知")])
+	lines.append("影响格位：%s" % context.get("player_range_text", "无"))
+	lines.append("预计命中：%s" % context.get("player_hit_text", "无"))
+	lines.append("预计伤害：%d" % int(context.get("player_damage", 0)))
+	if bool(context.get("show_player_momentum", false)):
+		lines.append("我方势：%d → %d" % [int(context.get("player_momentum_before", 0)), int(context.get("player_momentum_after", 0))])
+		lines.append("敌方势：%d → %d" % [int(context.get("enemy_momentum_before", 0)), int(context.get("enemy_momentum_after", 0))])
+	lines.append("敌方气血：%d/%d → %d/%d" % [int(context.get("enemy_hp_before", 0)), int(context.get("enemy_max_hp", 0)), int(context.get("enemy_hp_after", 0)), int(context.get("enemy_max_hp", 0))])
+	if bool(context.get("has_enemy_card", false)):
+		lines.append("")
+		lines.append("[b]敌方可见意图[/b]：%s" % context.get("enemy_card_name", "未知"))
+		lines.append("敌方位置：%s → %s" % [context.get("enemy_slot_label", "未知"), context.get("enemy_target_label", "未知")])
+		lines.append("敌方影响格位：%s" % context.get("enemy_range_text", "无"))
+		lines.append("敌方预计命中：%s" % context.get("enemy_hit_text", "无"))
+		lines.append("敌方预计伤害：%d" % int(context.get("enemy_damage", 0)))
+		if bool(context.get("show_enemy_momentum", false)):
+			lines.append("敌方势：%d → %d" % [int(context.get("enemy_self_momentum_before", 0)), int(context.get("enemy_self_momentum_after", 0))])
+			lines.append("我方势：%d → %d" % [int(context.get("player_momentum_before", 0)), int(context.get("player_momentum_after_enemy", 0))])
+		lines.append("我方气血：%d/%d → %d/%d" % [int(context.get("player_hp_before", 0)), int(context.get("player_max_hp", 0)), int(context.get("player_hp_after", 0)), int(context.get("player_max_hp", 0))])
+	var text: String = "\n".join(lines)
+	_effect_preview_cache[key] = text
 	return text
 
 static func compact_effect_summary(card: CardData) -> String:
@@ -137,4 +181,5 @@ static func clear_text_cache() -> void:
 	_button_text_cache.clear()
 	_detail_cache.clear()
 	_intent_text_cache.clear()
+	_effect_preview_cache.clear()
 	_empty_detail_cache = ""
