@@ -1,6 +1,6 @@
 # Web 重构进度（持续更新）
 
-## 当前阶段：Milestone D（性能收口进行中）
+## 当前阶段：Milestone D（性能收口后段）
 
 ---
 
@@ -12,8 +12,8 @@
 - [x] Web shell + 本地预览链路
 
 ### Visual 架构
-- [x] BattleStageHelper（几何缓存）
-- [x] BattleHudHelper（文本缓存 / intent 文案缓存）
+- [x] BattleStageHelper（几何缓存 / grid slot 状态构造）
+- [x] BattleHudHelper（文本缓存 / intent 文案缓存 / effect preview 文案格式化）
 - [x] BattleSkinHelper（texture / atlas / style cache）
 - [x] cached visual controller（wrapper）
 - [x] MainVisual 已接入 cached controller
@@ -36,6 +36,8 @@
 ### HUD
 - [x] intent 文案下沉到 BattleHudHelper
 - [x] intent 文案缓存化
+- [x] effect preview 文案下沉到 BattleHudHelper
+- [x] effect preview 文案缓存化
 
 ---
 
@@ -43,18 +45,16 @@
 
 ### Controller
 - [x] grid 状态判断从 cached controller 下沉
-- [ ] effect preview 文案下沉
-- [ ] visual controller 只做绑定，不做构造
+- [x] effect preview 文案从 cached controller 下沉
+- [ ] cached visual controller 继续瘦身，仅保留 context 构造、diff 和 apply
 
 ---
 
 ## 下一阶段（高收益优化）
 
-### HUD
-- [ ] effect preview 文案下沉到 BattleHudHelper
-
 ### Controller
-- [ ] range/grid/HUD 进一步拆薄
+- [ ] 继续拆薄 cached visual controller
+- [ ] 将 effect preview context 构造继续下沉为 BattleHudHelper / BattleStageHelper 协同生成
 - [ ] cached visual controller 只保留绑定与 diff 应用
 
 ---
@@ -70,4 +70,4 @@
 
 ## 当前结论
 
-👉 Stage diff、overlay pool、intent 文案下沉、grid 状态构造下沉已落地。下一刀聚焦 effect preview 文案下沉与 controller 继续瘦身。
+👉 Stage diff、overlay pool、intent 文案下沉、grid 状态构造下沉、effect preview 文案下沉已落地。下一刀聚焦 cached visual controller 继续瘦身，把 context 构造继续向 helper 收拢。
