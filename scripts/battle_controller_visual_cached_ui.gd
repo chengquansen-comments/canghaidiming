@@ -2,6 +2,7 @@ extends "res://scripts/battle_controller_visual_ui.gd"
 
 const BattleSkinHelper = preload("res://scripts/visual/battle_skin.gd")
 const BattleHudHelper = preload("res://scripts/visual/battle_hud_view.gd")
+const BattleStageHelper = preload("res://scripts/visual/battle_stage_view.gd")
 
 var _last_stage_grid_state: Dictionary = {}
 var _range_polygon_pool: Array[Polygon2D] = []
@@ -98,23 +99,14 @@ func _refresh_stage_grid() -> void:
 	_refresh_range_trapezoids(player_range, player_target_slot, enemy_range, enemy_target_slot)
 	var next_state: Dictionary = {}
 	for i in range(GRID_SLOT_COUNT):
-		var in_player_range: bool = player_range.has(i)
-		var in_enemy_range: bool = enemy_range.has(i)
-		var has_player: bool = i == player_target_slot
-		var has_enemy: bool = i == enemy_target_slot
-		var fill: Color = GRID_BASE_COLOR
-		if has_player:
-			fill = PLAYER_POS_COLOR
-		if has_enemy:
-			fill = ENEMY_POS_COLOR
-		var label_text: String = ""
-		if (has_enemy and in_player_range) or (has_player and in_enemy_range):
-			label_text = "×"
-		elif in_player_range or in_enemy_range:
-			label_text = "·"
-		var state_key: String = "%s|%s|%s|%s|%s|%s" % [fill.to_html(), str(i), str(has_player), str(has_enemy), str(in_player_range), str(in_enemy_range)]
-		next_state[i] = {"key": state_key, "fill": fill, "label": label_text, "has_player": has_player, "has_enemy": has_enemy}
-		if not _last_stage_grid_state.has(i) or (_last_stage_grid_state[i] as Dictionary).get("key", "") != state_key or (_last_stage_grid_state[i] as Dictionary).get("label", "") != label_text:
+		var slot_state: Dictionary = BattleStageHelper.build_slot_state(i, player_target_slot, enemy_target_slot, player_range, enemy_range, GRID_BASE_COLOR, PLAYER_POS_COLOR, ENEMY_POS_COLOR)
+		var fill: Color = slot_state.get("fill", GRID_BASE_COLOR) as Color
+		var label_text: String = slot_state.get("label", "") as String
+		var has_player: bool = slot_state.get("has_player", false) as bool
+		var has_enemy: bool = slot_state.get("has_enemy", false) as bool
+		var state_key: String = "%s|%s|%s|%s" % [fill.to_html(), label_text, str(has_player), str(has_enemy)]
+		next_state[i] = {"key": state_key}
+		if not _last_stage_grid_state.has(i) or (_last_stage_grid_state[i] as Dictionary).get("key", "") != state_key:
 			_apply_stage_grid_slot(i, fill, has_player, has_enemy, label_text)
 	_last_stage_grid_state = next_state
 
