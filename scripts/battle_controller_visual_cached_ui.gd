@@ -2,16 +2,25 @@ extends "res://scripts/battle_controller_visual_ui.gd"
 
 const BattleActorRenderHelper = preload("res://scripts/visual/battle_actor_view.gd")
 const BattleFontHelper = preload("res://scripts/visual/battle_font_view.gd")
+const ActorAnimationRuntime = preload("res://scripts/visual/actor_animation_runtime.gd")
 
 var _last_stage_grid_state: Dictionary = {}
 var _range_polygon_pool: Array[Polygon2D] = []
 var _range_line_pool: Array[Line2D] = []
 var _active_range_polygons: Array[Polygon2D] = []
 var _active_range_lines: Array[Line2D] = []
+var _player_actor_runtime: ActorAnimationRuntime = null
+var _enemy_actor_runtime: ActorAnimationRuntime = null
+var _player_actor_runtime_meta_path := ""
+var _enemy_actor_runtime_meta_path := ""
 
 func _ready() -> void:
 	super()
 	_force_cjk_font()
+
+func _process(delta: float) -> void:
+	super(delta)
+	_update_actor_animation_runtimes(delta)
 
 func _force_cjk_font() -> void:
 	BattleFontHelper.enforce(self)
@@ -22,7 +31,13 @@ func _build_ui() -> void:
 
 func _refresh_visual_ui() -> void:
 	super()
+	_ensure_actor_animation_runtimes()
 	_force_cjk_font()
+
+func _refresh_character_visuals() -> void:
+	super()
+	_ensure_actor_animation_runtimes()
+	_play_actor_idle_if_runtime_ready()
 
 func _build_stage_layer() -> void:
 	super()
@@ -200,3 +215,83 @@ func _apply_stage_grid_slot(slot: int, fill: Color, has_player: bool, has_enemy:
 		return
 	stage_grid_cells[slot].add_theme_stylebox_override("panel", _make_grid_cell_style(fill, slot, has_player, has_enemy, false, false))
 	stage_grid_labels[slot].text = label_text
+
+func _update_actor_animation_runtimes(delta: float) -> void:
+	if _player_actor_runtime != null and _player_actor_runtime.is_ready:
+		_player_actor_runtime.update(delta)
+	if _enemy_actor_runtime != null and _enemy_actor_runtime.is_ready:
+		_enemy_actor_runtime.update(delta)
+
+func _ensure_actor_animation_runtimes() -> void:
+	_ensure_single_actor_runtime(true)
+	_ensure_single_actor_runtime(false)
+
+func _ensure_single_actor_runtime(is_player_actor: bool) -> void:
+	var fighter: Fighter = player if is_player_actor else enemy
+	var sprite: TextureRect = player_sprite if is_player_actor else enemy_sprite
+	if fighter == null or sprite == null:
+		_clear_actor_runtime(is_player_actor)
+		return
+	var meta_path: String = _actor_meta_path_for(fighter, not is_player_actor)
+	if meta_path == "":
+		_clear_actor_runtime(is_player_actor)
+		return
+	if is_player_actor:
+		if _player_actor_runtime != null and _player_actor_runtime_meta_path == meta_path:
+			return
+		_player_actor_runtime = _create_actor_runtime("player", meta_path, sprite)
+		_player_actor_runtime_meta_path = meta_path if _player_actor_runtime != null and _player_actor_runtime.is_ready else ""
+	else:
+		if _enemy_actor_runtime != null and _enemy_actor_runtime_meta_path == meta_path:
+			return
+		_enemy_actor_runtime = _create_actor_runtime("enemy", meta_path, sprite)
+		_enemy_actor_runtime_meta_path = meta_path if _enemy_actor_runtime != null and _enemy_actor_runtime.is_ready else ""
+
+func _create_actor_runtime(actor_key: String, meta_path: String, sprite: TextureRect) -> ActorAnimationRuntime:
+	var runtime: ActorAnimationRuntime = ActorAnimationRuntime.new()
+	runtime.runtime_ready.connect(_on_actor_runtime_ready)
+	runtime.runtime_failed.connect(_on_actor_runtime_failed)
+	runtime.hit_frame_reached.connect(_on_actor_runtime_hit_frame)
+	runtime.animation_finished.connect(_on_actor_runtime_animation_finished)
+	var ok: bool = runtime.bind(actor_key, meta_path, sprite)
+	return runtime if ok else null
+
+func _clear_actor_runtime(is_player_actor: bool) -> void:
+	if is_player_actor:
+		_player_actor_runtime = null
+		_player_actor_runtime_meta_path = ""
+	else:
+		_enemy_actor_runtime = null
+		_enemy_actor_runtime_meta_path = ""
+
+func _play_actor_idle_if_runtime_ready() -> void:
+	if _player_actor_runtime != null and _player_actor_runtime.is_ready:
+		_player_actor_runtime.play_idle(false)
+	if _enemy_actor_runtime != null and _enemy_actor_runtime.is_ready:
+		_enemy_actor_runtime.play_idle(false)
+
+func _actor_meta_path_for(fighter: Fighter, prefer_enemy_variant: bool) -> String:
+	if fighter == null or fighter.data == null:
+		return ""
+	var role_id: String = str(fighter.data.id)
+	if role_id == "":
+		return ""
+	if prefer_enemy_variant:
+		var enemy_role_id: String = "enemy_%s" % role_id
+		var enemy_path: String = "res://assets/pixel_battle/actors/%s/%s.meta.json" % [enemy_role_id, enemy_role_id]
+		if FileAccess.file_exists(enemy_path):
+			return enemy_path
+	var default_path: String = "res://assets/pixel_battle/actors/%s/%s.meta.json" % [role_id, role_id]
+	return default_path if FileAccess.file_exists(default_path) else ""
+
+func _on_actor_runtime_ready(actor_key: String, role_id: String) -> void:
+	print("[actor-runtime] ready %s role=%s" % [actor_key, role_id])
+
+func _on_actor_runtime_failed(actor_key: String, message: String) -> void:
+	print("[actor-runtime] failed %s: %s" % [actor_key, message])
+
+func _on_actor_runtime_hit_frame(actor_key: String, animation_name: String, frame_index: int, fx_id: String, impact_offset: Vector2) -> void:
+	print("[actor-runtime] hit_frame %s %s frame=%d fx=%s offset=%s" % [actor_key, animation_name, frame_index, fx_id, str(impact_offset)])
+
+func _on_actor_runtime_animation_finished(actor_key: String, animation_name: String) -> void:
+	print("[actor-runtime] finished %s %s" % [actor_key, animation_name])
