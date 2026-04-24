@@ -89,42 +89,42 @@ func _refresh_range_trapezoids(player_range: Array[int], player_origin_slot: int
 	_recycle_range_overlay_nodes()
 	var player_style: Dictionary = BattleStageHelper.range_overlay_style(true)
 	for slot in player_range:
-		_draw_range_trapezoid(slot, player_origin_slot, player_style)
+		_draw_range_trapezoid(slot, player_origin_slot, int(player_style.get("polygon_z", 2)), player_style.get("fill_color", Color(1, 1, 1, 0.2)) as Color, player_style.get("outline_color", Color(1, 1, 1, 0.7)) as Color)
 	var enemy_style: Dictionary = BattleStageHelper.range_overlay_style(false)
 	for slot in enemy_range:
-		_draw_range_trapezoid(slot, enemy_origin_slot, enemy_style)
+		_draw_range_trapezoid(slot, enemy_origin_slot, int(enemy_style.get("polygon_z", 2)), enemy_style.get("fill_color", Color(1, 1, 1, 0.2)) as Color, enemy_style.get("outline_color", Color(1, 1, 1, 0.7)) as Color)
 
-func _draw_range_trapezoid(slot: int, origin_slot: int, style: Dictionary) -> void:
+func _draw_range_trapezoid(slot: int, origin_slot: int, z_index: int, fill_color: Color, outline_color: Color) -> void:
 	if range_overlay_layer == null:
 		return
 	var points: PackedVector2Array = _range_trapezoid_points(slot, origin_slot)
 	var polygon: Polygon2D = _take_range_polygon()
 	polygon.polygon = points
-	polygon.color = style.get("fill_color", Color(1, 1, 1, 0.2)) as Color
-	polygon.z_index = int(style.get("polygon_z", 2))
+	polygon.color = fill_color
+	polygon.z_index = z_index
 	polygon.visible = true
 	_active_range_polygons.append(polygon)
 	var outline: Line2D = _take_range_line()
 	outline.points = points
 	outline.closed = true
-	outline.width = float(style.get("line_width", 3.0))
-	outline.default_color = style.get("outline_color", Color(1, 1, 1, 0.7)) as Color
+	outline.width = 3.0
+	outline.default_color = outline_color
 	outline.joint_mode = Line2D.LINE_JOINT_ROUND
-	outline.z_index = int(style.get("line_z", 3))
+	outline.z_index = z_index + 1
 	outline.visible = true
 	_active_range_lines.append(outline)
 
 func _take_range_polygon() -> Polygon2D:
 	if not _range_polygon_pool.is_empty():
 		return _range_polygon_pool.pop_back()
-	var polygon := Polygon2D.new()
+	var polygon: Polygon2D = Polygon2D.new()
 	range_overlay_layer.add_child(polygon)
 	return polygon
 
 func _take_range_line() -> Line2D:
 	if not _range_line_pool.is_empty():
 		return _range_line_pool.pop_back()
-	var line := Line2D.new()
+	var line: Line2D = Line2D.new()
 	range_overlay_layer.add_child(line)
 	return line
 
