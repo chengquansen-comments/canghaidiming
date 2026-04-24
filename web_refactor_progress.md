@@ -13,7 +13,7 @@
 
 ### Visual 架构
 - [x] BattleStageHelper（几何缓存 / grid slot 状态构造）
-- [x] BattleHudHelper（文本缓存 / intent 文案缓存 / effect preview 文案格式化）
+- [x] BattleHudHelper（文本缓存 / intent 文案缓存 / effect preview 文案格式化 / effect preview context 推导）
 - [x] BattleSkinHelper（texture / atlas / style cache）
 - [x] cached visual controller（wrapper）
 - [x] MainVisual 已接入 cached controller
@@ -38,6 +38,7 @@
 - [x] intent 文案缓存化
 - [x] effect preview 文案下沉到 BattleHudHelper
 - [x] effect preview 文案缓存化
+- [x] effect preview context 推导下沉到 BattleHudHelper
 
 ---
 
@@ -46,7 +47,8 @@
 ### Controller
 - [x] grid 状态判断从 cached controller 下沉
 - [x] effect preview 文案从 cached controller 下沉
-- [ ] cached visual controller 继续瘦身，仅保留 context 构造、diff 和 apply
+- [x] effect preview context 推导从 cached controller 下沉
+- [ ] cached visual controller 继续瘦身，仅保留原始输入采集、diff 和 apply
 
 ---
 
@@ -54,7 +56,7 @@
 
 ### Controller
 - [ ] 继续拆薄 cached visual controller
-- [ ] 将 effect preview context 构造继续下沉为 BattleHudHelper / BattleStageHelper 协同生成
+- [ ] 将 range overlay 颜色/绘制配置下沉
 - [ ] cached visual controller 只保留绑定与 diff 应用
 
 ---
@@ -70,4 +72,4 @@
 
 ## 当前结论
 
-👉 Stage diff、overlay pool、intent 文案下沉、grid 状态构造下沉、effect preview 文案下沉已落地。下一刀聚焦 cached visual controller 继续瘦身，把 context 构造继续向 helper 收拢。
+👉 Stage diff、overlay pool、intent 文案下沉、grid 状态构造下沉、effect preview 文案与 context 下沉已落地。下一刀聚焦 cached visual controller 最后瘦身：range overlay 配置下沉与绑定层收口。
