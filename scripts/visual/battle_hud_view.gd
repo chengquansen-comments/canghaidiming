@@ -5,6 +5,7 @@ static var _summary_cache: Dictionary = {}
 static var _button_text_cache: Dictionary = {}
 static var _detail_cache: Dictionary = {}
 static var _empty_detail_cache: String = ""
+static var _intent_text_cache: Dictionary = {}
 
 static func _card_key(card: CardData) -> String:
 	if card == null:
@@ -22,6 +23,33 @@ static func _card_key(card: CardData) -> String:
 		str(card.break_momentum),
 		"/".join(tags)
 	]
+
+static func intent_bubble_text(card: CardData, actor_slot: int, opponent_slot: int, target_slot: int) -> String:
+	if card == null:
+		return ""
+	var key: String = "%s|%d|%d|%d" % [_card_key(card), actor_slot, opponent_slot, target_slot]
+	if _intent_text_cache.has(key):
+		return _intent_text_cache[key] as String
+	var lines: Array[String] = []
+	var move_line: String = ""
+	if card.is_movement_card():
+		move_line = "位移至 %d" % target_slot
+	if move_line != "":
+		lines.append(move_line)
+	var effect_parts: Array[String] = []
+	if card.damage > 0:
+		effect_parts.append("伤害 %d" % card.damage)
+	if card.guard > 0:
+		effect_parts.append("格挡 %d" % card.guard)
+	if card.gain_momentum > 0:
+		effect_parts.append("增势 %d" % card.gain_momentum)
+	if card.break_momentum > 0:
+		effect_parts.append("削势 %d" % card.break_momentum)
+	if not effect_parts.is_empty():
+		lines.append(" / ".join(effect_parts))
+	var text: String = "\n".join(lines)
+	_intent_text_cache[key] = text
+	return text
 
 static func compact_effect_summary(card: CardData) -> String:
 	var key: String = _card_key(card)
@@ -108,4 +136,5 @@ static func clear_text_cache() -> void:
 	_summary_cache.clear()
 	_button_text_cache.clear()
 	_detail_cache.clear()
+	_intent_text_cache.clear()
 	_empty_detail_cache = ""
