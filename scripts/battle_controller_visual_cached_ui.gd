@@ -1,8 +1,6 @@
 extends "res://scripts/battle_controller_visual_ui.gd"
 
-const ACTOR_RENDER_SIZE := Vector2(300, 300)
-const ACTOR_FOOT_OFFSET_X := 150.0
-const ACTOR_GROUND_Y := 552.0
+const BattleActorRenderHelper = preload("res://scripts/visual/battle_actor_view.gd")
 
 var _last_stage_grid_state: Dictionary = {}
 var _range_polygon_pool: Array[Polygon2D] = []
@@ -12,35 +10,17 @@ var _active_range_lines: Array[Line2D] = []
 
 func _build_stage_layer() -> void:
 	super()
-	_apply_actor_render_bounds(player_sprite, player_fallback_actor)
-	_apply_actor_render_bounds(enemy_sprite, enemy_fallback_actor)
-
-func _apply_actor_render_bounds(sprite: TextureRect, fallback: Control) -> void:
-	if sprite != null:
-		sprite.custom_minimum_size = ACTOR_RENDER_SIZE
-		sprite.size = ACTOR_RENDER_SIZE
-		sprite.clip_contents = false
-		sprite.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	if fallback != null:
-		fallback.custom_minimum_size = ACTOR_RENDER_SIZE
-		fallback.size = ACTOR_RENDER_SIZE
-		fallback.clip_contents = false
+	BattleActorRenderHelper.apply_render_bounds(player_sprite, player_fallback_actor)
+	BattleActorRenderHelper.apply_render_bounds(enemy_sprite, enemy_fallback_actor)
 
 func _sheet_frame_texture(source: Texture2D, frame: int) -> Texture2D:
-	if source == null:
-		return null
-	var source_size: Vector2 = source.get_size()
-	var is_standard_horizontal_sheet: bool = int(round(source_size.y)) == FRAME_SIZE.y and int(round(source_size.x)) >= FRAME_SIZE.x * SHEET_FRAME_COUNT
-	if not is_standard_horizontal_sheet:
-		return source
-	return BattleSkinHelper.atlas_frame(source, FRAME_SIZE, frame)
+	return BattleActorRenderHelper.frame_texture(source, frame, FRAME_SIZE, SHEET_FRAME_COUNT)
 
 func _slot_top_left(slot: int, is_player: bool) -> Vector2:
-	return BattleStageHelper.slot_top_left(size.x, slot, is_player, GRID_SLOT_COUNT, GRID_SLOT_WIDTH, GRID_SLOT_GAP, ACTOR_GROUND_Y, ACTOR_RENDER_SIZE.y, ACTOR_FOOT_OFFSET_X, ACTOR_FOOT_OFFSET_X)
+	return BattleActorRenderHelper.slot_top_left(size.x, slot, is_player, GRID_SLOT_COUNT, GRID_SLOT_WIDTH, GRID_SLOT_GAP)
 
 func _animated_actor_top_left(is_player: bool, start_slot: int, target_slot: int, active: bool) -> Vector2:
-	return BattleStageHelper.animated_actor_top_left(size.x, is_player, start_slot, target_slot, active, _preview_cycle_phase(), GRID_SLOT_COUNT, GRID_SLOT_WIDTH, GRID_SLOT_GAP, ACTOR_GROUND_Y, ACTOR_RENDER_SIZE.y, ACTOR_FOOT_OFFSET_X, ACTOR_FOOT_OFFSET_X)
+	return BattleActorRenderHelper.animated_actor_top_left(size.x, is_player, start_slot, target_slot, active, _preview_cycle_phase(), GRID_SLOT_COUNT, GRID_SLOT_WIDTH, GRID_SLOT_GAP)
 
 func _make_flat_card_style(fill: Color, border: Color, border_width: int) -> StyleBoxFlat:
 	return BattleSkinHelper.make_flat_card_style(fill, border, border_width)
