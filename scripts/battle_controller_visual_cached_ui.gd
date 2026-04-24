@@ -1,9 +1,5 @@
 extends "res://scripts/battle_controller_visual_ui.gd"
 
-const BattleSkinHelper = preload("res://scripts/visual/battle_skin.gd")
-const BattleHudHelper = preload("res://scripts/visual/battle_hud_view.gd")
-const BattleStageHelper = preload("res://scripts/visual/battle_stage_view.gd")
-
 var _last_stage_grid_state: Dictionary = {}
 var _range_polygon_pool: Array[Polygon2D] = []
 var _range_line_pool: Array[Line2D] = []
