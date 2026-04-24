@@ -5,6 +5,7 @@ static var _grid_width_cache: Dictionary = {}
 static var _slot_center_cache: Dictionary = {}
 static var _slot_top_left_cache: Dictionary = {}
 static var _slot_state_cache: Dictionary = {}
+static var _range_overlay_style_cache: Dictionary = {}
 
 static func grid_total_width(slot_count: int, slot_width: float, slot_gap: float) -> float:
 	var key: String = "%d|%.3f|%.3f" % [slot_count, slot_width, slot_gap]
@@ -66,8 +67,33 @@ static func build_slot_state(i: int, player_slot: int, enemy_slot: int, player_r
 	_slot_state_cache[key] = state
 	return state
 
+static func range_overlay_style(is_player: bool) -> Dictionary:
+	var key: String = "player" if is_player else "enemy"
+	if _range_overlay_style_cache.has(key):
+		return _range_overlay_style_cache[key] as Dictionary
+	var style: Dictionary = {}
+	if is_player:
+		style = {
+			"fill_color": Color(0.25, 0.62, 1.0, 0.24),
+			"outline_color": Color(0.62, 0.86, 1.0, 0.78),
+			"line_width": 3.0,
+			"polygon_z": 2,
+			"line_z": 3
+		}
+	else:
+		style = {
+			"fill_color": Color(1.0, 0.32, 0.22, 0.23),
+			"outline_color": Color(1.0, 0.67, 0.52, 0.78),
+			"line_width": 3.0,
+			"polygon_z": 2,
+			"line_z": 3
+		}
+	_range_overlay_style_cache[key] = style
+	return style
+
 static func clear_geometry_cache() -> void:
 	_grid_width_cache.clear()
 	_slot_center_cache.clear()
 	_slot_top_left_cache.clear()
 	_slot_state_cache.clear()
+	_range_overlay_style_cache.clear()
