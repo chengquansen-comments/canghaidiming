@@ -2,6 +2,7 @@ extends Control
 class_name NarrativeDemoController
 
 const NarrativeStateScript := preload("res://scripts/narrative/narrative_state.gd")
+const BattleFontHelper := preload("res://scripts/visual/battle_font_view.gd")
 
 var narrative: NarrativeState
 var root_panel: PanelContainer
@@ -19,7 +20,11 @@ var waiting_result := false
 
 func _ready() -> void:
 	_build_ui()
+	_force_cjk_font()
 	_start_narrative()
+
+func _force_cjk_font() -> void:
+	BattleFontHelper.enforce(self)
 
 func _build_ui() -> void:
 	root_panel = PanelContainer.new()
@@ -110,8 +115,10 @@ func _start_narrative() -> void:
 	if not ok:
 		title_label.text = "叙事数据加载失败"
 		body_label.text = "请检查 data/narrative/mvp_compressed_narrative.json"
+		_force_cjk_font()
 		return
 	_render_next_prologue_step()
+	_force_cjk_font()
 
 func _clear_choices() -> void:
 	for child in choices_box.get_children():
@@ -126,6 +133,7 @@ func _on_continue_pressed() -> void:
 			_render_ending()
 		else:
 			_render_node()
+	_force_cjk_font()
 
 func _render_next_prologue_step() -> void:
 	_clear_choices()
@@ -141,6 +149,7 @@ func _render_next_prologue_step() -> void:
 	type_label.text = "序章 / %d/%d" % [narrative.prologue_index, narrative.prologue_count()]
 	body_label.text = _format_step(step)
 	continue_button.visible = true
+	_force_cjk_font()
 
 func _format_step(step: Dictionary) -> String:
 	var lines: Array[String] = []
@@ -187,6 +196,7 @@ func _render_node() -> void:
 		button.custom_minimum_size = Vector2(0, 44)
 		button.pressed.connect(_on_choice_pressed.bind(i))
 		choices_box.add_child(button)
+	_force_cjk_font()
 
 func _format_node(node: Dictionary) -> String:
 	var lines: Array[String] = []
@@ -235,6 +245,7 @@ func _on_choice_pressed(index: int) -> void:
 	var result := narrative.choose(index)
 	if not bool(result.get("ok", false)):
 		result_label.text = str(result.get("result", "无效选择。"))
+		_force_cjk_font()
 		return
 	_clear_choices()
 	result_label.text = str(result.get("result", ""))
@@ -242,6 +253,7 @@ func _on_choice_pressed(index: int) -> void:
 	route_label.text = narrative.route_text()
 	continue_button.visible = true
 	waiting_result = true
+	_force_cjk_font()
 
 func _render_ending() -> void:
 	_clear_choices()
@@ -253,3 +265,4 @@ func _render_ending() -> void:
 	result_label.text = narrative.last_result_text
 	vars_label.text = narrative.variables_text()
 	continue_button.visible = false
+	_force_cjk_font()
