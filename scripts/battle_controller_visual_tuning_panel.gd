@@ -121,8 +121,8 @@ func _refresh_tuning_panel() -> void:
 	text += "[b]调参 / 预览诊断面板[/b]  [color=#9cc7ff]F9隐藏[/color]\n"
 	text += "真实距离: %s    检查: %d    OK: %.1f%%\n" % [str(distance), tuning_total_checks, ok_rate]
 	if player != null and enemy != null:
-		text += "玩家: pos=%d face=%s HP=%d 势=%d guard=%d\n" % [player.position, player.facing, player.hp, player.momentum, player.guard]
-		text += "敌人: pos=%d face=%s HP=%d 势=%d guard=%d\n" % [enemy.position, enemy.facing, enemy.hp, enemy.momentum, enemy.guard]
+		text += "玩家: pos=%d face=%s HP=%d 势=%d guard=%d\n" % [player.position, player.facing, player.hp, player.momentum, player.guard_points]
+		text += "敌人: pos=%d face=%s HP=%d 势=%d guard=%d\n" % [enemy.position, enemy.facing, enemy.hp, enemy.momentum, enemy.guard_points]
 	text += "\n[b]当前预演[/b]\n"
 	text += "玩家牌: %s\n敌方牌: %s\n" % [p_card, e_card]
 	text += "顺序: %s\n" % JSON.stringify(tuning_last_snapshot.get("order", []))
