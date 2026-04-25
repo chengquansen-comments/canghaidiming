@@ -5,6 +5,7 @@ const BattleStateMachineScript := preload("res://scripts/battle_state_machine.gd
 const DEFAULT_NARRATIVE_SCENE := "res://scenes/NarrativeDemo.tscn"
 
 var narrative_debug_layer: CanvasLayer
+var enemy_config_strip: Label
 var narrative_debug_box: VBoxContainer
 var narrative_context_label: Label
 var battle_mapping_label: Label
@@ -28,6 +29,21 @@ func _add_narrative_debug_layer() -> void:
 	narrative_debug_layer.layer = 100
 	add_child(narrative_debug_layer)
 
+	enemy_config_strip = Label.new()
+	enemy_config_strip.name = "EnemyConfigTopStrip"
+	enemy_config_strip.text = _enemy_full_config_text()
+	enemy_config_strip.anchor_left = 0.02
+	enemy_config_strip.anchor_right = 0.98
+	enemy_config_strip.anchor_top = 0.0
+	enemy_config_strip.anchor_bottom = 0.0
+	enemy_config_strip.offset_top = 6
+	enemy_config_strip.offset_bottom = 46
+	enemy_config_strip.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	enemy_config_strip.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	enemy_config_strip.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	enemy_config_strip.add_theme_font_size_override("font_size", 14)
+	narrative_debug_layer.add_child(enemy_config_strip)
+
 	var panel := PanelContainer.new()
 	panel.name = "NarrativeDebugPanel"
 	panel.anchor_left = 1.0
@@ -36,8 +52,8 @@ func _add_narrative_debug_layer() -> void:
 	panel.anchor_bottom = 0.0
 	panel.offset_left = -540
 	panel.offset_right = -18
-	panel.offset_top = 48
-	panel.offset_bottom = 440
+	panel.offset_top = 54
+	panel.offset_bottom = 460
 	narrative_debug_layer.add_child(panel)
 
 	var margin := MarginContainer.new()
@@ -111,9 +127,14 @@ func _mapping_debug_text() -> String:
 func _enemy_config_debug_text() -> String:
 	return NarrativeBattleContext.enemy_config_debug_text()
 
+func _enemy_full_config_text() -> String:
+	return NarrativeBattleContext.enemy_config_full_text()
+
 func _update_battle_result_debug() -> void:
 	if battle_result_label == null:
 		return
+	if enemy_config_strip != null:
+		enemy_config_strip.text = _enemy_full_config_text()
 	if narrative_context_label != null:
 		narrative_context_label.text = _context_debug_text()
 	if battle_mapping_label != null:
