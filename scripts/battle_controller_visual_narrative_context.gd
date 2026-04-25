@@ -8,6 +8,7 @@ var narrative_debug_layer: CanvasLayer
 var narrative_debug_box: VBoxContainer
 var narrative_context_label: Label
 var battle_mapping_label: Label
+var enemy_config_label: Label
 var battle_result_label: Label
 var recommended_start_button: Button
 var continue_narrative_button: Button
@@ -33,10 +34,10 @@ func _add_narrative_debug_layer() -> void:
 	panel.anchor_right = 1.0
 	panel.anchor_top = 0.0
 	panel.anchor_bottom = 0.0
-	panel.offset_left = -520
+	panel.offset_left = -540
 	panel.offset_right = -18
-	panel.offset_top = 54
-	panel.offset_bottom = 390
+	panel.offset_top = 48
+	panel.offset_bottom = 440
 	narrative_debug_layer.add_child(panel)
 
 	var margin := MarginContainer.new()
@@ -61,8 +62,15 @@ func _add_narrative_debug_layer() -> void:
 	battle_mapping_label.name = "BattleMappingDebugLabel"
 	battle_mapping_label.text = _mapping_debug_text()
 	battle_mapping_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	battle_mapping_label.add_theme_font_size_override("font_size", 15)
+	battle_mapping_label.add_theme_font_size_override("font_size", 14)
 	narrative_debug_box.add_child(battle_mapping_label)
+
+	enemy_config_label = Label.new()
+	enemy_config_label.name = "EnemyConfigDebugLabel"
+	enemy_config_label.text = _enemy_config_debug_text()
+	enemy_config_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	enemy_config_label.add_theme_font_size_override("font_size", 14)
+	narrative_debug_box.add_child(enemy_config_label)
 
 	battle_result_label = Label.new()
 	battle_result_label.name = "BattleResultDebugLabel"
@@ -100,6 +108,9 @@ func _context_debug_text() -> String:
 func _mapping_debug_text() -> String:
 	return "接战映射：%s" % NarrativeBattleContext.battle_mapping_debug_text()
 
+func _enemy_config_debug_text() -> String:
+	return NarrativeBattleContext.enemy_config_debug_text()
+
 func _update_battle_result_debug() -> void:
 	if battle_result_label == null:
 		return
@@ -107,6 +118,8 @@ func _update_battle_result_debug() -> void:
 		narrative_context_label.text = _context_debug_text()
 	if battle_mapping_label != null:
 		battle_mapping_label.text = _mapping_debug_text()
+	if enemy_config_label != null:
+		enemy_config_label.text = _enemy_config_debug_text()
 	if state_machine == null:
 		_set_battle_result_debug_text("战斗结果：state_machine=null｜可点击返回剧情")
 		return
