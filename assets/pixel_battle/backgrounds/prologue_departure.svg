@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#efe0bf"/><stop offset="1" stop-color="#a39882"/></linearGradient>
+  </defs>
+  <rect width="960" height="640" fill="url(#paper)"/>
+  <path d="M0 300 C150 260 300 300 480 270 C650 240 780 290 960 250 L960 640 L0 640 Z" fill="#2f3a3d" opacity="0.55"/>
+  <path d="M0 420 C180 380 340 450 540 410 C720 370 820 430 960 390 L960 640 L0 640 Z" fill="#111415" opacity="0.72"/>
+  <path d="M640 170 L680 430 L600 430 Z" fill="#0e0f10" opacity="0.92"/>
+  <path d="M620 210 C600 260 595 310 600 360" stroke="#d9c79e" stroke-width="10" opacity="0.65" fill="none"/>
+  <path d="M680 200 C720 250 745 300 760 350" stroke="#7e2e28" stroke-width="16" opacity="0.68" fill="none"/>
+  <path d="M150 200 L220 200" stroke="#d9c79e" stroke-width="6" opacity="0.7"/>
+  <path d="M190 190 L220 200 L190 210" fill="#d9c79e" opacity="0.7"/>
+  <text x="52" y="585" font-size="24" fill="#7e2e28" opacity="0.9" font-family="serif">出山那天，风很正</text>
+</svg>
