@@ -21,7 +21,6 @@ func _build_ui() -> void:
 	_refresh_tuning_panel()
 
 func _unhandled_input(event: InputEvent) -> void:
-	# Debug input is isolated. Only F9 is handled globally; normal battle input is untouched.
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_F9:
 			tuning_visible = not tuning_visible
@@ -146,17 +145,17 @@ func _capture_card_base_values(force: bool = false) -> void:
 	if not force and not _card_base_values.is_empty():
 		return
 	_card_base_values.clear()
-	for card in _all_runtime_cards():
-		if card == null:
+	for runtime_card: CardData in _all_runtime_cards():
+		if runtime_card == null:
 			continue
-		_card_base_values[card.id] = {
-			"damage": card.damage,
-			"break_momentum": card.break_momentum,
-			"momentum_cost": card.momentum_cost,
-			"self_move_after": card.self_move_after,
-			"target_push_after": card.target_push_after,
-			"target_pull_after": card.target_pull_after,
-			"move_condition": card.move_condition
+		_card_base_values[runtime_card.id] = {
+			"damage": runtime_card.damage,
+			"break_momentum": runtime_card.break_momentum,
+			"momentum_cost": runtime_card.momentum_cost,
+			"self_move_after": runtime_card.self_move_after,
+			"target_push_after": runtime_card.target_push_after,
+			"target_pull_after": runtime_card.target_pull_after,
+			"move_condition": runtime_card.move_condition
 		}
 
 func _all_runtime_cards() -> Array[CardData]:
@@ -165,12 +164,12 @@ func _all_runtime_cards() -> Array[CardData]:
 		var data: FighterData = fighter_catalog[key]
 		if data == null:
 			continue
-		for card in data.base_deck:
-			if card != null:
-				cards.append(card)
-	for card in reward_pool:
-		if card != null:
-			cards.append(card)
+		for deck_card: CardData in data.base_deck:
+			if deck_card != null:
+				cards.append(deck_card)
+	for reward_card: CardData in reward_pool:
+		if reward_card != null:
+			cards.append(reward_card)
 	_collect_fighter_cards(player, cards)
 	_collect_fighter_cards(enemy, cards)
 	return cards
@@ -178,35 +177,35 @@ func _all_runtime_cards() -> Array[CardData]:
 func _collect_fighter_cards(fighter: Fighter, cards: Array[CardData]) -> void:
 	if fighter == null:
 		return
-	for card in fighter.hand:
-		if card != null:
-			cards.append(card)
-	for card in fighter.draw_pile:
-		if card != null:
-			cards.append(card)
-	for card in fighter.discard_pile:
-		if card != null:
-			cards.append(card)
+	for hand_card: CardData in fighter.hand:
+		if hand_card != null:
+			cards.append(hand_card)
+	for draw_card: CardData in fighter.draw_pile:
+		if draw_card != null:
+			cards.append(draw_card)
+	for discard_card: CardData in fighter.discard_pile:
+		if discard_card != null:
+			cards.append(discard_card)
 
 func _apply_hot_tuning() -> void:
 	_capture_card_base_values()
-	for card in _all_runtime_cards():
-		if card == null or not _card_base_values.has(card.id):
+	for runtime_card: CardData in _all_runtime_cards():
+		if runtime_card == null or not _card_base_values.has(runtime_card.id):
 			continue
-		var base: Dictionary = _card_base_values[card.id]
-		card.damage = maxi(0, int(round(float(base.get("damage", 0)) * damage_multiplier)))
-		card.break_momentum = maxi(0, int(round(float(base.get("break_momentum", 0)) * break_multiplier)))
-		card.momentum_cost = maxi(0, int(base.get("momentum_cost", 0)) + cost_delta)
+		var base: Dictionary = _card_base_values[runtime_card.id]
+		runtime_card.damage = maxi(0, int(round(float(base.get("damage", 0)) * damage_multiplier)))
+		runtime_card.break_momentum = maxi(0, int(round(float(base.get("break_momentum", 0)) * break_multiplier)))
+		runtime_card.momentum_cost = maxi(0, int(base.get("momentum_cost", 0)) + cost_delta)
 		if movement_enabled:
-			card.self_move_after = int(base.get("self_move_after", 0))
-			card.target_push_after = int(base.get("target_push_after", 0))
-			card.target_pull_after = int(base.get("target_pull_after", 0))
-			card.move_condition = str(base.get("move_condition", CardData.MOVE_NONE))
+			runtime_card.self_move_after = int(base.get("self_move_after", 0))
+			runtime_card.target_push_after = int(base.get("target_push_after", 0))
+			runtime_card.target_pull_after = int(base.get("target_pull_after", 0))
+			runtime_card.move_condition = str(base.get("move_condition", CardData.MOVE_NONE))
 		else:
-			card.self_move_after = 0
-			card.target_push_after = 0
-			card.target_pull_after = 0
-			card.move_condition = CardData.MOVE_NONE
+			runtime_card.self_move_after = 0
+			runtime_card.target_push_after = 0
+			runtime_card.target_pull_after = 0
+			runtime_card.move_condition = CardData.MOVE_NONE
 	_stage_grid_signature = ""
 	_stage_actor_signature = ""
 	_refresh_hand_buttons()
@@ -233,19 +232,19 @@ func _run_auto_optimize() -> void:
 	_last_sample_report = AutoBattleSampler.format_optimize_report(opt)
 	_refresh_tuning_panel()
 
-func _export_cards(fighter) -> Array:
-	var out := []
+func _export_cards(fighter: Fighter) -> Array:
+	var out: Array = []
 	if fighter == null:
 		return out
-	for card in fighter.hand:
-		out.append(_card_to_dict(card))
-	for card in fighter.draw_pile:
-		out.append(_card_to_dict(card))
-	for card in fighter.discard_pile:
-		out.append(_card_to_dict(card))
+	for hand_card: CardData in fighter.hand:
+		out.append(_card_to_dict(hand_card))
+	for draw_card: CardData in fighter.draw_pile:
+		out.append(_card_to_dict(draw_card))
+	for discard_card: CardData in fighter.discard_pile:
+		out.append(_card_to_dict(discard_card))
 	return out
 
-func _card_to_dict(card) -> Dictionary:
+func _card_to_dict(card: CardData) -> Dictionary:
 	return {
 		"id": card.id,
 		"display_name": card.display_name,
