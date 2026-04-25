@@ -1,7 +1,7 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：压缩叙事已推进到“验收通过 + 视觉占位 + 战斗桥接占位按钮 + 静态分叉地图布局数据”。  
+> 当前阶段：压缩叙事已推进到“验收通过 + 视觉占位 + 战斗桥接占位按钮 + 静态分叉地图展示层”。  
 > 核心原则：剧情 MVP 入口和现有选角色战斗入口分开；不扩写剧情，不重构战斗，不改 Web 外壳结构；先把短镜头链、三变量、单局旧案闭环、路线感、中文显示、最小地图表现、视觉占位和战斗接口跑通。
 
 ---
@@ -30,7 +30,7 @@
 战斗测试：进入现有 MainVisual.tscn / MainText.tscn
 叙事 Demo：显示压缩序章、当前节点、三变量、推荐路线、已走节点、结局入口
 中文显示：剧情侧统一走 NarrativeFontHelper，内部复用战斗测试的 BattleFontHelper / cjk_font.ttf 逻辑
-地图表现：当前为横向节点卡片；下一步可按静态分叉地图布局数据升级 UI
+地图表现：读取静态分叉地图布局 JSON，按六列展示军令 / 初遇 / 疑点 / 压迫 / 破船 / 军门
 背景表现：图片存在则显示，不存在则显示明确占位文本，不阻塞 Web 运行
 人物表现：立绘存在则显示，不存在则显示角色名 / 路径占位，不阻塞 Web 运行
 旧物表现：旧物图存在则显示，不存在则显示旧物名 / 路径占位，不阻塞 Web 运行
@@ -97,7 +97,24 @@ data/narrative/mvp_static_map_layout.json
 不影响当前 narrative-only 路径。
 ```
 
-### 3.3 叙事状态机
+### 3.3 静态地图布局读取器
+
+```text
+scripts/narrative/narrative_static_map_layout.gd
+```
+
+已支持：
+
+```text
+读取 data/narrative/mvp_static_map_layout.json；
+解析 columns / edges；
+建立 node_to_column 索引；
+建立 outgoing_edges / incoming_edges 索引；
+提供 previous_nodes / next_nodes；
+供 NarrativeDemo 渲染分叉地图和判断可达节点。
+```
+
+### 3.4 叙事状态机
 
 ```text
 scripts/narrative/narrative_state.gd
@@ -120,7 +137,7 @@ scripts/narrative/narrative_state.gd
 输出当前节点状态 node_status_text。
 ```
 
-### 3.4 独立 Demo Controller
+### 3.5 独立 Demo Controller
 
 ```text
 scripts/narrative/narrative_demo_controller.gd
@@ -135,8 +152,14 @@ scripts/narrative/narrative_demo_controller.gd
 展示选择按钮；
 展示变量变化；
 展示结局；
-展示路线条：● 已走 / ▶ 当前 / ○ 未到；
-展示横向节点卡片：节点标题、节点类型、已走/当前/未到状态；
+读取 mvp_static_map_layout.json；
+按 columns 渲染静态分叉地图；
+显示军令 / 初遇 / 疑点 / 压迫 / 破船 / 军门六列；
+显示节点卡片；
+当前节点高亮；
+已走节点变色；
+可达节点标记为 ◎；
+未到节点显示 ○；
 展示 P0 背景图区域；
 展示 P0 人物立绘区域；
 展示旧物图占位；
@@ -148,7 +171,7 @@ scripts/narrative/narrative_demo_controller.gd
 动态刷新节点、选择按钮、结局页后重复应用字体，避免新增控件中文乱码。
 ```
 
-### 3.5 中文字体 Helper
+### 3.6 中文字体 Helper
 
 ```text
 scripts/narrative/narrative_font_helper.gd
@@ -163,7 +186,7 @@ scripts/narrative/narrative_font_helper.gd
 后续叙事 UI 新增控件时只需要调用 NarrativeFontHelper.enforce(root)。
 ```
 
-### 3.6 战斗回调桥接接口
+### 3.7 战斗回调桥接接口
 
 ```text
 scripts/narrative/narrative_combat_bridge.gd
@@ -183,7 +206,7 @@ scripts/narrative/narrative_combat_bridge.gd
 不改变 narrative-only 路径。
 ```
 
-### 3.7 独立测试场景
+### 3.8 独立测试场景
 
 ```text
 scenes/NarrativeDemo.tscn
@@ -198,7 +221,7 @@ scenes/NarrativeDemo.tscn
 暂不影响现有战斗测试场景。
 ```
 
-### 3.8 入口分流
+### 3.9 入口分流
 
 已更新：
 
@@ -248,8 +271,11 @@ Web smoke_battle 参数仍保留自动进入战斗测试；
 ### 4.2 当前仍需继续验收
 
 ```text
-[ ] 横向节点卡片 UI 在 Web 下显示正常
-[ ] 节点卡片当前 / 已走 / 未到状态准确
+[ ] 静态分叉地图六列显示正常
+[ ] 当前节点高亮
+[ ] 已走节点变色
+[ ] 可达节点显示 ◎
+[ ] 未到节点显示 ○
 [ ] P0 背景区域图片存在时可显示
 [ ] P0 背景资源不存在时可显示占位文本
 [ ] P0 立绘资源存在时可显示
@@ -261,7 +287,6 @@ Web smoke_battle 参数仍保留自动进入战斗测试；
 [ ] battle / elite / boss 节点显示“请求战斗 / 视为胜利继续”
 [ ] 点击“请求战斗”能生成 payload
 [ ] 点击“视为胜利继续”后仍显示当前节点战后选择
-[ ] 静态分叉地图布局 JSON 字段完整
 [ ] 不跳 MainVisual
 [ ] 不改 battle_controller
 [ ] narrative-only 路径仍可完整走通
@@ -303,6 +328,9 @@ e75f6f700e18cf3c777f56b246a76ab07526f4d1  Add P0 narrative portrait placeholder 
 f5e68ecc597af7af44bf2e0cbbcfaeadf9515dbb  Connect narrative combat bridge to demo
 22da1479f37a8de22ff84c38df0576dfe44d0a49  Refresh narrative progress after demo combat bridge
 8be4aa9e342f21ce9a436e8830dc242671284967  Add MVP static narrative map layout
+e4da062e39f130eedf21d1c1cf44f79828768e06  Refresh narrative progress after static map layout data
+22005f41766ab3a4ab8e9522d07d22a5af25d699  Add narrative static map layout loader
+04297f2b61f98cda12c7067bbbb813857c64077e  Render static branch map layout in narrative demo
 ```
 
 ---
@@ -315,6 +343,8 @@ f5e68ecc597af7af44bf2e0cbbcfaeadf9515dbb  Connect narrative combat bridge to dem
 [x] 压缩叙事脚本定稿
 [x] 叙事 JSON 数据化
 [x] 静态分叉地图布局数据化
+[x] 静态地图布局读取器
+[x] NarrativeDemo 读取布局 JSON 渲染六列分叉地图
 [x] 三变量数据结构
 [x] choice delta 机制
 [x] requires / requires_flag 机制
@@ -325,7 +355,6 @@ f5e68ecc597af7af44bf2e0cbbcfaeadf9515dbb  Connect narrative combat bridge to dem
 [x] Web 入口区分：剧情 MVP / 战斗测试
 [x] 桌面入口区分：剧情 MVP / 字符战斗 / 视觉战斗
 [x] 最小路线 UI：● 已走 / ▶ 当前 / ○ 未到
-[x] 最小肉鸽地图卡片 UI：节点标题 / 节点类型 / 状态
 [x] P0 背景图显示占位：图片存在则显示，不存在则占位
 [x] P0 人物立绘显示占位：图片存在则显示，不存在则角色名 / 路径占位
 [x] 旧物图显示占位：图片存在则显示，不存在则旧物名 / 路径占位
@@ -339,25 +368,25 @@ f5e68ecc597af7af44bf2e0cbbcfaeadf9515dbb  Connect narrative combat bridge to dem
 ### 6.2 尚未实装
 
 ```text
-[ ] NarrativeDemo 读取 mvp_static_map_layout.json 渲染分叉地图
 [ ] 与现有战斗场景的真实胜利回调
+[ ] 静态分叉地图节点点击跳转 / 选路
 ```
 
 ---
 
 ## 7. 当前风险
 
-### 风险一：静态分叉地图还只是数据
+### 风险一：静态分叉地图需要 Web 验收
 
-当前已新增 `mvp_static_map_layout.json`，但 NarrativeDemo 还没有读取这份布局渲染分叉地图。
+当前 NarrativeDemo 已读取 `mvp_static_map_layout.json` 并渲染六列地图，但尚未 Web 验收。
 
 处理原则：
 
 ```text
-下一刀先接读取和展示；
-只替换地图展示层；
-不改变叙事推进逻辑；
-不做随机地图生成。
+先验证六列展示是否可读；
+确认 1600×1000 下不挤压正文；
+确认当前 / 已走 / 可达 / 未到状态准确；
+不急着做节点点击。
 ```
 
 ### 风险二：战斗桥接按钮需要 Web 验收
@@ -389,26 +418,25 @@ f5e68ecc597af7af44bf2e0cbbcfaeadf9515dbb  Connect narrative combat bridge to dem
 
 ## 8. 下一刀执行清单
 
-### Step 1：NarrativeDemo 读取静态分叉地图布局
+### Step 1：验收静态分叉地图展示层
 
 ```text
-读取 data/narrative/mvp_static_map_layout.json
-按 columns 渲染地图列
-每列显示 column title
-每列显示节点卡片
-按 row / lane 做简单上下排序
-当前节点高亮
-已走节点变色
-未到节点普通状态
+进入剧情 MVP
+走完序章
+观察地图区域
+逐步推进节点
+观察六列地图状态变化
 ```
 
 通过标准：
 
 ```text
-[ ] NarrativeDemo 中地图不再只是推荐路径横条
 [ ] 地图能显示军令 / 初遇 / 疑点 / 压迫 / 破船 / 军门六列
-[ ] 当前节点高亮
-[ ] 已走节点变色
+[ ] 当前节点高亮为 ▶
+[ ] 已走节点显示 ●
+[ ] 可达节点显示 ◎
+[ ] 未到节点显示 ○
+[ ] 地图区域不挤压正文到不可读
 [ ] 不改变当前叙事推进逻辑
 [ ] 不做随机地图生成
 ```
@@ -448,7 +476,7 @@ NarrativeState.current_node.combat
 ## 9. 对 Codex 的下一步指令
 
 ```text
-请让 NarrativeDemo 读取 data/narrative/mvp_static_map_layout.json，并用它渲染静态分叉地图展示层。只做 UI 展示：按 columns 渲染“军令 / 初遇 / 疑点 / 压迫 / 破船 / 军门”六列，每列显示节点卡片，当前节点高亮，已走节点变色，未到节点普通状态。不要改变 mvp_compressed_narrative.json 的推进逻辑，不要做随机地图生成，不要改 battle_controller，不要改 MainVisual.tscn，不要重构 web_shell.html。
+请优先验证 NarrativeDemo.tscn 的静态分叉地图展示层。当前 Demo 已读取 data/narrative/mvp_static_map_layout.json，并按 columns 渲染“军令 / 初遇 / 疑点 / 压迫 / 破船 / 军门”六列。请确认当前节点高亮、已走节点变色、可达节点标记、未到节点状态，以及地图区域是否挤压正文。不要改变 mvp_compressed_narrative.json 的推进逻辑，不要做随机地图生成，不要改 battle_controller，不要改 MainVisual.tscn，不要重构 web_shell.html。
 ```
 
 ---
@@ -456,5 +484,5 @@ NarrativeState.current_node.combat
 ## 10. 当前一句话结论
 
 ```text
-叙事 MVP 已完成“脚本压缩 → 数据化 → 状态机 → 独立 Demo 场景 → 入口分流 → 中文字体专用 Helper → 最小肉鸽地图卡片 UI → P0 视觉占位 → 战斗桥接占位按钮 → 静态分叉地图布局数据”；下一步抓重点让 NarrativeDemo 读取布局 JSON，并渲染真正的静态分叉地图展示层。
+叙事 MVP 已完成“脚本压缩 → 数据化 → 状态机 → 独立 Demo 场景 → 入口分流 → 中文字体专用 Helper → P0 视觉占位 → 战斗桥接占位按钮 → 静态分叉地图布局数据 → 六列静态分叉地图展示层”；下一步抓重点验收 Web 展示，再决定是否推进节点点击选路或真实战斗胜利回调。
 ```
