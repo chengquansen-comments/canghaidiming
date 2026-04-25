@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360">
+  <rect width="960" height="360" fill="#151922"/>
+  <rect x="40" y="40" width="880" height="280" rx="18" fill="#242b35" stroke="#9a7b4f" stroke-width="6"/>
+  <circle cx="190" cy="180" r="70" fill="#3a2a1c" stroke="#c79b57" stroke-width="5"/>
+  <rect x="340" y="105" width="430" height="34" fill="#6b5134"/>
+  <rect x="340" y="165" width="360" height="28" fill="#6b5134"/>
+  <rect x="340" y="220" width="470" height="24" fill="#6b5134"/>
+  <text x="480" y="305" text-anchor="middle" font-size="34" fill="#e5d0a2" font-family="sans-serif">军令巡海 / Military Order</text>
+</svg>
