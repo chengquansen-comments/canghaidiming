@@ -88,7 +88,7 @@ func _build_ui() -> void:
 	scene_label = Label.new()
 	scene_label.add_theme_font_size_override("font_size", 16)
 	scene_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	scene_label.custom_minimum_size = Vector2(0, 48)
+	scene_label.custom_minimum_size = Vector2(0, 64)
 	layout.add_child(scene_label)
 
 	var visual_frame := PanelContainer.new()
@@ -150,7 +150,7 @@ func _render() -> void:
 		title_label.text = "《大明之沧海嘀鸣》剧情 MVP"
 		status_label.text = "序章 %d/%d" % [step_index + 1, PROLOGUE.size()]
 		map_label.text = "尚未进入行军图"
-		scene_label.text = _prologue_scene_hint()
+		scene_label.text = _format_scene_text(_prologue_scene_hint())
 		_render_visual("", _prologue_visual_hint())
 		body_label.text = PROLOGUE[step_index]
 		vars_label.text = _vars_text()
@@ -160,7 +160,7 @@ func _render() -> void:
 		title_label.text = str(node.get("title", ""))
 		status_label.text = "当前：%s / %s / %s" % [str(node.get("column", "")), str(node.get("type", "")), str(node.get("id", ""))]
 		map_label.text = _map_text()
-		scene_label.text = str(node.get("scene", ""))
+		scene_label.text = _format_scene_text(str(node.get("scene", "")))
 		_render_visual(str(node.get("visual_path", "")), str(node.get("scene", "")))
 		body_label.text = _node_body(node)
 		if not last_hint.is_empty():
@@ -177,6 +177,19 @@ func _render() -> void:
 			var choice: Dictionary = choices[i]
 			_add_choice_button(choice, i)
 	BattleFontHelper.enforce(self)
+
+func _format_scene_text(raw_text: String) -> String:
+	var normalized := raw_text.replace("；", "。")
+	var parts := normalized.split("。", false)
+	var lines: Array[String] = []
+	for part in parts:
+		var clean := str(part).strip_edges()
+		if clean.is_empty():
+			continue
+		lines.append("• %s" % clean)
+	if lines.is_empty():
+		return "• 场景占位：暂无"
+	return "\n".join(lines)
 
 func _render_visual(path: String, fallback_text: String) -> void:
 	if path.is_empty() or not ResourceLoader.exists(path):
@@ -329,7 +342,7 @@ func _render_ending() -> void:
 	title_label.text = "结局：潮声还在"
 	status_label.text = "单局结算"
 	map_label.text = _map_text()
-	scene_label.text = "结局图占位：上报 / 掩盖 / 私查 / 借势四类结局图后续接入。"
+	scene_label.text = _format_scene_text("结局图占位：上报 / 掩盖 / 私查 / 借势四类结局图后续接入。")
 	_render_visual("", "结局图占位：上报 / 掩盖 / 私查 / 借势四类结局图后续接入。")
 	body_label.text = "军功 %d / 清望 %d / 旧案线索 %d\n\n案卷缺页，潮声仍在。" % [jun_gong, qing_wang, clues]
 	vars_label.text = _vars_text()
