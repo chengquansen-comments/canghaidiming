@@ -10,6 +10,7 @@ var current_node_id: String = ""
 var current_ending_id: String = ""
 var prologue_index: int = 0
 var last_result_text: String = ""
+var visited_node_ids: Array[String] = []
 
 func load_from_path(path: String = DEFAULT_DATA_PATH) -> bool:
 	if not FileAccess.file_exists(path):
@@ -31,6 +32,7 @@ func load_from_path(path: String = DEFAULT_DATA_PATH) -> bool:
 func _reset_runtime_state() -> void:
 	variables.clear()
 	flags.clear()
+	visited_node_ids.clear()
 	current_ending_id = ""
 	last_result_text = ""
 	prologue_index = 0
@@ -40,6 +42,7 @@ func _reset_runtime_state() -> void:
 		variables[key] = int(def.get("initial", 0))
 	var map_data: Dictionary = data.get("map", {})
 	current_node_id = str(map_data.get("start_node", ""))
+	_mark_current_node_visited()
 
 func prologue_count() -> int:
 	var steps: Array = data.get("prologue", [])
@@ -106,6 +109,7 @@ func choose(index: int) -> Dictionary:
 		current_ending_id = str(choice.get("ending", "silent_tide"))
 		return {"ok": true, "choice": choice, "result": last_result_text, "ending": current_ending()}
 	current_node_id = str(choice.get("next", current_node_id))
+	_mark_current_node_visited()
 	return {"ok": true, "choice": choice, "result": last_result_text, "node": current_node()}
 
 func _apply_choice(choice: Dictionary) -> void:
@@ -115,6 +119,12 @@ func _apply_choice(choice: Dictionary) -> void:
 	var flag_list: Array = choice.get("flags", [])
 	for flag_value in flag_list:
 		flags[str(flag_value)] = true
+
+func _mark_current_node_visited() -> void:
+	if current_node_id.is_empty():
+		return
+	if not visited_node_ids.has(current_node_id):
+		visited_node_ids.append(current_node_id)
 
 func current_ending() -> Dictionary:
 	if current_ending_id.is_empty():
@@ -138,6 +148,36 @@ func variables_text() -> String:
 	for key in variables.keys():
 		parts.append("%s %d" % [variable_short_label(str(key)), int(variables.get(key, 0))])
 	return " / ".join(parts)
+
+func map_route() -> Array[String]:
+	var route: Array[String] = []
+	var map_data: Dictionary = data.get("map", {})
+	var raw_route: Array = map_data.get("recommended_path", [])
+	for value in raw_route:
+		route.append(str(value))
+	return route
+
+func route_text() -> String:
+	var route := map_route()
+	if route.is_empty():
+		return "地图路线未配置。"
+	var parts: Array[String] = []
+	for node_id in route:
+		var node := node_by_id(node_id)
+		var title := str(node.get("title", node_id))
+		var marker := "○"
+		if node_id == current_node_id and current_ending_id.is_empty():
+			marker = "▶"
+		elif visited_node_ids.has(node_id):
+			marker = "●"
+		parts.append("%s %s" % [marker, title])
+	return "  →  ".join(parts)
+
+func node_status_text() -> String:
+	if not current_ending_id.is_empty():
+		return "当前：结局 / %s" % str(current_ending().get("title", "沉默"))
+	var node := current_node()
+	return "当前：%s / %s" % [node_type_label(str(node.get("type", ""))), str(node.get("title", current_node_id))]
 
 func node_type_label(node_type: String) -> String:
 	match node_type:
