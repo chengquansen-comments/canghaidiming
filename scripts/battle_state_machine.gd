@@ -114,8 +114,6 @@ func face_target(actor: Fighter, target: Fighter) -> void:
 
 
 func apply_card_movement(card: CardData, actor: Fighter, target: Fighter, range_result: String) -> void:
-	var actor_state: Dictionary = _fighter_to_resolver_state(actor)
-	var target_state: Dictionary = _fighter_to_resolver_state(target)
 	var moved: Dictionary = CombatResolver.apply_card_movement(card, true, actor.position, target.position, actor.facing, range_result, target.pending_control_state == Fighter.CONTROL_BROKEN)
 	actor.position = int(moved.get("player", actor.position))
 	target.position = int(moved.get("enemy", target.position))
@@ -163,14 +161,15 @@ func resolve_intent(intent: IntentData, actor: Fighter, target: Fighter) -> Arra
 	if card.requires_hit_check():
 		if range_result == RANGE_MISS_FACING:
 			lines.append("%s 背向目标，未能命中。" % card.display_name)
-			_apply_resolved_positions(actor, target, sim)
 			return lines
 		if range_result == RANGE_MISS_RANGE:
 			lines.append("%s 因距离 %d 不合式，未能命中。" % [card.display_name, current_distance])
-			_apply_resolved_positions(actor, target, sim)
 			return lines
 		if range_result == RANGE_GRAZE:
 			lines.append("%s 距离 %d 略失准头，只擦中目标。" % [card.display_name, current_distance])
+
+	# 位移必须在命中成立后立刻写回。这样先手击退/拉近/自移会立即改变后手的真实距离与朝向。
+	_apply_resolved_positions(actor, target, sim)
 
 	var raw_damage: int = int(CombatResolver.resolve_card_effect(card, range_result, actor.is_broken(), target.is_broken(), 0).get("damage", 0))
 	var final_damage: int = absi(int(sim.get("enemy_hp_delta", 0))) if int(sim.get("enemy_hp_delta", 0)) < 0 else 0
@@ -203,8 +202,6 @@ func resolve_intent(intent: IntentData, actor: Fighter, target: Fighter) -> Arra
 			target.queue_broken_state()
 			actor.queue_combo_window()
 			lines.append("%s 的势被打到 0，下回合将崩势硬直！" % target.data.display_name)
-
-	_apply_resolved_positions(actor, target, sim)
 	return lines
 
 
