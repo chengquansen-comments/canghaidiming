@@ -1,211 +1,206 @@
-# 叙事 MVP 地图点击推进补充记录
+# 叙事 MVP 安全线推进记录
 
 > 分支：`feature/symmetry-gameplay`  
-> 记录目的：补充 `NARRATIVE_MVP_PROGRESS.md` 中“静态分叉地图节点点击选路”阶段的实际推进情况。  
-> 当前原则：地图点击必须复用原有 `choice` 推进链路，不绕过 `requires / requires_flag / delta / flags / ending`。
+> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；地图点击、安全行军图、三变量、战斗占位、场景/人物/旧物文本占位已重新补回。  
+> 当前原则：优先保证 Web Parser 稳定；暂不恢复旧 `scripts/narrative/*` 复杂链路；不改 `MainVisual.tscn`，不改 `battle_controller`，不重构 `web_shell.html`。
 
 ---
 
-## 1. 本轮已完成
+## 1. 为什么切安全线
 
-### 1.1 NarrativeState 选路接口
-
-文件：
+此前复杂叙事链路出现了 Web Parser 风险：
 
 ```text
-scripts/narrative/narrative_state.gd
+Parser Error: Could not resolve class "NarrativeDemoController"
+Parser Error: Identifier "HScrollContainer" not declared in the current scope
 ```
 
-已新增：
+处理策略：
 
 ```text
-choice_index_for_next_node(next_node_id)
-can_choose_next_node(next_node_id)
-choose_next_node(next_node_id)
-```
-
-说明：
-
-```text
-choose_next_node(next_node_id)
-内部仍走 available_choices(current_node()) → choose(index)
-不会绕过 choice
-不会绕过 requires / requires_flag
-不会绕过 delta / flags
-不会绕过 ending
-```
-
-对应提交：
-
-```text
-d9202d91e55bd32614171b546d7cd974afaa5ffa  Add narrative next-node choice helper
+先恢复 P0 Web 构建稳定；
+临时隔离旧 scripts/narrative/*；
+新建不依赖旧链路的安全版 NarrativeDemo controller；
+在安全版上逐步补回 MVP 体验。
 ```
 
 ---
 
-### 1.2 地图点击 Router
-
-文件：
-
-```text
-scripts/narrative/narrative_map_click_router.gd
-```
-
-已新增：
-
-```text
-can_click_node(narrative, node_id)
-click_node(narrative, node_id)
-click_hint(narrative, node_id)
-```
-
-点击状态：
-
-```text
-当前节点
-已走过
-可前往
-未开放
-```
-
-说明：
-
-```text
-click_node(narrative, node_id)
-最终调用 NarrativeState.choose_next_node(node_id)
-即地图点击和按钮选择共用同一套推进规则
-```
-
-对应提交：
-
-```text
-ee7fbb796b5cd7be7e39f8f13adcf80f5fbb2b03  Add narrative map click router
-```
-
----
-
-### 1.3 可点击地图 Demo Controller
-
-新增文件：
-
-```text
-scripts/narrative/narrative_demo_controller_clickable_map.gd
-```
-
-实现方式：
-
-```text
-继承 NarrativeDemoController
-只覆盖 _build_static_map_node_card(node_entry)
-将静态地图节点卡片改为 Button
-Button.pressed 接入 _on_static_map_node_pressed(node_id)
-点击后通过 NarrativeMapClickRouter.click_hint 判断状态
-只有“可前往”节点调用 NarrativeMapClickRouter.click_node
-成功后刷新 _render_node()
-```
-
-对应提交：
-
-```text
-5a7a6fdbcf9b6f5264a4a8c77fb2e79e98ad8b56  Add clickable narrative map demo controller
-```
-
----
-
-### 1.4 NarrativeDemo 场景切换到可点击地图 Controller
-
-修改文件：
+## 2. 当前有效入口
 
 ```text
 scenes/NarrativeDemo.tscn
 ```
 
-当前脚本指向：
+当前脚本：
 
 ```text
-res://scripts/narrative/narrative_demo_controller_clickable_map.gd
+res://scripts/narrative_demo_safe_controller.gd
 ```
 
 说明：
 
 ```text
-不直接大改原 narrative_demo_controller.gd
-保留原 controller 作为稳定基类
-可点击地图逻辑独立在 clickable_map controller 中
-降低 Web 编译和回滚风险
-```
-
-对应提交：
-
-```text
-1a596731a76dd83943f4d7ee9e43d7a809ddb89f  Use clickable map controller in narrative demo scene
+该 controller 不依赖 HScrollContainer；
+不依赖 scripts/narrative/*；
+复用 BattleFontHelper 保障中文字体；
+用于当前剧情 MVP Web 稳定验收。
 ```
 
 ---
 
-## 2. 当前完成状态
+## 3. 已完成提交记录
 
 ```text
-[x] NarrativeDemo 节点卡片点击调用 NarrativeMapClickRouter
-[x] 可前往节点点击后刷新 node / map / choices / variables
-[x] 当前节点点击只提示“当前节点”
-[x] 已走节点点击只提示“已走过”
-[x] 未开放节点点击只提示“未开放”
-[x] 推进仍走 NarrativeState.choose_next_node
-[x] requires / delta / flags 仍由原 choice 逻辑处理
+9228e5fc8dffc1a4de022521a84d11aca8a5b174  Ignore legacy narrative scripts for parser stability
+90d405523f565a4d5ecf0ab36f247c9893634941  Use parser-safe narrative demo controller
+72b93d5ecf54199f3c38dcd630a4a4e27155bcc3  Restore safe narrative map and art placeholders
+4b440f5f4da75e08ec80ccda07b8942fa264a92e  Add safe narrative map jump buttons
+b580c2e58e98ba7dc5779599f0dfce21a510dafe  Apply default rewards on safe map navigation
 ```
 
 ---
 
-## 3. 当前仍需验收
+## 4. 当前安全版已完成能力
 
 ```text
-[ ] Web 构建无 GDScript 编译错误
-[ ] NarrativeDemo.tscn 能正常进入
-[ ] 六列静态分叉地图仍正常显示
-[ ] 点击 ◎ 可达节点能推进到对应节点
-[ ] 点击 ○ 未开放节点不推进，只提示
-[ ] 点击 ● 已走节点不推进，只提示
-[ ] 点击 ▶ 当前节点不推进，只提示
-[ ] 点击后变量、战斗桥接面板、背景、立绘、choices 均刷新
-[ ] narrative-only 路径仍可完整走通
+[x] 压缩序章可播放
+[x] 序章中文显示正常
+[x] 六列行军图文本展示：军令 / 初遇 / 疑点 / 压迫 / 破船 / 军门
+[x] 地图状态标记：▶ 当前 / ● 已走 / ◎ 可前往 / ○ 未开放
+[x] 地图按钮可点击
+[x] 点击 ◎ 可前往节点可推进
+[x] 点击 ▶ 当前节点只提示，不推进
+[x] 点击 ● 已走节点只提示，不推进
+[x] 点击 ○ 未开放节点只提示，不推进
+[x] 地图点击推进后刷新地图、节点、场景占位、choices、变量
+[x] 地图点击推进后按节点类型给予默认收益
+[x] 三变量保留：军功 / 清望 / 旧案线索
+[x] 普通 choices 按各自 delta 修改三变量
+[x] 场景文本占位：背景 / 人物 / 旧物 / 结局图
+[x] 战斗桥接文本占位：请求战斗 / 视为胜利继续 / node_id / encounter_id
+[x] 结局与重开闭环
+[x] Web Parser 稳定，不再依赖旧复杂叙事链路
 ```
 
 ---
 
-## 4. 下一刀建议
+## 5. 当前默认收益规则
 
-### Step 1：Web 验收可点击地图
+地图点击推进时，会根据目标节点类型给予默认行军收益：
 
 ```text
-进入剧情 MVP
-走完序章
-点击地图上的可达节点
-验证推进和刷新
-点击当前 / 已走 / 未开放节点
-验证只提示不推进
+普通战斗：军功 +1，旧案线索 +1
+精英战斗：军功 +1，旧案线索 +1
+Boss：军功 +2，旧案线索 +1
+旧物：旧案线索 +2
+结尾：清望 +1
+事件：清望 +1
 ```
 
-### Step 2：若通过，再推进真实战斗接入前调研
+说明：
 
 ```text
-梳理 MainVisual 的启动参数
-梳理战斗胜利回调位置
-确认不破坏当前战斗测试入口
-```
-
----
-
-## 5. 给 Codex 的精确指令
-
-```text
-请优先验证 scenes/NarrativeDemo.tscn 当前脚本 res://scripts/narrative/narrative_demo_controller_clickable_map.gd 的 Web 编译和运行。重点验证静态分叉地图节点点击：只有“可前往”的节点能推进；当前节点、已走节点、未开放节点只提示不推进；推进必须仍走 NarrativeState.choose_next_node，不允许绕过 choice / requires / delta / flags 逻辑。不要改变 mvp_compressed_narrative.json 的推进逻辑，不要做随机地图生成，不要改 battle_controller，不要改 MainVisual.tscn，不要重构 web_shell.html。
+这是安全版临时规则，目的是避免地图点击推进时三变量完全不变化。
+下一步建议统一“普通选择推进”和“地图点击推进”的收益口径。
 ```
 
 ---
 
-## 6. 当前一句话结论
+## 6. 当前仍需推进
 
 ```text
-地图点击的状态机接口、Router 和 NarrativeDemo 可点击 UI 都已完成；下一步抓重点做 Web 验收，再决定是否进入真实战斗回调接入。
+[ ] 统一普通 choices 和地图点击推进的收益入口
+[ ] 避免“地图点击默认收益”和“普通选择 delta”形成两套难解释规则
+[ ] 将安全版行军图从纯文本进一步升级为更清晰的按钮区布局
+[ ] 恢复图片显示，但不能重新引入 HScrollContainer / 旧 scripts/narrative/* 解析风险
+[ ] 真实战斗胜利回调接入前调研
+```
+
+---
+
+## 7. 下一刀建议：统一推进收益入口
+
+目标：
+
+```text
+把选择按钮推进和地图按钮推进都收口到统一方法。
+```
+
+建议实现：
+
+```text
+_apply_choice_delta(choice)
+_apply_default_map_reward(target_index)
+_advance_to_node(target_index, reason)
+```
+
+落地原则：
+
+```text
+普通选择：先应用 choice delta，再推进下一节点；
+地图点击：应用默认地图收益，再推进目标节点；
+所有推进结束后统一刷新 _render()；
+继续不依赖 scripts/narrative/*；
+继续不碰 MainVisual / battle_controller / web_shell。
+```
+
+验收标准：
+
+```text
+[ ] 普通选择推进后变量变化正常
+[ ] 地图点击推进后变量变化正常
+[ ] 两种推进路径都刷新地图 / 场景 / choices / 战斗占位
+[ ] 结局和重开不受影响
+[ ] Web 构建稳定
+```
+
+---
+
+## 8. 后续路线
+
+### Step 1：统一收益入口
+
+```text
+优先级最高，避免当前安全版逻辑继续分叉。
+```
+
+### Step 2：安全版 UI 细化
+
+```text
+行军图按钮区域更清晰；
+战斗桥接按钮和普通选择按钮视觉区分；
+场景占位信息分层展示。
+```
+
+### Step 3：安全恢复图片展示
+
+```text
+只在 safe controller 内做 TextureRect + ResourceLoader.exists；
+不恢复旧 narrative_demo_controller.gd；
+不使用 HScrollContainer。
+```
+
+### Step 4：真实战斗接入前调研
+
+```text
+先梳理 MainVisual 的启动参数和胜利回调；
+不直接改战斗规则；
+不破坏现有战斗测试入口。
+```
+
+---
+
+## 9. 给 Codex 的下一步指令
+
+```text
+请继续在 scripts/narrative_demo_safe_controller.gd 上推进，不要恢复 scripts/narrative/* 旧复杂链路。下一步优先统一普通 choices 和地图点击推进的收益入口：抽出 _apply_choice_delta(choice)、_apply_default_map_reward(target_index)、_advance_to_node(target_index, reason) 之类的安全方法。普通选择先应用 choice delta，再统一推进；地图点击应用默认收益后统一推进。保持 Web Parser 稳定，不要使用 HScrollContainer，不要改 MainVisual.tscn，不要改 battle_controller，不要重构 web_shell.html。
+```
+
+---
+
+## 10. 当前一句话结论
+
+```text
+剧情 MVP 已从复杂链路切到安全线，并重新补回“序章、六列行军图、地图点击、三变量、战斗占位、场景占位、结局闭环”；下一步抓重点统一推进收益入口，避免安全版内部产生两套规则。
 ```
