@@ -26,16 +26,63 @@ static func run_parameter_sweep(player_cards: Array, enemy_cards: Array, options
 		for brk in break_values:
 			for cost in cost_values:
 				for move_enabled in movement_values:
-					var tuned_player := tune_cards(player_cards, float(dmg), float(brk), int(cost), bool(move_enabled))
-					var tuned_enemy := tune_cards(enemy_cards, float(dmg), float(brk), int(cost), bool(move_enabled))
-					var result := run_batch(tuned_player, tuned_enemy, {"sample_count": samples_per_config, "max_turns": max_turns})
-					result.config = {"damage": float(dmg), "break": float(brk), "cost": int(cost), "movement": bool(move_enabled)}
-					result.balance_score = balance_score(result)
+					var result := evaluate_config(player_cards, enemy_cards, {"damage": float(dmg), "break": float(brk), "cost": int(cost), "movement": bool(move_enabled)}, samples_per_config, max_turns)
 					results.append(result)
 	results.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 		return float(a.get("balance_score", 999.0)) < float(b.get("balance_score", 999.0))
 	)
 	return {"results": results, "best": results[0] if not results.is_empty() else {}, "config_count": results.size(), "samples_per_config": samples_per_config}
+
+static func run_auto_optimize(player_cards: Array, enemy_cards: Array, options: Dictionary = {}) -> Dictionary:
+	var iterations := int(options.get("iterations", 4))
+	var candidates_per_iter := int(options.get("candidates_per_iter", 10))
+	var samples_per_config := int(options.get("samples_per_config", 50))
+	var max_turns := int(options.get("max_turns", 30))
+	var rng := RandomNumberGenerator.new()
+	rng.seed = int(options.get("seed", Time.get_unix_time_from_system()))
+	var center := {"damage": 1.0, "break": 1.0, "cost": 0, "movement": true}
+	var radius_damage := 0.25
+	var radius_break := 0.25
+	var all_results: Array[Dictionary] = []
+	var best := evaluate_config(player_cards, enemy_cards, center, samples_per_config, max_turns)
+	all_results.append(best)
+	for iter in range(iterations):
+		var local_results: Array[Dictionary] = []
+		for i in range(candidates_per_iter):
+			var cfg := {
+				"damage": clampf(float(center.damage) + rng.randf_range(-radius_damage, radius_damage), 0.65, 1.6),
+				"break": clampf(float(center.break) + rng.randf_range(-radius_break, radius_break), 0.65, 1.6),
+				"cost": int(center.cost),
+				"movement": bool(center.movement)
+			}
+			if rng.randf() < 0.18:
+				cfg.cost = rng.randi_range(-1, 1)
+			if rng.randf() < 0.12:
+				cfg.movement = not bool(cfg.movement)
+			var result := evaluate_config(player_cards, enemy_cards, cfg, samples_per_config, max_turns)
+			result.iteration = iter + 1
+			local_results.append(result)
+			all_results.append(result)
+		local_results.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+			return float(a.get("balance_score", 999.0)) < float(b.get("balance_score", 999.0))
+		)
+		if not local_results.is_empty() and float(local_results[0].balance_score) < float(best.balance_score):
+			best = local_results[0]
+			center = best.config
+		radius_damage *= 0.58
+		radius_break *= 0.58
+	all_results.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+		return float(a.get("balance_score", 999.0)) < float(b.get("balance_score", 999.0))
+	)
+	return {"best": best, "results": all_results, "evaluated": all_results.size(), "iterations": iterations, "samples_per_config": samples_per_config}
+
+static func evaluate_config(player_cards: Array, enemy_cards: Array, config: Dictionary, samples_per_config: int, max_turns: int) -> Dictionary:
+	var tuned_player := tune_cards(player_cards, float(config.damage), float(config.break), int(config.cost), bool(config.movement))
+	var tuned_enemy := tune_cards(enemy_cards, float(config.damage), float(config.break), int(config.cost), bool(config.movement))
+	var result := run_batch(tuned_player, tuned_enemy, {"sample_count": samples_per_config, "max_turns": max_turns})
+	result.config = config.duplicate(true)
+	result.balance_score = balance_score(result)
+	return result
 
 static func tune_cards(cards: Array, damage_mul: float, break_mul: float, cost_delta: int, movement_enabled: bool) -> Array:
 	var out := []
@@ -65,53 +112,26 @@ static func balance_score(result: Dictionary) -> float:
 	return win_gap * 2.0 + turn_penalty + distance_penalty + draw_penalty
 
 static func _ratio_get(r: Dictionary, key: int) -> float:
-	if r.has(key):
-		return float(r[key])
-	if r.has(str(key)):
-		return float(r[str(key)])
+	if r.has(key): return float(r[key])
+	if r.has(str(key)): return float(r[str(key)])
 	return 0.0
 
 static func run_single(player_cards: Array, enemy_cards: Array, max_turns: int, rng: RandomNumberGenerator) -> Dictionary:
 	var p := {"hp": 24, "momentum": 6, "guard": 0, "position": 2, "facing": "right", "broken": false, "style": "spear"}
 	var e := {"hp": 22, "momentum": 6, "guard": 0, "position": 6, "facing": "left", "broken": false, "style": "blade"}
-	var distance_hist := {}
-	var push_count := 0
-	var pull_count := 0
-	var self_move_count := 0
-	var break_count := 0
-	var player_hit_count := 0
-	var enemy_hit_count := 0
-	var turns := 0
+	var distance_hist := {}; var push_count := 0; var pull_count := 0; var self_move_count := 0; var break_count := 0; var player_hit_count := 0; var enemy_hit_count := 0; var turns := 0
 	for turn in range(max_turns):
-		turns += 1
-		p.guard = 0
-		e.guard = 0
-		p.momentum = mini(10, int(p.momentum) + 3)
-		e.momentum = mini(10, int(e.momentum) + 3)
-		p.broken = false
-		e.broken = false
-		_move_toward_preferred_range(p, e, [2, 3])
-		_move_toward_preferred_range(e, p, [1, 2])
-		var p_card := _choose_card(player_cards, p, e, rng)
-		var e_card := _choose_card(enemy_cards, e, p, rng)
-		var order := ["player", "enemy"] if rng.randi_range(0, 1) == 0 else ["enemy", "player"]
+		turns += 1; p.guard = 0; e.guard = 0; p.momentum = mini(10, int(p.momentum) + 3); e.momentum = mini(10, int(e.momentum) + 3); p.broken = false; e.broken = false
+		_move_toward_preferred_range(p, e, [2, 3]); _move_toward_preferred_range(e, p, [1, 2])
+		var p_card := _choose_card(player_cards, p, e, rng); var e_card := _choose_card(enemy_cards, e, p, rng); var order := ["player", "enemy"] if rng.randi_range(0, 1) == 0 else ["enemy", "player"]
 		var sim := PreviewConsistencyChecker.simulate({"player_position": int(p.position), "enemy_position": int(e.position), "player_facing": str(p.facing), "enemy_facing": str(e.facing), "player_card": p_card, "enemy_card": e_card, "order": order, "player_momentum": int(p.momentum), "enemy_momentum": int(e.momentum), "player_guard": int(p.guard), "enemy_guard": int(e.guard), "player_broken": bool(p.broken), "enemy_broken": bool(e.broken)})
-		p.hp += int(sim.get("player_hp_delta", 0))
-		e.hp += int(sim.get("enemy_hp_delta", 0))
-		p.momentum = clampi(int(p.momentum) + int(sim.get("player_momentum_delta", 0)), 0, 10)
-		e.momentum = clampi(int(e.momentum) + int(sim.get("enemy_momentum_delta", 0)), 0, 10)
-		p.position = int(sim.get("player_final", p.position))
-		e.position = int(sim.get("enemy_final", e.position))
-		_face_each_other(p, e)
+		p.hp += int(sim.get("player_hp_delta", 0)); e.hp += int(sim.get("enemy_hp_delta", 0)); p.momentum = clampi(int(p.momentum) + int(sim.get("player_momentum_delta", 0)), 0, 10); e.momentum = clampi(int(e.momentum) + int(sim.get("enemy_momentum_delta", 0)), 0, 10); p.position = int(sim.get("player_final", p.position)); e.position = int(sim.get("enemy_final", e.position)); _face_each_other(p, e)
 		if str(sim.get("player_range_result", "none")) == "hit": player_hit_count += 1
 		if str(sim.get("enemy_range_result", "none")) == "hit": enemy_hit_count += 1
 		if bool(sim.get("player_will_break", false)): break_count += 1
 		if bool(sim.get("enemy_will_break", false)): break_count += 1
-		push_count += _movement_count(p_card, "target_push_after") + _movement_count(e_card, "target_push_after")
-		pull_count += _movement_count(p_card, "target_pull_after") + _movement_count(e_card, "target_pull_after")
-		self_move_count += abs(int(p_card.get("self_move_after", 0))) + abs(int(e_card.get("self_move_after", 0)))
-		var d := absi(int(e.position) - int(p.position))
-		distance_hist[d] = int(distance_hist.get(d, 0)) + 1
+		push_count += _movement_count(p_card, "target_push_after") + _movement_count(e_card, "target_push_after"); pull_count += _movement_count(p_card, "target_pull_after") + _movement_count(e_card, "target_pull_after"); self_move_count += abs(int(p_card.get("self_move_after", 0))) + abs(int(e_card.get("self_move_after", 0)))
+		var d := absi(int(e.position) - int(p.position)); distance_hist[d] = int(distance_hist.get(d, 0)) + 1
 		if int(p.hp) <= 0 or int(e.hp) <= 0: break
 	var winner := "draw"
 	if int(p.hp) > 0 and int(e.hp) <= 0: winner = "player"
@@ -122,19 +142,15 @@ static func run_single(player_cards: Array, enemy_cards: Array, max_turns: int, 
 
 static func _choose_card(cards: Array, actor: Dictionary, target: Dictionary, rng: RandomNumberGenerator) -> Dictionary:
 	if cards.is_empty(): return {}
-	var best: Dictionary = {}
-	var best_score := -999999.0
+	var best: Dictionary = {}; var best_score := -999999.0
 	for card in cards:
 		if typeof(card) != TYPE_DICTIONARY: continue
 		var score := _score_card(card, actor, target) + rng.randf_range(-0.75, 0.75)
-		if score > best_score:
-			best_score = score
-			best = card
+		if score > best_score: best_score = score; best = card
 	return best if not best.is_empty() else cards[rng.randi_range(0, cards.size() - 1)]
 
 static func _score_card(card: Dictionary, actor: Dictionary, target: Dictionary) -> float:
-	var distance := absi(int(target.position) - int(actor.position))
-	var score := 0.0
+	var distance := absi(int(target.position) - int(actor.position)); var score := 0.0
 	if distance >= int(card.get("min_distance", 0)) and distance <= int(card.get("max_distance", 8)): score += 8.0
 	else: score -= 3.0
 	if int(actor.momentum) < int(card.get("momentum_cost", 0)): score -= 8.0
@@ -148,10 +164,8 @@ static func _score_card(card: Dictionary, actor: Dictionary, target: Dictionary)
 	return score
 
 static func _move_toward_preferred_range(actor: Dictionary, target: Dictionary, preferred: Array) -> void:
-	var distance := absi(int(target.position) - int(actor.position))
-	var min_pref := int(preferred[0]); var max_pref := int(preferred[1])
-	if distance >= min_pref and distance <= max_pref:
-		_face_each_other(actor, target); return
+	var distance := absi(int(target.position) - int(actor.position)); var min_pref := int(preferred[0]); var max_pref := int(preferred[1])
+	if distance >= min_pref and distance <= max_pref: _face_each_other(actor, target); return
 	var dir := 1 if int(target.position) > int(actor.position) else -1
 	if distance > max_pref: actor.position = clampi(int(actor.position) + dir, 0, 8)
 	elif distance < min_pref: actor.position = clampi(int(actor.position) - dir, 0, 8)
@@ -178,8 +192,7 @@ static func _record_result(aggregate: Dictionary, result: Dictionary) -> void:
 	for key in hist.keys(): aggregate.distance_hist[key] = int(aggregate.distance_hist.get(key, 0)) + int(hist[key])
 
 static func _finalize_aggregate(aggregate: Dictionary) -> void:
-	var n := maxi(int(aggregate.sample_count), 1)
-	aggregate.player_win_rate = float(aggregate.player_wins) / float(n); aggregate.enemy_win_rate = float(aggregate.enemy_wins) / float(n); aggregate.draw_rate = float(aggregate.draws) / float(n); aggregate.avg_turns = float(aggregate.turns_total) / float(n)
+	var n := maxi(int(aggregate.sample_count), 1); aggregate.player_win_rate = float(aggregate.player_wins) / float(n); aggregate.enemy_win_rate = float(aggregate.enemy_wins) / float(n); aggregate.draw_rate = float(aggregate.draws) / float(n); aggregate.avg_turns = float(aggregate.turns_total) / float(n)
 	var total_distance_ticks := 0
 	for key in aggregate.distance_hist.keys(): total_distance_ticks += int(aggregate.distance_hist[key])
 	var distance_ratio := {}
@@ -192,13 +205,23 @@ static func format_report(result: Dictionary) -> String:
 
 static func format_sweep_report(sweep: Dictionary, top_n: int = 5) -> String:
 	if sweep.is_empty(): return "未扫描"
-	var results: Array = sweep.get("results", [])
-	var text := "扫描:%d组 x %d局\n" % [int(sweep.get("config_count", 0)), int(sweep.get("samples_per_config", 0))]
+	var results: Array = sweep.get("results", []); var text := "扫描:%d组 x %d局\n" % [int(sweep.get("config_count", 0)), int(sweep.get("samples_per_config", 0))]
 	for i in range(mini(top_n, results.size())):
-		var r: Dictionary = results[i]
-		var c: Dictionary = r.get("config", {})
-		text += "%d) score %.3f D%.2f B%.2f C%+d M%s 枪%.0f%% 刀%.0f%% 回合%.1f\n" % [i + 1, float(r.get("balance_score", 0.0)), float(c.get("damage", 1.0)), float(c.get("break", 1.0)), int(c.get("cost", 0)), "开" if bool(c.get("movement", true)) else "关", float(r.get("player_win_rate", 0.0)) * 100.0, float(r.get("enemy_win_rate", 0.0)) * 100.0, float(r.get("avg_turns", 0.0))]
+		text += _format_rank_line(i + 1, results[i]) + "\n"
 	return text
+
+static func format_optimize_report(opt: Dictionary, top_n: int = 5) -> String:
+	if opt.is_empty(): return "未优化"
+	var text := "优化:%d轮 / 评估%d组 x %d局\n" % [int(opt.get("iterations", 0)), int(opt.get("evaluated", 0)), int(opt.get("samples_per_config", 0))]
+	text += "推荐: " + _format_rank_line(1, opt.get("best", {})) + "\n"
+	var results: Array = opt.get("results", [])
+	for i in range(1, mini(top_n, results.size())):
+		text += _format_rank_line(i + 1, results[i]) + "\n"
+	return text
+
+static func _format_rank_line(rank: int, r: Dictionary) -> String:
+	var c: Dictionary = r.get("config", {})
+	return "%d) score %.3f D%.2f B%.2f C%+d M%s 枪%.0f%% 刀%.0f%% 回合%.1f" % [rank, float(r.get("balance_score", 0.0)), float(c.get("damage", 1.0)), float(c.get("break", 1.0)), int(c.get("cost", 0)), "开" if bool(c.get("movement", true)) else "关", float(r.get("player_win_rate", 0.0)) * 100.0, float(r.get("enemy_win_rate", 0.0)) * 100.0, float(r.get("avg_turns", 0.0))]
 
 static func _format_distance_ratio(distance_ratio: Dictionary) -> String:
 	var parts: Array[String] = []
