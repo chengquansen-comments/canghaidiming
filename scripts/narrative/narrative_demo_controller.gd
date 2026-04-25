@@ -10,6 +10,28 @@ const PROLOGUE_BACKGROUND_HINTS := {
 	"p08_master_cards": "res://assets/pixel_battle/backgrounds/prologue_master_blocks_blade.png",
 	"p12_ten_years": "res://assets/pixel_battle/backgrounds/prologue_ten_years_later.png"
 }
+const PROLOGUE_PORTRAIT_HINTS := {
+	"p02_father": {"name": "父亲", "path": ""},
+	"p03_enemy": {"name": "敌人", "path": ""},
+	"p05_child_card": {"name": "幼年主角", "path": "res://assets/pixel_battle/portraits/protagonist_child.png"},
+	"p06_child_down": {"name": "敌人", "path": ""},
+	"p07_master_enter": {"name": "师父", "path": "res://assets/pixel_battle/portraits/mentor_veteran.png"},
+	"p08_master_cards": {"name": "师父", "path": "res://assets/pixel_battle/portraits/mentor_veteran.png"},
+	"p11_dont_look": {"name": "师父", "path": "res://assets/pixel_battle/portraits/mentor_veteran.png"},
+	"p12_ten_years": {"name": "主角 / 师父", "path": "res://assets/pixel_battle/portraits/protagonist_young.png"}
+}
+const SPEAKER_PORTRAIT_HINTS := {
+	"主角": {"name": "主角：年轻武官", "path": "res://assets/pixel_battle/portraits/protagonist_young.png"},
+	"师父": {"name": "师父：沉默老兵", "path": "res://assets/pixel_battle/portraits/mentor_veteran.png"},
+	"上官": {"name": "军门上官", "path": "res://assets/pixel_battle/portraits/military_superior.png"},
+	"Boss": {"name": "小股倭寇首领", "path": "res://assets/pixel_battle/portraits/wakou_leader.png"},
+	"海商": {"name": "海商豪强", "path": "res://assets/pixel_battle/portraits/merchant_magnate.png"},
+	"押运官": {"name": "失械案押运官", "path": "res://assets/pixel_battle/portraits/transport_officer.png"},
+	"兵变营头": {"name": "兵变营头", "path": "res://assets/pixel_battle/portraits/mutiny_captain.png"},
+	"敌方枪手": {"name": "敌方枪手", "path": "res://assets/pixel_battle/portraits/enemy_spearman_story.png"},
+	"敌方刀客": {"name": "敌方刀客", "path": "res://assets/pixel_battle/portraits/enemy_blademaster_story.png"},
+	"旧物": {"name": "旧物", "path": ""}
+}
 
 var narrative: NarrativeState
 var root_panel: PanelContainer
@@ -17,9 +39,13 @@ var title_label: Label
 var type_label: Label
 var route_label: Label
 var map_box: HBoxContainer
+var visual_row: HBoxContainer
 var art_frame: PanelContainer
 var art_texture: TextureRect
 var art_label: Label
+var portrait_frame: PanelContainer
+var portrait_texture: TextureRect
+var portrait_label: Label
 var body_label: RichTextLabel
 var result_label: Label
 var vars_label: Label
@@ -87,9 +113,15 @@ func _build_ui() -> void:
 	map_box.add_theme_constant_override("separation", 8)
 	map_scroll.add_child(map_box)
 
+	visual_row = HBoxContainer.new()
+	visual_row.add_theme_constant_override("separation", 10)
+	visual_row.custom_minimum_size = Vector2(0, 170)
+	layout.add_child(visual_row)
+
 	art_frame = PanelContainer.new()
+	art_frame.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	art_frame.custom_minimum_size = Vector2(0, 170)
-	layout.add_child(art_frame)
+	visual_row.add_child(art_frame)
 
 	var art_stack := CenterContainer.new()
 	art_frame.add_child(art_stack)
@@ -97,22 +129,43 @@ func _build_ui() -> void:
 	art_texture = TextureRect.new()
 	art_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	art_texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	art_texture.custom_minimum_size = Vector2(960, 160)
+	art_texture.custom_minimum_size = Vector2(760, 160)
 	art_stack.add_child(art_texture)
 
 	art_label = Label.new()
 	art_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	art_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	art_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	art_label.custom_minimum_size = Vector2(900, 0)
+	art_label.custom_minimum_size = Vector2(720, 0)
 	art_label.modulate = Color(0.86, 0.82, 0.7, 1.0)
 	art_stack.add_child(art_label)
+
+	portrait_frame = PanelContainer.new()
+	portrait_frame.custom_minimum_size = Vector2(190, 170)
+	visual_row.add_child(portrait_frame)
+
+	var portrait_stack := CenterContainer.new()
+	portrait_frame.add_child(portrait_stack)
+
+	portrait_texture = TextureRect.new()
+	portrait_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	portrait_texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	portrait_texture.custom_minimum_size = Vector2(180, 160)
+	portrait_stack.add_child(portrait_texture)
+
+	portrait_label = Label.new()
+	portrait_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	portrait_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	portrait_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	portrait_label.custom_minimum_size = Vector2(170, 0)
+	portrait_label.modulate = Color(0.86, 0.82, 0.7, 1.0)
+	portrait_stack.add_child(portrait_label)
 
 	body_label = RichTextLabel.new()
 	body_label.fit_content = false
 	body_label.scroll_active = true
 	body_label.bbcode_enabled = true
-	body_label.custom_minimum_size = Vector2(0, 210)
+	body_label.custom_minimum_size = Vector2(0, 190)
 	body_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	body_label.add_theme_font_size_override("normal_font_size", 22)
 	layout.add_child(body_label)
@@ -158,6 +211,7 @@ func _start_narrative() -> void:
 		title_label.text = "叙事数据加载失败"
 		body_label.text = "请检查 data/narrative/mvp_compressed_narrative.json"
 		_set_art_placeholder("叙事数据加载失败。")
+		_set_portrait_placeholder("无角色")
 		_render_map_strip()
 		_force_cjk_font()
 		return
@@ -199,6 +253,7 @@ func _render_next_prologue_step() -> void:
 	title_label.text = str(step.get("title", "刀下余声")) if step.has("title") else "刀下余声"
 	type_label.text = "序章 / %d/%d" % [narrative.prologue_index, narrative.prologue_count()]
 	_render_step_art(step)
+	_render_step_portrait(step)
 	body_label.text = _format_step(step)
 	continue_button.visible = true
 	_force_cjk_font()
@@ -210,6 +265,13 @@ func _render_step_art(step: Dictionary) -> void:
 		_set_art_placeholder("序章镜头：%s" % str(step.get("kind", "black")))
 		return
 	_set_art_from_path(bg_path, "P0 序章背景占位：%s" % bg_path)
+
+func _render_step_portrait(step: Dictionary) -> void:
+	var step_id := str(step.get("id", ""))
+	var hint: Dictionary = PROLOGUE_PORTRAIT_HINTS.get(step_id, {})
+	if hint.is_empty() and step.has("speaker"):
+		hint = _portrait_hint_for_speaker(str(step.get("speaker", "")))
+	_apply_portrait_hint(hint, "序章角色")
 
 func _format_step(step: Dictionary) -> String:
 	var lines: Array[String] = []
@@ -247,6 +309,7 @@ func _render_node() -> void:
 	vars_label.text = narrative.variables_text()
 	result_label.text = narrative.last_result_text
 	_render_node_art(node)
+	_render_node_portrait(node)
 	body_label.text = _format_node(node)
 	continue_button.visible = false
 	_render_map_strip()
@@ -267,6 +330,32 @@ func _render_node_art(node: Dictionary) -> void:
 		return
 	_set_art_from_path(bg, "P0 节点背景占位：%s" % bg)
 
+func _render_node_portrait(node: Dictionary) -> void:
+	var dialogue: Array = node.get("dialogue", [])
+	for line_value in dialogue:
+		if typeof(line_value) != TYPE_DICTIONARY:
+			continue
+		var line: Dictionary = line_value
+		var speaker := str(line.get("speaker", ""))
+		if not speaker.is_empty():
+			_apply_portrait_hint(_portrait_hint_for_speaker(speaker), speaker)
+			return
+	_set_portrait_placeholder("角色占位：当前节点暂无角色立绘。")
+
+func _portrait_hint_for_speaker(speaker: String) -> Dictionary:
+	return SPEAKER_PORTRAIT_HINTS.get(speaker, {"name": speaker, "path": ""})
+
+func _apply_portrait_hint(hint: Dictionary, fallback_name: String) -> void:
+	if hint.is_empty():
+		_set_portrait_placeholder("角色占位：%s" % fallback_name)
+		return
+	var name := str(hint.get("name", fallback_name))
+	var path := str(hint.get("path", ""))
+	if path.is_empty():
+		_set_portrait_placeholder("角色占位：%s" % name)
+		return
+	_set_portrait_from_path(path, "角色占位：%s\n%s" % [name, path])
+
 func _set_art_from_path(path: String, fallback_text: String) -> void:
 	if art_texture == null or art_label == null:
 		return
@@ -286,6 +375,26 @@ func _set_art_placeholder(text: String) -> void:
 	if art_label != null:
 		art_label.text = text
 		art_label.visible = true
+
+func _set_portrait_from_path(path: String, fallback_text: String) -> void:
+	if portrait_texture == null or portrait_label == null:
+		return
+	if ResourceLoader.exists(path):
+		var tex := load(path)
+		if tex is Texture2D:
+			portrait_texture.texture = tex
+			portrait_texture.visible = true
+			portrait_label.visible = false
+			return
+	_set_portrait_placeholder(fallback_text)
+
+func _set_portrait_placeholder(text: String) -> void:
+	if portrait_texture != null:
+		portrait_texture.texture = null
+		portrait_texture.visible = false
+	if portrait_label != null:
+		portrait_label.text = text
+		portrait_label.visible = true
 
 func _render_map_strip() -> void:
 	_clear_map()
@@ -441,5 +550,6 @@ func _render_ending() -> void:
 	vars_label.text = narrative.variables_text()
 	continue_button.visible = false
 	_set_art_placeholder("结局图占位：后续接入上报 / 掩盖 / 私查 / 借势四类结局图。")
+	_set_portrait_placeholder("结局人物占位")
 	_render_map_strip()
 	_force_cjk_font()
