@@ -111,7 +111,10 @@ func _resolver_preview_text(is_player_side: bool, card: CardData, sim: Dictionar
 		parts.append("擦中")
 		parts.append("伤%d" % damage)
 	else:
-		parts.append("命中") if card.requires_hit_check() else parts.append("生效")
+		if card.requires_hit_check():
+			parts.append("命中")
+		else:
+			parts.append("生效")
 		if damage > 0:
 			parts.append("伤%d" % damage)
 	if break_value > 0:
