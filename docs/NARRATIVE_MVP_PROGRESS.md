@@ -1,7 +1,7 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景信息分层 + 结局闭环 + UI 分层 + 操作区滚动修复 + 真实战斗 V1 单向跳转 + MainVisual 叙事上下文诊断 + Battle Result 诊断 + 战斗胜利后继续剧情闭环 + CanvasLayer 无条件返回剧情控件 + Engine metadata 上下文持久化兜底 + encounter_id 接战映射诊断 + 关卡信息可见性修复”；返回剧情闭环与关卡信息可见性均已验收通过。  
+> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景信息分层 + 结局闭环 + UI 分层 + 操作区滚动修复 + 真实战斗 V1 单向跳转 + MainVisual 叙事上下文诊断 + Battle Result 诊断 + 战斗胜利后继续剧情闭环 + CanvasLayer 无条件返回剧情控件 + Engine metadata 上下文持久化兜底 + encounter_id 接战映射诊断 + 关卡信息可见性修复 + 按推荐接敌过渡按钮”；返回剧情闭环与关卡信息可见性均已验收通过。  
 > 核心原则：继续走安全线，不恢复旧 `scripts/narrative/*` 复杂链路；不使用 `HScrollContainer`；不直接改战斗规则；不破坏现有战斗测试入口；不重构 `web_shell.html`。
 
 ---
@@ -39,18 +39,11 @@
 → NarrativeDemo 从 NarrativeBattleContext / Engine metadata 消费 battle result，并按 win 自动推进到下一节点
 ```
 
-V3 前置目标已达成：
+V3 当前目标：
 
 ```text
-encounter_id → battle mapping 诊断已可见。
-MainVisual 右上角能显示关卡信息 / 推荐 player_role / enemy_role / difficulty。
-```
-
-当前下一阶段目标：
-
-```text
-V3：encounter_id → enemy/fighter 自动配置。
-但需要先准确定位现有角色选择与战斗创建入口，避免绕过 _show_role_selection 或破坏现有测试入口。
+从“只显示接战映射”推进到“按推荐接敌”的安全过渡入口。
+不直接绕过现有角色选择；不改 BattleStateMachine；不改卡牌/伤害/AI 规则。
 ```
 
 当前仍不做：
@@ -61,6 +54,7 @@ V3：encounter_id → enemy/fighter 自动配置。
 不改 finish_round
 不做复杂失败惩罚
 不新增复杂敌人体系
+不强制绕过 MainVisual 原角色选择入口
 ```
 
 ---
@@ -249,6 +243,7 @@ CanvasLayer 右上角显示：
 - 叙事上下文诊断
 - 接战映射诊断
 - 战斗结果诊断
+- 按推荐接敌按钮
 - 返回剧情按钮
 ```
 
@@ -261,16 +256,47 @@ player.hp <= 0 and enemy.hp <= 0 → narrative_result=draw
 player/enemy 不可用或尚未结算时点击返回 → win 保底
 ```
 
-新增 V3 前置能力：
+新增 V3 过渡能力：
 
 ```text
-BattleMappingDebugLabel
-→ 显示 NarrativeBattleContext.battle_mapping_debug_text()
-→ 当前仅诊断展示，不自动配置 player/enemy
+RecommendedBattleButton
+→ 文案：“按推荐接敌”
+→ 点击后读取 NarrativeBattleContext.get_battle_mapping().player_role
+→ 先写入 player_role_id
+→ 尝试按安全候选函数名调用现有角色选择/开战入口
+→ 若未匹配入口，不报错，只提示继续使用原角色选择按钮
+```
 
-NarrativeContextDebugLabel
-→ 第一行直接合并显示：关卡信息 / 推荐玩家 / 推荐敌人 / 难度
-→ 避免新增 label 被面板空间挤掉导致不可见
+当前候选入口：
+
+```text
+一参候选：
+_on_role_selected(role_id)
+_select_role(role_id)
+_choose_role(role_id)
+_pick_role(role_id)
+_start_battle(role_id)
+_begin_battle(role_id)
+_start_session(role_id)
+_begin_session(role_id)
+_start_run(role_id)
+
+零参候选：
+_confirm_role_selection()
+_confirm_role_pick()
+_start_battle()
+_begin_battle()
+_start_session()
+_begin_session()
+_start_run()
+```
+
+防护：
+
+```text
+调用前用 get_method_list() 检查方法名和参数数量；
+不直接 call 不存在方法；
+未匹配时只写 player_role_id 并提示，不影响原手动入口。
 ```
 
 对应提交：
@@ -285,6 +311,7 @@ fb13aad67c3e3a3c3b50c3a8ed3b5aba3f3efec0  Add always visible return narrative co
 fbdbb8a7434e51e088e74741efb6e421136587fe  Show return narrative control unconditionally in MainVisual
 01392a2a1ab57d537f189d7c198d2899bea4c381  Show narrative encounter mapping in battle debug panel
 dbca1c0e0c01f98c641b8ef9263b58fd3802aa09  Make encounter mapping visible in MainVisual panel
+608afa2569611e01bc212455361cbf25876aaafd  Add recommended battle entry control
 ```
 
 验收状态：
@@ -293,16 +320,17 @@ dbca1c0e0c01f98c641b8ef9263b58fd3802aa09  Make encounter mapping visible in Main
 [x] MainVisual 右上角已出现返回剧情按钮
 [x] 返回剧情闭环已验收通过
 [x] 关卡信息 / 接战映射可见性已验收通过
+[ ] “按推荐接敌”按钮仍需 Web 验收
 ```
 
 约束：
 
 ```text
-不绕过角色选择
-不根据 encounter_id 自动换敌人
+不强制绕过角色选择
+不强制自动换敌人
 不改战斗规则
 不改 BattleStateMachine
-只做上下文、接战映射诊断、结果诊断、返回剧情按钮
+只做推荐接敌入口与可回退调用
 ```
 
 ---
@@ -437,7 +465,7 @@ _show_role_selection()
 
 ```text
 角色选择和战斗创建入口还没有被稳定定位到可安全覆盖的函数。
-下一步不能直接绕过 _show_role_selection；应先精准定位 role selection 按钮、player_role_id 设置、player/enemy 创建函数。
+已先通过“按推荐接敌”按钮做反射式安全尝试：有匹配入口就调用；没有就回退到原手动选择入口。
 ```
 
 ### 6.3 胜负结算点
@@ -474,7 +502,8 @@ phase 切到 RESULT 发生在 finish_round()
 [x] Web 验收：MainVisual 原有角色选择入口不受影响
 [x] Web 验收：NarrativeDemo 下方选项完整显示 / 可滚动
 [x] Web 验收：MainVisual 右上角显示关卡信息 / encounter_id 接战映射诊断
-[ ] 精准定位角色选择与战斗创建入口
+[ ] Web 验收：“按推荐接敌”按钮是否出现
+[ ] Web 验收：点击“按推荐接敌”是否能自动进入推荐职业，或至少提示回退到手动选择
 [ ] 根据 visual_debug_label 判断 SVG 是否可被当前 Godot Web 导入为 Texture2D
 [ ] 若 SVG 不能作为 Texture2D 正常显示，则改为真实 PNG 占位图
 [ ] V3：encounter_id → enemy/fighter 自动配置
@@ -483,62 +512,51 @@ phase 切到 RESULT 发生在 finish_round()
 
 ---
 
-## 8. 下一刀建议：精准定位角色选择与战斗创建入口
+## 8. 下一刀建议：Web 验收“按推荐接敌”按钮
 
 目标：
 
 ```text
-为 encounter_id → enemy/fighter 自动配置找到安全插入点。
+确认推荐接敌入口不会破坏原战斗入口，并判断是否能命中现有角色选择函数。
 ```
 
-必须确认：
+验收标准：
 
 ```text
-1. _show_role_selection() 后续如何创建按钮
-2. player_role_id 在哪里被赋值
-3. player / enemy 在哪里被 new 出来
-4. enemy 当前是否固定为另一职业，还是跟随 player_role_id
-5. 是否有函数可被 wrapper 调用来自动选择角色
+[ ] 从 beach_ambush 进入 MainVisual，右上角出现“按推荐接敌”按钮
+[ ] 点击后，如果命中入口，应进入 spearman 推荐接战
+[ ] 如果未命中入口，应显示：已写入推荐玩家=spearman；未匹配自动入口，请继续使用原角色选择按钮
+[ ] 原角色选择按钮仍可用
+[ ] 返回剧情闭环不受影响
+[ ] Web 构建稳定
 ```
 
-安全标准：
+如按钮能命中入口：
 
 ```text
-不绕过 _build_catalog()
-不绕过 _build_ui()
-不改 BattleStateMachine
-不改卡牌/伤害/AI 规则
-不破坏直接打开 MainVisual 的原测试入口
+下一刀可固化 encounter_id → player_role 自动选择。
 ```
 
-第一版自动配置建议：
+如按钮不能命中入口：
 
 ```text
-如果能找到稳定函数：
-    NarrativeBattleContext.get_battle_mapping().player_role
-    → 自动选中对应 player_role
-    → enemy 暂时仍按现有创建逻辑
-    → 保留角色选择入口可手动覆盖
-
-如果找不到稳定函数：
-    继续只展示推荐，不自动配置
-    先在文档中记录阻塞点
+下一刀继续精准定位真实角色选择函数名，或在 battle_controller_core.gd 中新增一个稳定 public helper：start_recommended_battle(role_id)。
 ```
 
 ---
 
 ## 9. 后续路线
 
-### Step 1：精准定位角色选择与战斗创建入口
+### Step 1：Web 验收“按推荐接敌”按钮
 
 ```text
-确认是否能安全自动选择 player_role。
+确认推荐接敌按钮可见、可点、不破坏原入口。
 ```
 
-### Step 2：encounter_id → player_role 自动选择
+### Step 2：固化 player_role 自动选择
 
 ```text
-先只自动选择玩家职业，不改敌人逻辑。
+优先只自动选择玩家职业，不改敌人逻辑。
 ```
 
 ### Step 3：encounter_id → enemy/fighter 自动配置
@@ -559,7 +577,7 @@ phase 切到 RESULT 发生在 finish_round()
 ## 10. 给 Codex 的下一步指令
 
 ```text
-请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前剧情—战斗—剧情闭环和右上角关卡信息 / 接战映射显示均已验收通过。下一步请精准定位 battle_controller_core.gd 里的角色选择与战斗创建入口：_show_role_selection() 如何创建按钮，player_role_id 在哪里赋值，player/enemy 在哪里 new 出来，是否存在可被 wrapper 调用的自动选择函数。不要改 BattleStateMachine，不要绕过 _show_role_selection，不要破坏 MainVisual 直接测试入口。若入口稳定，再做 encounter_id → player_role 自动选择；若入口不稳定，只更新文档记录阻塞点。
+请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前剧情—战斗—剧情闭环和右上角关卡信息 / 接战映射显示均已验收通过。本轮已在 MainVisual 右上角增加“按推荐接敌”按钮：点击后读取 NarrativeBattleContext.get_battle_mapping().player_role，先写入 player_role_id，并通过 get_method_list() 安全尝试调用现有角色选择/开战函数；若未匹配入口，只提示继续手动选择，不报错。下一步请 Web 回归验收该按钮是否出现、是否能命中现有入口、是否不影响原角色选择与返回剧情闭环。不要改 BattleStateMachine，不要强制绕过原角色选择入口。
 ```
 
 ---
@@ -567,5 +585,5 @@ phase 切到 RESULT 发生在 finish_round()
 ## 11. 当前一句话结论
 
 ```text
-剧情—战斗—剧情闭环与关卡信息显示均已验收通过；下一步进入 V3 自动接敌前的角色选择入口精准定位。
+剧情—战斗—剧情闭环与关卡信息显示均已验收通过；本轮已新增“按推荐接敌”过渡按钮，下一步验证它能否命中现有角色选择入口。
 ```
