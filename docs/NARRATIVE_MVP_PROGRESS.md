@@ -1,7 +1,7 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景信息分层 + 结局闭环 + UI 分层 + 操作区滚动修复 + 真实战斗 V1 单向跳转 + MainVisual 叙事上下文诊断 + Battle Result 诊断 + 战斗胜利后继续剧情闭环 + CanvasLayer 无条件返回剧情控件”。  
+> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景信息分层 + 结局闭环 + UI 分层 + 操作区滚动修复 + 真实战斗 V1 单向跳转 + MainVisual 叙事上下文诊断 + Battle Result 诊断 + 战斗胜利后继续剧情闭环 + CanvasLayer 无条件返回剧情控件”；返回剧情控件已验收可见。  
 > 核心原则：继续走安全线，不恢复旧 `scripts/narrative/*` 复杂链路；不使用 `HScrollContainer`；不直接改战斗规则；不破坏现有战斗测试入口；不重构 `web_shell.html`。
 
 ---
@@ -209,13 +209,11 @@ fb13aad67c3e3a3c3b50c3a8ed3b5aba3f3efec0  Add always visible return narrative co
 fbdbb8a7434e51e088e74741efb6e421136587fe  Show return narrative control unconditionally in MainVisual
 ```
 
-本轮关键修复：
+验收状态：
 
 ```text
-[修复] 已确认 scenes/MainVisual.tscn 确实挂载 scripts/battle_controller_visual_narrative_context.gd。
-[修复] 返回剧情控件不再依赖 NarrativeBattleContext.has_request()。
-[修复] MainVisual 只要打开，就无条件显示右上角 CanvasLayer 返回剧情面板。
-[修复] 如果上下文丢失，点击返回剧情仍回到 res://scenes/NarrativeDemo.tscn，并按 win 保底。
+[x] MainVisual 右上角已出现返回剧情按钮
+[ ] 返回后是否自动推进到下一节点仍需继续验收
 ```
 
 约束：
@@ -390,8 +388,7 @@ phase 切到 RESULT 发生在 finish_round()
 ## 7. 当前仍需推进
 
 ```text
-[ ] Web 验收：打开 MainVisual 后，右上角无条件出现“返回剧情”按钮
-[ ] Web 验收：从 NarrativeDemo 请求战斗后，MainVisual 右上角出现“返回剧情”按钮
+[x] Web 验收：打开 MainVisual 后，右上角无条件出现“返回剧情”按钮
 [ ] Web 验收：点击“返回剧情”能返回 NarrativeDemo
 [ ] Web 验收：返回后 NarrativeDemo 自动推进到下一节点
 [ ] Web 验收：MainVisual 原有角色选择入口不受影响
@@ -404,20 +401,19 @@ phase 切到 RESULT 发生在 finish_round()
 
 ---
 
-## 8. 下一刀建议：Web 验收 MainVisual 无条件返回控件
+## 8. 下一刀建议：验收返回后叙事推进
 
 目标：
 
 ```text
-确认 MainVisual wrapper 真实生效。
+确认“返回剧情”按钮不仅可见，而且能完成回到 NarrativeDemo 与节点推进。
 ```
 
 验收标准：
 
 ```text
-[ ] 直接打开 MainVisual，也能看到右上角 CanvasLayer 面板和“返回剧情”按钮
-[ ] 从 NarrativeDemo 战斗节点点击请求战斗，也能看到右上角 CanvasLayer 面板和“返回剧情”按钮
-[ ] 原有角色选择仍可用
+[ ] 从 NarrativeDemo 战斗节点点击请求战斗
+[ ] 进入 MainVisual，右上角出现“返回剧情”按钮
 [ ] 点击“返回剧情”返回 NarrativeDemo
 [ ] NarrativeDemo 显示战斗返回提示
 [ ] 地图当前节点已经推进到下一格
@@ -425,35 +421,29 @@ phase 切到 RESULT 发生在 finish_round()
 [ ] Web 构建稳定
 ```
 
-如果这次按钮仍不出现：
+如果能返回但不推进：
 
 ```text
-下一刀应判断为脚本 _ready 未执行或 CanvasLayer 未渲染；需要在 MainVisual.tscn 中直接加一个静态 Button 节点，而不是运行时 add_child。
+下一刀重点修 NarrativeBattleContext 跨场景结果保留与 NarrativeDemo 消费逻辑。
 ```
 
 ---
 
 ## 9. 后续路线
 
-### Step 1：Web 验收 MainVisual 无条件返回控件
+### Step 1：Web 验收返回后叙事推进
 
 ```text
-确认 wrapper 和 CanvasLayer 真实可见。
+确认剧情—战斗—剧情闭环完整可玩。
 ```
 
-### Step 2：必要时改为 MainVisual.tscn 静态 Button 节点
-
-```text
-如果运行时 CanvasLayer 仍不可见，就直接在场景文件中加静态按钮节点。
-```
-
-### Step 3：encounter_id → enemy/fighter 映射
+### Step 2：encounter_id → enemy/fighter 映射
 
 ```text
 只映射到已有 spearman / blademaster，不新增复杂敌人体系。
 ```
 
-### Step 4：失败 / 平局叙事分支
+### Step 3：失败 / 平局叙事分支
 
 ```text
 先轻量处理失败、平局，不做复杂惩罚系统。
@@ -464,7 +454,7 @@ phase 切到 RESULT 发生在 finish_round()
 ## 10. 给 Codex 的下一步指令
 
 ```text
-请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。已确认 scenes/MainVisual.tscn 挂载的是 scripts/battle_controller_visual_narrative_context.gd。本轮已将 MainVisual 的返回剧情控件改为无条件显示：只要 MainVisual 打开，右上角就创建 CanvasLayer 面板和“返回剧情”按钮，不再依赖 NarrativeBattleContext.has_request()。下一步请 Web 回归验收：直接打开 MainVisual 和从 NarrativeDemo 请求战斗进入 MainVisual，两种路径都应显示右上角返回剧情按钮。若仍不显示，下一刀改为在 MainVisual.tscn 中添加静态 Button 节点。
+请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前 MainVisual 右上角返回剧情按钮已验收可见。下一步请 Web 回归验收：从 NarrativeDemo 请求战斗进入 MainVisual，点击返回剧情，确认能回到 NarrativeDemo，并且地图推进到下一节点、军功/旧案线索增加。若能返回但不推进，下一刀修 NarrativeBattleContext 跨场景结果保留与 NarrativeDemo 消费逻辑。不要改 BattleStateMachine，不要绕过角色选择，不要根据 encounter_id 自动换敌人。
 ```
 
 ---
@@ -472,5 +462,5 @@ phase 切到 RESULT 发生在 finish_round()
 ## 11. 当前一句话结论
 
 ```text
-MainVisual.tscn 挂载 wrapper 已确认无误；返回剧情控件已改为 MainVisual 无条件显示，若仍不可见，下一步应改为 MainVisual.tscn 静态按钮节点。
+MainVisual 返回剧情控件已验收可见；下一步要验收返回 NarrativeDemo 后是否自动推进节点与增加变量。
 ```
