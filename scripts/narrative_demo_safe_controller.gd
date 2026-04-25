@@ -53,9 +53,48 @@ const NODES := [
 ]
 
 func _ready() -> void:
+	_consume_battle_result_if_needed()
 	_build_ui()
 	BattleFontHelper.enforce(self)
 	_render()
+
+func _consume_battle_result_if_needed() -> void:
+	if not NarrativeBattleContext.has_result():
+		return
+	var source_id := NarrativeBattleContext.source_node_id
+	var result := NarrativeBattleContext.last_result
+	for i in range(NODES.size()):
+		var node: Dictionary = NODES[i]
+		if str(node.get("id", "")) == source_id:
+			node_index = i
+			in_prologue = false
+			break
+	if result == "win":
+		_apply_battle_result_reward(node_index)
+		if node_index < NODES.size() - 1:
+			node_index += 1
+		last_hint = "战斗胜利：已返回剧情，并自动推进到下一节点。"
+	elif result == "lose":
+		last_hint = "战斗失败：已返回剧情，当前 Demo 暂不惩罚，可选择视为胜利继续或重试。"
+	elif result == "draw":
+		last_hint = "战斗同归于尽：已返回剧情，当前 Demo 暂按线索保留处理。"
+	else:
+		last_hint = "战斗结果未知：已返回剧情。"
+	NarrativeBattleContext.clear()
+
+func _apply_battle_result_reward(source_index: int) -> void:
+	if source_index < 0 or source_index >= NODES.size():
+		return
+	var node: Dictionary = NODES[source_index]
+	match str(node.get("type", "")):
+		"普通战斗", "精英战斗":
+			jun_gong += 1
+			clues += 1
+		"Boss":
+			jun_gong += 2
+			clues += 2
+		_:
+			jun_gong += 1
 
 func _build_ui() -> void:
 	var root := PanelContainer.new()
@@ -354,7 +393,7 @@ func _on_request_battle() -> void:
 	var encounter_id := str(node.get("combat", ""))
 	var source_node_id := str(node.get("id", ""))
 	NarrativeBattleContext.set_request(encounter_id, source_node_id)
-	body_label.text = _node_body(node) + "\n\n[b]战斗跳转[/b]\n%s\n即将进入 MainVisual。V1 只做单向跳转，暂不处理战斗结束返回。" % NarrativeBattleContext.debug_text()
+	body_label.text = _node_body(node) + "\n\n[b]战斗跳转[/b]\n%s\n即将进入 MainVisual。" % NarrativeBattleContext.debug_text()
 	BattleFontHelper.enforce(self)
 	call_deferred("_change_to_main_visual")
 
