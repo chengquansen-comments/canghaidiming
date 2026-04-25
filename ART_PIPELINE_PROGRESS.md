@@ -2,15 +2,16 @@
 
 ## 当前阶段
 
-已经从“资产规范文档”推进到三条硬链路：
+已经从“资产规范文档”推进到四条硬链路：
 
 ```text
 资产验收工具链
 动画运行时骨架
 过渡 actor meta 包
+Web 美术验收闭环
 ```
 
-当前重点不再是继续微调 UI，而是让项目具备完整角色动作包的接入能力，并且先用现有三帧 sheet 走通过渡链路：
+当前重点不再是继续微调 UI，也不是继续改战斗规则，而是围绕 Web 美术线做闭环：
 
 ```text
 旧三帧 sheet
@@ -18,8 +19,27 @@
 → visual controller 自动发现 meta
 → ActorAnimationRuntime 播放
 → hit_frame 信号
-→ 后续接 FX / 结算反馈
+→ FX / 受击反馈
+→ sprite 绑定气泡
+→ Web 视觉验收
 ```
+
+---
+
+## 当前真实画面基准
+
+当前项目已经切到：
+
+```text
+逻辑分辨率：1600 × 1000
+画面比例：16:10
+Web 外壳：浏览器黑底铺满，不自行裁切
+比例控制：Godot stretch/aspect=keep
+主场景：scenes/MainVisual.tscn
+主控制器：scripts/battle_controller_visual_responsive_ui.gd
+```
+
+历史规范文档里仍可能出现 `1600 × 900`、`16:9` 口径。后续执行以当前项目真实配置和 `ART_WEB_VISUAL_ACCEPTANCE_PLAN.md` 为准。
 
 ---
 
@@ -220,7 +240,7 @@ scripts/battle_controller_visual_cached_ui.gd
 没有 actor meta：保留旧三帧 sheet 显示；
 _process(delta)：更新 player / enemy runtime；
 _refresh_character_visuals()：确保 runtime 存在并回 idle；
-hit_frame_reached：目前先打 log，下一步接 FX；
+hit_frame_reached：已进入 visual controller，可继续接 FX / 防守方反馈；
 runtime_failed：不阻断旧逻辑。
 ```
 
@@ -237,11 +257,13 @@ res://assets/pixel_battle/actors/enemy_{role_id}/enemy_{role_id}.meta.json
 
 当前不等待新美术，先用现有三帧 sheet 建立可被 runtime 识别的 actor meta。
 
-新增：
+当前已有：
 
 ```text
 assets/pixel_battle/actors/spearman/spearman.meta.json
 assets/pixel_battle/actors/blademaster/blademaster.meta.json
+assets/pixel_battle/actors/enemy_spearman/enemy_spearman.meta.json
+assets/pixel_battle/actors/enemy_blademaster/enemy_blademaster.meta.json
 ```
 
 过渡策略：
@@ -267,6 +289,74 @@ blademaster fx = slash_arc。
 
 ---
 
+## 已完成五：Web 美术验收计划
+
+新增：
+
+```text
+ART_WEB_VISUAL_ACCEPTANCE_PLAN.md
+```
+
+该文档把当前美术线推进收口为六个验收主题：
+
+```text
+P0：Web 构建稳定
+P1：敌方角色身份稳定
+P2：意图气泡绑定角色实际 sprite
+P3：角色动作包从三帧过渡到最低可交付包
+P4：特效与 hit_frame 对齐
+P5：UI 视觉一致性
+```
+
+该文档同时明确：
+
+```text
+当前 Web demo 以 1600×1000、16:10、Godot stretch/aspect=keep 为准；
+旧 1600×900 / 16:9 文档口径不再作为当前验收标准；
+所有新动作资产必须 actor meta 化，同时兼容旧三帧 fallback；
+Web 构建稳定优先于任何视觉扩展。
+```
+
+---
+
+## 最近一次代码修复
+
+### 1. 敌方角色攻击后形象切换
+
+改动位置：
+
+```text
+scripts/battle_controller_visual_responsive_ui.gd
+```
+
+处理方向：
+
+```text
+父级 visual refresh 仍可能把旧三帧 sheet 写回 TextureRect；
+responsive 层在刷新后重新调用 actor runtime；
+有 enemy_* meta 时，敌方角色保持 enemy_* sheet 身份；
+旧三帧只作为 fallback，不应覆盖 active runtime。
+```
+
+### 2. 意图气泡与角色 sprite 绑定
+
+改动位置：
+
+```text
+scripts/battle_controller_visual_responsive_ui.gd
+```
+
+处理方向：
+
+```text
+气泡不按格位独立计算；
+气泡绑定 TextureRect 中实际绘制出来的 sprite 可见矩形；
+兼容 512×512 actor meta sheet、384×384 老 sheet、横向过渡 sheet；
+窗口缩放、角色移动、动作切帧后持续校准。
+```
+
+---
+
 ## 当前约束
 
 旧三帧 sheet 仍然只是过渡资产。正式动画包仍然应该迁移到：
@@ -282,24 +372,32 @@ assets/pixel_battle/actors/{role_id}/
   {role_id}.meta.json
 ```
 
-当前 runtime 已接入，但战斗事件还没有真正驱动 attack / guard / hit / break 播放。
+但在完整动作包稳定前，必须继续满足：
+
+```text
+旧三帧 sheet 可用；
+meta 缺失时可回退；
+单个动作缺失不导致 Web 崩溃；
+Web 构建稳定优先。
+```
 
 ---
 
 ## 下一刀建议
 
-下一步进入“战斗事件驱动动画”。
+下一步进入“Web 美术验收闭环 + 单角色最低动作包”。
 
 优先级：
 
 ```text
-P0：确认 Web / Godot 编译无 GDScript 错误
+P0：本地执行 ./tools/build_and_serve_web.sh，确认无 GDScript 编译错误
 P1：确认 runtime ready 日志出现 player / enemy
-P2：确认角色 idle 来自 ActorAnimationRuntime，而不是旧刷新覆盖
-P3：把确认出招事件接到 player_actor_runtime.play_event("attack_light")
-P4：把 enemy intent 接到 enemy_actor_runtime.play_event("attack_light")
-P5：hit_frame_reached 接现有 FX pool：pierce_streak / slash_arc
-P6：根据 hit / guard / break 结果触发防守方动画
+P2：确认 enemy_* 攻击、受击、回 idle 后不切回普通 sheet
+P3：确认气泡绑定 sprite 实际绘制区域，缩放和移动后不漂
+P4：用 spearman 做最低动作包：idle / move_forward / attack_light / guard / hit / break
+P5：跑 tools/validate_art_assets.py，形成动作覆盖报告
+P6：再复制到 enemy_spearman、blademaster、enemy_blademaster
+P7：最后补 UI frame / icon / FX 一致性资产
 ```
 
 ---
@@ -314,14 +412,16 @@ P6：根据 hit / guard / break 结果触发防守方动画
 → 动画运行时骨架
 → visual controller 接入
 → 现有三帧资产 meta 化
+→ 角色身份与气泡绑定修复
+→ Web 美术验收计划
 ```
 
-项目已经从“静态角色显示”推进到“新动画系统可被识别和加载”的阶段。下一轮才真正进入动作演出：
+项目已经从“静态角色显示”推进到“Web 美术验收闭环”的阶段。下一轮不应再扩规则，而应直接打通：
 
 ```text
-确认出招
-→ 播放 attack_light
-→ hit_frame
-→ FX
-→ 受击 / 格挡 / 破势动画
+spearman 最低动作包
+→ actor bundle 校验
+→ Web 运行验收
+→ enemy / blademaster 复制
+→ UI / FX 一致性补齐
 ```
