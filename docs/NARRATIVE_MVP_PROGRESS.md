@@ -1,7 +1,7 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：P0 Web 构建稳定已再次恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景/人物/旧物文本占位 + 结局闭环 + 收益与推进入口收口 + UI 分层 + 最小图片显示 + 六列地图操作布局 + SVG 占位视觉资源 + 场景信息分层展示 + 视觉资源诊断 + Parser 稳定修复 + 真实战斗 V1 单向跳转 + MainVisual 叙事上下文诊断 + 下方操作区滚动修复”。  
+> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景信息分层 + 结局闭环 + UI 分层 + 操作区滚动修复 + 真实战斗 V1 单向跳转 + MainVisual 叙事上下文诊断”；真实战斗胜负结算点已完成第一轮定位。  
 > 核心原则：继续走安全线，不恢复旧 `scripts/narrative/*` 复杂链路；不使用 `HScrollContainer`；不直接改战斗规则；不破坏现有战斗测试入口；不重构 `web_shell.html`。
 
 ---
@@ -24,7 +24,7 @@
 → 结局
 ```
 
-同时新增 V1 战斗接入目标：
+真实战斗 V1 接入目标：
 
 ```text
 剧情战斗节点点击“请求战斗”
@@ -32,6 +32,13 @@
 → 单向跳转 MainVisual.tscn
 → MainVisual 显示叙事上下文诊断
 → MainVisual 继续走现有角色选择入口
+```
+
+下一阶段目标：
+
+```text
+不改战斗规则，先做战斗结果诊断：
+确认 player / enemy 的 HP 归零后，MainVisual 是否能识别 state_machine.phase == RESULT。
 ```
 
 ---
@@ -118,7 +125,6 @@ scripts/narrative_demo_safe_controller.gd
 [x] 地图点击推进后按节点类型给予默认收益
 [x] 三变量保留：军功 / 清望 / 旧案线索
 [x] 普通 choices 按各自 delta 修改三变量
-[x] 场景文本占位：背景 / 人物 / 旧物 / 结局图
 [x] 场景信息分层展示：_format_scene_text 按句切分为 bullet
 [x] 战斗桥接：请求战斗 / 视为胜利继续 / node_id / encounter_id
 [x] 请求战斗已升级为 V1 单向跳转 MainVisual.tscn
@@ -391,7 +397,101 @@ MainVisual 现有测试入口保持不变。
 
 ---
 
-## 8. 当前仍需推进
+## 8. 真实战斗胜负结算点第一轮定位
+
+### 8.1 HP 写入点
+
+文件：
+
+```text
+scripts/battle_state_machine.gd
+```
+
+关键函数：
+
+```text
+resolve_intent(intent, actor, target)
+```
+
+当前逻辑：
+
+```text
+如果 actor.hp <= 0，则本次 intent 不再执行；
+攻击命中后计算 final_damage；
+如果 final_damage > 0：
+    target.hp = maxi(target.hp - final_damage, 0)
+```
+
+结论：
+
+```text
+真实 HP 归零发生在 BattleStateMachine.resolve_intent() 内。
+```
+
+### 8.2 Result phase 切换点
+
+文件：
+
+```text
+scripts/battle_state_machine.gd
+```
+
+关键函数：
+
+```text
+finish_round(player, enemy)
+```
+
+当前逻辑：
+
+```text
+phase = BattlePhase.DECLARE if player.hp > 0 and enemy.hp > 0 else BattlePhase.RESULT
+```
+
+结论：
+
+```text
+胜负判断的最小可靠信号是：state_machine.phase == BattleStateMachine.BattlePhase.RESULT。
+```
+
+### 8.3 仍需继续定位
+
+```text
+当前已明确 HP 归零和 RESULT phase 切换点；
+仍需继续定位 battle_controller_core.gd 或子类中如何处理 RESULT phase：
+- 是否显示 overlay_panel
+- 是否设置 battle_active=false
+- 是否已有“继续 / 重开 / 返回”按钮
+- 是否已有类似 _show_result / _show_rewards / _return_to_selection 的函数
+```
+
+### 8.4 下一步接入判断
+
+第一版战斗结果回写不应直接改 BattleStateMachine。
+
+建议先在 MainVisual wrapper 中做非侵入式诊断：
+
+```text
+_process 或定时检查：
+if NarrativeBattleContext.has_request()
+   and state_machine.phase == BattleStateMachine.BattlePhase.RESULT:
+       显示 BattleResultDebugLabel
+       只显示 player.hp / enemy.hp / result
+```
+
+暂不做：
+
+```text
+不自动回 NarrativeDemo
+不自动写入剧情变量
+不改 finish_round
+不改 resolve_intent
+不改战斗规则
+```
+
+---
+
+## 9. 当前仍需推进
 
 ```text
 [ ] Web 验收：NarrativeDemo 下方选项完整显示 / 可滚动
@@ -400,50 +500,57 @@ MainVisual 现有测试入口保持不变。
 [ ] Web 验收：MainVisual 原有角色选择入口不受影响
 [ ] 根据 visual_debug_label 判断 SVG 是否可被当前 Godot Web 导入为 Texture2D
 [ ] 若 SVG 不能作为 Texture2D 正常显示，则改为真实 PNG 占位图
-[ ] 真实战斗胜利/失败回调接入前继续定位结算函数
+[ ] 继续定位 battle_controller_core.gd 中 RESULT phase 的 UI 处理函数
+[ ] V2：MainVisual wrapper 显示 battle result 诊断
 [ ] V3：encounter_id → enemy/fighter 映射
+[ ] V4：战斗结果回写叙事
 ```
 
 ---
 
-## 9. 下一刀建议：Web 回归验收 UI 与跳转
+## 10. 下一刀建议：MainVisual wrapper 增加 Battle Result 诊断
 
 目标：
 
 ```text
-确认本轮 ScrollContainer 修复没有影响剧情推进和战斗跳转。
+不改战斗规则，只在 wrapper 中显示战斗结果诊断。
+```
+
+建议实现：
+
+```text
+1. 在 scripts/battle_controller_visual_narrative_context.gd 中增加 result_debug_label
+2. 在 _process 或轻量 Timer 中检查：
+   NarrativeBattleContext.has_request()
+   state_machine.phase == BattleStateMachine.BattlePhase.RESULT
+3. 如果 RESULT：
+   player.hp > 0 and enemy.hp <= 0 → narrative_result=win
+   player.hp <= 0 and enemy.hp > 0 → narrative_result=lose
+   两者都 <=0 → narrative_result=draw
+4. 只显示诊断，不返回剧情，不改变量
 ```
 
 验收标准：
 
 ```text
-[ ] 序章继续按钮显示完整
-[ ] 正式节点下：行军图操作 / 战斗桥接 / 叙事选择均可见或可滚动
-[ ] 普通叙事选择能推进节点
-[ ] 请求战斗能跳转 MainVisual
-[ ] MainVisual 顶部显示“叙事战斗上下文：encounter_id=...｜source_node_id=...｜return_after_battle=false”
-[ ] 原有角色选择仍可用
+[ ] 从 NarrativeDemo 请求战斗进入 MainVisual
+[ ] 打完战斗后能看到 result 诊断
+[ ] 原有战斗结算 UI 不受影响
 [ ] Web 构建稳定
 ```
 
-如果下方区域仍然不够：
+---
+
+## 11. 给 Codex 的下一步指令
 
 ```text
-下一刀只继续压缩上方视觉区域或提高 action_scroll 最小高度，不改叙事/战斗规则。
+请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前已定位 BattleStateMachine.resolve_intent() 是 HP 写入点，finish_round(player, enemy) 会在任一方 HP <= 0 时把 phase 切到 BattlePhase.RESULT。下一步请只在 scripts/battle_controller_visual_narrative_context.gd 这个 wrapper 中增加 battle result 诊断：当 NarrativeBattleContext.has_request() 且 state_machine.phase == BattleStateMachine.BattlePhase.RESULT 时，显示 player.hp / enemy.hp / narrative_result。不要改 BattleStateMachine，不要改 resolve_intent，不要改 finish_round，不要自动回 NarrativeDemo，不要根据 encounter_id 自动换敌人。
 ```
 
 ---
 
-## 10. 给 Codex 的下一步指令
+## 12. 当前一句话结论
 
 ```text
-请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前已修复 NarrativeDemo 下方 UI 显示不全问题：map_buttons_box / combat_buttons_box / choices_box 已统一放入 ScrollContainer。下一步请做 Web 回归验收：确认叙事选择区域完整显示或可滚动，普通选择能推进，请求战斗能跳转 MainVisual，MainVisual 显示 NarrativeBattleContext 诊断，且原有角色选择入口仍可用。不要绕过角色选择，不要改战斗规则，不要根据 encounter_id 自动换敌人，不要重构 web_shell.html。
-```
-
----
-
-## 11. 当前一句话结论
-
-```text
-剧情 MVP 安全线已完成并通过 P0；本轮已修复 NarrativeDemo 下方操作区显示不全问题，下一步应 Web 回归验收 UI 滚动、叙事推进和 MainVisual 单向跳转链路。
+剧情 MVP 安全线已完成并通过 P0；真实战斗胜负结算点已完成第一轮定位，下一步应在 MainVisual wrapper 上做非侵入式 Battle Result 诊断，为后续战斗结果回写叙事做准备。
 ```
