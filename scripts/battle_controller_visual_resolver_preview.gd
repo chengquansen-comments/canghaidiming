@@ -165,8 +165,8 @@ func _update_preview_arrow(line: Line2D, is_player_side: bool, from_slot: int, t
 	if from_slot == to_slot:
 		line.visible = false
 		return
-	var start: Vector2 = _preview_arrow_point(from_slot, is_player_side)
-	var end: Vector2 = _preview_arrow_point(to_slot, is_player_side)
+	var start: Vector2 = _preview_arrow_point(from_slot)
+	var end: Vector2 = _preview_arrow_point(to_slot)
 	var delta: Vector2 = end - start
 	if delta.length() < 1.0:
 		line.visible = false
@@ -183,9 +183,8 @@ func _update_preview_arrow(line: Line2D, is_player_side: bool, from_slot: int, t
 	line.add_point(end - dir * head_len - normal * head_w)
 	line.visible = true
 
-func _preview_arrow_point(slot: int, is_player_side: bool) -> Vector2:
-	var top_left: Vector2 = _slot_top_left(slot, is_player_side)
-	return top_left + Vector2(ACTOR_DISPLAY_SIZE.x * 0.5, ACTOR_DISPLAY_SIZE.y * 0.76)
+func _preview_arrow_point(slot: int) -> Vector2:
+	return Vector2(_slot_center_x(clampi(slot, 0, GRID_SLOT_COUNT - 1)), GRID_STAGE_Y + GRID_SLOT_HEIGHT * 0.5)
 
 func _preview_ghost_modulate(is_player: bool, overlaps_real_actor: bool) -> Color:
 	var alpha: float = PREVIEW_GHOST_OVERLAP_ALPHA if overlaps_real_actor else PREVIEW_GHOST_ALPHA
@@ -194,27 +193,93 @@ func _preview_ghost_modulate(is_player: bool, overlaps_real_actor: bool) -> Colo
 	return Color(0.55, 0.78, 1.0, alpha) if is_player else Color(1.0, 0.64, 0.48, alpha)
 
 func _compute_ordered_preview() -> Dictionary:
+	if player == null or enemy == null:
+		return {"has_preview": false}
 	var p_intent: IntentData = draft_player_intent if draft_player_intent != null else player_intent
 	var e_intent: IntentData = enemy_intent
-	var p_card: CardData = p_intent.actual_card if p_intent != null else null
-	var e_card: CardData = e_intent.actual_card if e_intent != null else null
-	var has_preview: bool = draft_player_has_position or p_card != null or e_card != null
+	var has_preview: bool = draft_player_has_position or p_intent != null or e_intent != null
 	if not has_preview:
 		return {"has_preview": false}
-	var p_state: Dictionary = _resolver_preview_state(true, p_intent)
-	var e_state: Dictionary = _resolver_preview_state(false, e_intent)
-	var order: Array[String] = _preview_resolution_order(p_intent, e_intent)
-	var sim: Dictionary = CombatResolver.resolve_exchange(p_state, e_state, p_card, e_card, order)
+	var sim: Dictionary = _ordered_preview_simulation(p_intent, e_intent)
 	return {
 		"has_preview": true,
-		"player_subjective": int(p_state.get("position", 0)),
-		"enemy_subjective": int(e_state.get("position", 0)),
-		"player_final": clampi(int(sim.get("player_final", p_state.get("position", 0))), 0, GRID_SLOT_COUNT - 1),
-		"enemy_final": clampi(int(sim.get("enemy_final", e_state.get("position", 0))), 0, GRID_SLOT_COUNT - 1),
+		"player_subjective": int(sim.get("player_subjective", player.position)),
+		"enemy_subjective": int(sim.get("enemy_subjective", enemy.position)),
+		"player_final": clampi(int(sim.get("player_final", player.position)), 0, GRID_SLOT_COUNT - 1),
+		"enemy_final": clampi(int(sim.get("enemy_final", enemy.position)), 0, GRID_SLOT_COUNT - 1),
 		"player_text": "",
 		"enemy_text": "",
 		"sim": sim,
-		"source": "CombatResolver"
+		"source": "CombatResolver-sequenced"
+	}
+
+func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> Dictionary:
+	var p_card: CardData = p_intent.actual_card if p_intent != null else null
+	var e_card: CardData = e_intent.actual_card if e_intent != null else null
+	var p_subjective: int = _player_preview_position()
+	var e_subjective: int = enemy.position
+	if e_intent != null and e_intent.target_position >= 0:
+		e_subjective = e_intent.target_position
+	var p_final: int = player.position
+	var e_final: int = enemy.position
+	var p_facing: String = _player_preview_facing()
+	var e_facing: String = _enemy_preview_facing()
+	var p_hp_delta := 0
+	var e_hp_delta := 0
+	var p_momentum_delta := 0
+	var e_momentum_delta := 0
+	var p_range_result := CombatResolver.RANGE_NONE
+	var e_range_result := CombatResolver.RANGE_NONE
+	var order: Array[String] = _preview_resolution_order(p_intent, e_intent)
+	var steps: Array[Dictionary] = []
+	for side: String in order:
+		if side == "player":
+			var before_move: int = p_final
+			p_final = p_subjective
+			steps.append({"side": "player", "phase": "move", "from": before_move, "to": p_final})
+			if p_card != null:
+				p_range_result = CombatResolver.evaluate_range(p_card, p_final, p_facing, e_final)
+				var out_p: Dictionary = CombatResolver.resolve_card_effect(p_card, p_range_result, player.is_broken(), enemy.is_broken(), enemy.guard_points)
+				e_hp_delta -= int(out_p.get("damage", 0))
+				e_momentum_delta -= int(out_p.get("break", 0))
+				p_momentum_delta += int(out_p.get("gain", 0))
+				steps.append({"side": "player", "phase": "effect", "card": p_card.display_name, "range": p_range_result, "damage": int(out_p.get("damage", 0)), "break": int(out_p.get("break", 0)), "gain": int(out_p.get("gain", 0))})
+				var before_effect_move_p: int = p_final
+				var before_effect_move_e: int = e_final
+				var moved_p: Dictionary = CombatResolver.apply_card_movement(p_card, true, p_final, e_final, p_facing, p_range_result, false)
+				p_final = int(moved_p.get("player", p_final))
+				e_final = int(moved_p.get("enemy", e_final))
+				steps.append({"side": "player", "phase": "effect_move", "actor_from": before_effect_move_p, "actor_to": p_final, "target_from": before_effect_move_e, "target_to": e_final, "range": p_range_result})
+		else:
+			var before_enemy_move: int = e_final
+			e_final = e_subjective
+			steps.append({"side": "enemy", "phase": "move", "from": before_enemy_move, "to": e_final})
+			if e_card != null:
+				e_range_result = CombatResolver.evaluate_range(e_card, e_final, e_facing, p_final)
+				var out_e: Dictionary = CombatResolver.resolve_card_effect(e_card, e_range_result, enemy.is_broken(), player.is_broken(), player.guard_points)
+				p_hp_delta -= int(out_e.get("damage", 0))
+				p_momentum_delta -= int(out_e.get("break", 0))
+				e_momentum_delta += int(out_e.get("gain", 0))
+				steps.append({"side": "enemy", "phase": "effect", "card": e_card.display_name, "range": e_range_result, "damage": int(out_e.get("damage", 0)), "break": int(out_e.get("break", 0)), "gain": int(out_e.get("gain", 0))})
+				var before_effect_move_p2: int = p_final
+				var before_effect_move_e2: int = e_final
+				var moved_e: Dictionary = CombatResolver.apply_card_movement(e_card, false, p_final, e_final, e_facing, e_range_result, false)
+				p_final = int(moved_e.get("player", p_final))
+				e_final = int(moved_e.get("enemy", e_final))
+				steps.append({"side": "enemy", "phase": "effect_move", "actor_from": before_effect_move_e2, "actor_to": e_final, "target_from": before_effect_move_p2, "target_to": p_final, "range": e_range_result})
+	return {
+		"player_subjective": p_subjective,
+		"enemy_subjective": e_subjective,
+		"player_final": clampi(p_final, 0, GRID_SLOT_COUNT - 1),
+		"enemy_final": clampi(e_final, 0, GRID_SLOT_COUNT - 1),
+		"player_hp_delta": p_hp_delta,
+		"enemy_hp_delta": e_hp_delta,
+		"player_momentum_delta": p_momentum_delta,
+		"enemy_momentum_delta": e_momentum_delta,
+		"player_range_result": p_range_result,
+		"enemy_range_result": e_range_result,
+		"order": order,
+		"steps": steps
 	}
 
 func _resolver_preview_state(is_player: bool, intent: IntentData) -> Dictionary:
@@ -246,37 +311,48 @@ func _effect_preview_text() -> String:
 	var e_intent: IntentData = enemy_intent
 	var p_card: CardData = p_intent.actual_card if p_intent != null else null
 	var e_card: CardData = e_intent.actual_card if e_intent != null else null
-	var p_state: Dictionary = _resolver_preview_state(true, p_intent)
-	var e_state: Dictionary = _resolver_preview_state(false, e_intent)
-	var order: Array[String] = _preview_resolution_order(p_intent, e_intent)
-	var sim: Dictionary = CombatResolver.resolve_exchange(p_state, e_state, p_card, e_card, order)
+	var sim: Dictionary = _ordered_preview_simulation(p_intent, e_intent)
 	var lines: Array[String] = []
 	lines.append("[font_size=18][b]效果预览[/b][/font_size]")
-	lines.append("距离：%d" % absi(int(e_state.get("position", 0)) - int(p_state.get("position", 0))))
+	lines.append("行动顺序：%s" % _order_text(sim.get("order", [])))
 	lines.append("我方招式：%s" % (p_card.display_name if p_card != null else "待命"))
 	lines.append("敌方招式：%s" % (e_card.display_name if e_card != null else "待命"))
 	lines.append("")
-	lines.append("[b]伤害 / 削势预览[/b]")
-	lines.append(_effect_line(true, p_card, sim))
-	lines.append(_effect_line(false, e_card, sim))
+	lines.append("[b]顺序结算预览[/b]")
+	for step: Dictionary in sim.get("steps", []):
+		lines.append(_step_text(step))
 	lines.append("")
-	lines.append("[b]位移效果预览[/b]")
-	lines.append("我方位移：%s → %s" % [_slot_label(int(p_state.get("position", player.position))), _slot_label(int(sim.get("player_final", p_state.get("position", player.position))))])
-	lines.append("敌方位移：%s → %s" % [_slot_label(int(e_state.get("position", enemy.position))), _slot_label(int(sim.get("enemy_final", e_state.get("position", enemy.position))))])
+	lines.append("[b]最终汇总[/b]")
+	lines.append("我方：伤%d / 势-%d / 位移 %s → %s" % [absi(int(sim.get("player_hp_delta", 0))) if int(sim.get("player_hp_delta", 0)) < 0 else 0, absi(int(sim.get("player_momentum_delta", 0))) if int(sim.get("player_momentum_delta", 0)) < 0 else 0, _slot_label(player.position), _slot_label(int(sim.get("player_final", player.position)))])
+	lines.append("敌方：伤%d / 势-%d / 位移 %s → %s" % [absi(int(sim.get("enemy_hp_delta", 0))) if int(sim.get("enemy_hp_delta", 0)) < 0 else 0, absi(int(sim.get("enemy_momentum_delta", 0))) if int(sim.get("enemy_momentum_delta", 0)) < 0 else 0, _slot_label(enemy.position), _slot_label(int(sim.get("enemy_final", enemy.position)))])
 	return "\n".join(lines)
 
-func _effect_line(is_player_side: bool, card: CardData, sim: Dictionary) -> String:
-	if card == null:
-		return "%s：待命" % ("我方" if is_player_side else "敌方")
-	var range_result: String = str(sim.get("player_range_result", CombatResolver.RANGE_NONE)) if is_player_side else str(sim.get("enemy_range_result", CombatResolver.RANGE_NONE))
-	var hp_delta: int = int(sim.get("enemy_hp_delta", 0)) if is_player_side else int(sim.get("player_hp_delta", 0))
-	var momentum_delta: int = int(sim.get("enemy_momentum_delta", 0)) if is_player_side else int(sim.get("player_momentum_delta", 0))
-	var damage: int = absi(hp_delta) if hp_delta < 0 else 0
-	var break_value: int = absi(momentum_delta) if momentum_delta < 0 else 0
-	var range_text: String = _range_text(range_result)
-	if range_result == CombatResolver.RANGE_MISS_FACING or range_result == CombatResolver.RANGE_MISS_RANGE:
-		return "%s：%s / 未命中，无伤害无削势" % ["我方" if is_player_side else "敌方", card.display_name]
-	return "%s：%s / %s / 伤%d / 势-%d" % ["我方" if is_player_side else "敌方", card.display_name, range_text, damage, break_value]
+func _order_text(order_value) -> String:
+	var order: Array = order_value
+	var parts: Array[String] = []
+	for side in order:
+		parts.append("我方" if str(side) == "player" else "敌方")
+	return " → ".join(parts)
+
+func _step_text(step: Dictionary) -> String:
+	var side_text := "我方" if str(step.get("side", "player")) == "player" else "敌方"
+	var phase := str(step.get("phase", ""))
+	if phase == "move":
+		return "%s移动：%s → %s" % [side_text, _slot_label(int(step.get("from", 0))), _slot_label(int(step.get("to", 0)))]
+	if phase == "effect":
+		var range_result := str(step.get("range", CombatResolver.RANGE_NONE))
+		if range_result == CombatResolver.RANGE_MISS_FACING or range_result == CombatResolver.RANGE_MISS_RANGE:
+			return "%s招式：%s / 未命中，无伤害无削势" % [side_text, str(step.get("card", "待命"))]
+		return "%s招式：%s / %s / 伤%d / 势-%d" % [side_text, str(step.get("card", "待命")), _range_text(range_result), int(step.get("damage", 0)), int(step.get("break", 0))]
+	if phase == "effect_move":
+		var actor_from := int(step.get("actor_from", 0))
+		var actor_to := int(step.get("actor_to", actor_from))
+		var target_from := int(step.get("target_from", 0))
+		var target_to := int(step.get("target_to", target_from))
+		if actor_from == actor_to and target_from == target_to:
+			return "%s招式位移：无" % side_text
+		return "%s招式位移：自身 %s → %s；目标 %s → %s" % [side_text, _slot_label(actor_from), _slot_label(actor_to), _slot_label(target_from), _slot_label(target_to)]
+	return "%s：无" % side_text
 
 func _range_text(range_result: String) -> String:
 	match range_result:
