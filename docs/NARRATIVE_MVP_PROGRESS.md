@@ -1,7 +1,7 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景/人物/旧物文本占位 + 结局闭环 + 收益与推进入口收口 + UI 分层 + 最小图片显示”。  
+> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景/人物/旧物文本占位 + 结局闭环 + 收益与推进入口收口 + UI 分层 + 最小图片显示 + 六列地图操作布局”。  
 > 核心原则：继续走安全线，不恢复旧 `scripts/narrative/*` 复杂链路；不使用 `HScrollContainer`；不改 `MainVisual.tscn`；不改 `battle_controller`；不重构 `web_shell.html`。
 
 ---
@@ -30,7 +30,7 @@
 剧情 MVP：进入 NarrativeDemo.tscn
 当前脚本：res://scripts/narrative_demo_safe_controller.gd
 中文显示：复用 BattleFontHelper
-行军图：六列文本地图 + 地图按钮
+行军图：六列文本地图 + 六列地图按钮
 地图状态：▶ 当前 / ● 已走 / ◎ 可前往 / ○ 未开放
 叙事变量：军功 / 清望 / 旧案线索
 视觉表现：ResourceLoader.exists + TextureRect，资源不存在则文本占位
@@ -106,6 +106,7 @@ scripts/narrative_demo_safe_controller.gd
 [x] 压缩序章可播放
 [x] 序章中文显示正常
 [x] 六列行军图文本展示：军令 / 初遇 / 疑点 / 压迫 / 破船 / 军门
+[x] 六列行军图按钮布局：每列一个 VBoxContainer，外层 HBoxContainer
 [x] 地图状态标记：▶ 当前 / ● 已走 / ◎ 可前往 / ○ 未开放
 [x] 地图按钮可点击
 [x] 点击 ◎ 可前往节点可推进
@@ -134,6 +135,7 @@ b580c2e58e98ba7dc5779599f0dfce21a510dafe  Apply default rewards on safe map navi
 0d57c595a4938c179bd21a636b9ffd1b5500fa44  Unify safe narrative progression helpers
 9376b50ded1842e29edbf06ccbec41c2c2d80b4c  Split safe narrative demo button sections
 0fcc090ec98dcc6cc5fa1b9f8d8c4d6dc7efbcd7  Add safe narrative visual texture display
+544de82a3988307d67899ad246b01500799065c7  Render safe narrative map buttons as columns
 ```
 
 ---
@@ -173,7 +175,7 @@ military_coverup → res://assets/pixel_battle/backgrounds/narrative_military_co
 当前动态控件已经拆成三个区域：
 
 ```text
-map_buttons_box：行军图操作，只放地图节点按钮
+map_buttons_box：行军图操作，只放地图节点按钮；当前为六列布局
 combat_buttons_box：战斗桥接，只放“请求战斗 / 视为胜利继续”或无战斗提示
 choices_box：叙事选择，只放当前节点 choices / 序章继续 / 重开叙事
 ```
@@ -234,7 +236,7 @@ Boss：军功 +2，旧案线索 +1
 
 ```text
 [ ] 安全版 Web 回归验收
-[ ] 行军图按钮区进一步做换行 / 分列，避免宽屏以外横向过挤
+[ ] 六列行军图操作区在 1600×1000 下验收
 [ ] 场景占位信息分层展示，降低正文拥挤
 [ ] 图片显示区域尺寸和正文高度在 1600×1000 下验收
 [ ] 给缺失图片资产补图或补占位 png
@@ -243,49 +245,49 @@ Boss：军功 +2，旧案线索 +1
 
 ---
 
-## 8. 下一刀建议：行军图按钮换行 / 分列
+## 8. 下一刀建议：补最小占位 PNG
 
 目标：
 
 ```text
-当前行军图按钮使用单行 HBoxContainer，节点多时可能挤压或溢出。
-下一步将行军图按钮改成两行或按列分组，仍不使用 HScrollContainer。
+当前 visual_path 已接入，但仓库中不一定有对应图片。
+下一步为当前 6 个 visual_path 补最小占位 png，确保 TextureRect 真实渲染路径可验收。
 ```
 
-建议实现：
+建议资产：
 
 ```text
-1. map_buttons_box 下按 column 分组
-2. 每个 column 一个 VBoxContainer
-3. 外层使用 HBoxContainer 显示六列
-4. 每列显示该列节点按钮
-5. 仍保持按钮点击逻辑不变
+assets/pixel_battle/backgrounds/narrative_military_order.png
+assets/pixel_battle/backgrounds/narrative_beach_ambush.png
+assets/pixel_battle/relics/relic_ming_firearm.png
+assets/pixel_battle/portraits/transport_officer.png
+assets/pixel_battle/portraits/wakou_leader.png
+assets/pixel_battle/backgrounds/narrative_military_coverup.png
 ```
 
 验收标准：
 
 ```text
-[ ] 六列更像行军图
-[ ] 宽屏下不挤压正文
-[ ] 不使用 HScrollContainer
-[ ] 地图点击推进不受影响
+[ ] 六个路径 ResourceLoader.exists(path) 为 true
+[ ] TextureRect 显示图片而不是文本占位
 [ ] Web 构建稳定
+[ ] 地图点击、战斗占位、结局闭环不受影响
 ```
 
 ---
 
 ## 9. 后续路线
 
-### Step 1：行军图按钮分列
+### Step 1：补占位 PNG
 
 ```text
-优先级最高，配合当前六列地图文本，让操作区也更像肉鸽地图。
+优先级最高，验证当前图片显示链路真的可用。
 ```
 
-### Step 2：补占位 png
+### Step 2：场景信息分层
 
 ```text
-对当前 visual_path 中缺失的图片，补最小占位 png，确保视觉区域能看到真实 TextureRect 效果。
+将 scene 文本拆成背景 / 人物 / 旧物三类显示，减少长文本占位堆叠。
 ```
 
 ### Step 3：真实战斗接入前调研
@@ -307,7 +309,7 @@ Boss：军功 +2，旧案线索 +1
 ## 10. 给 Codex 的下一步指令
 
 ```text
-请继续在 scripts/narrative_demo_safe_controller.gd 上推进，不要恢复 scripts/narrative/* 旧复杂链路。下一步优先把行军图按钮从单行 HBoxContainer 改成按 column 分组的六列布局，每列一个 VBoxContainer，外层一个 HBoxContainer，不使用 HScrollContainer。保持地图点击逻辑不变，不改 MainVisual.tscn，不改 battle_controller，不重构 web_shell.html。完成后验证：Web 构建稳定，地图点击、战斗占位、结局闭环不受影响。
+请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。下一步优先补最小占位 PNG 到当前 6 个 visual_path，确保 ResourceLoader.exists(path) 为 true，并让 TextureRect 真实显示图片。不要改 MainVisual.tscn，不要改 battle_controller，不要重构 web_shell.html。完成后验证：Web 构建稳定，视觉区域显示图片，地图点击、战斗占位、结局闭环不受影响。
 ```
 
 ---
@@ -315,5 +317,5 @@ Boss：军功 +2，旧案线索 +1
 ## 11. 当前一句话结论
 
 ```text
-剧情 MVP 安全线已完成“Web 稳定、压缩序章、六列行军图、地图点击、三变量成长、战斗占位、场景占位、结局闭环、收益与推进入口收口、UI 分层、最小图片显示”；下一步抓重点把行军图按钮区改成真正的六列操作布局。
+剧情 MVP 安全线已完成“Web 稳定、压缩序章、六列行军图、六列地图操作、地图点击、三变量成长、战斗占位、场景占位、结局闭环、收益与推进入口收口、UI 分层、最小图片显示”；下一步抓重点补占位 PNG，验证 TextureRect 真实显示链路。
 ```
