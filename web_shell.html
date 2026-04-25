@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>$GODOT_PROJECT_NAME</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     html, body {
       margin: 0;
       padding: 0;
@@ -18,34 +21,37 @@
     #app {
       position: fixed;
       inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 100vw;
+      height: 100vh;
       background: #000;
+      overflow: hidden;
     }
     #game-frame {
-      position: relative;
-      width: min(100vw, calc(100vh * 16 / 9));
-      height: min(100vh, calc(100vw * 9 / 16));
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
       overflow: hidden;
-      background: radial-gradient(circle at top, #202c3c 0%, #0f141d 62%);
+      background: #000;
     }
     #boot {
       position: absolute;
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
-      width: min(92%, 720px);
+      width: min(92vw, 720px);
+      max-height: 92vh;
+      overflow: auto;
       border: 2px solid #c8a768;
       border-radius: 18px;
       background: rgba(24, 34, 49, 0.94);
       box-shadow: 0 18px 48px rgba(0, 0, 0, 0.38);
       padding: 28px 30px;
-      box-sizing: border-box;
       text-align: center;
+      z-index: 2;
     }
     #title {
-      font-size: 30px;
+      font-size: clamp(22px, 3.2vw, 30px);
       font-weight: 700;
       margin-bottom: 10px;
     }
@@ -93,9 +99,17 @@
     button:hover { background: #2d4259; }
     #canvas {
       display: none;
-      width: 100%;
-      height: 100%;
+      position: absolute;
+      inset: 0;
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: none;
+      max-height: none;
+      margin: 0;
+      padding: 0;
       background: #000;
+      outline: none;
+      touch-action: none;
     }
   </style>
 </head>
@@ -135,9 +149,15 @@
       progressBar.style.width = (safe * 100).toFixed(1) + '%';
     }
 
+    function fillBrowserCanvas() {
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+    }
+
     function showCanvas() {
       boot.style.display = 'none';
       canvas.style.display = 'block';
+      fillBrowserCanvas();
       canvas.focus();
     }
 
@@ -147,6 +167,7 @@
       startBtn.disabled = true;
       document.body.dataset.webSmoke = 'boot-started';
       setStatus('正在启动 Web 构建…');
+      fillBrowserCanvas();
 
       const engine = new Engine($GODOT_CONFIG);
       try {
@@ -169,8 +190,12 @@
       }
     }
 
+    window.addEventListener('resize', fillBrowserCanvas);
+    window.addEventListener('orientationchange', () => window.setTimeout(fillBrowserCanvas, 50));
     startBtn.addEventListener('click', startGame);
     reloadBtn.addEventListener('click', () => window.location.reload());
+    fillBrowserCanvas();
+
     if (params.get('autostart') === '1') {
       window.addEventListener('load', () => {
         window.setTimeout(startGame, 0);
