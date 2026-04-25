@@ -1,13 +1,15 @@
 extends "res://scripts/narrative_demo_formal_controller.gd"
 
-const ACTION_AREA_SIZE := Vector2(0, 300)
-const BODY_AREA_SIZE := Vector2(0, 88)
-const MAP_AREA_SIZE := Vector2(0, 56)
-const SCENE_AREA_SIZE := Vector2(0, 42)
-const MINI_VISUAL_FRAME_SIZE := Vector2(0, 28)
+const PERFORMANCE_RATIO := 0.6667
+const OPERATION_RATIO := 0.3333
+const BODY_AREA_SIZE := Vector2(0, 74)
+const MAP_AREA_SIZE := Vector2(0, 48)
+const SCENE_AREA_SIZE := Vector2(0, 38)
+const MINI_VISUAL_FRAME_SIZE := Vector2(0, 20)
 
 var background_texture: TextureRect
 var background_dim: ColorRect
+var operation_panel: PanelContainer
 
 func _ready() -> void:
 	_add_scene_background_layer()
@@ -17,7 +19,6 @@ func _ready() -> void:
 func _render_visual(path: String, fallback_text: String) -> void:
 	_apply_art_layout_size()
 	_update_scene_background(path, fallback_text)
-	# 小图区域不再承载主体视觉，只保留诊断文字，避免挤占选项。
 	if visual_texture != null:
 		visual_texture.texture = null
 		visual_texture.visible = false
@@ -32,11 +33,11 @@ func _render() -> void:
 
 func _add_scene_background_layer() -> void:
 	background_texture = TextureRect.new()
-	background_texture.name = "NarrativeSceneBackground"
+	background_texture.name = "NarrativePerformanceBackground"
 	background_texture.anchor_left = 0.0
 	background_texture.anchor_top = 0.0
 	background_texture.anchor_right = 1.0
-	background_texture.anchor_bottom = 1.0
+	background_texture.anchor_bottom = PERFORMANCE_RATIO
 	background_texture.offset_left = 0.0
 	background_texture.offset_top = 0.0
 	background_texture.offset_right = 0.0
@@ -48,16 +49,16 @@ func _add_scene_background_layer() -> void:
 	move_child(background_texture, 0)
 
 	background_dim = ColorRect.new()
-	background_dim.name = "NarrativeSceneBackgroundDim"
+	background_dim.name = "NarrativePerformanceDim"
 	background_dim.anchor_left = 0.0
 	background_dim.anchor_top = 0.0
 	background_dim.anchor_right = 1.0
-	background_dim.anchor_bottom = 1.0
+	background_dim.anchor_bottom = PERFORMANCE_RATIO
 	background_dim.offset_left = 0.0
 	background_dim.offset_top = 0.0
 	background_dim.offset_right = 0.0
 	background_dim.offset_bottom = 0.0
-	background_dim.color = Color(0.05, 0.045, 0.035, 0.32)
+	background_dim.color = Color(0.05, 0.045, 0.035, 0.20)
 	background_dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(background_dim)
 	move_child(background_dim, 1)
@@ -78,26 +79,32 @@ func _update_scene_background(path: String, fallback_text: String) -> void:
 		background_texture.visible = true
 
 func _make_fallback_background(text: String) -> Texture2D:
-	var image: Image = Image.create(960, 540, false, Image.FORMAT_RGBA8)
+	var image: Image = Image.create(960, 640, false, Image.FORMAT_RGBA8)
 	image.fill(Color(0.78, 0.70, 0.55, 1.0))
-	# 简单做一层暗色海岸底，避免纯色背景。
-	for y in range(340, 540):
+	for y in range(390, 640):
 		for x in range(0, 960):
-			var alpha: float = float(y - 340) / 200.0
+			var alpha: float = float(y - 390) / 250.0
 			image.set_pixel(x, y, Color(0.10, 0.12, 0.12, 0.55 + 0.25 * alpha))
 	var texture: ImageTexture = ImageTexture.create_from_image(image)
 	return texture
 
 func _background_debug_text(path: String) -> String:
 	if path.is_empty():
-		return "背景诊断：path=空｜使用主视觉色底"
+		return "背景诊断：path=空｜表演区使用主视觉色底"
 	if not ResourceLoader.exists(path):
-		return "背景诊断：path=%s｜exists=false｜使用主视觉色底" % path
-	return "背景诊断：path=%s｜exists=true｜状态=主体背景" % path
+		return "背景诊断：path=%s｜exists=false｜表演区使用主视觉色底" % path
+	return "背景诊断：path=%s｜exists=true｜状态=上方2/3表演区背景" % path
 
 func _apply_art_layout_size() -> void:
-	# 场景图已经成为全屏主体背景；中部小视觉区收缩为诊断条。
-	# 下方选项仍优先显示，确保玩法流程不被背景图挤掉。
+	# 剧情 UI 明确分割：上方 2/3 为表演区，下方 1/3 为选项/操作区。
+	# 旧的小图区域只保留诊断；真正场景图铺在上方表演区。
+	var viewport_size: Vector2 = get_viewport_rect().size
+	var operation_height: float = max(230.0, viewport_size.y * OPERATION_RATIO)
+	var performance_height: float = viewport_size.y - operation_height
+	if background_texture != null:
+		background_texture.anchor_bottom = performance_height / max(1.0, viewport_size.y)
+	if background_dim != null:
+		background_dim.anchor_bottom = performance_height / max(1.0, viewport_size.y)
 	if map_label != null:
 		map_label.custom_minimum_size = MAP_AREA_SIZE
 	if scene_label != null:
@@ -106,7 +113,7 @@ func _apply_art_layout_size() -> void:
 		body_label.custom_minimum_size = BODY_AREA_SIZE
 		body_label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	if action_scroll != null:
-		action_scroll.custom_minimum_size = ACTION_AREA_SIZE
+		action_scroll.custom_minimum_size = Vector2(0, max(150.0, operation_height - 150.0))
 		action_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	if visual_texture != null:
 		visual_texture.custom_minimum_size = Vector2(0, 0)
