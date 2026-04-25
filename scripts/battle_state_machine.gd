@@ -4,6 +4,7 @@ class_name BattleStateMachine
 const Fighter = preload("res://scripts/fighter.gd")
 const IntentData = preload("res://scripts/intent_data.gd")
 const CardData = preload("res://scripts/card_data.gd")
+const CombatResolver = preload("res://scripts/combat_resolver.gd")
 
 enum BattlePhase {
 	NODE_SELECTION,
@@ -84,38 +85,25 @@ func update_distance_from_positions(player: Fighter, enemy: Fighter) -> int:
 
 
 func direction_toward(actor_pos: int, target_pos: int, fallback_facing: String) -> int:
-	if target_pos > actor_pos:
-		return 1
-	if target_pos < actor_pos:
-		return -1
-	return 1 if fallback_facing == "right" else -1
+	return CombatResolver.preview_dir(actor_pos, target_pos, fallback_facing)
 
 
 func apply_self_move(actor: Fighter, target: Fighter, amount: int) -> void:
 	if amount == 0:
 		return
-	var dir := direction_toward(actor.position, target.position, actor.facing)
-	if amount > 0:
-		actor.position += dir
-	else:
-		actor.position -= dir
-	actor.position = clampi(actor.position, 0, 8)
+	actor.position = CombatResolver.preview_self(actor.position, target.position, actor.facing, amount)
 
 
 func apply_push_target(actor: Fighter, target: Fighter, amount: int) -> void:
 	if amount <= 0:
 		return
-	var dir := direction_toward(actor.position, target.position, actor.facing)
-	target.position += dir * amount
-	target.position = clampi(target.position, 0, 8)
+	target.position = CombatResolver.preview_push(actor.position, target.position, actor.facing, amount)
 
 
 func apply_pull_target(actor: Fighter, target: Fighter, amount: int) -> void:
 	if amount <= 0:
 		return
-	var dir := direction_toward(actor.position, target.position, actor.facing)
-	target.position -= dir * amount
-	target.position = clampi(target.position, 0, 8)
+	target.position = CombatResolver.preview_pull(actor.position, target.position, actor.facing, amount)
 
 
 func face_target(actor: Fighter, target: Fighter) -> void:
@@ -126,57 +114,22 @@ func face_target(actor: Fighter, target: Fighter) -> void:
 
 
 func apply_card_movement(card: CardData, actor: Fighter, target: Fighter, range_result: String) -> void:
-	var can_move := false
-	match card.move_condition:
-		CardData.MOVE_ALWAYS:
-			can_move = true
-		CardData.MOVE_ON_HIT:
-			can_move = range_result == RANGE_HIT
-		CardData.MOVE_ON_GRAZE:
-			can_move = range_result == RANGE_GRAZE
-		CardData.MOVE_ON_BREAK:
-			can_move = target.pending_control_state == Fighter.CONTROL_BROKEN
-		_:
-			can_move = false
-	if not can_move:
-		return
-	if card.target_push_after > 0:
-		apply_push_target(actor, target, card.target_push_after)
-	elif card.target_pull_after > 0:
-		apply_pull_target(actor, target, card.target_pull_after)
-	elif card.self_move_after != 0:
-		apply_self_move(actor, target, card.self_move_after)
+	var actor_state: Dictionary = _fighter_to_resolver_state(actor)
+	var target_state: Dictionary = _fighter_to_resolver_state(target)
+	var moved: Dictionary = CombatResolver.apply_card_movement(card, true, actor.position, target.position, actor.facing, range_result, target.pending_control_state == Fighter.CONTROL_BROKEN)
+	actor.position = int(moved.get("player", actor.position))
+	target.position = int(moved.get("enemy", target.position))
 	face_target(actor, target)
 	face_target(target, actor)
 	update_distance_from_positions(actor, target)
 
 
 func is_facing_target(actor: Fighter, target: Fighter) -> bool:
-	if actor == null or target == null:
-		return true
-	if actor.position == target.position:
-		return true
-	if target.position > actor.position:
-		return actor.facing == "right"
-	return actor.facing == "left"
+	return CombatResolver.faces_target(actor.position, actor.facing, target.position)
 
 
 func evaluate_card_range(card: CardData, actor: Fighter, target: Fighter) -> String:
-	if card == null or not card.requires_hit_check():
-		return RANGE_HIT
-	if card.requires_facing and not card.has_tag("回身") and not is_facing_target(actor, target):
-		return RANGE_MISS_FACING
-	var distance := absi(target.position - actor.position)
-	if card.is_usable_at(distance):
-		return RANGE_HIT
-	var distance_gap := 0
-	if distance < card.min_distance:
-		distance_gap = card.min_distance - distance
-	else:
-		distance_gap = distance - card.max_distance
-	if distance_gap == 1:
-		return RANGE_GRAZE
-	return RANGE_MISS_RANGE
+	return CombatResolver.evaluate_range(card, actor.position, actor.facing, target.position)
 
 
 func resolve_intent(intent: IntentData, actor: Fighter, target: Fighter) -> Array[String]:
@@ -193,62 +146,85 @@ func resolve_intent(intent: IntentData, actor: Fighter, target: Fighter) -> Arra
 		lines.append("%s 崩势未稳，本回合无法行动。" % actor.data.display_name)
 		return lines
 
+	var actor_state: Dictionary = _fighter_to_resolver_state(actor)
+	var target_state: Dictionary = _fighter_to_resolver_state(target)
+	var order: Array[String] = []
+	order.append("player")
+	var sim: Dictionary = CombatResolver.resolve_exchange(actor_state, target_state, card, null, order)
+	var range_result: String = str(sim.get("player_range_result", RANGE_HIT))
+
 	if card.is_guard_card():
-		var guard_total := actor.add_guard(card.guard)
-		lines.append("%s 立起 %d 格挡，当前护值 %d。" % [card.display_name, card.guard, guard_total])
-		apply_card_movement(card, actor, target, RANGE_HIT)
+		var guard_gain: int = int(sim.get("player_guard_delta", card.guard))
+		var guard_total: int = actor.add_guard(guard_gain)
+		lines.append("%s 立起 %d 格挡，当前护值 %d。" % [card.display_name, guard_gain, guard_total])
+		_apply_resolved_positions(actor, target, sim)
 		return lines
 
-	var range_result := RANGE_HIT
 	if card.requires_hit_check():
-		range_result = evaluate_card_range(card, actor, target)
 		if range_result == RANGE_MISS_FACING:
 			lines.append("%s 背向目标，未能命中。" % card.display_name)
+			_apply_resolved_positions(actor, target, sim)
 			return lines
 		if range_result == RANGE_MISS_RANGE:
 			lines.append("%s 因距离 %d 不合式，未能命中。" % [card.display_name, current_distance])
+			_apply_resolved_positions(actor, target, sim)
 			return lines
 		if range_result == RANGE_GRAZE:
 			lines.append("%s 距离 %d 略失准头，只擦中目标。" % [card.display_name, current_distance])
 
-	if card.damage > 0:
-		var effective_damage := card.damage
-		if range_result == RANGE_GRAZE:
-			effective_damage = maxi(ceili(float(effective_damage) * 0.5), 1)
+	var raw_damage: int = int(CombatResolver.resolve_card_effect(card, range_result, actor.is_broken(), target.is_broken(), 0).get("damage", 0))
+	var final_damage: int = absi(int(sim.get("enemy_hp_delta", 0))) if int(sim.get("enemy_hp_delta", 0)) < 0 else 0
+	var blocked: int = maxi(raw_damage - final_damage, 0)
+	if blocked > 0:
+		target.guard_points = maxi(target.guard_points - blocked, 0)
+		lines.append("%s 被格挡化去 %d。" % [card.display_name, blocked])
+	if raw_damage > 0:
 		if target.is_broken():
-			effective_damage *= 2
-			lines.append("%s 处于崩势，所受伤害翻倍至 %d。" % [target.data.display_name, effective_damage])
-		var remaining_damage := target.absorb_damage(effective_damage)
-		var blocked := effective_damage - remaining_damage
-		if blocked > 0:
-			lines.append("%s 被格挡化去 %d。" % [card.display_name, blocked])
-		if remaining_damage > 0:
-			target.hp = maxi(target.hp - remaining_damage, 0)
-			lines.append("%s 命中，造成 %d 伤害。" % [card.display_name, remaining_damage])
+			lines.append("%s 处于崩势，所受伤害翻倍至 %d。" % [target.data.display_name, raw_damage])
+		if final_damage > 0:
+			target.hp = maxi(target.hp - final_damage, 0)
+			lines.append("%s 命中，造成 %d 伤害。" % [card.display_name, final_damage])
 		else:
 			lines.append("%s 被完全格挡。" % card.display_name)
-	elif card.requires_hit_check():
+	elif card.requires_hit_check() and range_result == RANGE_HIT:
 		lines.append("%s 命中。" % card.display_name)
 
-	if card.gain_momentum > 0:
-		var gained_momentum := actor.recover_momentum(card.gain_momentum)
+	var momentum_gain: int = int(sim.get("player_momentum_delta", 0))
+	if momentum_gain > 0:
+		var gained_momentum: int = actor.recover_momentum(momentum_gain)
 		lines.append("%s 增己势 %d。" % [card.display_name, gained_momentum])
-	var break_amount := card.break_momentum
-	if range_result == RANGE_GRAZE and break_amount > 0:
-		break_amount = maxi(break_amount - 1, 0)
+	var break_amount: int = absi(int(sim.get("enemy_momentum_delta", 0))) if int(sim.get("enemy_momentum_delta", 0)) < 0 else 0
 	if break_amount > 0:
-		var before_break := target.momentum
+		var before_break: int = target.momentum
 		target.momentum = maxi(target.momentum - break_amount, 0)
-		var actual_break := before_break - target.momentum
+		var actual_break: int = before_break - target.momentum
 		lines.append("%s 削敌势 %d。" % [card.display_name, actual_break])
 		if before_break > 0 and target.momentum == 0:
 			target.queue_broken_state()
 			actor.queue_combo_window()
 			lines.append("%s 的势被打到 0，下回合将崩势硬直！" % target.data.display_name)
 
-	apply_card_movement(card, actor, target, range_result)
-
+	_apply_resolved_positions(actor, target, sim)
 	return lines
+
+
+func _fighter_to_resolver_state(fighter: Fighter) -> Dictionary:
+	return {
+		"hp": fighter.hp,
+		"momentum": fighter.momentum,
+		"guard": fighter.guard_points,
+		"position": fighter.position,
+		"facing": fighter.facing,
+		"broken": fighter.is_broken()
+	}
+
+
+func _apply_resolved_positions(actor: Fighter, target: Fighter, sim: Dictionary) -> void:
+	actor.position = int(sim.get("player_final", actor.position))
+	target.position = int(sim.get("enemy_final", target.position))
+	face_target(actor, target)
+	face_target(target, actor)
+	update_distance_from_positions(actor, target)
 
 
 func finish_round(player: Fighter, enemy: Fighter) -> void:
