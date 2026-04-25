@@ -1,7 +1,7 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景/人物/旧物文本占位 + 结局闭环 + 收益与推进入口收口 + UI 分层 + 最小图片显示 + 六列地图操作布局 + SVG 占位视觉资源”。  
+> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景/人物/旧物文本占位 + 结局闭环 + 收益与推进入口收口 + UI 分层 + 最小图片显示 + 六列地图操作布局 + SVG 占位视觉资源 + 场景信息分层展示”。  
 > 核心原则：继续走安全线，不恢复旧 `scripts/narrative/*` 复杂链路；不使用 `HScrollContainer`；不改 `MainVisual.tscn`；不改 `battle_controller`；不重构 `web_shell.html`。
 
 ---
@@ -34,6 +34,7 @@
 地图状态：▶ 当前 / ● 已走 / ◎ 可前往 / ○ 未开放
 叙事变量：军功 / 清望 / 旧案线索
 视觉表现：ResourceLoader.exists + TextureRect；当前使用 SVG 占位资源走通加载链路
+场景信息：scene 文本按句切分为多行 bullet，降低拥挤
 战斗表现：请求战斗 / 视为胜利继续 先用文本占位
 UI 分层：行军图操作 / 战斗桥接 / 叙事选择 三个区域分开展示
 ```
@@ -118,6 +119,7 @@ scripts/narrative_demo_safe_controller.gd
 [x] 三变量保留：军功 / 清望 / 旧案线索
 [x] 普通 choices 按各自 delta 修改三变量
 [x] 场景文本占位：背景 / 人物 / 旧物 / 结局图
+[x] 场景信息分层展示：_format_scene_text 按句切分为 bullet
 [x] 战斗桥接文本占位：请求战斗 / 视为胜利继续 / node_id / encounter_id
 [x] 结局与重开闭环
 [x] 收益与推进入口已收口：_apply_choice_delta / _apply_default_map_reward / _advance_to_node
@@ -137,6 +139,7 @@ b580c2e58e98ba7dc5779599f0dfce21a510dafe  Apply default rewards on safe map navi
 0fcc090ec98dcc6cc5fa1b9f8d8c4d6dc7efbcd7  Add safe narrative visual texture display
 544de82a3988307d67899ad246b01500799065c7  Render safe narrative map buttons as columns
 a07c872bd3ce0b9ba53f5cdb63591a23ee2d1535  Point safe narrative visuals to SVG placeholders
+bec8e7efef48734b90608f9bf27ea2e38e9648d4  Format safe narrative scene hints into layers
 ```
 
 ---
@@ -261,7 +264,6 @@ Boss：军功 +2，旧案线索 +1
 [ ] 若 SVG 不能作为 Texture2D 正常显示，则改为真实 PNG 占位图
 [ ] 六列行军图操作区在 1600×1000 下验收
 [ ] 图片显示区域尺寸和正文高度在 1600×1000 下验收
-[ ] 场景占位信息分层展示，降低正文拥挤
 [ ] 真实战斗胜利回调接入前调研
 ```
 
@@ -301,13 +303,7 @@ Boss：军功 +2，旧案线索 +1
 如果 SVG 无法被 TextureRect 正常显示，则批量替换为 PNG 资源。
 ```
 
-### Step 3：场景信息分层
-
-```text
-将 scene 文本拆成背景 / 人物 / 旧物三类显示，减少长文本占位堆叠。
-```
-
-### Step 4：真实战斗接入前调研
+### Step 3：真实战斗接入前调研
 
 ```text
 梳理 MainVisual 的启动参数和胜利回调；
@@ -320,7 +316,7 @@ Boss：军功 +2，旧案线索 +1
 ## 10. 给 Codex 的下一步指令
 
 ```text
-请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前已添加 6 个 SVG 占位视觉资源，并将 scripts/narrative_demo_safe_controller.gd 的 visual_path 指向这些 SVG。下一步请做 Web 回归验收：确认 ResourceLoader.exists(svg_path) 是否为 true，TextureRect 是否能显示 SVG。如果 SVG 不能作为 Texture2D 正常显示，请改用 PNG 占位图。不要改 MainVisual.tscn，不要改 battle_controller，不要重构 web_shell.html。
+请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前已添加 6 个 SVG 占位视觉资源，并将 scripts/narrative_demo_safe_controller.gd 的 visual_path 指向这些 SVG，同时 scene 文本已分层展示。下一步请做 Web 回归验收：确认 ResourceLoader.exists(svg_path) 是否为 true，TextureRect 是否能显示 SVG。如果 SVG 不能作为 Texture2D 正常显示，请改用 PNG 占位图。不要改 MainVisual.tscn，不要改 battle_controller，不要重构 web_shell.html。
 ```
 
 ---
@@ -328,5 +324,5 @@ Boss：军功 +2，旧案线索 +1
 ## 11. 当前一句话结论
 
 ```text
-剧情 MVP 安全线已完成“Web 稳定、压缩序章、六列行军图、六列地图操作、地图点击、三变量成长、战斗占位、场景占位、结局闭环、收益与推进入口收口、UI 分层、最小图片显示、SVG 占位视觉资源”；下一步抓重点验收 SVG 在 Godot Web 中是否能稳定显示。
+剧情 MVP 安全线已完成“Web 稳定、压缩序章、六列行军图、六列地图操作、地图点击、三变量成长、战斗占位、场景占位、场景信息分层、结局闭环、收益与推进入口收口、UI 分层、最小图片显示、SVG 占位视觉资源”；下一步抓重点验收 SVG 在 Godot Web 中是否能稳定显示。
 ```
