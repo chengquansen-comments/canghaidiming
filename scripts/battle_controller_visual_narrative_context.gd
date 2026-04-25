@@ -9,6 +9,7 @@ var narrative_debug_box: VBoxContainer
 var narrative_context_label: Label
 var battle_mapping_label: Label
 var battle_result_label: Label
+var recommended_start_button: Button
 var continue_narrative_button: Button
 var last_result_debug_text := ""
 var result_recorded := false
@@ -35,7 +36,7 @@ func _add_narrative_debug_layer() -> void:
 	panel.offset_left = -520
 	panel.offset_right = -18
 	panel.offset_top = 54
-	panel.offset_bottom = 330
+	panel.offset_bottom = 390
 	narrative_debug_layer.add_child(panel)
 
 	var margin := MarginContainer.new()
@@ -69,6 +70,13 @@ func _add_narrative_debug_layer() -> void:
 	battle_result_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	battle_result_label.add_theme_font_size_override("font_size", 13)
 	narrative_debug_box.add_child(battle_result_label)
+
+	recommended_start_button = Button.new()
+	recommended_start_button.name = "RecommendedBattleButton"
+	recommended_start_button.text = "按推荐接敌"
+	recommended_start_button.custom_minimum_size = Vector2(0, 40)
+	recommended_start_button.pressed.connect(_on_recommended_battle_pressed)
+	narrative_debug_box.add_child(recommended_start_button)
 
 	continue_narrative_button = Button.new()
 	continue_narrative_button.name = "ContinueNarrativeButton"
@@ -139,6 +147,55 @@ func _get_narrative_result() -> String:
 	if player.hp <= 0 and enemy.hp <= 0:
 		return "draw"
 	return "win"
+
+func _on_recommended_battle_pressed() -> void:
+	var mapping := NarrativeBattleContext.get_battle_mapping()
+	var role_id := str(mapping.get("player_role", "spearman"))
+	player_role_id = role_id
+	var called := _try_recommended_role_entry(role_id)
+	if called:
+		_set_battle_result_debug_text("接战操作：已按推荐玩家=%s 尝试进入战斗。" % role_id)
+	else:
+		_set_battle_result_debug_text("接战操作：已写入推荐玩家=%s；未匹配自动入口，请继续使用原角色选择按钮。" % role_id)
+
+func _try_recommended_role_entry(role_id: String) -> bool:
+	var one_arg_methods := [
+		"_on_role_selected",
+		"_select_role",
+		"_choose_role",
+		"_pick_role",
+		"_start_battle",
+		"_begin_battle",
+		"_start_session",
+		"_begin_session",
+		"_start_run"
+	]
+	for method_name in one_arg_methods:
+		if _method_accepts_arg_count(method_name, 1):
+			callv(method_name, [role_id])
+			return true
+	var no_arg_methods := [
+		"_confirm_role_selection",
+		"_confirm_role_pick",
+		"_start_battle",
+		"_begin_battle",
+		"_start_session",
+		"_begin_session",
+		"_start_run"
+	]
+	for method_name in no_arg_methods:
+		if _method_accepts_arg_count(method_name, 0):
+			callv(method_name, [])
+			return true
+	return false
+
+func _method_accepts_arg_count(method_name: String, arg_count: int) -> bool:
+	for method_info in get_method_list():
+		if str(method_info.get("name", "")) != method_name:
+			continue
+		var args: Array = method_info.get("args", [])
+		return args.size() == arg_count
+	return false
 
 func _on_continue_narrative_pressed() -> void:
 	if not NarrativeBattleContext.has_result():
