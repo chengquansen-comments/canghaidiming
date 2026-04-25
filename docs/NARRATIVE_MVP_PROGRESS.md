@@ -1,7 +1,7 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景/人物/旧物文本占位 + 结局闭环 + 收益与推进入口收口 + UI 分层 + 最小图片显示 + 六列地图操作布局 + SVG 占位视觉资源 + 场景信息分层展示”。  
+> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景/人物/旧物文本占位 + 结局闭环 + 收益与推进入口收口 + UI 分层 + 最小图片显示 + 六列地图操作布局 + SVG 占位视觉资源 + 场景信息分层展示 + 视觉资源诊断”。  
 > 核心原则：继续走安全线，不恢复旧 `scripts/narrative/*` 复杂链路；不使用 `HScrollContainer`；不改 `MainVisual.tscn`；不改 `battle_controller`；不重构 `web_shell.html`。
 
 ---
@@ -34,6 +34,7 @@
 地图状态：▶ 当前 / ● 已走 / ◎ 可前往 / ○ 未开放
 叙事变量：军功 / 清望 / 旧案线索
 视觉表现：ResourceLoader.exists + TextureRect；当前使用 SVG 占位资源走通加载链路
+视觉诊断：显示 path / exists / type / 状态，便于 Web 验收
 场景信息：scene 文本按句切分为多行 bullet，降低拥挤
 战斗表现：请求战斗 / 视为胜利继续 先用文本占位
 UI 分层：行军图操作 / 战斗桥接 / 叙事选择 三个区域分开展示
@@ -126,6 +127,7 @@ scripts/narrative_demo_safe_controller.gd
 [x] UI 分层完成：map_buttons_box / combat_buttons_box / choices_box
 [x] 最小图片显示：TextureRect + ResourceLoader.exists
 [x] 视觉资源路径已切到 SVG 占位资源
+[x] 视觉资源诊断：visual_debug_label 显示 path / exists / type / 状态
 ```
 
 对应提交：
@@ -140,6 +142,7 @@ b580c2e58e98ba7dc5779599f0dfce21a510dafe  Apply default rewards on safe map navi
 544de82a3988307d67899ad246b01500799065c7  Render safe narrative map buttons as columns
 a07c872bd3ce0b9ba53f5cdb63591a23ee2d1535  Point safe narrative visuals to SVG placeholders
 bec8e7efef48734b90608f9bf27ea2e38e9648d4  Format safe narrative scene hints into layers
+6d1b8a5129c14a960d2614f69a609886a03339d2  Add safe narrative visual diagnostics
 ```
 
 ---
@@ -183,10 +186,10 @@ visual_path
 当前安全版规则：
 
 ```text
-visual_path 为空 → 显示文本占位
-ResourceLoader.exists(path) 为 false → 显示文本占位
-资源存在且是 Texture2D → TextureRect 显示图片
-资源存在但不是 Texture2D → 显示错误占位文本
+visual_path 为空 → 显示文本占位；诊断 path=空 / 状态=文本占位
+ResourceLoader.exists(path) 为 false → 显示文本占位；诊断 exists=false
+资源存在且是 Texture2D → TextureRect 显示图片；诊断 exists=true / type=Texture2D / 状态=已显示
+资源存在但不是 Texture2D → 显示错误占位文本；诊断 exists=true / type=<class> / 状态=非 Texture2D
 ```
 
 当前配置路径：
@@ -260,7 +263,7 @@ Boss：军功 +2，旧案线索 +1
 
 ```text
 [ ] 安全版 Web 回归验收
-[ ] 验证 SVG 是否可被当前 Godot Web 导入为 Texture2D
+[ ] 根据 visual_debug_label 判断 SVG 是否可被当前 Godot Web 导入为 Texture2D
 [ ] 若 SVG 不能作为 Texture2D 正常显示，则改为真实 PNG 占位图
 [ ] 六列行军图操作区在 1600×1000 下验收
 [ ] 图片显示区域尺寸和正文高度在 1600×1000 下验收
@@ -274,7 +277,7 @@ Boss：军功 +2，旧案线索 +1
 目标：
 
 ```text
-验证 ResourceLoader.exists(svg_path) 和 TextureRect 显示链路在当前 Godot Web 构建中是否可用。
+根据 visual_debug_label 直接判断 ResourceLoader.exists(svg_path) 和 TextureRect 显示链路是否可用。
 ```
 
 验收标准：
@@ -282,8 +285,9 @@ Boss：军功 +2，旧案线索 +1
 ```text
 [ ] Web 构建稳定
 [ ] 进入 NarrativeDemo 不报错
-[ ] 进入节点后视觉区域显示 SVG 图，而不是文本占位
-[ ] 若显示“视觉资源不是 Texture2D”，则下一刀改用 PNG 占位图
+[ ] 进入节点后视觉诊断显示 exists=true
+[ ] 如果 type=Texture2D 且状态=已显示，则 SVG 链路可继续使用
+[ ] 如果 type 不是 Texture2D 或状态=非 Texture2D，则下一刀改用 PNG 占位图
 [ ] 地图点击、战斗占位、结局闭环不受影响
 ```
 
@@ -316,7 +320,7 @@ Boss：军功 +2，旧案线索 +1
 ## 10. 给 Codex 的下一步指令
 
 ```text
-请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前已添加 6 个 SVG 占位视觉资源，并将 scripts/narrative_demo_safe_controller.gd 的 visual_path 指向这些 SVG，同时 scene 文本已分层展示。下一步请做 Web 回归验收：确认 ResourceLoader.exists(svg_path) 是否为 true，TextureRect 是否能显示 SVG。如果 SVG 不能作为 Texture2D 正常显示，请改用 PNG 占位图。不要改 MainVisual.tscn，不要改 battle_controller，不要重构 web_shell.html。
+请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前已添加 6 个 SVG 占位视觉资源，并将 scripts/narrative_demo_safe_controller.gd 的 visual_path 指向这些 SVG，同时新增 visual_debug_label 显示 path / exists / type / 状态。下一步请做 Web 回归验收：确认 visual_debug_label 是否显示 exists=true 和 type=Texture2D。如果 SVG 不能作为 Texture2D 正常显示，请改用 PNG 占位图。不要改 MainVisual.tscn，不要改 battle_controller，不要重构 web_shell.html。
 ```
 
 ---
@@ -324,5 +328,5 @@ Boss：军功 +2，旧案线索 +1
 ## 11. 当前一句话结论
 
 ```text
-剧情 MVP 安全线已完成“Web 稳定、压缩序章、六列行军图、六列地图操作、地图点击、三变量成长、战斗占位、场景占位、场景信息分层、结局闭环、收益与推进入口收口、UI 分层、最小图片显示、SVG 占位视觉资源”；下一步抓重点验收 SVG 在 Godot Web 中是否能稳定显示。
+剧情 MVP 安全线已完成“Web 稳定、压缩序章、六列行军图、六列地图操作、地图点击、三变量成长、战斗占位、场景占位、场景信息分层、结局闭环、收益与推进入口收口、UI 分层、最小图片显示、SVG 占位视觉资源、视觉资源诊断”；下一步抓重点用 Web 验收结果决定继续用 SVG 还是切 PNG。
 ```
