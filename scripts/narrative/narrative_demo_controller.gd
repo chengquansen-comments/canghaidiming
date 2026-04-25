@@ -30,7 +30,7 @@ const SPEAKER_PORTRAIT_HINTS := {
 	"兵变营头": {"name": "兵变营头", "path": "res://assets/pixel_battle/portraits/mutiny_captain.png"},
 	"敌方枪手": {"name": "敌方枪手", "path": "res://assets/pixel_battle/portraits/enemy_spearman_story.png"},
 	"敌方刀客": {"name": "敌方刀客", "path": "res://assets/pixel_battle/portraits/enemy_blademaster_story.png"},
-	"旧物": {"name": "旧物", "path": ""}
+	"旧物": {"name": "旧物：官造火铳", "path": "res://assets/pixel_battle/relics/relic_ming_firearm.png"}
 }
 
 var narrative: NarrativeState
@@ -354,7 +354,7 @@ func _apply_portrait_hint(hint: Dictionary, fallback_name: String) -> void:
 	if path.is_empty():
 		_set_portrait_placeholder("角色占位：%s" % name)
 		return
-	_set_portrait_from_path(path, "角色占位：%s\n%s" % [name, path])
+	_set_portrait_from_path(path, "角色 / 旧物占位：%s\n%s" % [name, path])
 
 func _set_art_from_path(path: String, fallback_text: String) -> void:
 	if art_texture == null or art_label == null:
