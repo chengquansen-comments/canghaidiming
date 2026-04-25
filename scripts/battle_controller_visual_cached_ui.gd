@@ -13,6 +13,8 @@ var _player_actor_runtime: ActorAnimationRuntime = null
 var _enemy_actor_runtime: ActorAnimationRuntime = null
 var _player_actor_runtime_meta_path := ""
 var _enemy_actor_runtime_meta_path := ""
+var _last_player_animation_card: CardData = null
+var _last_enemy_animation_card: CardData = null
 
 func _ready() -> void:
 	super()
@@ -37,7 +39,17 @@ func _refresh_visual_ui() -> void:
 func _refresh_character_visuals() -> void:
 	super()
 	_ensure_actor_animation_runtimes()
-	_play_actor_idle_if_runtime_ready()
+	_refresh_actor_runtime_visuals()
+
+func _confirm_player_intent() -> void:
+	_ensure_actor_animation_runtimes()
+	var selected_player_card: CardData = _intent_card(draft_player_intent)
+	if selected_player_card == null:
+		selected_player_card = _intent_card(player_intent)
+	var visible_enemy_card: CardData = _enemy_preview_card()
+	_play_actor_runtime_for_card(true, selected_player_card)
+	_play_actor_runtime_for_card(false, visible_enemy_card)
+	super()
 
 func _build_stage_layer() -> void:
 	super()
@@ -264,11 +276,73 @@ func _clear_actor_runtime(is_player_actor: bool) -> void:
 		_enemy_actor_runtime = null
 		_enemy_actor_runtime_meta_path = ""
 
-func _play_actor_idle_if_runtime_ready() -> void:
-	if _player_actor_runtime != null and _player_actor_runtime.is_ready:
-		_player_actor_runtime.play_idle(false)
-	if _enemy_actor_runtime != null and _enemy_actor_runtime.is_ready:
-		_enemy_actor_runtime.play_idle(false)
+func _refresh_actor_runtime_visuals() -> void:
+	_refresh_single_actor_runtime_visual(_player_actor_runtime, player_fallback_actor)
+	_refresh_single_actor_runtime_visual(_enemy_actor_runtime, enemy_fallback_actor)
+
+func _refresh_single_actor_runtime_visual(runtime: ActorAnimationRuntime, fallback: Control) -> void:
+	if runtime == null or not runtime.is_ready:
+		return
+	if fallback != null:
+		fallback.visible = false
+	if runtime.player != null and runtime.player.playing:
+		runtime.player._apply_current_frame()
+		return
+	runtime.play_idle(false)
+
+func _intent_card(intent: IntentData) -> CardData:
+	if intent != null and intent.actual_card != null:
+		return intent.actual_card
+	return null
+
+func _play_actor_runtime_for_card(is_player_actor: bool, card: CardData) -> void:
+	var runtime: ActorAnimationRuntime = _player_actor_runtime if is_player_actor else _enemy_actor_runtime
+	if runtime == null or not runtime.is_ready:
+		return
+	var event_name: String = _animation_event_for_card(card)
+	if event_name == "":
+		return
+	if is_player_actor:
+		_last_player_animation_card = card
+	else:
+		_last_enemy_animation_card = card
+	runtime.play_event(event_name, true)
+
+func _animation_event_for_card(card: CardData) -> String:
+	if card == null:
+		return "idle"
+	if card.is_guard_card():
+		return "guard"
+	if card.is_momentum_card():
+		return "focus"
+	if card.damage > 0:
+		return "attack_heavy" if _card_has_tag(card, "终结") else "attack_light"
+	if card.break_momentum > 0:
+		return "focus"
+	return "idle"
+
+func _card_has_tag(card: CardData, tag: String) -> bool:
+	if card == null:
+		return false
+	for item in card.tags:
+		if str(item) == tag:
+			return true
+	return false
+
+func _play_defender_reaction_for_hit_frame(attacker_key: String) -> void:
+	var attacking_card: CardData = _last_player_animation_card if attacker_key == "player" else _last_enemy_animation_card
+	var defender_runtime: ActorAnimationRuntime = _enemy_actor_runtime if attacker_key == "player" else _player_actor_runtime
+	var defender: Fighter = enemy if attacker_key == "player" else player
+	if defender_runtime == null or not defender_runtime.is_ready or attacking_card == null:
+		return
+	var event_name := "hit"
+	if defender != null and defender.is_broken():
+		event_name = "break"
+	elif attacking_card.break_momentum > 0 and attacking_card.damage <= 0:
+		event_name = "break"
+	elif attacking_card.guard > 0:
+		event_name = "guard"
+	defender_runtime.play_event(event_name, true)
 
 func _actor_meta_path_for(fighter: Fighter, prefer_enemy_variant: bool) -> String:
 	if fighter == null or fighter.data == null:
@@ -292,6 +366,7 @@ func _on_actor_runtime_failed(actor_key: String, message: String) -> void:
 
 func _on_actor_runtime_hit_frame(actor_key: String, animation_name: String, frame_index: int, fx_id: String, impact_offset: Vector2) -> void:
 	print("[actor-runtime] hit_frame %s %s frame=%d fx=%s offset=%s" % [actor_key, animation_name, frame_index, fx_id, str(impact_offset)])
+	_play_defender_reaction_for_hit_frame(actor_key)
 
 func _on_actor_runtime_animation_finished(actor_key: String, animation_name: String) -> void:
 	print("[actor-runtime] finished %s %s" % [actor_key, animation_name])
