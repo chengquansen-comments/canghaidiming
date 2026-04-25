@@ -167,12 +167,34 @@ func _on_map_node_pressed(target_index: int) -> void:
 	elif target_index < node_index:
 		last_hint = "地图节点：已走过。"
 	elif target_index == node_index + 1:
-		last_hint = "地图节点：可前往，已通过地图选路推进。"
+		_apply_default_map_reward(target_index)
+		last_hint = "地图节点：可前往，已通过地图选路推进，并获得默认行军收益。"
 		node_index = target_index
 		battle_requested = false
 	else:
 		last_hint = "地图节点：未开放。"
 	_render()
+
+func _apply_default_map_reward(target_index: int) -> void:
+	if target_index < 0 or target_index >= NODES.size():
+		return
+	var node: Dictionary = NODES[target_index]
+	match str(node.get("type", "")):
+		"普通战斗":
+			jun_gong += 1
+			clues += 1
+		"精英战斗":
+			jun_gong += 1
+			clues += 1
+		"Boss":
+			jun_gong += 2
+			clues += 1
+		"旧物":
+			clues += 2
+		"结尾":
+			qing_wang += 1
+		_:
+			qing_wang += 1
 
 func _on_continue_prologue() -> void:
 	step_index += 1
