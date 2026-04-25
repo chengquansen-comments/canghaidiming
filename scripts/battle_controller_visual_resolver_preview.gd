@@ -118,11 +118,10 @@ func _refresh_preview_ghosts() -> void:
 		return
 	var player_subjective: int = int(preview.get("player_subjective", player.position))
 	var enemy_subjective: int = int(preview.get("enemy_subjective", enemy.position))
-	var player_final: int = int(preview.get("player_final", player.position))
-	var enemy_final: int = int(preview.get("enemy_final", enemy.position))
+	var player_final: int = int(preview.get("player_final", player_subjective))
+	var enemy_final: int = int(preview.get("enemy_final", enemy_subjective))
 	player_preview_ghost.texture = player_sprite.texture if player_sprite != null else null
 	enemy_preview_ghost.texture = enemy_sprite.texture if enemy_sprite != null else null
-	# 虚影只表示双方主观行动位置；箭头继续表示主观位置 → 招式位移结算后最终位置。
 	player_preview_ghost.position = _slot_top_left(player_subjective, true)
 	enemy_preview_ghost.position = _slot_top_left(enemy_subjective, false)
 	player_preview_ghost.modulate = _preview_ghost_modulate(true, player_subjective == player.position)
@@ -206,8 +205,8 @@ func _compute_ordered_preview() -> Dictionary:
 		"has_preview": true,
 		"player_subjective": int(sim.get("player_subjective", player.position)),
 		"enemy_subjective": int(sim.get("enemy_subjective", enemy.position)),
-		"player_final": clampi(int(sim.get("player_final", player.position)), 0, GRID_SLOT_COUNT - 1),
-		"enemy_final": clampi(int(sim.get("enemy_final", enemy.position)), 0, GRID_SLOT_COUNT - 1),
+		"player_final": clampi(int(sim.get("player_final", sim.get("player_subjective", player.position))), 0, GRID_SLOT_COUNT - 1),
+		"enemy_final": clampi(int(sim.get("enemy_final", sim.get("enemy_subjective", enemy.position))), 0, GRID_SLOT_COUNT - 1),
 		"player_text": "",
 		"enemy_text": "",
 		"sim": sim,
@@ -231,10 +230,13 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 	var e_range_result := CombatResolver.RANGE_NONE
 	var order: Array[String] = _preview_resolution_order(p_intent, e_intent)
 	var steps: Array[Dictionary] = []
+	var player_move_applied := false
+	var enemy_move_applied := false
 	for side: String in order:
 		if side == "player":
 			var before_move: int = p_final
 			p_final = p_subjective
+			player_move_applied = true
 			steps.append({"side": "player", "phase": "move", "from": before_move, "to": p_final})
 			if p_card != null:
 				var result_p: Dictionary = _resolve_one_preview_step(true, p_card, p_final, e_final)
@@ -251,6 +253,7 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 		else:
 			var before_enemy_move: int = e_final
 			e_final = e_subjective
+			enemy_move_applied = true
 			steps.append({"side": "enemy", "phase": "move", "from": before_enemy_move, "to": e_final})
 			if e_card != null:
 				var result_e: Dictionary = _resolve_one_preview_step(false, e_card, e_final, p_final)
@@ -264,6 +267,16 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 				e_final = int(result_e.get("actor_final", e_final))
 				p_final = int(result_e.get("target_final", p_final))
 				steps.append({"side": "enemy", "phase": "effect_move", "actor_from": before_effect_move_e2, "actor_to": e_final, "target_from": before_effect_move_p2, "target_to": p_final, "range": e_range_result})
+	if not player_move_applied and draft_player_has_position:
+		p_final = p_subjective
+		steps.append({"side": "player", "phase": "move", "from": player.position, "to": p_subjective})
+	if not enemy_move_applied and e_intent != null and e_intent.target_position >= 0:
+		e_final = e_subjective
+		steps.append({"side": "enemy", "phase": "move", "from": enemy.position, "to": e_subjective})
+	if p_card == null:
+		p_final = p_subjective
+	if e_card == null:
+		e_final = e_subjective
 	return {
 		"player_subjective": p_subjective,
 		"enemy_subjective": e_subjective,
