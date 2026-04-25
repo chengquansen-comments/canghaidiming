@@ -18,6 +18,8 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 	var e_momentum_delta: int = 0
 	var p_running_momentum: int = player.momentum
 	var e_running_momentum: int = enemy.momentum
+	var p_max_momentum: int = player.data.max_momentum if player != null and player.data != null else 0
+	var e_max_momentum: int = enemy.data.max_momentum if enemy != null and enemy.data != null else 0
 	var player_will_break: bool = false
 	var enemy_will_break: bool = false
 	var p_range_result: String = CombatResolver.RANGE_NONE
@@ -40,8 +42,8 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 				var target_m_delta: int = int(result_p.get("target_momentum_delta", 0))
 				var actor_m_delta: int = int(result_p.get("actor_momentum_delta", 0))
 				var before_enemy_momentum: int = e_running_momentum
-				e_running_momentum = clampi(e_running_momentum + target_m_delta, 0, enemy.max_momentum)
-				p_running_momentum = clampi(p_running_momentum + actor_m_delta, 0, player.max_momentum)
+				e_running_momentum = clampi(e_running_momentum + target_m_delta, 0, e_max_momentum)
+				p_running_momentum = clampi(p_running_momentum + actor_m_delta, 0, p_max_momentum)
 				var breaks_enemy: bool = before_enemy_momentum > 0 and e_running_momentum <= 0
 				enemy_will_break = enemy_will_break or breaks_enemy
 				e_hp_delta += int(result_p.get("target_hp_delta", 0))
@@ -65,8 +67,8 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 				var target_m_delta_e: int = int(result_e.get("target_momentum_delta", 0))
 				var actor_m_delta_e: int = int(result_e.get("actor_momentum_delta", 0))
 				var before_player_momentum: int = p_running_momentum
-				p_running_momentum = clampi(p_running_momentum + target_m_delta_e, 0, player.max_momentum)
-				e_running_momentum = clampi(e_running_momentum + actor_m_delta_e, 0, enemy.max_momentum)
+				p_running_momentum = clampi(p_running_momentum + target_m_delta_e, 0, p_max_momentum)
+				e_running_momentum = clampi(e_running_momentum + actor_m_delta_e, 0, e_max_momentum)
 				var breaks_player: bool = before_player_momentum > 0 and p_running_momentum <= 0
 				player_will_break = player_will_break or breaks_player
 				p_hp_delta += int(result_e.get("target_hp_delta", 0))
