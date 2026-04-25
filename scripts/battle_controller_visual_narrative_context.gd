@@ -7,6 +7,7 @@ const DEFAULT_NARRATIVE_SCENE := "res://scenes/NarrativeDemo.tscn"
 var narrative_debug_layer: CanvasLayer
 var narrative_debug_box: VBoxContainer
 var narrative_context_label: Label
+var battle_mapping_label: Label
 var battle_result_label: Label
 var continue_narrative_button: Button
 var last_result_debug_text := ""
@@ -31,10 +32,10 @@ func _add_narrative_debug_layer() -> void:
 	panel.anchor_right = 1.0
 	panel.anchor_top = 0.0
 	panel.anchor_bottom = 0.0
-	panel.offset_left = -430
+	panel.offset_left = -450
 	panel.offset_right = -18
 	panel.offset_top = 68
-	panel.offset_bottom = 230
+	panel.offset_bottom = 260
 	narrative_debug_layer.add_child(panel)
 
 	var margin := MarginContainer.new()
@@ -55,6 +56,13 @@ func _add_narrative_debug_layer() -> void:
 	narrative_context_label.add_theme_font_size_override("font_size", 14)
 	narrative_debug_box.add_child(narrative_context_label)
 
+	battle_mapping_label = Label.new()
+	battle_mapping_label.name = "BattleMappingDebugLabel"
+	battle_mapping_label.text = _mapping_debug_text()
+	battle_mapping_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	battle_mapping_label.add_theme_font_size_override("font_size", 14)
+	narrative_debug_box.add_child(battle_mapping_label)
+
 	battle_result_label = Label.new()
 	battle_result_label.name = "BattleResultDebugLabel"
 	battle_result_label.text = "战斗结果：可随时返回剧情；胜负会按当前 HP 推断"
@@ -74,9 +82,14 @@ func _context_debug_text() -> String:
 		return "叙事上下文：%s" % NarrativeBattleContext.debug_text()
 	return "叙事上下文：无请求｜返回将按 win 保底"
 
+func _mapping_debug_text() -> String:
+	return "接战映射：%s" % NarrativeBattleContext.battle_mapping_debug_text()
+
 func _update_battle_result_debug() -> void:
 	if battle_result_label == null:
 		return
+	if battle_mapping_label != null:
+		battle_mapping_label.text = _mapping_debug_text()
 	if state_machine == null:
 		_set_battle_result_debug_text("战斗结果：state_machine=null｜可点击返回剧情")
 		return
