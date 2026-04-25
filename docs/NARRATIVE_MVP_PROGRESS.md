@@ -1,8 +1,8 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：压缩叙事已推进到“入口分流 + 最小地图路线 UI”。  
-> 核心原则：剧情 MVP 入口和现有选角色战斗入口分开；不扩写剧情，不重构战斗，不改 Web 外壳结构；先把短镜头链、三变量、单局旧案闭环、路线感跑通。
+> 当前阶段：压缩叙事已推进到“入口分流 + 最小地图路线 UI + 中文字体修复”。  
+> 核心原则：剧情 MVP 入口和现有选角色战斗入口分开；不扩写剧情，不重构战斗，不改 Web 外壳结构；先把短镜头链、三变量、单局旧案闭环、路线感和中文显示跑通。
 
 ---
 
@@ -29,6 +29,7 @@
 剧情 MVP：进入 NarrativeDemo.tscn
 战斗测试：进入现有 MainVisual.tscn / MainText.tscn
 叙事 Demo：显示压缩序章、当前节点、三变量、推荐路线、已走节点、结局入口
+中文显示：沿用战斗测试的 BattleFontHelper / cjk_font.ttf 逻辑
 ```
 
 ---
@@ -138,7 +139,9 @@ scripts/narrative/narrative_demo_controller.gd
 展示选择按钮；
 展示变量变化；
 展示结局；
-展示路线条：● 已走 / ▶ 当前 / ○ 未到。
+展示路线条：● 已走 / ▶ 当前 / ○ 未到；
+沿用战斗测试的 BattleFontHelper.enforce(self) 强制应用 CJK 字体；
+动态刷新节点、选择按钮、结局页后重复应用字体，避免新增控件中文乱码。
 ```
 
 ### 3.4 独立测试场景
@@ -208,6 +211,7 @@ da1e5b08bb3d3ccf5e293940086d4a33f6e8e901  Add compressed narrative demo scene
 0bd6542f2c58c8e057015a28f7a73d03d905a848  Refresh narrative MVP progress after entry split
 e78ebbaa11775a1d944944ac6b706f113b57243f  Add MVP narrative route state
 8955ac6add7723e7b9ecf0905217bed3a65e3708  Add route overview to narrative demo
+05c16bf0afda79b5bf182cda658e005bf3e1136c  Apply battle CJK font handling to narrative demo
 ```
 
 ---
@@ -230,6 +234,7 @@ e78ebbaa11775a1d944944ac6b706f113b57243f  Add MVP narrative route state
 [x] 桌面入口区分：剧情 MVP / 字符战斗 / 视觉战斗
 [x] 最小路线 UI：● 已走 / ▶ 当前 / ○ 未到
 [x] 潜在数组强转风险局部修复：敌人列表不再使用 PackedStringArray 强转
+[x] 剧情 MVP 中文字体修复：复用 BattleFontHelper / cjk_font.ttf
 ```
 
 ### 5.2 尚未验收
@@ -240,6 +245,7 @@ e78ebbaa11775a1d944944ac6b706f113b57243f  Add MVP narrative route state
 [ ] Web 入口点击“进入战斗测试”仍能进入 MainVisual.tscn
 [ ] 桌面入口点击“进入剧情 MVP”能进入 NarrativeDemo.tscn
 [ ] 桌面入口点击“进入视觉版战斗”仍能进入 MainVisual.tscn
+[ ] 剧情 MVP 中文不乱码
 [ ] 序章可从头点到“该出山了”
 [ ] 节点选择可正常推进
 [ ] 三变量显示正确
@@ -274,11 +280,11 @@ RichTextLabel / Label 属性在当前 Godot 版本中的兼容性；
 信号绑定 bind 的参数类型。
 ```
 
-已处理一处潜在风险：
+已处理两处潜在风险：
 
 ```text
 敌人列表展示不再使用 PackedStringArray(combat.get("enemies", [])) 强转；
-改为手动遍历 Variant Array 后 join。
+剧情 MVP 复用战斗测试的 BattleFontHelper.enforce(self) 处理中文字体。
 ```
 
 处理原则：
@@ -318,11 +324,13 @@ RichTextLabel / Label 属性在当前 Godot 版本中的兼容性；
 
 ## 7. 下一刀执行清单
 
-### Step 1：入口分流验收
+### Step 1：中文与入口分流验收
 
 ```text
 运行 Main.tscn
 确认 Web / 桌面入口均出现剧情与战斗分流按钮
+进入 NarrativeDemo.tscn
+确认中文不乱码
 ```
 
 通过标准：
@@ -333,6 +341,7 @@ RichTextLabel / Label 属性在当前 Godot 版本中的兼容性；
 [ ] 字符战斗按钮仍进入 MainText.tscn（桌面）
 [ ] smoke_battle 参数仍自动进战斗
 [ ] narrative_mvp 参数自动进剧情
+[ ] 剧情标题、旁白、对白、选择按钮、变量均不乱码
 ```
 
 ### Step 2：本地编译验收
@@ -407,7 +416,7 @@ RichTextLabel / Label 属性在当前 Godot 版本中的兼容性；
 ## 8. 对 Codex 的下一步指令
 
 ```text
-请优先验证并修复入口分流与 NarrativeDemo.tscn 编译问题。当前入口应保持：剧情 MVP → scenes/NarrativeDemo.tscn；战斗测试 → scenes/MainVisual.tscn；桌面字符战斗 → scenes/MainText.tscn。不要改 battle_controller，不要改 MainVisual.tscn，不要重构 web_shell.html。若出现 GDScript 类型错误，只做局部修复。验收路径为：Main 入口分流正常 → 剧情 MVP 序章完整播放 → 军令节点 → 节点选择 → 三变量变化 → 路线条变化 → Boss → 军门压案 → 结局。
+请优先验证并修复入口分流、剧情 MVP 中文乱码和 NarrativeDemo.tscn 编译问题。当前剧情 MVP 已复用 BattleFontHelper.enforce(self)，需要确认标题、旁白、对白、按钮、变量和路线条均不乱码。入口应保持：剧情 MVP → scenes/NarrativeDemo.tscn；战斗测试 → scenes/MainVisual.tscn；桌面字符战斗 → scenes/MainText.tscn。不要改 battle_controller，不要改 MainVisual.tscn，不要重构 web_shell.html。若出现 GDScript 类型错误，只做局部修复。验收路径为：Main 入口分流正常 → 剧情 MVP 中文不乱码 → 序章完整播放 → 军令节点 → 节点选择 → 三变量变化 → 路线条变化 → Boss → 军门压案 → 结局。
 ```
 
 ---
@@ -415,5 +424,5 @@ RichTextLabel / Label 属性在当前 Godot 版本中的兼容性；
 ## 9. 当前一句话结论
 
 ```text
-叙事 MVP 已完成“脚本压缩 → 数据化 → 状态机 → 独立 Demo 场景 → 入口分流 → 最小路线 UI”；下一步不是扩写剧情，而是验证编译与入口，再把路线条升级为真正的最小肉鸽地图 UI。
+叙事 MVP 已完成“脚本压缩 → 数据化 → 状态机 → 独立 Demo 场景 → 入口分流 → 最小路线 UI → 中文字体修复”；下一步不是扩写剧情，而是验证中文、编译与入口，再把路线条升级为真正的最小肉鸽地图 UI。
 ```
