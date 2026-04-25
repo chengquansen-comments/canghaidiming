@@ -29,10 +29,11 @@ func _clear_role_buttons() -> void:
 func _add_role_button(role_id: String, title: String) -> void:
 	if overlay_actions == null:
 		return
+	var selected_role_id: String = role_id
 	var button := Button.new()
 	button.text = title
 	button.pressed.connect(func() -> void:
-		_select_role_and_start(role_id)
+		_select_role_and_start(selected_role_id)
 	)
 	overlay_actions.add_child(button)
 
@@ -48,6 +49,29 @@ func _select_role_and_start(role_id: String) -> void:
 	_clear_actor_runtime(true)
 	_clear_actor_runtime(false)
 	_start_session()
+	_enforce_selected_player_role()
+
+func _enforce_selected_player_role() -> void:
+	if player_role_id == "" or not fighter_catalog.has(player_role_id):
+		return
+	if player != null and player.data != null and player.data.id == player_role_id:
+		return
+	print("[role-select] correcting player fighter to ", player_role_id)
+	var selected_data: FighterData = fighter_catalog[player_role_id]
+	player = Fighter.new(selected_data)
+	player.set_session_realm(selected_data.starting_realm)
+	player.reset_for_battle(HAND_SIZE)
+	if enemy == null:
+		var fallback_enemy_id := "blademaster" if player_role_id == "spearman" else "spearman"
+		if fighter_catalog.has(fallback_enemy_id):
+			enemy = Fighter.new(fighter_catalog[fallback_enemy_id])
+			enemy.set_session_realm(ENEMY_SESSION_REALM)
+			enemy.reset_for_battle(HAND_SIZE)
+	state_machine.update_distance_from_positions(player, enemy)
+	_clear_actor_runtime(true)
+	_clear_actor_runtime(false)
+	_ensure_actor_animation_runtimes()
+	_refresh_ui()
 
 func _refresh_preview_ghosts() -> void:
 	_ensure_preview_ghosts()
