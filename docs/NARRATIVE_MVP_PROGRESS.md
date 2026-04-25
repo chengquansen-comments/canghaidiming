@@ -1,7 +1,7 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景信息分层 + 结局闭环 + UI 分层 + 操作区滚动修复 + 真实战斗 V1 单向跳转 + MainVisual 叙事上下文诊断 + Battle Result 诊断 + 战斗胜利后继续剧情闭环 + CanvasLayer 无条件返回剧情控件 + Engine metadata 上下文持久化兜底 + encounter_id 接战映射诊断 + 关卡信息可见性修复 + 按推荐接敌过渡按钮”；返回剧情闭环与关卡信息可见性均已验收通过。  
+> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景信息分层 + 结局闭环 + UI 分层 + 操作区滚动修复 + 真实战斗 V1 单向跳转 + MainVisual 叙事上下文诊断 + Battle Result 诊断 + 战斗胜利后继续剧情闭环 + CanvasLayer 无条件返回剧情控件 + Engine metadata 上下文持久化兜底 + encounter_id 接战映射诊断 + 关卡信息可见性修复 + 按推荐接敌过渡按钮 + 三场 MVP 战斗敌人配置”。返回剧情闭环与关卡信息可见性均已验收通过。  
 > 核心原则：继续走安全线，不恢复旧 `scripts/narrative/*` 复杂链路；不使用 `HScrollContainer`；不直接改战斗规则；不破坏现有战斗测试入口；不重构 `web_shell.html`。
 
 ---
@@ -42,7 +42,7 @@
 V3 当前目标：
 
 ```text
-从“只显示接战映射”推进到“按推荐接敌”的安全过渡入口。
+从“只显示接战映射”推进到“敌人配置数据层 + 按推荐接敌”的安全过渡入口。
 不直接绕过现有角色选择；不改 BattleStateMachine；不改卡牌/伤害/AI 规则。
 ```
 
@@ -176,42 +176,80 @@ clear()
 → 清空 Engine metadata
 ```
 
-新增 V3 前置能力：
+新增 V3 敌人配置能力：
 
 ```text
 get_battle_mapping()
-→ 根据 encounter_id 返回推荐接战配置
+→ 根据 encounter_id 返回推荐接战配置与 enemy_config
+
+get_enemy_config()
+→ 返回当前 encounter 的敌人配置
 
 battle_mapping_debug_text()
 → 输出当前推荐映射，供 MainVisual 诊断面板展示
+
+enemy_config_debug_text()
+→ 输出敌人配置摘要，供 MainVisual 诊断面板展示
 ```
 
-当前映射：
+当前映射与敌人配置：
 
 ```text
-enc_beach_ambush
+enc_beach_ambush：海边伏击 / 敌方枪手
 → player_role=spearman
 → enemy_role=enemy_spearman
 → enemy_family=spearman
 → difficulty=normal
+→ enemy_id=enemy_spearman_beach_ambush
+→ display_name=敌方枪手
+→ weapon=长枪
+→ max_hp=26
+→ max_posture=10
+→ start_posture=4
+→ intent_style=poke_pressure
+→ behavior_tags=试探 / 抢势 / 突刺 / 低防御
+→ reward=军功+1 / 清望+0 / 旧案线索+1
 
-enc_transport_officer
+enc_transport_officer：失械案押运官 / 敌方刀客
 → player_role=blademaster
 → enemy_role=enemy_blademaster
 → enemy_family=blademaster
 → difficulty=elite
+→ enemy_id=enemy_blademaster_transport_officer
+→ display_name=失械案押运官
+→ weapon=腰刀
+→ max_hp=34
+→ max_posture=10
+→ start_posture=5
+→ intent_style=counter_break
+→ behavior_tags=架刀 / 反击 / 破防 / 压迫
+→ reward=军功+1 / 清望+1 / 旧案线索+2
 
-enc_wakou_boss
+enc_wakou_boss：破船 Boss / 小股倭寇首领
 → player_role=blademaster
 → enemy_role=enemy_blademaster
 → enemy_family=blademaster
 → difficulty=boss
+→ enemy_id=enemy_blademaster_wakou_leader
+→ display_name=小股倭寇首领
+→ weapon=倭刀
+→ max_hp=42
+→ max_posture=10
+→ start_posture=6
+→ intent_style=boss_feint_burst
+→ behavior_tags=虚招 / 抢势 / 连斩 / 临死线索
+→ reward=军功+2 / 清望+0 / 旧案线索+2
 
-fallback
+fallback：默认战斗 / 枪手
 → player_role=spearman
 → enemy_role=enemy_spearman
-→ enemy_family=spearman
 → difficulty=fallback
+→ enemy_id=enemy_spearman_fallback
+→ display_name=默认敌方枪手
+→ weapon=长枪
+→ max_hp=26
+→ start_posture=4
+→ intent_style=fallback
 ```
 
 对应提交：
@@ -220,11 +258,12 @@ fallback
 bc38e66a4e06daa3af46376900401c4fa4090ea2  Add battle result state to narrative context
 a7df5dcc37c44f52e22564322e47b0d96b3542ec  Persist narrative battle context in metadata
 b7d59ab944fdea36ea78a25cc76536f520a6bebf  Add narrative encounter battle mapping
+1ed1e75b11dc4c160783159cd26e8c0f30b6b7ce  Add enemy configs for narrative MVP encounters
 ```
 
 ---
 
-### 2.4 MainVisual 叙事上下文、接战映射与返回剧情控件
+### 2.4 MainVisual 叙事上下文、敌人配置与返回剧情控件
 
 文件：
 
@@ -242,6 +281,7 @@ CanvasLayer 右上角显示：
 - 关卡信息 / 推荐接战信息
 - 叙事上下文诊断
 - 接战映射诊断
+- 敌人配置摘要
 - 战斗结果诊断
 - 按推荐接敌按钮
 - 返回剧情按钮
@@ -259,6 +299,10 @@ player/enemy 不可用或尚未结算时点击返回 → win 保底
 新增 V3 过渡能力：
 
 ```text
+EnemyConfigDebugLabel
+→ 显示 NarrativeBattleContext.enemy_config_debug_text()
+→ 当前仅作为配置验收展示，不直接覆盖战斗实例
+
 RecommendedBattleButton
 → 文案：“按推荐接敌”
 → 点击后读取 NarrativeBattleContext.get_battle_mapping().player_role
@@ -312,6 +356,7 @@ fbdbb8a7434e51e088e74741efb6e421136587fe  Show return narrative control uncondit
 01392a2a1ab57d537f189d7c198d2899bea4c381  Show narrative encounter mapping in battle debug panel
 dbca1c0e0c01f98c641b8ef9263b58fd3802aa09  Make encounter mapping visible in MainVisual panel
 608afa2569611e01bc212455361cbf25876aaafd  Add recommended battle entry control
+e7119878ed82301534e7e8227ece54e17fc579ae  Show enemy config summary in narrative battle panel
 ```
 
 验收状态：
@@ -320,6 +365,7 @@ dbca1c0e0c01f98c641b8ef9263b58fd3802aa09  Make encounter mapping visible in Main
 [x] MainVisual 右上角已出现返回剧情按钮
 [x] 返回剧情闭环已验收通过
 [x] 关卡信息 / 接战映射可见性已验收通过
+[ ] 敌人配置摘要仍需 Web 验收
 [ ] “按推荐接敌”按钮仍需 Web 验收
 ```
 
@@ -330,7 +376,7 @@ dbca1c0e0c01f98c641b8ef9263b58fd3802aa09  Make encounter mapping visible in Main
 不强制自动换敌人
 不改战斗规则
 不改 BattleStateMachine
-只做推荐接敌入口与可回退调用
+只做推荐接敌入口、敌人配置展示与可回退调用
 ```
 
 ---
@@ -502,6 +548,7 @@ phase 切到 RESULT 发生在 finish_round()
 [x] Web 验收：MainVisual 原有角色选择入口不受影响
 [x] Web 验收：NarrativeDemo 下方选项完整显示 / 可滚动
 [x] Web 验收：MainVisual 右上角显示关卡信息 / encounter_id 接战映射诊断
+[ ] Web 验收：MainVisual 右上角显示敌人配置摘要
 [ ] Web 验收：“按推荐接敌”按钮是否出现
 [ ] Web 验收：点击“按推荐接敌”是否能自动进入推荐职业，或至少提示回退到手动选择
 [ ] 根据 visual_debug_label 判断 SVG 是否可被当前 Godot Web 导入为 Texture2D
@@ -512,20 +559,21 @@ phase 切到 RESULT 发生在 finish_round()
 
 ---
 
-## 8. 下一刀建议：Web 验收“按推荐接敌”按钮
+## 8. 下一刀建议：Web 验收敌人配置摘要与推荐接敌按钮
 
 目标：
 
 ```text
-确认推荐接敌入口不会破坏原战斗入口，并判断是否能命中现有角色选择函数。
+确认三场 MVP 战斗敌人配置已经进入右上角诊断面板，且不破坏原战斗入口。
 ```
 
 验收标准：
 
 ```text
-[ ] 从 beach_ambush 进入 MainVisual，右上角出现“按推荐接敌”按钮
-[ ] 点击后，如果命中入口，应进入 spearman 推荐接战
-[ ] 如果未命中入口，应显示：已写入推荐玩家=spearman；未匹配自动入口，请继续使用原角色选择按钮
+[ ] beach_ambush 显示：敌人配置=敌方枪手｜武器=长枪｜HP=26｜势=4/10｜行为=poke_pressure
+[ ] transport_officer 显示：敌人配置=失械案押运官｜武器=腰刀｜HP=34｜势=5/10｜行为=counter_break
+[ ] wakou_boss 显示：敌人配置=小股倭寇首领｜武器=倭刀｜HP=42｜势=6/10｜行为=boss_feint_burst
+[ ] “按推荐接敌”按钮出现
 [ ] 原角色选择按钮仍可用
 [ ] 返回剧情闭环不受影响
 [ ] Web 构建稳定
@@ -547,10 +595,10 @@ phase 切到 RESULT 发生在 finish_round()
 
 ## 9. 后续路线
 
-### Step 1：Web 验收“按推荐接敌”按钮
+### Step 1：Web 验收敌人配置摘要与“按推荐接敌”按钮
 
 ```text
-确认推荐接敌按钮可见、可点、不破坏原入口。
+确认配置可见、按钮可见、原入口不受影响。
 ```
 
 ### Step 2：固化 player_role 自动选择
@@ -577,7 +625,7 @@ phase 切到 RESULT 发生在 finish_round()
 ## 10. 给 Codex 的下一步指令
 
 ```text
-请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前剧情—战斗—剧情闭环和右上角关卡信息 / 接战映射显示均已验收通过。本轮已在 MainVisual 右上角增加“按推荐接敌”按钮：点击后读取 NarrativeBattleContext.get_battle_mapping().player_role，先写入 player_role_id，并通过 get_method_list() 安全尝试调用现有角色选择/开战函数；若未匹配入口，只提示继续手动选择，不报错。下一步请 Web 回归验收该按钮是否出现、是否能命中现有入口、是否不影响原角色选择与返回剧情闭环。不要改 BattleStateMachine，不要强制绕过原角色选择入口。
+请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前剧情—战斗—剧情闭环和右上角关卡信息 / 接战映射显示均已验收通过。本轮已在 NarrativeBattleContext.get_battle_mapping() 中为三场 MVP 战斗补充 enemy_config，并在 MainVisual 右上角新增 EnemyConfigDebugLabel 显示敌人配置摘要。下一步请 Web 回归验收：beach_ambush、transport_officer、wakou_boss 三场战斗是否分别显示正确敌人配置；同时验收“按推荐接敌”按钮是否出现、是否不影响原角色选择与返回剧情闭环。不要改 BattleStateMachine，不要强制绕过原角色选择入口。
 ```
 
 ---
@@ -585,5 +633,5 @@ phase 切到 RESULT 发生在 finish_round()
 ## 11. 当前一句话结论
 
 ```text
-剧情—战斗—剧情闭环与关卡信息显示均已验收通过；本轮已新增“按推荐接敌”过渡按钮，下一步验证它能否命中现有角色选择入口。
+三场 MVP 战斗敌人配置已进入数据层，并已在 MainVisual 右上角显示配置摘要；下一步验收配置显示与“按推荐接敌”按钮。
 ```
