@@ -164,16 +164,23 @@ func _add_choice_button(choice: Dictionary, index: int) -> void:
 func _on_map_node_pressed(target_index: int) -> void:
 	if target_index == node_index:
 		last_hint = "地图节点：当前节点。"
-	elif target_index < node_index:
+		_render()
+		return
+	if target_index < node_index:
 		last_hint = "地图节点：已走过。"
-	elif target_index == node_index + 1:
-		_apply_default_map_reward(target_index)
-		last_hint = "地图节点：可前往，已通过地图选路推进，并获得默认行军收益。"
-		node_index = target_index
-		battle_requested = false
-	else:
+		_render()
+		return
+	if target_index != node_index + 1:
 		last_hint = "地图节点：未开放。"
-	_render()
+		_render()
+		return
+	_apply_default_map_reward(target_index)
+	_advance_to_node(target_index, "地图节点：可前往，已通过地图选路推进，并获得默认行军收益。")
+
+func _apply_choice_delta(choice: Dictionary) -> void:
+	jun_gong += int(choice.get("dg", 0))
+	qing_wang += int(choice.get("dq", 0))
+	clues += int(choice.get("dc", 0))
 
 func _apply_default_map_reward(target_index: int) -> void:
 	if target_index < 0 or target_index >= NODES.size():
@@ -195,6 +202,17 @@ func _apply_default_map_reward(target_index: int) -> void:
 			qing_wang += 1
 		_:
 			qing_wang += 1
+
+func _advance_to_node(target_index: int, hint: String = "") -> void:
+	battle_requested = false
+	last_hint = hint
+	if target_index < 0:
+		return
+	if target_index >= NODES.size():
+		_render_ending()
+		return
+	node_index = target_index
+	_render()
 
 func _on_continue_prologue() -> void:
 	step_index += 1
@@ -222,14 +240,9 @@ func _on_choice(index: int) -> void:
 	if index < 0 or index >= choices.size():
 		return
 	var choice: Dictionary = choices[index]
-	jun_gong += int(choice.get("dg", 0))
-	qing_wang += int(choice.get("dq", 0))
-	clues += int(choice.get("dc", 0))
-	battle_requested = false
-	last_hint = ""
+	_apply_choice_delta(choice)
 	if node_index < NODES.size() - 1:
-		node_index += 1
-		_render()
+		_advance_to_node(node_index + 1, "")
 	else:
 		_render_ending()
 
