@@ -1,8 +1,8 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：压缩叙事已推进到“入口分流 + 最小地图路线 UI + 中文字体修复”。  
-> 核心原则：剧情 MVP 入口和现有选角色战斗入口分开；不扩写剧情，不重构战斗，不改 Web 外壳结构；先把短镜头链、三变量、单局旧案闭环、路线感和中文显示跑通。
+> 当前阶段：压缩叙事已推进到“验收通过 + 入口分流 + 最小肉鸽地图卡片 UI”。  
+> 核心原则：剧情 MVP 入口和现有选角色战斗入口分开；不扩写剧情，不重构战斗，不改 Web 外壳结构；先把短镜头链、三变量、单局旧案闭环、路线感、中文显示和最小地图表现跑通。
 
 ---
 
@@ -29,56 +29,23 @@
 剧情 MVP：进入 NarrativeDemo.tscn
 战斗测试：进入现有 MainVisual.tscn / MainText.tscn
 叙事 Demo：显示压缩序章、当前节点、三变量、推荐路线、已走节点、结局入口
-中文显示：沿用战斗测试的 BattleFontHelper / cjk_font.ttf 逻辑
+中文显示：剧情侧统一走 NarrativeFontHelper，内部复用战斗测试的 BattleFontHelper / cjk_font.ttf 逻辑
+地图表现：从文字路线条升级为横向节点卡片
 ```
 
 ---
 
 ## 2. 已完成文档
 
-### 2.1 压缩脚本
-
 ```text
 docs/MVP_NARRATIVE_SCRIPT_COMPRESSED.md
-```
-
-作用：
-
-```text
-把开局压成 2–3 分钟极短镜头链；
-把每个地图节点压成 1 句旁白 + 2 句对白 + 2–3 个选择；
-保留完整旧案闭环；
-作为当前叙事实装主参考。
-```
-
-### 2.2 完整脚本备份
-
-```text
 docs/MVP_NARRATIVE_SCRIPT.md
-```
-
-作用：
-
-```text
-作为扩展参考；
-后续不再按该文档增加叙事密度；
-当前实现以 compressed 版为准。
-```
-
-### 2.3 美术配套
-
-```text
 docs/CHARACTER_IMAGE_PROMPTS_STORY.md
 docs/SCENE_IMAGE_PROMPTS_STORY.md
 docs/MVP_SINGLE_RUN_ART_COMPLETION_PLAN.md
 ```
 
-作用：
-
-```text
-为叙事 MVP 的人物立绘、场景背景、单局美术闭环提供资产制作清单；
-当前还未接入运行时，仅作为资产生产和后续接入依据。
-```
+当前实现以 `MVP_NARRATIVE_SCRIPT_COMPRESSED.md` 为准，完整脚本只作扩展参考。
 
 ---
 
@@ -140,11 +107,27 @@ scripts/narrative/narrative_demo_controller.gd
 展示变量变化；
 展示结局；
 展示路线条：● 已走 / ▶ 当前 / ○ 未到；
-沿用战斗测试的 BattleFontHelper.enforce(self) 强制应用 CJK 字体；
+展示横向节点卡片：节点标题、节点类型、已走/当前/未到状态；
+通过 NarrativeFontHelper.enforce(self) 统一应用中文字体；
 动态刷新节点、选择按钮、结局页后重复应用字体，避免新增控件中文乱码。
 ```
 
-### 3.4 独立测试场景
+### 3.4 中文字体 Helper
+
+```text
+scripts/narrative/narrative_font_helper.gd
+```
+
+职责：
+
+```text
+作为叙事侧字体统一入口；
+内部复用 scripts/visual/battle_font_view.gd；
+保持剧情 MVP 与战斗测试使用同一套 CJK 字体链路；
+后续叙事 UI 新增控件时只需要调用 NarrativeFontHelper.enforce(root)。
+```
+
+### 3.5 独立测试场景
 
 ```text
 scenes/NarrativeDemo.tscn
@@ -159,7 +142,7 @@ scenes/NarrativeDemo.tscn
 暂不影响现有战斗测试场景。
 ```
 
-### 3.5 入口分流
+### 3.6 入口分流
 
 已更新：
 
@@ -196,7 +179,32 @@ Web smoke_battle 参数仍保留自动进入战斗测试；
 
 ---
 
-## 4. 已完成提交记录
+## 4. 验收状态
+
+### 4.1 用户已验收通过
+
+```text
+[x] 剧情 MVP 中文不乱码
+[x] 入口分流可用
+[x] NarrativeDemo 可进入
+```
+
+### 4.2 当前仍需继续验收
+
+```text
+[ ] 横向节点卡片 UI 在 Web 下显示正常
+[ ] 节点卡片当前 / 已走 / 未到状态准确
+[ ] 序章可从头点到“该出山了”
+[ ] 节点选择可正常推进
+[ ] 三变量显示正确
+[ ] Boss 后可进入军门压案
+[ ] 上报 / 掩盖 / 私查 / 借势可按条件出现
+[ ] 结局能正常显示
+```
+
+---
+
+## 5. 已完成提交记录
 
 ```text
 ac07cac6c1347678c7f47047fe0b75b28f0278b0  Add compressed MVP narrative script
@@ -212,13 +220,15 @@ da1e5b08bb3d3ccf5e293940086d4a33f6e8e901  Add compressed narrative demo scene
 e78ebbaa11775a1d944944ac6b706f113b57243f  Add MVP narrative route state
 8955ac6add7723e7b9ecf0905217bed3a65e3708  Add route overview to narrative demo
 05c16bf0afda79b5bf182cda658e005bf3e1136c  Apply battle CJK font handling to narrative demo
+d91a2bb3c3d12087af10145aabf3e632650a888a  Use narrative font helper in narrative demo
+cf820324e9f05e7c765ad8a2464ed1f34a929bdd  Add minimal narrative map strip UI
 ```
 
 ---
 
-## 5. 当前状态判断
+## 6. 当前状态判断
 
-### 5.1 已经完成
+### 6.1 已经完成
 
 ```text
 [x] 压缩叙事脚本定稿
@@ -233,196 +243,136 @@ e78ebbaa11775a1d944944ac6b706f113b57243f  Add MVP narrative route state
 [x] Web 入口区分：剧情 MVP / 战斗测试
 [x] 桌面入口区分：剧情 MVP / 字符战斗 / 视觉战斗
 [x] 最小路线 UI：● 已走 / ▶ 当前 / ○ 未到
+[x] 最小肉鸽地图卡片 UI：节点标题 / 节点类型 / 状态
 [x] 潜在数组强转风险局部修复：敌人列表不再使用 PackedStringArray 强转
 [x] 剧情 MVP 中文字体修复：复用 BattleFontHelper / cjk_font.ttf
+[x] 新增 NarrativeFontHelper，叙事侧字体入口收口
 ```
 
-### 5.2 尚未验收
+### 6.2 尚未实装
 
 ```text
-[ ] 本地运行 NarrativeDemo.tscn 无 GDScript 编译错误
-[ ] Web 入口点击“进入剧情 MVP”能进入 NarrativeDemo.tscn
-[ ] Web 入口点击“进入战斗测试”仍能进入 MainVisual.tscn
-[ ] 桌面入口点击“进入剧情 MVP”能进入 NarrativeDemo.tscn
-[ ] 桌面入口点击“进入视觉版战斗”仍能进入 MainVisual.tscn
-[ ] 剧情 MVP 中文不乱码
-[ ] 序章可从头点到“该出山了”
-[ ] 节点选择可正常推进
-[ ] 三变量显示正确
-[ ] 路线条能正确显示当前节点与已走节点
-[ ] Boss 后可进入军门压案
-[ ] 上报 / 掩盖 / 私查 / 借势可按条件出现
-[ ] 结局能正常显示
-```
-
-### 5.3 尚未实装
-
-```text
-[ ] 真实肉鸽地图 UI：节点圆点 / 图标 / 分支点击
 [ ] 与现有战斗场景的胜利回调
 [ ] P0 背景图显示
 [ ] P0 人物立绘显示
 [ ] 旧物图显示
+[ ] 真正分叉式肉鸽地图布局
 ```
 
 ---
 
-## 6. 当前风险
+## 7. 当前风险
 
-### 风险一：GDScript 编译风险
+### 风险一：地图卡片 UI 的 Web 适配
 
-当前新增叙事脚本尚未经过本地 Godot 编译验证。重点风险点：
-
-```text
-JSON 字段类型转换；
-Array / Dictionary 静态类型；
-RichTextLabel / Label 属性在当前 Godot 版本中的兼容性；
-信号绑定 bind 的参数类型。
-```
-
-已处理两处潜在风险：
+当前横向节点卡片已经落地，但仍需 Web 验证：
 
 ```text
-敌人列表展示不再使用 PackedStringArray(combat.get("enemies", [])) 强转；
-剧情 MVP 复用战斗测试的 BattleFontHelper.enforce(self) 处理中文字体。
+是否挤压正文；
+是否能横向滚动；
+中文是否继续稳定；
+节点卡片状态是否刷新及时。
 ```
+
+### 风险二：路线仍是推荐路径，不是真分叉地图
+
+当前地图 UI 只是把推荐路径卡片化，不是真正的分叉节点图。
 
 处理原则：
 
 ```text
-先修到 NarrativeDemo.tscn 可运行；
-不要同时改战斗主控制器；
-不要在编译未过前接 MainVisual。
+先验收横向卡片路线；
+再升级为静态分叉地图；
+不要直接做复杂随机地图生成。
 ```
 
-### 风险二：入口分流构建风险
+### 风险三：战斗节点仍是占位
 
-入口已经改为按钮分流，但尚未 Web 构建验证。
+当前 battle / elite / boss 节点只展示 encounter_id。
 
 处理原则：
 
 ```text
-优先验证 Web 首页是否能打开；
-确认“进入战斗测试”不受影响；
-确认 smoke_battle 仍能自动进入战斗；
-确认 narrative_mvp 可自动进入剧情 MVP。
-```
-
-### 风险三：路线 UI 仍是线性路线条
-
-当前已经有路线感，但还不是完整肉鸽地图。
-
-处理原则：
-
-```text
-先接受线性路线条；
-验证压缩叙事节奏；
-下一刀再加节点圆点、六类图标和分支点击。
+先把叙事节奏与地图 UI 跑通；
+再接战斗胜利回调；
+不要为了叙事大改战斗规则。
 ```
 
 ---
 
-## 7. 下一刀执行清单
+## 8. 下一刀执行清单
 
-### Step 1：中文与入口分流验收
+### Step 1：验收最小地图卡片 UI
 
 ```text
-运行 Main.tscn
-确认 Web / 桌面入口均出现剧情与战斗分流按钮
-进入 NarrativeDemo.tscn
-确认中文不乱码
+进入剧情 MVP
+走完序章
+进入军令节点
+观察横向地图卡片
+逐步选择推进
+观察节点状态变化
 ```
 
 通过标准：
 
 ```text
-[ ] 剧情 MVP 按钮进入 NarrativeDemo.tscn
-[ ] 战斗测试按钮进入 MainVisual.tscn
-[ ] 字符战斗按钮仍进入 MainText.tscn（桌面）
-[ ] smoke_battle 参数仍自动进战斗
-[ ] narrative_mvp 参数自动进剧情
-[ ] 剧情标题、旁白、对白、选择按钮、变量均不乱码
+[ ] 当前节点显示高亮
+[ ] 已走节点变为已走状态
+[ ] 未到节点保持未到状态
+[ ] 横向滚动可用
+[ ] 正文区域不被挤没
+[ ] 中文不乱码
 ```
 
-### Step 2：本地编译验收
+### Step 2：接 P0 背景图显示占位
+
+先不要求真实图全部存在，先做图片存在则显示，不存在则文本占位：
 
 ```text
-打开 scenes/NarrativeDemo.tscn
-运行当前场景
-记录 GDScript 错误
-逐个修复
+prologue_burning_village.png
+prologue_master_blocks_blade.png
+prologue_ten_years_later.png
+node_military_order.png
+node_beach_ambush.png
+node_ming_firearms.png
+boss_wakou_wrecked_ship.png
+ending_military_office_coverup.png
 ```
 
-通过标准：
+### Step 3：接人物立绘占位
+
+优先：
 
 ```text
-[ ] 场景能打开
-[ ] 点击“继续”不报错
-[ ] 序章能完整播放
-[ ] 进入军令节点
-[ ] 路线条正常显示
+protagonist_young.png
+protagonist_child.png
+mentor_veteran.png
+wakou_leader.png
+military_superior.png
 ```
 
-### Step 3：叙事流程验收
-
-验证推荐路径：
+### Step 4：预留战斗回调接口
 
 ```text
-序章
-→ 军令：问旧案
-→ 海边伏击：搜身留证
-→ 明制火器：私下留证
-→ 押运官：私藏名册
-→ 夜半磨刀：问旧案
-→ Boss：查看火器箱
-→ 军门压案：据实上报 / 藏下一份证据
-```
-
-通过标准：
-
-```text
-[ ] 旧案线索 >= 3 时出现“据实上报”
-[ ] 旧案线索 >= 2 时出现“藏下一份证据”
-[ ] 未经过海商宴时不出现“拿证据换船粮”
-[ ] 变量变化符合按钮显示
-[ ] 路线条从 ○ 变为 ●，当前节点显示 ▶
-```
-
-### Step 4：增加真实最小地图 UI
-
-下一步从路线条升级为一张静态路线图，不做复杂生成算法：
-
-```text
-军令
-→ 海边伏击 / 渔村残火
-→ 明制火器 / 海商宴
-→ 押运官 / 欠饷营 / 夜半磨刀
-→ Boss
-→ 军门压案
-```
-
-展示要求：
-
-```text
-六类节点图标；
-当前节点高亮；
-已走节点变暗；
-未开放节点半透明；
-节点点击进入 current_node。
+NarrativeState.current_node.combat
+→ encounter_id
+→ 战斗测试入口
+→ battle_win
+→ 回到当前 node 战后 choices
 ```
 
 ---
 
-## 8. 对 Codex 的下一步指令
+## 9. 对 Codex 的下一步指令
 
 ```text
-请优先验证并修复入口分流、剧情 MVP 中文乱码和 NarrativeDemo.tscn 编译问题。当前剧情 MVP 已复用 BattleFontHelper.enforce(self)，需要确认标题、旁白、对白、按钮、变量和路线条均不乱码。入口应保持：剧情 MVP → scenes/NarrativeDemo.tscn；战斗测试 → scenes/MainVisual.tscn；桌面字符战斗 → scenes/MainText.tscn。不要改 battle_controller，不要改 MainVisual.tscn，不要重构 web_shell.html。若出现 GDScript 类型错误，只做局部修复。验收路径为：Main 入口分流正常 → 剧情 MVP 中文不乱码 → 序章完整播放 → 军令节点 → 节点选择 → 三变量变化 → 路线条变化 → Boss → 军门压案 → 结局。
+请优先验证 NarrativeDemo.tscn 的横向地图卡片 UI。当前剧情 MVP 已通过用户验收：入口分流可用，中文不乱码。下一步不要扩写剧情，不要改 battle_controller，不要改 MainVisual.tscn，不要重构 web_shell.html。请验证：序章结束后出现横向节点卡片；当前节点高亮；已走节点变色；未到节点保持普通状态；横向滚动可用；正文区域不被挤压。验证后再接 P0 背景图显示占位。
 ```
 
 ---
 
-## 9. 当前一句话结论
+## 10. 当前一句话结论
 
 ```text
-叙事 MVP 已完成“脚本压缩 → 数据化 → 状态机 → 独立 Demo 场景 → 入口分流 → 最小路线 UI → 中文字体修复”；下一步不是扩写剧情，而是验证中文、编译与入口，再把路线条升级为真正的最小肉鸽地图 UI。
+叙事 MVP 已完成“脚本压缩 → 数据化 → 状态机 → 独立 Demo 场景 → 入口分流 → 中文字体专用 Helper → 最小肉鸽地图卡片 UI”；下一步抓重点验收地图卡片 UI，然后接 P0 背景图与角色立绘占位。
 ```
