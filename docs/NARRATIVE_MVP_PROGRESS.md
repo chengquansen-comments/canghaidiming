@@ -1,7 +1,7 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：压缩叙事已推进到“验收通过 + 地图卡片 UI + P0 背景/人物/旧物占位 + 战斗回调桥接接口”。  
+> 当前阶段：压缩叙事已推进到“验收通过 + 视觉占位 + 战斗回调桥接占位按钮”。  
 > 核心原则：剧情 MVP 入口和现有选角色战斗入口分开；不扩写剧情，不重构战斗，不改 Web 外壳结构；先把短镜头链、三变量、单局旧案闭环、路线感、中文显示、最小地图表现、视觉占位和战斗接口跑通。
 
 ---
@@ -34,7 +34,7 @@
 背景表现：图片存在则显示，不存在则显示明确占位文本，不阻塞 Web 运行
 人物表现：立绘存在则显示，不存在则显示角色名 / 路径占位，不阻塞 Web 运行
 旧物表现：旧物图存在则显示，不存在则显示旧物名 / 路径占位，不阻塞 Web 运行
-战斗接口：先只预留 bridge，不强切 MainVisual，不改 battle_controller
+战斗接口：NarrativeDemo 内只做占位按钮，不强切 MainVisual，不改 battle_controller
 ```
 
 ---
@@ -106,22 +106,18 @@ scripts/narrative/narrative_demo_controller.gd
 运行时构建最小 UI；
 展示序章 step；
 展示节点标题 / 类型 / 背景路径 / 旁白 / 对白；
-展示战斗占位 encounter_id；
 展示选择按钮；
 展示变量变化；
 展示结局；
 展示路线条：● 已走 / ▶ 当前 / ○ 未到；
 展示横向节点卡片：节点标题、节点类型、已走/当前/未到状态；
 展示 P0 背景图区域；
-序章 step 可按 id 映射到 P0 序章背景；
-节点可读取 background 字段并尝试加载对应背景；
-图片不存在时显示占位文本，不阻塞运行；
 展示 P0 人物立绘区域；
-序章 step 可按 id 映射幼年主角、师父、成年主角等立绘；
-节点可按 speaker 映射军门上官、Boss、海商、押运官、兵变营头等立绘；
-立绘不存在时显示角色名 / 路径占位，不阻塞运行；
-旧物节点可映射官造火铳图；
-旧物图不存在时显示旧物名 / 路径占位，不阻塞运行；
+展示旧物图占位；
+在 battle / elite / boss 节点展示战斗桥接面板；
+战斗桥接面板支持“请求战斗”和“视为胜利继续”；
+请求战斗时展示 node_id / encounter_id / enemies payload；
+视为胜利继续时不切 MainVisual，只回到当前节点战后选择；
 通过 NarrativeFontHelper.enforce(self) 统一应用中文字体；
 动态刷新节点、选择按钮、结局页后重复应用字体，避免新增控件中文乱码。
 ```
@@ -159,14 +155,6 @@ scripts/narrative/narrative_combat_bridge.gd
 不强制切换 MainVisual；
 不修改 battle_controller；
 不改变 narrative-only 路径。
-```
-
-用途定位：
-
-```text
-这是接口层，不是正式接战斗。
-下一步可以先在 NarrativeDemo 中做“请求战斗 / 视为胜利继续”的占位按钮。
-正式接入时再让 MainVisual 或战斗场景发 battle_win 回来。
 ```
 
 ### 3.6 独立测试场景
@@ -244,6 +232,12 @@ Web smoke_battle 参数仍保留自动进入战斗测试；
 [ ] 旧物图资源不存在时可显示旧物名 / 路径占位
 [ ] 战斗桥接接口文件可编译
 [ ] 战斗节点 payload 字段正确：node_id / encounter_id / enemies
+[ ] battle / elite / boss 节点显示“请求战斗 / 视为胜利继续”
+[ ] 点击“请求战斗”能生成 payload
+[ ] 点击“视为胜利继续”后仍显示当前节点战后选择
+[ ] 不跳 MainVisual
+[ ] 不改 battle_controller
+[ ] narrative-only 路径仍可完整走通
 [ ] 序章可从头点到“该出山了”
 [ ] 节点选择可正常推进
 [ ] 三变量显示正确
@@ -279,6 +273,7 @@ e75f6f700e18cf3c777f56b246a76ab07526f4d1  Add P0 narrative portrait placeholder 
 1f35d7100f0519a30c31108e0508f395755a711c  Refresh narrative progress after portrait placeholders
 053c9b083d3906b437c6d6392f1de6dd5843cfd5  Add MVP relic placeholder display
 6a552c0f40bb2be5b81cb8bf6b575f94f4eaedae  Add narrative combat bridge interface
+f5e68ecc597af7af44bf2e0cbbcfaeadf9515dbb  Connect narrative combat bridge to demo
 ```
 
 ---
@@ -305,6 +300,7 @@ e75f6f700e18cf3c777f56b246a76ab07526f4d1  Add P0 narrative portrait placeholder 
 [x] P0 人物立绘显示占位：图片存在则显示，不存在则角色名 / 路径占位
 [x] 旧物图显示占位：图片存在则显示，不存在则旧物名 / 路径占位
 [x] 战斗回调桥接接口：NarrativeCombatBridge
+[x] NarrativeDemo 战斗桥接占位按钮：请求战斗 / 视为胜利继续
 [x] 潜在数组强转风险局部修复：敌人列表不再使用 PackedStringArray 强转
 [x] 剧情 MVP 中文字体修复：复用 BattleFontHelper / cjk_font.ttf
 [x] 新增 NarrativeFontHelper，叙事侧字体入口收口
@@ -313,7 +309,6 @@ e75f6f700e18cf3c777f56b246a76ab07526f4d1  Add P0 narrative portrait placeholder 
 ### 6.2 尚未实装
 
 ```text
-[ ] NarrativeDemo 中的“请求战斗 / 视为胜利继续”占位按钮
 [ ] 与现有战斗场景的真实胜利回调
 [ ] 真正分叉式肉鸽地图布局
 ```
@@ -322,17 +317,17 @@ e75f6f700e18cf3c777f56b246a76ab07526f4d1  Add P0 narrative portrait placeholder 
 
 ## 7. 当前风险
 
-### 风险一：战斗桥接接口尚未接 Demo
+### 风险一：战斗桥接按钮需要 Web 验收
 
-当前 `NarrativeCombatBridge` 已经存在，但还没有在 NarrativeDemo 中挂按钮。
+当前 `NarrativeCombatBridge` 已经接到 NarrativeDemo，但尚未 Web 验收。
 
 处理原则：
 
 ```text
-下一刀先做 Demo 占位按钮：请求战斗 / 视为胜利；
-不要立即切 MainVisual；
-不要改 battle_controller；
-确保 narrative-only 路径仍完整。
+先验证占位按钮；
+确认 payload 正确；
+确认不跳 MainVisual；
+确认 narrative-only 路径仍完整。
 ```
 
 ### 风险二：视觉区域 Web 适配仍需继续验收
@@ -346,14 +341,14 @@ e75f6f700e18cf3c777f56b246a76ab07526f4d1  Add P0 narrative portrait placeholder 
 横向地图卡片 + 背景区域 + 立绘/旧物区域 + 正文是否在 1600×1000 下可读。
 ```
 
-### 风险三：战斗节点仍是占位
+### 风险三：真实战斗仍未接入
 
-当前 battle / elite / boss 节点仍未进入真实战斗。
+当前 battle / elite / boss 节点只做 bridge 占位。
 
 处理原则：
 
 ```text
-先把接口跑通；
+先验收占位桥接；
 再接真实战斗胜利回调；
 不要为了叙事大改战斗规则。
 ```
@@ -362,22 +357,26 @@ e75f6f700e18cf3c777f56b246a76ab07526f4d1  Add P0 narrative portrait placeholder 
 
 ## 8. 下一刀执行清单
 
-### Step 1：把 NarrativeCombatBridge 接到 NarrativeDemo
+### Step 1：验收 NarrativeDemo 战斗桥接占位
 
 ```text
-在 battle / elite / boss 节点显示：
-请求战斗
-视为胜利继续
+进入剧情 MVP
+走完序章
+进入海边伏击 / 押运官 / Boss 等战斗节点
+观察战斗桥接面板
+点击“请求战斗”
+点击“视为胜利继续”
+继续选择战后处理
 ```
 
 通过标准：
 
 ```text
-[ ] 点击“请求战斗”能生成 payload
+[ ] battle / elite / boss 节点出现战斗桥接面板
 [ ] payload 显示 node_id / encounter_id / enemies
-[ ] 点击“视为胜利继续”后仍显示当前节点战后选择
-[ ] 不跳 MainVisual
-[ ] 不改 battle_controller
+[ ] 点击“请求战斗”只显示 payload，不跳场景
+[ ] 点击“视为胜利继续”后仍停留当前节点
+[ ] 当前节点战后选择仍可点击
 [ ] narrative-only 路径仍可完整走通
 ```
 
@@ -389,6 +388,14 @@ NarrativeState.current_node.combat
 → MainVisual / 战斗场景
 → battle_win
 → 回到当前 node 战后 choices
+```
+
+原则：
+
+```text
+正式接入前，先梳理 MainVisual 的启动参数和战斗结束信号；
+不要直接改战斗规则；
+不要破坏现有选角色战斗测试入口。
 ```
 
 ### Step 3：静态分叉地图布局
@@ -407,7 +414,7 @@ NarrativeState.current_node.combat
 ## 9. 对 Codex 的下一步指令
 
 ```text
-请把 scripts/narrative/narrative_combat_bridge.gd 接入 NarrativeDemo.tscn 的控制器中，仅做占位交互：在 battle / elite / boss 节点显示“请求战斗”和“视为胜利继续”。请求战斗时展示 payload，包括 node_id、encounter_id、enemies。视为胜利继续时不切 MainVisual，只关闭战斗占位，保留当前节点的战后选择。不要改 battle_controller，不要改 MainVisual.tscn，不要重构 web_shell.html，保持 narrative-only 路径完整可走通。
+请优先验证 NarrativeDemo.tscn 的战斗桥接占位按钮。当前剧情 MVP 已通过用户验收：入口分流可用，中文不乱码。下一步不要扩写剧情，不要改 battle_controller，不要改 MainVisual.tscn，不要重构 web_shell.html。请验证：battle / elite / boss 节点是否出现“请求战斗 / 视为胜利继续”；点击请求战斗是否展示 node_id / encounter_id / enemies；点击视为胜利继续是否不跳场景且仍能选择战后处理。验证后再评估真实战斗胜利回调。
 ```
 
 ---
@@ -415,5 +422,5 @@ NarrativeState.current_node.combat
 ## 10. 当前一句话结论
 
 ```text
-叙事 MVP 已完成“脚本压缩 → 数据化 → 状态机 → 独立 Demo 场景 → 入口分流 → 中文字体专用 Helper → 最小肉鸽地图卡片 UI → P0 背景占位 → P0 人物立绘占位 → 旧物图占位 → 战斗回调桥接接口”；下一步抓重点把桥接接口接到 NarrativeDemo 的占位按钮上。
+叙事 MVP 已完成“脚本压缩 → 数据化 → 状态机 → 独立 Demo 场景 → 入口分流 → 中文字体专用 Helper → 最小肉鸽地图卡片 UI → P0 背景占位 → P0 人物立绘占位 → 旧物图占位 → 战斗回调桥接接口 → Demo 占位按钮”；下一步抓重点验收桥接按钮，再决定是否接真实战斗胜利回调。
 ```
