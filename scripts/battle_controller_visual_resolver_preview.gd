@@ -48,7 +48,7 @@ func _select_role_and_start(role_id: String) -> void:
 		overlay_panel.visible = false
 	_clear_actor_runtime(true)
 	_clear_actor_runtime(false)
-	_start_session()
+	_start_session(player_role_id)
 	_enforce_selected_player_role()
 
 func _enforce_selected_player_role() -> void:
