@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360">
+  <rect width="960" height="360" fill="#171318"/>
+  <rect x="80" y="60" width="800" height="235" rx="18" fill="#2a2024" stroke="#8e6c44" stroke-width="6"/>
+  <rect x="235" y="98" width="490" height="155" fill="#d2bd8d"/>
+  <path d="M310 130 h330 M310 165 h280 M310 200 h335" stroke="#5c4030" stroke-width="8"/>
+  <rect x="595" y="170" width="92" height="52" fill="#8d2525" opacity="0.85"/>
+  <path d="M700 82 l45 200" stroke="#101010" stroke-width="12"/>
+  <text x="480" y="330" text-anchor="middle" font-size="34" fill="#e5d0a2" font-family="sans-serif">军门压案 / Military Coverup</text>
+</svg>
