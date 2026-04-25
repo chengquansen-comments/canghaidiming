@@ -13,20 +13,37 @@ const RESPONSIVE_HAND_HEIGHT := 176.0
 const RESPONSIVE_CARD_SIZE := Vector2(152, 168)
 const RESPONSIVE_DETAIL_PANEL_HEIGHT := 132.0
 const RESPONSIVE_DETAIL_LABEL_HEIGHT := 94.0
+const BUBBLE_GAP_Y := 12.0
+const BUBBLE_SAFE_MARGIN_X := 24.0
+
+func _process(delta: float) -> void:
+	super(delta)
+	_bind_intent_bubbles_to_actor_sprites()
 
 func _build_ui() -> void:
 	super()
 	_configure_responsive_bottom_layout()
 	call_deferred("_configure_responsive_bottom_layout")
+	call_deferred("_bind_intent_bubbles_to_actor_sprites")
 
 func _refresh_visual_ui() -> void:
 	super()
 	_configure_responsive_bottom_layout()
+	_bind_intent_bubbles_to_actor_sprites()
 
 func _refresh_hand_buttons() -> void:
 	super()
 	_configure_responsive_bottom_layout()
 	_configure_hand_button_sizes()
+	_bind_intent_bubbles_to_actor_sprites()
+
+func _refresh_stage_actor_positions(force: bool = false) -> void:
+	super(force)
+	_bind_intent_bubbles_to_actor_sprites()
+
+func _refresh_intent_bubbles(force: bool = false) -> void:
+	super(force)
+	_bind_intent_bubbles_to_actor_sprites()
 
 func _configure_responsive_bottom_layout() -> void:
 	_configure_bottom_root_bounds()
@@ -128,6 +145,24 @@ func _configure_hand_button_sizes() -> void:
 			control.custom_minimum_size = Vector2(0, RESPONSIVE_HAND_HEIGHT)
 			control.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 			control.clip_contents = true
+
+func _bind_intent_bubbles_to_actor_sprites() -> void:
+	_bind_single_intent_bubble(player_intent_bubble, player_sprite)
+	_bind_single_intent_bubble(enemy_intent_bubble, enemy_sprite)
+
+func _bind_single_intent_bubble(bubble: PanelContainer, sprite: TextureRect) -> void:
+	if bubble == null or sprite == null or not bubble.visible:
+		return
+	var bubble_size: Vector2 = bubble.size
+	if bubble_size.x <= 1.0 or bubble_size.y <= 1.0:
+		bubble_size = bubble.custom_minimum_size
+	var sprite_size: Vector2 = sprite.size
+	var target_x: float = sprite.position.x + sprite_size.x * 0.5 - bubble_size.x * 0.5
+	var target_y: float = sprite.position.y - bubble_size.y - BUBBLE_GAP_Y
+	bubble.position = Vector2(
+		clampf(target_x, BUBBLE_SAFE_MARGIN_X, maxf(BUBBLE_SAFE_MARGIN_X, size.x - bubble_size.x - BUBBLE_SAFE_MARGIN_X)),
+		maxf(STAGE_AREA_TOP + 8.0, target_y)
+	)
 
 func _control_bar_node() -> Control:
 	if confirm_button != null and confirm_button.get_parent() is Control:
