@@ -1,7 +1,7 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：P0 Web 构建稳定已再次恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景/人物/旧物文本占位 + 结局闭环 + 收益与推进入口收口 + UI 分层 + 最小图片显示 + 六列地图操作布局 + SVG 占位视觉资源 + 场景信息分层展示 + 视觉资源诊断 + Parser 稳定修复 + 真实战斗 V1 单向跳转”。  
+> 当前阶段：P0 Web 构建稳定已再次恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景/人物/旧物文本占位 + 结局闭环 + 收益与推进入口收口 + UI 分层 + 最小图片显示 + 六列地图操作布局 + SVG 占位视觉资源 + 场景信息分层展示 + 视觉资源诊断 + Parser 稳定修复 + 真实战斗 V1 单向跳转 + MainVisual 叙事上下文诊断”。  
 > 核心原则：继续走安全线，不恢复旧 `scripts/narrative/*` 复杂链路；不使用 `HScrollContainer`；不直接改战斗规则；不破坏现有战斗测试入口；不重构 `web_shell.html`。
 
 ---
@@ -30,6 +30,7 @@
 剧情战斗节点点击“请求战斗”
 → 写入 encounter_id / source_node_id
 → 单向跳转 MainVisual.tscn
+→ MainVisual 显示叙事上下文诊断
 → MainVisual 继续走现有角色选择入口
 ```
 
@@ -182,7 +183,54 @@ NarrativeDemo 点击“请求战斗”
 
 ---
 
-### 3.4 SVG 占位视觉资源
+### 3.4 MainVisual 叙事上下文诊断
+
+新增 wrapper：
+
+```text
+scripts/battle_controller_visual_narrative_context.gd
+```
+
+实现方式：
+
+```text
+extends res://scripts/battle_controller_visual_break_preview.gd
+_ready() 中先 super._ready()
+如果 NarrativeBattleContext.has_request()，追加 NarrativeContextDebugLabel
+只显示 encounter_id / source_node_id / return_after_battle
+```
+
+`scenes/MainVisual.tscn` 当前脚本已从：
+
+```text
+res://scripts/battle_controller_visual_break_preview.gd
+```
+
+改为：
+
+```text
+res://scripts/battle_controller_visual_narrative_context.gd
+```
+
+对应提交：
+
+```text
+97bffadb05c0ee994edb27597319e22c251ef645  Add narrative context wrapper for MainVisual
+02301584ac14d56483a2f9c6d1c3052abd40dbea  Use narrative context wrapper for MainVisual
+```
+
+约束：
+
+```text
+不绕过角色选择
+不根据 encounter_id 自动换敌人
+不改战斗规则
+只做传参诊断显示
+```
+
+---
+
+### 3.5 SVG 占位视觉资源
 
 已新增：
 
@@ -274,13 +322,19 @@ Boss：军功 +2，旧案线索 +1
 
 ### 7.1 MainVisual 当前入口
 
-当前 `scenes/MainVisual.tscn` 挂载脚本不是早期文档里的 responsive controller，而是：
+当前 `scenes/MainVisual.tscn` 已改挂 wrapper：
+
+```text
+res://scripts/battle_controller_visual_narrative_context.gd
+```
+
+该 wrapper 继承：
 
 ```text
 res://scripts/battle_controller_visual_break_preview.gd
 ```
 
-继承链路为：
+原始战斗继承链路仍为：
 
 ```text
 battle_controller_visual_break_preview.gd
@@ -319,6 +373,7 @@ MainVisual 现有测试入口保持不变。
 叙事节点点击“请求战斗”
 → 记录 encounter_id / source_node_id
 → 跳转 MainVisual.tscn
+→ MainVisual 显示 NarrativeBattleContext 诊断
 → MainVisual 仍进入现有角色选择/战斗测试链路
 ```
 
@@ -337,48 +392,44 @@ MainVisual 现有测试入口保持不变。
 
 ```text
 [ ] Web 验收：NarrativeDemo 点击请求战斗能进入 MainVisual
+[ ] Web 验收：MainVisual 显示 encounter_id / source_node_id
 [ ] Web 验收：MainVisual 原有角色选择入口不受影响
 [ ] 根据 visual_debug_label 判断 SVG 是否可被当前 Godot Web 导入为 Texture2D
 [ ] 若 SVG 不能作为 Texture2D 正常显示，则改为真实 PNG 占位图
 [ ] 真实战斗胜利/失败回调接入前继续定位结算函数
-[ ] V2：MainVisual 读取 NarrativeBattleContext 并显示来源诊断
 [ ] V3：encounter_id → enemy/fighter 映射
 ```
 
 ---
 
-## 9. 下一刀建议：MainVisual 显示 NarrativeBattleContext 诊断
+## 9. 下一刀建议：Web 验收 MainVisual 上下文诊断
 
 目标：
 
 ```text
-V1 单向跳转后，MainVisual 页面能看见来源上下文，确认 narrative → battle 传参没有丢。
-```
-
-建议实现：
-
-```text
-1. 在不改战斗规则的前提下，给 battle controller 增加一个轻量 context debug label
-2. preload NarrativeBattleContext
-3. 如果 has_request()，显示 encounter_id / source_node_id
-4. 不绕过角色选择
-5. 不根据 encounter_id 改敌人
+确认 narrative → battle 传参链路可见。
 ```
 
 验收标准：
 
 ```text
 [ ] 从 NarrativeDemo 请求战斗进入 MainVisual
-[ ] MainVisual 显示 encounter_id / source_node_id
+[ ] MainVisual 顶部显示“叙事战斗上下文：encounter_id=...｜source_node_id=...｜return_after_battle=false”
 [ ] 原有角色选择仍可用
 [ ] Web 构建稳定
+```
+
+如果诊断显示位置遮挡 UI：
+
+```text
+下一刀只调整 debug label 位置，不改战斗规则。
 ```
 
 ---
 
 ## 10. 后续路线
 
-### Step 1：MainVisual 显示上下文诊断
+### Step 1：Web 验收 MainVisual 上下文诊断
 
 ```text
 确认单向跳转传参链路真实可见。
@@ -407,7 +458,7 @@ V1 单向跳转后，MainVisual 页面能看见来源上下文，确认 narrativ
 ## 11. 给 Codex 的下一步指令
 
 ```text
-请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前已完成 NarrativeDemo → MainVisual 的 V1 单向跳转，并新增 scripts/narrative_battle_context.gd 记录 encounter_id / source_node_id。下一步请在 MainVisual 当前脚本链路中加最小 context 诊断显示：进入 MainVisual 后，如果 NarrativeBattleContext.has_request()，显示 encounter_id / source_node_id。不要绕过角色选择，不要改战斗规则，不要根据 encounter_id 自动换敌人，不要重构 web_shell.html。
+请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前已完成 NarrativeDemo → MainVisual 的 V1 单向跳转，并通过 scripts/battle_controller_visual_narrative_context.gd wrapper 在 MainVisual 显示 NarrativeBattleContext 诊断。下一步请做 Web 回归验收：从 NarrativeDemo 点击请求战斗，确认 MainVisual 能打开，顶部显示 encounter_id / source_node_id，且原有角色选择入口仍可用。不要绕过角色选择，不要改战斗规则，不要根据 encounter_id 自动换敌人，不要重构 web_shell.html。
 ```
 
 ---
@@ -415,5 +466,5 @@ V1 单向跳转后，MainVisual 页面能看见来源上下文，确认 narrativ
 ## 12. 当前一句话结论
 
 ```text
-剧情 MVP 安全线已完成并通过 P0；真实战斗接入已完成 V1 单向跳转，下一步应在 MainVisual 显示 NarrativeBattleContext 诊断，确认叙事传参链路可见。
+剧情 MVP 安全线已完成并通过 P0；真实战斗接入已完成 V1 单向跳转与 MainVisual 上下文诊断，下一步应 Web 验收传参链路和原有角色选择入口。
 ```
