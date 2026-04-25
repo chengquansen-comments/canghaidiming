@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="1440" viewBox="0 0 960 1440">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#efe0bf"/><stop offset="0.58" stop-color="#c8b994"/><stop offset="1" stop-color="#8f8875"/></linearGradient>
+    <linearGradient id="mist" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2e8cf" stop-opacity="0.15"/><stop offset="1" stop-color="#111719" stop-opacity="0.72"/></linearGradient>
+  </defs>
+  <rect width="960" height="1440" fill="url(#paper)"/>
+  <rect width="960" height="1440" fill="url(#mist)"/>
+  <path d="M0 685 C155 620 285 675 430 620 C590 560 755 620 960 545 L960 1440 L0 1440 Z" fill="#39464a" opacity="0.42"/>
+  <path d="M0 840 C170 770 325 850 500 790 C690 720 800 820 960 765 L960 1440 L0 1440 Z" fill="#15191a" opacity="0.66"/>
+  <path d="M0 1040 C190 970 360 1080 575 1010 C760 950 840 1040 960 1000 L960 1440 L0 1440 Z" fill="#0f1213" opacity="0.78"/>
+  <path d="M100 430 C250 360 380 420 515 370 C660 320 785 380 900 330" stroke="#4b5860" stroke-width="42" opacity="0.13" fill="none"/>
+  <path d="M700 512 L760 1178 L590 1178 Z" fill="#101314" opacity="0.93"/>
+  <path d="M668 620 L535 1180 L602 1180 Z" fill="#16191a" opacity="0.82"/>
+  <path d="M746 625 L880 1182 L795 1182 Z" fill="#141719" opacity="0.86"/>
+  <path d="M720 610 C770 735 800 900 815 1060" stroke="#7e2e28" stroke-width="58" opacity="0.72" fill="none"/>
+  <path d="M702 592 C650 720 650 890 695 1075" stroke="#e6d8b8" stroke-width="20" opacity="0.63" fill="none"/>
+  <path d="M772 520 L836 525 L810 1188 L742 1188 Z" fill="#0b0d0e" opacity="0.96"/>
+  <path d="M804 555 L860 710" stroke="#0b0d0e" stroke-width="18" opacity="0.88"/>
+  <path d="M682 760 L855 710" stroke="#cbbd9a" stroke-width="16" opacity="0.75"/>
+  <path d="M200 238 V678" stroke="#17110f" stroke-width="10" opacity="0.78"/>
+  <text x="184" y="270" font-size="86" fill="#17110f" opacity="0.92" font-family="serif" writing-mode="tb">沧海嘀鸣</text>
+  <rect x="155" y="704" width="78" height="78" fill="#9f2f28" opacity="0.88"/>
+  <text x="174" y="752" font-size="28" fill="#eadbb9" opacity="0.9" font-family="serif">印</text>
+  <path d="M105 1220 C240 1160 365 1220 520 1180 C695 1135 810 1195 930 1155" stroke="#d8c9a5" stroke-width="10" opacity="0.35" fill="none"/>
+</svg>
