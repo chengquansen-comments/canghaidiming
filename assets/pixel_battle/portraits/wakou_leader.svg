@@ -1,10 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360">
-  <rect width="960" height="360" fill="#141619"/>
-  <rect x="350" y="50" width="260" height="280" rx="24" fill="#322424" stroke="#a35f4f" stroke-width="6"/>
-  <circle cx="480" cy="125" r="50" fill="#7d5c49"/>
-  <path d="M425 82 h110 l42 34 h-194 z" fill="#202020"/>
-  <rect x="420" y="180" width="120" height="110" rx="12" fill="#3f2b2b"/>
-  <path d="M575 90 l80 185" stroke="#c8c0aa" stroke-width="10"/>
-  <path d="M655 275 l-28 20 l14 -32 z" fill="#c8c0aa"/>
-  <text x="480" y="342" text-anchor="middle" font-size="32" fill="#e5d0a2" font-family="sans-serif">小股倭寇首领 / Wakou Leader</text>
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eadbb9"/><stop offset="1" stop-color="#9c927c"/></linearGradient>
+  </defs>
+  <rect width="960" height="360" fill="url(#paper)"/>
+  <path d="M0 226 C180 184 320 228 495 198 C660 170 780 210 960 170 L960 360 L0 360 Z" fill="#303b3f" opacity="0.62"/>
+  <path d="M0 292 C170 250 330 305 520 272 C720 235 820 292 960 258 L960 360 L0 360 Z" fill="#151719" opacity="0.72"/>
+  <path d="M140 242 L385 208 L470 250 L190 286 Z" fill="#171413" opacity="0.82"/>
+  <path d="M190 218 L380 196" stroke="#7b5a36" stroke-width="8" opacity="0.78"/>
+  <rect x="226" y="218" width="120" height="45" rx="8" fill="#372819" opacity="0.9"/>
+  <path d="M612 84 L646 282 L554 282 Z" fill="#121313" opacity="0.92"/>
+  <path d="M588 115 L520 282 L560 282 Z" fill="#1a1b1b" opacity="0.82"/>
+  <path d="M645 118 L720 282 L670 282 Z" fill="#1a1b1b" opacity="0.86"/>
+  <path d="M637 120 C664 162 684 210 700 256" stroke="#7e2e28" stroke-width="25" opacity="0.70" fill="none"/>
+  <path d="M681 96 C725 136 743 190 718 245" stroke="#e0d3ae" stroke-width="8" opacity="0.76" fill="none"/>
+  <path d="M548 205 L705 166" stroke="#cfc2a0" stroke-width="9" opacity="0.78"/>
+  <path d="M725 161 L745 169 L724 183" fill="#cfc2a0" opacity="0.78"/>
+  <rect x="690" y="220" width="74" height="18" rx="5" fill="#4f3d2b" opacity="0.9"/>
+  <circle cx="758" cy="229" r="8" fill="#151515" stroke="#b89a64" stroke-width="3"/>
+  <path d="M38 74 C215 40 360 70 530 50 C705 30 810 55 930 38" stroke="#4b5860" stroke-width="18" opacity="0.16" fill="none"/>
+  <text x="770" y="76" font-size="25" fill="#202020" opacity="0.72" font-family="serif">破船首领</text>
+  <text x="54" y="326" font-size="22" fill="#7e2e28" opacity="0.92" font-family="serif">你找错海了</text>
 </svg>
