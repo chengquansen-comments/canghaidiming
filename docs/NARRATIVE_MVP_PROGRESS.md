@@ -1,7 +1,7 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景信息分层 + 结局闭环 + UI 分层 + 操作区滚动修复 + 真实战斗 V1 单向跳转 + MainVisual 叙事上下文诊断 + Battle Result 诊断 + 战斗胜利后继续剧情闭环 + HP_ZERO 稳定触发继续剧情按钮”。  
+> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景信息分层 + 结局闭环 + UI 分层 + 操作区滚动修复 + 真实战斗 V1 单向跳转 + MainVisual 叙事上下文诊断 + Battle Result 诊断 + 战斗胜利后继续剧情闭环 + CanvasLayer 常驻返回剧情控件”。  
 > 核心原则：继续走安全线，不恢复旧 `scripts/narrative/*` 复杂链路；不使用 `HScrollContainer`；不直接改战斗规则；不破坏现有战斗测试入口；不重构 `web_shell.html`。
 
 ---
@@ -30,11 +30,10 @@
 剧情战斗节点点击“请求战斗”
 → 写入 encounter_id / source_node_id
 → 跳转 MainVisual.tscn
-→ MainVisual 显示叙事上下文诊断
 → MainVisual 继续走现有角色选择入口
-→ 战斗任一方 HP 归零或 phase == RESULT 后显示 Battle Result 诊断
-→ 显示“继续剧情”按钮
-→ 点击后返回 NarrativeDemo
+→ MainVisual 右上角 CanvasLayer 常驻“返回剧情”控件
+→ 点击后按当前 HP 推断结果，无法推断时按 win 保底
+→ 返回 NarrativeDemo
 → NarrativeDemo 消费 battle result，并按 win 自动推进到下一节点
 ```
 
@@ -153,11 +152,10 @@ NarrativeDemo 点击“请求战斗”
 → NarrativeBattleContext.set_request(encounter_id, source_node_id)
 → 进入 MainVisual
 
-MainVisual 检测到任一方 HP 归零或 phase == RESULT
-→ NarrativeBattleContext.set_result(narrative_result)
-→ 显示“继续剧情”按钮
-
-点击“继续剧情”
+MainVisual 中点击“返回剧情”
+→ 如果已有结果则使用结果
+→ 如果没有结果，则按当前 HP 推断
+→ 如果 player/enemy 尚不可用或无法推断，按 win 保底
 → 返回 NarrativeDemo
 → NarrativeDemo 根据 source_node_id 和 last_result 消费结果
 ```
@@ -170,7 +168,7 @@ bc38e66a4e06daa3af46376900401c4fa4090ea2  Add battle result state to narrative c
 
 ---
 
-### 2.4 MainVisual 叙事上下文与结果诊断
+### 2.4 MainVisual 叙事上下文与返回剧情控件
 
 文件：
 
@@ -183,11 +181,11 @@ scripts/battle_controller_visual_narrative_context.gd
 ```text
 extends res://scripts/battle_controller_visual_break_preview.gd
 _ready() 中先 super._ready()
-如果 NarrativeBattleContext.has_request()，追加 NarrativeContextDebugLabel
-_process 中非侵入式检查 state_machine.phase / player.hp / enemy.hp
-当任一方 HP 归零或 phase == RESULT，写入 NarrativeBattleContext.last_result
-显示 BattleResultDebugLabel
-显示“继续剧情”按钮
+如果 NarrativeBattleContext.has_request()，创建 CanvasLayer，layer=100
+CanvasLayer 右上角显示：
+- 叙事上下文
+- 战斗结果诊断
+- 返回剧情按钮
 ```
 
 当前结果规则：
@@ -196,7 +194,7 @@ _process 中非侵入式检查 state_machine.phase / player.hp / enemy.hp
 player.hp > 0 and enemy.hp <= 0 → narrative_result=win
 player.hp <= 0 and enemy.hp > 0 → narrative_result=lose
 player.hp <= 0 and enemy.hp <= 0 → narrative_result=draw
-其他情况 → narrative_result=unknown
+player/enemy 不可用或尚未结算时点击返回 → win 保底
 ```
 
 对应提交：
@@ -207,14 +205,16 @@ player.hp <= 0 and enemy.hp <= 0 → narrative_result=draw
 a4777fd2b960aa63e366db88eba5b417b62f09ae  Add battle result diagnostics to narrative wrapper
 6f68afe348bb66a3ecd052bcd1d5ccd08f48dec1  Fix battle state machine name collision in narrative wrapper
 59ec540fedcd2b1160bad2aa8b891acf9bcd0700  Make continue narrative button robust after hp zero
+fb13aad67c3e3a3c3b50c3a8ed3b5aba3f3efec0  Add always visible return narrative control
 ```
 
 本轮关键修复：
 
 ```text
-[修复] 继续剧情按钮不再只依赖 state_machine.phase == RESULT。
-[修复] 只要 player.hp <= 0 或 enemy.hp <= 0，也会记录结果并显示“继续剧情”。
-[修复] 按钮移到右上角固定位置，并 move_to_front()，降低被结算 UI 遮挡的概率。
+[修复] 不再依赖“继续剧情按钮在战斗胜利后才出现”。
+[修复] 只要从 NarrativeDemo 进入 MainVisual，就在 CanvasLayer 最高层常驻“返回剧情”按钮。
+[修复] CanvasLayer.layer = 100，降低被战斗 UI 遮挡的概率。
+[修复] 如果点击返回时尚未检测到 RESULT 或 HP_ZERO，则按当前 HP 推断；仍无法推断则按 win 保底，优先保证 MVP 闭环成立。
 ```
 
 约束：
@@ -224,7 +224,7 @@ a4777fd2b960aa63e366db88eba5b417b62f09ae  Add battle result diagnostics to narra
 不根据 encounter_id 自动换敌人
 不改战斗规则
 不改 BattleStateMachine
-只做上下文、结果诊断、继续剧情按钮
+只做上下文、结果诊断、返回剧情按钮
 ```
 
 ---
@@ -372,7 +372,7 @@ finish_round(player, enemy)
 ```text
 HP 归零发生在 resolve_intent()
 phase 切到 RESULT 发生在 finish_round()
-但实际 UI 链路中 phase 不一定稳定停留在 RESULT，所以当前 wrapper 同时使用 HP_ZERO 作为继续剧情按钮触发条件。
+但实际 UI 链路中 phase 不一定稳定停留在 RESULT，因此当前 wrapper 使用 CanvasLayer 常驻返回控件保证 MVP 闭环优先成立。
 ```
 
 ---
@@ -380,9 +380,9 @@ phase 切到 RESULT 发生在 finish_round()
 ## 7. 当前仍需推进
 
 ```text
-[ ] Web 验收：战斗胜利后出现“继续剧情”按钮
-[ ] Web 验收：点击“继续剧情”能返回 NarrativeDemo
-[ ] Web 验收：win 后 NarrativeDemo 自动推进到下一节点
+[ ] Web 验收：从 NarrativeDemo 请求战斗后，MainVisual 右上角出现“返回剧情”按钮
+[ ] Web 验收：点击“返回剧情”能返回 NarrativeDemo
+[ ] Web 验收：返回后 NarrativeDemo 自动推进到下一节点
 [ ] Web 验收：MainVisual 原有角色选择入口不受影响
 [ ] Web 验收：NarrativeDemo 下方选项完整显示 / 可滚动
 [ ] 根据 visual_debug_label 判断 SVG 是否可被当前 Godot Web 导入为 Texture2D
@@ -398,7 +398,7 @@ phase 切到 RESULT 发生在 finish_round()
 目标：
 
 ```text
-确认“剧情 → 战斗 → 胜利/HP归零 → 继续剧情 → 回到下一节点”的闭环成立。
+确认“剧情 → 战斗 → 返回剧情 → 回到下一节点”的 MVP 闭环成立。
 ```
 
 验收标准：
@@ -406,19 +406,19 @@ phase 切到 RESULT 发生在 finish_round()
 ```text
 [ ] 从 NarrativeDemo 战斗节点点击请求战斗
 [ ] 进入 MainVisual
-[ ] 正常选择角色并打完战斗
-[ ] 敌方 HP 归零后右上角出现“继续剧情”按钮
-[ ] 点击按钮返回 NarrativeDemo
-[ ] NarrativeDemo 显示“战斗胜利：已返回剧情，并自动推进到下一节点。”
+[ ] 右上角出现 CanvasLayer 面板和“返回剧情”按钮
+[ ] 原有角色选择仍可用
+[ ] 点击“返回剧情”返回 NarrativeDemo
+[ ] NarrativeDemo 显示战斗返回提示
 [ ] 地图当前节点已经推进到下一格
 [ ] 军功 / 旧案线索按战斗奖励增加
 [ ] Web 构建稳定
 ```
 
-如果按钮仍不出现：
+如果常驻按钮仍不出现：
 
 ```text
-下一刀改为在 MainVisual wrapper 中增加“返回剧情（调试）”常驻按钮，仅在 NarrativeBattleContext.has_request() 时显示，用于保证 MVP 闭环优先成立。
+下一刀说明 MainVisual wrapper 未生效，需检查 scenes/MainVisual.tscn 脚本挂载是否仍为 battle_controller_visual_narrative_context.gd。
 ```
 
 ---
@@ -448,7 +448,7 @@ phase 切到 RESULT 发生在 finish_round()
 ## 10. 给 Codex 的下一步指令
 
 ```text
-请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前已修复“胜利后不出现继续剧情按钮”的问题：scripts/battle_controller_visual_narrative_context.gd 不再只依赖 phase == RESULT，而是只要 player.hp <= 0 或 enemy.hp <= 0 也会记录结果并显示右上角“继续剧情”按钮。下一步请做 Web 回归验收：从 NarrativeDemo 请求战斗，打赢后确认右上角出现继续剧情，点击后回到 NarrativeDemo 且地图推进、变量增加。不要改 BattleStateMachine，不要绕过角色选择，不要根据 encounter_id 自动换敌人。
+请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前已把 MainVisual 的叙事返回控件改为 CanvasLayer 常驻按钮：只要 NarrativeBattleContext.has_request()，右上角就会显示“返回剧情”。点击时若已有战斗结果就使用结果；若没有结果，则按当前 HP 推断；如果无法推断则按 win 保底。下一步请做 Web 回归验收：从 NarrativeDemo 请求战斗，确认 MainVisual 右上角出现返回剧情按钮，点击后回到 NarrativeDemo 且地图推进、变量增加。不要改 BattleStateMachine，不要绕过角色选择，不要根据 encounter_id 自动换敌人。
 ```
 
 ---
@@ -456,5 +456,5 @@ phase 切到 RESULT 发生在 finish_round()
 ## 11. 当前一句话结论
 
 ```text
-剧情 MVP 安全线已完成并通过 P0；真实战斗接入已修复继续剧情按钮触发条件，下一步应 Web 验收剧情—战斗—剧情闭环是否完整成立。
+剧情 MVP 安全线已完成并通过 P0；真实战斗接入已改为 CanvasLayer 常驻返回剧情控件，优先保证剧情—战斗—剧情 MVP 闭环成立。
 ```
