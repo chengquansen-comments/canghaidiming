@@ -4,6 +4,7 @@ class_name NarrativeDemoController
 const NarrativeStateScript := preload("res://scripts/narrative/narrative_state.gd")
 const NarrativeFontHelper := preload("res://scripts/narrative/narrative_font_helper.gd")
 const NarrativeCombatBridgeScript := preload("res://scripts/narrative/narrative_combat_bridge.gd")
+const NarrativeStaticMapLayoutScript := preload("res://scripts/narrative/narrative_static_map_layout.gd")
 const PROLOGUE_BACKGROUND_HINTS := {
 	"p01_tide": "res://assets/pixel_battle/backgrounds/prologue_burning_village.png",
 	"p04_blade": "res://assets/pixel_battle/backgrounds/prologue_burning_village.png",
@@ -36,6 +37,7 @@ const SPEAKER_PORTRAIT_HINTS := {
 
 var narrative: NarrativeState
 var combat_bridge: NarrativeCombatBridge
+var map_layout: NarrativeStaticMapLayout
 var root_panel: PanelContainer
 var title_label: Label
 var type_label: Label
@@ -110,13 +112,13 @@ func _build_ui() -> void:
 	layout.add_child(route_label)
 
 	var map_scroll := HScrollContainer.new()
-	map_scroll.custom_minimum_size = Vector2(0, 88)
+	map_scroll.custom_minimum_size = Vector2(0, 142)
 	map_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	map_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	layout.add_child(map_scroll)
 
 	map_box = HBoxContainer.new()
-	map_box.add_theme_constant_override("separation", 8)
+	map_box.add_theme_constant_override("separation", 10)
 	map_scroll.add_child(map_box)
 
 	visual_row = HBoxContainer.new()
@@ -171,7 +173,7 @@ func _build_ui() -> void:
 	body_label.fit_content = false
 	body_label.scroll_active = true
 	body_label.bbcode_enabled = true
-	body_label.custom_minimum_size = Vector2(0, 160)
+	body_label.custom_minimum_size = Vector2(0, 118)
 	body_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	body_label.add_theme_font_size_override("normal_font_size", 22)
 	layout.add_child(body_label)
@@ -247,6 +249,8 @@ func _build_ui() -> void:
 func _start_narrative() -> void:
 	narrative = NarrativeStateScript.new()
 	combat_bridge = NarrativeCombatBridgeScript.new()
+	map_layout = NarrativeStaticMapLayoutScript.new()
+	map_layout.load_from_path()
 	var ok := narrative.load_from_path()
 	showing_prologue = true
 	waiting_result = false
@@ -489,6 +493,114 @@ func _render_map_strip() -> void:
 	_clear_map()
 	if narrative == null or map_box == null:
 		return
+	if map_layout != null and map_layout.is_loaded():
+		_render_static_branch_map()
+		return
+	_render_fallback_route_strip()
+
+func _render_static_branch_map() -> void:
+	var columns: Array = map_layout.columns()
+	if columns.is_empty():
+		_render_fallback_route_strip()
+		return
+	for column_value in columns:
+		if typeof(column_value) != TYPE_DICTIONARY:
+			continue
+		var column: Dictionary = column_value
+		map_box.add_child(_build_map_column(column))
+
+func _build_map_column(column: Dictionary) -> Control:
+	var panel := PanelContainer.new()
+	panel.custom_minimum_size = Vector2(176, 126)
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("17202b")
+	style.border_color = Color("344354")
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(12)
+	panel.add_theme_stylebox_override("panel", style)
+
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 8)
+	margin.add_theme_constant_override("margin_top", 6)
+	margin.add_theme_constant_override("margin_right", 8)
+	margin.add_theme_constant_override("margin_bottom", 6)
+	panel.add_child(margin)
+
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", 4)
+	margin.add_child(box)
+
+	var title := Label.new()
+	title.text = str(column.get("title", column.get("column_id", "")))
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 13)
+	title.modulate = Color(0.86, 0.80, 0.64, 1.0)
+	box.add_child(title)
+
+	var nodes: Array = column.get("nodes", [])
+	for node_value in nodes:
+		if typeof(node_value) != TYPE_DICTIONARY:
+			continue
+		var node_entry: Dictionary = node_value
+		box.add_child(_build_static_map_node_card(node_entry))
+	return panel
+
+func _build_static_map_node_card(node_entry: Dictionary) -> Control:
+	var node_id := str(node_entry.get("node_id", ""))
+	var node := narrative.node_by_id(node_id)
+	var node_type := str(node.get("type", ""))
+	var is_current := node_id == narrative.current_node_id and narrative.current_ending_id.is_empty() and not showing_prologue
+	var is_visited := narrative.visited_node_ids.has(node_id) and not showing_prologue
+	var is_available := _is_static_map_node_available(node_id)
+
+	var card := PanelContainer.new()
+	card.custom_minimum_size = Vector2(156, 30)
+	var style := StyleBoxFlat.new()
+	style.set_corner_radius_all(8)
+	style.set_border_width_all(1)
+	style.bg_color = Color("202936")
+	style.border_color = Color("536171")
+	if is_available:
+		style.bg_color = Color("203240")
+		style.border_color = Color("6f8899")
+	if is_visited:
+		style.bg_color = Color("263548")
+		style.border_color = Color("7d8fa6")
+	if is_current:
+		style.bg_color = Color("3a2c18")
+		style.border_color = Color("d8b26e")
+	card.add_theme_stylebox_override("panel", style)
+
+	var label := Label.new()
+	label.text = "%s %s %s" % [_static_map_marker(is_current, is_visited, is_available), _node_type_icon(node_type), str(node.get("title", node_id))]
+	label.add_theme_font_size_override("font_size", 12)
+	label.clip_text = true
+	card.add_child(label)
+	return card
+
+func _is_static_map_node_available(node_id: String) -> bool:
+	if showing_prologue or narrative == null or map_layout == null:
+		return false
+	if node_id == narrative.current_node_id or narrative.visited_node_ids.has(node_id):
+		return true
+	var previous := map_layout.previous_nodes(node_id)
+	if previous.is_empty():
+		return node_id == narrative.current_node_id
+	for prev_id in previous:
+		if narrative.visited_node_ids.has(prev_id):
+			return true
+	return false
+
+func _static_map_marker(is_current: bool, is_visited: bool, is_available: bool) -> String:
+	if is_current:
+		return "▶"
+	if is_visited:
+		return "●"
+	if is_available:
+		return "◎"
+	return "○"
+
+func _render_fallback_route_strip() -> void:
 	var route := narrative.map_route()
 	if route.is_empty():
 		var empty_label := Label.new()
