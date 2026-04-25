@@ -5,6 +5,12 @@ const ROLE_MOMENTUM := "momentum"
 const ROLE_DAMAGE := "damage"
 const ROLE_GUARD := "guard"
 
+const MOVE_NONE := "none"
+const MOVE_ON_HIT := "on_hit"
+const MOVE_ALWAYS := "always"
+const MOVE_ON_BREAK := "on_break"
+const MOVE_ON_GRAZE := "on_graze"
+
 var id: String
 var display_name: String
 var description: String
@@ -19,6 +25,10 @@ var guard: int
 var tags: PackedStringArray
 var weapon_style: String
 var requires_facing: bool
+var self_move_after: int
+var target_push_after: int
+var target_pull_after: int
+var move_condition: String
 
 
 func _init(
@@ -35,7 +45,11 @@ func _init(
 	p_guard: int = 0,
 	p_tags: PackedStringArray = PackedStringArray(),
 	p_weapon_style: String = "",
-	p_requires_facing: bool = true
+	p_requires_facing: bool = true,
+	p_self_move_after: int = 0,
+	p_target_push_after: int = 0,
+	p_target_pull_after: int = 0,
+	p_move_condition: String = MOVE_NONE
 ) -> void:
 	id = p_id
 	display_name = p_display_name
@@ -51,6 +65,10 @@ func _init(
 	tags = p_tags.duplicate()
 	weapon_style = p_weapon_style
 	requires_facing = p_requires_facing
+	self_move_after = clampi(p_self_move_after, -1, 1)
+	target_push_after = clampi(p_target_push_after, 0, 1)
+	target_pull_after = clampi(p_target_pull_after, 0, 1)
+	move_condition = _normalize_move_condition(p_move_condition)
 
 
 func duplicate_card() -> CardData:
@@ -68,8 +86,20 @@ func duplicate_card() -> CardData:
 		guard,
 		tags,
 		weapon_style,
-		requires_facing
+		requires_facing,
+		self_move_after,
+		target_push_after,
+		target_pull_after,
+		move_condition
 	)
+
+
+func _normalize_move_condition(value: String) -> String:
+	match value:
+		MOVE_ON_HIT, MOVE_ALWAYS, MOVE_ON_BREAK, MOVE_ON_GRAZE:
+			return value
+		_:
+			return MOVE_NONE
 
 
 func has_tag(tag: String) -> bool:
@@ -109,6 +139,21 @@ func type_label() -> String:
 			return "伤害牌"
 
 
+func movement_summary_parts() -> Array[String]:
+	var parts: Array[String] = []
+	if target_push_after > 0:
+		parts.append("击退%d" % target_push_after)
+	if target_pull_after > 0:
+		parts.append("拉近%d" % target_pull_after)
+	if self_move_after > 0:
+		parts.append("进身%d" % self_move_after)
+	elif self_move_after < 0:
+		parts.append("后撤%d" % absi(self_move_after))
+	if move_condition != MOVE_NONE and not parts.is_empty():
+		parts.append("条件%s" % move_condition)
+	return parts
+
+
 func short_summary() -> String:
 	var parts: Array[String] = []
 	parts.append(type_label())
@@ -126,4 +171,7 @@ func short_summary() -> String:
 		parts.append("标签 %s" % " / ".join(tags))
 	if weapon_style != "":
 		parts.append("式 %s" % weapon_style)
+	var move_parts := movement_summary_parts()
+	if not move_parts.is_empty():
+		parts.append("位移 %s" % " / ".join(move_parts))
 	return "%s｜%s" % [display_name, "｜".join(parts)]
