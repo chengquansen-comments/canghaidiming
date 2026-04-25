@@ -4,6 +4,10 @@ const BattleFontHelper := preload("res://scripts/visual/battle_font_view.gd")
 const NarrativeBattleContext := preload("res://scripts/narrative_battle_context.gd")
 const MAIN_VISUAL_SCENE := "res://scenes/MainVisual.tscn"
 const MAP_COLUMNS := ["军令", "初遇", "疑点", "压迫", "破船", "军门"]
+const PROLOGUE_MASTER_RESCUE_STEP := 6
+const PROLOGUE_AFTER_MASTER_BATTLE_STEP := 8
+const PROLOGUE_MASTER_ENCOUNTER_ID := "enc_prologue_master_rescue"
+const PROLOGUE_MASTER_SOURCE_ID := "prologue_master_rescue"
 
 var title_label: Label
 var status_label: Label
@@ -63,6 +67,16 @@ func _consume_battle_result_if_needed() -> void:
 		return
 	var source_id := NarrativeBattleContext.source_node_id
 	var result := NarrativeBattleContext.last_result
+	if source_id == PROLOGUE_MASTER_SOURCE_ID:
+		in_prologue = true
+		step_index = PROLOGUE_AFTER_MASTER_BATTLE_STEP
+		if result == "win":
+			clues += 1
+			last_hint = "序章战斗胜利：师父斩敌，敌人临死吐出旧案线索。"
+		else:
+			last_hint = "序章战斗返回：当前 Demo 按师父救场继续推进。"
+		NarrativeBattleContext.clear()
+		return
 	for i in range(NODES.size()):
 		var node: Dictionary = NODES[i]
 		if str(node.get("id", "")) == source_id:
@@ -224,9 +238,15 @@ func _render_prologue() -> void:
 	scene_label.text = _format_scene_text(_prologue_scene_hint())
 	_render_visual("", _prologue_visual_hint())
 	body_label.text = PROLOGUE[step_index]
+	if not last_hint.is_empty():
+		body_label.text += "\n\n[i]%s[/i]" % last_hint
 	vars_label.text = _vars_text()
 	_add_placeholder(map_buttons_box, "序章阶段尚未开放行军图。")
-	_add_placeholder(combat_buttons_box, "序章阶段暂不接入战斗跳转。")
+	if step_index == PROLOGUE_MASTER_RESCUE_STEP:
+		_add_button(combat_buttons_box, "请求序章战斗：师父救场", _on_request_prologue_master_battle)
+		_add_button(combat_buttons_box, "跳过战斗继续序章", _on_skip_prologue_master_battle)
+	else:
+		_add_placeholder(combat_buttons_box, "序章当前段落无战斗跳转。")
 	_add_button(choices_box, "继续", _on_continue_prologue)
 
 func _render_node() -> void:
@@ -386,6 +406,18 @@ func _on_continue_prologue() -> void:
 		in_prologue = false
 		node_index = 0
 		last_hint = ""
+	_render()
+
+func _on_request_prologue_master_battle() -> void:
+	NarrativeBattleContext.set_request(PROLOGUE_MASTER_ENCOUNTER_ID, PROLOGUE_MASTER_SOURCE_ID)
+	body_label.text = PROLOGUE[step_index] + "\n\n[b]序章战斗跳转[/b]\n师父救场战：玩家操控师父，用强力牌击败袭村刀手。\n%s\n即将进入 MainVisual。" % NarrativeBattleContext.debug_text()
+	BattleFontHelper.enforce(self)
+	call_deferred("_change_to_main_visual")
+
+func _on_skip_prologue_master_battle() -> void:
+	step_index = PROLOGUE_AFTER_MASTER_BATTLE_STEP
+	clues += 1
+	last_hint = "已跳过师父救场战，按胜利继续序章。"
 	_render()
 
 func _on_request_battle() -> void:
