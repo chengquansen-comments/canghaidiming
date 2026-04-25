@@ -16,9 +16,43 @@ const RESPONSIVE_DETAIL_LABEL_HEIGHT := 94.0
 const BUBBLE_GAP_Y := 12.0
 const BUBBLE_SAFE_MARGIN_X := 24.0
 
+var _last_resolved_position_signature := ""
+
 func _process(delta: float) -> void:
 	super(delta)
+	_refresh_positions_immediately_after_movement()
 	_bind_intent_bubbles_to_actor_sprites()
+
+func _resolved_position_signature() -> String:
+	if player == null or enemy == null:
+		return "no-session"
+	return "%d|%s|%d|%s|%d" % [
+		player.position,
+		player.facing,
+		enemy.position,
+		enemy.facing,
+		state_machine.current_distance if state_machine != null else -1
+	]
+
+func _refresh_positions_immediately_after_movement() -> void:
+	if player == null or enemy == null or not battle_active:
+		_last_resolved_position_signature = _resolved_position_signature()
+		return
+	var signature := _resolved_position_signature()
+	if signature == _last_resolved_position_signature:
+		return
+	_last_resolved_position_signature = signature
+	# Movement can happen inside BattleStateMachine.resolve_intent, outside the normal
+	# card-selection refresh path. Clear visual caches and force the stage to redraw
+	# on the same frame so push/pull/self-move effects are visible immediately.
+	_stage_grid_signature = ""
+	_stage_actor_signature = ""
+	_player_intent_bubble_signature = ""
+	_enemy_intent_bubble_signature = ""
+	_refresh_stage_grid(true)
+	_refresh_stage_actor_positions(true)
+	_refresh_intent_bubbles(true)
+	_refresh_effect_preview_panel()
 
 func _build_catalog() -> void:
 	# v0.3.2: override the parent prototype catalog with movement-aware spear/blade cards.
