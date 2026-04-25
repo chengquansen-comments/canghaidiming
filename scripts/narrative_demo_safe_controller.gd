@@ -2,8 +2,8 @@ extends Control
 
 const BattleFontHelper := preload("res://scripts/visual/battle_font_view.gd")
 const NarrativeBattleContext := preload("res://scripts/narrative_battle_context.gd")
-const MAP_COLUMNS := ["军令", "初遇", "疑点", "压迫", "破船", "军门"]
 const MAIN_VISUAL_SCENE := "res://scenes/MainVisual.tscn"
+const MAP_COLUMNS := ["军令", "初遇", "疑点", "压迫", "破船", "军门"]
 
 var title_label: Label
 var status_label: Label
@@ -14,9 +14,12 @@ var visual_label: Label
 var visual_debug_label: Label
 var body_label: RichTextLabel
 var vars_label: Label
+var action_scroll: ScrollContainer
+var action_content: VBoxContainer
 var map_buttons_box: VBoxContainer
 var combat_buttons_box: VBoxContainer
 var choices_box: VBoxContainer
+
 var step_index := 0
 var node_index := 0
 var jun_gong := 0
@@ -56,47 +59,51 @@ func _ready() -> void:
 
 func _build_ui() -> void:
 	var root := PanelContainer.new()
-	root.anchor_left = 0.04
-	root.anchor_top = 0.04
-	root.anchor_right = 0.96
-	root.anchor_bottom = 0.96
+	root.anchor_left = 0.035
+	root.anchor_top = 0.03
+	root.anchor_right = 0.965
+	root.anchor_bottom = 0.97
 	add_child(root)
 
 	var margin := MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 28)
-	margin.add_theme_constant_override("margin_top", 24)
-	margin.add_theme_constant_override("margin_right", 28)
-	margin.add_theme_constant_override("margin_bottom", 24)
+	margin.add_theme_constant_override("margin_left", 24)
+	margin.add_theme_constant_override("margin_top", 18)
+	margin.add_theme_constant_override("margin_right", 24)
+	margin.add_theme_constant_override("margin_bottom", 18)
 	root.add_child(margin)
 
 	var layout := VBoxContainer.new()
-	layout.add_theme_constant_override("separation", 8)
+	layout.add_theme_constant_override("separation", 6)
+	layout.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	margin.add_child(layout)
 
 	title_label = Label.new()
-	title_label.add_theme_font_size_override("font_size", 30)
+	title_label.add_theme_font_size_override("font_size", 28)
 	layout.add_child(title_label)
+
 	status_label = Label.new()
-	status_label.add_theme_font_size_override("font_size", 18)
+	status_label.add_theme_font_size_override("font_size", 17)
 	layout.add_child(status_label)
+
 	map_label = Label.new()
-	map_label.add_theme_font_size_override("font_size", 16)
+	map_label.add_theme_font_size_override("font_size", 15)
 	map_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	map_label.custom_minimum_size = Vector2(0, 86)
+	map_label.custom_minimum_size = Vector2(0, 72)
 	layout.add_child(map_label)
+
 	scene_label = Label.new()
-	scene_label.add_theme_font_size_override("font_size", 16)
+	scene_label.add_theme_font_size_override("font_size", 15)
 	scene_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	scene_label.custom_minimum_size = Vector2(0, 62)
+	scene_label.custom_minimum_size = Vector2(0, 50)
 	layout.add_child(scene_label)
 
 	var visual_frame := PanelContainer.new()
-	visual_frame.custom_minimum_size = Vector2(0, 104)
+	visual_frame.custom_minimum_size = Vector2(0, 82)
 	layout.add_child(visual_frame)
 	var visual_center := CenterContainer.new()
 	visual_frame.add_child(visual_center)
 	visual_texture = TextureRect.new()
-	visual_texture.custom_minimum_size = Vector2(520, 96)
+	visual_texture.custom_minimum_size = Vector2(480, 74)
 	visual_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	visual_texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	visual_center.add_child(visual_texture)
@@ -104,26 +111,40 @@ func _build_ui() -> void:
 	visual_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	visual_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	visual_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	visual_label.custom_minimum_size = Vector2(520, 0)
+	visual_label.custom_minimum_size = Vector2(480, 0)
 	visual_center.add_child(visual_label)
+
 	visual_debug_label = Label.new()
 	visual_debug_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	visual_debug_label.add_theme_font_size_override("font_size", 12)
+	visual_debug_label.add_theme_font_size_override("font_size", 11)
 	visual_debug_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	layout.add_child(visual_debug_label)
 
 	body_label = RichTextLabel.new()
 	body_label.bbcode_enabled = true
-	body_label.custom_minimum_size = Vector2(0, 150)
+	body_label.custom_minimum_size = Vector2(0, 112)
 	body_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	body_label.add_theme_font_size_override("normal_font_size", 24)
+	body_label.add_theme_font_size_override("normal_font_size", 22)
 	layout.add_child(body_label)
+
 	vars_label = Label.new()
-	vars_label.add_theme_font_size_override("font_size", 18)
+	vars_label.add_theme_font_size_override("font_size", 17)
 	layout.add_child(vars_label)
-	map_buttons_box = _build_section_box(layout, "行军图操作")
-	combat_buttons_box = _build_section_box(layout, "战斗桥接")
-	choices_box = _build_section_box(layout, "叙事选择")
+
+	action_scroll = ScrollContainer.new()
+	action_scroll.custom_minimum_size = Vector2(0, 250)
+	action_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	action_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	layout.add_child(action_scroll)
+
+	action_content = VBoxContainer.new()
+	action_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	action_content.add_theme_constant_override("separation", 6)
+	action_scroll.add_child(action_content)
+
+	map_buttons_box = _build_section_box(action_content, "行军图操作")
+	combat_buttons_box = _build_section_box(action_content, "战斗桥接")
+	choices_box = _build_section_box(action_content, "叙事选择")
 
 func _build_section_box(parent: VBoxContainer, title: String) -> VBoxContainer:
 	var label := Label.new()
@@ -131,6 +152,7 @@ func _build_section_box(parent: VBoxContainer, title: String) -> VBoxContainer:
 	label.add_theme_font_size_override("font_size", 15)
 	parent.add_child(label)
 	var box := VBoxContainer.new()
+	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	box.add_theme_constant_override("separation", 6)
 	parent.add_child(box)
 	return box
@@ -145,39 +167,49 @@ func _clear_dynamic_boxes() -> void:
 	_clear_box(map_buttons_box)
 	_clear_box(combat_buttons_box)
 	_clear_box(choices_box)
+	if action_scroll != null:
+		action_scroll.scroll_vertical = 0
 
 func _render() -> void:
 	_clear_dynamic_boxes()
 	if in_prologue:
-		title_label.text = "《大明之沧海嘀鸣》剧情 MVP"
-		status_label.text = "序章 %d/%d" % [step_index + 1, PROLOGUE.size()]
-		map_label.text = "尚未进入行军图"
-		scene_label.text = _format_scene_text(_prologue_scene_hint())
-		_render_visual("", _prologue_visual_hint())
-		body_label.text = PROLOGUE[step_index]
-		vars_label.text = _vars_text()
-		_add_button(choices_box, "继续", _on_continue_prologue)
+		_render_prologue()
 	else:
-		var node: Dictionary = NODES[node_index]
-		title_label.text = str(node.get("title", ""))
-		status_label.text = "当前：%s / %s / %s" % [str(node.get("column", "")), str(node.get("type", "")), str(node.get("id", ""))]
-		map_label.text = _map_text()
-		scene_label.text = _format_scene_text(str(node.get("scene", "")))
-		_render_visual(str(node.get("visual_path", "")), str(node.get("scene", "")))
-		body_label.text = _node_body(node)
-		if not last_hint.is_empty():
-			body_label.text += "\n\n[i]%s[/i]" % last_hint
-		vars_label.text = _vars_text()
-		_add_safe_map_buttons()
-		if _is_combat_node(node):
-			_add_button(combat_buttons_box, "请求战斗：%s" % str(node.get("combat", "")), _on_request_battle)
-			_add_button(combat_buttons_box, "视为胜利继续", _on_mock_battle_win)
-		else:
-			_add_placeholder(combat_buttons_box, "当前节点无战斗。")
-		var choices: Array = node.get("choices", [])
-		for i in range(choices.size()):
-			_add_choice_button(choices[i], i)
+		_render_node()
 	BattleFontHelper.enforce(self)
+
+func _render_prologue() -> void:
+	title_label.text = "《大明之沧海嘀鸣》剧情 MVP"
+	status_label.text = "序章 %d/%d" % [step_index + 1, PROLOGUE.size()]
+	map_label.text = "尚未进入行军图"
+	scene_label.text = _format_scene_text(_prologue_scene_hint())
+	_render_visual("", _prologue_visual_hint())
+	body_label.text = PROLOGUE[step_index]
+	vars_label.text = _vars_text()
+	_add_placeholder(map_buttons_box, "序章阶段尚未开放行军图。")
+	_add_placeholder(combat_buttons_box, "序章阶段暂不接入战斗跳转。")
+	_add_button(choices_box, "继续", _on_continue_prologue)
+
+func _render_node() -> void:
+	var node: Dictionary = NODES[node_index]
+	title_label.text = str(node.get("title", ""))
+	status_label.text = "当前：%s / %s / %s" % [str(node.get("column", "")), str(node.get("type", "")), str(node.get("id", ""))]
+	map_label.text = _map_text()
+	scene_label.text = _format_scene_text(str(node.get("scene", "")))
+	_render_visual(str(node.get("visual_path", "")), str(node.get("scene", "")))
+	body_label.text = _node_body(node)
+	if not last_hint.is_empty():
+		body_label.text += "\n\n[i]%s[/i]" % last_hint
+	vars_label.text = _vars_text()
+	_add_safe_map_buttons()
+	if _is_combat_node(node):
+		_add_button(combat_buttons_box, "请求战斗：%s" % str(node.get("combat", "")), _on_request_battle)
+		_add_button(combat_buttons_box, "视为胜利继续", _on_mock_battle_win)
+	else:
+		_add_placeholder(combat_buttons_box, "当前节点无战斗。")
+	var choices: Array = node.get("choices", [])
+	for i in range(choices.size()):
+		_add_choice_button(choices[i], i)
 
 func _format_scene_text(raw_text: String) -> String:
 	var normalized := raw_text.replace("；", "。")
@@ -247,20 +279,23 @@ func _add_safe_map_buttons() -> void:
 func _add_button(parent: VBoxContainer, text: String, callback: Callable) -> void:
 	var btn := Button.new()
 	btn.text = text
-	btn.custom_minimum_size = Vector2(0, 44)
+	btn.custom_minimum_size = Vector2(0, 42)
+	btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	btn.pressed.connect(callback)
 	parent.add_child(btn)
 
 func _add_placeholder(parent: VBoxContainer, text: String) -> void:
 	var label := Label.new()
 	label.text = text
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.add_theme_font_size_override("font_size", 14)
 	parent.add_child(label)
 
 func _add_choice_button(choice: Dictionary, index: int) -> void:
 	var btn := Button.new()
 	btn.text = "%s（军功 %+d / 清望 %+d / 旧案 %+d）" % [str(choice.get("text", "")), int(choice.get("dg", 0)), int(choice.get("dq", 0)), int(choice.get("dc", 0))]
-	btn.custom_minimum_size = Vector2(0, 44)
+	btn.custom_minimum_size = Vector2(0, 42)
+	btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	btn.pressed.connect(_on_choice.bind(index))
 	choices_box.add_child(btn)
 
@@ -351,6 +386,8 @@ func _render_ending() -> void:
 	body_label.text = "军功 %d / 清望 %d / 旧案线索 %d\n\n案卷缺页，潮声仍在。" % [jun_gong, qing_wang, clues]
 	vars_label.text = _vars_text()
 	_clear_dynamic_boxes()
+	_add_placeholder(map_buttons_box, "单局已结束。")
+	_add_placeholder(combat_buttons_box, "结局阶段无战斗。")
 	_add_button(choices_box, "重开叙事", _restart)
 	BattleFontHelper.enforce(self)
 
