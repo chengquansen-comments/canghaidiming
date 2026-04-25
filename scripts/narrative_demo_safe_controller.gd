@@ -1,7 +1,9 @@
 extends Control
 
 const BattleFontHelper := preload("res://scripts/visual/battle_font_view.gd")
+const NarrativeBattleContext := preload("res://scripts/narrative_battle_context.gd")
 const MAP_COLUMNS := ["军令", "初遇", "疑点", "压迫", "破船", "军门"]
+const MAIN_VISUAL_SCENE := "res://scenes/MainVisual.tscn"
 
 var title_label: Label
 var status_label: Label
@@ -314,8 +316,15 @@ func _on_continue_prologue() -> void:
 
 func _on_request_battle() -> void:
 	var node: Dictionary = NODES[node_index]
-	body_label.text = _node_body(node) + "\n\n[b]战斗桥接占位[/b]\nnode_id=%s｜encounter_id=%s｜状态=已请求" % [str(node.get("id", "")), str(node.get("combat", ""))]
+	var encounter_id := str(node.get("combat", ""))
+	var source_node_id := str(node.get("id", ""))
+	NarrativeBattleContext.set_request(encounter_id, source_node_id)
+	body_label.text = _node_body(node) + "\n\n[b]战斗跳转[/b]\n%s\n即将进入 MainVisual。V1 只做单向跳转，暂不处理战斗结束返回。" % NarrativeBattleContext.debug_text()
 	BattleFontHelper.enforce(self)
+	call_deferred("_change_to_main_visual")
+
+func _change_to_main_visual() -> void:
+	get_tree().change_scene_to_file(MAIN_VISUAL_SCENE)
 
 func _on_mock_battle_win() -> void:
 	var node: Dictionary = NODES[node_index]
@@ -353,6 +362,7 @@ func _restart() -> void:
 	clues = 0
 	in_prologue = true
 	last_hint = ""
+	NarrativeBattleContext.clear()
 	_render()
 
 func _map_text() -> String:
@@ -378,7 +388,7 @@ func _map_marker_for_index(index: int) -> String:
 func _node_body(node: Dictionary) -> String:
 	var body := "[b]%s[/b]\n%s" % [str(node.get("type", "")), str(node.get("text", ""))]
 	if _is_combat_node(node):
-		body += "\n\n[b]战斗桥接占位[/b]\nnode_id=%s｜encounter_id=%s｜状态=未请求" % [str(node.get("id", "")), str(node.get("combat", ""))]
+		body += "\n\n[b]战斗桥接[/b]\nnode_id=%s｜encounter_id=%s｜状态=可请求" % [str(node.get("id", "")), str(node.get("combat", ""))]
 	return body
 
 func _is_combat_node(node: Dictionary) -> bool:
