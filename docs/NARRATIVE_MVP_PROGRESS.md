@@ -1,7 +1,7 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景信息分层 + 结局闭环 + UI 分层 + 操作区滚动修复 + 真实战斗 V1 单向跳转 + MainVisual 叙事上下文诊断 + Battle Result 诊断 + 战斗胜利后继续剧情闭环 + CanvasLayer 无条件返回剧情控件 + Engine metadata 上下文持久化兜底 + encounter_id 接战映射诊断”；返回剧情闭环已验收通过。  
+> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景信息分层 + 结局闭环 + UI 分层 + 操作区滚动修复 + 真实战斗 V1 单向跳转 + MainVisual 叙事上下文诊断 + Battle Result 诊断 + 战斗胜利后继续剧情闭环 + CanvasLayer 无条件返回剧情控件 + Engine metadata 上下文持久化兜底 + encounter_id 接战映射诊断 + 关卡信息可见性修复”；返回剧情闭环已验收通过。  
 > 核心原则：继续走安全线，不恢复旧 `scripts/narrative/*` 复杂链路；不使用 `HScrollContainer`；不直接改战斗规则；不破坏现有战斗测试入口；不重构 `web_shell.html`。
 
 ---
@@ -43,7 +43,7 @@
 
 ```text
 先做 encounter_id → battle mapping 诊断，不直接自动改战斗配置。
-MainVisual 右上角显示推荐 player_role / enemy_role / difficulty，作为后续自动接敌的前置验证。
+MainVisual 右上角显示关卡信息 / 推荐 player_role / enemy_role / difficulty，作为后续自动接敌的前置验证。
 ```
 
 当前仍不做：
@@ -239,6 +239,7 @@ extends res://scripts/battle_controller_visual_break_preview.gd
 _ready() 中先 super._ready()
 无论 NarrativeBattleContext.has_request() 是否为 true，都创建 CanvasLayer，layer=100
 CanvasLayer 右上角显示：
+- 关卡信息 / 推荐接战信息
 - 叙事上下文诊断
 - 接战映射诊断
 - 战斗结果诊断
@@ -260,6 +261,10 @@ player/enemy 不可用或尚未结算时点击返回 → win 保底
 BattleMappingDebugLabel
 → 显示 NarrativeBattleContext.battle_mapping_debug_text()
 → 当前仅诊断展示，不自动配置 player/enemy
+
+NarrativeContextDebugLabel
+→ 第一行直接合并显示：关卡信息 / 推荐玩家 / 推荐敌人 / 难度
+→ 避免新增 label 被面板空间挤掉导致不可见
 ```
 
 对应提交：
@@ -273,6 +278,7 @@ a4777fd2b960aa63e366db88eba5b417b62f09ae  Add battle result diagnostics to narra
 fb13aad67c3e3a3c3b50c3a8ed3b5aba3f3efec0  Add always visible return narrative control
 fbdbb8a7434e51e088e74741efb6e421136587fe  Show return narrative control unconditionally in MainVisual
 01392a2a1ab57d537f189d7c198d2899bea4c381  Show narrative encounter mapping in battle debug panel
+dbca1c0e0c01f98c641b8ef9263b58fd3802aa09  Make encounter mapping visible in MainVisual panel
 ```
 
 验收状态：
@@ -280,7 +286,7 @@ fbdbb8a7434e51e088e74741efb6e421136587fe  Show return narrative control uncondit
 ```text
 [x] MainVisual 右上角已出现返回剧情按钮
 [x] 返回剧情闭环已验收通过
-[ ] 接战映射诊断仍需 Web 验收
+[ ] 关卡信息 / 接战映射可见性仍需 Web 验收
 ```
 
 约束：
@@ -462,7 +468,7 @@ phase 切到 RESULT 发生在 finish_round()
 [x] Web 验收：返回后 NarrativeDemo 自动推进到下一节点
 [x] Web 验收：MainVisual 原有角色选择入口不受影响
 [x] Web 验收：NarrativeDemo 下方选项完整显示 / 可滚动
-[ ] Web 验收：MainVisual 右上角显示 encounter_id 接战映射诊断
+[ ] Web 验收：MainVisual 右上角显示关卡信息 / encounter_id 接战映射诊断
 [ ] 根据 visual_debug_label 判断 SVG 是否可被当前 Godot Web 导入为 Texture2D
 [ ] 若 SVG 不能作为 Texture2D 正常显示，则改为真实 PNG 占位图
 [ ] V3：encounter_id → enemy/fighter 自动配置
@@ -471,7 +477,7 @@ phase 切到 RESULT 发生在 finish_round()
 
 ---
 
-## 8. 下一刀建议：Web 验收接战映射诊断
+## 8. 下一刀建议：Web 验收关卡信息 / 接战映射诊断
 
 目标：
 
@@ -483,11 +489,11 @@ phase 切到 RESULT 发生在 finish_round()
 
 ```text
 [ ] 从 beach_ambush 节点请求战斗，MainVisual 显示：
-    battle_mapping=海边伏击 / 敌方枪手｜player=spearman｜enemy=enemy_spearman｜difficulty=normal
+    关卡信息：海边伏击 / 敌方枪手｜推荐玩家=spearman｜推荐敌人=enemy_spearman｜难度=normal
 [ ] 从 transport_officer 节点请求战斗，MainVisual 显示：
-    battle_mapping=失械案押运官 / 敌方刀客｜player=blademaster｜enemy=enemy_blademaster｜difficulty=elite
+    关卡信息：失械案押运官 / 敌方刀客｜推荐玩家=blademaster｜推荐敌人=enemy_blademaster｜难度=elite
 [ ] 从 wakou_boss 节点请求战斗，MainVisual 显示：
-    battle_mapping=破船 Boss / 小股倭寇首领｜player=blademaster｜enemy=enemy_blademaster｜difficulty=boss
+    关卡信息：破船 Boss / 小股倭寇首领｜推荐玩家=blademaster｜推荐敌人=enemy_blademaster｜难度=boss
 [ ] 返回剧情闭环不受影响
 [ ] Web 构建稳定
 ```
@@ -496,7 +502,7 @@ phase 切到 RESULT 发生在 finish_round()
 
 ## 9. 后续路线
 
-### Step 1：Web 验收接战映射诊断
+### Step 1：Web 验收关卡信息 / 接战映射诊断
 
 ```text
 确认 encounter_id 在 MainVisual 中能稳定映射为角色/敌人/难度。
@@ -520,7 +526,7 @@ phase 切到 RESULT 发生在 finish_round()
 ## 10. 给 Codex 的下一步指令
 
 ```text
-请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前返回剧情闭环已验收通过，并已新增 encounter_id → battle_mapping 诊断：NarrativeBattleContext.get_battle_mapping() 根据 encounter_id 返回 player_role / enemy_role / difficulty，MainVisual 右上角诊断面板显示 battle_mapping_debug_text()。下一步请 Web 回归验收：从 beach_ambush、transport_officer、wakou_boss 三个战斗节点分别进入 MainVisual，确认右上角接战映射显示正确；不要自动换敌人，不要绕过角色选择，不要改 BattleStateMachine。
+请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前返回剧情闭环已验收通过，并已新增 encounter_id → battle_mapping 诊断。由于右上角未显示新增关卡信息，本轮已把“关卡信息 / 推荐玩家 / 推荐敌人 / 难度”合并进 NarrativeContextDebugLabel 第一行，并扩大 MainVisual 右上角 CanvasLayer 面板高度。下一步请 Web 回归验收：从 beach_ambush、transport_officer、wakou_boss 三个战斗节点分别进入 MainVisual，确认右上角关卡信息显示正确；不要自动换敌人，不要绕过角色选择，不要改 BattleStateMachine。
 ```
 
 ---
@@ -528,5 +534,5 @@ phase 切到 RESULT 发生在 finish_round()
 ## 11. 当前一句话结论
 
 ```text
-剧情—战斗—剧情闭环已验收通过；本轮已完成 encounter_id 接战映射诊断，为下一步自动配置敌人做前置准备。
+剧情—战斗—剧情闭环已验收通过；本轮已修复 MainVisual 右上角关卡信息不可见问题，下一步验收 encounter_id 接战映射显示是否正确。
 ```
