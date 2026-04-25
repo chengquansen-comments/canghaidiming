@@ -1,6 +1,7 @@
 extends Control
 
 const BattleFontHelper := preload("res://scripts/visual/battle_font_view.gd")
+const MAP_COLUMNS: Array[String] = ["军令", "初遇", "疑点", "压迫", "破船", "军门"]
 
 var title_label: Label
 var status_label: Label
@@ -196,16 +197,28 @@ func _render_visual(path: String, fallback_text: String) -> void:
 		visual_label.text = "视觉资源不是 Texture2D：%s" % path
 
 func _add_safe_map_buttons() -> void:
-	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 6)
-	map_buttons_box.add_child(row)
-	for i in range(NODES.size()):
-		var node: Dictionary = NODES[i]
-		var btn := Button.new()
-		btn.text = "%s %s" % [_map_marker_for_index(i), str(node.get("title", ""))]
-		btn.custom_minimum_size = Vector2(148, 38)
-		btn.pressed.connect(_on_map_node_pressed.bind(i))
-		row.add_child(btn)
+	var column_row := HBoxContainer.new()
+	column_row.add_theme_constant_override("separation", 8)
+	map_buttons_box.add_child(column_row)
+	for column_name in MAP_COLUMNS:
+		var column_box := VBoxContainer.new()
+		column_box.custom_minimum_size = Vector2(142, 0)
+		column_box.add_theme_constant_override("separation", 4)
+		column_row.add_child(column_box)
+		var title := Label.new()
+		title.text = column_name
+		title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		title.add_theme_font_size_override("font_size", 13)
+		column_box.add_child(title)
+		for i in range(NODES.size()):
+			var node: Dictionary = NODES[i]
+			if str(node.get("column", "")) != column_name:
+				continue
+			var btn := Button.new()
+			btn.text = "%s %s" % [_map_marker_for_index(i), str(node.get("title", ""))]
+			btn.custom_minimum_size = Vector2(136, 38)
+			btn.pressed.connect(_on_map_node_pressed.bind(i))
+			column_box.add_child(btn)
 
 func _add_button(parent: VBoxContainer, text: String, callback: Callable) -> void:
 	var btn := Button.new()
@@ -336,9 +349,8 @@ func _restart() -> void:
 	_render()
 
 func _map_text() -> String:
-	var columns: Array[String] = ["军令", "初遇", "疑点", "压迫", "破船", "军门"]
 	var lines: Array[String] = []
-	for col in columns:
+	for col in MAP_COLUMNS:
 		var items: Array[String] = []
 		for i in range(NODES.size()):
 			var n: Dictionary = NODES[i]
