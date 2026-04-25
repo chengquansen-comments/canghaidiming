@@ -60,6 +60,29 @@ static func debug_text() -> String:
 static func get_battle_mapping() -> Dictionary:
 	_pull_meta()
 	match encounter_id:
+		"enc_prologue_master_rescue":
+			return {
+				"player_role": "blademaster",
+				"enemy_role": "enemy_blademaster",
+				"enemy_family": "blademaster",
+				"difficulty": "tutorial_elite",
+				"label": "序章救场 / 袭村倭寇刀手",
+				"enemy_config": {
+					"enemy_id": "enemy_blademaster_prologue_raider",
+					"display_name": "袭村倭寇刀手",
+					"narrative_identity": "屠村后折返灭口的倭寇刀手，被师父截住。此战玩家名义上操控师父。",
+					"weapon": "倭刀",
+					"role_sheet": "enemy_blademaster",
+					"max_hp": 24,
+					"max_posture": 10,
+					"start_posture": 3,
+					"intent_style": "tutorial_victim",
+					"behavior_tags": ["教学", "低血量", "可速杀", "临死线索"],
+					"preferred_intents": ["虚张声势", "挥刀", "退步"],
+					"ai_note": "序章教学战，目标是让玩家体验师父三张强力牌压制敌人；敌人应弱于正式战斗。",
+					"reward": {"jun_gong": 0, "qing_wang": 0, "clues": 1}
+				}
+			}
 		"enc_beach_ambush":
 			return {
 				"player_role": "spearman",
@@ -165,13 +188,32 @@ static func enemy_config_debug_text() -> String:
 	var config := get_enemy_config()
 	if config.is_empty():
 		return "enemy_config=空"
-	return "敌人配置=%s｜武器=%s｜HP=%s｜势=%s/%s｜行为=%s" % [
+	return "敌人配置=%s｜武器=%s｜HP=%s｜势=%s/%s｜行为=%s｜标签=%s｜意图=%s" % [
 		str(config.get("display_name", "")),
 		str(config.get("weapon", "")),
 		str(config.get("max_hp", "")),
 		str(config.get("start_posture", "")),
 		str(config.get("max_posture", "")),
-		str(config.get("intent_style", ""))
+		str(config.get("intent_style", "")),
+		", ".join(config.get("behavior_tags", [])),
+		", ".join(config.get("preferred_intents", []))
+	]
+
+static func enemy_config_full_text() -> String:
+	var config := get_enemy_config()
+	if config.is_empty():
+		return "敌人详细配置：空"
+	return "敌人详细配置：%s｜身份=%s｜武器=%s｜HP=%s｜势=%s/%s｜行为=%s｜标签=%s｜意图=%s｜说明=%s" % [
+		str(config.get("display_name", "")),
+		str(config.get("narrative_identity", "")),
+		str(config.get("weapon", "")),
+		str(config.get("max_hp", "")),
+		str(config.get("start_posture", "")),
+		str(config.get("max_posture", "")),
+		str(config.get("intent_style", "")),
+		", ".join(config.get("behavior_tags", [])),
+		", ".join(config.get("preferred_intents", [])),
+		str(config.get("ai_note", ""))
 	]
 
 static func _write_meta() -> void:
