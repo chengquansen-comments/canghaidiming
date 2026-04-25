@@ -2,7 +2,7 @@ extends Control
 class_name NarrativeDemoController
 
 const NarrativeStateScript := preload("res://scripts/narrative/narrative_state.gd")
-const BattleFontHelper := preload("res://scripts/visual/battle_font_view.gd")
+const NarrativeFontHelper := preload("res://scripts/narrative/narrative_font_helper.gd")
 
 var narrative: NarrativeState
 var root_panel: PanelContainer
@@ -24,7 +24,7 @@ func _ready() -> void:
 	_start_narrative()
 
 func _force_cjk_font() -> void:
-	BattleFontHelper.enforce(self)
+	NarrativeFontHelper.enforce(self)
 
 func _build_ui() -> void:
 	root_panel = PanelContainer.new()
