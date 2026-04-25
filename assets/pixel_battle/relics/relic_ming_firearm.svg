@@ -1,9 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360">
-  <rect width="960" height="360" fill="#181818"/>
-  <rect x="70" y="70" width="820" height="220" rx="16" fill="#2f271e" stroke="#8d6a3f" stroke-width="6"/>
-  <rect x="190" y="172" width="460" height="34" rx="8" fill="#8b7a62"/>
-  <rect x="625" y="150" width="110" height="76" rx="10" fill="#5f5548"/>
-  <rect x="155" y="160" width="80" height="58" rx="8" fill="#4b3524"/>
-  <circle cx="710" cy="188" r="20" fill="#222" stroke="#b49661" stroke-width="4"/>
-  <text x="480" y="315" text-anchor="middle" font-size="34" fill="#e5d0a2" font-family="sans-serif">明制火器 / Ming Firearm Relic</text>
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eadbb9"/><stop offset="1" stop-color="#938c7a"/></linearGradient>
+    <radialGradient id="cold" cx="45%" cy="45%" r="65%"><stop offset="0" stop-color="#d7d0bb" stop-opacity="0.45"/><stop offset="1" stop-color="#111719" stop-opacity="0.65"/></radialGradient>
+  </defs>
+  <rect width="960" height="360" fill="url(#paper)"/>
+  <rect width="960" height="360" fill="url(#cold)"/>
+  <path d="M90 265 C220 235 315 258 440 232 C605 198 760 222 910 190" stroke="#4f5b5f" stroke-width="18" opacity="0.16" fill="none"/>
+  <path d="M135 95 L820 86 L875 260 L82 282 Z" fill="#1b1714" opacity="0.88"/>
+  <path d="M158 116 L805 108 L836 245 L125 260 Z" fill="#372819" opacity="0.94" stroke="#7b5a36" stroke-width="5"/>
+  <path d="M190 167 L610 154 L625 181 L198 199 Z" fill="#6b6354" opacity="0.95"/>
+  <rect x="605" y="137" width="94" height="62" rx="8" fill="#3d3a34" opacity="0.96"/>
+  <circle cx="682" cy="168" r="14" fill="#161616" stroke="#b89a64" stroke-width="4"/>
+  <path d="M215 222 C350 205 460 210 600 195" stroke="#bfae86" stroke-width="6" opacity="0.5" fill="none"/>
+  <path d="M230 132 L306 126 L300 150 L224 156 Z" fill="#8c2f29" opacity="0.78"/>
+  <text x="260" y="149" font-size="20" fill="#e7d9b5" opacity="0.86" font-family="serif">官造</text>
+  <path d="M760 110 C815 150 830 190 806 240" stroke="#d6c8a4" stroke-width="4" opacity="0.45" fill="none"/>
+  <text x="790" y="76" font-size="25" fill="#202020" opacity="0.72" font-family="serif">明制火器</text>
+  <text x="54" y="326" font-size="22" fill="#7e2e28" opacity="0.92" font-family="serif">官造二字还在</text>
 </svg>
