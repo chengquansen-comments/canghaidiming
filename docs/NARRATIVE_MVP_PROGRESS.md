@@ -1,7 +1,7 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景信息分层 + 结局闭环 + UI 分层 + 操作区滚动修复 + 真实战斗 V1 单向跳转 + MainVisual 叙事上下文诊断 + Battle Result 诊断 + 战斗胜利后继续剧情闭环 + CanvasLayer 无条件返回剧情控件 + Engine metadata 上下文持久化兜底 + encounter_id 接战映射诊断 + 关卡信息可见性修复 + 按推荐接敌过渡按钮 + 三场 MVP 战斗敌人配置”。返回剧情闭环与关卡信息可见性均已验收通过。  
+> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 序章师父救场战 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景信息分层 + 结局闭环 + UI 分层 + 操作区滚动修复 + 真实战斗 V1 单向跳转 + MainVisual 叙事上下文诊断 + Battle Result 诊断 + 战斗胜利后继续剧情闭环 + CanvasLayer 无条件返回剧情控件 + Engine metadata 上下文持久化兜底 + encounter_id 接战映射诊断 + 关卡信息可见性修复 + 按推荐接敌过渡按钮 + 四场 MVP 战斗敌人配置 + 顶部敌人详细配置横条”。返回剧情闭环与关卡信息可见性均已验收通过。  
 > 核心原则：继续走安全线，不恢复旧 `scripts/narrative/*` 复杂链路；不使用 `HScrollContainer`；不直接改战斗规则；不破坏现有战斗测试入口；不重构 `web_shell.html`。
 
 ---
@@ -14,6 +14,10 @@
 玩家能在 Web 稳定环境里走完：
 倭寇袭村
 → 师父救命
+→ 序章师父救场战
+→ 敌人临死：“军……”
+→ 暗箭灭口
+→ 师父：“别看。”
 → 十年后出山
 → 军令巡海
 → 海边伏击
@@ -32,6 +36,7 @@
 → 同步写入 Engine metadata
 → 跳转 MainVisual.tscn
 → MainVisual 继续走现有角色选择入口
+→ MainVisual 顶部横条显示敌人详细配置
 → MainVisual 右上角 CanvasLayer 无条件显示“返回剧情”控件
 → 点击后按当前 HP 推断结果，无法推断时按 win 保底
 → 将 result 同步写入 Engine metadata
@@ -42,7 +47,7 @@
 V3 当前目标：
 
 ```text
-从“只显示接战映射”推进到“敌人配置数据层 + 按推荐接敌”的安全过渡入口。
+从“只显示接战映射”推进到“敌人配置数据层 + 顶部敌人详细配置横条 + 按推荐接敌”的安全过渡入口。
 不直接绕过现有角色选择；不改 BattleStateMachine；不改卡牌/伤害/AI 规则。
 ```
 
@@ -97,6 +102,9 @@ scripts/narrative_demo_safe_controller.gd
 ```text
 [x] 压缩序章可播放
 [x] 序章中文显示正常
+[x] 序章“师父入场”段接入真实战斗跳转
+[x] 序章师父救场战返回后继续到“敌人临死：军……”
+[x] 序章可跳过师父救场战，按胜利继续
 [x] 六列行军图文本展示：军令 / 初遇 / 疑点 / 压迫 / 破船 / 军门
 [x] 六列行军图按钮布局：每列一个 VBoxContainer，外层 HBoxContainer
 [x] 地图状态标记：▶ 当前 / ● 已走 / ◎ 可前往 / ○ 未开放
@@ -130,6 +138,7 @@ scripts/narrative_demo_safe_controller.gd
 07a22f47c6f3bdb693cc082d0f86fd5f4e6d9c9f  Add one-way jump from narrative demo to battle scene
 bfe1aeea444afc112740df0c27557557ffdb2693  Make narrative action area scrollable
 c139ebfc4504ffe1be72f73f2c3d168028151e34  Consume battle result when returning to narrative demo
+7311d8321ed6f02be3700c4bbafdf96a624bbcf1  Connect prologue master rescue to battle
 ```
 
 ---
@@ -190,11 +199,29 @@ battle_mapping_debug_text()
 
 enemy_config_debug_text()
 → 输出敌人配置摘要，供 MainVisual 诊断面板展示
+
+enemy_config_full_text()
+→ 输出完整敌人配置，供 MainVisual 顶部横条强显示
 ```
 
 当前映射与敌人配置：
 
 ```text
+enc_prologue_master_rescue：序章救场 / 袭村倭寇刀手
+→ player_role=blademaster
+→ enemy_role=enemy_blademaster
+→ enemy_family=blademaster
+→ difficulty=tutorial_elite
+→ enemy_id=enemy_blademaster_prologue_raider
+→ display_name=袭村倭寇刀手
+→ weapon=倭刀
+→ max_hp=24
+→ max_posture=10
+→ start_posture=3
+→ intent_style=tutorial_victim
+→ behavior_tags=教学 / 低血量 / 可速杀 / 临死线索
+→ reward=军功+0 / 清望+0 / 旧案线索+1
+
 enc_beach_ambush：海边伏击 / 敌方枪手
 → player_role=spearman
 → enemy_role=enemy_spearman
@@ -259,6 +286,7 @@ bc38e66a4e06daa3af46376900401c4fa4090ea2  Add battle result state to narrative c
 a7df5dcc37c44f52e22564322e47b0d96b3542ec  Persist narrative battle context in metadata
 b7d59ab944fdea36ea78a25cc76536f520a6bebf  Add narrative encounter battle mapping
 1ed1e75b11dc4c160783159cd26e8c0f30b6b7ce  Add enemy configs for narrative MVP encounters
+d614ee15156e17bc9b52fe306478b0f0b37fe6de  Add prologue master rescue encounter config
 ```
 
 ---
@@ -277,6 +305,8 @@ scripts/battle_controller_visual_narrative_context.gd
 extends res://scripts/battle_controller_visual_break_preview.gd
 _ready() 中先 super._ready()
 无论 NarrativeBattleContext.has_request() 是否为 true，都创建 CanvasLayer，layer=100
+CanvasLayer 顶部横条显示：
+- 完整敌人详细配置
 CanvasLayer 右上角显示：
 - 关卡信息 / 推荐接战信息
 - 叙事上下文诊断
@@ -299,6 +329,10 @@ player/enemy 不可用或尚未结算时点击返回 → win 保底
 新增 V3 过渡能力：
 
 ```text
+EnemyConfigTopStrip
+→ 显示 NarrativeBattleContext.enemy_config_full_text()
+→ 位于 MainVisual 顶部，避免右上角面板空间不足导致看不到详细配置
+
 EnemyConfigDebugLabel
 → 显示 NarrativeBattleContext.enemy_config_debug_text()
 → 当前仅作为配置验收展示，不直接覆盖战斗实例
@@ -357,6 +391,7 @@ fbdbb8a7434e51e088e74741efb6e421136587fe  Show return narrative control uncondit
 dbca1c0e0c01f98c641b8ef9263b58fd3802aa09  Make encounter mapping visible in MainVisual panel
 608afa2569611e01bc212455361cbf25876aaafd  Add recommended battle entry control
 e7119878ed82301534e7e8227ece54e17fc579ae  Show enemy config summary in narrative battle panel
+3cc4eff045f2302558e2461481302d7ca38c016d  Add top enemy config strip in MainVisual
 ```
 
 验收状态：
@@ -365,7 +400,8 @@ e7119878ed82301534e7e8227ece54e17fc579ae  Show enemy config summary in narrative
 [x] MainVisual 右上角已出现返回剧情按钮
 [x] 返回剧情闭环已验收通过
 [x] 关卡信息 / 接战映射可见性已验收通过
-[ ] 敌人配置摘要仍需 Web 验收
+[ ] 顶部敌人详细配置横条仍需 Web 验收
+[ ] 序章师父救场战仍需 Web 验收
 [ ] “按推荐接敌”按钮仍需 Web 验收
 ```
 
@@ -446,6 +482,11 @@ ResourceLoader.exists(path) 为 false → 显示文本占位；诊断 exists=fal
 
 ```text
 MainVisual 返回 NarrativeDemo 后：
+如果 source_node_id == prologue_master_rescue：
+    回到序章 step=8，即“敌人临死：军……”
+    win 时旧案线索 +1
+    显示“序章战斗胜利：师父斩敌，敌人临死吐出旧案线索。”
+
 如果 last_result == win：
     根据原战斗节点类型给予战斗收益
     自动推进到下一节点
@@ -548,7 +589,9 @@ phase 切到 RESULT 发生在 finish_round()
 [x] Web 验收：MainVisual 原有角色选择入口不受影响
 [x] Web 验收：NarrativeDemo 下方选项完整显示 / 可滚动
 [x] Web 验收：MainVisual 右上角显示关卡信息 / encounter_id 接战映射诊断
-[ ] Web 验收：MainVisual 右上角显示敌人配置摘要
+[ ] Web 验收：MainVisual 顶部显示敌人详细配置横条
+[ ] Web 验收：序章师父救场段出现“请求序章战斗：师父救场”按钮
+[ ] Web 验收：序章师父救场战返回后继续到“敌人临死：军……”
 [ ] Web 验收：“按推荐接敌”按钮是否出现
 [ ] Web 验收：点击“按推荐接敌”是否能自动进入推荐职业，或至少提示回退到手动选择
 [ ] 根据 visual_debug_label 判断 SVG 是否可被当前 Godot Web 导入为 Texture2D
@@ -559,62 +602,66 @@ phase 切到 RESULT 发生在 finish_round()
 
 ---
 
-## 8. 下一刀建议：Web 验收敌人配置摘要与推荐接敌按钮
+## 8. 下一刀建议：Web 验收顶部敌人配置横条与序章师父救场战
 
 目标：
 
 ```text
-确认三场 MVP 战斗敌人配置已经进入右上角诊断面板，且不破坏原战斗入口。
+确认“敌人详细配置强显示”和“序章师父救场战接入”都成立。
 ```
 
 验收标准：
 
 ```text
-[ ] beach_ambush 显示：敌人配置=敌方枪手｜武器=长枪｜HP=26｜势=4/10｜行为=poke_pressure
-[ ] transport_officer 显示：敌人配置=失械案押运官｜武器=腰刀｜HP=34｜势=5/10｜行为=counter_break
-[ ] wakou_boss 显示：敌人配置=小股倭寇首领｜武器=倭刀｜HP=42｜势=6/10｜行为=boss_feint_burst
-[ ] “按推荐接敌”按钮出现
-[ ] 原角色选择按钮仍可用
+[ ] 序章推进到“师父入场，玩家操控师父。”时，出现：
+    请求序章战斗：师父救场
+    跳过战斗继续序章
+
+[ ] 点击“请求序章战斗：师父救场”进入 MainVisual
+
+[ ] MainVisual 顶部横条显示：
+    敌人详细配置：袭村倭寇刀手｜身份=...｜武器=倭刀｜HP=24｜势=3/10｜行为=tutorial_victim｜标签=教学, 低血量, 可速杀, 临死线索
+
+[ ] 点击“返回剧情”后回到 NarrativeDemo，并继续到：
+    敌人临死：军……
+
+[ ] beach_ambush 顶部横条显示敌方枪手详细配置
+[ ] transport_officer 顶部横条显示失械案押运官详细配置
+[ ] wakou_boss 顶部横条显示小股倭寇首领详细配置
 [ ] 返回剧情闭环不受影响
 [ ] Web 构建稳定
-```
-
-如按钮能命中入口：
-
-```text
-下一刀可固化 encounter_id → player_role 自动选择。
-```
-
-如按钮不能命中入口：
-
-```text
-下一刀继续精准定位真实角色选择函数名，或在 battle_controller_core.gd 中新增一个稳定 public helper：start_recommended_battle(role_id)。
 ```
 
 ---
 
 ## 9. 后续路线
 
-### Step 1：Web 验收敌人配置摘要与“按推荐接敌”按钮
+### Step 1：Web 验收顶部敌人配置横条与序章师父救场战
 
 ```text
-确认配置可见、按钮可见、原入口不受影响。
+确认详细配置可见，序章战斗也纳入剧情—战斗—剧情闭环。
 ```
 
-### Step 2：固化 player_role 自动选择
+### Step 2：Web 验收“按推荐接敌”按钮
+
+```text
+确认推荐接敌按钮可见、可点、不破坏原入口。
+```
+
+### Step 3：固化 player_role 自动选择
 
 ```text
 优先只自动选择玩家职业，不改敌人逻辑。
 ```
 
-### Step 3：encounter_id → enemy/fighter 自动配置
+### Step 4：encounter_id → enemy/fighter 自动配置
 
 ```text
 只映射到已有 spearman / blademaster，不新增复杂敌人体系。
 仍不改战斗规则，只做启动参数接入。
 ```
 
-### Step 4：失败 / 平局叙事分支
+### Step 5：失败 / 平局叙事分支
 
 ```text
 先轻量处理失败、平局，不做复杂惩罚系统。
@@ -625,7 +672,7 @@ phase 切到 RESULT 发生在 finish_round()
 ## 10. 给 Codex 的下一步指令
 
 ```text
-请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前剧情—战斗—剧情闭环和右上角关卡信息 / 接战映射显示均已验收通过。本轮已在 NarrativeBattleContext.get_battle_mapping() 中为三场 MVP 战斗补充 enemy_config，并在 MainVisual 右上角新增 EnemyConfigDebugLabel 显示敌人配置摘要。下一步请 Web 回归验收：beach_ambush、transport_officer、wakou_boss 三场战斗是否分别显示正确敌人配置；同时验收“按推荐接敌”按钮是否出现、是否不影响原角色选择与返回剧情闭环。不要改 BattleStateMachine，不要强制绕过原角色选择入口。
+请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前已完成两项修复：1）敌人详细配置不再只依赖右上角 EnemyConfigDebugLabel，而是通过 MainVisual 顶部 EnemyConfigTopStrip 强显示 NarrativeBattleContext.enemy_config_full_text()；2）序章“师父入场，玩家操控师父。”段已接入 enc_prologue_master_rescue，NarrativeDemo 中出现“请求序章战斗：师父救场”和“跳过战斗继续序章”按钮，战斗返回后进入“敌人临死：军……”。下一步请 Web 回归验收顶部敌人详细配置横条、序章师父救场战跳转与返回，以及原剧情—战斗—剧情闭环是否不受影响。不要改 BattleStateMachine，不要强制绕过原角色选择入口。
 ```
 
 ---
@@ -633,5 +680,5 @@ phase 切到 RESULT 发生在 finish_round()
 ## 11. 当前一句话结论
 
 ```text
-三场 MVP 战斗敌人配置已进入数据层，并已在 MainVisual 右上角显示配置摘要；下一步验收配置显示与“按推荐接敌”按钮。
+敌人详细配置已改为顶部横条强显示，序章师父救场也已接入战斗；下一步验收这两个新增闭环。
 ```
