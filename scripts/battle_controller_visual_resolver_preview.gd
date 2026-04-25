@@ -3,6 +3,10 @@ extends "res://scripts/battle_controller_visual_hot_tuning.gd"
 const CombatResolver = preload("res://scripts/combat_resolver.gd")
 const PREVIEW_GHOST_ALPHA := 0.80
 const PREVIEW_GHOST_OVERLAP_ALPHA := 0.00
+const PLAYER_START_POSITION := 2
+const ENEMY_START_POSITION := 6
+const PLAYER_START_FACING := "right"
+const ENEMY_START_FACING := "left"
 
 func _show_role_selection() -> void:
 	battle_active = false
@@ -54,17 +58,19 @@ func _select_role_and_start(role_id: String) -> void:
 func _enforce_selected_player_role() -> void:
 	if player_role_id == "" or not fighter_catalog.has(player_role_id):
 		return
-	if player != null and player.data != null and player.data.id == player_role_id:
-		return
-	print("[role-select] correcting player fighter to ", player_role_id)
-	var selected_data: FighterData = fighter_catalog[player_role_id]
-	player = Fighter.new(selected_data)
-	player.set_session_realm(selected_data.starting_realm)
-	player.reset_for_battle(HAND_SIZE)
-	if enemy == null:
-		var fallback_enemy_id := "blademaster" if player_role_id == "spearman" else "spearman"
-		if fighter_catalog.has(fallback_enemy_id):
-			enemy = Fighter.new(fighter_catalog[fallback_enemy_id])
+	var enemy_role_id: String = "blademaster" if player_role_id == "spearman" else "spearman"
+	var should_rebuild_player: bool = player == null or player.data == null or player.data.id != player_role_id or player.position != PLAYER_START_POSITION or player.facing != PLAYER_START_FACING
+	if should_rebuild_player:
+		print("[role-select] correcting player fighter to ", player_role_id, " on player side")
+		var player_data: FighterData = _side_fighter_data(fighter_catalog[player_role_id], true)
+		player = Fighter.new(player_data)
+		player.set_session_realm(fighter_catalog[player_role_id].starting_realm)
+		player.reset_for_battle(HAND_SIZE)
+	if fighter_catalog.has(enemy_role_id):
+		var should_rebuild_enemy: bool = enemy == null or enemy.data == null or enemy.data.id != enemy_role_id or enemy.position != ENEMY_START_POSITION or enemy.facing != ENEMY_START_FACING
+		if should_rebuild_enemy:
+			var enemy_data: FighterData = _side_fighter_data(fighter_catalog[enemy_role_id], false)
+			enemy = Fighter.new(enemy_data)
 			enemy.set_session_realm(ENEMY_SESSION_REALM)
 			enemy.reset_for_battle(HAND_SIZE)
 	state_machine.update_distance_from_positions(player, enemy)
@@ -72,6 +78,24 @@ func _enforce_selected_player_role() -> void:
 	_clear_actor_runtime(false)
 	_ensure_actor_animation_runtimes()
 	_refresh_ui()
+
+func _side_fighter_data(source: FighterData, is_player_side: bool) -> FighterData:
+	var side_position: int = PLAYER_START_POSITION if is_player_side else ENEMY_START_POSITION
+	var side_facing: String = PLAYER_START_FACING if is_player_side else ENEMY_START_FACING
+	return FighterData.new(
+		source.id,
+		source.display_name,
+		source.weapon_name,
+		source.max_hp,
+		source.max_momentum,
+		source.starting_momentum,
+		source.starting_realm,
+		source.preferred_distances,
+		source.starting_deck,
+		source.qinggong,
+		side_position,
+		side_facing
+	)
 
 func _refresh_preview_ghosts() -> void:
 	_ensure_preview_ghosts()
