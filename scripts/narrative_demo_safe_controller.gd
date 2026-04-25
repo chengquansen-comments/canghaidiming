@@ -9,6 +9,7 @@ var map_label: Label
 var scene_label: Label
 var visual_texture: TextureRect
 var visual_label: Label
+var visual_debug_label: Label
 var body_label: RichTextLabel
 var vars_label: Label
 var map_buttons_box: VBoxContainer
@@ -108,6 +109,12 @@ func _build_ui() -> void:
 	visual_label.custom_minimum_size = Vector2(520, 0)
 	visual_center.add_child(visual_label)
 
+	visual_debug_label = Label.new()
+	visual_debug_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	visual_debug_label.add_theme_font_size_override("font_size", 12)
+	visual_debug_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	layout.add_child(visual_debug_label)
+
 	body_label = RichTextLabel.new()
 	body_label.bbcode_enabled = true
 	body_label.custom_minimum_size = Vector2(0, 160)
@@ -192,22 +199,35 @@ func _format_scene_text(raw_text: String) -> String:
 	return "\n".join(lines)
 
 func _render_visual(path: String, fallback_text: String) -> void:
-	if path.is_empty() or not ResourceLoader.exists(path):
+	if path.is_empty():
 		visual_texture.texture = null
 		visual_texture.visible = false
 		visual_label.visible = true
 		visual_label.text = "视觉占位：%s" % fallback_text
+		visual_debug_label.text = "视觉诊断：path=空｜状态=文本占位"
+		return
+	if not ResourceLoader.exists(path):
+		visual_texture.texture = null
+		visual_texture.visible = false
+		visual_label.visible = true
+		visual_label.text = "视觉占位：%s" % fallback_text
+		visual_debug_label.text = "视觉诊断：path=%s｜exists=false｜状态=文本占位" % path
 		return
 	var resource := load(path)
 	if resource is Texture2D:
 		visual_texture.texture = resource
 		visual_texture.visible = true
 		visual_label.visible = false
+		visual_debug_label.text = "视觉诊断：path=%s｜exists=true｜type=Texture2D｜状态=已显示" % path
 	else:
 		visual_texture.texture = null
 		visual_texture.visible = false
 		visual_label.visible = true
+		var class_name := "null"
+		if resource != null:
+			class_name = str(resource.get_class())
 		visual_label.text = "视觉资源不是 Texture2D：%s" % path
+		visual_debug_label.text = "视觉诊断：path=%s｜exists=true｜type=%s｜状态=非 Texture2D" % [path, class_name]
 
 func _add_safe_map_buttons() -> void:
 	var column_row := HBoxContainer.new()
