@@ -22,7 +22,7 @@ func _build_ui() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	super(event)
+	# Parent chain does not define _unhandled_input, so do not call super(event).
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_F9:
 			tuning_visible = not tuning_visible
