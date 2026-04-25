@@ -212,57 +212,40 @@ func _apply_hot_tuning() -> void:
 	_refresh_effect_preview_panel()
 
 func _run_sampling(count: int) -> void:
-	var player_cards := _export_cards(player)
-	var enemy_cards := _export_cards(enemy)
+	var player_cards: Array[CardData] = _export_cards(player)
+	var enemy_cards: Array[CardData] = _export_cards(enemy)
 	var result := AutoBattleSampler.run_batch(player_cards, enemy_cards, {"sample_count": count})
 	_last_sample_report = AutoBattleSampler.format_report(result)
 	_refresh_tuning_panel()
 
 func _run_sweep() -> void:
-	var player_cards := _export_cards(player)
-	var enemy_cards := _export_cards(enemy)
+	var player_cards: Array[CardData] = _export_cards(player)
+	var enemy_cards: Array[CardData] = _export_cards(enemy)
 	var sweep := AutoBattleSampler.run_parameter_sweep(player_cards, enemy_cards, {"samples_per_config": 40})
 	_last_sample_report = AutoBattleSampler.format_sweep_report(sweep)
 	_refresh_tuning_panel()
 
 func _run_auto_optimize() -> void:
-	var player_cards := _export_cards(player)
-	var enemy_cards := _export_cards(enemy)
+	var player_cards: Array[CardData] = _export_cards(player)
+	var enemy_cards: Array[CardData] = _export_cards(enemy)
 	var opt := AutoBattleSampler.run_auto_optimize(player_cards, enemy_cards, {"iterations": 4, "candidates_per_iter": 10, "samples_per_config": 40})
 	_last_sample_report = AutoBattleSampler.format_optimize_report(opt)
 	_refresh_tuning_panel()
 
-func _export_cards(fighter: Fighter) -> Array:
-	var out: Array = []
+func _export_cards(fighter: Fighter) -> Array[CardData]:
+	var out: Array[CardData] = []
 	if fighter == null:
 		return out
 	for hand_card: CardData in fighter.hand:
-		out.append(_card_to_dict(hand_card))
+		if hand_card != null:
+			out.append(hand_card)
 	for draw_card: CardData in fighter.draw_pile:
-		out.append(_card_to_dict(draw_card))
+		if draw_card != null:
+			out.append(draw_card)
 	for discard_card: CardData in fighter.discard_pile:
-		out.append(_card_to_dict(discard_card))
+		if discard_card != null:
+			out.append(discard_card)
 	return out
-
-func _card_to_dict(card: CardData) -> Dictionary:
-	return {
-		"id": card.id,
-		"display_name": card.display_name,
-		"momentum_cost": card.momentum_cost,
-		"damage": card.damage,
-		"break_momentum": card.break_momentum,
-		"gain_momentum": card.gain_momentum,
-		"guard": card.guard,
-		"min_distance": card.min_distance,
-		"max_distance": card.max_distance,
-		"requires_facing": card.requires_facing,
-		"requires_hit_check": card.requires_hit_check(),
-		"tags": Array(card.tags),
-		"self_move_after": card.self_move_after,
-		"target_push_after": card.target_push_after,
-		"target_pull_after": card.target_pull_after,
-		"move_condition": card.move_condition
-	}
 
 func _refresh_tuning_panel() -> void:
 	super()
