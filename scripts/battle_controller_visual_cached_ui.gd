@@ -344,6 +344,31 @@ func _play_defender_reaction_for_hit_frame(attacker_key: String) -> void:
 		event_name = "guard"
 	defender_runtime.play_event(event_name, true)
 
+func _trigger_runtime_fx_feedback(actor_key: String, fx_id: String, impact_offset: Vector2) -> void:
+	var attacking_card: CardData = _last_player_animation_card if actor_key == "player" else _last_enemy_animation_card
+	var attacker: Fighter = player if actor_key == "player" else enemy
+	var defender: Fighter = enemy if actor_key == "player" else player
+	if attacker == null or defender == null:
+		return
+	var profession_id: String = str(attacker.data.id)
+	var is_finisher: bool = _card_has_tag(attacking_card, "终结")
+	var color: Color = _runtime_fx_color(fx_id, profession_id, is_finisher)
+	if fx_id == "pierce_streak" or profession_id == "spearman":
+		_show_pierce_line(color, is_finisher)
+	elif fx_id == "slash_arc" or profession_id == "blademaster":
+		_show_slash_cut(color, is_finisher)
+	else:
+		_play_profession_shape_feedback(profession_id, color, is_finisher, false)
+	_show_target_receive_feedback(defender, profession_id, color, is_finisher)
+	_impact_feedback(color, 6.2 if is_finisher else 3.8, profession_id == "spearman", is_finisher)
+
+func _runtime_fx_color(fx_id: String, profession_id: String, is_finisher: bool) -> Color:
+	if fx_id == "pierce_streak" or profession_id == "spearman":
+		return Color("dff4ff") if is_finisher else Color("9fd8ff")
+	if fx_id == "slash_arc" or profession_id == "blademaster":
+		return Color("ffd1a8") if is_finisher else Color("ff9f73")
+	return Color("f5d889") if is_finisher else Color("d9c18a")
+
 func _actor_meta_path_for(fighter: Fighter, prefer_enemy_variant: bool) -> String:
 	if fighter == null or fighter.data == null:
 		return ""
@@ -366,6 +391,7 @@ func _on_actor_runtime_failed(actor_key: String, message: String) -> void:
 
 func _on_actor_runtime_hit_frame(actor_key: String, animation_name: String, frame_index: int, fx_id: String, impact_offset: Vector2) -> void:
 	print("[actor-runtime] hit_frame %s %s frame=%d fx=%s offset=%s" % [actor_key, animation_name, frame_index, fx_id, str(impact_offset)])
+	_trigger_runtime_fx_feedback(actor_key, fx_id, impact_offset)
 	_play_defender_reaction_for_hit_frame(actor_key)
 
 func _on_actor_runtime_animation_finished(actor_key: String, animation_name: String) -> void:
