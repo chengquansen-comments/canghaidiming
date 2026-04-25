@@ -1,0 +1,92 @@
+{
+  "schema_version": "0.1",
+  "layout_id": "mvp_static_branch_map_v1",
+  "title": "行军图一：初出山",
+  "description": "MVP 静态分叉地图布局。只用于表现和后续 UI，不改变叙事节点数据，不做随机地图生成。",
+  "columns": [
+    {
+      "column_id": "start",
+      "title": "军令",
+      "nodes": [
+        {"node_id": "military_order", "row": 0, "lane": "center"}
+      ]
+    },
+    {
+      "column_id": "early_contact",
+      "title": "初遇",
+      "nodes": [
+        {"node_id": "beach_ambush", "row": -1, "lane": "upper"},
+        {"node_id": "burnt_village", "row": 1, "lane": "lower"}
+      ]
+    },
+    {
+      "column_id": "clue_or_deal",
+      "title": "疑点",
+      "nodes": [
+        {"node_id": "ming_firearm", "row": -1, "lane": "upper"},
+        {"node_id": "merchant_banquet", "row": 1, "lane": "lower"}
+      ]
+    },
+    {
+      "column_id": "pressure",
+      "title": "压迫",
+      "nodes": [
+        {"node_id": "transport_officer", "row": -1, "lane": "upper"},
+        {"node_id": "night_sharpening", "row": 0, "lane": "center"},
+        {"node_id": "mutiny_camp", "row": 1, "lane": "lower"}
+      ]
+    },
+    {
+      "column_id": "boss",
+      "title": "破船",
+      "nodes": [
+        {"node_id": "wakou_boss", "row": 0, "lane": "center"}
+      ]
+    },
+    {
+      "column_id": "ending",
+      "title": "军门",
+      "nodes": [
+        {"node_id": "military_coverup", "row": 0, "lane": "center"}
+      ]
+    }
+  ],
+  "edges": [
+    {"from": "military_order", "to": "beach_ambush"},
+    {"from": "military_order", "to": "burnt_village"},
+    {"from": "beach_ambush", "to": "ming_firearm"},
+    {"from": "beach_ambush", "to": "merchant_banquet"},
+    {"from": "burnt_village", "to": "ming_firearm"},
+    {"from": "burnt_village", "to": "merchant_banquet"},
+    {"from": "ming_firearm", "to": "transport_officer"},
+    {"from": "ming_firearm", "to": "night_sharpening"},
+    {"from": "merchant_banquet", "to": "night_sharpening"},
+    {"from": "merchant_banquet", "to": "mutiny_camp"},
+    {"from": "transport_officer", "to": "wakou_boss"},
+    {"from": "night_sharpening", "to": "wakou_boss"},
+    {"from": "mutiny_camp", "to": "wakou_boss"},
+    {"from": "wakou_boss", "to": "military_coverup"}
+  ],
+  "node_type_icons": {
+    "battle": "⚔",
+    "elite": "◆",
+    "event": "?",
+    "camp": "♨",
+    "relic": "◇",
+    "boss": "☠",
+    "ending_gate": "▣"
+  },
+  "status_markers": {
+    "current": "▶",
+    "visited": "●",
+    "available": "◎",
+    "locked": "○"
+  },
+  "implementation_notes": [
+    "当前只是静态布局数据，不改变 mvp_compressed_narrative.json 的推进逻辑。",
+    "后续 UI 可按 columns 渲染列，按 row/lane 决定上下位置。",
+    "edges 用于后续绘制连接线和判定可点击节点。",
+    "第一版 UI 可以只显示列和节点，不必画真实曲线。",
+    "不要在这个阶段引入随机地图生成。"
+  ]
+}
