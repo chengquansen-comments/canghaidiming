@@ -9,6 +9,7 @@ var root_panel: PanelContainer
 var title_label: Label
 var type_label: Label
 var route_label: Label
+var map_box: HBoxContainer
 var body_label: RichTextLabel
 var result_label: Label
 var vars_label: Label
@@ -28,10 +29,10 @@ func _force_cjk_font() -> void:
 
 func _build_ui() -> void:
 	root_panel = PanelContainer.new()
-	root_panel.anchor_left = 0.06
-	root_panel.anchor_top = 0.06
-	root_panel.anchor_right = 0.94
-	root_panel.anchor_bottom = 0.94
+	root_panel.anchor_left = 0.04
+	root_panel.anchor_top = 0.04
+	root_panel.anchor_right = 0.96
+	root_panel.anchor_bottom = 0.96
 	root_panel.offset_left = 0
 	root_panel.offset_top = 0
 	root_panel.offset_right = 0
@@ -46,7 +47,7 @@ func _build_ui() -> void:
 	root_panel.add_child(margin)
 
 	var layout := VBoxContainer.new()
-	layout.add_theme_constant_override("separation", 12)
+	layout.add_theme_constant_override("separation", 10)
 	margin.add_child(layout)
 
 	title_label = Label.new()
@@ -62,15 +63,25 @@ func _build_ui() -> void:
 	route_label = Label.new()
 	route_label.add_theme_font_size_override("font_size", 15)
 	route_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	route_label.custom_minimum_size = Vector2(0, 48)
+	route_label.custom_minimum_size = Vector2(0, 42)
 	route_label.modulate = Color(0.66, 0.78, 0.84, 1.0)
 	layout.add_child(route_label)
+
+	var map_scroll := HScrollContainer.new()
+	map_scroll.custom_minimum_size = Vector2(0, 88)
+	map_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	map_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	layout.add_child(map_scroll)
+
+	map_box = HBoxContainer.new()
+	map_box.add_theme_constant_override("separation", 8)
+	map_scroll.add_child(map_box)
 
 	body_label = RichTextLabel.new()
 	body_label.fit_content = false
 	body_label.scroll_active = true
 	body_label.bbcode_enabled = true
-	body_label.custom_minimum_size = Vector2(0, 340)
+	body_label.custom_minimum_size = Vector2(0, 280)
 	body_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	body_label.add_theme_font_size_override("normal_font_size", 22)
 	layout.add_child(body_label)
@@ -115,6 +126,7 @@ func _start_narrative() -> void:
 	if not ok:
 		title_label.text = "叙事数据加载失败"
 		body_label.text = "请检查 data/narrative/mvp_compressed_narrative.json"
+		_render_map_strip()
 		_force_cjk_font()
 		return
 	_render_next_prologue_step()
@@ -122,6 +134,12 @@ func _start_narrative() -> void:
 
 func _clear_choices() -> void:
 	for child in choices_box.get_children():
+		child.queue_free()
+
+func _clear_map() -> void:
+	if map_box == null:
+		return
+	for child in map_box.get_children():
 		child.queue_free()
 
 func _on_continue_pressed() -> void:
@@ -140,6 +158,7 @@ func _render_next_prologue_step() -> void:
 	result_label.text = ""
 	vars_label.text = ""
 	route_label.text = "序章：短镜头链 / 尚未进入行军图"
+	_render_map_strip()
 	if not narrative.has_next_prologue_step():
 		showing_prologue = false
 		_render_node()
@@ -188,6 +207,7 @@ func _render_node() -> void:
 	result_label.text = narrative.last_result_text
 	body_label.text = _format_node(node)
 	continue_button.visible = false
+	_render_map_strip()
 	var choices := narrative.available_choices(node)
 	for i in range(choices.size()):
 		var choice: Dictionary = choices[i]
@@ -197,6 +217,91 @@ func _render_node() -> void:
 		button.pressed.connect(_on_choice_pressed.bind(i))
 		choices_box.add_child(button)
 	_force_cjk_font()
+
+func _render_map_strip() -> void:
+	_clear_map()
+	if narrative == null or map_box == null:
+		return
+	var route := narrative.map_route()
+	if route.is_empty():
+		var empty_label := Label.new()
+		empty_label.text = "地图路线未配置"
+		map_box.add_child(empty_label)
+		return
+	for node_id in route:
+		map_box.add_child(_build_map_node_card(node_id))
+
+func _build_map_node_card(node_id: String) -> Control:
+	var node := narrative.node_by_id(node_id)
+	var node_type := str(node.get("type", ""))
+	var is_current := node_id == narrative.current_node_id and narrative.current_ending_id.is_empty() and not showing_prologue
+	var is_visited := narrative.visited_node_ids.has(node_id) and not showing_prologue
+
+	var card := PanelContainer.new()
+	card.custom_minimum_size = Vector2(150, 76)
+	var style := StyleBoxFlat.new()
+	style.set_corner_radius_all(12)
+	style.set_border_width_all(2)
+	style.bg_color = Color("202936")
+	style.border_color = Color("536171")
+	if is_visited:
+		style.bg_color = Color("263548")
+		style.border_color = Color("7d8fa6")
+	if is_current:
+		style.bg_color = Color("3a2c18")
+		style.border_color = Color("d8b26e")
+	card.add_theme_stylebox_override("panel", style)
+
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 8)
+	margin.add_theme_constant_override("margin_top", 6)
+	margin.add_theme_constant_override("margin_right", 8)
+	margin.add_theme_constant_override("margin_bottom", 6)
+	card.add_child(margin)
+
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", 2)
+	margin.add_child(box)
+
+	var title := Label.new()
+	title.text = "%s %s" % [_node_marker(node_id, is_current, is_visited), str(node.get("title", node_id))]
+	title.add_theme_font_size_override("font_size", 14)
+	title.clip_text = true
+	box.add_child(title)
+
+	var type := Label.new()
+	type.text = "%s %s" % [_node_type_icon(node_type), narrative.node_type_label(node_type)]
+	type.add_theme_font_size_override("font_size", 12)
+	type.modulate = Color(0.78, 0.82, 0.86, 1.0)
+	box.add_child(type)
+
+	return card
+
+func _node_marker(node_id: String, is_current: bool, is_visited: bool) -> String:
+	if is_current:
+		return "▶"
+	if is_visited:
+		return "●"
+	return "○"
+
+func _node_type_icon(node_type: String) -> String:
+	match node_type:
+		"battle":
+			return "⚔"
+		"elite":
+			return "◆"
+		"event":
+			return "?"
+		"camp":
+			return "♨"
+		"relic":
+			return "◇"
+		"boss":
+			return "☠"
+		"ending_gate":
+			return "▣"
+		_:
+			return "·"
 
 func _format_node(node: Dictionary) -> String:
 	var lines: Array[String] = []
@@ -251,6 +356,7 @@ func _on_choice_pressed(index: int) -> void:
 	result_label.text = str(result.get("result", ""))
 	vars_label.text = narrative.variables_text()
 	route_label.text = narrative.route_text()
+	_render_map_strip()
 	continue_button.visible = true
 	waiting_result = true
 	_force_cjk_font()
@@ -265,4 +371,5 @@ func _render_ending() -> void:
 	result_label.text = narrative.last_result_text
 	vars_label.text = narrative.variables_text()
 	continue_button.visible = false
+	_render_map_strip()
 	_force_cjk_font()
