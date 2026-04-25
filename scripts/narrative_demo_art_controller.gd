@@ -13,14 +13,22 @@ const PROLOGUE_BG := {
 	"departure": "res://assets/pixel_battle/backgrounds/prologue_departure.svg"
 }
 
+const PROLOGUE_CHAR := {
+	"master": "res://assets/pixel_battle/portraits/performance_master_veteran.svg",
+	"hero": "res://assets/pixel_battle/portraits/performance_hero_young.svg"
+}
+
 var background_texture: TextureRect
 var mist_layer_a: ColorRect
 var mist_layer_b: ColorRect
 var background_dim: ColorRect
+var char_master: TextureRect
+var char_hero: TextureRect
 var art_time: float = 0.0
 
 func _ready() -> void:
 	_add_scene_background_layer()
+	_add_character_layers()
 	super._ready()
 
 func _process(delta: float) -> void:
@@ -30,6 +38,7 @@ func _process(delta: float) -> void:
 func _render_visual(path: String, fallback_text: String) -> void:
 	var final_path: String = _resolve_background_path(path)
 	_update_scene_background(final_path, fallback_text)
+	_update_character_stage()
 
 func _resolve_background_path(path: String) -> String:
 	if step_index <= 3:
@@ -78,6 +87,36 @@ func _add_scene_background_layer() -> void:
 	add_child(background_dim)
 	move_child(background_dim, 3)
 
+func _add_character_layers() -> void:
+	char_master = _make_character_layer("NarrativeCharMaster", PROLOGUE_CHAR.master, 0.22, 0.57)
+	add_child(char_master)
+	move_child(char_master, 4)
+
+	char_hero = _make_character_layer("NarrativeCharHero", PROLOGUE_CHAR.hero, 0.58, 0.92)
+	add_child(char_hero)
+	move_child(char_hero, 5)
+
+func _make_character_layer(layer_name: String, path: String, left_anchor: float, right_anchor: float) -> TextureRect:
+	var layer: TextureRect = TextureRect.new()
+	layer.name = layer_name
+	layer.anchor_left = left_anchor
+	layer.anchor_right = right_anchor
+	layer.anchor_top = 0.12
+	layer.anchor_bottom = PERFORMANCE_RATIO
+	layer.offset_left = 0.0
+	layer.offset_right = 0.0
+	layer.offset_top = 0.0
+	layer.offset_bottom = 0.0
+	layer.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	layer.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	layer.visible = false
+	if ResourceLoader.exists(path):
+		var texture_resource: Resource = load(path)
+		if texture_resource is Texture2D:
+			layer.texture = texture_resource
+	return layer
+
 func _make_mist_layer(layer_name: String, gray: float, alpha: float) -> ColorRect:
 	var layer: ColorRect = ColorRect.new()
 	layer.name = layer_name
@@ -98,6 +137,23 @@ func _update_scene_background(path: String, fallback_text: String) -> void:
 	if tex is Texture2D:
 		background_texture.texture = tex
 
+func _update_character_stage() -> void:
+	if char_master != null:
+		char_master.visible = false
+	if char_hero != null:
+		char_hero.visible = false
+	if step_index <= 3:
+		return
+	elif step_index <= 8:
+		if char_master != null:
+			char_master.visible = true
+	elif step_index <= 11:
+		if char_master != null:
+			char_master.visible = true
+	elif step_index == PROLOGUE_CAREER_STEP:
+		if char_hero != null:
+			char_hero.visible = true
+
 func _update_performance_motion(delta: float) -> void:
 	art_time += delta
 	var drift_x: float = sin(art_time * DRIFT_SPEED) * DRIFT_AMPLITUDE.x
@@ -116,3 +172,14 @@ func _update_performance_motion(delta: float) -> void:
 	if background_dim != null:
 		var pulse: float = 0.18 + 0.035 * sin(art_time * 0.9)
 		background_dim.color = Color(0.05, 0.04, 0.03, pulse)
+	_update_character_motion()
+
+func _update_character_motion() -> void:
+	if char_master != null and char_master.visible:
+		var master_breath: float = 1.0 + 0.018 * sin(art_time * 1.05)
+		char_master.scale = Vector2(master_breath, master_breath)
+		char_master.position.y = 3.0 * sin(art_time * 0.8)
+	if char_hero != null and char_hero.visible:
+		var hero_breath: float = 1.0 + 0.014 * sin(art_time * 1.2)
+		char_hero.scale = Vector2(hero_breath, hero_breath)
+		char_hero.position.y = 2.0 * sin(art_time * 0.9)
