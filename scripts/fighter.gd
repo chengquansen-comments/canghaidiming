@@ -17,6 +17,9 @@ var control_state: String
 var pending_control_state: String
 var combo_window_active: bool
 var pending_combo_window: bool
+var position: int
+var facing: String
+var qinggong: int
 var draw_pile: Array[CardData] = []
 var discard_pile: Array[CardData] = []
 var hand: Array[CardData] = []
@@ -33,6 +36,9 @@ func _init(p_data: FighterData) -> void:
 	pending_control_state = CONTROL_NONE
 	combo_window_active = false
 	pending_combo_window = false
+	position = data.starting_position
+	facing = data.starting_facing
+	qinggong = data.qinggong
 	reset_for_battle()
 
 
@@ -45,6 +51,9 @@ func reset_for_battle(hand_size: int = 4) -> void:
 	pending_control_state = CONTROL_NONE
 	combo_window_active = false
 	pending_combo_window = false
+	position = data.starting_position
+	facing = data.starting_facing
+	qinggong = data.qinggong
 	draw_pile = data.clone_deck()
 	draw_pile.shuffle()
 	discard_pile.clear()
@@ -171,6 +180,11 @@ func spend_momentum(amount: int) -> bool:
 		return false
 	momentum -= amount
 	return true
+
+
+func set_stance(target_position: int, target_facing: String) -> void:
+	position = clampi(target_position, 0, 8)
+	facing = "left" if target_facing == "left" else "right"
 
 
 func preferred_text() -> String:

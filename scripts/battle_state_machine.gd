@@ -17,6 +17,11 @@ var current_distance: int = 2
 var round_index: int = 1
 var player_tie_advantage := true
 
+const RANGE_HIT := "hit"
+const RANGE_GRAZE := "graze"
+const RANGE_MISS_RANGE := "miss_range"
+const RANGE_MISS_FACING := "miss_facing"
+
 
 func reset_for_session() -> void:
 	phase = BattlePhase.NODE_SELECTION
@@ -27,8 +32,43 @@ func reset_for_session() -> void:
 
 func begin_battle(initial_distance: int = 2) -> void:
 	phase = BattlePhase.DECLARE
-	current_distance = clampi(initial_distance, 1, 3)
+	current_distance = maxi(initial_distance, 0)
 	round_index = 1
+
+
+func update_distance_from_positions(player: Fighter, enemy: Fighter) -> int:
+	if player == null or enemy == null:
+		return current_distance
+	current_distance = absi(enemy.position - player.position)
+	return current_distance
+
+
+func is_facing_target(actor: Fighter, target: Fighter) -> bool:
+	if actor == null or target == null:
+		return true
+	if actor.position == target.position:
+		return true
+	if target.position > actor.position:
+		return actor.facing == "right"
+	return actor.facing == "left"
+
+
+func evaluate_card_range(card: CardData, actor: Fighter, target: Fighter) -> String:
+	if card == null or not card.requires_hit_check():
+		return RANGE_HIT
+	if card.requires_facing and not card.has_tag("回身") and not is_facing_target(actor, target):
+		return RANGE_MISS_FACING
+	var distance := absi(target.position - actor.position)
+	if card.is_usable_at(distance):
+		return RANGE_HIT
+	var distance_gap := 0
+	if distance < card.min_distance:
+		distance_gap = card.min_distance - distance
+	else:
+		distance_gap = distance - card.max_distance
+	if distance_gap == 1:
+		return RANGE_GRAZE
+	return RANGE_MISS_RANGE
 
 
 func get_declaration_order(player: Fighter, enemy: Fighter) -> PackedStringArray:
@@ -91,12 +131,21 @@ func resolve_intent(intent: IntentData, actor: Fighter, target: Fighter) -> Arra
 		return lines
 
 	if card.requires_hit_check():
-		if not card.is_usable_at(current_distance):
+		var range_result := evaluate_card_range(card, actor, target)
+		if range_result == RANGE_MISS_FACING:
+			lines.append("%s 背向目标，未能命中。" % card.display_name)
+			return lines
+		if range_result == RANGE_MISS_RANGE:
 			lines.append("%s 因距离 %d 不合式，未能命中。" % [card.display_name, current_distance])
 			return lines
+		var is_graze := range_result == RANGE_GRAZE
+		if is_graze:
+			lines.append("%s 距离 %d 略失准头，只擦中目标。" % [card.display_name, current_distance])
 
 		if card.damage > 0:
 			var effective_damage := card.damage
+			if is_graze:
+				effective_damage = maxi(ceili(float(effective_damage) * 0.5), 1)
 			if target.is_broken():
 				effective_damage *= 2
 				lines.append("%s 处于崩势，所受伤害翻倍至 %d。" % [target.data.display_name, effective_damage])
@@ -116,9 +165,12 @@ func resolve_intent(intent: IntentData, actor: Fighter, target: Fighter) -> Arra
 		if card.gain_momentum > 0:
 			var gained_momentum := actor.recover_momentum(card.gain_momentum)
 			lines.append("%s 增己势 %d。" % [card.display_name, gained_momentum])
-		if card.break_momentum > 0:
+		var break_amount := card.break_momentum
+		if is_graze and break_amount > 0:
+			break_amount = maxi(break_amount - 1, 0)
+		if break_amount > 0:
 			var before_break := target.momentum
-			target.momentum = maxi(target.momentum - card.break_momentum, 0)
+			target.momentum = maxi(target.momentum - break_amount, 0)
 			var actual_break := before_break - target.momentum
 			lines.append("%s 削敌势 %d。" % [card.display_name, actual_break])
 			if before_break > 0 and target.momentum == 0:

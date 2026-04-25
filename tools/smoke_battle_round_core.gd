@@ -11,8 +11,11 @@ func _init() -> void:
 	var guard := CardData.new("smoke_guard", "烟测守势", "用于回归测试的格挡。", 1, 3, 1, CardData.ROLE_GUARD, 0, 0, 0, 6)
 	var player := Fighter.new(FighterData.new("player", "玩家", "枪", 30, 5, 5, 1, PackedInt32Array([2]), [thrust, guard]))
 	var enemy := Fighter.new(FighterData.new("enemy", "敌人", "刀", 30, 5, 5, 2, PackedInt32Array([2]), [thrust.duplicate_card(), guard.duplicate_card()]))
+	player.set_stance(2, "right")
+	enemy.set_stance(4, "left")
 	var state_machine := BattleStateMachine.new()
 	state_machine.begin_battle(2)
+	state_machine.update_distance_from_positions(player, enemy)
 
 	var player_intent := IntentData.from_card(player, thrust)
 	var enemy_intent := IntentData.from_card(enemy, guard)

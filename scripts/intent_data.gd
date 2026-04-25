@@ -11,6 +11,8 @@ var visible_card: CardData
 var actual_card: CardData
 var hidden_move: HiddenMoveData
 var consumed_cards: Array[CardData] = []
+var target_position: int = -1
+var target_facing: String = ""
 
 
 static func from_card(source: Fighter, card: CardData) -> IntentData:
@@ -21,6 +23,8 @@ static func from_card(source: Fighter, card: CardData) -> IntentData:
 	intent.actual_card = card
 	intent.hidden_move = null
 	intent.consumed_cards = [card]
+	intent.target_position = source.position
+	intent.target_facing = source.facing
 	return intent
 
 
@@ -32,7 +36,14 @@ static func from_hidden_move(source: Fighter, hidden: HiddenMoveData, cards_to_c
 	intent.actual_card = hidden.real_card
 	intent.hidden_move = hidden
 	intent.consumed_cards = cards_to_consume.duplicate()
+	intent.target_position = source.position
+	intent.target_facing = source.facing
 	return intent
+
+
+func set_stance(position: int, facing: String) -> void:
+	target_position = clampi(position, 0, 8)
+	target_facing = "left" if facing == "left" else "right"
 
 
 func is_hidden() -> bool:

@@ -270,6 +270,7 @@ func _build_stage_layer() -> void:
 	player_sprite.custom_minimum_size = ACTOR_DISPLAY_SIZE
 	player_sprite.size = ACTOR_DISPLAY_SIZE
 	player_sprite.clip_contents = true
+	player_sprite.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	player_sprite.z_index = 8
 	stage_layer.add_child(player_sprite)
 	player_fallback_actor = _build_actor_fallback(Color("5c86b2"), Color("9fdcff"), false)
@@ -284,6 +285,7 @@ func _build_stage_layer() -> void:
 	enemy_sprite.custom_minimum_size = ACTOR_DISPLAY_SIZE
 	enemy_sprite.size = ACTOR_DISPLAY_SIZE
 	enemy_sprite.clip_contents = true
+	enemy_sprite.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	enemy_sprite.z_index = 8
 	stage_layer.add_child(enemy_sprite)
 	enemy_fallback_actor = _build_actor_fallback(Color("8a4f47"), Color("ffb18b"), false)
@@ -293,6 +295,7 @@ func _build_stage_layer() -> void:
 
 	center_fx_layer = Control.new()
 	center_fx_layer.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+	center_fx_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	stage_layer.add_child(center_fx_layer)
 
 func _build_range_overlay_layer() -> void:
@@ -350,7 +353,7 @@ func _build_stage_area_frame() -> void:
 
 func _build_stage_grid() -> void:
 	stage_grid_box = HBoxContainer.new()
-	stage_grid_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	stage_grid_box.mouse_filter = Control.MOUSE_FILTER_PASS
 	stage_grid_box.anchor_left = 0.5
 	stage_grid_box.anchor_right = 0.5
 	stage_grid_box.anchor_top = 0.0
@@ -365,10 +368,12 @@ func _build_stage_grid() -> void:
 	for i in range(GRID_SLOT_COUNT):
 		var cell := PanelContainer.new()
 		cell.custom_minimum_size = Vector2(GRID_SLOT_WIDTH, GRID_SLOT_HEIGHT)
-		cell.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		cell.mouse_filter = Control.MOUSE_FILTER_STOP
+		cell.gui_input.connect(_on_stage_grid_cell_gui_input.bind(i))
 		stage_grid_box.add_child(cell)
 		stage_grid_cells.append(cell)
 		var label := Label.new()
+		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		label.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -379,6 +384,14 @@ func _build_stage_grid() -> void:
 		label.add_theme_constant_override("shadow_offset_y", 1)
 		cell.add_child(label)
 		stage_grid_labels.append(label)
+		var click_target := Button.new()
+		click_target.text = ""
+		click_target.flat = true
+		click_target.focus_mode = Control.FOCUS_NONE
+		click_target.mouse_filter = Control.MOUSE_FILTER_STOP
+		click_target.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+		click_target.pressed.connect(_on_stage_grid_slot_pressed.bind(i))
+		cell.add_child(click_target)
 
 	stage_slot_label_box = HBoxContainer.new()
 	stage_slot_label_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -407,43 +420,57 @@ func _build_stage_grid() -> void:
 		slot_box.add_child(slot_label)
 		stage_slot_name_labels.append(slot_label)
 
+func _on_stage_grid_cell_gui_input(event: InputEvent, slot: int) -> void:
+	if event is InputEventMouseButton:
+		var mouse_event := event as InputEventMouseButton
+		if mouse_event.pressed and mouse_event.button_index == MOUSE_BUTTON_LEFT:
+			_on_stage_grid_slot_pressed(slot)
+
 func _build_actor_fallback(body_color: Color, weapon_color: Color, flip: bool) -> Control:
 	var root := Control.new()
 	root.custom_minimum_size = ACTOR_DISPLAY_SIZE
+	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var fallback_scale := ACTOR_DISPLAY_SIZE.x / ACTOR_FALLBACK_BASE_SIZE
 	root.scale = Vector2.ONE * fallback_scale
 	var torso := ColorRect.new()
+	torso.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	torso.color = body_color
 	torso.position = Vector2(120, 90)
 	torso.size = Vector2(84, 126)
 	root.add_child(torso)
 	var head := ColorRect.new()
+	head.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	head.color = Color("f0d1b0")
 	head.position = Vector2(132, 46)
 	head.size = Vector2(58, 50)
 	root.add_child(head)
 	var leg_l := ColorRect.new()
+	leg_l.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	leg_l.color = body_color.darkened(0.2)
 	leg_l.position = Vector2(126, 216)
 	leg_l.size = Vector2(26, 78)
 	root.add_child(leg_l)
 	var leg_r := ColorRect.new()
+	leg_r.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	leg_r.color = body_color.darkened(0.1)
 	leg_r.position = Vector2(172, 216)
 	leg_r.size = Vector2(26, 78)
 	root.add_child(leg_r)
 	var arm := ColorRect.new()
+	arm.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	arm.color = body_color.lightened(0.1)
 	arm.position = Vector2(88 if not flip else 204, 112)
 	arm.size = Vector2(34, 18)
 	root.add_child(arm)
 	var weapon := ColorRect.new()
+	weapon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	weapon.color = weapon_color
 	weapon.position = Vector2(44 if not flip else 230, 84)
 	weapon.size = Vector2(12, 156)
 	weapon.rotation_degrees = -18 if not flip else 18
 	root.add_child(weapon)
 	var ground_shadow := ColorRect.new()
+	ground_shadow.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	ground_shadow.color = Color(0, 0, 0, 0.25)
 	ground_shadow.position = Vector2(104, 292)
 	ground_shadow.size = Vector2(112, 14)

@@ -17,6 +17,8 @@ var break_momentum: int
 var damage: int
 var guard: int
 var tags: PackedStringArray
+var weapon_style: String
+var requires_facing: bool
 
 
 func _init(
@@ -31,7 +33,9 @@ func _init(
 	p_break_momentum: int = 0,
 	p_damage: int = 0,
 	p_guard: int = 0,
-	p_tags: PackedStringArray = PackedStringArray()
+	p_tags: PackedStringArray = PackedStringArray(),
+	p_weapon_style: String = "",
+	p_requires_facing: bool = true
 ) -> void:
 	id = p_id
 	display_name = p_display_name
@@ -45,6 +49,8 @@ func _init(
 	damage = maxi(p_damage, 0)
 	guard = maxi(p_guard, 0)
 	tags = p_tags.duplicate()
+	weapon_style = p_weapon_style
+	requires_facing = p_requires_facing
 
 
 func duplicate_card() -> CardData:
@@ -60,7 +66,9 @@ func duplicate_card() -> CardData:
 		break_momentum,
 		damage,
 		guard,
-		tags
+		tags,
+		weapon_style,
+		requires_facing
 	)
 
 
@@ -116,4 +124,6 @@ func short_summary() -> String:
 		parts.append("格挡 %d" % guard)
 	if not tags.is_empty():
 		parts.append("标签 %s" % " / ".join(tags))
+	if weapon_style != "":
+		parts.append("式 %s" % weapon_style)
 	return "%s｜%s" % [display_name, "｜".join(parts)]

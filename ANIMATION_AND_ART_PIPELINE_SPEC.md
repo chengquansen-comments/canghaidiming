@@ -293,61 +293,61 @@ Web canvas 尺寸
   "default_facing": "right",
   "scale": 1.0,
   "animations": {
-    "idle": {
-      "file": "spearman_idle.png",
-      "frames": 8,
-      "fps": 8,
-      "loop": true
-    },
-    "move_forward": {
-      "file": "spearman_move_forward.png",
-      "frames": 6,
-      "fps": 12,
-      "loop": false,
-      "root_motion": [1.0, 0.0]
-    },
-    "attack_light": {
-      "file": "spearman_attack_light.png",
-      "frames": 8,
-      "fps": 14,
-      "loop": false,
-      "hit_frame": 5,
-      "phase_frames": {
-        "anticipation": [0, 1],
-        "strike": [2, 4],
-        "impact": [5, 5],
-        "recovery": [6, 7]
-      },
-      "fx": "pierce_streak",
-      "weapon_tip_frame": {
-        "5": [430, 260]
-      },
-      "impact_offset": [120, -60],
-      "recovery_to": "idle"
-    },
-    "guard": {
-      "file": "spearman_guard.png",
-      "frames": 6,
-      "fps": 10,
-      "loop": false,
-      "active_frame": 3,
-      "fx": "guard_flash",
-      "recovery_to": "idle"
-    },
-    "hit": {
-      "file": "spearman_hit.png",
-      "frames": 5,
-      "fps": 14,
-      "loop": false,
-      "recovery_to": "idle"
-    },
-    "break": {
-      "file": "spearman_break.png",
-      "frames": 8,
-      "fps": 12,
-      "loop": false,
-      "recovery_to": "idle"
-    }
+	"idle": {
+	  "file": "spearman_idle.png",
+	  "frames": 8,
+	  "fps": 8,
+	  "loop": true
+	},
+	"move_forward": {
+	  "file": "spearman_move_forward.png",
+	  "frames": 6,
+	  "fps": 12,
+	  "loop": false,
+	  "root_motion": [1.0, 0.0]
+	},
+	"attack_light": {
+	  "file": "spearman_attack_light.png",
+	  "frames": 8,
+	  "fps": 14,
+	  "loop": false,
+	  "hit_frame": 5,
+	  "phase_frames": {
+		"anticipation": [0, 1],
+		"strike": [2, 4],
+		"impact": [5, 5],
+		"recovery": [6, 7]
+	  },
+	  "fx": "pierce_streak",
+	  "weapon_tip_frame": {
+		"5": [430, 260]
+	  },
+	  "impact_offset": [120, -60],
+	  "recovery_to": "idle"
+	},
+	"guard": {
+	  "file": "spearman_guard.png",
+	  "frames": 6,
+	  "fps": 10,
+	  "loop": false,
+	  "active_frame": 3,
+	  "fx": "guard_flash",
+	  "recovery_to": "idle"
+	},
+	"hit": {
+	  "file": "spearman_hit.png",
+	  "frames": 5,
+	  "fps": 14,
+	  "loop": false,
+	  "recovery_to": "idle"
+	},
+	"break": {
+	  "file": "spearman_break.png",
+	  "frames": 8,
+	  "fps": 12,
+	  "loop": false,
+	  "recovery_to": "idle"
+	}
   }
 }
 ```

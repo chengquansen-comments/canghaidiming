@@ -10,6 +10,7 @@ const IntentData = preload("res://scripts/intent_data.gd")
 const HAND_SIZE := 4
 const ENEMY_SESSION_REALM := 2
 const ROUND_MOMENTUM_RECOVERY := 2
+const BATTLE_SLOT_COUNT := 9
 
 var state_machine := BattleStateMachine.new()
 var enemy_ai := EnemyAI.new()
@@ -28,6 +29,9 @@ var node_pick_count := 0
 var player_intent: IntentData
 var enemy_intent: IntentData
 var draft_player_intent: IntentData
+var draft_player_position := -1
+var draft_player_facing := ""
+var draft_player_has_position := false
 var declaration_order: PackedStringArray = PackedStringArray()
 var declaration_index := 0
 
@@ -237,7 +241,9 @@ func _ready_card(
 	p_break_momentum: int,
 	p_damage: int,
 	p_guard: int,
-	p_tags: PackedStringArray = PackedStringArray()
+	p_tags: PackedStringArray = PackedStringArray(),
+	p_weapon_style: String = "",
+	p_requires_facing: bool = true
 ) -> CardData:
 	return CardData.new(
 		p_id,
@@ -251,32 +257,34 @@ func _ready_card(
 		p_break_momentum,
 		p_damage,
 		p_guard,
-		p_tags
+		p_tags,
+		p_weapon_style,
+		p_requires_facing
 	)
 
 
 func _build_catalog() -> void:
-	var spear_read := _ready_card("spear_read", "探锋", "枪手试探，专注立势。", 2, 3, 1, CardData.ROLE_MOMENTUM, 2, 0, 0, 0)
-	var spear_break := _ready_card("spear_break", "压枪", "压住来路，削弱对方势头。", 2, 3, 1, CardData.ROLE_MOMENTUM, 0, 2, 0, 0)
-	var spear_senki := _ready_card("spear_senki", "截势先机", "先发争先，只争势不取伤。", 1, 2, 2, CardData.ROLE_MOMENTUM, 2, 2, 0, 0, PackedStringArray(["先机"]))
-	var spear_mid := _ready_card("spear_mid", "中平枪", "标准中段枪刺。", 2, 3, 1, CardData.ROLE_DAMAGE, 0, 0, 4, 0, PackedStringArray(["连招起手", "起手"]))
-	var spear_heavy := _ready_card("spear_heavy", "龙脊重刺", "大开大合的重刺。", 2, 3, 2, CardData.ROLE_DAMAGE, 0, 0, 8, 0, PackedStringArray(["终结"]))
-	var spear_guard := _ready_card("spear_guard", "回圆架", "回枪成圆，以守化险。", 1, 3, 1, CardData.ROLE_GUARD, 0, 0, 0, 4)
-	var spear_wall := _ready_card("spear_wall", "封门守", "稳固门户，重守待机。", 1, 3, 2, CardData.ROLE_GUARD, 0, 0, 0, 8)
+	var spear_read := _ready_card("spear_read", "拧枪探势", "长枪控距试探，稳住中远节奏。", 3, 5, 1, CardData.ROLE_MOMENTUM, 2, 0, 0, 0, PackedStringArray(), "枪")
+	var spear_break := _ready_card("spear_break", "压杆破势", "枪杆压住来路，专削远处敌势。", 3, 5, 1, CardData.ROLE_MOMENTUM, 0, 2, 0, 0, PackedStringArray(), "枪")
+	var spear_senki := _ready_card("spear_senki", "回身截枪", "错身后反手截势，背向也可命中。", 2, 4, 2, CardData.ROLE_MOMENTUM, 2, 2, 0, 0, PackedStringArray(["先机", "回身"]), "枪")
+	var spear_mid := _ready_card("spear_mid", "中平长刺", "标准中远枪刺。", 3, 5, 1, CardData.ROLE_DAMAGE, 0, 0, 4, 0, PackedStringArray(["连招起手", "起手"]), "枪")
+	var spear_heavy := _ready_card("spear_heavy", "龙脊贯刺", "大开大合的远距重刺。", 4, 5, 2, CardData.ROLE_DAMAGE, 0, 0, 8, 0, PackedStringArray(["终结"]), "枪")
+	var spear_guard := _ready_card("spear_guard", "回圆架", "回枪成圆，以守化险。", 0, 5, 1, CardData.ROLE_GUARD, 0, 0, 0, 4, PackedStringArray(), "枪", false)
+	var spear_wall := _ready_card("spear_wall", "封门守", "稳固门户，重守待机。", 0, 5, 2, CardData.ROLE_GUARD, 0, 0, 0, 8, PackedStringArray(), "枪", false)
 
-	var blade_probe := _ready_card("blade_probe", "探步", "刀客试探，专注抢势。", 1, 2, 1, CardData.ROLE_MOMENTUM, 2, 0, 0, 0)
-	var blade_press := _ready_card("blade_press", "逼刀", "压迫敌方，专破其势。", 1, 2, 1, CardData.ROLE_MOMENTUM, 0, 2, 0, 0)
-	var blade_senki := _ready_card("blade_senki", "燕返先机", "以快争先，先夺局势。", 1, 1, 2, CardData.ROLE_MOMENTUM, 2, 2, 0, 0, PackedStringArray(["先机"]))
-	var blade_cut := _ready_card("blade_cut", "赶步斩", "迅捷标准斩击。", 1, 2, 1, CardData.ROLE_DAMAGE, 0, 0, 4, 0, PackedStringArray(["连招起手", "起手"]))
-	var blade_heavy := _ready_card("blade_heavy", "断流重斩", "势大力沉的压胜一斩。", 1, 2, 2, CardData.ROLE_DAMAGE, 0, 0, 8, 0, PackedStringArray(["终结"]))
-	var blade_guard := _ready_card("blade_guard", "藏锋格", "低身藏锋，以格挡化险。", 1, 3, 1, CardData.ROLE_GUARD, 0, 0, 0, 4)
-	var blade_wall := _ready_card("blade_wall", "锁门架", "以刀封门，强守不退。", 1, 3, 2, CardData.ROLE_GUARD, 0, 0, 0, 8)
+	var blade_probe := _ready_card("blade_probe", "贴步探刀", "刀客贴身试探，抢近身势。", 0, 2, 1, CardData.ROLE_MOMENTUM, 2, 0, 0, 0, PackedStringArray(), "刀")
+	var blade_press := _ready_card("blade_press", "逼身断势", "短兵贴压，专破近处敌势。", 0, 2, 1, CardData.ROLE_MOMENTUM, 0, 2, 0, 0, PackedStringArray(), "刀")
+	var blade_senki := _ready_card("blade_senki", "回身燕返", "错身回刀争先，背向也可命中。", 0, 2, 2, CardData.ROLE_MOMENTUM, 2, 2, 0, 0, PackedStringArray(["先机", "回身"]), "刀")
+	var blade_cut := _ready_card("blade_cut", "贴身快斩", "迅捷近身斩击。", 0, 2, 1, CardData.ROLE_DAMAGE, 0, 0, 4, 0, PackedStringArray(["连招起手", "起手"]), "刀")
+	var blade_heavy := _ready_card("blade_heavy", "断流重斩", "势大力沉的贴身压胜一斩。", 0, 1, 2, CardData.ROLE_DAMAGE, 0, 0, 8, 0, PackedStringArray(["终结"]), "刀")
+	var blade_guard := _ready_card("blade_guard", "藏锋格", "低身藏锋，以格挡化险。", 0, 3, 1, CardData.ROLE_GUARD, 0, 0, 0, 4, PackedStringArray(), "刀", false)
+	var blade_wall := _ready_card("blade_wall", "锁门架", "以刀封门，强守不退。", 0, 3, 2, CardData.ROLE_GUARD, 0, 0, 0, 8, PackedStringArray(), "刀", false)
 
 	var spear_deck: Array[CardData] = [spear_read, spear_break, spear_senki, spear_mid, spear_heavy, spear_guard, spear_wall]
 	var blade_deck: Array[CardData] = [blade_probe, blade_press, blade_senki, blade_cut, blade_heavy, blade_guard, blade_wall]
 
-	fighter_catalog["spearman"] = FighterData.new("spearman", "枪手", "长枪", 24, 6, 5, 1, PackedInt32Array([2, 3]), spear_deck)
-	fighter_catalog["blademaster"] = FighterData.new("blademaster", "刀客", "单刀", 22, 6, 5, 2, PackedInt32Array([1, 2]), blade_deck)
+	fighter_catalog["spearman"] = FighterData.new("spearman", "枪手", "长枪", 24, 6, 5, 1, PackedInt32Array([3, 4, 5]), spear_deck, 1, 2, "right")
+	fighter_catalog["blademaster"] = FighterData.new("blademaster", "刀客", "单刀", 22, 6, 5, 2, PackedInt32Array([0, 1, 2]), blade_deck, 1, 6, "left")
 
 	reward_pool = [
 		_ready_card("reward_momentum_up", "聚势", "专注提振自身势头。", 1, 3, 1, CardData.ROLE_MOMENTUM, 2, 0, 0, 0),
@@ -660,6 +668,7 @@ func _start_session(role_id: String) -> void:
 	player_intent = null
 	enemy_intent = null
 	draft_player_intent = null
+	_reset_player_stance_draft()
 	declaration_order = PackedStringArray()
 	fusion_first_index = -1
 	_hide_overlay()
@@ -669,7 +678,7 @@ func _start_session(role_id: String) -> void:
 
 
 func _copy_fighter_data(data: FighterData) -> FighterData:
-	return FighterData.new(data.id, data.display_name, data.weapon_name, data.max_hp, data.max_momentum, data.starting_momentum, data.starting_realm, data.preferred_distances, data.clone_deck())
+	return FighterData.new(data.id, data.display_name, data.weapon_name, data.max_hp, data.max_momentum, data.starting_momentum, data.starting_realm, data.preferred_distances, data.clone_deck(), data.qinggong, data.starting_position, data.starting_facing)
 
 
 func _show_node_buttons() -> void:
@@ -868,10 +877,12 @@ func _start_battle() -> void:
 	battle_count += 1
 	player.reset_for_battle(HAND_SIZE)
 	enemy.reset_for_battle(HAND_SIZE)
-	state_machine.begin_battle(2)
+	state_machine.begin_battle(absi(enemy.position - player.position))
+	state_machine.update_distance_from_positions(player, enemy)
 	player_intent = null
 	enemy_intent = null
 	draft_player_intent = null
+	_reset_player_stance_draft()
 	declaration_index = 0
 	fusion_first_index = -1
 	_log("[b]演武开始。[/b] 第 %d 场，对距固定从 2 开始。玩家会话武境 %d，敌方会话武境 %d。" % [battle_count, player.session_realm, enemy.session_realm])
@@ -883,6 +894,8 @@ func _begin_round() -> void:
 	player_intent = null
 	enemy_intent = null
 	draft_player_intent = null
+	_reset_player_stance_draft()
+	state_machine.update_distance_from_positions(player, enemy)
 	if state_machine.round_index > 1:
 		var player_gain := player.recover_momentum(ROUND_MOMENTUM_RECOVERY)
 		var enemy_gain := enemy.recover_momentum(ROUND_MOMENTUM_RECOVERY)
@@ -934,6 +947,7 @@ func _advance_declaration() -> void:
 
 func _reset_draft_intent() -> void:
 	draft_player_intent = null
+	_reset_player_stance_draft()
 	_refresh_ui()
 
 
@@ -952,6 +966,7 @@ func _on_player_card_pressed(card: CardData) -> void:
 		_log("势不足，无法选用 %s。" % card.display_name)
 		return
 	draft_player_intent = IntentData.from_card(player, card)
+	_apply_player_stance_draft_to_intent()
 	var combo_marker := _combo_marker_text(player, card)
 	if combo_marker != "":
 		_log("已选定%s [color=#95e1d3]%s[/color]。%s" % [_card_role_prefix(card), card.display_name, combo_marker])
@@ -963,6 +978,7 @@ func _on_player_card_pressed(card: CardData) -> void:
 func _confirm_player_intent() -> void:
 	if not awaiting_player_input or draft_player_intent == null:
 		return
+	_apply_player_stance_draft_to_intent()
 	if draft_player_intent.actual_card.id != "idle" and draft_player_intent.actual_card.id != "staggered" and not player.spend_momentum(draft_player_intent.actual_card.momentum_cost):
 		_log("你的势不足，无法确认这招。")
 		_refresh_ui()
@@ -978,6 +994,87 @@ func _finish_player_declaration() -> void:
 	_log("玩家定招：%s。" % state_machine.get_visible_intent_text(player_intent, enemy))
 	_advance_declaration()
 	_refresh_ui()
+
+
+func _reset_player_stance_draft() -> void:
+	draft_player_position = -1
+	draft_player_facing = ""
+	draft_player_has_position = false
+
+
+func _player_target_position() -> int:
+	if draft_player_has_position:
+		return draft_player_position
+	if draft_player_intent != null and draft_player_intent.target_position >= 0:
+		return draft_player_intent.target_position
+	return player.position if player != null else 0
+
+
+func _player_target_facing() -> String:
+	if draft_player_has_position and draft_player_facing != "":
+		return draft_player_facing
+	if draft_player_intent != null and draft_player_intent.target_facing != "":
+		return draft_player_intent.target_facing
+	return player.facing if player != null else "right"
+
+
+func _apply_player_stance_draft_to_intent() -> void:
+	if draft_player_intent == null or player == null:
+		return
+	var target_position := _player_target_position()
+	var target_facing := _player_target_facing()
+	if not draft_player_has_position:
+		target_position = player.position
+		target_facing = player.facing
+	draft_player_intent.set_stance(target_position, target_facing)
+
+
+func _legal_positions_for(fighter: Fighter) -> Array[int]:
+	var result: Array[int] = []
+	if fighter == null:
+		return result
+	var start := clampi(fighter.position - fighter.qinggong, 0, BATTLE_SLOT_COUNT - 1)
+	var finish := clampi(fighter.position + fighter.qinggong, 0, BATTLE_SLOT_COUNT - 1)
+	for slot in range(start, finish + 1):
+		result.append(slot)
+	return result
+
+
+func _is_player_legal_position(slot: int) -> bool:
+	return _legal_positions_for(player).has(slot)
+
+
+func _on_stage_grid_slot_pressed(slot: int) -> void:
+	if not awaiting_player_input or player == null:
+		return
+	if not _is_player_legal_position(slot):
+		_log("轻功不足，不能移动到该格。")
+		return
+	var current_target := _player_target_position()
+	if draft_player_has_position and slot == current_target and slot == player.position:
+		draft_player_facing = _opposite_facing(_player_target_facing())
+	else:
+		draft_player_position = slot
+		draft_player_facing = _facing_toward(slot, enemy.position if enemy != null else slot, player.facing)
+		draft_player_has_position = true
+	_apply_player_stance_draft_to_intent()
+	_log("已选身位：%d，朝向%s。" % [slot, "左" if _player_target_facing() == "left" else "右"])
+	_invalidate_stage_preview()
+	_refresh_ui()
+
+
+func _facing_toward(actor_position: int, target_position: int, fallback: String) -> String:
+	if actor_position == target_position:
+		return fallback
+	return "right" if target_position > actor_position else "left"
+
+
+func _opposite_facing(value: String) -> String:
+	return "left" if value == "right" else "right"
+
+
+func _invalidate_stage_preview() -> void:
+	pass
 
 
 func _resolve_combo_chain_if_any(actor: Fighter, target: Fighter, intent: IntentData) -> Array[String]:
@@ -1066,6 +1163,7 @@ func _build_intent_feedback(actor: Fighter, target: Fighter, intent: IntentData,
 		"connected": false,
 		"blocked_only": false,
 		"missed": false,
+		"range_result": BattleStateMachine.RANGE_HIT,
 		"hp_damage": 0,
 		"guard_damage": 0
 	}
@@ -1076,12 +1174,14 @@ func _build_intent_feedback(actor: Fighter, target: Fighter, intent: IntentData,
 		return feedback
 	var hp_damage := maxi(target_hp_before - target.hp, 0)
 	var guard_damage := maxi(target_guard_before - target.guard_points, 0)
-	var was_in_range := card.is_usable_at(resolution_distance)
+	var range_result := state_machine.evaluate_card_range(card, actor, target)
+	var was_in_range := range_result == BattleStateMachine.RANGE_HIT or range_result == BattleStateMachine.RANGE_GRAZE
 	feedback["is_attack"] = true
 	feedback["was_in_range"] = was_in_range
 	feedback["connected"] = was_in_range and (hp_damage > 0 or guard_damage > 0)
 	feedback["blocked_only"] = was_in_range and hp_damage == 0 and guard_damage > 0
 	feedback["missed"] = not was_in_range
+	feedback["range_result"] = range_result
 	feedback["hp_damage"] = hp_damage
 	feedback["guard_damage"] = guard_damage
 	return feedback
@@ -1093,12 +1193,13 @@ func _on_intent_resolved(_actor: Fighter, _target: Fighter, _intent: IntentData,
 
 func _resolve_round() -> void:
 	state_machine.phase = BattleStateMachine.BattlePhase.RESOLUTION
+	_apply_declared_stances()
 	var order := state_machine.get_resolution_order(player, enemy, player_intent, enemy_intent)
 	_log("[b]结算顺序：[/b] %s -> %s" % [order[0].get_actual_name(), order[1].get_actual_name()])
 	for intent in order:
 		var actor := player if intent.actor_id == player.data.id else enemy
 		var target := enemy if intent.actor_id == player.data.id else player
-		var resolution_distance := state_machine.current_distance
+		var resolution_distance := state_machine.update_distance_from_positions(player, enemy)
 		var target_hp_before := target.hp
 		var target_guard_before := target.guard_points
 		var target_was_pending_broken := target.pending_control_state == Fighter.CONTROL_BROKEN
@@ -1128,6 +1229,27 @@ func _resolve_round() -> void:
 	state_machine.finish_round(player, enemy)
 	_log("[b]回合势态：[/b] %s" % state_machine.pressure_state_text(player, enemy))
 	_begin_round()
+
+
+func _apply_declared_stances() -> void:
+	_apply_intent_stance(player, player_intent)
+	_apply_intent_stance(enemy, enemy_intent)
+	state_machine.update_distance_from_positions(player, enemy)
+	_log("[b]身位确认：[/b] 玩家 %d 朝%s，敌方 %d 朝%s，距离 %d。" % [
+		player.position,
+		"左" if player.facing == "left" else "右",
+		enemy.position,
+		"左" if enemy.facing == "left" else "右",
+		state_machine.current_distance
+	])
+
+
+func _apply_intent_stance(fighter: Fighter, intent: IntentData) -> void:
+	if fighter == null or intent == null:
+		return
+	var target_position := fighter.position if intent.target_position < 0 else intent.target_position
+	var target_facing := fighter.facing if intent.target_facing == "" else intent.target_facing
+	fighter.set_stance(target_position, target_facing)
 
 
 func _finish_battle() -> void:
@@ -1202,8 +1324,8 @@ func _status_text() -> String:
 	var lines: Array[String] = []
 	lines.append("[b]当前概况[/b]")
 	lines.append("演武 %d｜距离 %d｜回合 %d" % [battle_count, state_machine.current_distance, state_machine.round_index])
-	lines.append("玩家：%s｜生命 %d/%d｜势 %d/%d｜护值 %d" % [player.data.display_name, player.hp, player.data.max_hp, player.momentum, player.data.max_momentum, player.guard_points])
-	lines.append("敌方：%s｜生命 %d/%d｜势 %d/%d｜护值 %d" % [enemy.data.display_name, enemy.hp, enemy.data.max_hp, enemy.momentum, enemy.data.max_momentum, enemy.guard_points])
+	lines.append("玩家：%s｜生命 %d/%d｜势 %d/%d｜护值 %d｜位 %d｜朝%s" % [player.data.display_name, player.hp, player.data.max_hp, player.momentum, player.data.max_momentum, player.guard_points, player.position, "左" if player.facing == "left" else "右"])
+	lines.append("敌方：%s｜生命 %d/%d｜势 %d/%d｜护值 %d｜位 %d｜朝%s" % [enemy.data.display_name, enemy.hp, enemy.data.max_hp, enemy.momentum, enemy.data.max_momentum, enemy.guard_points, enemy.position, "左" if enemy.facing == "left" else "右"])
 	lines.append("")
 	lines.append("[b]当前规则状态[/b]")
 	lines.append("- %s" % state_machine.tie_rule_text(player, enemy))
@@ -1229,15 +1351,15 @@ func _draft_uses_card(card: CardData) -> bool:
 
 
 func _idle_card() -> CardData:
-	return _ready_card("idle", "不动", "本回合不出招，不产生额外效果。", 1, 3, 0, CardData.ROLE_GUARD, 0, 0, 0, 0)
+	return _ready_card("idle", "不动", "本回合不出招，不产生额外效果。", 0, 8, 0, CardData.ROLE_GUARD, 0, 0, 0, 0, PackedStringArray(), "", false)
 
 
 func _preview_wait_card() -> CardData:
-	return _ready_card("preview_wait", "待机", "仅用于预览：尚未选招时按什么都不做处理。", 1, 3, 0, CardData.ROLE_GUARD, 0, 0, 0, 0)
+	return _ready_card("preview_wait", "待机", "仅用于预览：尚未选招时按什么都不做处理。", 0, 8, 0, CardData.ROLE_GUARD, 0, 0, 0, 0, PackedStringArray(), "", false)
 
 
 func _stagger_card() -> CardData:
-	return _ready_card("staggered", "崩势硬直", "势被打崩，下一回合无法行动。", 1, 3, 0, CardData.ROLE_MOMENTUM, 0, 0, 0, 0)
+	return _ready_card("staggered", "崩势硬直", "势被打崩，下一回合无法行动。", 0, 8, 0, CardData.ROLE_MOMENTUM, 0, 0, 0, 0, PackedStringArray(), "", false)
 
 
 func _refresh_log() -> void:

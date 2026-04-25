@@ -99,16 +99,21 @@ func _effect_preview_context() -> Dictionary:
 		uses_wait = true
 	var player_target: int = _target_slot_for_preview(true, player_slot, enemy_slot, preview_card)
 	var enemy_target_for_preview: int = _target_slot_for_preview(false, player_slot, enemy_slot, enemy_card)
+	var player_facing: String = _player_preview_facing()
+	var enemy_facing: String = _enemy_preview_facing()
 	var player_range: Array[int] = _attack_range_slots(true, player_target, preview_card)
-	var hits_enemy: bool = player_range.has(enemy_target_for_preview)
+	var player_result: String = _preview_range_result(preview_card, player_target, player_facing, enemy_target_for_preview)
+	var hits_enemy: bool = preview_card.requires_hit_check() and (player_result == BattleStateMachine.RANGE_HIT or player_result == BattleStateMachine.RANGE_GRAZE)
 	var enemy_range: Array[int] = []
 	var enemy_hits_player: bool = false
 	var enemy_damage: int = 0
+	var enemy_result: String = BattleStateMachine.RANGE_HIT
 	var enemy_target: int = enemy_target_for_preview
 	if enemy_card != null:
 		enemy_range = _attack_range_slots(false, enemy_target, enemy_card)
-		enemy_hits_player = enemy_range.has(player_target)
-		enemy_damage = _preview_damage(enemy_card, player, enemy_hits_player)
+		enemy_result = _preview_range_result(enemy_card, enemy_target, enemy_facing, player_target)
+		enemy_hits_player = enemy_card.requires_hit_check() and (enemy_result == BattleStateMachine.RANGE_HIT or enemy_result == BattleStateMachine.RANGE_GRAZE)
+		enemy_damage = _preview_damage_for_result(enemy_card, player, enemy_result)
 	var input: Dictionary = {
 		"has_data": true,
 		"preview_card": preview_card,
@@ -117,9 +122,11 @@ func _effect_preview_context() -> Dictionary:
 		"distance": state_machine.current_distance,
 		"player_slot_label": _slot_label(player_slot),
 		"player_target_label": _slot_label(player_target),
+		"player_facing": _facing_label(player_facing),
 		"player_range_text": _slot_list_text(player_range),
 		"hits_enemy": hits_enemy,
-		"player_damage": _preview_damage(preview_card, enemy, hits_enemy),
+		"player_hit_text": _range_result_text(player_result) if preview_card.requires_hit_check() else "无",
+		"player_damage": _preview_damage_for_result(preview_card, enemy, player_result),
 		"player_momentum": player.momentum,
 		"player_max_momentum": player.data.max_momentum,
 		"enemy_momentum": enemy.momentum,
@@ -129,12 +136,16 @@ func _effect_preview_context() -> Dictionary:
 		"player_hp": player.hp,
 		"player_max_hp": player.data.max_hp,
 		"enemy_hits_player": enemy_hits_player,
-		"enemy_damage": enemy_damage
+		"enemy_damage": enemy_damage,
+		"player_break_amount": _preview_break_for_result(preview_card, player_result)
 	}
 	if enemy_card != null:
 		input["enemy_slot_label"] = _slot_label(enemy_slot)
 		input["enemy_target_label"] = _slot_label(enemy_target)
+		input["enemy_facing"] = _facing_label(enemy_facing)
 		input["enemy_range_text"] = _slot_list_text(enemy_range)
+		input["enemy_hit_text"] = _range_result_text(enemy_result) if enemy_card.requires_hit_check() else "无"
+		input["enemy_break_amount"] = _preview_break_for_result(enemy_card, enemy_result)
 	return BattleHudHelper.build_effect_preview_context(input)
 
 func _clear_range_trapezoids() -> void:
@@ -209,24 +220,42 @@ func _refresh_stage_grid(show_ranges: bool = true) -> void:
 	var enemy_range: Array[int] = _attack_range_slots(false, enemy_target_slot, enemy_preview_card) if show_ranges else []
 	_refresh_range_trapezoids(player_range, player_target_slot, enemy_range, enemy_target_slot)
 	var next_state: Dictionary = {}
+	var legal_positions := _legal_positions_for(player)
 	for i in range(GRID_SLOT_COUNT):
 		var slot_state: Dictionary = BattleStageHelper.build_slot_state(i, player_target_slot, enemy_target_slot, player_range, enemy_range, GRID_BASE_COLOR, PLAYER_POS_COLOR, ENEMY_POS_COLOR)
 		var fill: Color = slot_state.get("fill", GRID_BASE_COLOR) as Color
 		var label_text: String = slot_state.get("label", "") as String
 		var has_player: bool = slot_state.get("has_player", false) as bool
 		var has_enemy: bool = slot_state.get("has_enemy", false) as bool
-		var state_key: String = "%s|%s|%s|%s" % [fill.to_html(), label_text, str(has_player), str(has_enemy)]
+		var is_legal: bool = awaiting_player_input and legal_positions.has(i)
+		var is_selected: bool = i == player_target_slot
+		if is_legal and not has_player and not has_enemy:
+			fill = fill.lerp(Color("53745a"), 0.45)
+		var state_key: String = "%s|%s|%s|%s|%s|%s" % [fill.to_html(), label_text, str(has_player), str(has_enemy), str(is_legal), str(is_selected)]
 		next_state[i] = {"key": state_key}
 		if not _last_stage_grid_state.has(i) or (_last_stage_grid_state[i] as Dictionary).get("key", "") != state_key:
-			_apply_stage_grid_slot(i, fill, has_player, has_enemy, label_text)
+			_apply_stage_grid_slot(i, fill, has_player, has_enemy, label_text, is_legal, is_selected)
 	_last_stage_grid_state = next_state
 	_force_cjk_font()
 
-func _apply_stage_grid_slot(slot: int, fill: Color, has_player: bool, has_enemy: bool, label_text: String) -> void:
+func _invalidate_stage_preview() -> void:
+	super()
+	_last_stage_grid_state.clear()
+
+func _apply_stage_grid_slot(slot: int, fill: Color, has_player: bool, has_enemy: bool, label_text: String, is_legal: bool = false, is_selected: bool = false) -> void:
 	if slot < 0 or slot >= stage_grid_cells.size() or slot >= stage_grid_labels.size():
 		return
-	stage_grid_cells[slot].add_theme_stylebox_override("panel", _make_grid_cell_style(fill, slot, has_player, has_enemy, false, false))
+	var style := _make_grid_cell_style(fill, slot, has_player, has_enemy, false, false)
+	if is_legal or is_selected:
+		style.border_color = Color("9fe08f") if is_legal else Color("ffd479")
+		style.border_width_top = 4
+		style.border_width_right = 4
+		style.border_width_bottom = 4
+		style.border_width_left = 4 if slot == 0 else 0
+	stage_grid_cells[slot].add_theme_stylebox_override("panel", style)
 	stage_grid_labels[slot].text = label_text
+	if is_legal and label_text == "":
+		stage_grid_labels[slot].text = "○"
 
 func _update_actor_animation_runtimes(delta: float) -> void:
 	if _player_actor_runtime != null and _player_actor_runtime.is_ready:

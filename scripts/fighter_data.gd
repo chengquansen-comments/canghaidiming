@@ -12,6 +12,9 @@ var starting_momentum: int
 var starting_realm: int
 var preferred_distances: PackedInt32Array
 var starting_deck: Array[CardData]
+var qinggong: int
+var starting_position: int
+var starting_facing: String
 
 
 func _init(
@@ -23,7 +26,10 @@ func _init(
 	p_starting_momentum: int = 5,
 	p_starting_realm: int = 1,
 	p_preferred_distances: PackedInt32Array = PackedInt32Array(),
-	p_starting_deck: Array[CardData] = []
+	p_starting_deck: Array[CardData] = [],
+	p_qinggong: int = 1,
+	p_starting_position: int = 0,
+	p_starting_facing: String = "right"
 ) -> void:
 	id = p_id
 	display_name = p_display_name
@@ -33,6 +39,9 @@ func _init(
 	starting_momentum = clampi(p_starting_momentum, 0, max_momentum)
 	starting_realm = p_starting_realm
 	preferred_distances = p_preferred_distances
+	qinggong = maxi(p_qinggong, 0)
+	starting_position = clampi(p_starting_position, 0, 8)
+	starting_facing = "left" if p_starting_facing == "left" else "right"
 	starting_deck = []
 	for card in p_starting_deck:
 		starting_deck.append(card.duplicate_card())

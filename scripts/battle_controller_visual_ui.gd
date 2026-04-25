@@ -318,14 +318,54 @@ func _slot_top_left(slot: int, is_player: bool) -> Vector2:
 	return BattleStageHelper.slot_top_left(size.x, slot, is_player, GRID_SLOT_COUNT, GRID_SLOT_WIDTH, GRID_SLOT_GAP, STAGE_GROUND_Y, player_sprite.size.y, PLAYER_FOOT_OFFSET_X, ENEMY_FOOT_OFFSET_X)
 
 func _current_grid_positions() -> Dictionary:
-	var distance := state_machine.current_distance if state_machine != null else 2
-	return BattleStageHelper.current_grid_positions(distance, GRID_RIGHT_ANCHOR_SLOT, GRID_SLOT_COUNT)
+	return {
+		"player": player.position if player != null else 0,
+		"enemy": enemy.position if enemy != null else GRID_RIGHT_ANCHOR_SLOT
+	}
 
 func _target_slot_for_preview(is_player: bool, player_slot: int, enemy_slot: int, card: CardData) -> int:
-	return BattleStageHelper.target_slot_for_preview(is_player, player_slot, enemy_slot, card, GRID_SLOT_COUNT)
+	if is_player:
+		return _player_preview_position()
+	var intent := _enemy_preview_intent()
+	if intent != null and intent.target_position >= 0:
+		return intent.target_position
+	return enemy_slot
 
 func _attack_range_slots(is_player: bool, origin_slot: int, card: CardData) -> Array[int]:
-	return BattleStageHelper.attack_range_slots(is_player, origin_slot, card, GRID_SLOT_COUNT)
+	var result: Array[int] = []
+	if card == null or not card.requires_hit_check():
+		return result
+	var facing := _player_preview_facing() if is_player else _enemy_preview_facing()
+	var dir := 1 if facing == "right" else -1
+	for distance in range(card.min_distance, card.max_distance + 1):
+		var slot := origin_slot + dir * distance
+		if slot >= 0 and slot < GRID_SLOT_COUNT:
+			result.append(slot)
+	return result
+
+func _player_preview_position() -> int:
+	if player == null:
+		return 0
+	if draft_player_has_position:
+		return draft_player_position
+	if draft_player_intent != null and draft_player_intent.target_position >= 0:
+		return draft_player_intent.target_position
+	return player.position
+
+func _player_preview_facing() -> String:
+	if player == null:
+		return "right"
+	if draft_player_has_position and draft_player_facing != "":
+		return draft_player_facing
+	if draft_player_intent != null and draft_player_intent.target_facing != "":
+		return draft_player_intent.target_facing
+	return player.facing
+
+func _enemy_preview_facing() -> String:
+	var intent := _enemy_preview_intent()
+	if intent != null and intent.target_facing != "":
+		return intent.target_facing
+	return enemy.facing if enemy != null else "left"
 
 func _preview_cycle_phase() -> float:
 	return BattleStageHelper.preview_cycle_phase(preview_anim_time, PREVIEW_CYCLE_DURATION)
@@ -430,6 +470,64 @@ func _preview_damage(card: CardData, target: Fighter, hits_target: bool) -> int:
 	if target != null:
 		amount = maxi(amount - target.guard_points, 0)
 	return amount
+
+func _preview_damage_for_result(card: CardData, target: Fighter, range_result: String) -> int:
+	if card == null or card.damage <= 0:
+		return 0
+	if range_result != BattleStateMachine.RANGE_HIT and range_result != BattleStateMachine.RANGE_GRAZE:
+		return 0
+	var amount := card.damage
+	if range_result == BattleStateMachine.RANGE_GRAZE:
+		amount = maxi(ceili(float(amount) * 0.5), 1)
+	if target != null and target.is_broken():
+		amount *= 2
+	if target != null:
+		amount = maxi(amount - target.guard_points, 0)
+	return amount
+
+func _preview_break_for_result(card: CardData, range_result: String) -> int:
+	if card == null:
+		return 0
+	if range_result != BattleStateMachine.RANGE_HIT and range_result != BattleStateMachine.RANGE_GRAZE:
+		return 0
+	if range_result == BattleStateMachine.RANGE_GRAZE:
+		return maxi(card.break_momentum - 1, 0)
+	return card.break_momentum
+
+func _preview_range_result(card: CardData, actor_position: int, actor_facing: String, target_position: int) -> String:
+	if card == null or not card.requires_hit_check():
+		return BattleStateMachine.RANGE_HIT
+	if card.requires_facing and not card.has_tag("回身") and not _preview_faces_target(actor_position, actor_facing, target_position):
+		return BattleStateMachine.RANGE_MISS_FACING
+	var distance := absi(target_position - actor_position)
+	if distance >= card.min_distance and distance <= card.max_distance:
+		return BattleStateMachine.RANGE_HIT
+	var distance_gap := card.min_distance - distance if distance < card.min_distance else distance - card.max_distance
+	if distance_gap == 1:
+		return BattleStateMachine.RANGE_GRAZE
+	return BattleStateMachine.RANGE_MISS_RANGE
+
+func _preview_faces_target(actor_position: int, actor_facing: String, target_position: int) -> bool:
+	if actor_position == target_position:
+		return true
+	if target_position > actor_position:
+		return actor_facing == "right"
+	return actor_facing == "left"
+
+func _range_result_text(result: String) -> String:
+	match result:
+		BattleStateMachine.RANGE_HIT:
+			return "命中"
+		BattleStateMachine.RANGE_GRAZE:
+			return "擦中"
+		BattleStateMachine.RANGE_MISS_FACING:
+			return "朝向错误"
+		BattleStateMachine.RANGE_MISS_RANGE:
+			return "距离落空"
+	return "无"
+
+func _facing_label(value: String) -> String:
+	return "左" if value == "left" else "右"
 
 func _slot_label(slot: int) -> String:
 	if slot >= 0 and slot < SLOT_LABELS.size():
@@ -591,6 +689,9 @@ func _hand_buttons_state_signature() -> String:
 	parts.append(str(state_machine.phase if state_machine != null else -1))
 	parts.append(_intent_card_id(draft_player_intent))
 	parts.append(_intent_card_id(player_intent))
+	parts.append(str(draft_player_position))
+	parts.append(draft_player_facing)
+	parts.append(str(draft_player_has_position))
 	parts.append(str(player.combo_window_active))
 	parts.append(str(player.control_state))
 	parts.append(str(int(round(hand_flow.size.x)) if hand_flow != null else 0))
@@ -940,7 +1041,7 @@ func _stage_actor_state_signature(player_target_slot: int, enemy_target_slot: in
 	var enemy_card_id := enemy_card.id if enemy_card != null else "-"
 	var player_role := player.data.id if player != null else "-"
 	var enemy_role := enemy.data.id if enemy != null else "-"
-	return "%d|%d|%s|%s|%s|%s|%d|%d|%d" % [
+	return "%d|%d|%s|%s|%s|%s|%d|%d|%d|%s|%s" % [
 		player_target_slot,
 		enemy_target_slot,
 		player_card_id,
@@ -949,13 +1050,15 @@ func _stage_actor_state_signature(player_target_slot: int, enemy_target_slot: in
 		enemy_role,
 		int(round(size.x)),
 		int(round(player_sprite.size.y)),
-		int(round(enemy_sprite.size.y))
+		int(round(enemy_sprite.size.y)),
+		_player_preview_facing(),
+		_enemy_preview_facing()
 	]
 
 func _apply_actor_facing(player_slot: int, enemy_slot: int, player_top_left: Vector2, enemy_top_left: Vector2) -> void:
-	# 当前素材默认朝右；根据预期站位动态翻转，让回合开始与预览阶段都面向对手。
-	var player_faces_left := player_slot > enemy_slot
-	var enemy_faces_left := enemy_slot > player_slot
+	# 当前素材默认朝右；按本回合选择的朝向翻转。
+	var player_faces_left := _player_preview_facing() == "left"
+	var enemy_faces_left := _enemy_preview_facing() == "left"
 	_set_texture_actor_facing(player_sprite, player_faces_left)
 	_set_texture_actor_facing(enemy_sprite, enemy_faces_left)
 	_set_fallback_actor_facing(player_fallback_actor, player_faces_left, player_top_left)
@@ -985,6 +1088,12 @@ func _process(delta: float) -> void:
 	_refresh_stage_grid()
 	_refresh_stage_actor_positions()
 	_refresh_intent_bubbles()
+
+func _invalidate_stage_preview() -> void:
+	_stage_grid_signature = ""
+	_stage_actor_signature = ""
+	_player_intent_bubble_signature = ""
+	_enemy_intent_bubble_signature = ""
 
 func _player_preview_card() -> CardData:
 	if draft_player_intent != null and draft_player_intent.actual_card != null:

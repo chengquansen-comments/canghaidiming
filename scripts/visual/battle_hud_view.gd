@@ -12,7 +12,7 @@ static func _card_key(card: CardData) -> String:
 	if card == null:
 		return "null"
 	var tags: PackedStringArray = card.tags if card.tags != null else PackedStringArray()
-	return "%s|%s|%d|%d|%d|%d|%d|%d|%s|%s" % [
+	return "%s|%s|%d|%d|%d|%d|%d|%d|%s|%s|%s|%s" % [
 		card.id,
 		card.display_name,
 		card.momentum_cost,
@@ -22,7 +22,9 @@ static func _card_key(card: CardData) -> String:
 		card.guard,
 		card.gain_momentum,
 		str(card.break_momentum),
-		"/".join(tags)
+		"/".join(tags),
+		card.weapon_style,
+		str(card.requires_facing)
 	]
 
 static func intent_bubble_text(card: CardData, actor_slot: int, opponent_slot: int, target_slot: int) -> String:
@@ -86,18 +88,21 @@ static func build_effect_preview_context(input: Dictionary) -> Dictionary:
 	var player_momentum_after_enemy: int = player_momentum
 	if preview_card != null:
 		player_momentum_after = clampi(player_momentum - preview_card.momentum_cost + (preview_card.gain_momentum if hits_enemy else 0), 0, player_max_momentum)
-		enemy_momentum_after = clampi(enemy_momentum - (preview_card.break_momentum if hits_enemy else 0), 0, enemy_max_momentum)
+		var player_break_amount := int(input.get("player_break_amount", preview_card.break_momentum if hits_enemy else 0))
+		enemy_momentum_after = clampi(enemy_momentum - player_break_amount, 0, enemy_max_momentum)
 	if enemy_card != null:
 		enemy_self_momentum_after = clampi(enemy_momentum - enemy_card.momentum_cost + (enemy_card.gain_momentum if enemy_hits_player else 0), 0, enemy_max_momentum)
-		player_momentum_after_enemy = clampi(player_momentum - (enemy_card.break_momentum if enemy_hits_player else 0), 0, player_max_momentum)
+		var enemy_break_amount := int(input.get("enemy_break_amount", enemy_card.break_momentum if enemy_hits_player else 0))
+		player_momentum_after_enemy = clampi(player_momentum - enemy_break_amount, 0, player_max_momentum)
 	var context: Dictionary = {
 		"has_data": true,
 		"current_card_name": input.get("current_card_name", "未选招，按不动预览"),
 		"distance": int(input.get("distance", 0)),
 		"player_slot_label": input.get("player_slot_label", "未知"),
 		"player_target_label": input.get("player_target_label", "未知"),
+		"player_facing": input.get("player_facing", "未知"),
 		"player_range_text": input.get("player_range_text", "无"),
-		"player_hit_text": "敌方" if hits_enemy and preview_card != null and preview_card.requires_hit_check() else "无",
+		"player_hit_text": input.get("player_hit_text", "敌方" if hits_enemy and preview_card != null and preview_card.requires_hit_check() else "无"),
 		"player_damage": player_damage,
 		"show_player_momentum": preview_card != null and (preview_card.gain_momentum > 0 or preview_card.break_momentum > 0 or preview_card.momentum_cost > 0),
 		"player_momentum_before": player_momentum,
@@ -112,17 +117,22 @@ static func build_effect_preview_context(input: Dictionary) -> Dictionary:
 		"player_max_hp": player_max_hp,
 		"player_hp_after": maxi(player_hp - enemy_damage, 0)
 	}
+	if input.has("player_break_amount"):
+		context["player_break_amount"] = input.get("player_break_amount", 0)
 	if enemy_card != null:
 		context["enemy_card_name"] = enemy_card.display_name
 		context["enemy_slot_label"] = input.get("enemy_slot_label", "未知")
 		context["enemy_target_label"] = input.get("enemy_target_label", "未知")
+		context["enemy_facing"] = input.get("enemy_facing", "未知")
 		context["enemy_range_text"] = input.get("enemy_range_text", "无")
-		context["enemy_hit_text"] = "我方" if enemy_hits_player and enemy_card.requires_hit_check() else "无"
+		context["enemy_hit_text"] = input.get("enemy_hit_text", "我方" if enemy_hits_player and enemy_card.requires_hit_check() else "无")
 		context["enemy_damage"] = enemy_damage
 		context["show_enemy_momentum"] = enemy_card.gain_momentum > 0 or enemy_card.break_momentum > 0 or enemy_card.momentum_cost > 0
 		context["enemy_self_momentum_before"] = enemy_momentum
 		context["enemy_self_momentum_after"] = enemy_self_momentum_after
 		context["player_momentum_after_enemy"] = player_momentum_after_enemy
+		if input.has("enemy_break_amount"):
+			context["enemy_break_amount"] = input.get("enemy_break_amount", 0)
 	return context
 
 static func effect_preview_text(context: Dictionary) -> String:
@@ -135,9 +145,13 @@ static func effect_preview_text(context: Dictionary) -> String:
 	lines.append("[font_size=18][b]效果预览[/b][/font_size]")
 	lines.append("当前：%s，距离 %d" % [context.get("current_card_name", "未选招，按不动预览"), int(context.get("distance", 0))])
 	lines.append("我方位置：%s → %s" % [context.get("player_slot_label", "未知"), context.get("player_target_label", "未知")])
+	if context.has("player_facing"):
+		lines.append("我方朝向：%s" % context.get("player_facing", "未知"))
 	lines.append("影响格位：%s" % context.get("player_range_text", "无"))
 	lines.append("预计命中：%s" % context.get("player_hit_text", "无"))
 	lines.append("预计伤害：%d" % int(context.get("player_damage", 0)))
+	if context.has("player_break_amount"):
+		lines.append("预计削势：%d" % int(context.get("player_break_amount", 0)))
 	if bool(context.get("show_player_momentum", false)):
 		lines.append("我方势：%d → %d" % [int(context.get("player_momentum_before", 0)), int(context.get("player_momentum_after", 0))])
 		lines.append("敌方势：%d → %d" % [int(context.get("enemy_momentum_before", 0)), int(context.get("enemy_momentum_after", 0))])
@@ -146,9 +160,13 @@ static func effect_preview_text(context: Dictionary) -> String:
 		lines.append("")
 		lines.append("[b]敌方可见意图[/b]：%s" % context.get("enemy_card_name", "未知"))
 		lines.append("敌方位置：%s → %s" % [context.get("enemy_slot_label", "未知"), context.get("enemy_target_label", "未知")])
+		if context.has("enemy_facing"):
+			lines.append("敌方朝向：%s" % context.get("enemy_facing", "未知"))
 		lines.append("敌方影响格位：%s" % context.get("enemy_range_text", "无"))
 		lines.append("敌方预计命中：%s" % context.get("enemy_hit_text", "无"))
 		lines.append("敌方预计伤害：%d" % int(context.get("enemy_damage", 0)))
+		if context.has("enemy_break_amount"):
+			lines.append("敌方预计削势：%d" % int(context.get("enemy_break_amount", 0)))
 		if bool(context.get("show_enemy_momentum", false)):
 			lines.append("敌方势：%d → %d" % [int(context.get("enemy_self_momentum_before", 0)), int(context.get("enemy_self_momentum_after", 0))])
 			lines.append("我方势：%d → %d" % [int(context.get("player_momentum_before", 0)), int(context.get("player_momentum_after_enemy", 0))])

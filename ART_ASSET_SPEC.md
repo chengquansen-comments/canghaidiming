@@ -105,28 +105,28 @@ Web 外层页面负责 letterbox：
 ```text
 assets/pixel_battle/actors/
   spearman/
-    spearman_idle.png
-    spearman_walk.png
-    spearman_attack_light.png
-    spearman_attack_heavy.png
-    spearman_guard.png
-    spearman_hit.png
-    spearman_break.png
-    spearman_victory.png
-    spearman_defeat.png
-    spearman.meta.json
+	spearman_idle.png
+	spearman_walk.png
+	spearman_attack_light.png
+	spearman_attack_heavy.png
+	spearman_guard.png
+	spearman_hit.png
+	spearman_break.png
+	spearman_victory.png
+	spearman_defeat.png
+	spearman.meta.json
 
   blademaster/
-    blademaster_idle.png
-    blademaster_walk.png
-    blademaster_attack_light.png
-    blademaster_attack_heavy.png
-    blademaster_guard.png
-    blademaster_hit.png
-    blademaster_break.png
-    blademaster_victory.png
-    blademaster_defeat.png
-    blademaster.meta.json
+	blademaster_idle.png
+	blademaster_walk.png
+	blademaster_attack_light.png
+	blademaster_attack_heavy.png
+	blademaster_guard.png
+	blademaster_hit.png
+	blademaster_break.png
+	blademaster_victory.png
+	blademaster_defeat.png
+	blademaster.meta.json
 ```
 
 当前兼容旧目录：
@@ -696,45 +696,45 @@ assets/pixel_battle/actors/{role_id}/{role_id}.meta.json
   "foot_anchor": [256, 500],
   "body_center": [256, 300],
   "animations": {
-    "idle": {
-      "file": "spearman_idle.png",
-      "frames": 8,
-      "fps": 8,
-      "loop": true
-    },
-    "move_forward": {
-      "file": "spearman_move_forward.png",
-      "frames": 6,
-      "fps": 12,
-      "loop": false
-    },
-    "attack_light": {
-      "file": "spearman_attack_light.png",
-      "frames": 8,
-      "fps": 14,
-      "loop": false,
-      "hit_frame": 5,
-      "fx": "pierce_streak",
-      "impact_offset": [120, -60]
-    },
-    "guard": {
-      "file": "spearman_guard.png",
-      "frames": 6,
-      "fps": 10,
-      "loop": false
-    },
-    "hit": {
-      "file": "spearman_hit.png",
-      "frames": 5,
-      "fps": 14,
-      "loop": false
-    },
-    "break": {
-      "file": "spearman_break.png",
-      "frames": 8,
-      "fps": 12,
-      "loop": false
-    }
+	"idle": {
+	  "file": "spearman_idle.png",
+	  "frames": 8,
+	  "fps": 8,
+	  "loop": true
+	},
+	"move_forward": {
+	  "file": "spearman_move_forward.png",
+	  "frames": 6,
+	  "fps": 12,
+	  "loop": false
+	},
+	"attack_light": {
+	  "file": "spearman_attack_light.png",
+	  "frames": 8,
+	  "fps": 14,
+	  "loop": false,
+	  "hit_frame": 5,
+	  "fx": "pierce_streak",
+	  "impact_offset": [120, -60]
+	},
+	"guard": {
+	  "file": "spearman_guard.png",
+	  "frames": 6,
+	  "fps": 10,
+	  "loop": false
+	},
+	"hit": {
+	  "file": "spearman_hit.png",
+	  "frames": 5,
+	  "fps": 14,
+	  "loop": false
+	},
+	"break": {
+	  "file": "spearman_break.png",
+	  "frames": 8,
+	  "fps": 12,
+	  "loop": false
+	}
   }
 }
 ```
