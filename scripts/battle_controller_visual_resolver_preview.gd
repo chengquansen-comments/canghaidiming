@@ -1,13 +1,8 @@
 extends "res://scripts/battle_controller_visual_hot_tuning.gd"
 
-# Preview routing layer: keep all UI/debug/hot tuning behavior, but make the
-# ghost preview use the shared CombatResolver instead of local preview rules.
-# v0.3.4: ghost labels are hidden; ghosts only indicate expected displacement.
-
 const CombatResolver = preload("res://scripts/combat_resolver.gd")
-const PREVIEW_GHOST_ALPHA := 0.30
+const PREVIEW_GHOST_ALPHA := 0.80
 const PREVIEW_GHOST_OVERLAP_ALPHA := 0.00
-
 
 func _refresh_preview_ghosts() -> void:
 	_ensure_preview_ghosts()
@@ -34,13 +29,11 @@ func _refresh_preview_ghosts() -> void:
 	enemy_preview_label.visible = false
 	_set_preview_ghosts_visible(true)
 
-
 func _preview_ghost_modulate(is_player: bool, overlaps_real_actor: bool) -> Color:
 	var alpha: float = PREVIEW_GHOST_OVERLAP_ALPHA if overlaps_real_actor else PREVIEW_GHOST_ALPHA
 	if overlaps_real_actor:
 		return Color(1.0, 1.0, 1.0, alpha)
 	return Color(0.55, 0.78, 1.0, alpha) if is_player else Color(1.0, 0.64, 0.48, alpha)
-
 
 func _compute_ordered_preview() -> Dictionary:
 	var p_intent: IntentData = draft_player_intent if draft_player_intent != null else player_intent
@@ -50,7 +43,6 @@ func _compute_ordered_preview() -> Dictionary:
 	var has_preview: bool = draft_player_has_position or p_card != null or e_card != null
 	if not has_preview:
 		return {"has_preview": false}
-
 	var p_state: Dictionary = _resolver_preview_state(true, p_intent)
 	var e_state: Dictionary = _resolver_preview_state(false, e_intent)
 	var order: Array[String] = _preview_resolution_order(p_intent, e_intent)
@@ -63,7 +55,6 @@ func _compute_ordered_preview() -> Dictionary:
 		"enemy_text": "",
 		"source": "CombatResolver"
 	}
-
 
 func _resolver_preview_state(is_player: bool, intent: IntentData) -> Dictionary:
 	var fighter: Fighter = player if is_player else enemy
