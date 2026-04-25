@@ -1,8 +1,8 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：压缩叙事已从文档进入独立 Demo 实装。  
-> 核心原则：不扩写剧情，不重构战斗，不改 Web 外壳，先把“短镜头链 + 三变量 + 单局旧案闭环”跑通。
+> 当前阶段：压缩叙事已从独立 Demo 推进到“入口分流”。  
+> 核心原则：剧情 MVP 入口和现有选角色战斗入口分开；不扩写剧情，不重构战斗，不改 Web 外壳结构，只做最小入口分流和后续验收。
 
 ---
 
@@ -23,7 +23,13 @@
 → 上报 / 掩盖 / 私查 / 借势
 ```
 
-不做完整武官人生，不做多章节，不做长篇对白。
+入口层面当前目标：
+
+```text
+剧情 MVP：进入 NarrativeDemo.tscn
+战斗测试：进入现有 MainVisual.tscn / MainText.tscn
+二者互不覆盖，互不抢入口。
+```
 
 ---
 
@@ -143,7 +149,42 @@ scenes/NarrativeDemo.tscn
 单独运行叙事 MVP；
 暂不替换 MainVisual.tscn；
 暂不接入真实战斗；
-暂不影响 Web 主构建路径。
+暂不影响现有战斗测试场景。
+```
+
+### 3.5 入口分流
+
+已更新：
+
+```text
+scripts/web_runtime_launcher.gd
+scripts/main_mode_launcher.gd
+```
+
+Web 入口：
+
+```text
+进入剧情 MVP → scenes/NarrativeDemo.tscn
+进入战斗测试 → scenes/MainVisual.tscn
+重新加载当前页
+```
+
+桌面开发入口：
+
+```text
+进入剧情 MVP → scenes/NarrativeDemo.tscn
+进入字符版战斗 → scenes/MainText.tscn
+进入视觉版战斗 → scenes/MainVisual.tscn
+```
+
+说明：
+
+```text
+未修改 MainVisual.tscn；
+未修改 battle_controller；
+未替换当前选角色战斗入口；
+Web smoke_battle 参数仍保留自动进入战斗测试。
+新增 narrative_mvp 参数可自动进入剧情 MVP。
 ```
 
 ---
@@ -157,7 +198,12 @@ dc815aa0186e41107b0d1c7dc6366183684b5bc6  Add compressed MVP narrative data
 c5ab27b03a888eabbb2f317663cdec613a061df6  Add compressed narrative demo controller
 da1e5b08bb3d3ccf5e293940086d4a33f6e8e901  Add compressed narrative demo scene
 113ddb5ff811798d8fcb0abec325a38040116a37  Add narrative implementation progress notes
+156d04e86c455b153d864b6f34f6557da399d4c2  Add narrative MVP progress tracker
+8d69a2c06bd0f93cadc5bbad9d7544787e06b687  Refresh narrative implementation progress
+6213ecf242a4a8d08bc4a9459fa14ef46d8f5a22  Add separate narrative MVP entry to desktop launcher
 ```
+
+> 注：Web launcher 也已更新为“剧情 MVP / 战斗测试”分流。若后续需要精确追踪该提交，请以 GitHub 最新提交记录为准。
 
 ---
 
@@ -175,12 +221,18 @@ da1e5b08bb3d3ccf5e293940086d4a33f6e8e901  Add compressed narrative demo scene
 [x] ending 入口
 [x] 独立 Demo 场景
 [x] 不影响现有战斗主场景
+[x] Web 入口区分：剧情 MVP / 战斗测试
+[x] 桌面入口区分：剧情 MVP / 字符战斗 / 视觉战斗
 ```
 
 ### 5.2 尚未验收
 
 ```text
 [ ] 本地运行 NarrativeDemo.tscn 无 GDScript 编译错误
+[ ] Web 入口点击“进入剧情 MVP”能进入 NarrativeDemo.tscn
+[ ] Web 入口点击“进入战斗测试”仍能进入 MainVisual.tscn
+[ ] 桌面入口点击“进入剧情 MVP”能进入 NarrativeDemo.tscn
+[ ] 桌面入口点击“进入视觉版战斗”仍能进入 MainVisual.tscn
 [ ] 序章可从头点到“该出山了”
 [ ] 节点选择可正常推进
 [ ] 三变量显示正确
@@ -197,7 +249,6 @@ da1e5b08bb3d3ccf5e293940086d4a33f6e8e901  Add compressed narrative demo scene
 [ ] P0 背景图显示
 [ ] P0 人物立绘显示
 [ ] 旧物图显示
-[ ] Web 主入口接入策略
 ```
 
 ---
@@ -206,7 +257,7 @@ da1e5b08bb3d3ccf5e293940086d4a33f6e8e901  Add compressed narrative demo scene
 
 ### 风险一：GDScript 编译风险
 
-当前新增脚本尚未经过本地 Godot 编译验证。重点风险点：
+当前新增叙事脚本尚未经过本地 Godot 编译验证。重点风险点：
 
 ```text
 JSON 字段类型转换；
@@ -224,7 +275,20 @@ RichTextLabel / Label 属性在当前 Godot 版本中的兼容性；
 不要在编译未过前接 MainVisual。
 ```
 
-### 风险二：叙事路径过线性
+### 风险二：入口分流构建风险
+
+入口已经改为按钮分流，但尚未 Web 构建验证。
+
+处理原则：
+
+```text
+优先验证 Web 首页是否能打开；
+确认“进入战斗测试”不受影响；
+确认 smoke_battle 仍能自动进入战斗；
+确认 narrative_mvp 可自动进入剧情 MVP。
+```
+
+### 风险三：叙事路径过线性
 
 当前推荐路径能闭环，但还不是完整肉鸽地图。
 
@@ -236,23 +300,28 @@ RichTextLabel / Label 属性在当前 Godot 版本中的兼容性；
 下一刀再加地图节点 UI 和分支。
 ```
 
-### 风险三：战斗节点只是占位
-
-当前 battle / elite / boss 节点只显示 encounter_id，不会真的进入战斗。
-
-处理原则：
-
-```text
-先验证叙事状态机；
-再接战斗胜利回调；
-不要为了叙事提前大改战斗规则。
-```
-
 ---
 
 ## 7. 下一刀执行清单
 
-### Step 1：本地编译验收
+### Step 1：入口分流验收
+
+```text
+运行 Main.tscn
+确认 Web / 桌面入口均出现剧情与战斗分流按钮
+```
+
+通过标准：
+
+```text
+[ ] 剧情 MVP 按钮进入 NarrativeDemo.tscn
+[ ] 战斗测试按钮进入 MainVisual.tscn
+[ ] 字符战斗按钮仍进入 MainText.tscn（桌面）
+[ ] smoke_battle 参数仍自动进战斗
+[ ] narrative_mvp 参数自动进剧情
+```
+
+### Step 2：本地编译验收
 
 ```text
 打开 scenes/NarrativeDemo.tscn
@@ -270,7 +339,7 @@ RichTextLabel / Label 属性在当前 Godot 版本中的兼容性；
 [ ] 进入军令节点
 ```
 
-### Step 2：叙事流程验收
+### Step 3：叙事流程验收
 
 验证推荐路径：
 
@@ -294,7 +363,7 @@ RichTextLabel / Label 属性在当前 Godot 版本中的兼容性；
 [ ] 变量变化符合按钮显示
 ```
 
-### Step 3：增加最小地图 UI
+### Step 4：增加最小地图 UI
 
 先做一张静态路线图，不做复杂生成算法：
 
@@ -317,40 +386,12 @@ RichTextLabel / Label 属性在当前 Godot 版本中的兼容性；
 节点点击进入 current_node。
 ```
 
-### Step 4：接 P0 美术占位
-
-先显示背景路径对应图片，图片不存在时显示文本占位，不阻塞运行。
-
-优先：
-
-```text
-prologue_burning_village.png
-prologue_master_blocks_blade.png
-prologue_ten_years_later.png
-node_military_order.png
-node_beach_ambush.png
-node_ming_firearms.png
-boss_wakou_wrecked_ship.png
-ending_military_office_coverup.png
-```
-
-### Step 5：接战斗胜利回调
-
-当前不要求真实切场景，先设计接口：
-
-```text
-NarrativeState.current_node.combat
-→ battle encounter_id
-→ battle_win
-→ 回到当前 node 的战后 choices
-```
-
 ---
 
 ## 8. 对 Codex 的下一步指令
 
 ```text
-请基于 scenes/NarrativeDemo.tscn、scripts/narrative/narrative_state.gd、scripts/narrative/narrative_demo_controller.gd 做最小修复与验收。目标是让 NarrativeDemo.tscn 在 Godot Web 项目中无编译错误运行。不要改 MainVisual.tscn，不要改 battle_controller，不要改 web_shell.html。若出现类型错误，只做局部修复。验收路径为：序章完整播放 → 军令节点 → 节点选择 → 三变量变化 → Boss → 军门压案 → 结局。
+请优先验证并修复入口分流与 NarrativeDemo.tscn 编译问题。当前入口应保持：剧情 MVP → scenes/NarrativeDemo.tscn；战斗测试 → scenes/MainVisual.tscn；桌面字符战斗 → scenes/MainText.tscn。不要改 battle_controller，不要改 MainVisual.tscn，不要重构 web_shell.html。若出现 GDScript 类型错误，只做局部修复。验收路径为：Main 入口分流正常 → 剧情 MVP 序章完整播放 → 军令节点 → 节点选择 → 三变量变化 → Boss → 军门压案 → 结局。
 ```
 
 ---
@@ -358,5 +399,5 @@ NarrativeState.current_node.combat
 ## 9. 当前一句话结论
 
 ```text
-叙事 MVP 已完成“脚本压缩 → 数据化 → 状态机 → 独立 Demo 场景”的第一闭环；下一步不是扩写剧情，而是本地跑通 NarrativeDemo.tscn，并在不影响战斗主线的前提下补最小地图 UI 和美术占位。
+叙事 MVP 已完成“脚本压缩 → 数据化 → 状态机 → 独立 Demo 场景 → 入口分流”；下一步不是扩写剧情，而是验证入口分流和 NarrativeDemo.tscn 编译运行，再补最小地图 UI 与美术占位。
 ```
