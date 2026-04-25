@@ -308,6 +308,17 @@ P4：特效与 hit_frame 对齐
 P5：UI 视觉一致性
 ```
 
+当前验收状态：
+
+```text
+[PASSED] P0：Web 构建稳定
+[PASSED] P1：敌方角色身份稳定
+[PASSED] P2：意图气泡绑定角色实际 sprite
+[NEXT]   P3：角色动作包从三帧过渡到最低可交付包
+[TODO]   P4：特效与 hit_frame 对齐
+[TODO]   P5：UI 视觉一致性
+```
+
 该文档同时明确：
 
 ```text
@@ -315,6 +326,40 @@ P5：UI 视觉一致性
 旧 1600×900 / 16:9 文档口径不再作为当前验收标准；
 所有新动作资产必须 actor meta 化，同时兼容旧三帧 fallback；
 Web 构建稳定优先于任何视觉扩展。
+```
+
+---
+
+## 已通过验收记录
+
+### P0：Web 构建稳定
+
+```text
+[x] Web 页面能打开
+[x] 浏览器控制台无 GDScript 编译错误
+[x] 中文不乱码
+[x] 角色不整张 sheet 显示
+[x] 角色不重复显示
+[x] 16:10 下无异常拉伸
+```
+
+### P1：敌方角色身份稳定
+
+```text
+[x] enemy_spearman 一直显示 enemy_spearman_sheet
+[x] enemy_blademaster 一直显示 enemy_blademaster_sheet
+[x] 攻击、受击、回 idle 后身份不变
+[x] 没有短暂闪回普通角色 sheet
+```
+
+### P2：意图气泡绑定角色实际 sprite
+
+```text
+[x] 气泡始终位于角色头顶附近
+[x] 气泡不会贴到格位中心而脱离角色
+[x] 角色左右移动后气泡跟随
+[x] 角色 sheet 留白不同也不造成明显偏移
+[x] 16:10 窗口缩放后位置稳定
 ```
 
 ---
@@ -385,19 +430,19 @@ Web 构建稳定优先。
 
 ## 下一刀建议
 
-下一步进入“Web 美术验收闭环 + 单角色最低动作包”。
+下一步进入 P3：“单角色最低动作包”。
 
 优先级：
 
 ```text
-P0：本地执行 ./tools/build_and_serve_web.sh，确认无 GDScript 编译错误
-P1：确认 runtime ready 日志出现 player / enemy
-P2：确认 enemy_* 攻击、受击、回 idle 后不切回普通 sheet
-P3：确认气泡绑定 sprite 实际绘制区域，缩放和移动后不漂
-P4：用 spearman 做最低动作包：idle / move_forward / attack_light / guard / hit / break
-P5：跑 tools/validate_art_assets.py，形成动作覆盖报告
-P6：再复制到 enemy_spearman、blademaster、enemy_blademaster
-P7：最后补 UI frame / icon / FX 一致性资产
+P3.1：先为 spearman 建立最低动作包目录与 meta 口径
+P3.2：确认 validate_actor_bundle.py 能识别动作覆盖率
+P3.3：接入 spearman_idle / attack_light / guard / hit / break / move_forward
+P3.4：Web 验收 spearman 动作切换无抖动、无整张 sheet、无裁脚
+P3.5：复制链路到 enemy_spearman
+P3.6：再扩展 blademaster / enemy_blademaster
+P4：随后做 hit_frame 特效同步验收
+P5：最后补 UI frame / icon / FX 一致性资产
 ```
 
 ---
@@ -414,9 +459,10 @@ P7：最后补 UI frame / icon / FX 一致性资产
 → 现有三帧资产 meta 化
 → 角色身份与气泡绑定修复
 → Web 美术验收计划
+→ P0-P2 验收通过
 ```
 
-项目已经从“静态角色显示”推进到“Web 美术验收闭环”的阶段。下一轮不应再扩规则，而应直接打通：
+项目已经从“Web 美术验收闭环搭建”推进到“最低动作包生产”的阶段。下一轮不应再扩规则，而应直接打通：
 
 ```text
 spearman 最低动作包
