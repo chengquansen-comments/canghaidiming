@@ -125,7 +125,7 @@ static func run_single(player_cards: Array[CardData], enemy_cards: Array[CardDat
 		_move_toward_preferred_range(e, p, [1, 2])
 		var p_card: CardData = _choose_card(player_cards, p, e, rng)
 		var e_card: CardData = _choose_card(enemy_cards, e, p, rng)
-		var order: Array[String] = ["player", "enemy"] if rng.randi_range(0, 1) == 0 else ["enemy", "player"]
+		var order: Array[String] = _random_resolution_order(rng)
 		var sim: Dictionary = _simulate_exchange(p, e, p_card, e_card, order)
 		p["hp"] = int(p.get("hp", 0)) + int(sim.get("player_hp_delta", 0))
 		e["hp"] = int(e.get("hp", 0)) + int(sim.get("enemy_hp_delta", 0))
@@ -162,6 +162,16 @@ static func run_single(player_cards: Array[CardData], enemy_cards: Array[CardDat
 	elif int(e.get("hp", 0)) > int(p.get("hp", 0)):
 		winner = "enemy_timeout"
 	return {"winner": winner, "turns": turns, "player_hp": int(p.get("hp", 0)), "enemy_hp": int(e.get("hp", 0)), "distance_hist": distance_hist, "push_count": push_count, "pull_count": pull_count, "self_move_count": self_move_count, "break_count": break_count, "player_hit_count": player_hit_count, "enemy_hit_count": enemy_hit_count}
+
+static func _random_resolution_order(rng: RandomNumberGenerator) -> Array[String]:
+	var result: Array[String] = []
+	if rng.randi_range(0, 1) == 0:
+		result.append("player")
+		result.append("enemy")
+	else:
+		result.append("enemy")
+		result.append("player")
+	return result
 
 static func _simulate_exchange(p: Dictionary, e: Dictionary, p_card: CardData, e_card: CardData, order: Array[String]) -> Dictionary:
 	var p_pos: int = int(p.get("position", 0))
