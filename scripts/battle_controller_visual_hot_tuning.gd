@@ -24,7 +24,7 @@ func _build_hot_tuning_controls() -> void:
 	if tuning_panel == null or tuning_label == null or _hot_controls_root != null:
 		return
 	tuning_label.custom_minimum_size = Vector2(360, 140)
-	tuning_panel.offset_bottom = 480
+	tuning_panel.offset_bottom = 520
 	_hot_controls_root = VBoxContainer.new()
 	tuning_panel.add_child(_hot_controls_root)
 	_add_slider_row("伤害倍率", 0.5, 2.0, 0.05, damage_multiplier, _on_damage_multiplier_changed)
@@ -38,11 +38,11 @@ func _add_sample_buttons() -> void:
 	var btn100 := Button.new()
 	btn100.text = "采样100局"
 	btn100.pressed.connect(func(): _run_sampling(100))
-	var btn1000 := Button.new()
-	btn1000.text = "采样1000局"
-	btn1000.pressed.connect(func(): _run_sampling(1000))
+	var btnSweep := Button.new()
+	btnSweep.text = "参数扫描"
+	btnSweep.pressed.connect(_run_sweep)
 	row.add_child(btn100)
-	row.add_child(btn1000)
+	row.add_child(btnSweep)
 	_hot_controls_root.add_child(row)
 
 func _run_sampling(count: int) -> void:
@@ -50,6 +50,13 @@ func _run_sampling(count: int) -> void:
 	var enemy_cards := _export_cards(enemy)
 	var result := AutoBattleSampler.run_batch(player_cards, enemy_cards, {"sample_count": count})
 	_last_sample_report = AutoBattleSampler.format_report(result)
+	_refresh_tuning_panel()
+
+func _run_sweep() -> void:
+	var player_cards := _export_cards(player)
+	var enemy_cards := _export_cards(enemy)
+	var sweep := AutoBattleSampler.run_parameter_sweep(player_cards, enemy_cards, {"samples_per_config": 40})
+	_last_sample_report = AutoBattleSampler.format_sweep_report(sweep)
 	_refresh_tuning_panel()
 
 func _export_cards(fighter) -> Array:
@@ -79,5 +86,5 @@ func _card_to_dict(card) -> Dictionary:
 
 func _refresh_tuning_panel() -> void:
 	super()
-	tuning_label.text += "\n[b]自动对局采样[/b]\n"
+	tuning_label.text += "\n[b]自动对局/参数扫描[/b]\n"
 	tuning_label.text += _last_sample_report
