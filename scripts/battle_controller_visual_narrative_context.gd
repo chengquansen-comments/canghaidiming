@@ -2,6 +2,7 @@ extends "res://scripts/battle_controller_visual_break_preview.gd"
 
 const NarrativeBattleContext := preload("res://scripts/narrative_battle_context.gd")
 const BattleStateMachineScript := preload("res://scripts/battle_state_machine.gd")
+const DEFAULT_NARRATIVE_SCENE := "res://scenes/NarrativeDemo.tscn"
 
 var narrative_debug_layer: CanvasLayer
 var narrative_debug_box: VBoxContainer
@@ -19,8 +20,6 @@ func _process(_delta: float) -> void:
 	_update_battle_result_debug()
 
 func _add_narrative_debug_layer() -> void:
-	if not NarrativeBattleContext.has_request():
-		return
 	narrative_debug_layer = CanvasLayer.new()
 	narrative_debug_layer.name = "NarrativeDebugCanvasLayer"
 	narrative_debug_layer.layer = 100
@@ -35,7 +34,7 @@ func _add_narrative_debug_layer() -> void:
 	panel.offset_left = -430
 	panel.offset_right = -18
 	panel.offset_top = 68
-	panel.offset_bottom = 218
+	panel.offset_bottom = 230
 	narrative_debug_layer.add_child(panel)
 
 	var margin := MarginContainer.new()
@@ -51,7 +50,7 @@ func _add_narrative_debug_layer() -> void:
 
 	narrative_context_label = Label.new()
 	narrative_context_label.name = "NarrativeContextDebugLabel"
-	narrative_context_label.text = "叙事上下文：%s" % NarrativeBattleContext.debug_text()
+	narrative_context_label.text = _context_debug_text()
 	narrative_context_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	narrative_context_label.add_theme_font_size_override("font_size", 14)
 	narrative_debug_box.add_child(narrative_context_label)
@@ -70,12 +69,13 @@ func _add_narrative_debug_layer() -> void:
 	continue_narrative_button.pressed.connect(_on_continue_narrative_pressed)
 	narrative_debug_box.add_child(continue_narrative_button)
 
+func _context_debug_text() -> String:
+	if NarrativeBattleContext.has_request():
+		return "叙事上下文：%s" % NarrativeBattleContext.debug_text()
+	return "叙事上下文：无请求｜返回将按 win 保底"
+
 func _update_battle_result_debug() -> void:
 	if battle_result_label == null:
-		return
-	if not NarrativeBattleContext.has_request():
-		if narrative_debug_layer != null:
-			narrative_debug_layer.visible = false
 		return
 	if state_machine == null:
 		_set_battle_result_debug_text("战斗结果：state_machine=null｜可点击返回剧情")
@@ -99,7 +99,7 @@ func _record_result_once(narrative_result: String) -> void:
 	NarrativeBattleContext.set_result(narrative_result)
 	result_recorded = true
 	if narrative_context_label != null:
-		narrative_context_label.text = "叙事上下文：%s" % NarrativeBattleContext.debug_text()
+		narrative_context_label.text = _context_debug_text()
 
 func _set_battle_result_debug_text(text: String) -> void:
 	if text == last_result_debug_text:
@@ -121,4 +121,7 @@ func _get_narrative_result() -> String:
 func _on_continue_narrative_pressed() -> void:
 	if not NarrativeBattleContext.has_result():
 		NarrativeBattleContext.set_result(_get_narrative_result())
-	get_tree().change_scene_to_file(NarrativeBattleContext.source_scene)
+	var target_scene := NarrativeBattleContext.source_scene
+	if target_scene.is_empty():
+		target_scene = DEFAULT_NARRATIVE_SCENE
+	get_tree().change_scene_to_file(target_scene)
