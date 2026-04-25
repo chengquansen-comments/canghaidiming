@@ -4,6 +4,51 @@ const CombatResolver = preload("res://scripts/combat_resolver.gd")
 const PREVIEW_GHOST_ALPHA := 0.80
 const PREVIEW_GHOST_OVERLAP_ALPHA := 0.00
 
+func _show_role_selection() -> void:
+	battle_active = false
+	awaiting_player_input = false
+	player_role_id = ""
+	if overlay_scrim != null:
+		overlay_scrim.visible = true
+	if overlay_panel != null:
+		overlay_panel.visible = true
+	if overlay_title != null:
+		overlay_title.text = "选择兵器"
+	if overlay_body != null:
+		overlay_body.text = "选择本局操控角色。"
+	_clear_role_buttons()
+	_add_role_button("spearman", "枪手")
+	_add_role_button("blademaster", "刀客")
+
+func _clear_role_buttons() -> void:
+	if overlay_actions == null:
+		return
+	for child in overlay_actions.get_children():
+		child.queue_free()
+
+func _add_role_button(role_id: String, title: String) -> void:
+	if overlay_actions == null:
+		return
+	var button := Button.new()
+	button.text = title
+	button.pressed.connect(func() -> void:
+		_select_role_and_start(role_id)
+	)
+	overlay_actions.add_child(button)
+
+func _select_role_and_start(role_id: String) -> void:
+	if not fighter_catalog.has(role_id):
+		role_id = "spearman"
+	player_role_id = role_id
+	print("[role-select] selected=", player_role_id)
+	if overlay_scrim != null:
+		overlay_scrim.visible = false
+	if overlay_panel != null:
+		overlay_panel.visible = false
+	_clear_actor_runtime(true)
+	_clear_actor_runtime(false)
+	_start_session()
+
 func _refresh_preview_ghosts() -> void:
 	_ensure_preview_ghosts()
 	if player_preview_ghost == null or enemy_preview_ghost == null or player_preview_label == null or enemy_preview_label == null:
