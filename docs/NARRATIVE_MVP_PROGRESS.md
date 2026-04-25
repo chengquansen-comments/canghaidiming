@@ -1,7 +1,7 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景/人物/旧物文本占位 + 结局闭环 + 收益与推进入口收口 + UI 分层”。  
+> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景/人物/旧物文本占位 + 结局闭环 + 收益与推进入口收口 + UI 分层 + 最小图片显示”。  
 > 核心原则：继续走安全线，不恢复旧 `scripts/narrative/*` 复杂链路；不使用 `HScrollContainer`；不改 `MainVisual.tscn`；不改 `battle_controller`；不重构 `web_shell.html`。
 
 ---
@@ -33,7 +33,7 @@
 行军图：六列文本地图 + 地图按钮
 地图状态：▶ 当前 / ● 已走 / ◎ 可前往 / ○ 未开放
 叙事变量：军功 / 清望 / 旧案线索
-视觉表现：背景 / 人物 / 旧物 / 结局图先用文本占位
+视觉表现：ResourceLoader.exists + TextureRect，资源不存在则文本占位
 战斗表现：请求战斗 / 视为胜利继续 先用文本占位
 UI 分层：行军图操作 / 战斗桥接 / 叙事选择 三个区域分开展示
 ```
@@ -121,6 +121,8 @@ scripts/narrative_demo_safe_controller.gd
 [x] 结局与重开闭环
 [x] 收益与推进入口已收口：_apply_choice_delta / _apply_default_map_reward / _advance_to_node
 [x] UI 分层完成：map_buttons_box / combat_buttons_box / choices_box
+[x] 最小图片显示：TextureRect + ResourceLoader.exists
+[x] 资源存在则显示图片，资源不存在则显示文本占位
 ```
 
 对应提交：
@@ -131,48 +133,37 @@ scripts/narrative_demo_safe_controller.gd
 b580c2e58e98ba7dc5779599f0dfce21a510dafe  Apply default rewards on safe map navigation
 0d57c595a4938c179bd21a636b9ffd1b5500fa44  Unify safe narrative progression helpers
 9376b50ded1842e29edbf06ccbec41c2c2d80b4c  Split safe narrative demo button sections
+0fcc090ec98dcc6cc5fa1b9f8d8c4d6dc7efbcd7  Add safe narrative visual texture display
 ```
 
 ---
 
-## 4. 当前收益与推进规则
+## 4. 当前视觉显示规则
 
-### 4.1 普通选择按钮
+节点现在可配置：
 
 ```text
-普通 choice 点击
-→ _apply_choice_delta(choice)
-→ _advance_to_node(node_index + 1, "")
-→ _render()
+visual_path
 ```
 
-choice delta 来自节点 choices：
+当前安全版规则：
 
 ```text
-dg：军功变化
-dq：清望变化
-dc：旧案线索变化
+visual_path 为空 → 显示文本占位
+ResourceLoader.exists(path) 为 false → 显示文本占位
+资源存在且是 Texture2D → TextureRect 显示图片
+资源存在但不是 Texture2D → 显示错误占位文本
 ```
 
-### 4.2 地图点击按钮
+当前配置路径：
 
 ```text
-地图按钮点击
-→ 当前节点：只提示，不推进
-→ 已走节点：只提示，不推进
-→ 未开放节点：只提示，不推进
-→ 可前往节点：_apply_default_map_reward(target_index) → _advance_to_node(target_index, hint)
-```
-
-默认地图收益规则：
-
-```text
-普通战斗：军功 +1，旧案线索 +1
-精英战斗：军功 +1，旧案线索 +1
-Boss：军功 +2，旧案线索 +1
-旧物：旧案线索 +2
-结尾：清望 +1
-事件：清望 +1
+military_order → res://assets/pixel_battle/backgrounds/narrative_military_order.png
+beach_ambush → res://assets/pixel_battle/backgrounds/narrative_beach_ambush.png
+ming_firearm → res://assets/pixel_battle/relics/relic_ming_firearm.png
+transport_officer → res://assets/pixel_battle/portraits/transport_officer.png
+wakou_boss → res://assets/pixel_battle/portraits/wakou_leader.png
+military_coverup → res://assets/pixel_battle/backgrounds/narrative_military_coverup.png
 ```
 
 ---
@@ -197,65 +188,104 @@ choices_box：叙事选择，只放当前节点 choices / 序章继续 / 重开�
 
 ---
 
-## 6. 当前仍需推进
+## 6. 当前收益与推进规则
+
+### 6.1 普通选择按钮
+
+```text
+普通 choice 点击
+→ _apply_choice_delta(choice)
+→ _advance_to_node(node_index + 1, "")
+→ _render()
+```
+
+choice delta 来自节点 choices：
+
+```text
+dg：军功变化
+dq：清望变化
+dc：旧案线索变化
+```
+
+### 6.2 地图点击按钮
+
+```text
+地图按钮点击
+→ 当前节点：只提示，不推进
+→ 已走节点：只提示，不推进
+→ 未开放节点：只提示，不推进
+→ 可前往节点：_apply_default_map_reward(target_index) → _advance_to_node(target_index, hint)
+```
+
+默认地图收益规则：
+
+```text
+普通战斗：军功 +1，旧案线索 +1
+精英战斗：军功 +1，旧案线索 +1
+Boss：军功 +2，旧案线索 +1
+旧物：旧案线索 +2
+结尾：清望 +1
+事件：清望 +1
+```
+
+---
+
+## 7. 当前仍需推进
 
 ```text
 [ ] 安全版 Web 回归验收
 [ ] 行军图按钮区进一步做换行 / 分列，避免宽屏以外横向过挤
 [ ] 场景占位信息分层展示，降低正文拥挤
-[ ] 安全恢复图片显示：背景 / 立绘 / 旧物图
+[ ] 图片显示区域尺寸和正文高度在 1600×1000 下验收
+[ ] 给缺失图片资产补图或补占位 png
 [ ] 真实战斗胜利回调接入前调研
 ```
 
 ---
 
-## 7. 下一刀建议：安全版图片显示恢复
+## 8. 下一刀建议：行军图按钮换行 / 分列
 
 目标：
 
 ```text
-在 safe controller 内恢复最小图片显示能力，不恢复旧复杂 narrative controller。
+当前行军图按钮使用单行 HBoxContainer，节点多时可能挤压或溢出。
+下一步将行军图按钮改成两行或按列分组，仍不使用 HScrollContainer。
 ```
 
 建议实现：
 
 ```text
-1. 新增 visual_label 或 visual_box 区域
-2. 每个节点配置 bg_path / portrait_path / relic_path 可选字段
-3. 用 ResourceLoader.exists(path) 判断资源是否存在
-4. 资源存在则显示 TextureRect
-5. 资源不存在则保留现有文本占位
-6. 不使用 HScrollContainer
-7. 不引用 scripts/narrative/*
+1. map_buttons_box 下按 column 分组
+2. 每个 column 一个 VBoxContainer
+3. 外层使用 HBoxContainer 显示六列
+4. 每列显示该列节点按钮
+5. 仍保持按钮点击逻辑不变
 ```
 
 验收标准：
 
 ```text
-[ ] 无图时仍显示文本占位
-[ ] 有图时显示 TextureRect
+[ ] 六列更像行军图
+[ ] 宽屏下不挤压正文
+[ ] 不使用 HScrollContainer
+[ ] 地图点击推进不受影响
 [ ] Web 构建稳定
-[ ] 序章、行军图、地图点击、战斗占位、结局闭环不受影响
 ```
 
 ---
 
-## 8. 后续路线
+## 9. 后续路线
 
-### Step 1：安全恢复图片展示
+### Step 1：行军图按钮分列
 
 ```text
-只在 safe controller 内做 TextureRect + ResourceLoader.exists；
-不恢复旧 narrative_demo_controller.gd；
-不使用 HScrollContainer。
+优先级最高，配合当前六列地图文本，让操作区也更像肉鸽地图。
 ```
 
-### Step 2：安全版 UI 继续细化
+### Step 2：补占位 png
 
 ```text
-地图按钮换行 / 多行布局；
-场景占位分背景、人物、旧物三段；
-战斗桥接区域增加 payload 信息。
+对当前 visual_path 中缺失的图片，补最小占位 png，确保视觉区域能看到真实 TextureRect 效果。
 ```
 
 ### Step 3：真实战斗接入前调研
@@ -274,16 +304,16 @@ choices_box：叙事选择，只放当前节点 choices / 序章继续 / 重开�
 
 ---
 
-## 9. 给 Codex 的下一步指令
+## 10. 给 Codex 的下一步指令
 
 ```text
-请继续在 scripts/narrative_demo_safe_controller.gd 上推进，不要恢复 scripts/narrative/* 旧复杂链路。下一步优先在 safe controller 内安全恢复图片显示能力：新增视觉区域，用 ResourceLoader.exists 判断 bg_path / portrait_path / relic_path 是否存在；存在则显示 TextureRect，不存在则继续显示文本占位。不要使用 HScrollContainer，不要改 MainVisual.tscn，不要改 battle_controller，不要重构 web_shell.html。完成后验证：Web 构建稳定，序章、行军图、地图点击、战斗占位、结局闭环都不受影响。
+请继续在 scripts/narrative_demo_safe_controller.gd 上推进，不要恢复 scripts/narrative/* 旧复杂链路。下一步优先把行军图按钮从单行 HBoxContainer 改成按 column 分组的六列布局，每列一个 VBoxContainer，外层一个 HBoxContainer，不使用 HScrollContainer。保持地图点击逻辑不变，不改 MainVisual.tscn，不改 battle_controller，不重构 web_shell.html。完成后验证：Web 构建稳定，地图点击、战斗占位、结局闭环不受影响。
 ```
 
 ---
 
-## 10. 当前一句话结论
+## 11. 当前一句话结论
 
 ```text
-剧情 MVP 安全线已完成“Web 稳定、压缩序章、六列行军图、地图点击、三变量成长、战斗占位、场景占位、结局闭环、收益与推进入口收口、UI 分层”；下一步抓重点在 safe controller 内恢复图片显示能力。
+剧情 MVP 安全线已完成“Web 稳定、压缩序章、六列行军图、地图点击、三变量成长、战斗占位、场景占位、结局闭环、收益与推进入口收口、UI 分层、最小图片显示”；下一步抓重点把行军图按钮区改成真正的六列操作布局。
 ```
