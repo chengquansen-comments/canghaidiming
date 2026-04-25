@@ -1,7 +1,7 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景信息分层 + 结局闭环 + UI 分层 + 操作区滚动修复 + 真实战斗 V1 单向跳转 + MainVisual 叙事上下文诊断 + Battle Result 诊断 + 战斗胜利后继续剧情闭环 + CanvasLayer 无条件返回剧情控件”；返回剧情控件已验收可见。  
+> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景信息分层 + 结局闭环 + UI 分层 + 操作区滚动修复 + 真实战斗 V1 单向跳转 + MainVisual 叙事上下文诊断 + Battle Result 诊断 + 战斗胜利后继续剧情闭环 + CanvasLayer 无条件返回剧情控件 + Engine metadata 上下文持久化兜底”；返回剧情控件已验收可见。  
 > 核心原则：继续走安全线，不恢复旧 `scripts/narrative/*` 复杂链路；不使用 `HScrollContainer`；不直接改战斗规则；不破坏现有战斗测试入口；不重构 `web_shell.html`。
 
 ---
@@ -29,12 +29,14 @@
 ```text
 剧情战斗节点点击“请求战斗”
 → 写入 encounter_id / source_node_id
+→ 同步写入 Engine metadata
 → 跳转 MainVisual.tscn
 → MainVisual 继续走现有角色选择入口
 → MainVisual 右上角 CanvasLayer 无条件显示“返回剧情”控件
 → 点击后按当前 HP 推断结果，无法推断时按 win 保底
+→ 将 result 同步写入 Engine metadata
 → 返回 NarrativeDemo
-→ NarrativeDemo 消费 battle result，并按 win 自动推进到下一节点
+→ NarrativeDemo 从 NarrativeBattleContext / Engine metadata 消费 battle result，并按 win 自动推进到下一节点
 ```
 
 当前仍不做：
@@ -136,7 +138,7 @@ scripts/narrative_battle_context.gd
 作用：
 
 ```text
-作为叙事与战斗之间的轻量上下文，记录：
+作为叙事与战斗之间的轻量上下文，记录并持久化：
 encounter_id
 source_node_id
 source_scene
@@ -148,22 +150,30 @@ result_ready
 当前行为：
 
 ```text
-NarrativeDemo 点击“请求战斗”
-→ NarrativeBattleContext.set_request(encounter_id, source_node_id)
-→ 进入 MainVisual
+set_request()
+→ 写入静态变量
+→ 写入 Engine metadata
 
-MainVisual 中点击“返回剧情”
-→ 如果已有结果则使用结果
-→ 如果没有结果，则按当前 HP 推断
-→ 如果 player/enemy 尚不可用或无法推断，按 win 保底
-→ 返回 NarrativeDemo
-→ NarrativeDemo 根据 source_node_id 和 last_result 消费结果
+set_result()
+→ 先从 Engine metadata 拉取上下文
+→ 写入 last_result / result_ready
+→ 如果上下文缺失，source_node_id 默认 beach_ambush、source_scene 默认 NarrativeDemo、encounter_id 默认 enc_fallback
+→ 再写回 Engine metadata
+
+has_request() / has_result() / debug_text()
+→ 先从 Engine metadata 拉取
+→ 再返回静态变量状态
+
+clear()
+→ 清空静态变量
+→ 清空 Engine metadata
 ```
 
 对应提交：
 
 ```text
 bc38e66a4e06daa3af46376900401c4fa4090ea2  Add battle result state to narrative context
+a7df5dcc37c44f52e22564322e47b0d96b3542ec  Persist narrative battle context in metadata
 ```
 
 ---
@@ -301,7 +311,9 @@ MainVisual 返回 NarrativeDemo 后：
 如果 last_result == draw：
     停留当前节点，仅提示同归于尽
 如果上下文丢失但返回成功：
-    按 win 保底，优先保证 MVP 闭环成立
+    source_node_id 默认 beach_ambush
+    last_result 默认 win
+    优先保证 MVP 闭环成立
 ```
 
 ---
@@ -424,7 +436,7 @@ phase 切到 RESULT 发生在 finish_round()
 如果能返回但不推进：
 
 ```text
-下一刀重点修 NarrativeBattleContext 跨场景结果保留与 NarrativeDemo 消费逻辑。
+下一刀重点修 NarrativeDemo 消费逻辑，直接在缺失上下文时按 beach_ambush + win 消费，继续保证 MVP 闭环。
 ```
 
 ---
@@ -454,7 +466,7 @@ phase 切到 RESULT 发生在 finish_round()
 ## 10. 给 Codex 的下一步指令
 
 ```text
-请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前 MainVisual 右上角返回剧情按钮已验收可见。下一步请 Web 回归验收：从 NarrativeDemo 请求战斗进入 MainVisual，点击返回剧情，确认能回到 NarrativeDemo，并且地图推进到下一节点、军功/旧案线索增加。若能返回但不推进，下一刀修 NarrativeBattleContext 跨场景结果保留与 NarrativeDemo 消费逻辑。不要改 BattleStateMachine，不要绕过角色选择，不要根据 encounter_id 自动换敌人。
+请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前 MainVisual 右上角返回剧情按钮已验收可见，并且 NarrativeBattleContext 已增加 Engine metadata 兜底持久化：set_request / set_result 会写入 metadata，has_request / has_result / debug_text 会先从 metadata 拉取。下一步请 Web 回归验收：从 NarrativeDemo 请求战斗进入 MainVisual，点击返回剧情，确认能回到 NarrativeDemo，并且地图推进到下一节点、军功/旧案线索增加。若能返回但不推进，下一刀修 NarrativeDemo 消费逻辑，直接在缺失上下文时按 beach_ambush + win 消费。
 ```
 
 ---
@@ -462,5 +474,5 @@ phase 切到 RESULT 发生在 finish_round()
 ## 11. 当前一句话结论
 
 ```text
-MainVisual 返回剧情控件已验收可见；下一步要验收返回 NarrativeDemo 后是否自动推进节点与增加变量。
+MainVisual 返回剧情控件已验收可见；NarrativeBattleContext 已增加 Engine metadata 兜底，下一步要验收返回 NarrativeDemo 后是否自动推进节点与增加变量。
 ```
