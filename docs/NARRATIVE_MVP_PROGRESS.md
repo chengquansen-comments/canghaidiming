@@ -1,7 +1,7 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景信息分层 + 结局闭环 + UI 分层 + 操作区滚动修复 + 真实战斗 V1 单向跳转 + MainVisual 叙事上下文诊断 + Battle Result 诊断 + 战斗胜利后继续剧情闭环”。  
+> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景信息分层 + 结局闭环 + UI 分层 + 操作区滚动修复 + 真实战斗 V1 单向跳转 + MainVisual 叙事上下文诊断 + Battle Result 诊断 + 战斗胜利后继续剧情闭环 + HP_ZERO 稳定触发继续剧情按钮”。  
 > 核心原则：继续走安全线，不恢复旧 `scripts/narrative/*` 复杂链路；不使用 `HScrollContainer`；不直接改战斗规则；不破坏现有战斗测试入口；不重构 `web_shell.html`。
 
 ---
@@ -32,7 +32,7 @@
 → 跳转 MainVisual.tscn
 → MainVisual 显示叙事上下文诊断
 → MainVisual 继续走现有角色选择入口
-→ 战斗结算后显示 Battle Result 诊断
+→ 战斗任一方 HP 归零或 phase == RESULT 后显示 Battle Result 诊断
 → 显示“继续剧情”按钮
 → 点击后返回 NarrativeDemo
 → NarrativeDemo 消费 battle result，并按 win 自动推进到下一节点
@@ -153,7 +153,7 @@ NarrativeDemo 点击“请求战斗”
 → NarrativeBattleContext.set_request(encounter_id, source_node_id)
 → 进入 MainVisual
 
-MainVisual 战斗进入 RESULT
+MainVisual 检测到任一方 HP 归零或 phase == RESULT
 → NarrativeBattleContext.set_result(narrative_result)
 → 显示“继续剧情”按钮
 
@@ -185,7 +185,7 @@ extends res://scripts/battle_controller_visual_break_preview.gd
 _ready() 中先 super._ready()
 如果 NarrativeBattleContext.has_request()，追加 NarrativeContextDebugLabel
 _process 中非侵入式检查 state_machine.phase / player.hp / enemy.hp
-当 phase == RESULT，写入 NarrativeBattleContext.last_result
+当任一方 HP 归零或 phase == RESULT，写入 NarrativeBattleContext.last_result
 显示 BattleResultDebugLabel
 显示“继续剧情”按钮
 ```
@@ -206,12 +206,15 @@ player.hp <= 0 and enemy.hp <= 0 → narrative_result=draw
 02301584ac14d56483a2f9c6d1c3052abd40dbea  Use narrative context wrapper for MainVisual
 a4777fd2b960aa63e366db88eba5b417b62f09ae  Add battle result diagnostics to narrative wrapper
 6f68afe348bb66a3ecd052bcd1d5ccd08f48dec1  Fix battle state machine name collision in narrative wrapper
+59ec540fedcd2b1160bad2aa8b891acf9bcd0700  Make continue narrative button robust after hp zero
 ```
 
-新增本轮提交：
+本轮关键修复：
 
 ```text
-Add continue narrative button after battle result
+[修复] 继续剧情按钮不再只依赖 state_machine.phase == RESULT。
+[修复] 只要 player.hp <= 0 或 enemy.hp <= 0，也会记录结果并显示“继续剧情”。
+[修复] 按钮移到右上角固定位置，并 move_to_front()，降低被结算 UI 遮挡的概率。
 ```
 
 约束：
@@ -369,7 +372,7 @@ finish_round(player, enemy)
 ```text
 HP 归零发生在 resolve_intent()
 phase 切到 RESULT 发生在 finish_round()
-最小可靠胜负信号是 state_machine.phase == BattlePhase.RESULT
+但实际 UI 链路中 phase 不一定稳定停留在 RESULT，所以当前 wrapper 同时使用 HP_ZERO 作为继续剧情按钮触发条件。
 ```
 
 ---
@@ -395,7 +398,7 @@ phase 切到 RESULT 发生在 finish_round()
 目标：
 
 ```text
-确认“剧情 → 战斗 → 胜利 → 继续剧情 → 回到下一节点”的闭环成立。
+确认“剧情 → 战斗 → 胜利/HP归零 → 继续剧情 → 回到下一节点”的闭环成立。
 ```
 
 验收标准：
@@ -404,7 +407,7 @@ phase 切到 RESULT 发生在 finish_round()
 [ ] 从 NarrativeDemo 战斗节点点击请求战斗
 [ ] 进入 MainVisual
 [ ] 正常选择角色并打完战斗
-[ ] RESULT 后出现“继续剧情”按钮
+[ ] 敌方 HP 归零后右上角出现“继续剧情”按钮
 [ ] 点击按钮返回 NarrativeDemo
 [ ] NarrativeDemo 显示“战斗胜利：已返回剧情，并自动推进到下一节点。”
 [ ] 地图当前节点已经推进到下一格
@@ -412,10 +415,10 @@ phase 切到 RESULT 发生在 finish_round()
 [ ] Web 构建稳定
 ```
 
-如果按钮遮挡战斗 UI：
+如果按钮仍不出现：
 
 ```text
-下一刀只调整 ContinueNarrativeButton 位置，不改战斗规则。
+下一刀改为在 MainVisual wrapper 中增加“返回剧情（调试）”常驻按钮，仅在 NarrativeBattleContext.has_request() 时显示，用于保证 MVP 闭环优先成立。
 ```
 
 ---
@@ -445,7 +448,7 @@ phase 切到 RESULT 发生在 finish_round()
 ## 10. 给 Codex 的下一步指令
 
 ```text
-请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前已补上战斗胜利后的继续剧情闭环：MainVisual RESULT 后显示“继续剧情”按钮，点击返回 NarrativeDemo；NarrativeDemo 消费 NarrativeBattleContext.last_result，如果 win 则给战斗奖励并自动推进到下一节点。下一步请做 Web 回归验收：从 NarrativeDemo 请求战斗，打赢后点击继续剧情，确认回到 NarrativeDemo 且地图推进、变量增加。不要改 BattleStateMachine，不要绕过角色选择，不要根据 encounter_id 自动换敌人。
+请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前已修复“胜利后不出现继续剧情按钮”的问题：scripts/battle_controller_visual_narrative_context.gd 不再只依赖 phase == RESULT，而是只要 player.hp <= 0 或 enemy.hp <= 0 也会记录结果并显示右上角“继续剧情”按钮。下一步请做 Web 回归验收：从 NarrativeDemo 请求战斗，打赢后确认右上角出现继续剧情，点击后回到 NarrativeDemo 且地图推进、变量增加。不要改 BattleStateMachine，不要绕过角色选择，不要根据 encounter_id 自动换敌人。
 ```
 
 ---
@@ -453,5 +456,5 @@ phase 切到 RESULT 发生在 finish_round()
 ## 11. 当前一句话结论
 
 ```text
-剧情 MVP 安全线已完成并通过 P0；真实战斗接入已从“单向跳转”推进到“胜利后继续剧情闭环”，下一步应 Web 验收剧情—战斗—剧情是否完整成立。
+剧情 MVP 安全线已完成并通过 P0；真实战斗接入已修复继续剧情按钮触发条件，下一步应 Web 验收剧情—战斗—剧情闭环是否完整成立。
 ```
