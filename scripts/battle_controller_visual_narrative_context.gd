@@ -32,21 +32,21 @@ func _add_narrative_debug_layer() -> void:
 	panel.anchor_right = 1.0
 	panel.anchor_top = 0.0
 	panel.anchor_bottom = 0.0
-	panel.offset_left = -450
+	panel.offset_left = -520
 	panel.offset_right = -18
-	panel.offset_top = 68
-	panel.offset_bottom = 260
+	panel.offset_top = 54
+	panel.offset_bottom = 330
 	narrative_debug_layer.add_child(panel)
 
 	var margin := MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 10)
-	margin.add_theme_constant_override("margin_top", 8)
-	margin.add_theme_constant_override("margin_right", 10)
-	margin.add_theme_constant_override("margin_bottom", 8)
+	margin.add_theme_constant_override("margin_left", 12)
+	margin.add_theme_constant_override("margin_top", 10)
+	margin.add_theme_constant_override("margin_right", 12)
+	margin.add_theme_constant_override("margin_bottom", 10)
 	panel.add_child(margin)
 
 	narrative_debug_box = VBoxContainer.new()
-	narrative_debug_box.add_theme_constant_override("separation", 6)
+	narrative_debug_box.add_theme_constant_override("separation", 8)
 	margin.add_child(narrative_debug_box)
 
 	narrative_context_label = Label.new()
@@ -60,14 +60,14 @@ func _add_narrative_debug_layer() -> void:
 	battle_mapping_label.name = "BattleMappingDebugLabel"
 	battle_mapping_label.text = _mapping_debug_text()
 	battle_mapping_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	battle_mapping_label.add_theme_font_size_override("font_size", 14)
+	battle_mapping_label.add_theme_font_size_override("font_size", 15)
 	narrative_debug_box.add_child(battle_mapping_label)
 
 	battle_result_label = Label.new()
 	battle_result_label.name = "BattleResultDebugLabel"
 	battle_result_label.text = "战斗结果：可随时返回剧情；胜负会按当前 HP 推断"
 	battle_result_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	battle_result_label.add_theme_font_size_override("font_size", 14)
+	battle_result_label.add_theme_font_size_override("font_size", 13)
 	narrative_debug_box.add_child(battle_result_label)
 
 	continue_narrative_button = Button.new()
@@ -78,9 +78,16 @@ func _add_narrative_debug_layer() -> void:
 	narrative_debug_box.add_child(continue_narrative_button)
 
 func _context_debug_text() -> String:
+	var mapping := NarrativeBattleContext.get_battle_mapping()
+	var mapping_summary := "关卡信息：%s｜推荐玩家=%s｜推荐敌人=%s｜难度=%s" % [
+		str(mapping.get("label", "")),
+		str(mapping.get("player_role", "")),
+		str(mapping.get("enemy_role", "")),
+		str(mapping.get("difficulty", ""))
+	]
 	if NarrativeBattleContext.has_request():
-		return "叙事上下文：%s" % NarrativeBattleContext.debug_text()
-	return "叙事上下文：无请求｜返回将按 win 保底"
+		return "%s\n叙事上下文：%s" % [mapping_summary, NarrativeBattleContext.debug_text()]
+	return "%s\n叙事上下文：无请求｜返回将按 win 保底" % mapping_summary
 
 func _mapping_debug_text() -> String:
 	return "接战映射：%s" % NarrativeBattleContext.battle_mapping_debug_text()
@@ -88,6 +95,8 @@ func _mapping_debug_text() -> String:
 func _update_battle_result_debug() -> void:
 	if battle_result_label == null:
 		return
+	if narrative_context_label != null:
+		narrative_context_label.text = _context_debug_text()
 	if battle_mapping_label != null:
 		battle_mapping_label.text = _mapping_debug_text()
 	if state_machine == null:
