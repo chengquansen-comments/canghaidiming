@@ -7,8 +7,8 @@ const BattleStageHelper = preload("res://scripts/visual/battle_stage_view.gd")
 # Visual actor tuning for the 1600x960 battle layout.
 # Grid slot is around y=468..516. Foot point is kept just above the lower slot edge,
 # so the actor reads as standing inside the selected grid cell.
-const ACTOR_RENDER_SIZE := Vector2(600, 600)
-const ACTOR_FOOT_OFFSET_X := 300.0
+const ACTOR_RENDER_SIZE := Vector2(250, 250)
+const ACTOR_FOOT_OFFSET_X := 140.0
 const ACTOR_GROUND_Y := 512.0
 const MIN_HORIZONTAL_SHEET_RATIO := 2.35
 
