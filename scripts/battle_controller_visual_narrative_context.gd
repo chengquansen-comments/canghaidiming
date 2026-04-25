@@ -44,35 +44,36 @@ func _add_battle_result_debug() -> void:
 	battle_result_label = Label.new()
 	battle_result_label.name = "BattleResultDebugLabel"
 	battle_result_label.text = "战斗结果诊断：等待战斗结算"
-	battle_result_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	battle_result_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	battle_result_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	battle_result_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	battle_result_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	battle_result_label.anchor_left = 0.5
-	battle_result_label.anchor_right = 0.5
+	battle_result_label.anchor_left = 1.0
+	battle_result_label.anchor_right = 1.0
 	battle_result_label.anchor_top = 0.0
 	battle_result_label.anchor_bottom = 0.0
-	battle_result_label.offset_left = -420
-	battle_result_label.offset_right = 420
-	battle_result_label.offset_top = 112
-	battle_result_label.offset_bottom = 146
-	battle_result_label.add_theme_font_size_override("font_size", 16)
+	battle_result_label.offset_left = -520
+	battle_result_label.offset_right = -24
+	battle_result_label.offset_top = 78
+	battle_result_label.offset_bottom = 126
+	battle_result_label.add_theme_font_size_override("font_size", 15)
 	add_child(battle_result_label)
 
 	continue_narrative_button = Button.new()
 	continue_narrative_button.name = "ContinueNarrativeButton"
 	continue_narrative_button.text = "继续剧情"
 	continue_narrative_button.visible = false
-	continue_narrative_button.anchor_left = 0.5
-	continue_narrative_button.anchor_right = 0.5
+	continue_narrative_button.anchor_left = 1.0
+	continue_narrative_button.anchor_right = 1.0
 	continue_narrative_button.anchor_top = 0.0
 	continue_narrative_button.anchor_bottom = 0.0
-	continue_narrative_button.offset_left = -110
-	continue_narrative_button.offset_right = 110
-	continue_narrative_button.offset_top = 150
-	continue_narrative_button.offset_bottom = 194
+	continue_narrative_button.offset_left = -180
+	continue_narrative_button.offset_right = -24
+	continue_narrative_button.offset_top = 132
+	continue_narrative_button.offset_bottom = 178
 	continue_narrative_button.pressed.connect(_on_continue_narrative_pressed)
 	add_child(continue_narrative_button)
+	continue_narrative_button.move_to_front()
 
 func _update_battle_result_debug() -> void:
 	if battle_result_label == null:
@@ -88,7 +89,9 @@ func _update_battle_result_debug() -> void:
 	if player == null or enemy == null:
 		_set_battle_result_debug_text("战斗结果诊断：等待角色创建")
 		return
-	if state_machine.phase != BattleStateMachineScript.BattlePhase.RESULT:
+	var hp_result_ready := player.hp <= 0 or enemy.hp <= 0
+	var phase_result_ready := state_machine.phase == BattleStateMachineScript.BattlePhase.RESULT
+	if not hp_result_ready and not phase_result_ready:
 		_set_battle_result_debug_text("战斗结果诊断：phase=%s｜player_hp=%d｜enemy_hp=%d｜状态=未结算" % [str(state_machine.phase), player.hp, enemy.hp])
 		return
 	var narrative_result := _get_narrative_result()
@@ -97,9 +100,12 @@ func _update_battle_result_debug() -> void:
 		result_recorded = true
 		if narrative_context_label != null:
 			narrative_context_label.text = "叙事战斗上下文：%s" % NarrativeBattleContext.debug_text()
-	_set_battle_result_debug_text("战斗结果诊断：phase=RESULT｜player_hp=%d｜enemy_hp=%d｜narrative_result=%s" % [player.hp, enemy.hp, narrative_result])
+	var result_state := "RESULT" if phase_result_ready else "HP_ZERO"
+	_set_battle_result_debug_text("战斗结果诊断：state=%s｜phase=%s｜player_hp=%d｜enemy_hp=%d｜narrative_result=%s" % [result_state, str(state_machine.phase), player.hp, enemy.hp, narrative_result])
 	if continue_narrative_button != null:
 		continue_narrative_button.visible = true
+		continue_narrative_button.disabled = false
+		continue_narrative_button.move_to_front()
 
 func _set_battle_result_debug_text(text: String) -> void:
 	if text == last_result_debug_text:
@@ -119,4 +125,6 @@ func _get_narrative_result() -> String:
 	return "unknown"
 
 func _on_continue_narrative_pressed() -> void:
+	if not NarrativeBattleContext.has_result():
+		NarrativeBattleContext.set_result(_get_narrative_result())
 	get_tree().change_scene_to_file(NarrativeBattleContext.source_scene)
