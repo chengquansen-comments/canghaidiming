@@ -1,9 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360">
-  <rect width="960" height="360" fill="#151922"/>
-  <rect x="40" y="40" width="880" height="280" rx="18" fill="#242b35" stroke="#9a7b4f" stroke-width="6"/>
-  <circle cx="190" cy="180" r="70" fill="#3a2a1c" stroke="#c79b57" stroke-width="5"/>
-  <rect x="340" y="105" width="430" height="34" fill="#6b5134"/>
-  <rect x="340" y="165" width="360" height="28" fill="#6b5134"/>
-  <rect x="340" y="220" width="470" height="24" fill="#6b5134"/>
-  <text x="480" y="305" text-anchor="middle" font-size="34" fill="#e5d0a2" font-family="sans-serif">军令巡海 / Military Order</text>
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#efe0bf"/><stop offset="1" stop-color="#b9aa8a"/></linearGradient>
+    <linearGradient id="mist" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4b5860" stop-opacity="0.15"/><stop offset="1" stop-color="#1e2528" stop-opacity="0.45"/></linearGradient>
+  </defs>
+  <rect width="960" height="360" fill="url(#paper)"/>
+  <path d="M0 250 C180 210 260 270 420 230 C600 185 735 245 960 195 L960 360 L0 360 Z" fill="#2f3b3f" opacity="0.62"/>
+  <path d="M0 295 C180 260 310 310 500 275 C690 240 800 300 960 260 L960 360 L0 360 Z" fill="#111719" opacity="0.66"/>
+  <rect x="72" y="82" width="260" height="150" rx="10" fill="#201816" opacity="0.78"/>
+  <rect x="92" y="104" width="220" height="20" fill="#7e2e28" opacity="0.85"/>
+  <rect x="98" y="145" width="205" height="10" fill="#d5c39b" opacity="0.7"/>
+  <rect x="98" y="170" width="180" height="10" fill="#d5c39b" opacity="0.62"/>
+  <circle cx="306" cy="216" r="18" fill="#9f2f28" opacity="0.9"/>
+  <path d="M625 95 L660 285 L570 285 Z" fill="#141719" opacity="0.88"/>
+  <path d="M642 118 C660 152 675 188 690 220" stroke="#7e2e28" stroke-width="28" opacity="0.78" fill="none"/>
+  <path d="M624 112 C595 145 590 190 610 235" stroke="#e4d6b9" stroke-width="10" opacity="0.65" fill="none"/>
+  <path d="M690 86 L728 87 L712 282 L675 282 Z" fill="#1b1d1d" opacity="0.92"/>
+  <path d="M708 93 L744 135" stroke="#1b1d1d" stroke-width="8"/>
+  <path d="M45 58 C210 25 340 55 490 42 C680 28 805 45 925 30" stroke="#4b5860" stroke-width="18" opacity="0.18" fill="none"/>
+  <path d="M520 150 C610 118 690 122 780 152" stroke="#26363b" stroke-width="8" opacity="0.30" fill="none"/>
+  <text x="835" y="77" font-size="26" fill="#202020" opacity="0.72" font-family="serif">军令巡海</text>
+  <text x="54" y="326" font-size="22" fill="#7e2e28" opacity="0.92" font-family="serif">潮声未远，令已先至</text>
 </svg>
