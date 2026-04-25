@@ -7,6 +7,7 @@ var narrative: NarrativeState
 var root_panel: PanelContainer
 var title_label: Label
 var type_label: Label
+var route_label: Label
 var body_label: RichTextLabel
 var result_label: Label
 var vars_label: Label
@@ -22,10 +23,10 @@ func _ready() -> void:
 
 func _build_ui() -> void:
 	root_panel = PanelContainer.new()
-	root_panel.anchor_left = 0.08
-	root_panel.anchor_top = 0.08
-	root_panel.anchor_right = 0.92
-	root_panel.anchor_bottom = 0.92
+	root_panel.anchor_left = 0.06
+	root_panel.anchor_top = 0.06
+	root_panel.anchor_right = 0.94
+	root_panel.anchor_bottom = 0.94
 	root_panel.offset_left = 0
 	root_panel.offset_top = 0
 	root_panel.offset_right = 0
@@ -53,11 +54,18 @@ func _build_ui() -> void:
 	type_label.modulate = Color(0.82, 0.78, 0.68, 1.0)
 	layout.add_child(type_label)
 
+	route_label = Label.new()
+	route_label.add_theme_font_size_override("font_size", 15)
+	route_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	route_label.custom_minimum_size = Vector2(0, 48)
+	route_label.modulate = Color(0.66, 0.78, 0.84, 1.0)
+	layout.add_child(route_label)
+
 	body_label = RichTextLabel.new()
 	body_label.fit_content = false
 	body_label.scroll_active = true
 	body_label.bbcode_enabled = true
-	body_label.custom_minimum_size = Vector2(0, 390)
+	body_label.custom_minimum_size = Vector2(0, 340)
 	body_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	body_label.add_theme_font_size_override("normal_font_size", 22)
 	layout.add_child(body_label)
@@ -123,6 +131,7 @@ func _render_next_prologue_step() -> void:
 	_clear_choices()
 	result_label.text = ""
 	vars_label.text = ""
+	route_label.text = "序章：短镜头链 / 尚未进入行军图"
 	if not narrative.has_next_prologue_step():
 		showing_prologue = false
 		_render_node()
@@ -164,7 +173,8 @@ func _render_node() -> void:
 	_clear_choices()
 	var node := narrative.current_node()
 	title_label.text = str(node.get("title", "未知节点"))
-	type_label.text = narrative.node_type_label(str(node.get("type", "")))
+	type_label.text = narrative.node_status_text()
+	route_label.text = narrative.route_text()
 	vars_label.text = narrative.variables_text()
 	result_label.text = narrative.last_result_text
 	body_label.text = _format_node(node)
@@ -195,10 +205,17 @@ func _format_node(node: Dictionary) -> String:
 	if node.has("combat"):
 		var combat: Dictionary = node.get("combat", {})
 		lines.append("\n[b]战斗占位[/b]：%s" % str(combat.get("encounter_id", "")))
-		lines.append("敌人：%s" % ", ".join(PackedStringArray(combat.get("enemies", []))))
+		lines.append("敌人：%s" % _enemy_list_text(combat.get("enemies", [])))
 	if node.has("relic"):
 		lines.append("\n[b]旧物[/b]：%s" % str(node.get("relic", "")))
 	return "\n".join(lines)
+
+func _enemy_list_text(value: Variant) -> String:
+	var result: Array[String] = []
+	if typeof(value) == TYPE_ARRAY:
+		for item in value:
+			result.append(str(item))
+	return ", ".join(result)
 
 func _choice_button_text(choice: Dictionary) -> String:
 	var text := str(choice.get("text", ""))
@@ -222,6 +239,7 @@ func _on_choice_pressed(index: int) -> void:
 	_clear_choices()
 	result_label.text = str(result.get("result", ""))
 	vars_label.text = narrative.variables_text()
+	route_label.text = narrative.route_text()
 	continue_button.visible = true
 	waiting_result = true
 
@@ -230,6 +248,7 @@ func _render_ending() -> void:
 	var ending := narrative.current_ending()
 	title_label.text = "结局：%s" % str(ending.get("title", "沉默"))
 	type_label.text = "单局结算"
+	route_label.text = narrative.route_text()
 	body_label.text = str(ending.get("text", "潮声还在。"))
 	result_label.text = narrative.last_result_text
 	vars_label.text = narrative.variables_text()
