@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360">
+  <rect width="960" height="360" fill="#181818"/>
+  <rect x="70" y="70" width="820" height="220" rx="16" fill="#2f271e" stroke="#8d6a3f" stroke-width="6"/>
+  <rect x="190" y="172" width="460" height="34" rx="8" fill="#8b7a62"/>
+  <rect x="625" y="150" width="110" height="76" rx="10" fill="#5f5548"/>
+  <rect x="155" y="160" width="80" height="58" rx="8" fill="#4b3524"/>
+  <circle cx="710" cy="188" r="20" fill="#222" stroke="#b49661" stroke-width="4"/>
+  <text x="480" y="315" text-anchor="middle" font-size="34" fill="#e5d0a2" font-family="sans-serif">明制火器 / Ming Firearm Relic</text>
+</svg>
