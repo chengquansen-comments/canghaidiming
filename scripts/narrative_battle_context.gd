@@ -57,6 +57,46 @@ static func debug_text() -> String:
 	_pull_meta()
 	return "encounter_id=%s｜source_node_id=%s｜return_after_battle=%s｜last_result=%s" % [encounter_id, source_node_id, str(return_after_battle), last_result]
 
+static func get_battle_mapping() -> Dictionary:
+	_pull_meta()
+	match encounter_id:
+		"enc_beach_ambush":
+			return {
+				"player_role": "spearman",
+				"enemy_role": "enemy_spearman",
+				"enemy_family": "spearman",
+				"difficulty": "normal",
+				"label": "海边伏击 / 敌方枪手"
+			}
+		"enc_transport_officer":
+			return {
+				"player_role": "blademaster",
+				"enemy_role": "enemy_blademaster",
+				"enemy_family": "blademaster",
+				"difficulty": "elite",
+				"label": "失械案押运官 / 敌方刀客"
+			}
+		"enc_wakou_boss":
+			return {
+				"player_role": "blademaster",
+				"enemy_role": "enemy_blademaster",
+				"enemy_family": "blademaster",
+				"difficulty": "boss",
+				"label": "破船 Boss / 小股倭寇首领"
+			}
+		_:
+			return {
+				"player_role": "spearman",
+				"enemy_role": "enemy_spearman",
+				"enemy_family": "spearman",
+				"difficulty": "fallback",
+				"label": "默认战斗 / 枪手"
+			}
+
+static func battle_mapping_debug_text() -> String:
+	var mapping := get_battle_mapping()
+	return "battle_mapping=%s｜player=%s｜enemy=%s｜difficulty=%s" % [str(mapping.get("label", "")), str(mapping.get("player_role", "")), str(mapping.get("enemy_role", "")), str(mapping.get("difficulty", ""))]
+
 static func _write_meta() -> void:
 	Engine.set_meta(META_ENCOUNTER_ID, encounter_id)
 	Engine.set_meta(META_SOURCE_NODE_ID, source_node_id)
