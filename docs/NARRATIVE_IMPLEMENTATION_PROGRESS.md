@@ -1,17 +1,19 @@
 # 压缩版叙事实装进度
 
 > 对应脚本：`docs/MVP_NARRATIVE_SCRIPT_COMPRESSED.md`  
-> 当前目标：先独立跑通压缩叙事链路，不接管现有战斗规则和 Web 外壳。
+> 当前状态：压缩叙事已完成数据化、状态机、独立 Demo 场景。  
+> 当前目标：先本地跑通 `NarrativeDemo.tscn`，再补最小地图 UI 与美术占位；暂不接管现有战斗规则和 Web 外壳。
 
 ---
 
-## 1. 已新增文件
+## 1. 当前实装文件
 
 ```text
 data/narrative/mvp_compressed_narrative.json
 scripts/narrative/narrative_state.gd
 scripts/narrative/narrative_demo_controller.gd
 scenes/NarrativeDemo.tscn
+docs/NARRATIVE_MVP_PROGRESS.md
 ```
 
 ---
@@ -27,11 +29,11 @@ data/narrative/mvp_compressed_narrative.json
 包含：
 
 ```text
-序章极短镜头链
-三变量：军功 / 清望 / 旧案线索
-节点：军令、海边伏击、渔村残火、明制火器、押运官、欠饷营、海商宴、夜半磨刀、Boss、军门压案
-最终四选一：上报 / 掩盖 / 私查 / 借势
-小结局：上报、掩盖、私查、借势、沉默
+序章极短镜头链；
+三变量：军功 / 清望 / 旧案线索；
+节点：军令、海边伏击、渔村残火、明制火器、押运官、欠饷营、海商宴、夜半磨刀、Boss、军门压案；
+最终四选一：上报 / 掩盖 / 私查 / 借势；
+小结局：上报、掩盖、私查、借势、沉默。
 ```
 
 ### 2.2 叙事运行时状态
@@ -43,15 +45,16 @@ scripts/narrative/narrative_state.gd
 职责：
 
 ```text
-读取 JSON
-初始化三变量
-推进序章 step
-读取当前 node
-过滤可选 choice
-应用变量 delta
-记录 flags，例如 merchant_deal
-进入 ending
-输出变量显示文本
+读取 JSON；
+初始化三变量；
+推进序章 step；
+读取当前 node；
+过滤可选 choice；
+支持 requires / requires_flag；
+应用变量 delta；
+记录 flags，例如 merchant_deal；
+进入 ending；
+输出变量显示文本。
 ```
 
 ### 2.3 独立 Demo UI 控制器
@@ -63,13 +66,13 @@ scripts/narrative/narrative_demo_controller.gd
 职责：
 
 ```text
-构建最小 UI
-展示序章 step
-展示节点标题 / 类型 / 背景路径 / 旁白 / 对白
-展示战斗占位 encounter_id
-展示选择按钮
-展示变量变化
-展示结局
+构建最小 UI；
+展示序章 step；
+展示节点标题 / 类型 / 背景路径 / 旁白 / 对白；
+展示战斗占位 encounter_id；
+展示选择按钮；
+展示变量变化；
+展示结局。
 ```
 
 ### 2.4 独立测试场景
@@ -81,14 +84,46 @@ scenes/NarrativeDemo.tscn
 用途：
 
 ```text
-单独打开该场景即可跑压缩叙事 demo。
-暂不替换 MainVisual.tscn。
-暂不接入现有战斗控制器。
+单独打开该场景即可跑压缩叙事 demo；
+暂不替换 MainVisual.tscn；
+暂不接入现有战斗控制器；
+暂不影响 Web 主构建路径。
 ```
 
 ---
 
-## 3. 本阶段刻意不做
+## 3. 已完成状态
+
+```text
+[x] 压缩叙事脚本定稿
+[x] 叙事 JSON 数据化
+[x] 三变量数据结构
+[x] choice delta 机制
+[x] requires / requires_flag 机制
+[x] merchant_deal flag
+[x] ending 入口
+[x] 独立 Demo 场景
+[x] 不影响现有战斗主场景
+[x] 新增叙事 MVP 进度看板
+```
+
+---
+
+## 4. 尚未验收
+
+```text
+[ ] 本地运行 NarrativeDemo.tscn 无 GDScript 编译错误
+[ ] 序章可从头点到“该出山了”
+[ ] 节点选择可正常推进
+[ ] 三变量显示正确
+[ ] Boss 后可进入军门压案
+[ ] 上报 / 掩盖 / 私查 / 借势可按条件出现
+[ ] 结局能正常显示
+```
+
+---
+
+## 5. 本阶段刻意不做
 
 ```text
 不改 battle_controller 系列文件；
@@ -102,9 +137,9 @@ scenes/NarrativeDemo.tscn
 
 ---
 
-## 4. 本地验证方式
+## 6. 本地验证方式
 
-### 4.1 Godot 编辑器验证
+### 6.1 Godot 编辑器验证
 
 ```text
 打开 scenes/NarrativeDemo.tscn
@@ -119,11 +154,12 @@ scenes/NarrativeDemo.tscn
 点击选择后变量变化；
 经过推荐路径进入 Boss；
 Boss 后进入军门压案；
-满足条件时出现上报 / 私查 / 借势等选择；
+满足条件时出现上报 / 私查；
+经过海商宴时出现借势；
 点击后进入结局。
 ```
 
-### 4.2 Web 验证建议
+### 6.2 Web 验证建议
 
 当前没有替换主场景。若需要 Web 验证该叙事场景，可临时把 `project.godot` 的 main scene 或导出入口切到：
 
@@ -139,35 +175,40 @@ res://scenes/MainVisual.tscn
 
 ---
 
-## 5. 下一步实装建议
+## 7. 下一步实装建议
 
 ### Step 1：先修编译问题
 
 本地运行 `NarrativeDemo.tscn`，如有 GDScript 类型错误，优先修到可运行。
 
-### Step 2：加真实地图 UI
+### Step 2：叙事路径验收
+
+推荐验收路径：
+
+```text
+序章
+→ 军令：问旧案
+→ 海边伏击：搜身留证
+→ 明制火器：私下留证
+→ 押运官：私藏名册
+→ 夜半磨刀：问旧案
+→ Boss：查看火器箱
+→ 军门压案：据实上报 / 藏下一份证据
+```
+
+### Step 3：加最小地图 UI
 
 从当前线性推荐路径升级为一张最小肉鸽地图：
 
 ```text
-节点圆点
-六类节点图标
-当前节点高亮
-已走节点变暗
+节点圆点；
+六类节点图标；
+当前节点高亮；
+已走节点变暗；
+未开放节点半透明。
 ```
 
-### Step 3：接战斗结果
-
-现在 battle / elite / boss 节点只是战斗占位。后续可改为：
-
-```text
-进入战斗节点
-调用现有 battle scene
-战斗胜利后回到 NarrativeState
-显示战后选择
-```
-
-### Step 4：接美术背景
+### Step 4：接美术背景占位
 
 按 `docs/MVP_SINGLE_RUN_ART_COMPLETION_PLAN.md` 的 P0 资产接入：
 
@@ -182,23 +223,34 @@ boss_wakou_wrecked_ship.png
 ending_military_office_coverup.png
 ```
 
-### Step 5：再接角色立绘
+图片不存在时显示文本占位，不阻塞运行。
 
-优先：
+### Step 5：预留战斗回调接口
+
+现在 battle / elite / boss 节点只是战斗占位。后续可改为：
 
 ```text
-protagonist_young.png
-protagonist_child.png
-mentor_veteran.png
-wakou_leader.png
-military_superior.png
+NarrativeState.current_node.combat
+→ encounter_id
+→ 进入战斗
+→ battle_win
+→ 回到当前 node 战后 choices
 ```
 
 ---
 
-## 6. 当前判断
+## 8. 当前判断
 
-叙事已经从“文档脚本”推进到“可加载数据 + 可运行状态机 + 独立场景 Demo”的阶段。
+叙事已经从“文档脚本”推进到：
+
+```text
+压缩脚本
+→ JSON 数据
+→ NarrativeState
+→ Demo Controller
+→ NarrativeDemo.tscn
+→ 进度看板
+```
 
 下一刀不要扩写剧情，应优先本地跑通：
 
