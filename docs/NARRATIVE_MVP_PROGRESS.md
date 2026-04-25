@@ -1,8 +1,8 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：P0 Web 构建稳定已再次恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景/人物/旧物文本占位 + 结局闭环 + 收益与推进入口收口 + UI 分层 + 最小图片显示 + 六列地图操作布局 + SVG 占位视觉资源 + 场景信息分层展示 + 视觉资源诊断 + Parser 稳定修复”。  
-> 核心原则：继续走安全线，不恢复旧 `scripts/narrative/*` 复杂链路；不使用 `HScrollContainer`；不改 `MainVisual.tscn`；不改 `battle_controller`；不重构 `web_shell.html`。
+> 当前阶段：P0 Web 构建稳定已再次恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景/人物/旧物文本占位 + 结局闭环 + 收益与推进入口收口 + UI 分层 + 最小图片显示 + 六列地图操作布局 + SVG 占位视觉资源 + 场景信息分层展示 + 视觉资源诊断 + Parser 稳定修复”；真实战斗接入前调研已启动。  
+> 核心原则：继续走安全线，不恢复旧 `scripts/narrative/*` 复杂链路；不使用 `HScrollContainer`；不直接改战斗规则；不破坏现有战斗测试入口；不重构 `web_shell.html`。
 
 ---
 
@@ -38,6 +38,7 @@
 场景信息：scene 文本按句切分为多行 bullet，降低拥挤
 战斗表现：请求战斗 / 视为胜利继续 先用文本占位
 UI 分层：行军图操作 / 战斗桥接 / 叙事选择 三个区域分开展示
+下一阶段：从“战斗占位”推进到“真实战斗最小接入”
 ```
 
 ---
@@ -166,17 +167,6 @@ assets/pixel_battle/portraits/wakou_leader.svg
 assets/pixel_battle/backgrounds/narrative_military_coverup.svg
 ```
 
-对应提交：
-
-```text
-2875094edb5fabdefd30f81faa42df796b924d8b  Add narrative military order placeholder art
-b6f7e41a2c3d9a8d8c9cb20dc2a6ee71e34b3a4d  Add narrative beach ambush placeholder art
-b6f7e41a2c3d9a8d8c9cb20dc2a6ee71e34b3a4d  Add Ming firearm relic placeholder art
-52269becca1292119dcddb0a562350b8aa0c8b7e  Add transport officer placeholder portrait
-eacdd9a5bc073125c897be4756eb44ccf282ae17  Add wakou leader placeholder portrait
-9d51af72c78b5e25f6d28605d960806d1abcc4d0  Add military coverup placeholder art
-```
-
 ---
 
 ## 4. 当前视觉显示规则
@@ -263,83 +253,180 @@ Boss：军功 +2，旧案线索 +1
 
 ---
 
-## 7. 当前仍需推进
+## 7. 真实战斗接入前调研结论
+
+### 7.1 MainVisual 当前入口
+
+当前 `scenes/MainVisual.tscn` 挂载脚本不是早期文档里的 responsive controller，而是：
+
+```text
+res://scripts/battle_controller_visual_break_preview.gd
+```
+
+继承链路为：
+
+```text
+battle_controller_visual_break_preview.gd
+→ battle_controller_visual_resolver_preview.gd
+→ battle_controller_visual_responsive_ui.gd
+→ battle_controller_visual_cached_ui.gd
+→ battle_controller_visual_ui.gd
+→ battle_controller_demo_visual.gd
+→ battle_controller_core.gd
+```
+
+含义：
+
+```text
+真实接入不能只看 battle_controller_visual_responsive_ui.gd；
+MainVisual 当前实际入口是 break preview 层；
+任何 narrative 跳转都应以 MainVisual.tscn 当前脚本为准。
+```
+
+### 7.2 Battle Core 当前启动方式
+
+`battle_controller_core.gd` 的 `_ready()` 当前流程为：
+
+```text
+_build_catalog()
+_build_ui()
+state_machine.reset_for_session()
+_show_role_selection()
+```
+
+含义：
+
+```text
+战斗默认从“角色选择入口”开始；
+尚未看到可直接从 encounter_id 启动战斗的公开入口；
+第一版不应直接绕过 _show_role_selection，除非补一个明确的 narrative start API。
+```
+
+### 7.3 Catalog 与敌人配置现状
+
+`_build_catalog()` 当前核心角色仍是：
+
+```text
+spearman
+blademaster
+```
+
+含义：
+
+```text
+当前真实战斗资源和卡组仍围绕枪手 / 刀客；
+叙事 encounter_id 应先映射到已有 fighter id，而不是新增复杂敌人体系；
+建议第一版映射：
+enc_beach_ambush → enemy_spearman / spearman
+enc_transport_officer → enemy_blademaster / blademaster
+enc_wakou_boss → enemy_blademaster / blademaster
+```
+
+### 7.4 当前最小接入判断
+
+第一版建议不要做“完整战斗结束回到叙事”，先做：
+
+```text
+叙事节点点击“请求战斗”
+→ 记录 encounter_id 到全局/启动上下文
+→ 跳转 MainVisual.tscn
+→ MainVisual 仍进入现有角色选择/战斗测试链路
+```
+
+原因：
+
+```text
+风险最小；
+不改战斗规则；
+不破坏现有战斗测试入口；
+先验证叙事到战斗的单向链路。
+```
+
+第二版再做：
+
+```text
+战斗胜利/失败信号
+→ 回到 NarrativeDemo
+→ 根据 encounter_id 写入战斗结果
+→ 解锁战后 choice
+```
+
+---
+
+## 8. 当前仍需推进
 
 ```text
 [ ] 根据 visual_debug_label 判断 SVG 是否可被当前 Godot Web 导入为 Texture2D
 [ ] 若 SVG 不能作为 Texture2D 正常显示，则改为真实 PNG 占位图
 [ ] 六列行军图操作区在 1600×1000 下验收
 [ ] 图片显示区域尺寸和正文高度在 1600×1000 下验收
-[ ] 真实战斗胜利回调接入前调研
+[ ] 真实战斗单向跳转接入
+[ ] 真实战斗胜利/失败回调接入前继续定位结算函数
 ```
 
 ---
 
-## 8. 下一刀建议：真实战斗接入前调研
-
-鉴于 safe controller 已经恢复 Web 稳定并完成叙事 MVP 闭环，下一步不建议继续堆 UI 小功能，而应进入真实战斗接入前调研。
+## 9. 下一刀建议：叙事到 MainVisual 的单向跳转
 
 目标：
 
 ```text
-找出 MainVisual / battle_controller 当前如何启动战斗、如何识别胜负、是否已有战斗结束信号或回调点。
+把 safe controller 里的“请求战斗”从文本占位升级为单向跳转 MainVisual.tscn。
 ```
 
-需要确认：
+建议实现：
 
 ```text
-1. MainVisual.tscn 当前脚本和入口参数
-2. battle_controller_visual_responsive_ui.gd 是否有胜利/失败判定函数
-3. 当前“选择角色战斗测试入口”如何传入角色和敌人
-4. 是否能从 narrative_demo_safe_controller.gd 安全地传 encounter_id
-5. 是否需要先做单向跳转，还是需要做回到剧情节点的回调
+1. 新增 scripts/narrative_battle_context.gd，作为轻量全局上下文或可 preload 的静态上下文
+2. safe controller 点击“请求战斗”时写入 encounter_id / source_node_id
+3. get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
+4. MainVisual 暂不读取上下文，仍保留现有角色选择入口
+5. 文档标注：这是 V1 单向链路，不处理战斗后返回
 ```
 
 验收标准：
 
 ```text
-[ ] 只调研，不直接改战斗规则
-[ ] 不破坏现有战斗测试入口
-[ ] 输出真实接战斗的最小改造方案
-[ ] 明确第一版是“跳转战斗测试”还是“战斗结束回到叙事”
+[ ] NarrativeDemo 点击请求战斗能进入 MainVisual
+[ ] MainVisual 现有角色选择入口不受影响
+[ ] 不改战斗规则
+[ ] 不破坏 Web 构建
 ```
 
 ---
 
-## 9. 后续路线
+## 10. 后续路线
 
-### Step 1：真实战斗接入前调研
+### Step 1：真实战斗单向跳转
 
 ```text
-优先级最高，当前叙事 MVP 已具备完整安全闭环，需要判断如何接真实战斗。
+先打通剧情 → 战斗测试场景，不处理返回。
 ```
 
-### Step 2：必要时改 PNG 占位图
+### Step 2：定位战斗胜负结算函数
 
 ```text
-如果 SVG 无法被 TextureRect 正常显示，则批量替换为 PNG 资源。
+继续精确定位 HP 归零、battle_active=false、overlay 胜负按钮等逻辑。
 ```
 
-### Step 3：真实战斗最小接入
+### Step 3：战斗结果回写叙事
 
 ```text
-只做 encounter_id → MainVisual 的最小传参；
-不改战斗规则；
-不破坏当前战斗测试入口。
-```
-
----
-
-## 10. 给 Codex 的下一步指令
-
-```text
-请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前 safe controller 已恢复 Web 稳定并完成叙事 MVP 闭环。下一步请调研真实战斗接入：阅读 scenes/MainVisual.tscn、scripts/battle_controller_visual_responsive_ui.gd、scripts/battle_controller_demo_visual.gd、scripts/battle_controller_visual_ui.gd、scripts/battle_controller_visual_cached_ui.gd，找出战斗启动、敌人配置、胜利/失败判断和战斗结束回调点。只输出最小接入方案和风险点，不要直接改战斗规则，不要破坏现有战斗测试入口，不要重构 web_shell.html。
+只有在结算函数明确后，再加 battle_finished 信号或全局上下文结果回写。
 ```
 
 ---
 
-## 11. 当前一句话结论
+## 11. 给 Codex 的下一步指令
 
 ```text
-剧情 MVP 安全线已完成并再次通过 P0 Parser 稳定修复；下一步抓重点进入真实战斗接入前调研，避免继续在安全版 UI 上堆小改。
+请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前已调研 MainVisual：scenes/MainVisual.tscn 当前挂载 res://scripts/battle_controller_visual_break_preview.gd；battle core 的 _ready() 仍默认 _build_catalog()、_build_ui()、reset_for_session()、_show_role_selection()。下一步请做叙事到战斗的 V1 单向跳转：在 safe controller 点击“请求战斗”时记录 encounter_id / source_node_id，然后 change_scene_to_file("res://scenes/MainVisual.tscn")。不要改战斗规则，不要破坏 MainVisual 现有角色选择入口，不要重构 web_shell.html。
+```
+
+---
+
+## 12. 当前一句话结论
+
+```text
+剧情 MVP 安全线已完成并通过 P0；真实战斗接入前调研确认 MainVisual 当前入口是 break preview 层，第一版应先做 NarrativeDemo → MainVisual 的单向跳转，不直接做战斗结束回到叙事。
 ```
