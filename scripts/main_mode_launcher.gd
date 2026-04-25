@@ -21,10 +21,10 @@ func _build_ui() -> void:
 	panel.anchor_top = 0.5
 	panel.anchor_right = 0.5
 	panel.anchor_bottom = 0.5
-	panel.offset_left = -260
-	panel.offset_top = -180
-	panel.offset_right = 260
-	panel.offset_bottom = 180
+	panel.offset_left = -300
+	panel.offset_top = -220
+	panel.offset_right = 300
+	panel.offset_bottom = 220
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color("1a2230")
 	style.border_color = Color("bfa06a")
@@ -49,16 +49,24 @@ func _build_ui() -> void:
 	box.add_child(title)
 
 	var subtitle := Label.new()
-	subtitle.text = "字符版适合调规则，视觉版适合看演示。Web 正式入口已从总入口独立。"
+	subtitle.text = "剧情 MVP、字符版战斗、视觉版战斗已分开。剧情入口用于验证压缩叙事，战斗入口用于继续调规则和角色。"
 	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	subtitle.custom_minimum_size = Vector2(420, 0)
+	subtitle.custom_minimum_size = Vector2(500, 0)
 	subtitle.modulate = Color("c9d2df")
 	box.add_child(subtitle)
 
+	var narrative_button := Button.new()
+	narrative_button.text = "进入剧情 MVP"
+	narrative_button.custom_minimum_size = Vector2(300, 54)
+	narrative_button.pressed.connect(func() -> void:
+		get_tree().change_scene_to_file("res://scenes/NarrativeDemo.tscn")
+	)
+	box.add_child(narrative_button)
+
 	var text_button := Button.new()
 	text_button.text = "进入字符版战斗"
-	text_button.custom_minimum_size = Vector2(280, 54)
+	text_button.custom_minimum_size = Vector2(300, 54)
 	text_button.pressed.connect(func() -> void:
 		get_tree().change_scene_to_file("res://scenes/MainText.tscn")
 	)
@@ -66,7 +74,7 @@ func _build_ui() -> void:
 
 	var visual_button := Button.new()
 	visual_button.text = "进入视觉版战斗"
-	visual_button.custom_minimum_size = Vector2(280, 54)
+	visual_button.custom_minimum_size = Vector2(300, 54)
 	visual_button.pressed.connect(func() -> void:
 		get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
 	)
