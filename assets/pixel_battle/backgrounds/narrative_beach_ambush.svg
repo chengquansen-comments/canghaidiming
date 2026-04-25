@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360">
+  <rect width="960" height="360" fill="#101820"/>
+  <path d="M0 250 C180 210 300 285 480 245 C650 205 760 250 960 220 L960 360 L0 360 Z" fill="#213d47"/>
+  <path d="M0 285 C170 255 320 320 500 290 C680 260 790 300 960 270 L960 360 L0 360 Z" fill="#82613a"/>
+  <g stroke="#79875b" stroke-width="6">
+    <line x1="120" y1="250" x2="95" y2="125"/>
+    <line x1="160" y1="255" x2="180" y2="110"/>
+    <line x1="790" y1="250" x2="760" y2="120"/>
+    <line x1="835" y1="260" x2="865" y2="130"/>
+  </g>
+  <path d="M555 120 l38 95 h-76 z" fill="#2b2b2b"/>
+  <rect x="545" y="210" width="20" height="70" fill="#2b2b2b"/>
+  <text x="480" y="320" text-anchor="middle" font-size="34" fill="#d8c49a" font-family="sans-serif">海边伏击 / Beach Ambush</text>
+</svg>
