@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360">
+  <rect width="960" height="360" fill="#141619"/>
+  <rect x="350" y="50" width="260" height="280" rx="24" fill="#322424" stroke="#a35f4f" stroke-width="6"/>
+  <circle cx="480" cy="125" r="50" fill="#7d5c49"/>
+  <path d="M425 82 h110 l42 34 h-194 z" fill="#202020"/>
+  <rect x="420" y="180" width="120" height="110" rx="12" fill="#3f2b2b"/>
+  <path d="M575 90 l80 185" stroke="#c8c0aa" stroke-width="10"/>
+  <path d="M655 275 l-28 20 l14 -32 z" fill="#c8c0aa"/>
+  <text x="480" y="342" text-anchor="middle" font-size="32" fill="#e5d0a2" font-family="sans-serif">小股倭寇首领 / Wakou Leader</text>
+</svg>
