@@ -6,7 +6,7 @@ extends "res://scripts/battle_controller_visual_hot_tuning.gd"
 
 const CombatResolver = preload("res://scripts/combat_resolver.gd")
 const PREVIEW_GHOST_ALPHA := 0.30
-const PREVIEW_GHOST_OVERLAP_ALPHA := 1.00
+const PREVIEW_GHOST_OVERLAP_ALPHA := 0.00
 
 
 func _refresh_preview_ghosts() -> void:
