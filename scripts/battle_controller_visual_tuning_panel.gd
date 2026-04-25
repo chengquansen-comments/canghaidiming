@@ -6,7 +6,7 @@ extends "res://scripts/battle_controller_visual_preview_checked.gd"
 var tuning_panel: PanelContainer
 var tuning_content_root: VBoxContainer
 var tuning_label: RichTextLabel
-var tuning_visible := true
+var tuning_visible := false
 var tuning_total_checks := 0
 var tuning_ok_checks := 0
 var tuning_error_counts: Dictionary = {}
