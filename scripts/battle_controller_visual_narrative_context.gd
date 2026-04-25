@@ -5,7 +5,9 @@ const BattleStateMachineScript := preload("res://scripts/battle_state_machine.gd
 
 var narrative_context_label: Label
 var battle_result_label: Label
+var continue_narrative_button: Button
 var last_result_debug_text := ""
+var result_recorded := false
 
 func _ready() -> void:
 	super._ready()
@@ -57,11 +59,28 @@ func _add_battle_result_debug() -> void:
 	battle_result_label.add_theme_font_size_override("font_size", 16)
 	add_child(battle_result_label)
 
+	continue_narrative_button = Button.new()
+	continue_narrative_button.name = "ContinueNarrativeButton"
+	continue_narrative_button.text = "继续剧情"
+	continue_narrative_button.visible = false
+	continue_narrative_button.anchor_left = 0.5
+	continue_narrative_button.anchor_right = 0.5
+	continue_narrative_button.anchor_top = 0.0
+	continue_narrative_button.anchor_bottom = 0.0
+	continue_narrative_button.offset_left = -110
+	continue_narrative_button.offset_right = 110
+	continue_narrative_button.offset_top = 150
+	continue_narrative_button.offset_bottom = 194
+	continue_narrative_button.pressed.connect(_on_continue_narrative_pressed)
+	add_child(continue_narrative_button)
+
 func _update_battle_result_debug() -> void:
 	if battle_result_label == null:
 		return
 	if not NarrativeBattleContext.has_request():
 		battle_result_label.visible = false
+		if continue_narrative_button != null:
+			continue_narrative_button.visible = false
 		return
 	if state_machine == null:
 		_set_battle_result_debug_text("战斗结果诊断：state_machine=null")
@@ -73,7 +92,14 @@ func _update_battle_result_debug() -> void:
 		_set_battle_result_debug_text("战斗结果诊断：phase=%s｜player_hp=%d｜enemy_hp=%d｜状态=未结算" % [str(state_machine.phase), player.hp, enemy.hp])
 		return
 	var narrative_result := _get_narrative_result()
+	if not result_recorded:
+		NarrativeBattleContext.set_result(narrative_result)
+		result_recorded = true
+		if narrative_context_label != null:
+			narrative_context_label.text = "叙事战斗上下文：%s" % NarrativeBattleContext.debug_text()
 	_set_battle_result_debug_text("战斗结果诊断：phase=RESULT｜player_hp=%d｜enemy_hp=%d｜narrative_result=%s" % [player.hp, enemy.hp, narrative_result])
+	if continue_narrative_button != null:
+		continue_narrative_button.visible = true
 
 func _set_battle_result_debug_text(text: String) -> void:
 	if text == last_result_debug_text:
@@ -91,3 +117,6 @@ func _get_narrative_result() -> String:
 	if player.hp <= 0 and enemy.hp <= 0:
 		return "draw"
 	return "unknown"
+
+func _on_continue_narrative_pressed() -> void:
+	get_tree().change_scene_to_file(NarrativeBattleContext.source_scene)
