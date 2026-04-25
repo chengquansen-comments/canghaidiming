@@ -1,7 +1,7 @@
 extends "res://scripts/battle_controller_visual_break_preview.gd"
 
 const NarrativeBattleContext := preload("res://scripts/narrative_battle_context.gd")
-const BattleStateMachine := preload("res://scripts/battle_state_machine.gd")
+const BattleStateMachineScript := preload("res://scripts/battle_state_machine.gd")
 
 var narrative_context_label: Label
 var battle_result_label: Label
@@ -69,7 +69,7 @@ func _update_battle_result_debug() -> void:
 	if player == null or enemy == null:
 		_set_battle_result_debug_text("战斗结果诊断：等待角色创建")
 		return
-	if state_machine.phase != BattleStateMachine.BattlePhase.RESULT:
+	if state_machine.phase != BattleStateMachineScript.BattlePhase.RESULT:
 		_set_battle_result_debug_text("战斗结果诊断：phase=%s｜player_hp=%d｜enemy_hp=%d｜状态=未结算" % [str(state_machine.phase), player.hp, enemy.hp])
 		return
 	var narrative_result := _get_narrative_result()
