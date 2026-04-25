@@ -1,20 +1,44 @@
 extends "res://scripts/narrative_demo_formal_controller.gd"
 
+const ART_TEXTURE_SIZE := Vector2(640, 132)
+const ART_LABEL_SIZE := Vector2(640, 112)
+const ART_FRAME_SIZE := Vector2(0, 142)
+const ACTION_AREA_SIZE := Vector2(0, 300)
+const BODY_AREA_SIZE := Vector2(0, 82)
+const MAP_AREA_SIZE := Vector2(0, 54)
+const SCENE_AREA_SIZE := Vector2(0, 42)
+
 func _render_visual(path: String, fallback_text: String) -> void:
-	_apply_art_frame_size()
+	_apply_art_layout_size()
 	super._render_visual(path, fallback_text)
 
-func _apply_art_frame_size() -> void:
+func _render() -> void:
+	super._render()
+	_apply_art_layout_size()
+
+func _apply_art_layout_size() -> void:
+	# 上一版把视觉图拉到 220 高，会挤掉下方选项。
+	# 这里改成“中等画幅 + 下方操作区优先”，保证美术可见但不影响玩法验收。
+	if map_label != null:
+		map_label.custom_minimum_size = MAP_AREA_SIZE
+	if scene_label != null:
+		scene_label.custom_minimum_size = SCENE_AREA_SIZE
+	if body_label != null:
+		body_label.custom_minimum_size = BODY_AREA_SIZE
+		body_label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	if action_scroll != null:
+		action_scroll.custom_minimum_size = ACTION_AREA_SIZE
+		action_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	if visual_texture != null:
-		visual_texture.custom_minimum_size = Vector2(720, 210)
+		visual_texture.custom_minimum_size = ART_TEXTURE_SIZE
 		visual_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		visual_texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	if visual_label != null:
-		visual_label.custom_minimum_size = Vector2(720, 160)
+		visual_label.custom_minimum_size = ART_LABEL_SIZE
 	if visual_texture != null and visual_texture.get_parent() != null and visual_texture.get_parent().get_parent() != null:
-		var frame = visual_texture.get_parent().get_parent()
+		var frame: Node = visual_texture.get_parent().get_parent()
 		if frame is Control:
-			frame.custom_minimum_size = Vector2(0, 220)
+			(frame as Control).custom_minimum_size = ART_FRAME_SIZE
 
 func _prologue_visual_hint() -> String:
 	if step_index <= 3:
