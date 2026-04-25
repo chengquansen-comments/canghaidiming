@@ -8,6 +8,8 @@ var map_label: Label
 var scene_label: Label
 var body_label: RichTextLabel
 var vars_label: Label
+var map_buttons_box: VBoxContainer
+var combat_buttons_box: VBoxContainer
 var choices_box: VBoxContainer
 var step_index := 0
 var node_index := 0
@@ -88,7 +90,7 @@ func _build_ui() -> void:
 
 	body_label = RichTextLabel.new()
 	body_label.bbcode_enabled = true
-	body_label.custom_minimum_size = Vector2(0, 250)
+	body_label.custom_minimum_size = Vector2(0, 230)
 	body_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	body_label.add_theme_font_size_override("normal_font_size", 24)
 	layout.add_child(body_label)
@@ -97,16 +99,33 @@ func _build_ui() -> void:
 	vars_label.add_theme_font_size_override("font_size", 18)
 	layout.add_child(vars_label)
 
-	choices_box = VBoxContainer.new()
-	choices_box.add_theme_constant_override("separation", 8)
-	layout.add_child(choices_box)
+	map_buttons_box = _build_section_box(layout, "行军图操作")
+	combat_buttons_box = _build_section_box(layout, "战斗桥接")
+	choices_box = _build_section_box(layout, "叙事选择")
 
-func _clear_choices() -> void:
-	for child in choices_box.get_children():
+func _build_section_box(parent: VBoxContainer, title: String) -> VBoxContainer:
+	var label := Label.new()
+	label.text = title
+	label.add_theme_font_size_override("font_size", 15)
+	parent.add_child(label)
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", 6)
+	parent.add_child(box)
+	return box
+
+func _clear_box(box: VBoxContainer) -> void:
+	if box == null:
+		return
+	for child in box.get_children():
 		child.queue_free()
 
+func _clear_dynamic_boxes() -> void:
+	_clear_box(map_buttons_box)
+	_clear_box(combat_buttons_box)
+	_clear_box(choices_box)
+
 func _render() -> void:
-	_clear_choices()
+	_clear_dynamic_boxes()
 	if in_prologue:
 		title_label.text = "《大明之沧海嘀鸣》剧情 MVP"
 		status_label.text = "序章 %d/%d" % [step_index + 1, PROLOGUE.size()]
@@ -114,7 +133,7 @@ func _render() -> void:
 		scene_label.text = _prologue_scene_hint()
 		body_label.text = PROLOGUE[step_index]
 		vars_label.text = _vars_text()
-		_add_button("继续", _on_continue_prologue)
+		_add_button(choices_box, "继续", _on_continue_prologue)
 	else:
 		var node: Dictionary = NODES[node_index]
 		title_label.text = str(node.get("title", ""))
@@ -127,8 +146,10 @@ func _render() -> void:
 		vars_label.text = _vars_text()
 		_add_safe_map_buttons()
 		if _is_combat_node(node):
-			_add_button("请求战斗：%s" % str(node.get("combat", "")), _on_request_battle)
-			_add_button("视为胜利继续", _on_mock_battle_win)
+			_add_button(combat_buttons_box, "请求战斗：%s" % str(node.get("combat", "")), _on_request_battle)
+			_add_button(combat_buttons_box, "视为胜利继续", _on_mock_battle_win)
+		else:
+			_add_placeholder(combat_buttons_box, "当前节点无战斗。")
 		var choices: Array = node.get("choices", [])
 		for i in range(choices.size()):
 			var choice: Dictionary = choices[i]
@@ -138,7 +159,7 @@ func _render() -> void:
 func _add_safe_map_buttons() -> void:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 6)
-	choices_box.add_child(row)
+	map_buttons_box.add_child(row)
 	for i in range(NODES.size()):
 		var node: Dictionary = NODES[i]
 		var btn := Button.new()
@@ -147,12 +168,18 @@ func _add_safe_map_buttons() -> void:
 		btn.pressed.connect(_on_map_node_pressed.bind(i))
 		row.add_child(btn)
 
-func _add_button(text: String, callback: Callable) -> void:
+func _add_button(parent: VBoxContainer, text: String, callback: Callable) -> void:
 	var btn := Button.new()
 	btn.text = text
 	btn.custom_minimum_size = Vector2(0, 44)
 	btn.pressed.connect(callback)
-	choices_box.add_child(btn)
+	parent.add_child(btn)
+
+func _add_placeholder(parent: VBoxContainer, text: String) -> void:
+	var label := Label.new()
+	label.text = text
+	label.add_theme_font_size_override("font_size", 14)
+	parent.add_child(label)
 
 func _add_choice_button(choice: Dictionary, index: int) -> void:
 	var btn := Button.new()
@@ -253,8 +280,8 @@ func _render_ending() -> void:
 	scene_label.text = "结局图占位：上报 / 掩盖 / 私查 / 借势四类结局图后续接入。"
 	body_label.text = "军功 %d / 清望 %d / 旧案线索 %d\n\n案卷缺页，潮声仍在。" % [jun_gong, qing_wang, clues]
 	vars_label.text = _vars_text()
-	_clear_choices()
-	_add_button("重开叙事", _restart)
+	_clear_dynamic_boxes()
+	_add_button(choices_box, "重开叙事", _restart)
 	BattleFontHelper.enforce(self)
 
 func _restart() -> void:
