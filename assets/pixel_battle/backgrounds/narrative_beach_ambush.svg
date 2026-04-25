@@ -1,14 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360">
-  <rect width="960" height="360" fill="#101820"/>
-  <path d="M0 250 C180 210 300 285 480 245 C650 205 760 250 960 220 L960 360 L0 360 Z" fill="#213d47"/>
-  <path d="M0 285 C170 255 320 320 500 290 C680 260 790 300 960 270 L960 360 L0 360 Z" fill="#82613a"/>
-  <g stroke="#79875b" stroke-width="6">
-    <line x1="120" y1="250" x2="95" y2="125"/>
-    <line x1="160" y1="255" x2="180" y2="110"/>
-    <line x1="790" y1="250" x2="760" y2="120"/>
-    <line x1="835" y1="260" x2="865" y2="130"/>
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eadbb9"/><stop offset="1" stop-color="#a79d85"/></linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#637077" stop-opacity="0.32"/><stop offset="1" stop-color="#14191b" stop-opacity="0.7"/></linearGradient>
+  </defs>
+  <rect width="960" height="360" fill="url(#paper)"/>
+  <path d="M0 148 C150 118 260 150 390 130 C560 104 690 126 960 92" stroke="#56646a" stroke-width="25" opacity="0.18" fill="none"/>
+  <path d="M0 230 C180 190 320 230 480 205 C660 175 785 216 960 185 L960 360 L0 360 Z" fill="url(#sea)"/>
+  <path d="M0 295 C185 260 315 314 510 282 C700 250 785 295 960 268 L960 360 L0 360 Z" fill="#2a2520" opacity="0.58"/>
+  <path d="M84 255 C190 240 260 250 350 235" stroke="#191d1d" stroke-width="5" opacity="0.45" fill="none"/>
+  <path d="M150 262 C230 249 302 262 390 248" stroke="#191d1d" stroke-width="4" opacity="0.35" fill="none"/>
+  <g stroke="#222b2c" stroke-width="5" opacity="0.55">
+    <line x1="120" y1="280" x2="88" y2="145"/><line x1="158" y1="286" x2="186" y2="130"/><line x1="805" y1="275" x2="770" y2="136"/><line x1="850" y1="282" x2="882" y2="148"/>
   </g>
-  <path d="M555 120 l38 95 h-76 z" fill="#2b2b2b"/>
-  <rect x="545" y="210" width="20" height="70" fill="#2b2b2b"/>
-  <text x="480" y="320" text-anchor="middle" font-size="34" fill="#d8c49a" font-family="sans-serif">海边伏击 / Beach Ambush</text>
+  <path d="M618 110 L644 282 L575 282 Z" fill="#111313" opacity="0.9"/>
+  <path d="M602 128 L525 285 L575 285 Z" fill="#151718" opacity="0.78"/>
+  <path d="M668 122 L735 284 L680 284 Z" fill="#121415" opacity="0.82"/>
+  <path d="M642 116 L694 150" stroke="#151718" stroke-width="7" opacity="0.85"/>
+  <path d="M544 146 L502 258" stroke="#111313" stroke-width="7" opacity="0.9"/>
+  <path d="M620 148 C645 186 661 225 672 260" stroke="#7e2e28" stroke-width="16" opacity="0.64" fill="none"/>
+  <text x="805" y="75" font-size="25" fill="#202020" opacity="0.72" font-family="serif">海边伏击</text>
+  <text x="52" y="326" font-size="22" fill="#7e2e28" opacity="0.92" font-family="serif">脚印太整齐，不像海盗</text>
 </svg>
