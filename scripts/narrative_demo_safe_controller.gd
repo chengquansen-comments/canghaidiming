@@ -6,6 +6,8 @@ var title_label: Label
 var status_label: Label
 var map_label: Label
 var scene_label: Label
+var visual_texture: TextureRect
+var visual_label: Label
 var body_label: RichTextLabel
 var vars_label: Label
 var map_buttons_box: VBoxContainer
@@ -36,12 +38,12 @@ const PROLOGUE := [
 ]
 
 const NODES := [
-	{"id":"military_order", "title":"军令巡海", "column":"军令", "type":"事件", "scene":"背景占位：军门令牌、潮湿案牍、出海军令。人物占位：主角 / 上官。", "text":"军令落下，潮声像旧案翻页。", "choices":[{"text":"问旧案", "dg":0, "dq":1, "dc":1}, {"text":"领命出发", "dg":1, "dq":0, "dc":0}]},
-	{"id":"beach_ambush", "title":"海边伏击", "column":"初遇", "type":"普通战斗", "scene":"背景占位：海滩芦苇、暗潮、伏兵剪影。敌人占位：敌方枪手。", "text":"芦苇摇晃，敌影先动。", "combat":"enc_beach_ambush", "choices":[{"text":"搜身留证", "dg":1, "dq":0, "dc":1}, {"text":"斩首报功", "dg":2, "dq":-1, "dc":0}]},
-	{"id":"ming_firearm", "title":"明制火器", "column":"疑点", "type":"旧物", "scene":"旧物占位：官造火铳 relic_ming_firearm.png；背景占位：潮湿木箱、军械铸印。", "text":"箱中火器不是倭物，铸印仍在。", "choices":[{"text":"私下留证", "dg":0, "dq":0, "dc":2}, {"text":"上交火器", "dg":1, "dq":1, "dc":0}]},
-	{"id":"transport_officer", "title":"失械案押运官", "column":"压迫", "type":"精英战斗", "scene":"人物占位：失械案押运官。背景占位：雨夜驿道、车辙、火器空箱。", "text":"押运官看见你手中名册，脸色变了。", "combat":"enc_transport_officer", "choices":[{"text":"私藏名册", "dg":0, "dq":-1, "dc":2}, {"text":"当众审问", "dg":1, "dq":1, "dc":1}]},
-	{"id":"wakou_boss", "title":"破船 Boss", "column":"破船", "type":"Boss", "scene":"人物占位：小股倭寇首领。背景占位：搁浅破船、火器箱、暗箭方向。", "text":"敌首倒下前，看向火器箱。", "combat":"enc_wakou_boss", "choices":[{"text":"查看火器箱", "dg":2, "dq":0, "dc":2}, {"text":"烧船灭迹", "dg":1, "dq":-1, "dc":0}]},
-	{"id":"military_coverup", "title":"军门压案", "column":"军门", "type":"结尾", "scene":"背景占位：军门灯火、缺页案卷、压案朱批。人物占位：军门上官 / 师父阴影。", "text":"军门灯火通明，案卷却少了一页。", "choices":[{"text":"据实上报", "dg":0, "dq":2, "dc":0}, {"text":"藏下一份证据", "dg":0, "dq":0, "dc":1}, {"text":"沉默退下", "dg":0, "dq":-1, "dc":0}]}
+	{"id":"military_order", "title":"军令巡海", "column":"军令", "type":"事件", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_military_order.png", "scene":"背景占位：军门令牌、潮湿案牍、出海军令。人物占位：主角 / 上官。", "text":"军令落下，潮声像旧案翻页。", "choices":[{"text":"问旧案", "dg":0, "dq":1, "dc":1}, {"text":"领命出发", "dg":1, "dq":0, "dc":0}]},
+	{"id":"beach_ambush", "title":"海边伏击", "column":"初遇", "type":"普通战斗", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_beach_ambush.png", "scene":"背景占位：海滩芦苇、暗潮、伏兵剪影。敌人占位：敌方枪手。", "text":"芦苇摇晃，敌影先动。", "combat":"enc_beach_ambush", "choices":[{"text":"搜身留证", "dg":1, "dq":0, "dc":1}, {"text":"斩首报功", "dg":2, "dq":-1, "dc":0}]},
+	{"id":"ming_firearm", "title":"明制火器", "column":"疑点", "type":"旧物", "visual_path":"res://assets/pixel_battle/relics/relic_ming_firearm.png", "scene":"旧物占位：官造火铳 relic_ming_firearm.png；背景占位：潮湿木箱、军械铸印。", "text":"箱中火器不是倭物，铸印仍在。", "choices":[{"text":"私下留证", "dg":0, "dq":0, "dc":2}, {"text":"上交火器", "dg":1, "dq":1, "dc":0}]},
+	{"id":"transport_officer", "title":"失械案押运官", "column":"压迫", "type":"精英战斗", "visual_path":"res://assets/pixel_battle/portraits/transport_officer.png", "scene":"人物占位：失械案押运官。背景占位：雨夜驿道、车辙、火器空箱。", "text":"押运官看见你手中名册，脸色变了。", "combat":"enc_transport_officer", "choices":[{"text":"私藏名册", "dg":0, "dq":-1, "dc":2}, {"text":"当众审问", "dg":1, "dq":1, "dc":1}]},
+	{"id":"wakou_boss", "title":"破船 Boss", "column":"破船", "type":"Boss", "visual_path":"res://assets/pixel_battle/portraits/wakou_leader.png", "scene":"人物占位：小股倭寇首领。背景占位：搁浅破船、火器箱、暗箭方向。", "text":"敌首倒下前，看向火器箱。", "combat":"enc_wakou_boss", "choices":[{"text":"查看火器箱", "dg":2, "dq":0, "dc":2}, {"text":"烧船灭迹", "dg":1, "dq":-1, "dc":0}]},
+	{"id":"military_coverup", "title":"军门压案", "column":"军门", "type":"结尾", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_military_coverup.png", "scene":"背景占位：军门灯火、缺页案卷、压案朱批。人物占位：军门上官 / 师父阴影。", "text":"军门灯火通明，案卷却少了一页。", "choices":[{"text":"据实上报", "dg":0, "dq":2, "dc":0}, {"text":"藏下一份证据", "dg":0, "dq":0, "dc":1}, {"text":"沉默退下", "dg":0, "dq":-1, "dc":0}]}
 ]
 
 func _ready() -> void:
@@ -85,12 +87,29 @@ func _build_ui() -> void:
 	scene_label = Label.new()
 	scene_label.add_theme_font_size_override("font_size", 16)
 	scene_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	scene_label.custom_minimum_size = Vector2(0, 62)
+	scene_label.custom_minimum_size = Vector2(0, 48)
 	layout.add_child(scene_label)
+
+	var visual_frame := PanelContainer.new()
+	visual_frame.custom_minimum_size = Vector2(0, 110)
+	layout.add_child(visual_frame)
+	var visual_center := CenterContainer.new()
+	visual_frame.add_child(visual_center)
+	visual_texture = TextureRect.new()
+	visual_texture.custom_minimum_size = Vector2(520, 100)
+	visual_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	visual_texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	visual_center.add_child(visual_texture)
+	visual_label = Label.new()
+	visual_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	visual_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	visual_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	visual_label.custom_minimum_size = Vector2(520, 0)
+	visual_center.add_child(visual_label)
 
 	body_label = RichTextLabel.new()
 	body_label.bbcode_enabled = true
-	body_label.custom_minimum_size = Vector2(0, 230)
+	body_label.custom_minimum_size = Vector2(0, 160)
 	body_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	body_label.add_theme_font_size_override("normal_font_size", 24)
 	layout.add_child(body_label)
@@ -131,6 +150,7 @@ func _render() -> void:
 		status_label.text = "序章 %d/%d" % [step_index + 1, PROLOGUE.size()]
 		map_label.text = "尚未进入行军图"
 		scene_label.text = _prologue_scene_hint()
+		_render_visual("", _prologue_visual_hint())
 		body_label.text = PROLOGUE[step_index]
 		vars_label.text = _vars_text()
 		_add_button(choices_box, "继续", _on_continue_prologue)
@@ -140,6 +160,7 @@ func _render() -> void:
 		status_label.text = "当前：%s / %s / %s" % [str(node.get("column", "")), str(node.get("type", "")), str(node.get("id", ""))]
 		map_label.text = _map_text()
 		scene_label.text = str(node.get("scene", ""))
+		_render_visual(str(node.get("visual_path", "")), str(node.get("scene", "")))
 		body_label.text = _node_body(node)
 		if not last_hint.is_empty():
 			body_label.text += "\n\n[i]%s[/i]" % last_hint
@@ -155,6 +176,24 @@ func _render() -> void:
 			var choice: Dictionary = choices[i]
 			_add_choice_button(choice, i)
 	BattleFontHelper.enforce(self)
+
+func _render_visual(path: String, fallback_text: String) -> void:
+	if path.is_empty() or not ResourceLoader.exists(path):
+		visual_texture.texture = null
+		visual_texture.visible = false
+		visual_label.visible = true
+		visual_label.text = "视觉占位：%s" % fallback_text
+		return
+	var resource := load(path)
+	if resource is Texture2D:
+		visual_texture.texture = resource
+		visual_texture.visible = true
+		visual_label.visible = false
+	else:
+		visual_texture.texture = null
+		visual_texture.visible = false
+		visual_label.visible = true
+		visual_label.text = "视觉资源不是 Texture2D：%s" % path
 
 func _add_safe_map_buttons() -> void:
 	var row := HBoxContainer.new()
@@ -278,6 +317,7 @@ func _render_ending() -> void:
 	status_label.text = "单局结算"
 	map_label.text = _map_text()
 	scene_label.text = "结局图占位：上报 / 掩盖 / 私查 / 借势四类结局图后续接入。"
+	_render_visual("", "结局图占位：上报 / 掩盖 / 私查 / 借势四类结局图后续接入。")
 	body_label.text = "军功 %d / 清望 %d / 旧案线索 %d\n\n案卷缺页，潮声仍在。" % [jun_gong, qing_wang, clues]
 	vars_label.text = _vars_text()
 	_clear_dynamic_boxes()
@@ -335,3 +375,10 @@ func _prologue_scene_hint() -> String:
 	if step_index <= 8:
 		return "序章人物占位：幼年主角 / 师父 / 敌人。"
 	return "序章背景占位：暗箭、师父背影、十年后山路。"
+
+func _prologue_visual_hint() -> String:
+	if step_index <= 3:
+		return "黑屏潮声 / 火光 / 村口刀影"
+	if step_index <= 8:
+		return "幼年主角 / 师父 / 敌人"
+	return "暗箭 / 师父背影 / 十年后山路"
