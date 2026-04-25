@@ -1,9 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360">
-  <rect width="960" height="360" fill="#171b20"/>
-  <rect x="365" y="55" width="230" height="265" rx="26" fill="#2c3440" stroke="#9d8051" stroke-width="6"/>
-  <circle cx="480" cy="128" r="48" fill="#8c684c"/>
-  <rect x="422" y="178" width="116" height="105" rx="12" fill="#435064"/>
-  <rect x="390" y="70" width="180" height="35" fill="#29313c" stroke="#c4a15f" stroke-width="4"/>
-  <path d="M380 290 h200 l-36 40 h-128 z" fill="#1f252d"/>
-  <text x="480" y="342" text-anchor="middle" font-size="32" fill="#e5d0a2" font-family="sans-serif">失械案押运官 / Transport Officer</text>
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eadbb9"/><stop offset="1" stop-color="#968d78"/></linearGradient>
+    <linearGradient id="road" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a565b" stop-opacity="0.25"/><stop offset="1" stop-color="#151718" stop-opacity="0.72"/></linearGradient>
+  </defs>
+  <rect width="960" height="360" fill="url(#paper)"/>
+  <path d="M0 230 C170 205 310 238 470 210 C620 184 760 230 960 190 L960 360 L0 360 Z" fill="url(#road)"/>
+  <path d="M0 292 C200 260 340 316 520 280 C725 240 805 300 960 262 L960 360 L0 360 Z" fill="#171513" opacity="0.65"/>
+  <rect x="122" y="206" width="300" height="52" rx="8" fill="#211914" opacity="0.78"/>
+  <circle cx="170" cy="262" r="28" fill="#111" opacity="0.75"/>
+  <circle cx="366" cy="262" r="28" fill="#111" opacity="0.75"/>
+  <rect x="210" y="180" width="150" height="32" fill="#392a1b" opacity="0.82"/>
+  <path d="M606 76 L650 286 L555 286 Z" fill="#111314" opacity="0.93"/>
+  <path d="M584 111 L520 286 L560 286 Z" fill="#1a1b1b" opacity="0.82"/>
+  <path d="M642 116 L718 286 L670 286 Z" fill="#171819" opacity="0.86"/>
+  <path d="M627 118 C650 160 666 210 675 255" stroke="#354047" stroke-width="30" opacity="0.72" fill="none"/>
+  <path d="M642 132 C660 166 672 205 682 246" stroke="#7e2e28" stroke-width="14" opacity="0.66" fill="none"/>
+  <path d="M670 104 L720 278" stroke="#d8c9a5" stroke-width="8" opacity="0.70"/>
+  <rect x="708" y="238" width="95" height="28" rx="6" fill="#2b2118" opacity="0.86"/>
+  <path d="M42 70 C195 38 340 65 500 46 C690 25 800 60 930 40" stroke="#4b5860" stroke-width="18" opacity="0.16" fill="none"/>
+  <text x="760" y="76" font-size="25" fill="#202020" opacity="0.72" font-family="serif">失械押运官</text>
+  <text x="54" y="326" font-size="22" fill="#7e2e28" opacity="0.92" font-family="serif">名册在谁手里</text>
 </svg>
