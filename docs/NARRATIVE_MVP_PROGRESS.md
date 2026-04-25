@@ -1,7 +1,7 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景/人物/旧物文本占位 + 结局闭环 + 收益与推进入口收口 + UI 分层 + 最小图片显示 + 六列地图操作布局 + SVG 占位视觉资源 + 场景信息分层展示 + 视觉资源诊断”。  
+> 当前阶段：P0 Web 构建稳定已再次恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景/人物/旧物文本占位 + 结局闭环 + 收益与推进入口收口 + UI 分层 + 最小图片显示 + 六列地图操作布局 + SVG 占位视觉资源 + 场景信息分层展示 + 视觉资源诊断 + Parser 稳定修复”。  
 > 核心原则：继续走安全线，不恢复旧 `scripts/narrative/*` 复杂链路；不使用 `HScrollContainer`；不改 `MainVisual.tscn`；不改 `battle_controller`；不重构 `web_shell.html`。
 
 ---
@@ -49,6 +49,7 @@ UI 分层：行军图操作 / 战斗桥接 / 叙事选择 三个区域分开展�
 ```text
 Parser Error: Could not resolve class "NarrativeDemoController"
 Parser Error: Identifier "HScrollContainer" not declared in the current scope
+Parser Error: Expected variable name after "var"（class_name 变量名冲突）
 ```
 
 已采取处理：
@@ -57,7 +58,8 @@ Parser Error: Identifier "HScrollContainer" not declared in the current scope
 临时隔离旧 scripts/narrative/*；
 NarrativeDemo.tscn 切到 scripts/narrative_demo_safe_controller.gd；
 先恢复 P0 Web 构建稳定；
-在 safe controller 内逐步补回 MVP 体验。
+在 safe controller 内逐步补回 MVP 体验；
+修复 class_name 变量名冲突，改为 resource_class_name。
 ```
 
 当前有效入口：
@@ -83,6 +85,8 @@ res://scripts/narrative_demo_safe_controller.gd
 [x] NarrativeDemo.tscn 切到 parser-safe controller
 [x] 不再依赖 HScrollContainer
 [x] 不再依赖 NarrativeDemoController class_name 解析
+[x] 修复 visual diagnostics 中 class_name 作为变量名导致的 Parser Error
+[x] safe controller 已重新构建通过用户验收
 ```
 
 对应提交：
@@ -90,6 +94,7 @@ res://scripts/narrative_demo_safe_controller.gd
 ```text
 9228e5fc8dffc1a4de022521a84d11aca8a5b174  Ignore legacy narrative scripts for parser stability
 90d405523f565a4d5ecf0ab36f247c9893634941  Use parser-safe narrative demo controller
+c30ea1b5a6017ca956ecfbc512b074d484bf731c  Fix visual diagnostics parser variable name
 ```
 
 ---
@@ -143,6 +148,7 @@ b580c2e58e98ba7dc5779599f0dfce21a510dafe  Apply default rewards on safe map navi
 a07c872bd3ce0b9ba53f5cdb63591a23ee2d1535  Point safe narrative visuals to SVG placeholders
 bec8e7efef48734b90608f9bf27ea2e38e9648d4  Format safe narrative scene hints into layers
 6d1b8a5129c14a960d2614f69a609886a03339d2  Add safe narrative visual diagnostics
+c30ea1b5a6017ca956ecfbc512b074d484bf731c  Fix visual diagnostics parser variable name
 ```
 
 ---
@@ -170,8 +176,6 @@ b6f7e41a2c3d9a8d8c9cb20dc2a6ee71e34b3a4d  Add Ming firearm relic placeholder art
 eacdd9a5bc073125c897be4756eb44ccf282ae17  Add wakou leader placeholder portrait
 9d51af72c78b5e25f6d28605d960806d1abcc4d0  Add military coverup placeholder art
 ```
-
-> 注：部分提交 SHA 可能因连续文件创建由工具返回不完整展示；以仓库历史为准。
 
 ---
 
@@ -262,7 +266,6 @@ Boss：军功 +2，旧案线索 +1
 ## 7. 当前仍需推进
 
 ```text
-[ ] 安全版 Web 回归验收
 [ ] 根据 visual_debug_label 判断 SVG 是否可被当前 Godot Web 导入为 Texture2D
 [ ] 若 SVG 不能作为 Texture2D 正常显示，则改为真实 PNG 占位图
 [ ] 六列行军图操作区在 1600×1000 下验收
@@ -272,33 +275,43 @@ Boss：军功 +2，旧案线索 +1
 
 ---
 
-## 8. 下一刀建议：Web 验收 SVG 视觉链路
+## 8. 下一刀建议：真实战斗接入前调研
+
+鉴于 safe controller 已经恢复 Web 稳定并完成叙事 MVP 闭环，下一步不建议继续堆 UI 小功能，而应进入真实战斗接入前调研。
 
 目标：
 
 ```text
-根据 visual_debug_label 直接判断 ResourceLoader.exists(svg_path) 和 TextureRect 显示链路是否可用。
+找出 MainVisual / battle_controller 当前如何启动战斗、如何识别胜负、是否已有战斗结束信号或回调点。
+```
+
+需要确认：
+
+```text
+1. MainVisual.tscn 当前脚本和入口参数
+2. battle_controller_visual_responsive_ui.gd 是否有胜利/失败判定函数
+3. 当前“选择角色战斗测试入口”如何传入角色和敌人
+4. 是否能从 narrative_demo_safe_controller.gd 安全地传 encounter_id
+5. 是否需要先做单向跳转，还是需要做回到剧情节点的回调
 ```
 
 验收标准：
 
 ```text
-[ ] Web 构建稳定
-[ ] 进入 NarrativeDemo 不报错
-[ ] 进入节点后视觉诊断显示 exists=true
-[ ] 如果 type=Texture2D 且状态=已显示，则 SVG 链路可继续使用
-[ ] 如果 type 不是 Texture2D 或状态=非 Texture2D，则下一刀改用 PNG 占位图
-[ ] 地图点击、战斗占位、结局闭环不受影响
+[ ] 只调研，不直接改战斗规则
+[ ] 不破坏现有战斗测试入口
+[ ] 输出真实接战斗的最小改造方案
+[ ] 明确第一版是“跳转战斗测试”还是“战斗结束回到叙事”
 ```
 
 ---
 
 ## 9. 后续路线
 
-### Step 1：Web 验收 SVG 视觉链路
+### Step 1：真实战斗接入前调研
 
 ```text
-优先级最高，确认 Godot Web 对 SVG 资源显示是否可靠。
+优先级最高，当前叙事 MVP 已具备完整安全闭环，需要判断如何接真实战斗。
 ```
 
 ### Step 2：必要时改 PNG 占位图
@@ -307,12 +320,12 @@ Boss：军功 +2，旧案线索 +1
 如果 SVG 无法被 TextureRect 正常显示，则批量替换为 PNG 资源。
 ```
 
-### Step 3：真实战斗接入前调研
+### Step 3：真实战斗最小接入
 
 ```text
-梳理 MainVisual 的启动参数和胜利回调；
-不直接改战斗规则；
-不破坏现有战斗测试入口。
+只做 encounter_id → MainVisual 的最小传参；
+不改战斗规则；
+不破坏当前战斗测试入口。
 ```
 
 ---
@@ -320,7 +333,7 @@ Boss：军功 +2，旧案线索 +1
 ## 10. 给 Codex 的下一步指令
 
 ```text
-请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前已添加 6 个 SVG 占位视觉资源，并将 scripts/narrative_demo_safe_controller.gd 的 visual_path 指向这些 SVG，同时新增 visual_debug_label 显示 path / exists / type / 状态。下一步请做 Web 回归验收：确认 visual_debug_label 是否显示 exists=true 和 type=Texture2D。如果 SVG 不能作为 Texture2D 正常显示，请改用 PNG 占位图。不要改 MainVisual.tscn，不要改 battle_controller，不要重构 web_shell.html。
+请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前 safe controller 已恢复 Web 稳定并完成叙事 MVP 闭环。下一步请调研真实战斗接入：阅读 scenes/MainVisual.tscn、scripts/battle_controller_visual_responsive_ui.gd、scripts/battle_controller_demo_visual.gd、scripts/battle_controller_visual_ui.gd、scripts/battle_controller_visual_cached_ui.gd，找出战斗启动、敌人配置、胜利/失败判断和战斗结束回调点。只输出最小接入方案和风险点，不要直接改战斗规则，不要破坏现有战斗测试入口，不要重构 web_shell.html。
 ```
 
 ---
@@ -328,5 +341,5 @@ Boss：军功 +2，旧案线索 +1
 ## 11. 当前一句话结论
 
 ```text
-剧情 MVP 安全线已完成“Web 稳定、压缩序章、六列行军图、六列地图操作、地图点击、三变量成长、战斗占位、场景占位、场景信息分层、结局闭环、收益与推进入口收口、UI 分层、最小图片显示、SVG 占位视觉资源、视觉资源诊断”；下一步抓重点用 Web 验收结果决定继续用 SVG 还是切 PNG。
+剧情 MVP 安全线已完成并再次通过 P0 Parser 稳定修复；下一步抓重点进入真实战斗接入前调研，避免继续在安全版 UI 上堆小改。
 ```
