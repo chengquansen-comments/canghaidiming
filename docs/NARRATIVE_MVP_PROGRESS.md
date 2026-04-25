@@ -1,8 +1,8 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：压缩叙事已推进到“验收通过 + 入口分流 + 最小肉鸽地图卡片 UI + P0 背景占位显示”。  
-> 核心原则：剧情 MVP 入口和现有选角色战斗入口分开；不扩写剧情，不重构战斗，不改 Web 外壳结构；先把短镜头链、三变量、单局旧案闭环、路线感、中文显示、最小地图表现和背景占位跑通。
+> 当前阶段：压缩叙事已推进到“验收通过 + 地图卡片 UI + P0 背景占位 + P0 人物立绘占位”。  
+> 核心原则：剧情 MVP 入口和现有选角色战斗入口分开；不扩写剧情，不重构战斗，不改 Web 外壳结构；先把短镜头链、三变量、单局旧案闭环、路线感、中文显示、最小地图表现、背景占位和人物占位跑通。
 
 ---
 
@@ -32,6 +32,7 @@
 中文显示：剧情侧统一走 NarrativeFontHelper，内部复用战斗测试的 BattleFontHelper / cjk_font.ttf 逻辑
 地图表现：从文字路线条升级为横向节点卡片
 背景表现：图片存在则显示，不存在则显示明确占位文本，不阻塞 Web 运行
+人物表现：立绘存在则显示，不存在则显示角色名 / 路径占位，不阻塞 Web 运行
 ```
 
 ---
@@ -113,6 +114,10 @@ scripts/narrative/narrative_demo_controller.gd
 序章 step 可按 id 映射到 P0 序章背景；
 节点可读取 background 字段并尝试加载对应背景；
 图片不存在时显示占位文本，不阻塞运行；
+展示 P0 人物立绘区域；
+序章 step 可按 id 映射幼年主角、师父、成年主角等立绘；
+节点可按 speaker 映射军门上官、Boss、海商、押运官、兵变营头等立绘；
+立绘不存在时显示角色名 / 路径占位，不阻塞运行；
 通过 NarrativeFontHelper.enforce(self) 统一应用中文字体；
 动态刷新节点、选择按钮、结局页后重复应用字体，避免新增控件中文乱码。
 ```
@@ -201,6 +206,8 @@ Web smoke_battle 参数仍保留自动进入战斗测试；
 [ ] 节点卡片当前 / 已走 / 未到状态准确
 [ ] P0 背景区域图片存在时可显示
 [ ] P0 背景资源不存在时可显示占位文本
+[ ] P0 立绘资源存在时可显示
+[ ] P0 立绘资源不存在时可显示角色名 / 路径占位
 [ ] 序章可从头点到“该出山了”
 [ ] 节点选择可正常推进
 [ ] 三变量显示正确
@@ -231,6 +238,8 @@ d91a2bb3c3d12087af10145aabf3e632650a888a  Use narrative font helper in narrative
 cf820324e9f05e7c765ad8a2464ed1f34a929bdd  Add minimal narrative map strip UI
 a456bb1dd122b6823dcf98736461c73b579f79c2  Refresh narrative progress after map strip
 92515b04cab816490edb1ce1d8f28f38e4807d21  Add P0 narrative background placeholder display
+1ec55f51dad90705c99b56fe77f6bea64aeb566b  Refresh narrative progress after P0 background placeholders
+e75f6f700e18cf3c777f56b246a76ab07526f4d1  Add P0 narrative portrait placeholder display
 ```
 
 ---
@@ -254,6 +263,7 @@ a456bb1dd122b6823dcf98736461c73b579f79c2  Refresh narrative progress after map s
 [x] 最小路线 UI：● 已走 / ▶ 当前 / ○ 未到
 [x] 最小肉鸽地图卡片 UI：节点标题 / 节点类型 / 状态
 [x] P0 背景图显示占位：图片存在则显示，不存在则占位
+[x] P0 人物立绘显示占位：图片存在则显示，不存在则角色名 / 路径占位
 [x] 潜在数组强转风险局部修复：敌人列表不再使用 PackedStringArray 强转
 [x] 剧情 MVP 中文字体修复：复用 BattleFontHelper / cjk_font.ttf
 [x] 新增 NarrativeFontHelper，叙事侧字体入口收口
@@ -262,7 +272,6 @@ a456bb1dd122b6823dcf98736461c73b579f79c2  Refresh narrative progress after map s
 ### 6.2 尚未实装
 
 ```text
-[ ] P0 人物立绘显示
 [ ] 旧物图显示
 [ ] 与现有战斗场景的胜利回调
 [ ] 真正分叉式肉鸽地图布局
@@ -272,27 +281,27 @@ a456bb1dd122b6823dcf98736461c73b579f79c2  Refresh narrative progress after map s
 
 ## 7. 当前风险
 
-### 风险一：背景占位区域的 Web 适配
+### 风险一：背景 + 立绘区域的 Web 适配
 
-当前已新增背景显示区域，仍需验证：
+当前已新增背景显示区域和右侧立绘区域，仍需验证：
 
 ```text
 是否挤压正文；
 图片不存在时占位是否清楚；
-图片存在时是否比例正确；
-横向地图卡片 + 背景区域 + 正文是否在 1600×1000 下可读。
+图片存在时比例是否正确；
+横向地图卡片 + 背景区域 + 立绘区域 + 正文是否在 1600×1000 下可读。
 ```
 
-### 风险二：路线仍是推荐路径，不是真分叉地图
+### 风险二：speaker 到立绘的映射仍是最小规则
 
-当前地图 UI 是推荐路径卡片化，不是真正的分叉节点图。
+当前只按 step id 和 speaker 做简单映射。
 
 处理原则：
 
 ```text
-先验收横向卡片路线；
-再升级为静态分叉地图；
-不要直接做复杂随机地图生成。
+先跑通 P0 立绘占位；
+后续如需要更准，再在 narrative JSON 中增加 portrait 字段；
+不要现在扩张数据结构。
 ```
 
 ### 风险三：战斗节点仍是占位
@@ -302,7 +311,7 @@ a456bb1dd122b6823dcf98736461c73b579f79c2  Refresh narrative progress after map s
 处理原则：
 
 ```text
-先把叙事节奏、地图 UI、背景占位跑通；
+先把叙事节奏、地图 UI、背景占位、立绘占位跑通；
 再接战斗胜利回调；
 不要为了叙事大改战斗规则。
 ```
@@ -311,47 +320,29 @@ a456bb1dd122b6823dcf98736461c73b579f79c2  Refresh narrative progress after map s
 
 ## 8. 下一刀执行清单
 
-### Step 1：验收 P0 背景占位
+### Step 1：验收 P0 背景 + 立绘占位
 
 ```text
 进入剧情 MVP
 走完序章
 进入军令节点
 逐步推进到明制火器 / Boss / 军门压案
-观察背景区域
+观察背景区域和立绘区域
 ```
 
 通过标准：
 
 ```text
-[ ] 图片不存在时显示明确占位文本
-[ ] 图片存在时显示图片
+[ ] 背景图片不存在时显示明确占位文本
+[ ] 背景图片存在时显示图片
+[ ] 立绘图片不存在时显示角色名 / 路径占位
+[ ] 立绘图片存在时显示图片
 [ ] 正文区域不被挤没
 [ ] 地图卡片仍可横向滚动
 [ ] 中文不乱码
 ```
 
-### Step 2：接人物立绘占位
-
-优先：
-
-```text
-protagonist_young.png
-protagonist_child.png
-mentor_veteran.png
-wakou_leader.png
-military_superior.png
-```
-
-原则：
-
-```text
-图片存在则显示；
-图片不存在则显示角色名占位；
-不因为缺图阻塞 Web 运行。
-```
-
-### Step 3：接旧物图显示
+### Step 2：接旧物图显示
 
 优先：
 
@@ -362,7 +353,15 @@ relic_old_spear_tassel.png
 relic_transport_token.png
 ```
 
-### Step 4：预留战斗回调接口
+原则：
+
+```text
+旧物图存在则显示；
+旧物图不存在则显示旧物名占位；
+不因为缺图阻塞 Web 运行。
+```
+
+### Step 3：预留战斗回调接口
 
 ```text
 NarrativeState.current_node.combat
@@ -377,7 +376,7 @@ NarrativeState.current_node.combat
 ## 9. 对 Codex 的下一步指令
 
 ```text
-请优先验证 NarrativeDemo.tscn 的 P0 背景占位显示。当前剧情 MVP 已通过用户验收：入口分流可用，中文不乱码。下一步不要扩写剧情，不要改 battle_controller，不要改 MainVisual.tscn，不要重构 web_shell.html。请验证：序章与节点是否出现背景区域；图片不存在时是否有清晰占位；地图卡片是否仍正常显示；正文是否没有被挤压。验证后再接 P0 人物立绘占位。
+请优先验证 NarrativeDemo.tscn 的 P0 背景和 P0 人物立绘占位显示。当前剧情 MVP 已通过用户验收：入口分流可用，中文不乱码。下一步不要扩写剧情，不要改 battle_controller，不要改 MainVisual.tscn，不要重构 web_shell.html。请验证：序章与节点是否出现背景区域和右侧立绘区域；图片不存在时是否有清晰占位；地图卡片是否仍正常显示；正文是否没有被挤压。验证后再接旧物图显示占位。
 ```
 
 ---
@@ -385,5 +384,5 @@ NarrativeState.current_node.combat
 ## 10. 当前一句话结论
 
 ```text
-叙事 MVP 已完成“脚本压缩 → 数据化 → 状态机 → 独立 Demo 场景 → 入口分流 → 中文字体专用 Helper → 最小肉鸽地图卡片 UI → P0 背景占位显示”；下一步抓重点验收背景区域，再接人物立绘与旧物图占位。
+叙事 MVP 已完成“脚本压缩 → 数据化 → 状态机 → 独立 Demo 场景 → 入口分流 → 中文字体专用 Helper → 最小肉鸽地图卡片 UI → P0 背景占位 → P0 人物立绘占位”；下一步抓重点验收视觉区域，再接旧物图占位和战斗回调接口。
 ```
