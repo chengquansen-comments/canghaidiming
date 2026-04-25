@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://canghai_main_visual"]
 
-[ext_resource type="Script" path="res://scripts/battle_controller_visual_resolver_preview.gd" id="1_visual"]
+[ext_resource type="Script" path="res://scripts/battle_controller_visual_break_preview.gd" id="1_visual"]
 
 [node name="MainVisual" type="Control"]
 layout_mode = 3
