@@ -164,7 +164,7 @@ func _all_runtime_cards() -> Array[CardData]:
 		var data: FighterData = fighter_catalog[key]
 		if data == null:
 			continue
-		for deck_card: CardData in data.base_deck:
+		for deck_card: CardData in data.starting_deck:
 			if deck_card != null:
 				cards.append(deck_card)
 	for reward_card: CardData in reward_pool:
