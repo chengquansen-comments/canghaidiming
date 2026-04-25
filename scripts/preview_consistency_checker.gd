@@ -6,6 +6,16 @@ const RANGE_GRAZE := "graze"
 const RANGE_MISS_RANGE := "miss_range"
 const RANGE_MISS_FACING := "miss_facing"
 
+const ERROR_ORDER := "ORDER_ERROR"
+const ERROR_MOVE := "MOVE_ERROR"
+const ERROR_RANGE := "RANGE_ERROR"
+const ERROR_FACING := "FACING_ERROR"
+const ERROR_DAMAGE := "DAMAGE_ERROR"
+const ERROR_MOMENTUM := "MOMENTUM_ERROR"
+const ERROR_BREAK := "BREAK_ERROR"
+const ERROR_SCHEMA := "SCHEMA_ERROR"
+const ERROR_UNKNOWN := "UNKNOWN_ERROR"
+
 static func build_preview_signature(snapshot: Dictionary) -> Dictionary:
 	var sim := simulate(snapshot)
 	return {
@@ -25,18 +35,110 @@ static func build_preview_signature(snapshot: Dictionary) -> Dictionary:
 static func compare(snapshot: Dictionary, preview_signature: Dictionary) -> Dictionary:
 	var expected := build_preview_signature(snapshot)
 	var mismatches: Array[String] = []
+	var classified: Array[Dictionary] = []
+	var tags: Array[String] = []
 	for key in expected.keys():
 		if not preview_signature.has(key):
-			mismatches.append("missing:%s" % key)
+			var missing := {
+				"tag": ERROR_SCHEMA,
+				"field": key,
+				"expected": expected[key],
+				"actual": null,
+				"message": "missing:%s" % key
+			}
+			classified.append(missing)
+			mismatches.append(missing.message)
+			_add_unique_tag(tags, ERROR_SCHEMA)
 			continue
 		if str(preview_signature[key]) != str(expected[key]):
-			mismatches.append("%s expected=%s actual=%s" % [key, str(expected[key]), str(preview_signature[key])])
+			var tag := classify_field(key, expected[key], preview_signature[key])
+			var message := "[%s] %s expected=%s actual=%s" % [tag, key, str(expected[key]), str(preview_signature[key])]
+			classified.append({
+				"tag": tag,
+				"field": key,
+				"expected": expected[key],
+				"actual": preview_signature[key],
+				"message": message,
+				"hint": hint_for(tag, key)
+			})
+			mismatches.append(message)
+			_add_unique_tag(tags, tag)
 	return {
 		"ok": mismatches.is_empty(),
 		"expected": expected,
 		"actual": preview_signature,
-		"mismatches": mismatches
+		"mismatches": mismatches,
+		"classified_mismatches": classified,
+		"tags": tags,
+		"summary": build_summary(tags, classified)
 	}
+
+static func classify_field(field: String, expected, actual) -> String:
+	match field:
+		"order":
+			return ERROR_ORDER
+		"player_final", "enemy_final":
+			return ERROR_MOVE
+		"player_range_result", "enemy_range_result":
+			var actual_str := str(actual)
+			var expected_str := str(expected)
+			if actual_str == RANGE_MISS_FACING or expected_str == RANGE_MISS_FACING:
+				return ERROR_FACING
+			return ERROR_RANGE
+		"player_hp_delta", "enemy_hp_delta":
+			return ERROR_DAMAGE
+		"player_momentum_delta", "enemy_momentum_delta":
+			return ERROR_MOMENTUM
+		"player_will_break", "enemy_will_break":
+			return ERROR_BREAK
+		_:
+			return ERROR_UNKNOWN
+
+static func hint_for(tag: String, field: String) -> String:
+	match tag:
+		ERROR_ORDER:
+			return "检查 preview 是否调用 state_machine.get_resolution_order，以及先机/武境/崩势顺序是否一致。"
+		ERROR_MOVE:
+			return "检查 push/pull/self_move 的触发条件、方向、边界 clamp，以及是否按前一步位移后的坐标继续预演。"
+		ERROR_RANGE:
+			return "检查距离计算、min/max range、graze 规则，以及是否在位移后重新判定后手命中。"
+		ERROR_FACING:
+			return "检查 facing、回身标签、同格朝向规则，以及预览是否使用了最新朝向。"
+		ERROR_DAMAGE:
+			return "检查 hit/graze/miss 伤害、guard 抵扣、崩势增伤，以及未命中是否归零。"
+		ERROR_MOMENTUM:
+			return "检查 break_momentum、gain_momentum、graze 削势-1，以及 guard/momentum 牌是否误走命中链。"
+		ERROR_BREAK:
+			return "检查目标势归零判定、崩势状态预测、以及多段顺序下势变化是否累计。"
+		ERROR_SCHEMA:
+			return "检查 preview_signature 是否缺字段，通常是接入层没有同步 checker 的签名结构。"
+		_:
+			return "未知差异，先查看 expected/actual 原始签名。"
+
+static func build_summary(tags: Array[String], classified: Array[Dictionary]) -> String:
+	if tags.is_empty():
+		return "OK"
+	var chunks: Array[String] = []
+	for tag in tags:
+		var count := 0
+		for item in classified:
+			if str(item.get("tag", "")) == tag:
+				count += 1
+		chunks.append("%s x%d" % [tag, count])
+	return " / ".join(chunks)
+
+static func format_report(check: Dictionary) -> String:
+	if bool(check.get("ok", false)):
+		return "[PreviewCheck] OK"
+	var lines: Array[String] = []
+	lines.append("[PreviewMismatchSummary] %s" % str(check.get("summary", "")))
+	for item in check.get("classified_mismatches", []):
+		lines.append("%s | %s" % [str(item.get("message", "")), str(item.get("hint", ""))])
+	return "\n".join(lines)
+
+static func _add_unique_tag(tags: Array[String], tag: String) -> void:
+	if not tags.has(tag):
+		tags.append(tag)
 
 static func simulate(snapshot: Dictionary) -> Dictionary:
 	var p_pos: int = int(snapshot.get("player_position", 0))
