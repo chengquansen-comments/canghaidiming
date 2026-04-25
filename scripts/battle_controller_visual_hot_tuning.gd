@@ -21,12 +21,9 @@ func _build_ui() -> void:
 	_refresh_tuning_panel()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_F9:
-			tuning_visible = not tuning_visible
-			if tuning_panel != null:
-				tuning_panel.visible = tuning_visible
-			get_viewport().set_input_as_handled()
+	# F9 is handled in parent _input so it works even when panel controls have focus.
+	# Keep this empty to avoid duplicate toggles.
+	pass
 
 func _process(delta: float) -> void:
 	super(delta)
@@ -39,6 +36,10 @@ func _isolate_tuning_panel_input() -> void:
 	if tuning_panel == null:
 		return
 	tuning_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	if tuning_content_root != null:
+		tuning_content_root.mouse_filter = Control.MOUSE_FILTER_STOP
+	if tuning_label != null:
+		tuning_label.mouse_filter = Control.MOUSE_FILTER_STOP
 	if not tuning_panel.gui_input.is_connected(_on_tuning_panel_gui_input):
 		tuning_panel.gui_input.connect(_on_tuning_panel_gui_input)
 
@@ -49,13 +50,20 @@ func _on_tuning_panel_gui_input(event: InputEvent) -> void:
 func _build_hot_tuning_controls() -> void:
 	if tuning_panel == null or tuning_label == null or _hot_controls_root != null:
 		return
-	tuning_label.custom_minimum_size = Vector2(360, 140)
-	tuning_panel.offset_bottom = 560
+	var parent_container: VBoxContainer = tuning_content_root if tuning_content_root != null else null
+	if parent_container == null:
+		return
+	tuning_label.custom_minimum_size = Vector2(392, 300)
+	tuning_panel.offset_right = 452
+	tuning_panel.offset_bottom = 640
+	parent_container.custom_minimum_size = Vector2(412, 596)
 	_hot_controls_root = VBoxContainer.new()
 	_hot_controls_root.name = "HotTuningControls"
 	_hot_controls_root.mouse_filter = Control.MOUSE_FILTER_STOP
+	_hot_controls_root.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_hot_controls_root.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	_hot_controls_root.add_theme_constant_override("separation", 4)
-	tuning_panel.add_child(_hot_controls_root)
+	parent_container.add_child(_hot_controls_root)
 	_add_slider_row("伤害倍率", 0.5, 2.0, 0.05, damage_multiplier, _on_damage_multiplier_changed)
 	_add_slider_row("削势倍率", 0.5, 2.0, 0.05, break_multiplier, _on_break_multiplier_changed)
 	_add_slider_row("耗势修正", -1.0, 2.0, 1.0, float(cost_delta), _on_cost_delta_changed)
@@ -65,6 +73,7 @@ func _build_hot_tuning_controls() -> void:
 func _add_slider_row(label_text: String, min_value: float, max_value: float, step: float, value: float, callback: Callable) -> void:
 	var row := HBoxContainer.new()
 	row.mouse_filter = Control.MOUSE_FILTER_STOP
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var label := Label.new()
 	label.text = label_text
 	label.custom_minimum_size = Vector2(72, 22)
@@ -73,7 +82,8 @@ func _add_slider_row(label_text: String, min_value: float, max_value: float, ste
 	slider.max_value = max_value
 	slider.step = step
 	slider.value = value
-	slider.custom_minimum_size = Vector2(190, 22)
+	slider.custom_minimum_size = Vector2(220, 22)
+	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	slider.mouse_filter = Control.MOUSE_FILTER_STOP
 	var value_label := Label.new()
 	value_label.text = _format_slider_value(value, step)
@@ -100,6 +110,7 @@ func _add_toggle_row(label_text: String, initial: bool, callback: Callable) -> v
 func _add_sample_buttons() -> void:
 	var row := HBoxContainer.new()
 	row.mouse_filter = Control.MOUSE_FILTER_STOP
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var btn100 := Button.new()
 	btn100.text = "采样100局"
 	btn100.mouse_filter = Control.MOUSE_FILTER_STOP
