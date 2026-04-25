@@ -1194,7 +1194,7 @@ func _on_intent_resolved(_actor: Fighter, _target: Fighter, _intent: IntentData,
 func _resolve_round() -> void:
 	state_machine.phase = BattleStateMachine.BattlePhase.RESOLUTION
 	_apply_declared_stances()
-	var order := state_machine.get_resolution_order(player, enemy, player_intent, enemy_intent)
+	var order: Array[IntentData] = state_machine.get_resolution_order(player, enemy, player_intent, enemy_intent)
 	_log("[b]结算顺序：[/b] %s -> %s" % [order[0].get_actual_name(), order[1].get_actual_name()])
 	for intent in order:
 		var actor := player if intent.actor_id == player.data.id else enemy

@@ -26,7 +26,7 @@ func _init() -> void:
 		_fail("Enemy should have enough momentum for smoke guard.")
 		return
 
-	var order := state_machine.get_resolution_order(player, enemy, player_intent, enemy_intent)
+	var order: Array[IntentData] = state_machine.get_resolution_order(player, enemy, player_intent, enemy_intent)
 	if order.size() != 2 or order[0] != enemy_intent:
 		_fail("Higher-realm enemy should resolve before lower-realm player without 先机.")
 		return

@@ -782,8 +782,8 @@ always 位移可以在 guard / momentum 牌上触发。
   "requires_facing": true,
   "tags": ["长兵", "破势", "控线"],
   "movement": {
-    "target_push_after": 1,
-    "move_condition": "on_hit"
+	"target_push_after": 1,
+	"move_condition": "on_hit"
   },
   "description": "枪杆压住来路，命中后将敌人击退一格。"
 }
@@ -807,8 +807,8 @@ always 位移可以在 guard / momentum 牌上触发。
   "requires_facing": true,
   "tags": ["短兵", "拉扯"],
   "movement": {
-    "target_pull_after": 1,
-    "move_condition": "on_hit"
+	"target_pull_after": 1,
+	"move_condition": "on_hit"
   },
   "description": "刀锋挂带，命中后将敌人拉近一格。"
 }
