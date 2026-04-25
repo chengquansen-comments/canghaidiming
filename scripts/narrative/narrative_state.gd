@@ -97,6 +97,25 @@ func _choice_available(choice: Dictionary) -> bool:
 			return false
 	return true
 
+func choice_index_for_next_node(next_node_id: String) -> int:
+	if next_node_id.is_empty() or not current_ending_id.is_empty():
+		return -1
+	var choices := available_choices(current_node())
+	for i in range(choices.size()):
+		var choice: Dictionary = choices[i]
+		if str(choice.get("next", "")) == next_node_id:
+			return i
+	return -1
+
+func can_choose_next_node(next_node_id: String) -> bool:
+	return choice_index_for_next_node(next_node_id) >= 0
+
+func choose_next_node(next_node_id: String) -> Dictionary:
+	var choice_index := choice_index_for_next_node(next_node_id)
+	if choice_index < 0:
+		return {"ok": false, "result": "当前不能前往该节点。"}
+	return choose(choice_index)
+
 func choose(index: int) -> Dictionary:
 	var node := current_node()
 	var choices := available_choices(node)
