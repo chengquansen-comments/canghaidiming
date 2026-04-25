@@ -3,6 +3,7 @@ class_name NarrativeDemoController
 
 const NarrativeStateScript := preload("res://scripts/narrative/narrative_state.gd")
 const NarrativeFontHelper := preload("res://scripts/narrative/narrative_font_helper.gd")
+const NarrativeCombatBridgeScript := preload("res://scripts/narrative/narrative_combat_bridge.gd")
 const PROLOGUE_BACKGROUND_HINTS := {
 	"p01_tide": "res://assets/pixel_battle/backgrounds/prologue_burning_village.png",
 	"p04_blade": "res://assets/pixel_battle/backgrounds/prologue_burning_village.png",
@@ -34,6 +35,7 @@ const SPEAKER_PORTRAIT_HINTS := {
 }
 
 var narrative: NarrativeState
+var combat_bridge: NarrativeCombatBridge
 var root_panel: PanelContainer
 var title_label: Label
 var type_label: Label
@@ -49,6 +51,10 @@ var portrait_label: Label
 var body_label: RichTextLabel
 var result_label: Label
 var vars_label: Label
+var combat_panel: PanelContainer
+var combat_payload_label: Label
+var request_battle_button: Button
+var mock_win_button: Button
 var choices_box: VBoxContainer
 var continue_button: Button
 var restart_button: Button
@@ -165,10 +171,47 @@ func _build_ui() -> void:
 	body_label.fit_content = false
 	body_label.scroll_active = true
 	body_label.bbcode_enabled = true
-	body_label.custom_minimum_size = Vector2(0, 190)
+	body_label.custom_minimum_size = Vector2(0, 160)
 	body_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	body_label.add_theme_font_size_override("normal_font_size", 22)
 	layout.add_child(body_label)
+
+	combat_panel = PanelContainer.new()
+	combat_panel.visible = false
+	layout.add_child(combat_panel)
+
+	var combat_margin := MarginContainer.new()
+	combat_margin.add_theme_constant_override("margin_left", 10)
+	combat_margin.add_theme_constant_override("margin_top", 8)
+	combat_margin.add_theme_constant_override("margin_right", 10)
+	combat_margin.add_theme_constant_override("margin_bottom", 8)
+	combat_panel.add_child(combat_margin)
+
+	var combat_layout := VBoxContainer.new()
+	combat_layout.add_theme_constant_override("separation", 6)
+	combat_margin.add_child(combat_layout)
+
+	combat_payload_label = Label.new()
+	combat_payload_label.add_theme_font_size_override("font_size", 15)
+	combat_payload_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	combat_payload_label.modulate = Color(0.82, 0.88, 0.9, 1.0)
+	combat_layout.add_child(combat_payload_label)
+
+	var combat_buttons := HBoxContainer.new()
+	combat_buttons.add_theme_constant_override("separation", 8)
+	combat_layout.add_child(combat_buttons)
+
+	request_battle_button = Button.new()
+	request_battle_button.text = "请求战斗"
+	request_battle_button.custom_minimum_size = Vector2(140, 38)
+	request_battle_button.pressed.connect(_on_request_battle_pressed)
+	combat_buttons.add_child(request_battle_button)
+
+	mock_win_button = Button.new()
+	mock_win_button.text = "视为胜利继续"
+	mock_win_button.custom_minimum_size = Vector2(170, 38)
+	mock_win_button.pressed.connect(_on_mock_battle_win_pressed)
+	combat_buttons.add_child(mock_win_button)
 
 	result_label = Label.new()
 	result_label.add_theme_font_size_override("font_size", 18)
@@ -203,6 +246,7 @@ func _build_ui() -> void:
 
 func _start_narrative() -> void:
 	narrative = NarrativeStateScript.new()
+	combat_bridge = NarrativeCombatBridgeScript.new()
 	var ok := narrative.load_from_path()
 	showing_prologue = true
 	waiting_result = false
@@ -212,6 +256,7 @@ func _start_narrative() -> void:
 		body_label.text = "请检查 data/narrative/mvp_compressed_narrative.json"
 		_set_art_placeholder("叙事数据加载失败。")
 		_set_portrait_placeholder("无角色")
+		_render_combat_bridge({})
 		_render_map_strip()
 		_force_cjk_font()
 		return
@@ -244,6 +289,7 @@ func _render_next_prologue_step() -> void:
 	result_label.text = ""
 	vars_label.text = ""
 	route_label.text = "序章：短镜头链 / 尚未进入行军图"
+	_render_combat_bridge({})
 	_render_map_strip()
 	if not narrative.has_next_prologue_step():
 		showing_prologue = false
@@ -313,6 +359,7 @@ func _render_node() -> void:
 	body_label.text = _format_node(node)
 	continue_button.visible = false
 	_render_map_strip()
+	_render_combat_bridge(node)
 	var choices := narrative.available_choices(node)
 	for i in range(choices.size()):
 		var choice: Dictionary = choices[i]
@@ -321,6 +368,48 @@ func _render_node() -> void:
 		button.custom_minimum_size = Vector2(0, 44)
 		button.pressed.connect(_on_choice_pressed.bind(i))
 		choices_box.add_child(button)
+	_force_cjk_font()
+
+func _render_combat_bridge(node: Dictionary) -> void:
+	if combat_panel == null:
+		return
+	if node.is_empty() or not NarrativeCombatBridge.node_has_combat(node):
+		combat_panel.visible = false
+		combat_payload_label.text = ""
+		return
+	combat_panel.visible = true
+	var payload := NarrativeCombatBridge.build_payload(narrative.current_node_id, node)
+	combat_payload_label.text = "战斗桥接占位：\n%s" % _combat_payload_text(payload)
+
+func _combat_payload_text(payload: Dictionary) -> String:
+	var enemies_text := ""
+	var raw_enemies: Variant = payload.get("enemies", [])
+	if typeof(raw_enemies) == TYPE_ARRAY:
+		var parts: Array[String] = []
+		for enemy in raw_enemies:
+			parts.append(str(enemy))
+		enemies_text = ", ".join(parts)
+	return "node_id=%s｜encounter_id=%s｜enemies=%s" % [
+		str(payload.get("node_id", "")),
+		str(payload.get("encounter_id", "")),
+		enemies_text
+	]
+
+func _on_request_battle_pressed() -> void:
+	var node := narrative.current_node()
+	var payload := combat_bridge.request_battle(narrative.current_node_id, node)
+	if payload.is_empty():
+		result_label.text = "当前节点没有 combat 配置。"
+	else:
+		result_label.text = "已请求战斗：%s" % _combat_payload_text(payload)
+	_force_cjk_font()
+
+func _on_mock_battle_win_pressed() -> void:
+	if not combat_bridge.has_pending_battle():
+		var node := narrative.current_node()
+		combat_bridge.request_battle(narrative.current_node_id, node)
+	var payload := combat_bridge.resolve_win({"source": "narrative_demo_mock"})
+	result_label.text = "战斗占位胜利：%s。现在可选择战后处理。" % str(payload.get("encounter_id", ""))
 	_force_cjk_font()
 
 func _render_node_art(node: Dictionary) -> void:
@@ -549,6 +638,7 @@ func _render_ending() -> void:
 	result_label.text = narrative.last_result_text
 	vars_label.text = narrative.variables_text()
 	continue_button.visible = false
+	_render_combat_bridge({})
 	_set_art_placeholder("结局图占位：后续接入上报 / 掩盖 / 私查 / 借势四类结局图。")
 	_set_portrait_placeholder("结局人物占位")
 	_render_map_strip()
