@@ -4,6 +4,7 @@ extends "res://scripts/battle_controller_visual_preview_checked.gd"
 # Non-invasive wrapper: no battle rules are changed here.
 
 var tuning_panel: PanelContainer
+var tuning_content_root: VBoxContainer
 var tuning_label: RichTextLabel
 var tuning_visible := true
 var tuning_total_checks := 0
@@ -21,13 +22,17 @@ func _build_ui() -> void:
 	_refresh_tuning_panel()
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	# Parent chain does not define _unhandled_input, so do not call super(event).
+func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_F9:
-			tuning_visible = not tuning_visible
-			if tuning_panel != null:
-				tuning_panel.visible = tuning_visible
+			_toggle_tuning_panel()
+			get_viewport().set_input_as_handled()
+
+
+func _toggle_tuning_panel() -> void:
+	tuning_visible = not tuning_visible
+	if tuning_panel != null:
+		tuning_panel.visible = tuning_visible
 
 
 func _run_preview_consistency_check() -> void:
@@ -89,8 +94,8 @@ func _build_tuning_panel() -> void:
 	tuning_panel.anchor_bottom = 0.0
 	tuning_panel.offset_left = 12
 	tuning_panel.offset_top = 12
-	tuning_panel.offset_right = 392
-	tuning_panel.offset_bottom = 312
+	tuning_panel.offset_right = 432
+	tuning_panel.offset_bottom = 560
 	tuning_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(0.035, 0.045, 0.06, 0.82)
@@ -98,13 +103,23 @@ func _build_tuning_panel() -> void:
 	style.set_border_width_all(1)
 	style.set_corner_radius_all(10)
 	tuning_panel.add_theme_stylebox_override("panel", style)
+
+	tuning_content_root = VBoxContainer.new()
+	tuning_content_root.name = "TuningContentRoot"
+	tuning_content_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	tuning_content_root.add_theme_constant_override("separation", 6)
+	tuning_content_root.custom_minimum_size = Vector2(392, 520)
+	tuning_panel.add_child(tuning_content_root)
+
 	tuning_label = RichTextLabel.new()
 	tuning_label.fit_content = false
-	tuning_label.scroll_active = false
+	tuning_label.scroll_active = true
 	tuning_label.bbcode_enabled = true
-	tuning_label.custom_minimum_size = Vector2(360, 280)
+	tuning_label.custom_minimum_size = Vector2(392, 300)
+	tuning_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	tuning_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	tuning_label.add_theme_font_size_override("normal_font_size", 13)
-	tuning_panel.add_child(tuning_label)
+	tuning_content_root.add_child(tuning_label)
 	add_child(tuning_panel)
 
 
@@ -118,7 +133,7 @@ func _refresh_tuning_panel() -> void:
 	if tuning_total_checks > 0:
 		ok_rate = float(tuning_ok_checks) / float(tuning_total_checks) * 100.0
 	var text := ""
-	text += "[b]调参 / 预览诊断面板[/b]  [color=#9cc7ff]F9隐藏[/color]\n"
+	text += "[b]调参 / 预览诊断面板[/b]  [color=#9cc7ff]F9隐藏/显示[/color]\n"
 	text += "真实距离: %s    检查: %d    OK: %.1f%%\n" % [str(distance), tuning_total_checks, ok_rate]
 	if player != null and enemy != null:
 		text += "玩家: pos=%d face=%s HP=%d 势=%d guard=%d\n" % [player.position, player.facing, player.hp, player.momentum, player.guard_points]
