@@ -1,7 +1,7 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：P0 Web 构建稳定已再次恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景/人物/旧物文本占位 + 结局闭环 + 收益与推进入口收口 + UI 分层 + 最小图片显示 + 六列地图操作布局 + SVG 占位视觉资源 + 场景信息分层展示 + 视觉资源诊断 + Parser 稳定修复 + 真实战斗 V1 单向跳转 + MainVisual 叙事上下文诊断”。  
+> 当前阶段：P0 Web 构建稳定已再次恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景/人物/旧物文本占位 + 结局闭环 + 收益与推进入口收口 + UI 分层 + 最小图片显示 + 六列地图操作布局 + SVG 占位视觉资源 + 场景信息分层展示 + 视觉资源诊断 + Parser 稳定修复 + 真实战斗 V1 单向跳转 + MainVisual 叙事上下文诊断 + 下方操作区滚动修复”。  
 > 核心原则：继续走安全线，不恢复旧 `scripts/narrative/*` 复杂链路；不使用 `HScrollContainer`；不直接改战斗规则；不破坏现有战斗测试入口；不重构 `web_shell.html`。
 
 ---
@@ -125,6 +125,8 @@ scripts/narrative_demo_safe_controller.gd
 [x] 结局与重开闭环
 [x] 收益与推进入口已收口：_apply_choice_delta / _apply_default_map_reward / _advance_to_node
 [x] UI 分层完成：map_buttons_box / combat_buttons_box / choices_box
+[x] 下方操作区已改为 ScrollContainer，避免选项被挤出屏幕
+[x] 上方视觉/正文区域已压缩高度，优先保障地图、战斗、叙事选项可见
 [x] 最小图片显示：TextureRect + ResourceLoader.exists
 [x] 视觉资源路径已切到 SVG 占位资源
 [x] 视觉资源诊断：visual_debug_label 显示 path / exists / type / 状态
@@ -145,6 +147,7 @@ bec8e7efef48734b90608f9bf27ea2e38e9648d4  Format safe narrative scene hints into
 6d1b8a5129c14a960d2614f69a609886a03339d2  Add safe narrative visual diagnostics
 c30ea1b5a6017ca956ecfbc512b074d484bf731c  Fix visual diagnostics parser variable name
 07a22f47c6f3bdb693cc082d0f86fd5f4e6d9c9f  Add one-way jump from narrative demo to battle scene
+bfe1aeea444afc112740df0c27557557ffdb2693  Make narrative action area scrollable
 ```
 
 ---
@@ -173,12 +176,6 @@ return_after_battle=false
 NarrativeDemo 点击“请求战斗”
 → NarrativeBattleContext.set_request(encounter_id, source_node_id)
 → get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
-```
-
-对应提交：
-
-```text
-新增 scripts/narrative_battle_context.gd：Add narrative battle context for one-way jump
 ```
 
 ---
@@ -230,22 +227,40 @@ res://scripts/battle_controller_visual_narrative_context.gd
 
 ---
 
-### 3.5 SVG 占位视觉资源
+## 4. 当前 UI 修复说明
 
-已新增：
+### 4.1 问题
 
 ```text
-assets/pixel_battle/backgrounds/narrative_military_order.svg
-assets/pixel_battle/backgrounds/narrative_beach_ambush.svg
-assets/pixel_battle/relics/relic_ming_firearm.svg
-assets/pixel_battle/portraits/transport_officer.svg
-assets/pixel_battle/portraits/wakou_leader.svg
-assets/pixel_battle/backgrounds/narrative_military_coverup.svg
+NarrativeDemo 下方 UI 显示不全，尤其是“叙事选择”区域容易被挤出屏幕。
+```
+
+### 4.2 修复方式
+
+```text
+将 map_buttons_box / combat_buttons_box / choices_box 统一放入 action_scroll: ScrollContainer
+action_scroll 设置 SIZE_EXPAND_FILL
+操作区高度保底 250
+每次刷新时 action_scroll.scroll_vertical = 0
+同时压缩：
+- title / status / map / scene 字号与高度
+- visual_frame 高度
+- body_label 高度
+```
+
+### 4.3 验收标准
+
+```text
+[ ] 1600×1000 下叙事选择不再被裁掉
+[ ] 选项多时可向下滚动
+[ ] 地图按钮、战斗按钮、叙事选择都仍可点击
+[ ] 不影响跳转 MainVisual
+[ ] Web 构建稳定
 ```
 
 ---
 
-## 4. 当前视觉显示规则
+## 5. 当前视觉显示规则
 
 节点现在配置：
 
@@ -260,18 +275,6 @@ visual_path 为空 → 显示文本占位；诊断 path=空 / 状态=文本占�
 ResourceLoader.exists(path) 为 false → 显示文本占位；诊断 exists=false
 资源存在且是 Texture2D → TextureRect 显示图片；诊断 exists=true / type=Texture2D / 状态=已显示
 资源存在但不是 Texture2D → 显示错误占位文本；诊断 exists=true / type=<class> / 状态=非 Texture2D
-```
-
----
-
-## 5. 当前 UI 分层
-
-当前动态控件已经拆成三个区域：
-
-```text
-map_buttons_box：行军图操作，只放地图节点按钮；当前为六列布局
-combat_buttons_box：战斗桥接，只放“请求战斗 / 视为胜利继续”或无战斗提示
-choices_box：叙事选择，只放当前节点 choices / 序章继续 / 重开叙事
 ```
 
 ---
@@ -391,6 +394,7 @@ MainVisual 现有测试入口保持不变。
 ## 8. 当前仍需推进
 
 ```text
+[ ] Web 验收：NarrativeDemo 下方选项完整显示 / 可滚动
 [ ] Web 验收：NarrativeDemo 点击请求战斗能进入 MainVisual
 [ ] Web 验收：MainVisual 显示 encounter_id / source_node_id
 [ ] Web 验收：MainVisual 原有角色选择入口不受影响
@@ -402,69 +406,44 @@ MainVisual 现有测试入口保持不变。
 
 ---
 
-## 9. 下一刀建议：Web 验收 MainVisual 上下文诊断
+## 9. 下一刀建议：Web 回归验收 UI 与跳转
 
 目标：
 
 ```text
-确认 narrative → battle 传参链路可见。
+确认本轮 ScrollContainer 修复没有影响剧情推进和战斗跳转。
 ```
 
 验收标准：
 
 ```text
-[ ] 从 NarrativeDemo 请求战斗进入 MainVisual
+[ ] 序章继续按钮显示完整
+[ ] 正式节点下：行军图操作 / 战斗桥接 / 叙事选择均可见或可滚动
+[ ] 普通叙事选择能推进节点
+[ ] 请求战斗能跳转 MainVisual
 [ ] MainVisual 顶部显示“叙事战斗上下文：encounter_id=...｜source_node_id=...｜return_after_battle=false”
 [ ] 原有角色选择仍可用
 [ ] Web 构建稳定
 ```
 
-如果诊断显示位置遮挡 UI：
+如果下方区域仍然不够：
 
 ```text
-下一刀只调整 debug label 位置，不改战斗规则。
+下一刀只继续压缩上方视觉区域或提高 action_scroll 最小高度，不改叙事/战斗规则。
 ```
 
 ---
 
-## 10. 后续路线
-
-### Step 1：Web 验收 MainVisual 上下文诊断
+## 10. 给 Codex 的下一步指令
 
 ```text
-确认单向跳转传参链路真实可见。
-```
-
-### Step 2：定位战斗胜负结算函数
-
-```text
-继续精确定位 HP 归零、battle_active=false、overlay 胜负按钮等逻辑。
-```
-
-### Step 3：encounter_id → enemy/fighter 映射
-
-```text
-只映射到已有 spearman / blademaster，不新增复杂敌人体系。
-```
-
-### Step 4：战斗结果回写叙事
-
-```text
-只有在结算函数明确后，再加 battle_finished 信号或全局上下文结果回写。
+请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前已修复 NarrativeDemo 下方 UI 显示不全问题：map_buttons_box / combat_buttons_box / choices_box 已统一放入 ScrollContainer。下一步请做 Web 回归验收：确认叙事选择区域完整显示或可滚动，普通选择能推进，请求战斗能跳转 MainVisual，MainVisual 显示 NarrativeBattleContext 诊断，且原有角色选择入口仍可用。不要绕过角色选择，不要改战斗规则，不要根据 encounter_id 自动换敌人，不要重构 web_shell.html。
 ```
 
 ---
 
-## 11. 给 Codex 的下一步指令
+## 11. 当前一句话结论
 
 ```text
-请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前已完成 NarrativeDemo → MainVisual 的 V1 单向跳转，并通过 scripts/battle_controller_visual_narrative_context.gd wrapper 在 MainVisual 显示 NarrativeBattleContext 诊断。下一步请做 Web 回归验收：从 NarrativeDemo 点击请求战斗，确认 MainVisual 能打开，顶部显示 encounter_id / source_node_id，且原有角色选择入口仍可用。不要绕过角色选择，不要改战斗规则，不要根据 encounter_id 自动换敌人，不要重构 web_shell.html。
-```
-
----
-
-## 12. 当前一句话结论
-
-```text
-剧情 MVP 安全线已完成并通过 P0；真实战斗接入已完成 V1 单向跳转与 MainVisual 上下文诊断，下一步应 Web 验收传参链路和原有角色选择入口。
+剧情 MVP 安全线已完成并通过 P0；本轮已修复 NarrativeDemo 下方操作区显示不全问题，下一步应 Web 回归验收 UI 滚动、叙事推进和 MainVisual 单向跳转链路。
 ```
