@@ -17,13 +17,47 @@ var continue_narrative_button: Button
 var last_result_debug_text: String = ""
 var result_recorded: bool = false
 var narrative_numbers_applied: bool = false
+var narrative_auto_start_attempted: bool = false
 
 func _ready() -> void:
 	super._ready()
 	_add_narrative_debug_layer()
+	call_deferred("_auto_start_narrative_battle_if_needed")
 
 func _process(_delta: float) -> void:
 	_update_battle_result_debug()
+
+func _auto_start_narrative_battle_if_needed() -> void:
+	if narrative_auto_start_attempted:
+		return
+	if str(NarrativeBattleContext.encounter_id) != "enc_prologue_master_rescue":
+		return
+	narrative_auto_start_attempted = true
+	player_role_id = "blademaster"
+	var called: bool = _try_recommended_role_entry("blademaster")
+	if not called:
+		called = _press_role_button_by_text(["刀客", "腰刀", "blademaster", "刀"])
+	if called:
+		_set_battle_result_debug_text("序章师父战：已自动以师父刀法进入教学战。")
+	else:
+		_set_battle_result_debug_text("序章师父战：已写入师父刀法配置；未命中自动开战入口，请点刀客入口。")
+
+func _press_role_button_by_text(keywords: Array[String]) -> bool:
+	var buttons: Array[Button] = []
+	_collect_buttons(self, buttons)
+	for button: Button in buttons:
+		var text: String = button.text
+		for keyword: String in keywords:
+			if text.findn(keyword) >= 0:
+				button.emit_signal("pressed")
+				return true
+	return false
+
+func _collect_buttons(node: Node, out_buttons: Array[Button]) -> void:
+	for child: Node in node.get_children():
+		if child is Button:
+			out_buttons.append(child)
+		_collect_buttons(child, out_buttons)
 
 func _add_narrative_debug_layer() -> void:
 	narrative_debug_layer = CanvasLayer.new()
@@ -158,15 +192,20 @@ func _update_battle_result_debug() -> void:
 func _apply_narrative_numbers_once() -> void:
 	if narrative_numbers_applied:
 		return
+	var encounter: String = str(NarrativeBattleContext.encounter_id)
 	var mapping: Dictionary = NarrativeBattleContext.get_battle_mapping()
 	var profile: Dictionary = NarrativeBattleContext.get_player_profile()
 	var role_id: String = str(mapping.get("player_role", player_role_id))
-	if not profile.is_empty():
-		role_id = str(profile.get("role", role_id))
-	_apply_fighter_config(player, _player_config(role_id, profile))
-	_apply_fighter_config(enemy, _enemy_config(str(NarrativeBattleContext.encounter_id)))
+	if encounter == "enc_prologue_master_rescue":
+		_apply_fighter_config(player, _master_config())
+		_apply_fighter_config(enemy, _enemy_config(encounter))
+	else:
+		if not profile.is_empty():
+			role_id = str(profile.get("role", role_id))
+		_apply_fighter_config(player, _player_config(role_id, profile))
+		_apply_fighter_config(enemy, _enemy_config(encounter))
 	narrative_numbers_applied = true
-	_set_battle_result_debug_text("数值实装：已覆盖敌我 HP / 势 / 武境 / 轻功 / 起手牌 / 牌库。")
+	_set_battle_result_debug_text("正式实装：已应用本场敌我数值与牌组。")
 	_safe_refresh_runtime_ui()
 
 func _apply_fighter_config(fighter, config: Dictionary) -> void:
@@ -197,11 +236,14 @@ func _apply_fighter_config(fighter, config: Dictionary) -> void:
 		fighter.hand.append(fighter.draw_pile.pop_front())
 
 func _safe_refresh_runtime_ui() -> void:
-	var refresh_methods: Array[String] = ["_refresh_ui", "_update_ui", "_render_battle", "_render_state", "_refresh_all"]
+	var refresh_methods: Array[String] = ["_refresh_ui", "_update_ui", "_render_battle", "_render_state", "_refresh_all", "_render"]
 	for method_name: String in refresh_methods:
 		if _method_accepts_arg_count(method_name, 0):
 			callv(method_name, [])
 			return
+
+func _master_config() -> Dictionary:
+	return {"name":"沉默老兵", "weapon":"旧腰刀", "max_hp":48, "hp":48, "max_momentum":12, "momentum":9, "realm":4, "qinggong":3, "position":2, "facing":"right", "preferred":[0,1,2], "deck":_master_cards()}
 
 func _player_config(role_id: String, profile: Dictionary) -> Dictionary:
 	var realm: int = int(profile.get("martial_level", 1)) if not profile.is_empty() else 1
@@ -212,7 +254,7 @@ func _player_config(role_id: String, profile: Dictionary) -> Dictionary:
 func _enemy_config(encounter: String) -> Dictionary:
 	match encounter:
 		"enc_prologue_master_rescue":
-			return {"name":"序章对手", "weapon":"短刃", "max_hp":24, "hp":24, "max_momentum":10, "momentum":3, "realm":1, "qinggong":1, "position":6, "facing":"left", "preferred":[0,1,2], "deck":_enemy_intro_cards()}
+			return {"name":"袭村刀手", "weapon":"短刃", "max_hp":22, "hp":22, "max_momentum":8, "momentum":2, "realm":1, "qinggong":1, "position":6, "facing":"left", "preferred":[0,1,2], "deck":_enemy_intro_cards()}
 		"enc_transport_officer":
 			return {"name":"押运官", "weapon":"腰刀", "max_hp":34, "hp":34, "max_momentum":10, "momentum":5, "realm":2, "qinggong":2, "position":6, "facing":"left", "preferred":[0,1,2], "deck":_enemy_officer_cards()}
 		"enc_wakou_boss":
@@ -222,6 +264,9 @@ func _enemy_config(encounter: String) -> Dictionary:
 
 func _c(id: String, name: String, min_d: int, max_d: int, cost: int, role: String, gain: int, brk: int, dmg: int, guard: int, tags: Array, style: String, facing: bool = true) -> Dictionary:
 	return {"id":id, "name":name, "min":min_d, "max":max_d, "cost":cost, "role":role, "gain":gain, "break":brk, "damage":dmg, "guard":guard, "tags":tags, "style":style, "facing":facing}
+
+func _master_cards() -> Array:
+	return [_c("m_1","老兵压刀",0,2,0,"momentum",3,2,0,0,["教学","强力"],"刀"), _c("m_2","旧刀横封",0,3,0,"guard",0,0,0,9,["教学","守"],"刀",false), _c("m_3","沉默斩",0,2,1,"damage",0,2,12,0,["教学","斩杀"],"刀"), _c("m_4","断声一刀",0,1,1,"damage",0,3,16,0,["终结"],"刀")]
 
 func _spear_cards(level: int) -> Array:
 	var cards: Array = [_c("p_s1","枪式一",3,5,1,"momentum",2,0,0,0,["试探"],"枪"), _c("p_s2","枪式二",3,5,1,"momentum",0,2,0,0,["破势"],"枪"), _c("p_s3","枪式三",3,5,1,"damage",0,0,5,0,["起手"],"枪"), _c("p_s4","枪守式",0,5,1,"guard",0,0,0,5,["守"],"枪",false), _c("p_s5","枪进式",2,4,1,"damage",1,0,4,0,["进身"],"枪"), _c("p_s6","枪终式",4,5,2,"damage",0,1,8,0,["终结"],"枪")]
@@ -240,7 +285,7 @@ func _blade_cards(level: int) -> Array:
 	return cards
 
 func _enemy_intro_cards() -> Array:
-	return [_c("e_i1","教式一",0,2,1,"momentum",1,0,0,0,["教学"],"短"), _c("e_i2","教式二",0,2,1,"damage",0,0,3,0,["低威胁"],"短"), _c("e_i3","教守式",0,3,1,"guard",0,0,0,3,["守"],"短",false), _c("e_i4","教终式",0,1,2,"damage",0,0,5,0,["线索"],"短")]
+	return [_c("e_i1","乱步",0,2,1,"momentum",1,0,0,0,["教学"],"短"), _c("e_i2","乱砍",0,2,1,"damage",0,0,3,0,["低威胁"],"短"), _c("e_i3","退守",0,3,1,"guard",0,0,0,3,["守"],"短",false), _c("e_i4","困兽",0,1,2,"damage",0,0,5,0,["线索"],"短")]
 
 func _enemy_spear_cards() -> Array:
 	return [_c("e_s1","敌枪一",3,5,1,"momentum",2,0,0,0,["试探"],"枪"), _c("e_s2","敌枪二",3,5,1,"momentum",0,2,0,0,["抢势"],"枪"), _c("e_s3","敌枪三",3,5,1,"damage",0,0,4,0,["突刺"],"枪"), _c("e_s4","敌枪守",0,5,1,"guard",0,0,0,4,["守"],"枪",false), _c("e_s5","敌枪终",4,5,2,"damage",0,1,7,0,["重击"],"枪")]
@@ -265,13 +310,18 @@ func _packed_ints(values: Array) -> PackedInt32Array:
 	return result
 
 func _runtime_cards_text() -> String:
+	var encounter: String = str(NarrativeBattleContext.encounter_id)
 	var mapping: Dictionary = NarrativeBattleContext.get_battle_mapping()
 	var profile: Dictionary = NarrativeBattleContext.get_player_profile()
 	var role_id: String = str(mapping.get("player_role", "spearman"))
-	if not profile.is_empty():
-		role_id = str(profile.get("role", role_id))
-	var player_config: Dictionary = _player_config(role_id, profile)
-	var enemy_runtime_config: Dictionary = _enemy_config(str(NarrativeBattleContext.encounter_id))
+	var player_config: Dictionary
+	if encounter == "enc_prologue_master_rescue":
+		player_config = _master_config()
+	else:
+		if not profile.is_empty():
+			role_id = str(profile.get("role", role_id))
+		player_config = _player_config(role_id, profile)
+	var enemy_runtime_config: Dictionary = _enemy_config(encounter)
 	var player_deck: Array = player_config.get("deck", [])
 	var enemy_deck: Array = enemy_runtime_config.get("deck", [])
 	return "玩家持牌：%s\n敌方持牌：%s" % [_deck_summary(player_deck), _deck_summary(enemy_deck)]
