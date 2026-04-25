@@ -1,4 +1,4 @@
-extends NarrativeDemoController
+extends "res://scripts/narrative/narrative_demo_controller.gd"
 class_name NarrativeDemoControllerClickableMap
 
 const NarrativeMapClickRouterScript := preload("res://scripts/narrative/narrative_map_click_router.gd")
