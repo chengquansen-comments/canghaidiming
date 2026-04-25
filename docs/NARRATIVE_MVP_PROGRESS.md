@@ -1,14 +1,14 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：P0 Web 构建稳定已再次恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景/人物/旧物文本占位 + 结局闭环 + 收益与推进入口收口 + UI 分层 + 最小图片显示 + 六列地图操作布局 + SVG 占位视觉资源 + 场景信息分层展示 + 视觉资源诊断 + Parser 稳定修复”；真实战斗接入前调研已启动。  
+> 当前阶段：P0 Web 构建稳定已再次恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景/人物/旧物文本占位 + 结局闭环 + 收益与推进入口收口 + UI 分层 + 最小图片显示 + 六列地图操作布局 + SVG 占位视觉资源 + 场景信息分层展示 + 视觉资源诊断 + Parser 稳定修复 + 真实战斗 V1 单向跳转”。  
 > 核心原则：继续走安全线，不恢复旧 `scripts/narrative/*` 复杂链路；不使用 `HScrollContainer`；不直接改战斗规则；不破坏现有战斗测试入口；不重构 `web_shell.html`。
 
 ---
 
 ## 1. 当前目标
 
-叙事 MVP 当前只验证一件事：
+叙事 MVP 当前验证：
 
 ```text
 玩家能在 Web 稳定环境里走完：
@@ -24,21 +24,13 @@
 → 结局
 ```
 
-安全版目标：
+同时新增 V1 战斗接入目标：
 
 ```text
-剧情 MVP：进入 NarrativeDemo.tscn
-当前脚本：res://scripts/narrative_demo_safe_controller.gd
-中文显示：复用 BattleFontHelper
-行军图：六列文本地图 + 六列地图按钮
-地图状态：▶ 当前 / ● 已走 / ◎ 可前往 / ○ 未开放
-叙事变量：军功 / 清望 / 旧案线索
-视觉表现：ResourceLoader.exists + TextureRect；当前使用 SVG 占位资源走通加载链路
-视觉诊断：显示 path / exists / type / 状态，便于 Web 验收
-场景信息：scene 文本按句切分为多行 bullet，降低拥挤
-战斗表现：请求战斗 / 视为胜利继续 先用文本占位
-UI 分层：行军图操作 / 战斗桥接 / 叙事选择 三个区域分开展示
-下一阶段：从“战斗占位”推进到“真实战斗最小接入”
+剧情战斗节点点击“请求战斗”
+→ 写入 encounter_id / source_node_id
+→ 单向跳转 MainVisual.tscn
+→ MainVisual 继续走现有角色选择入口
 ```
 
 ---
@@ -127,7 +119,8 @@ scripts/narrative_demo_safe_controller.gd
 [x] 普通 choices 按各自 delta 修改三变量
 [x] 场景文本占位：背景 / 人物 / 旧物 / 结局图
 [x] 场景信息分层展示：_format_scene_text 按句切分为 bullet
-[x] 战斗桥接文本占位：请求战斗 / 视为胜利继续 / node_id / encounter_id
+[x] 战斗桥接：请求战斗 / 视为胜利继续 / node_id / encounter_id
+[x] 请求战斗已升级为 V1 单向跳转 MainVisual.tscn
 [x] 结局与重开闭环
 [x] 收益与推进入口已收口：_apply_choice_delta / _apply_default_map_reward / _advance_to_node
 [x] UI 分层完成：map_buttons_box / combat_buttons_box / choices_box
@@ -150,11 +143,46 @@ a07c872bd3ce0b9ba53f5cdb63591a23ee2d1535  Point safe narrative visuals to SVG pl
 bec8e7efef48734b90608f9bf27ea2e38e9648d4  Format safe narrative scene hints into layers
 6d1b8a5129c14a960d2614f69a609886a03339d2  Add safe narrative visual diagnostics
 c30ea1b5a6017ca956ecfbc512b074d484bf731c  Fix visual diagnostics parser variable name
+07a22f47c6f3bdb693cc082d0f86fd5f4e6d9c9f  Add one-way jump from narrative demo to battle scene
 ```
 
 ---
 
-### 3.3 SVG 占位视觉资源
+### 3.3 Narrative Battle Context
+
+新增文件：
+
+```text
+scripts/narrative_battle_context.gd
+```
+
+作用：
+
+```text
+作为 V1 单向跳转的轻量上下文，记录：
+encounter_id
+source_node_id
+source_scene
+return_after_battle=false
+```
+
+当前行为：
+
+```text
+NarrativeDemo 点击“请求战斗”
+→ NarrativeBattleContext.set_request(encounter_id, source_node_id)
+→ get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
+```
+
+对应提交：
+
+```text
+新增 scripts/narrative_battle_context.gd：Add narrative battle context for one-way jump
+```
+
+---
+
+### 3.4 SVG 占位视觉资源
 
 已新增：
 
@@ -184,17 +212,6 @@ visual_path 为空 → 显示文本占位；诊断 path=空 / 状态=文本占�
 ResourceLoader.exists(path) 为 false → 显示文本占位；诊断 exists=false
 资源存在且是 Texture2D → TextureRect 显示图片；诊断 exists=true / type=Texture2D / 状态=已显示
 资源存在但不是 Texture2D → 显示错误占位文本；诊断 exists=true / type=<class> / 状态=非 Texture2D
-```
-
-当前配置路径：
-
-```text
-military_order → res://assets/pixel_battle/backgrounds/narrative_military_order.svg
-beach_ambush → res://assets/pixel_battle/backgrounds/narrative_beach_ambush.svg
-ming_firearm → res://assets/pixel_battle/relics/relic_ming_firearm.svg
-transport_officer → res://assets/pixel_battle/portraits/transport_officer.svg
-wakou_boss → res://assets/pixel_battle/portraits/wakou_leader.svg
-military_coverup → res://assets/pixel_battle/backgrounds/narrative_military_coverup.svg
 ```
 
 ---
@@ -253,7 +270,7 @@ Boss：军功 +2，旧案线索 +1
 
 ---
 
-## 7. 真实战斗接入前调研结论
+## 7. 真实战斗接入调研结论
 
 ### 7.1 MainVisual 当前入口
 
@@ -275,14 +292,6 @@ battle_controller_visual_break_preview.gd
 → battle_controller_core.gd
 ```
 
-含义：
-
-```text
-真实接入不能只看 battle_controller_visual_responsive_ui.gd；
-MainVisual 当前实际入口是 break preview 层；
-任何 narrative 跳转都应以 MainVisual.tscn 当前脚本为准。
-```
-
 ### 7.2 Battle Core 当前启动方式
 
 `battle_controller_core.gd` 的 `_ready()` 当前流程为：
@@ -298,57 +307,28 @@ _show_role_selection()
 
 ```text
 战斗默认从“角色选择入口”开始；
-尚未看到可直接从 encounter_id 启动战斗的公开入口；
-第一版不应直接绕过 _show_role_selection，除非补一个明确的 narrative start API。
+V1 单向跳转不绕过 _show_role_selection；
+MainVisual 现有测试入口保持不变。
 ```
 
-### 7.3 Catalog 与敌人配置现状
+### 7.3 当前 V1 接入方式
 
-`_build_catalog()` 当前核心角色仍是：
-
-```text
-spearman
-blademaster
-```
-
-含义：
-
-```text
-当前真实战斗资源和卡组仍围绕枪手 / 刀客；
-叙事 encounter_id 应先映射到已有 fighter id，而不是新增复杂敌人体系；
-建议第一版映射：
-enc_beach_ambush → enemy_spearman / spearman
-enc_transport_officer → enemy_blademaster / blademaster
-enc_wakou_boss → enemy_blademaster / blademaster
-```
-
-### 7.4 当前最小接入判断
-
-第一版建议不要做“完整战斗结束回到叙事”，先做：
+已完成：
 
 ```text
 叙事节点点击“请求战斗”
-→ 记录 encounter_id 到全局/启动上下文
+→ 记录 encounter_id / source_node_id
 → 跳转 MainVisual.tscn
 → MainVisual 仍进入现有角色选择/战斗测试链路
 ```
 
-原因：
+暂不做：
 
 ```text
-风险最小；
-不改战斗规则；
-不破坏现有战斗测试入口；
-先验证叙事到战斗的单向链路。
-```
-
-第二版再做：
-
-```text
-战斗胜利/失败信号
-→ 回到 NarrativeDemo
-→ 根据 encounter_id 写入战斗结果
-→ 解锁战后 choice
+战斗结束回到叙事
+战斗胜负写回
+绕过角色选择
+根据 encounter_id 自动配置敌人
 ```
 
 ---
@@ -356,51 +336,52 @@ enc_wakou_boss → enemy_blademaster / blademaster
 ## 8. 当前仍需推进
 
 ```text
+[ ] Web 验收：NarrativeDemo 点击请求战斗能进入 MainVisual
+[ ] Web 验收：MainVisual 原有角色选择入口不受影响
 [ ] 根据 visual_debug_label 判断 SVG 是否可被当前 Godot Web 导入为 Texture2D
 [ ] 若 SVG 不能作为 Texture2D 正常显示，则改为真实 PNG 占位图
-[ ] 六列行军图操作区在 1600×1000 下验收
-[ ] 图片显示区域尺寸和正文高度在 1600×1000 下验收
-[ ] 真实战斗单向跳转接入
 [ ] 真实战斗胜利/失败回调接入前继续定位结算函数
+[ ] V2：MainVisual 读取 NarrativeBattleContext 并显示来源诊断
+[ ] V3：encounter_id → enemy/fighter 映射
 ```
 
 ---
 
-## 9. 下一刀建议：叙事到 MainVisual 的单向跳转
+## 9. 下一刀建议：MainVisual 显示 NarrativeBattleContext 诊断
 
 目标：
 
 ```text
-把 safe controller 里的“请求战斗”从文本占位升级为单向跳转 MainVisual.tscn。
+V1 单向跳转后，MainVisual 页面能看见来源上下文，确认 narrative → battle 传参没有丢。
 ```
 
 建议实现：
 
 ```text
-1. 新增 scripts/narrative_battle_context.gd，作为轻量全局上下文或可 preload 的静态上下文
-2. safe controller 点击“请求战斗”时写入 encounter_id / source_node_id
-3. get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
-4. MainVisual 暂不读取上下文，仍保留现有角色选择入口
-5. 文档标注：这是 V1 单向链路，不处理战斗后返回
+1. 在不改战斗规则的前提下，给 battle controller 增加一个轻量 context debug label
+2. preload NarrativeBattleContext
+3. 如果 has_request()，显示 encounter_id / source_node_id
+4. 不绕过角色选择
+5. 不根据 encounter_id 改敌人
 ```
 
 验收标准：
 
 ```text
-[ ] NarrativeDemo 点击请求战斗能进入 MainVisual
-[ ] MainVisual 现有角色选择入口不受影响
-[ ] 不改战斗规则
-[ ] 不破坏 Web 构建
+[ ] 从 NarrativeDemo 请求战斗进入 MainVisual
+[ ] MainVisual 显示 encounter_id / source_node_id
+[ ] 原有角色选择仍可用
+[ ] Web 构建稳定
 ```
 
 ---
 
 ## 10. 后续路线
 
-### Step 1：真实战斗单向跳转
+### Step 1：MainVisual 显示上下文诊断
 
 ```text
-先打通剧情 → 战斗测试场景，不处理返回。
+确认单向跳转传参链路真实可见。
 ```
 
 ### Step 2：定位战斗胜负结算函数
@@ -409,7 +390,13 @@ enc_wakou_boss → enemy_blademaster / blademaster
 继续精确定位 HP 归零、battle_active=false、overlay 胜负按钮等逻辑。
 ```
 
-### Step 3：战斗结果回写叙事
+### Step 3：encounter_id → enemy/fighter 映射
+
+```text
+只映射到已有 spearman / blademaster，不新增复杂敌人体系。
+```
+
+### Step 4：战斗结果回写叙事
 
 ```text
 只有在结算函数明确后，再加 battle_finished 信号或全局上下文结果回写。
@@ -420,7 +407,7 @@ enc_wakou_boss → enemy_blademaster / blademaster
 ## 11. 给 Codex 的下一步指令
 
 ```text
-请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前已调研 MainVisual：scenes/MainVisual.tscn 当前挂载 res://scripts/battle_controller_visual_break_preview.gd；battle core 的 _ready() 仍默认 _build_catalog()、_build_ui()、reset_for_session()、_show_role_selection()。下一步请做叙事到战斗的 V1 单向跳转：在 safe controller 点击“请求战斗”时记录 encounter_id / source_node_id，然后 change_scene_to_file("res://scenes/MainVisual.tscn")。不要改战斗规则，不要破坏 MainVisual 现有角色选择入口，不要重构 web_shell.html。
+请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前已完成 NarrativeDemo → MainVisual 的 V1 单向跳转，并新增 scripts/narrative_battle_context.gd 记录 encounter_id / source_node_id。下一步请在 MainVisual 当前脚本链路中加最小 context 诊断显示：进入 MainVisual 后，如果 NarrativeBattleContext.has_request()，显示 encounter_id / source_node_id。不要绕过角色选择，不要改战斗规则，不要根据 encounter_id 自动换敌人，不要重构 web_shell.html。
 ```
 
 ---
@@ -428,5 +415,5 @@ enc_wakou_boss → enemy_blademaster / blademaster
 ## 12. 当前一句话结论
 
 ```text
-剧情 MVP 安全线已完成并通过 P0；真实战斗接入前调研确认 MainVisual 当前入口是 break preview 层，第一版应先做 NarrativeDemo → MainVisual 的单向跳转，不直接做战斗结束回到叙事。
+剧情 MVP 安全线已完成并通过 P0；真实战斗接入已完成 V1 单向跳转，下一步应在 MainVisual 显示 NarrativeBattleContext 诊断，确认叙事传参链路可见。
 ```
