@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#efe0bf"/><stop offset="1" stop-color="#9a9079"/></linearGradient>
+  </defs>
+  <rect width="960" height="640" fill="url(#paper)"/>
+  <path d="M0 300 C160 260 290 305 450 275 C620 240 750 290 960 245 L960 640 L0 640 Z" fill="#2c3639" opacity="0.55"/>
+  <path d="M0 420 C170 380 330 450 520 410 C700 372 810 430 960 395 L960 640 L0 640 Z" fill="#111416" opacity="0.72"/>
+  <path d="M320 180 L360 420 L280 420 Z" fill="#0f1112" opacity="0.92"/>
+  <path d="M300 220 C280 260 270 300 275 350" stroke="#d9c79e" stroke-width="10" opacity="0.65" fill="none"/>
+  <path d="M360 200 C395 245 415 290 430 345" stroke="#7e2e28" stroke-width="16" opacity="0.68" fill="none"/>
+  <path d="M410 260 L470 260" stroke="#d9c79e" stroke-width="6" opacity="0.7"/>
+  <path d="M440 250 L470 260 L440 270" fill="#d9c79e" opacity="0.7"/>
+  <text x="52" y="585" font-size="24" fill="#7e2e28" opacity="0.9" font-family="serif">一刀拦下，生死已分</text>
+</svg>
