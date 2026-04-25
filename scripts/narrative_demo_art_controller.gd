@@ -13,9 +13,21 @@ const PROLOGUE_BG := {
 	"departure": "res://assets/pixel_battle/backgrounds/prologue_departure.svg"
 }
 
+const PROLOGUE_BG_PNG := {
+	"black_tide": "res://assets/pixel_battle/backgrounds/prologue_black_tide.png",
+	"rescue": "res://assets/pixel_battle/backgrounds/prologue_master_rescue.png",
+	"arrow": "res://assets/pixel_battle/backgrounds/prologue_arrow_silence.png",
+	"departure": "res://assets/pixel_battle/backgrounds/prologue_departure.png"
+}
+
 const PROLOGUE_CHAR := {
 	"master": "res://assets/pixel_battle/portraits/performance_master_veteran.svg",
 	"hero": "res://assets/pixel_battle/portraits/performance_hero_young.svg"
+}
+
+const PROLOGUE_CHAR_PNG := {
+	"master": "res://assets/pixel_battle/portraits/performance_master_veteran.png",
+	"hero": "res://assets/pixel_battle/portraits/performance_hero_young.png"
 }
 
 var background_texture: TextureRect
@@ -42,14 +54,24 @@ func _render_visual(path: String, fallback_text: String) -> void:
 
 func _resolve_background_path(path: String) -> String:
 	if step_index <= 3:
-		return PROLOGUE_BG.black_tide
+		return _prefer_png(PROLOGUE_BG_PNG.black_tide, PROLOGUE_BG.black_tide)
 	elif step_index <= 8:
-		return PROLOGUE_BG.rescue
+		return _prefer_png(PROLOGUE_BG_PNG.rescue, PROLOGUE_BG.rescue)
 	elif step_index <= 11:
-		return PROLOGUE_BG.arrow
+		return _prefer_png(PROLOGUE_BG_PNG.arrow, PROLOGUE_BG.arrow)
 	elif step_index == PROLOGUE_CAREER_STEP:
-		return PROLOGUE_BG.departure
-	return path
+		return _prefer_png(PROLOGUE_BG_PNG.departure, PROLOGUE_BG.departure)
+	return _prefer_png(_png_variant(path), path)
+
+func _prefer_png(png_path: String, fallback_path: String) -> String:
+	if not png_path.is_empty() and ResourceLoader.exists(png_path):
+		return png_path
+	return fallback_path
+
+func _png_variant(path: String) -> String:
+	if path.ends_with(".svg"):
+		return path.replace(".svg", ".png")
+	return ""
 
 func _add_scene_background_layer() -> void:
 	background_texture = TextureRect.new()
@@ -88,11 +110,11 @@ func _add_scene_background_layer() -> void:
 	move_child(background_dim, 3)
 
 func _add_character_layers() -> void:
-	char_master = _make_character_layer("NarrativeCharMaster", PROLOGUE_CHAR.master, 0.22, 0.57)
+	char_master = _make_character_layer("NarrativeCharMaster", _prefer_png(PROLOGUE_CHAR_PNG.master, PROLOGUE_CHAR.master), 0.22, 0.57)
 	add_child(char_master)
 	move_child(char_master, 4)
 
-	char_hero = _make_character_layer("NarrativeCharHero", PROLOGUE_CHAR.hero, 0.58, 0.92)
+	char_hero = _make_character_layer("NarrativeCharHero", _prefer_png(PROLOGUE_CHAR_PNG.hero, PROLOGUE_CHAR.hero), 0.58, 0.92)
 	add_child(char_hero)
 	move_child(char_hero, 5)
 
