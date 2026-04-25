@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e6d8b8"/><stop offset="1" stop-color="#867d6a"/></linearGradient>
+    <radialGradient id="dark" cx="52%" cy="48%" r="70%"><stop offset="0" stop-color="#2b2b28" stop-opacity="0.12"/><stop offset="1" stop-color="#090b0c" stop-opacity="0.78"/></radialGradient>
+  </defs>
+  <rect width="960" height="640" fill="url(#paper)"/>
+  <rect width="960" height="640" fill="url(#dark)"/>
+  <path d="M0 305 C160 260 320 320 505 275 C700 230 820 305 960 260 L960 640 L0 640 Z" fill="#202a2d" opacity="0.54"/>
+  <path d="M0 430 C190 385 340 460 540 415 C715 375 830 440 960 405 L960 640 L0 640 Z" fill="#0d1011" opacity="0.78"/>
+  <path d="M340 205 L370 430 L305 430 Z" fill="#0b0c0d" opacity="0.92"/>
+  <path d="M380 230 C405 270 418 320 425 380" stroke="#7e2e28" stroke-width="14" opacity="0.55" fill="none"/>
+  <path d="M640 145 L420 280" stroke="#111314" stroke-width="8" opacity="0.92"/>
+  <path d="M420 280 L452 276 L437 304 Z" fill="#111314" opacity="0.92"/>
+  <path d="M612 160 L648 137 M620 174 L664 154" stroke="#111314" stroke-width="5" opacity="0.88"/>
+  <circle cx="430" cy="283" r="16" fill="#8c2f29" opacity="0.62"/>
+  <path d="M90 150 C240 110 380 155 525 125 C690 90 790 145 910 108" stroke="#5d676b" stroke-width="20" opacity="0.12" fill="none"/>
+  <text x="52" y="585" font-size="24" fill="#8c2f29" opacity="0.86" font-family="serif">他说别看，箭已经到了</text>
+</svg>
