@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://canghai_narrative_demo"]
 
-[ext_resource type="Script" path="res://scripts/narrative/narrative_demo_controller.gd" id="1_narrative"]
+[ext_resource type="Script" path="res://scripts/narrative_demo_safe_controller.gd" id="1_narrative"]
 
 [node name="NarrativeDemo" type="Control"]
 layout_mode = 3
