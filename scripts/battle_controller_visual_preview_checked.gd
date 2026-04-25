@@ -58,8 +58,8 @@ func _build_preview_check_snapshot(p_intent: IntentData, e_intent: IntentData) -
 		"order": _preview_resolution_order(p_intent, e_intent),
 		"player_momentum": player.momentum,
 		"enemy_momentum": enemy.momentum,
-		"player_guard": player.guard,
-		"enemy_guard": enemy.guard,
+		"player_guard": player.guard_points,
+		"enemy_guard": enemy.guard_points,
 		"player_broken": player.is_broken(),
 		"enemy_broken": enemy.is_broken()
 	}
