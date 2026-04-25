@@ -16,6 +16,7 @@ var qing_wang := 0
 var clues := 0
 var in_prologue := true
 var battle_requested := false
+var last_hint := ""
 
 const PROLOGUE := [
 	"倭寇袭村：黑屏潮声",
@@ -121,7 +122,10 @@ func _render() -> void:
 		map_label.text = _map_text()
 		scene_label.text = str(node.get("scene", ""))
 		body_label.text = _node_body(node)
+		if not last_hint.is_empty():
+			body_label.text += "\n\n[i]%s[/i]" % last_hint
 		vars_label.text = _vars_text()
+		_add_safe_map_buttons()
 		if _is_combat_node(node):
 			_add_button("请求战斗：%s" % str(node.get("combat", "")), _on_request_battle)
 			_add_button("视为胜利继续", _on_mock_battle_win)
@@ -130,6 +134,18 @@ func _render() -> void:
 			var choice: Dictionary = choices[i]
 			_add_choice_button(choice, i)
 	BattleFontHelper.enforce(self)
+
+func _add_safe_map_buttons() -> void:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 6)
+	choices_box.add_child(row)
+	for i in range(NODES.size()):
+		var node: Dictionary = NODES[i]
+		var btn := Button.new()
+		btn.text = "%s %s" % [_map_marker_for_index(i), str(node.get("title", ""))]
+		btn.custom_minimum_size = Vector2(148, 38)
+		btn.pressed.connect(_on_map_node_pressed.bind(i))
+		row.add_child(btn)
 
 func _add_button(text: String, callback: Callable) -> void:
 	var btn := Button.new()
@@ -145,11 +161,25 @@ func _add_choice_button(choice: Dictionary, index: int) -> void:
 	btn.pressed.connect(_on_choice.bind(index))
 	choices_box.add_child(btn)
 
+func _on_map_node_pressed(target_index: int) -> void:
+	if target_index == node_index:
+		last_hint = "地图节点：当前节点。"
+	elif target_index < node_index:
+		last_hint = "地图节点：已走过。"
+	elif target_index == node_index + 1:
+		last_hint = "地图节点：可前往，已通过地图选路推进。"
+		node_index = target_index
+		battle_requested = false
+	else:
+		last_hint = "地图节点：未开放。"
+	_render()
+
 func _on_continue_prologue() -> void:
 	step_index += 1
 	if step_index >= PROLOGUE.size():
 		in_prologue = false
 		node_index = 0
+		last_hint = ""
 	_render()
 
 func _on_request_battle() -> void:
@@ -174,6 +204,7 @@ func _on_choice(index: int) -> void:
 	qing_wang += int(choice.get("dq", 0))
 	clues += int(choice.get("dc", 0))
 	battle_requested = false
+	last_hint = ""
 	if node_index < NODES.size() - 1:
 		node_index += 1
 		_render()
@@ -199,6 +230,7 @@ func _restart() -> void:
 	clues = 0
 	in_prologue = true
 	battle_requested = false
+	last_hint = ""
 	_render()
 
 func _map_text() -> String:
@@ -210,14 +242,18 @@ func _map_text() -> String:
 			var n: Dictionary = NODES[i]
 			if str(n.get("column", "")) != col:
 				continue
-			var marker := "○"
-			if i == node_index:
-				marker = "▶"
-			elif i < node_index:
-				marker = "●"
-			items.append("%s %s" % [marker, str(n.get("title", ""))])
+			items.append("%s %s" % [_map_marker_for_index(i), str(n.get("title", ""))])
 		lines.append("【%s】%s" % [col, " / ".join(items)])
 	return "\n".join(lines)
+
+func _map_marker_for_index(index: int) -> String:
+	if index == node_index:
+		return "▶"
+	if index < node_index:
+		return "●"
+	if index == node_index + 1:
+		return "◎"
+	return "○"
 
 func _node_body(node: Dictionary) -> String:
 	var body := "[b]%s[/b]\n%s" % [str(node.get("type", "")), str(node.get("text", ""))]
