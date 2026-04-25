@@ -1,7 +1,7 @@
 # 《大明之沧海嘀鸣》叙事 MVP 进度看板
 
 > 当前分支：`feature/symmetry-gameplay`  
-> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景/人物/旧物文本占位 + 结局闭环 + 收益与推进入口收口 + UI 分层 + 最小图片显示 + 六列地图操作布局”。  
+> 当前阶段：P0 Web 构建稳定已恢复；剧情 MVP 已切到安全版 controller；安全版已完成“压缩序章 + 六列行军图 + 地图点击 + 三变量成长 + 战斗占位 + 场景/人物/旧物文本占位 + 结局闭环 + 收益与推进入口收口 + UI 分层 + 最小图片显示 + 六列地图操作布局 + SVG 占位视觉资源”。  
 > 核心原则：继续走安全线，不恢复旧 `scripts/narrative/*` 复杂链路；不使用 `HScrollContainer`；不改 `MainVisual.tscn`；不改 `battle_controller`；不重构 `web_shell.html`。
 
 ---
@@ -33,7 +33,7 @@
 行军图：六列文本地图 + 六列地图按钮
 地图状态：▶ 当前 / ● 已走 / ◎ 可前往 / ○ 未开放
 叙事变量：军功 / 清望 / 旧案线索
-视觉表现：ResourceLoader.exists + TextureRect，资源不存在则文本占位
+视觉表现：ResourceLoader.exists + TextureRect；当前使用 SVG 占位资源走通加载链路
 战斗表现：请求战斗 / 视为胜利继续 先用文本占位
 UI 分层：行军图操作 / 战斗桥接 / 叙事选择 三个区域分开展示
 ```
@@ -123,7 +123,7 @@ scripts/narrative_demo_safe_controller.gd
 [x] 收益与推进入口已收口：_apply_choice_delta / _apply_default_map_reward / _advance_to_node
 [x] UI 分层完成：map_buttons_box / combat_buttons_box / choices_box
 [x] 最小图片显示：TextureRect + ResourceLoader.exists
-[x] 资源存在则显示图片，资源不存在则显示文本占位
+[x] 视觉资源路径已切到 SVG 占位资源
 ```
 
 对应提交：
@@ -136,13 +136,42 @@ b580c2e58e98ba7dc5779599f0dfce21a510dafe  Apply default rewards on safe map navi
 9376b50ded1842e29edbf06ccbec41c2c2d80b4c  Split safe narrative demo button sections
 0fcc090ec98dcc6cc5fa1b9f8d8c4d6dc7efbcd7  Add safe narrative visual texture display
 544de82a3988307d67899ad246b01500799065c7  Render safe narrative map buttons as columns
+a07c872bd3ce0b9ba53f5cdb63591a23ee2d1535  Point safe narrative visuals to SVG placeholders
 ```
+
+---
+
+### 3.3 SVG 占位视觉资源
+
+已新增：
+
+```text
+assets/pixel_battle/backgrounds/narrative_military_order.svg
+assets/pixel_battle/backgrounds/narrative_beach_ambush.svg
+assets/pixel_battle/relics/relic_ming_firearm.svg
+assets/pixel_battle/portraits/transport_officer.svg
+assets/pixel_battle/portraits/wakou_leader.svg
+assets/pixel_battle/backgrounds/narrative_military_coverup.svg
+```
+
+对应提交：
+
+```text
+2875094edb5fabdefd30f81faa42df796b924d8b  Add narrative military order placeholder art
+b6f7e41a2c3d9a8d8c9cb20dc2a6ee71e34b3a4d  Add narrative beach ambush placeholder art
+b6f7e41a2c3d9a8d8c9cb20dc2a6ee71e34b3a4d  Add Ming firearm relic placeholder art
+52269becca1292119dcddb0a562350b8aa0c8b7e  Add transport officer placeholder portrait
+eacdd9a5bc073125c897be4756eb44ccf282ae17  Add wakou leader placeholder portrait
+9d51af72c78b5e25f6d28605d960806d1abcc4d0  Add military coverup placeholder art
+```
+
+> 注：部分提交 SHA 可能因连续文件创建由工具返回不完整展示；以仓库历史为准。
 
 ---
 
 ## 4. 当前视觉显示规则
 
-节点现在可配置：
+节点现在配置：
 
 ```text
 visual_path
@@ -160,12 +189,12 @@ ResourceLoader.exists(path) 为 false → 显示文本占位
 当前配置路径：
 
 ```text
-military_order → res://assets/pixel_battle/backgrounds/narrative_military_order.png
-beach_ambush → res://assets/pixel_battle/backgrounds/narrative_beach_ambush.png
-ming_firearm → res://assets/pixel_battle/relics/relic_ming_firearm.png
-transport_officer → res://assets/pixel_battle/portraits/transport_officer.png
-wakou_boss → res://assets/pixel_battle/portraits/wakou_leader.png
-military_coverup → res://assets/pixel_battle/backgrounds/narrative_military_coverup.png
+military_order → res://assets/pixel_battle/backgrounds/narrative_military_order.svg
+beach_ambush → res://assets/pixel_battle/backgrounds/narrative_beach_ambush.svg
+ming_firearm → res://assets/pixel_battle/relics/relic_ming_firearm.svg
+transport_officer → res://assets/pixel_battle/portraits/transport_officer.svg
+wakou_boss → res://assets/pixel_battle/portraits/wakou_leader.svg
+military_coverup → res://assets/pixel_battle/backgrounds/narrative_military_coverup.svg
 ```
 
 ---
@@ -178,14 +207,6 @@ military_coverup → res://assets/pixel_battle/backgrounds/narrative_military_co
 map_buttons_box：行军图操作，只放地图节点按钮；当前为六列布局
 combat_buttons_box：战斗桥接，只放“请求战斗 / 视为胜利继续”或无战斗提示
 choices_box：叙事选择，只放当前节点 choices / 序章继续 / 重开叙事
-```
-
-分层目的：
-
-```text
-降低按钮堆叠带来的阅读负担；
-为后续接图片、接真实战斗、接更多节点留出结构空间；
-继续保持 Web Parser 稳定。
 ```
 
 ---
@@ -236,41 +257,31 @@ Boss：军功 +2，旧案线索 +1
 
 ```text
 [ ] 安全版 Web 回归验收
+[ ] 验证 SVG 是否可被当前 Godot Web 导入为 Texture2D
+[ ] 若 SVG 不能作为 Texture2D 正常显示，则改为真实 PNG 占位图
 [ ] 六列行军图操作区在 1600×1000 下验收
-[ ] 场景占位信息分层展示，降低正文拥挤
 [ ] 图片显示区域尺寸和正文高度在 1600×1000 下验收
-[ ] 给缺失图片资产补图或补占位 png
+[ ] 场景占位信息分层展示，降低正文拥挤
 [ ] 真实战斗胜利回调接入前调研
 ```
 
 ---
 
-## 8. 下一刀建议：补最小占位 PNG
+## 8. 下一刀建议：Web 验收 SVG 视觉链路
 
 目标：
 
 ```text
-当前 visual_path 已接入，但仓库中不一定有对应图片。
-下一步为当前 6 个 visual_path 补最小占位 png，确保 TextureRect 真实渲染路径可验收。
-```
-
-建议资产：
-
-```text
-assets/pixel_battle/backgrounds/narrative_military_order.png
-assets/pixel_battle/backgrounds/narrative_beach_ambush.png
-assets/pixel_battle/relics/relic_ming_firearm.png
-assets/pixel_battle/portraits/transport_officer.png
-assets/pixel_battle/portraits/wakou_leader.png
-assets/pixel_battle/backgrounds/narrative_military_coverup.png
+验证 ResourceLoader.exists(svg_path) 和 TextureRect 显示链路在当前 Godot Web 构建中是否可用。
 ```
 
 验收标准：
 
 ```text
-[ ] 六个路径 ResourceLoader.exists(path) 为 true
-[ ] TextureRect 显示图片而不是文本占位
 [ ] Web 构建稳定
+[ ] 进入 NarrativeDemo 不报错
+[ ] 进入节点后视觉区域显示 SVG 图，而不是文本占位
+[ ] 若显示“视觉资源不是 Texture2D”，则下一刀改用 PNG 占位图
 [ ] 地图点击、战斗占位、结局闭环不受影响
 ```
 
@@ -278,19 +289,25 @@ assets/pixel_battle/backgrounds/narrative_military_coverup.png
 
 ## 9. 后续路线
 
-### Step 1：补占位 PNG
+### Step 1：Web 验收 SVG 视觉链路
 
 ```text
-优先级最高，验证当前图片显示链路真的可用。
+优先级最高，确认 Godot Web 对 SVG 资源显示是否可靠。
 ```
 
-### Step 2：场景信息分层
+### Step 2：必要时改 PNG 占位图
+
+```text
+如果 SVG 无法被 TextureRect 正常显示，则批量替换为 PNG 资源。
+```
+
+### Step 3：场景信息分层
 
 ```text
 将 scene 文本拆成背景 / 人物 / 旧物三类显示，减少长文本占位堆叠。
 ```
 
-### Step 3：真实战斗接入前调研
+### Step 4：真实战斗接入前调研
 
 ```text
 梳理 MainVisual 的启动参数和胜利回调；
@@ -298,18 +315,12 @@ assets/pixel_battle/backgrounds/narrative_military_coverup.png
 不破坏现有战斗测试入口。
 ```
 
-### Step 4：重新评估旧复杂链路
-
-```text
-只有在 safe controller 跑稳后，再决定是否把旧 scripts/narrative/* 中的数据化能力逐步迁回。
-```
-
 ---
 
 ## 10. 给 Codex 的下一步指令
 
 ```text
-请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。下一步优先补最小占位 PNG 到当前 6 个 visual_path，确保 ResourceLoader.exists(path) 为 true，并让 TextureRect 真实显示图片。不要改 MainVisual.tscn，不要改 battle_controller，不要重构 web_shell.html。完成后验证：Web 构建稳定，视觉区域显示图片，地图点击、战斗占位、结局闭环不受影响。
+请继续在安全线推进，不要恢复 scripts/narrative/* 旧复杂链路。当前已添加 6 个 SVG 占位视觉资源，并将 scripts/narrative_demo_safe_controller.gd 的 visual_path 指向这些 SVG。下一步请做 Web 回归验收：确认 ResourceLoader.exists(svg_path) 是否为 true，TextureRect 是否能显示 SVG。如果 SVG 不能作为 Texture2D 正常显示，请改用 PNG 占位图。不要改 MainVisual.tscn，不要改 battle_controller，不要重构 web_shell.html。
 ```
 
 ---
@@ -317,5 +328,5 @@ assets/pixel_battle/backgrounds/narrative_military_coverup.png
 ## 11. 当前一句话结论
 
 ```text
-剧情 MVP 安全线已完成“Web 稳定、压缩序章、六列行军图、六列地图操作、地图点击、三变量成长、战斗占位、场景占位、结局闭环、收益与推进入口收口、UI 分层、最小图片显示”；下一步抓重点补占位 PNG，验证 TextureRect 真实显示链路。
+剧情 MVP 安全线已完成“Web 稳定、压缩序章、六列行军图、六列地图操作、地图点击、三变量成长、战斗占位、场景占位、结局闭环、收益与推进入口收口、UI 分层、最小图片显示、SVG 占位视觉资源”；下一步抓重点验收 SVG 在 Godot Web 中是否能稳定显示。
 ```
