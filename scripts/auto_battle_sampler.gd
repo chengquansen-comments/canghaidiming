@@ -2,7 +2,9 @@ extends RefCounted
 class_name AutoBattleSampler
 
 # CardData-only auto battle sampler. Runtime inputs and tuned candidates are
-# CardData instances; dictionaries are used only for aggregate reports/configs.
+# CardData instances; combat exchange is delegated to CombatResolver.
+
+const CombatResolver = preload("res://scripts/combat_resolver.gd")
 
 static func run_batch(player_cards: Array[CardData], enemy_cards: Array[CardData], options: Dictionary = {}) -> Dictionary:
 	var sample_count: int = int(options.get("sample_count", 100))
@@ -126,17 +128,19 @@ static func run_single(player_cards: Array[CardData], enemy_cards: Array[CardDat
 		var p_card: CardData = _choose_card(player_cards, p, e, rng)
 		var e_card: CardData = _choose_card(enemy_cards, e, p, rng)
 		var order: Array[String] = _random_resolution_order(rng)
-		var sim: Dictionary = _simulate_exchange(p, e, p_card, e_card, order)
+		var sim: Dictionary = CombatResolver.resolve_exchange(p, e, p_card, e_card, order)
 		p["hp"] = int(p.get("hp", 0)) + int(sim.get("player_hp_delta", 0))
 		e["hp"] = int(e.get("hp", 0)) + int(sim.get("enemy_hp_delta", 0))
 		p["momentum"] = clampi(int(p.get("momentum", 0)) + int(sim.get("player_momentum_delta", 0)), 0, 10)
 		e["momentum"] = clampi(int(e.get("momentum", 0)) + int(sim.get("enemy_momentum_delta", 0)), 0, 10)
+		p["guard"] = max(0, int(p.get("guard", 0)) + int(sim.get("player_guard_delta", 0)))
+		e["guard"] = max(0, int(e.get("guard", 0)) + int(sim.get("enemy_guard_delta", 0)))
 		p["position"] = int(sim.get("player_final", p.get("position", 0)))
 		e["position"] = int(sim.get("enemy_final", e.get("position", 0)))
 		_face_each_other(p, e)
-		if str(sim.get("player_range_result", "none")) == "hit":
+		if str(sim.get("player_range_result", "none")) == CombatResolver.RANGE_HIT:
 			player_hit_count += 1
-		if str(sim.get("enemy_range_result", "none")) == "hit":
+		if str(sim.get("enemy_range_result", "none")) == CombatResolver.RANGE_HIT:
 			enemy_hit_count += 1
 		if bool(sim.get("player_will_break", false)):
 			break_count += 1
@@ -172,89 +176,6 @@ static func _random_resolution_order(rng: RandomNumberGenerator) -> Array[String
 		result.append("enemy")
 		result.append("player")
 	return result
-
-static func _simulate_exchange(p: Dictionary, e: Dictionary, p_card: CardData, e_card: CardData, order: Array[String]) -> Dictionary:
-	var p_pos: int = int(p.get("position", 0))
-	var e_pos: int = int(e.get("position", 0))
-	var p_facing: String = str(p.get("facing", "right"))
-	var e_facing: String = str(e.get("facing", "left"))
-	var p_hp_delta: int = 0
-	var e_hp_delta: int = 0
-	var p_momentum_delta: int = 0
-	var e_momentum_delta: int = 0
-	var p_result: String = "none"
-	var e_result: String = "none"
-	var p_will_break: bool = false
-	var e_will_break: bool = false
-	for side: String in order:
-		if side == "player" and p_card != null:
-			p_result = _evaluate_range(p_card, p_pos, p_facing, e_pos)
-			var out_p: Dictionary = _resolve_card_preview(p_card, p_result, bool(p.get("broken", false)), bool(e.get("broken", false)), int(e.get("guard", 0)))
-			e_hp_delta -= int(out_p.get("damage", 0))
-			e_momentum_delta -= int(out_p.get("break", 0))
-			p_momentum_delta += int(out_p.get("gain", 0))
-			if int(e.get("momentum", 0)) > 0 and int(e.get("momentum", 0)) + e_momentum_delta <= 0:
-				e_will_break = true
-			var moved: Dictionary = _apply_card_movement(p_card, true, p_pos, e_pos, p_facing, p_result)
-			p_pos = int(moved.get("player", p_pos))
-			e_pos = int(moved.get("enemy", e_pos))
-		elif side == "enemy" and e_card != null:
-			e_result = _evaluate_range(e_card, e_pos, e_facing, p_pos)
-			var out_e: Dictionary = _resolve_card_preview(e_card, e_result, bool(e.get("broken", false)), bool(p.get("broken", false)), int(p.get("guard", 0)))
-			p_hp_delta -= int(out_e.get("damage", 0))
-			p_momentum_delta -= int(out_e.get("break", 0))
-			e_momentum_delta += int(out_e.get("gain", 0))
-			if int(p.get("momentum", 0)) > 0 and int(p.get("momentum", 0)) + p_momentum_delta <= 0:
-				p_will_break = true
-			var moved2: Dictionary = _apply_card_movement(e_card, false, p_pos, e_pos, e_facing, e_result)
-			p_pos = int(moved2.get("player", p_pos))
-			e_pos = int(moved2.get("enemy", e_pos))
-	return {"player_final": clampi(p_pos, 0, 8), "enemy_final": clampi(e_pos, 0, 8), "player_hp_delta": p_hp_delta, "enemy_hp_delta": e_hp_delta, "player_momentum_delta": p_momentum_delta, "enemy_momentum_delta": e_momentum_delta, "player_range_result": p_result, "enemy_range_result": e_result, "player_will_break": p_will_break, "enemy_will_break": e_will_break}
-
-static func _resolve_card_preview(card: CardData, range_result: String, actor_broken: bool, target_broken: bool, target_guard: int) -> Dictionary:
-	if actor_broken or (range_result != "hit" and range_result != "graze"):
-		return {"damage": 0, "break": 0, "gain": 0}
-	var damage: int = card.damage
-	if range_result == "graze":
-		damage = maxi(ceili(float(damage) * 0.5), 1) if damage > 0 else 0
-	if target_broken and damage > 0:
-		damage *= 2
-	damage = maxi(damage - target_guard, 0)
-	var break_value: int = card.break_momentum
-	if range_result == "graze":
-		break_value = maxi(break_value - 1, 0)
-	return {"damage": damage, "break": break_value, "gain": card.gain_momentum}
-
-static func _evaluate_range(card: CardData, actor_pos: int, actor_facing: String, target_pos: int) -> String:
-	if not card.requires_hit_check():
-		return "hit"
-	if card.requires_facing and not card.has_tag("回身") and not _faces_target(actor_pos, actor_facing, target_pos):
-		return "miss_facing"
-	var distance: int = absi(target_pos - actor_pos)
-	if distance >= card.min_distance and distance <= card.max_distance:
-		return "hit"
-	var gap: int = card.min_distance - distance if distance < card.min_distance else distance - card.max_distance
-	return "graze" if gap == 1 else "miss_range"
-
-static func _apply_card_movement(card: CardData, is_player_actor: bool, p_pos: int, e_pos: int, actor_facing: String, range_result: String) -> Dictionary:
-	var can_move: bool = false
-	if card.move_condition == CardData.MOVE_ALWAYS:
-		can_move = true
-	elif card.move_condition == CardData.MOVE_ON_HIT:
-		can_move = range_result == "hit"
-	elif card.move_condition == CardData.MOVE_ON_GRAZE:
-		can_move = range_result == "graze"
-	if not can_move:
-		return {"player": p_pos, "enemy": e_pos}
-	var actor_pos: int = p_pos if is_player_actor else e_pos
-	var target_pos: int = e_pos if is_player_actor else p_pos
-	if card.target_push_after > 0:
-		target_pos = _preview_push(actor_pos, target_pos, actor_facing, card.target_push_after)
-	elif card.target_pull_after > 0:
-		target_pos = _preview_pull(actor_pos, target_pos, actor_facing, card.target_pull_after)
-	elif card.self_move_after != 0:
-		actor_pos = _preview_self(actor_pos, target_pos, actor_facing, card.self_move_after)
-	return {"player": actor_pos if is_player_actor else target_pos, "enemy": target_pos if is_player_actor else actor_pos}
 
 static func _choose_card(cards: Array[CardData], actor: Dictionary, target: Dictionary, rng: RandomNumberGenerator) -> CardData:
 	if cards.is_empty():
@@ -314,13 +235,6 @@ static func _face_each_other(a: Dictionary, b: Dictionary) -> void:
 		a["facing"] = "left"
 		b["facing"] = "right"
 
-static func _faces_target(actor_pos: int, actor_facing: String, target_pos: int) -> bool:
-	if actor_pos == target_pos:
-		return true
-	if target_pos > actor_pos:
-		return actor_facing == "right"
-	return actor_facing == "left"
-
 static func _movement_count(card: CardData, field: String) -> int:
 	if card == null or card.move_condition == CardData.MOVE_NONE:
 		return 0
@@ -329,29 +243,6 @@ static func _movement_count(card: CardData, field: String) -> int:
 	if field == "target_pull_after":
 		return abs(card.target_pull_after)
 	return 0
-
-static func _preview_dir(actor_pos: int, target_pos: int, facing: String) -> int:
-	if target_pos > actor_pos:
-		return 1
-	if target_pos < actor_pos:
-		return -1
-	return 1 if facing == "right" else -1
-
-static func _preview_self(actor_pos: int, target_pos: int, facing: String, amount: int) -> int:
-	var dir: int = _preview_dir(actor_pos, target_pos, facing)
-	return clampi(actor_pos + dir if amount > 0 else actor_pos - dir, 0, 8)
-
-static func _preview_push(actor_pos: int, target_pos: int, facing: String, amount: int) -> int:
-	return clampi(target_pos + _preview_dir(actor_pos, target_pos, facing) * amount, 0, 8)
-
-static func _preview_pull(actor_pos: int, target_pos: int, facing: String, amount: int) -> int:
-	var dir: int = _preview_dir(actor_pos, target_pos, facing)
-	var result: int = clampi(target_pos - dir * amount, 0, 8)
-	if dir > 0 and result < actor_pos:
-		result = actor_pos
-	if dir < 0 and result > actor_pos:
-		result = actor_pos
-	return result
 
 static func balance_score(result: Dictionary) -> float:
 	var win_gap: float = abs(float(result.get("player_win_rate", 0.0)) - float(result.get("enemy_win_rate", 0.0)))
