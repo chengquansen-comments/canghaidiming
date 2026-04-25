@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360">
+  <rect width="960" height="360" fill="#171b20"/>
+  <rect x="365" y="55" width="230" height="265" rx="26" fill="#2c3440" stroke="#9d8051" stroke-width="6"/>
+  <circle cx="480" cy="128" r="48" fill="#8c684c"/>
+  <rect x="422" y="178" width="116" height="105" rx="12" fill="#435064"/>
+  <rect x="390" y="70" width="180" height="35" fill="#29313c" stroke="#c4a15f" stroke-width="4"/>
+  <path d="M380 290 h200 l-36 40 h-128 z" fill="#1f252d"/>
+  <text x="480" y="342" text-anchor="middle" font-size="32" fill="#e5d0a2" font-family="sans-serif">失械案押运官 / Transport Officer</text>
+</svg>
