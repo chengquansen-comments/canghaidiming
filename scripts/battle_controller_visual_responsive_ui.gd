@@ -29,6 +29,7 @@ func _build_ui() -> void:
 func _refresh_visual_ui() -> void:
 	super()
 	_configure_responsive_bottom_layout()
+	_stabilize_actor_runtime_textures()
 	_bind_intent_bubbles_to_actor_sprites()
 
 func _refresh_hand_buttons() -> void:
@@ -39,6 +40,7 @@ func _refresh_hand_buttons() -> void:
 
 func _refresh_stage_actor_positions(force: bool = false) -> void:
 	super(force)
+	_stabilize_actor_runtime_textures()
 	_bind_intent_bubbles_to_actor_sprites()
 
 func _refresh_intent_bubbles(force: bool = false) -> void:
@@ -146,6 +148,13 @@ func _configure_hand_button_sizes() -> void:
 			control.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 			control.clip_contents = true
 
+func _stabilize_actor_runtime_textures() -> void:
+	# Parent visual refreshes can still write the legacy three-frame sheet into the
+	# TextureRect. Re-apply the active runtime frame after those refreshes so enemy
+	# actors keep their enemy_* meta/sheet identity during and after attacks.
+	_ensure_actor_animation_runtimes()
+	_refresh_actor_runtime_visuals()
+
 func _bind_intent_bubbles_to_actor_sprites() -> void:
 	_bind_single_intent_bubble(player_intent_bubble, player_sprite)
 	_bind_single_intent_bubble(enemy_intent_bubble, enemy_sprite)
@@ -156,13 +165,25 @@ func _bind_single_intent_bubble(bubble: PanelContainer, sprite: TextureRect) -> 
 	var bubble_size: Vector2 = bubble.size
 	if bubble_size.x <= 1.0 or bubble_size.y <= 1.0:
 		bubble_size = bubble.custom_minimum_size
-	var sprite_size: Vector2 = sprite.size
-	var target_x: float = sprite.position.x + sprite_size.x * 0.5 - bubble_size.x * 0.5
-	var target_y: float = sprite.position.y - bubble_size.y - BUBBLE_GAP_Y
+	var sprite_rect: Rect2 = _sprite_visible_rect(sprite)
+	var target_x: float = sprite_rect.position.x + sprite_rect.size.x * 0.5 - bubble_size.x * 0.5
+	var target_y: float = sprite_rect.position.y - bubble_size.y - BUBBLE_GAP_Y
 	bubble.position = Vector2(
 		clampf(target_x, BUBBLE_SAFE_MARGIN_X, maxf(BUBBLE_SAFE_MARGIN_X, size.x - bubble_size.x - BUBBLE_SAFE_MARGIN_X)),
 		maxf(STAGE_AREA_TOP + 8.0, target_y)
 	)
+
+func _sprite_visible_rect(sprite: TextureRect) -> Rect2:
+	var rect := Rect2(sprite.position, sprite.size)
+	if sprite.texture == null:
+		return rect
+	var texture_size: Vector2 = sprite.texture.get_size()
+	if texture_size.x <= 0.0 or texture_size.y <= 0.0 or sprite.size.x <= 0.0 or sprite.size.y <= 0.0:
+		return rect
+	var draw_scale: float = minf(sprite.size.x / texture_size.x, sprite.size.y / texture_size.y)
+	var draw_size: Vector2 = texture_size * draw_scale
+	var draw_offset: Vector2 = (sprite.size - draw_size) * 0.5
+	return Rect2(sprite.position + draw_offset, draw_size)
 
 func _control_bar_node() -> Control:
 	if confirm_button != null and confirm_button.get_parent() is Control:
