@@ -7,6 +7,11 @@ const PLAYER_START_POSITION := 2
 const ENEMY_START_POSITION := 6
 const PLAYER_START_FACING := "right"
 const ENEMY_START_FACING := "left"
+const PLAYER_ARROW_COLOR := Color(0.55, 0.78, 1.0, 0.88)
+const ENEMY_ARROW_COLOR := Color(1.0, 0.64, 0.48, 0.88)
+
+var player_preview_arrow: Line2D
+var enemy_preview_arrow: Line2D
 
 func _show_role_selection() -> void:
 	battle_active = false
@@ -99,15 +104,20 @@ func _side_fighter_data(source: FighterData, is_player_side: bool) -> FighterDat
 
 func _refresh_preview_ghosts() -> void:
 	_ensure_preview_ghosts()
+	_ensure_preview_arrows()
 	if player_preview_ghost == null or enemy_preview_ghost == null or player_preview_label == null or enemy_preview_label == null:
 		return
 	if player == null or enemy == null or not battle_active:
 		_set_preview_ghosts_visible(false)
+		_set_preview_arrows_visible(false)
 		return
 	var preview: Dictionary = _compute_ordered_preview()
 	if not bool(preview.get("has_preview", false)):
 		_set_preview_ghosts_visible(false)
+		_set_preview_arrows_visible(false)
 		return
+	var player_subjective: int = int(preview.get("player_subjective", player.position))
+	var enemy_subjective: int = int(preview.get("enemy_subjective", enemy.position))
 	var player_final: int = int(preview.get("player_final", player.position))
 	var enemy_final: int = int(preview.get("enemy_final", enemy.position))
 	player_preview_ghost.texture = player_sprite.texture if player_sprite != null else null
@@ -121,6 +131,61 @@ func _refresh_preview_ghosts() -> void:
 	player_preview_label.visible = false
 	enemy_preview_label.visible = false
 	_set_preview_ghosts_visible(true)
+	_update_preview_arrow(player_preview_arrow, true, player_subjective, player_final)
+	_update_preview_arrow(enemy_preview_arrow, false, enemy_subjective, enemy_final)
+
+func _ensure_preview_arrows() -> void:
+	if player_preview_arrow == null:
+		player_preview_arrow = _make_preview_arrow(PLAYER_ARROW_COLOR)
+		stage_layer.add_child(player_preview_arrow)
+	if enemy_preview_arrow == null:
+		enemy_preview_arrow = _make_preview_arrow(ENEMY_ARROW_COLOR)
+		stage_layer.add_child(enemy_preview_arrow)
+
+func _make_preview_arrow(color: Color) -> Line2D:
+	var line := Line2D.new()
+	line.visible = false
+	line.z_index = 18
+	line.width = 5.0
+	line.default_color = color
+	line.joint_mode = Line2D.LINE_JOINT_ROUND
+	line.begin_cap_mode = Line2D.LINE_CAP_ROUND
+	line.end_cap_mode = Line2D.LINE_CAP_ROUND
+	return line
+
+func _set_preview_arrows_visible(value: bool) -> void:
+	if player_preview_arrow != null:
+		player_preview_arrow.visible = value
+	if enemy_preview_arrow != null:
+		enemy_preview_arrow.visible = value
+
+func _update_preview_arrow(line: Line2D, is_player_side: bool, from_slot: int, to_slot: int) -> void:
+	if line == null:
+		return
+	if from_slot == to_slot:
+		line.visible = false
+		return
+	var start: Vector2 = _preview_arrow_point(from_slot, is_player_side)
+	var end: Vector2 = _preview_arrow_point(to_slot, is_player_side)
+	var delta: Vector2 = end - start
+	if delta.length() < 1.0:
+		line.visible = false
+		return
+	var dir: Vector2 = delta.normalized()
+	var normal: Vector2 = Vector2(-dir.y, dir.x)
+	var head_len := 18.0
+	var head_w := 10.0
+	line.clear_points()
+	line.add_point(start)
+	line.add_point(end)
+	line.add_point(end - dir * head_len + normal * head_w)
+	line.add_point(end)
+	line.add_point(end - dir * head_len - normal * head_w)
+	line.visible = true
+
+func _preview_arrow_point(slot: int, is_player_side: bool) -> Vector2:
+	var top_left: Vector2 = _slot_top_left(slot, is_player_side)
+	return top_left + Vector2(ACTOR_DISPLAY_SIZE.x * 0.5, ACTOR_DISPLAY_SIZE.y * 0.76)
 
 func _preview_ghost_modulate(is_player: bool, overlaps_real_actor: bool) -> Color:
 	var alpha: float = PREVIEW_GHOST_OVERLAP_ALPHA if overlaps_real_actor else PREVIEW_GHOST_ALPHA
@@ -142,10 +207,13 @@ func _compute_ordered_preview() -> Dictionary:
 	var sim: Dictionary = CombatResolver.resolve_exchange(p_state, e_state, p_card, e_card, order)
 	return {
 		"has_preview": true,
+		"player_subjective": int(p_state.get("position", 0)),
+		"enemy_subjective": int(e_state.get("position", 0)),
 		"player_final": clampi(int(sim.get("player_final", p_state.get("position", 0))), 0, GRID_SLOT_COUNT - 1),
 		"enemy_final": clampi(int(sim.get("enemy_final", e_state.get("position", 0))), 0, GRID_SLOT_COUNT - 1),
 		"player_text": "",
 		"enemy_text": "",
+		"sim": sim,
 		"source": "CombatResolver"
 	}
 
@@ -170,3 +238,55 @@ func _resolver_preview_state(is_player: bool, intent: IntentData) -> Dictionary:
 		"facing": facing,
 		"broken": fighter.is_broken()
 	}
+
+func _effect_preview_text() -> String:
+	if player == null or enemy == null or state_machine == null:
+		return "[font_size=18][b]效果预览[/b][/font_size]\n等待战斗数据。"
+	var p_intent: IntentData = draft_player_intent if draft_player_intent != null else player_intent
+	var e_intent: IntentData = enemy_intent
+	var p_card: CardData = p_intent.actual_card if p_intent != null else null
+	var e_card: CardData = e_intent.actual_card if e_intent != null else null
+	var p_state: Dictionary = _resolver_preview_state(true, p_intent)
+	var e_state: Dictionary = _resolver_preview_state(false, e_intent)
+	var order: Array[String] = _preview_resolution_order(p_intent, e_intent)
+	var sim: Dictionary = CombatResolver.resolve_exchange(p_state, e_state, p_card, e_card, order)
+	var lines: Array[String] = []
+	lines.append("[font_size=18][b]效果预览[/b][/font_size]")
+	lines.append("距离：%d" % absi(int(e_state.get("position", 0)) - int(p_state.get("position", 0))))
+	lines.append("我方招式：%s" % (p_card.display_name if p_card != null else "待命"))
+	lines.append("敌方招式：%s" % (e_card.display_name if e_card != null else "待命"))
+	lines.append("")
+	lines.append("[b]伤害 / 削势预览[/b]")
+	lines.append(_effect_line(true, p_card, sim))
+	lines.append(_effect_line(false, e_card, sim))
+	lines.append("")
+	lines.append("[b]位移效果预览[/b]")
+	lines.append("我方位移：%s → %s" % [_slot_label(int(p_state.get("position", player.position))), _slot_label(int(sim.get("player_final", p_state.get("position", player.position))))])
+	lines.append("敌方位移：%s → %s" % [_slot_label(int(e_state.get("position", enemy.position))), _slot_label(int(sim.get("enemy_final", e_state.get("position", enemy.position))))])
+	return "\n".join(lines)
+
+func _effect_line(is_player_side: bool, card: CardData, sim: Dictionary) -> String:
+	if card == null:
+		return "%s：待命" % ("我方" if is_player_side else "敌方")
+	var range_result: String = str(sim.get("player_range_result", CombatResolver.RANGE_NONE)) if is_player_side else str(sim.get("enemy_range_result", CombatResolver.RANGE_NONE))
+	var hp_delta: int = int(sim.get("enemy_hp_delta", 0)) if is_player_side else int(sim.get("player_hp_delta", 0))
+	var momentum_delta: int = int(sim.get("enemy_momentum_delta", 0)) if is_player_side else int(sim.get("player_momentum_delta", 0))
+	var damage: int = absi(hp_delta) if hp_delta < 0 else 0
+	var break_value: int = absi(momentum_delta) if momentum_delta < 0 else 0
+	var range_text: String = _range_text(range_result)
+	if range_result == CombatResolver.RANGE_MISS_FACING or range_result == CombatResolver.RANGE_MISS_RANGE:
+		return "%s：%s / 未命中，无伤害无削势" % ["我方" if is_player_side else "敌方", card.display_name]
+	return "%s：%s / %s / 伤%d / 势-%d" % ["我方" if is_player_side else "敌方", card.display_name, range_text, damage, break_value]
+
+func _range_text(range_result: String) -> String:
+	match range_result:
+		CombatResolver.RANGE_HIT:
+			return "命中"
+		CombatResolver.RANGE_GRAZE:
+			return "擦中"
+		CombatResolver.RANGE_MISS_FACING:
+			return "朝向未中"
+		CombatResolver.RANGE_MISS_RANGE:
+			return "距离未中"
+		_:
+			return "生效"
