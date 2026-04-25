@@ -1,7 +1,7 @@
 extends Control
 
 const BattleFontHelper := preload("res://scripts/visual/battle_font_view.gd")
-const MAP_COLUMNS: Array[String] = ["军令", "初遇", "疑点", "压迫", "破船", "军门"]
+const MAP_COLUMNS := ["军令", "初遇", "疑点", "压迫", "破船", "军门"]
 
 var title_label: Label
 var status_label: Label
@@ -21,7 +21,6 @@ var jun_gong := 0
 var qing_wang := 0
 var clues := 0
 var in_prologue := true
-var battle_requested := false
 var last_hint := ""
 
 const PROLOGUE := [
@@ -69,36 +68,33 @@ func _build_ui() -> void:
 	root.add_child(margin)
 
 	var layout := VBoxContainer.new()
-	layout.add_theme_constant_override("separation", 10)
+	layout.add_theme_constant_override("separation", 8)
 	margin.add_child(layout)
 
 	title_label = Label.new()
 	title_label.add_theme_font_size_override("font_size", 30)
 	layout.add_child(title_label)
-
 	status_label = Label.new()
 	status_label.add_theme_font_size_override("font_size", 18)
 	layout.add_child(status_label)
-
 	map_label = Label.new()
 	map_label.add_theme_font_size_override("font_size", 16)
 	map_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	map_label.custom_minimum_size = Vector2(0, 92)
+	map_label.custom_minimum_size = Vector2(0, 86)
 	layout.add_child(map_label)
-
 	scene_label = Label.new()
 	scene_label.add_theme_font_size_override("font_size", 16)
 	scene_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	scene_label.custom_minimum_size = Vector2(0, 64)
+	scene_label.custom_minimum_size = Vector2(0, 62)
 	layout.add_child(scene_label)
 
 	var visual_frame := PanelContainer.new()
-	visual_frame.custom_minimum_size = Vector2(0, 110)
+	visual_frame.custom_minimum_size = Vector2(0, 104)
 	layout.add_child(visual_frame)
 	var visual_center := CenterContainer.new()
 	visual_frame.add_child(visual_center)
 	visual_texture = TextureRect.new()
-	visual_texture.custom_minimum_size = Vector2(520, 100)
+	visual_texture.custom_minimum_size = Vector2(520, 96)
 	visual_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	visual_texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	visual_center.add_child(visual_texture)
@@ -108,7 +104,6 @@ func _build_ui() -> void:
 	visual_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	visual_label.custom_minimum_size = Vector2(520, 0)
 	visual_center.add_child(visual_label)
-
 	visual_debug_label = Label.new()
 	visual_debug_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	visual_debug_label.add_theme_font_size_override("font_size", 12)
@@ -117,15 +112,13 @@ func _build_ui() -> void:
 
 	body_label = RichTextLabel.new()
 	body_label.bbcode_enabled = true
-	body_label.custom_minimum_size = Vector2(0, 160)
+	body_label.custom_minimum_size = Vector2(0, 150)
 	body_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	body_label.add_theme_font_size_override("normal_font_size", 24)
 	layout.add_child(body_label)
-
 	vars_label = Label.new()
 	vars_label.add_theme_font_size_override("font_size", 18)
 	layout.add_child(vars_label)
-
 	map_buttons_box = _build_section_box(layout, "行军图操作")
 	combat_buttons_box = _build_section_box(layout, "战斗桥接")
 	choices_box = _build_section_box(layout, "叙事选择")
@@ -181,8 +174,7 @@ func _render() -> void:
 			_add_placeholder(combat_buttons_box, "当前节点无战斗。")
 		var choices: Array = node.get("choices", [])
 		for i in range(choices.size()):
-			var choice: Dictionary = choices[i]
-			_add_choice_button(choice, i)
+			_add_choice_button(choices[i], i)
 	BattleFontHelper.enforce(self)
 
 func _format_scene_text(raw_text: String) -> String:
@@ -191,27 +183,18 @@ func _format_scene_text(raw_text: String) -> String:
 	var lines: Array[String] = []
 	for part in parts:
 		var clean := str(part).strip_edges()
-		if clean.is_empty():
-			continue
-		lines.append("• %s" % clean)
+		if not clean.is_empty():
+			lines.append("• %s" % clean)
 	if lines.is_empty():
 		return "• 场景占位：暂无"
 	return "\n".join(lines)
 
 func _render_visual(path: String, fallback_text: String) -> void:
 	if path.is_empty():
-		visual_texture.texture = null
-		visual_texture.visible = false
-		visual_label.visible = true
-		visual_label.text = "视觉占位：%s" % fallback_text
-		visual_debug_label.text = "视觉诊断：path=空｜状态=文本占位"
+		_set_visual_placeholder("视觉诊断：path=空｜状态=文本占位", fallback_text)
 		return
 	if not ResourceLoader.exists(path):
-		visual_texture.texture = null
-		visual_texture.visible = false
-		visual_label.visible = true
-		visual_label.text = "视觉占位：%s" % fallback_text
-		visual_debug_label.text = "视觉诊断：path=%s｜exists=false｜状态=文本占位" % path
+		_set_visual_placeholder("视觉诊断：path=%s｜exists=false｜状态=文本占位" % path, fallback_text)
 		return
 	var resource := load(path)
 	if resource is Texture2D:
@@ -219,15 +202,22 @@ func _render_visual(path: String, fallback_text: String) -> void:
 		visual_texture.visible = true
 		visual_label.visible = false
 		visual_debug_label.text = "视觉诊断：path=%s｜exists=true｜type=Texture2D｜状态=已显示" % path
-	else:
-		visual_texture.texture = null
-		visual_texture.visible = false
-		visual_label.visible = true
-		var class_name := "null"
-		if resource != null:
-			class_name = str(resource.get_class())
-		visual_label.text = "视觉资源不是 Texture2D：%s" % path
-		visual_debug_label.text = "视觉诊断：path=%s｜exists=true｜type=%s｜状态=非 Texture2D" % [path, class_name]
+		return
+	var resource_class_name := "null"
+	if resource != null:
+		resource_class_name = str(resource.get_class())
+	visual_texture.texture = null
+	visual_texture.visible = false
+	visual_label.visible = true
+	visual_label.text = "视觉资源不是 Texture2D：%s" % path
+	visual_debug_label.text = "视觉诊断：path=%s｜exists=true｜type=%s｜状态=非 Texture2D" % [path, resource_class_name]
+
+func _set_visual_placeholder(debug_text: String, fallback_text: String) -> void:
+	visual_texture.texture = null
+	visual_texture.visible = false
+	visual_label.visible = true
+	visual_label.text = "视觉占位：%s" % fallback_text
+	visual_debug_label.text = debug_text
 
 func _add_safe_map_buttons() -> void:
 	var column_row := HBoxContainer.new()
@@ -245,13 +235,12 @@ func _add_safe_map_buttons() -> void:
 		column_box.add_child(title)
 		for i in range(NODES.size()):
 			var node: Dictionary = NODES[i]
-			if str(node.get("column", "")) != column_name:
-				continue
-			var btn := Button.new()
-			btn.text = "%s %s" % [_map_marker_for_index(i), str(node.get("title", ""))]
-			btn.custom_minimum_size = Vector2(136, 38)
-			btn.pressed.connect(_on_map_node_pressed.bind(i))
-			column_box.add_child(btn)
+			if str(node.get("column", "")) == column_name:
+				var btn := Button.new()
+				btn.text = "%s %s" % [_map_marker_for_index(i), str(node.get("title", ""))]
+				btn.custom_minimum_size = Vector2(136, 38)
+				btn.pressed.connect(_on_map_node_pressed.bind(i))
+				column_box.add_child(btn)
 
 func _add_button(parent: VBoxContainer, text: String, callback: Callable) -> void:
 	var btn := Button.new()
@@ -276,18 +265,15 @@ func _add_choice_button(choice: Dictionary, index: int) -> void:
 func _on_map_node_pressed(target_index: int) -> void:
 	if target_index == node_index:
 		last_hint = "地图节点：当前节点。"
-		_render()
-		return
-	if target_index < node_index:
+	elif target_index < node_index:
 		last_hint = "地图节点：已走过。"
-		_render()
-		return
-	if target_index != node_index + 1:
+	elif target_index != node_index + 1:
 		last_hint = "地图节点：未开放。"
-		_render()
+	else:
+		_apply_default_map_reward(target_index)
+		_advance_to_node(target_index, "地图节点：可前往，已通过地图选路推进，并获得默认行军收益。")
 		return
-	_apply_default_map_reward(target_index)
-	_advance_to_node(target_index, "地图节点：可前往，已通过地图选路推进，并获得默认行军收益。")
+	_render()
 
 func _apply_choice_delta(choice: Dictionary) -> void:
 	jun_gong += int(choice.get("dg", 0))
@@ -299,10 +285,7 @@ func _apply_default_map_reward(target_index: int) -> void:
 		return
 	var node: Dictionary = NODES[target_index]
 	match str(node.get("type", "")):
-		"普通战斗":
-			jun_gong += 1
-			clues += 1
-		"精英战斗":
+		"普通战斗", "精英战斗":
 			jun_gong += 1
 			clues += 1
 		"Boss":
@@ -310,16 +293,11 @@ func _apply_default_map_reward(target_index: int) -> void:
 			clues += 1
 		"旧物":
 			clues += 2
-		"结尾":
-			qing_wang += 1
 		_:
 			qing_wang += 1
 
 func _advance_to_node(target_index: int, hint: String = "") -> void:
-	battle_requested = false
 	last_hint = hint
-	if target_index < 0:
-		return
 	if target_index >= NODES.size():
 		_render_ending()
 		return
@@ -335,13 +313,11 @@ func _on_continue_prologue() -> void:
 	_render()
 
 func _on_request_battle() -> void:
-	battle_requested = true
 	var node: Dictionary = NODES[node_index]
 	body_label.text = _node_body(node) + "\n\n[b]战斗桥接占位[/b]\nnode_id=%s｜encounter_id=%s｜状态=已请求" % [str(node.get("id", "")), str(node.get("combat", ""))]
 	BattleFontHelper.enforce(self)
 
 func _on_mock_battle_win() -> void:
-	battle_requested = false
 	var node: Dictionary = NODES[node_index]
 	body_label.text = _node_body(node) + "\n\n[b]战斗占位胜利[/b]\n现在可选择战后处理。"
 	BattleFontHelper.enforce(self)
@@ -351,8 +327,7 @@ func _on_choice(index: int) -> void:
 	var choices: Array = node.get("choices", [])
 	if index < 0 or index >= choices.size():
 		return
-	var choice: Dictionary = choices[index]
-	_apply_choice_delta(choice)
+	_apply_choice_delta(choices[index])
 	if node_index < NODES.size() - 1:
 		_advance_to_node(node_index + 1, "")
 	else:
@@ -377,7 +352,6 @@ func _restart() -> void:
 	qing_wang = 0
 	clues = 0
 	in_prologue = true
-	battle_requested = false
 	last_hint = ""
 	_render()
 
@@ -387,9 +361,8 @@ func _map_text() -> String:
 		var items: Array[String] = []
 		for i in range(NODES.size()):
 			var n: Dictionary = NODES[i]
-			if str(n.get("column", "")) != col:
-				continue
-			items.append("%s %s" % [_map_marker_for_index(i), str(n.get("title", ""))])
+			if str(n.get("column", "")) == col:
+				items.append("%s %s" % [_map_marker_for_index(i), str(n.get("title", ""))])
 		lines.append("【%s】%s" % [col, " / ".join(items)])
 	return "\n".join(lines)
 
