@@ -1,4 +1,4 @@
-# 《沧海嘀鸣》Web 美术线验收推进计划 v0.1
+# 《沧海嘀鸣》Web 美术线验收推进计划 v0.2
 
 > 本文档承接 `ART_ASSET_SPEC.md`、`ANIMATION_AND_ART_PIPELINE_SPEC.md`、`ART_PIPELINE_PROGRESS.md`。当前阶段不再从头设计战斗规则，专门推进 Web 美术线：角色动作、sprite sheet、特效、UI 一致性、角色/气泡绑定、Web 视觉验收。
 
@@ -19,13 +19,26 @@ Web 外壳：只铺满浏览器黑底，不再自行裁切 16:9 / 16:10
 
 ---
 
-## 1. 当前美术线优先级
+## 1. 验收状态总览
+
+```text
+[PASSED] P0：Web 构建稳定
+[PASSED] P1：敌方角色身份稳定
+[PASSED] P2：意图气泡绑定角色实际 sprite
+[NEXT]   P3：角色动作包从三帧过渡到最低可交付包
+[TODO]   P4：特效与 hit_frame 对齐
+[TODO]   P5：UI 视觉一致性
+```
+
+当前重心已经从“Web 是否稳定、角色是否漂移”切到“最低动作包生产与接入”。
+
+---
+
+## 2. 已通过验收
 
 ### P0：Web 构建稳定
 
-目标：任何美术接入都不能引入 GDScript 编译错误或 Web 构建失败。
-
-验收：
+验收命令：
 
 ```bash
 git pull
@@ -39,88 +52,62 @@ rm -rf build/web build/web.zip
 http://127.0.0.1:8060
 ```
 
-通过标准：
+通过结果：
 
 ```text
-[ ] Web 页面能打开
-[ ] 浏览器控制台无 GDScript 编译错误
-[ ] 中文不乱码
-[ ] 角色不整张 sheet 显示
-[ ] 角色不重复显示
-[ ] 16:10 下无异常拉伸
+[x] Web 页面能打开
+[x] 浏览器控制台无 GDScript 编译错误
+[x] 中文不乱码
+[x] 角色不整张 sheet 显示
+[x] 角色不重复显示
+[x] 16:10 下无异常拉伸
 ```
 
 ---
 
 ### P1：敌方角色身份稳定
 
-已知问题：敌方攻击后可能切回普通角色形象。
-
-当前修复方向：
+已通过结果：
 
 ```text
-有 enemy_{role_id}.meta.json 时，敌方 runtime 必须稳定绑定 enemy_* meta；
-父级视觉刷新后，必须重新应用 actor runtime 当前帧；
-旧三帧 sheet 只能作为 fallback，不能覆盖正在运行的 actor runtime。
+[x] enemy_spearman 一直显示 enemy_spearman_sheet
+[x] enemy_blademaster 一直显示 enemy_blademaster_sheet
+[x] 攻击、受击、回 idle 后身份不变
+[x] 没有短暂闪回普通角色 sheet
 ```
 
-验收动作：
+当前结论：
 
 ```text
-1. 进入 Web 战斗；
-2. 观察敌方初始形象；
-3. 选择攻击牌并确认出招；
-4. 敌方播放 attack / hit / guard 后回到 idle；
-5. 敌方仍保持 enemy_* 外观，不切成普通 spearman / blademaster。
-```
-
-通过标准：
-
-```text
-[ ] enemy_spearman 一直显示 enemy_spearman_sheet
-[ ] enemy_blademaster 一直显示 enemy_blademaster_sheet
-[ ] 攻击、受击、回 idle 后身份不变
-[ ] 没有短暂闪回普通角色 sheet
+有 enemy_{role_id}.meta.json 时，敌方 runtime 已能稳定绑定 enemy_* meta；
+父级视觉刷新后不会再把 active enemy runtime 覆盖成普通角色 sheet；
+旧三帧 sheet fallback 保持兼容。
 ```
 
 ---
 
 ### P2：意图气泡绑定角色实际 sprite
 
-已知问题：意图气泡偶尔和角色形象发生漂移。
-
-当前修复方向：
+已通过结果：
 
 ```text
-气泡不再按格位单独计算；
-气泡绑定 TextureRect 中实际绘制出来的 sprite 可见矩形；
-兼容 512×512 actor meta sheet、384×384 老 sheet、横向三帧过渡 sheet；
-窗口缩放、角色移动、动作切帧后都重新校准。
+[x] 气泡始终位于角色头顶附近
+[x] 气泡不会贴到格位中心而脱离角色
+[x] 角色左右移动后气泡跟随
+[x] 角色 sheet 留白不同也不造成明显偏移
+[x] 16:10 窗口缩放后位置稳定
 ```
 
-验收动作：
+当前结论：
 
 ```text
-1. 进入 Web 战斗；
-2. 观察玩家 / 敌方初始气泡；
-3. 选择不同移动/攻击牌；
-4. 缩放浏览器窗口；
-5. 多次确认出招，观察动作播放中和回 idle 后气泡位置。
-```
-
-通过标准：
-
-```text
-[ ] 气泡始终位于角色头顶附近
-[ ] 气泡不会贴到格位中心而脱离角色
-[ ] 角色左右移动后气泡跟随
-[ ] 角色 sheet 留白不同也不造成明显偏移
-[ ] 16:10 窗口缩放后位置稳定
+气泡已从“按格位单独计算”切到“绑定 TextureRect 中实际绘制出来的 sprite 可见矩形”；
+512×512 actor meta sheet、384×384 老 sheet、横向三帧过渡 sheet 均保持兼容。
 ```
 
 ---
 
-### P3：角色动作包从三帧过渡到最低可交付包
+## 3. 当前下一刀：P3 角色动作包从三帧过渡到最低可交付包
 
 短期不要求一次做完整 S 级动作包。先完成最低可交付包，保证 runtime、meta、FX、Web 验收链路跑通。
 
@@ -166,7 +153,20 @@ assets/pixel_battle/actors/{role_id}/
 不得因为某个新动作缺图导致 Web 崩溃。
 ```
 
+### P3 建议执行拆分
+
+```text
+P3.1：先为 spearman 建立最低动作包目录与 meta 口径
+P3.2：确认 validate_actor_bundle.py 能识别动作覆盖率
+P3.3：接入 spearman_idle / attack_light / guard / hit / break / move_forward
+P3.4：Web 验收 spearman 动作切换无抖动、无整张 sheet、无裁脚
+P3.5：复制链路到 enemy_spearman
+P3.6：再扩展 blademaster / enemy_blademaster
+```
+
 ---
+
+## 4. 后续待验收
 
 ### P4：特效与 hit_frame 对齐
 
@@ -179,8 +179,6 @@ ActorAnimationPlayer
 → visual controller
 → FX feedback
 ```
-
-下一步重点不是新增复杂特效，而是把已有特效稳定绑定到 hit_frame。
 
 优先特效：
 
@@ -234,7 +232,7 @@ break_icon.png
 
 ---
 
-## 2. 本阶段不做的事
+## 5. 本阶段不做的事
 
 为了避免美术线失焦，以下内容暂不推进：
 
@@ -250,22 +248,22 @@ break_icon.png
 
 ---
 
-## 3. 推荐执行顺序
+## 6. 当前执行顺序
 
 ```text
-第 1 刀：修敌方角色身份稳定
-第 2 刀：修气泡绑定 sprite 实际位置
-第 3 刀：补 Web 视觉验收清单
-第 4 刀：spearman 最低动作包
-第 5 刀：enemy_spearman 最低动作包
-第 6 刀：hit_frame 特效同步验收
-第 7 刀：blademaster / enemy_blademaster 复制链路
-第 8 刀：UI 资产一致性补齐
+已完成：Web 构建稳定
+已完成：敌方角色身份稳定
+已完成：气泡绑定 sprite 实际位置
+当前：spearman 最低动作包
+下一步：enemy_spearman 最低动作包
+随后：hit_frame 特效同步验收
+随后：blademaster / enemy_blademaster 复制链路
+最后：UI 资产一致性补齐
 ```
 
 ---
 
-## 4. 每次提交必须记录
+## 7. 每次提交必须记录
 
 每次推进后，在回复或进度文档中记录：
 
@@ -280,12 +278,12 @@ break_icon.png
 
 ---
 
-## 5. 当前验收口径一句话
+## 8. 当前验收口径一句话
 
 ```text
 以 1600×1000、16:10、Godot stretch/aspect=keep 为准；
-角色身份不能被旧 sheet 刷新覆盖；
-气泡必须绑定实际 sprite 可见区域；
+P0–P2 已通过；
+下一阶段集中推进 spearman 最低动作包；
 新增动作资产必须 actor meta 化，并兼容旧三帧 fallback；
 Web 构建稳定优先于任何视觉扩展。
 ```
