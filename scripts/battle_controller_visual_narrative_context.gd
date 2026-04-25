@@ -14,9 +14,9 @@ var enemy_config_label: Label
 var battle_result_label: Label
 var recommended_start_button: Button
 var continue_narrative_button: Button
-var last_result_debug_text := ""
-var result_recorded := false
-var narrative_numbers_applied := false
+var last_result_debug_text: String = ""
+var result_recorded: bool = false
+var narrative_numbers_applied: bool = false
 
 func _ready() -> void:
 	super._ready()
@@ -46,7 +46,7 @@ func _add_narrative_debug_layer() -> void:
 	enemy_config_strip.add_theme_font_size_override("font_size", 13)
 	narrative_debug_layer.add_child(enemy_config_strip)
 
-	var panel := PanelContainer.new()
+	var panel: PanelContainer = PanelContainer.new()
 	panel.name = "NarrativeDebugPanel"
 	panel.anchor_left = 1.0
 	panel.anchor_right = 1.0
@@ -58,7 +58,7 @@ func _add_narrative_debug_layer() -> void:
 	panel.offset_bottom = 500
 	narrative_debug_layer.add_child(panel)
 
-	var margin := MarginContainer.new()
+	var margin: MarginContainer = MarginContainer.new()
 	margin.add_theme_constant_override("margin_left", 12)
 	margin.add_theme_constant_override("margin_top", 10)
 	margin.add_theme_constant_override("margin_right", 12)
@@ -112,8 +112,8 @@ func _add_narrative_debug_layer() -> void:
 	narrative_debug_box.add_child(continue_narrative_button)
 
 func _context_debug_text() -> String:
-	var mapping := NarrativeBattleContext.get_battle_mapping()
-	var mapping_summary := "关卡信息：%s｜推荐玩家=%s｜推荐敌人=%s｜难度=%s" % [str(mapping.get("label", "")), str(mapping.get("player_role", "")), str(mapping.get("enemy_role", "")), str(mapping.get("difficulty", ""))]
+	var mapping: Dictionary = NarrativeBattleContext.get_battle_mapping()
+	var mapping_summary: String = "关卡信息：%s｜推荐玩家=%s｜推荐敌人=%s｜难度=%s" % [str(mapping.get("label", "")), str(mapping.get("player_role", "")), str(mapping.get("enemy_role", "")), str(mapping.get("difficulty", ""))]
 	if NarrativeBattleContext.has_request():
 		return "%s\n叙事上下文：%s" % [mapping_summary, NarrativeBattleContext.debug_text()]
 	return "%s\n叙事上下文：无请求｜返回将按 win 保底" % mapping_summary
@@ -145,22 +145,22 @@ func _update_battle_result_debug() -> void:
 		_set_battle_result_debug_text("战斗结果：等待角色创建｜可点击返回剧情")
 		return
 	_apply_narrative_numbers_once()
-	var hp_result_ready := player.hp <= 0 or enemy.hp <= 0
-	var phase_result_ready := state_machine.phase == BattleStateMachineScript.BattlePhase.RESULT
+	var hp_result_ready: bool = player.hp <= 0 or enemy.hp <= 0
+	var phase_result_ready: bool = state_machine.phase == BattleStateMachineScript.BattlePhase.RESULT
 	if not hp_result_ready and not phase_result_ready:
 		_set_battle_result_debug_text("战斗结果：phase=%s｜player_hp=%d｜enemy_hp=%d｜未结算，可点击返回剧情" % [str(state_machine.phase), player.hp, enemy.hp])
 		return
-	var narrative_result := _get_narrative_result()
+	var narrative_result: String = _get_narrative_result()
 	_record_result_once(narrative_result)
-	var result_state := "RESULT" if phase_result_ready else "HP_ZERO"
+	var result_state: String = "RESULT" if phase_result_ready else "HP_ZERO"
 	_set_battle_result_debug_text("战斗结果：state=%s｜phase=%s｜player_hp=%d｜enemy_hp=%d｜narrative_result=%s" % [result_state, str(state_machine.phase), player.hp, enemy.hp, narrative_result])
 
 func _apply_narrative_numbers_once() -> void:
 	if narrative_numbers_applied:
 		return
-	var mapping := NarrativeBattleContext.get_battle_mapping()
-	var profile := NarrativeBattleContext.get_player_profile()
-	var role_id := str(mapping.get("player_role", player_role_id))
+	var mapping: Dictionary = NarrativeBattleContext.get_battle_mapping()
+	var profile: Dictionary = NarrativeBattleContext.get_player_profile()
+	var role_id: String = str(mapping.get("player_role", player_role_id))
 	if not profile.is_empty():
 		role_id = str(profile.get("role", role_id))
 	_apply_fighter_config(player, _player_config(role_id, profile))
@@ -197,13 +197,14 @@ func _apply_fighter_config(fighter, config: Dictionary) -> void:
 		fighter.hand.append(fighter.draw_pile.pop_front())
 
 func _safe_refresh_runtime_ui() -> void:
-	for method_name in ["_refresh_ui", "_update_ui", "_render_battle", "_render_state", "_refresh_all"]:
+	var refresh_methods: Array[String] = ["_refresh_ui", "_update_ui", "_render_battle", "_render_state", "_refresh_all"]
+	for method_name: String in refresh_methods:
 		if _method_accepts_arg_count(method_name, 0):
 			callv(method_name, [])
 			return
 
 func _player_config(role_id: String, profile: Dictionary) -> Dictionary:
-	var realm := int(profile.get("martial_level", 1)) if not profile.is_empty() else 1
+	var realm: int = int(profile.get("martial_level", 1)) if not profile.is_empty() else 1
 	if role_id == "blademaster":
 		return {"name":str(profile.get("career", "腰刀武官")), "weapon":str(profile.get("weapon", "腰刀")), "max_hp":int(profile.get("max_hp", 34)), "hp":int(profile.get("hp", profile.get("max_hp", 34))), "max_momentum":int(profile.get("max_posture", 10)), "momentum":int(profile.get("posture", 7)), "realm":realm, "qinggong":2, "position":2, "facing":"right", "preferred":[0,1,2], "deck":_blade_cards(realm)}
 	return {"name":str(profile.get("career", "长枪武官")), "weapon":str(profile.get("weapon", "长枪")), "max_hp":int(profile.get("max_hp", 38)), "hp":int(profile.get("hp", profile.get("max_hp", 38))), "max_momentum":int(profile.get("max_posture", 10)), "momentum":int(profile.get("posture", 6)), "realm":realm, "qinggong":1, "position":2, "facing":"right", "preferred":[3,4,5], "deck":_spear_cards(realm)}
@@ -223,7 +224,7 @@ func _c(id: String, name: String, min_d: int, max_d: int, cost: int, role: Strin
 	return {"id":id, "name":name, "min":min_d, "max":max_d, "cost":cost, "role":role, "gain":gain, "break":brk, "damage":dmg, "guard":guard, "tags":tags, "style":style, "facing":facing}
 
 func _spear_cards(level: int) -> Array:
-	var cards := [_c("p_s1","枪式一",3,5,1,"momentum",2,0,0,0,["试探"],"枪"), _c("p_s2","枪式二",3,5,1,"momentum",0,2,0,0,["破势"],"枪"), _c("p_s3","枪式三",3,5,1,"damage",0,0,5,0,["起手"],"枪"), _c("p_s4","枪守式",0,5,1,"guard",0,0,0,5,["守"],"枪",false), _c("p_s5","枪进式",2,4,1,"damage",1,0,4,0,["进身"],"枪"), _c("p_s6","枪终式",4,5,2,"damage",0,1,8,0,["终结"],"枪")]
+	var cards: Array = [_c("p_s1","枪式一",3,5,1,"momentum",2,0,0,0,["试探"],"枪"), _c("p_s2","枪式二",3,5,1,"momentum",0,2,0,0,["破势"],"枪"), _c("p_s3","枪式三",3,5,1,"damage",0,0,5,0,["起手"],"枪"), _c("p_s4","枪守式",0,5,1,"guard",0,0,0,5,["守"],"枪",false), _c("p_s5","枪进式",2,4,1,"damage",1,0,4,0,["进身"],"枪"), _c("p_s6","枪终式",4,5,2,"damage",0,1,8,0,["终结"],"枪")]
 	if level >= 2:
 		cards.append(_c("p_s7","枪先式",2,4,2,"momentum",2,2,0,0,["先机"],"枪"))
 	if level >= 3:
@@ -231,7 +232,7 @@ func _spear_cards(level: int) -> Array:
 	return cards
 
 func _blade_cards(level: int) -> Array:
-	var cards := [_c("p_b1","刀式一",0,2,1,"momentum",2,0,0,0,["试探"],"刀"), _c("p_b2","刀式二",0,2,1,"momentum",0,2,0,0,["破势"],"刀"), _c("p_b3","刀式三",0,2,1,"damage",0,0,5,0,["起手"],"刀"), _c("p_b4","刀守式",0,3,1,"guard",0,0,0,5,["守"],"刀",false), _c("p_b5","刀追式",0,1,1,"damage",1,0,4,0,["追击"],"刀"), _c("p_b6","刀终式",0,1,2,"damage",0,1,8,0,["终结"],"刀")]
+	var cards: Array = [_c("p_b1","刀式一",0,2,1,"momentum",2,0,0,0,["试探"],"刀"), _c("p_b2","刀式二",0,2,1,"momentum",0,2,0,0,["破势"],"刀"), _c("p_b3","刀式三",0,2,1,"damage",0,0,5,0,["起手"],"刀"), _c("p_b4","刀守式",0,3,1,"guard",0,0,0,5,["守"],"刀",false), _c("p_b5","刀追式",0,1,1,"damage",1,0,4,0,["追击"],"刀"), _c("p_b6","刀终式",0,1,2,"damage",0,1,8,0,["终结"],"刀")]
 	if level >= 2:
 		cards.append(_c("p_b7","刀先式",0,2,2,"momentum",2,2,0,0,["先机"],"刀"))
 	if level >= 3:
@@ -252,29 +253,33 @@ func _enemy_boss_cards() -> Array:
 
 func _cards_from_configs(configs: Array) -> Array[CardDataScript]:
 	var cards: Array[CardDataScript] = []
-	for config in configs:
+	for config_variant in configs:
+		var config: Dictionary = config_variant
 		cards.append(CardDataScript.new(str(config.get("id", "card")), str(config.get("name", "招式")), str(config.get("name", "")), int(config.get("min", 0)), int(config.get("max", 5)), int(config.get("cost", 1)), str(config.get("role", "damage")), int(config.get("gain", 0)), int(config.get("break", 0)), int(config.get("damage", 0)), int(config.get("guard", 0)), PackedStringArray(config.get("tags", [])), str(config.get("style", "")), bool(config.get("facing", true))))
 	return cards
 
 func _packed_ints(values: Array) -> PackedInt32Array:
-	var result := PackedInt32Array()
-	for value in values:
-		result.append(int(value))
+	var result: PackedInt32Array = PackedInt32Array()
+	for value_variant in values:
+		result.append(int(value_variant))
 	return result
 
 func _runtime_cards_text() -> String:
-	var mapping := NarrativeBattleContext.get_battle_mapping()
-	var profile := NarrativeBattleContext.get_player_profile()
-	var role_id := str(mapping.get("player_role", "spearman"))
+	var mapping: Dictionary = NarrativeBattleContext.get_battle_mapping()
+	var profile: Dictionary = NarrativeBattleContext.get_player_profile()
+	var role_id: String = str(mapping.get("player_role", "spearman"))
 	if not profile.is_empty():
 		role_id = str(profile.get("role", role_id))
-	var player_deck := _player_config(role_id, profile).get("deck", [])
-	var enemy_deck := _enemy_config(str(NarrativeBattleContext.encounter_id)).get("deck", [])
+	var player_config: Dictionary = _player_config(role_id, profile)
+	var enemy_runtime_config: Dictionary = _enemy_config(str(NarrativeBattleContext.encounter_id))
+	var player_deck: Array = player_config.get("deck", [])
+	var enemy_deck: Array = enemy_runtime_config.get("deck", [])
 	return "玩家持牌：%s\n敌方持牌：%s" % [_deck_summary(player_deck), _deck_summary(enemy_deck)]
 
 func _deck_summary(deck: Array) -> String:
 	var chunks: Array[String] = []
-	for config in deck:
+	for config_variant in deck:
+		var config: Dictionary = config_variant
 		chunks.append("%s[耗%d/伤%d/守%d/势+%d/破%d/距%d-%d]" % [str(config.get("name", "")), int(config.get("cost", 0)), int(config.get("damage", 0)), int(config.get("guard", 0)), int(config.get("gain", 0)), int(config.get("break", 0)), int(config.get("min", 0)), int(config.get("max", 0))])
 	return "；".join(chunks)
 
@@ -304,30 +309,31 @@ func _get_narrative_result() -> String:
 	return "win"
 
 func _on_recommended_battle_pressed() -> void:
-	var mapping := NarrativeBattleContext.get_battle_mapping()
-	var role_id := str(mapping.get("player_role", "spearman"))
+	var mapping: Dictionary = NarrativeBattleContext.get_battle_mapping()
+	var role_id: String = str(mapping.get("player_role", "spearman"))
 	player_role_id = role_id
-	var called := _try_recommended_role_entry(role_id)
+	var called: bool = _try_recommended_role_entry(role_id)
 	if called:
 		_set_battle_result_debug_text("接战操作：已按推荐玩家=%s 尝试进入战斗。" % role_id)
 	else:
 		_set_battle_result_debug_text("接战操作：已写入推荐玩家=%s；未匹配自动入口，请继续使用原角色选择按钮。" % role_id)
 
 func _try_recommended_role_entry(role_id: String) -> bool:
-	var one_arg_methods := ["_on_role_selected", "_select_role", "_choose_role", "_pick_role", "_start_battle", "_begin_battle", "_start_session", "_begin_session", "_start_run"]
-	for method_name in one_arg_methods:
+	var one_arg_methods: Array[String] = ["_on_role_selected", "_select_role", "_choose_role", "_pick_role", "_start_battle", "_begin_battle", "_start_session", "_begin_session", "_start_run"]
+	for method_name: String in one_arg_methods:
 		if _method_accepts_arg_count(method_name, 1):
 			callv(method_name, [role_id])
 			return true
-	var no_arg_methods := ["_confirm_role_selection", "_confirm_role_pick", "_start_battle", "_begin_battle", "_start_session", "_begin_session", "_start_run"]
-	for method_name in no_arg_methods:
+	var no_arg_methods: Array[String] = ["_confirm_role_selection", "_confirm_role_pick", "_start_battle", "_begin_battle", "_start_session", "_begin_session", "_start_run"]
+	for method_name: String in no_arg_methods:
 		if _method_accepts_arg_count(method_name, 0):
 			callv(method_name, [])
 			return true
 	return false
 
 func _method_accepts_arg_count(method_name: String, arg_count: int) -> bool:
-	for method_info in get_method_list():
+	for method_info_variant in get_method_list():
+		var method_info: Dictionary = method_info_variant
 		if str(method_info.get("name", "")) != method_name:
 			continue
 		var args: Array = method_info.get("args", [])
@@ -337,7 +343,7 @@ func _method_accepts_arg_count(method_name: String, arg_count: int) -> bool:
 func _on_continue_narrative_pressed() -> void:
 	if not NarrativeBattleContext.has_result():
 		NarrativeBattleContext.set_result(_get_narrative_result())
-	var target_scene := NarrativeBattleContext.source_scene
+	var target_scene: String = NarrativeBattleContext.source_scene
 	if target_scene.is_empty():
 		target_scene = DEFAULT_NARRATIVE_SCENE
 	get_tree().change_scene_to_file(target_scene)
