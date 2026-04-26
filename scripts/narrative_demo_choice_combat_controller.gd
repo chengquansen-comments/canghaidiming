@@ -4,8 +4,8 @@ extends "res://scripts/narrative_demo_canonical_controller.gd"
 # 1. Read node segments sentence by sentence.
 # 2. Show narrative choices only after reading is complete.
 # 3. If a choice has combat, start combat from that choice.
-# 4. After victory, apply that choice's effects, show its result sentence by sentence, then continue.
-# 5. If a choice has no combat, apply effects immediately, show result sentence by sentence, then continue.
+# 4. After victory, apply that choice's effects, show result sentence by sentence, show delta as its own step, then continue.
+# 5. If a choice has no combat, apply effects immediately, show result sentence by sentence, show delta as its own step, then continue.
 # 6. Boss nodes may use post-battle stance choices: read -> fight -> choose stance.
 
 const META_PENDING_CHOICE_JSON := "canghai_pending_narrative_choice_json"
@@ -70,6 +70,9 @@ func _choice_preview(choice: Dictionary, node: Dictionary) -> String:
 func _choice_result_segments() -> Array[String]:
 	var segments: Array[String] = []
 	_append_text_segments(segments, choice_result_text)
+	var delta := choice_result_delta_text.strip_edges()
+	if not delta.is_empty():
+		segments.append("[b]%s[/b]" % delta)
 	if segments.is_empty():
 		segments.append("")
 	return segments
@@ -203,7 +206,7 @@ func _consume_battle_result_if_needed() -> void:
 				choice_result_delta_text = _format_effect_delta(effects)
 				choice_result_sentence_index = 0
 				showing_choice_result = true
-				last_hint = "战斗胜利：请确认战后结果。"
+				last_hint = ""
 	elif result == "lose":
 		last_hint = "战斗失败：已返回剧情。当前暂不扣除资源，可重新选择。"
 		showing_choice_result = false
@@ -226,10 +229,6 @@ func _render_node() -> void:
 	_render_visual(str(node.get("visual_path", "")), str(node.get("scene", "")))
 	if showing_choice_result:
 		body_label.text = _current_choice_result_text()
-		if _is_choice_result_complete():
-			body_label.text += "\n\n[b]%s[/b]" % choice_result_delta_text
-			if not last_hint.is_empty():
-				body_label.text += "\n\n[i]%s[/i]" % _fragmented_hint(last_hint)
 		vars_label.text = _vars_text()
 		_add_safe_map_buttons()
 		_add_placeholder(combat_buttons_box, "")
