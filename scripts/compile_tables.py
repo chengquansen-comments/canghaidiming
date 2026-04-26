@@ -354,6 +354,9 @@ def build_narrative_mvp_nodes() -> dict[str, Any]:
             "id": required(row, "id", "narrative_mvp_prologue_steps"),
             "text": required(row, "text", "narrative_mvp_prologue_steps"),
         }
+        title = row.get("title", "").strip()
+        if title != "":
+            step["title"] = title
         career_prompt = row.get("career_prompt", "").strip()
         if career_prompt != "":
             step["career_prompt"] = career_prompt
@@ -514,7 +517,7 @@ def required(row: dict[str, str], key: str, context: str) -> str:
 def write_json(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
-        json.dump(payload, handle, ensure_ascii=False, indent=2)
+        json.dump(payload, ensure_ascii=False, indent=2, fp=handle)
         handle.write("\n")
 
 
