@@ -1,8 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
-  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#161716"/><stop offset="0.52" stop-color="#34302a"/><stop offset="1" stop-color="#7b604a"/></linearGradient><radialGradient id="fire" cx="72%" cy="36%" r="42%"><stop offset="0" stop-color="#8f2f27" stop-opacity="0.42"/><stop offset="1" stop-color="#111" stop-opacity="0"/></radialGradient></defs>
-  <rect width="1280" height="720" fill="url(#g)"/><rect width="1280" height="720" fill="url(#fire)"/>
-  <path d="M0 320 C190 265 345 335 530 286 C760 230 920 315 1280 245 L1280 720 L0 720 Z" fill="#263237" opacity="0.58"/>
-  <path d="M0 480 C220 410 420 525 665 455 C900 390 1060 500 1280 430 L1280 720 L0 720 Z" fill="#090c0d" opacity="0.86"/>
-  <path d="M760 265 L805 505 L710 505 Z" fill="#080909" opacity="0.76"/><path d="M840 245 L895 510 L805 510 Z" fill="#080909" opacity="0.70"/>
-  <text x="64" y="664" font-size="30" fill="#8c2f29" opacity="0.80" font-family="serif">黑潮救援</text>
+  <defs>
+    <linearGradient id="night" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#111514"/>
+      <stop offset="0.48" stop-color="#2d302c"/>
+      <stop offset="1" stop-color="#0b0d0d"/>
+    </linearGradient>
+    <radialGradient id="distantFire" cx="78%" cy="42%" r="44%">
+      <stop offset="0" stop-color="#8e3329" stop-opacity="0.42"/>
+      <stop offset="0.52" stop-color="#3a1715" stop-opacity="0.20"/>
+      <stop offset="1" stop-color="#050606" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="blur" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="7"/></filter>
+  </defs>
+  <rect width="1280" height="720" fill="url(#night)"/>
+  <rect width="1280" height="720" fill="url(#distantFire)"/>
+  <path d="M0 292 C165 238 328 286 488 248 C680 202 832 270 1000 230 C1110 204 1190 214 1280 190 L1280 420 L0 432 Z" fill="#29383b" opacity="0.44"/>
+  <path d="M0 390 C180 340 344 402 538 360 C734 316 895 386 1088 344 C1170 326 1230 330 1280 320 L1280 516 L0 520 Z" fill="#151c1e" opacity="0.62"/>
+  <ellipse cx="892" cy="302" rx="178" ry="62" fill="#212725" opacity="0.34" filter="url(#blur)"/>
+  <ellipse cx="1040" cy="270" rx="142" ry="50" fill="#5b241f" opacity="0.24" filter="url(#blur)"/>
+  <path d="M70 474 C260 414 420 514 620 456 C830 398 1018 506 1280 430 L1280 720 L0 720 Z" fill="#060808" opacity="0.90"/>
+  <path d="M730 258 L782 520 L692 520 Z" fill="#050707" opacity="0.82"/>
+  <path d="M810 232 L874 526 L768 526 Z" fill="#060707" opacity="0.76"/>
+  <path d="M858 286 L960 522 L880 522 Z" fill="#070808" opacity="0.60"/>
+  <path d="M640 424 C688 382 730 372 792 390 C754 414 710 430 640 424 Z" fill="#121211" opacity="0.70"/>
+  <path d="M886 418 C940 382 1010 374 1074 394 C1018 416 954 428 886 418 Z" fill="#14110f" opacity="0.64"/>
+  <path d="M456 542 L506 706 L438 706 Z M528 512 L580 706 L508 706 Z M1120 500 L1178 706 L1098 706 Z" fill="#030404" opacity="0.94"/>
+  <path d="M410 590 L618 528" stroke="#050606" stroke-width="16" stroke-linecap="round" opacity="0.90"/>
+  <path d="M998 580 L1236 500" stroke="#050606" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
+  <path d="M0 608 C220 570 410 630 646 596 C858 566 1030 620 1280 574 L1280 720 L0 720 Z" fill="#030404" opacity="0.78"/>
+  <rect width="1280" height="720" fill="#000" opacity="0.08"/>
 </svg>
