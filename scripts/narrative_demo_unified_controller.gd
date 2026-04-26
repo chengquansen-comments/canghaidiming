@@ -9,8 +9,9 @@ var prologue_choice_result_delta_text: String = ""
 
 func _render_prologue() -> void:
 	var prologue: Dictionary = _prologue_data()
-	title_label.text = str(prologue.get("title", "《大明之沧海嘀鸣》"))
-	status_label.text = "旧村 / 序章"
+	var step_data: Dictionary = _prologue_step_data(step_index)
+	title_label.text = _prologue_display_title(prologue, step_data)
+	status_label.text = _prologue_display_status(prologue, step_data)
 	map_label.text = ""
 	scene_label.text = _format_scene_text(_prologue_scene_hint())
 	_render_visual("", _prologue_visual_hint())
@@ -44,6 +45,89 @@ func _render_prologue() -> void:
 		return
 
 	_add_button(choices_box, "继续", _on_continue_prologue)
+
+func _prologue_display_title(prologue: Dictionary, step_data: Dictionary) -> String:
+	var step_title := str(step_data.get("title", ""))
+	if not step_title.is_empty():
+		return step_title
+	return str(prologue.get("title", "《大明之沧海嘀鸣》"))
+
+func _prologue_display_status(prologue: Dictionary, step_data: Dictionary) -> String:
+	var status := str(step_data.get("status", ""))
+	if not status.is_empty():
+		return status
+	var step_title := str(step_data.get("title", ""))
+	if not step_title.is_empty():
+		return step_title
+	return str(prologue.get("title", "《大明之沧海嘀鸣》"))
+
+func _prologue_map_title() -> String:
+	var steps := _prologue_steps()
+	if not steps.is_empty() and steps[0] is Dictionary:
+		var title := str((steps[0] as Dictionary).get("title", ""))
+		if not title.is_empty():
+			return title
+	var prologue := _prologue_data()
+	return str(prologue.get("title", "《大明之沧海嘀鸣》"))
+
+func _current_world_map_title() -> String:
+	if in_prologue:
+		return _prologue_map_title()
+	var node: Dictionary = _node_data_at(node_index)
+	return str(node.get("title", ""))
+
+func _world_map_total_count() -> int:
+	return MVP_NODE_IDS.size() + 1
+
+func _world_map_current_index() -> int:
+	return 0 if in_prologue else node_index + 1
+
+func _world_map_title_at(map_index: int) -> String:
+	if map_index == 0:
+		return _prologue_map_title()
+	var node: Dictionary = _node_data_at(map_index - 1)
+	return str(node.get("title", ""))
+
+func _world_map_marker_for_index(index: int) -> String:
+	var current := _world_map_current_index()
+	if index == current:
+		return "◆ 当前"
+	if index < current:
+		return "● 已过"
+	if index == current + 1:
+		return "◎ 可前往"
+	return "○ 未开放"
+
+func _refresh_world_map() -> void:
+	if world_map_layer == null or world_map_panel == null or world_map_nodes_row == null:
+		return
+	world_map_panel.visible = true
+	if world_map_status_label != null:
+		world_map_status_label.text = "海疆行军图｜当前：%s｜军功 %d｜清望 %d｜旧案 %d" % [_current_world_map_title(), jun_gong, qing_wang, clues]
+	for child: Node in world_map_nodes_row.get_children():
+		child.queue_free()
+	for i in range(_world_map_total_count()):
+		if i > 0:
+			world_map_nodes_row.add_child(_make_world_map_line(i))
+		world_map_nodes_row.add_child(_make_world_map_node_button(i))
+
+func _make_world_map_node_button(index: int) -> Button:
+	var btn := Button.new()
+	btn.text = "%s\n%s" % [_world_map_marker_for_index(index), _world_map_title_at(index)]
+	btn.custom_minimum_size = Vector2(116, 48)
+	btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	btn.focus_mode = Control.FOCUS_NONE
+	btn.mouse_filter = Control.MOUSE_FILTER_STOP
+	btn.disabled = index > _world_map_current_index() + 1
+	btn.pressed.connect(_on_world_map_node_pressed.bind(index))
+	return btn
+
+func _on_world_map_node_pressed(map_index: int) -> void:
+	if map_index == 0:
+		last_hint = "地图节点：序章。"
+		_render()
+		return
+	_on_map_node_pressed(map_index - 1)
 
 func _add_prologue_combat_choice() -> void:
 	var combat: Dictionary = _prologue_combat_data(PROLOGUE_MASTER_RESCUE_STEP)
