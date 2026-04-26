@@ -46,7 +46,6 @@ func _apply_canonical_effects(effects: Dictionary) -> void:
 	jun_gong += int(normalized[VAR_MILITARY_MERIT])
 	qing_wang += int(normalized[VAR_CLEAN_REPUTATION])
 	clues += int(normalized[VAR_CASE_CLUES])
-	NarrativeBattleContext.apply_player_growth("choice", 0, 0, 0, false)
 
 func _choice_effects_for_index(index: int) -> Dictionary:
 	var node: Dictionary = NODES[node_index]
@@ -94,6 +93,7 @@ func _on_choice(index: int) -> void:
 	if static_choices.size() > 0 and index >= static_choices.size():
 		return
 	_apply_canonical_effects(_choice_effects_for_index(index))
+	NarrativeBattleContext.apply_player_growth("choice", 0, 0, 0, false)
 	if node_index < NODES.size() - 1:
 		_advance_to_node(node_index + 1, "")
 	else:
@@ -106,14 +106,19 @@ func _apply_choice_delta(choice: Dictionary) -> void:
 		VAR_CASE_CLUES: int(choice.get(VAR_CASE_CLUES, choice.get("dc", choice.get("clues", 0)))),
 		VAR_SOLDIER_TRUST: int(choice.get(VAR_SOLDIER_TRUST, 0))
 	})
+	NarrativeBattleContext.apply_player_growth("choice", 0, 0, 0, false)
 
-func _reward_for_current_context(source_index: int) -> Dictionary:
-	var context_reward := NarrativeBattleContext.get_enemy_config().get("reward", {})
+func _battle_reward_for_source(source_index: int) -> Dictionary:
+	var context_reward = NarrativeBattleContext.get_enemy_config().get("reward", {})
 	if context_reward is Dictionary and not (context_reward as Dictionary).is_empty():
 		return _normalize_effects(context_reward)
 	if source_index < 0 or source_index >= NODES.size():
 		return {VAR_MILITARY_MERIT: 0, VAR_CLEAN_REPUTATION: 0, VAR_CASE_CLUES: 0, VAR_SOLDIER_TRUST: 0}
 	var node: Dictionary = NODES[source_index]
+	var encounter_id := str(node.get("combat", ""))
+	if has_method("_formal_reward_for_encounter"):
+		var formal_reward: Dictionary = _formal_reward_for_encounter(encounter_id, str(node.get("type", "")))
+		return _normalize_effects(formal_reward)
 	match str(node.get("type", "")):
 		"普通战斗", "精英战斗":
 			return {VAR_MILITARY_MERIT: 1, VAR_CLEAN_REPUTATION: 0, VAR_CASE_CLUES: 1, VAR_SOLDIER_TRUST: 0}
@@ -122,8 +127,25 @@ func _reward_for_current_context(source_index: int) -> Dictionary:
 		_:
 			return {VAR_MILITARY_MERIT: 1, VAR_CLEAN_REPUTATION: 0, VAR_CASE_CLUES: 0, VAR_SOLDIER_TRUST: 0}
 
+func _battle_growth_reward_for_source(source_index: int) -> Dictionary:
+	if source_index < 0 or source_index >= NODES.size():
+		return {"hp_gain": 0, "posture_gain": 0, "martial_gain": 0, "heal_full": false}
+	var node: Dictionary = NODES[source_index]
+	var encounter_id := str(node.get("combat", ""))
+	if has_method("_formal_reward_for_encounter"):
+		return _formal_reward_for_encounter(encounter_id, str(node.get("type", "")))
+	return {"hp_gain": 2, "posture_gain": 0, "martial_gain": 1, "heal_full": true}
+
 func _apply_battle_result_reward(source_index: int) -> void:
-	_apply_canonical_effects(_reward_for_current_context(source_index))
+	_apply_canonical_effects(_battle_reward_for_source(source_index))
+	var growth := _battle_growth_reward_for_source(source_index)
+	NarrativeBattleContext.apply_player_growth(
+		"battle_win",
+		int(growth.get("hp_gain", 0)),
+		int(growth.get("posture_gain", 0)),
+		int(growth.get("martial_gain", 0)),
+		bool(growth.get("heal_full", true))
+	)
 
 func _vars_text() -> String:
 	return "军功 %d / 清望 %d / 旧案线索 %d" % [jun_gong, qing_wang, clues]
