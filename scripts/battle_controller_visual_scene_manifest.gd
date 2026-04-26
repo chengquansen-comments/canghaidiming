@@ -17,7 +17,6 @@ var stable_debug_deck_label: Label
 var stable_debug_ai_label: Label
 var stable_debug_runtime_label: Label
 var stable_debug_actions_row: HBoxContainer
-var stable_debug_recommended_button: Button
 var stable_debug_continue_button: Button
 var stable_debug_last_values: Dictionary = {}
 
@@ -199,13 +198,6 @@ func _build_stable_debug_panel() -> void:
 	stable_debug_actions_row.mouse_filter = Control.MOUSE_FILTER_PASS
 	stable_debug_actions_row.add_theme_constant_override("separation", 8)
 	box.add_child(stable_debug_actions_row)
-
-	stable_debug_recommended_button = Button.new()
-	stable_debug_recommended_button.text = "按推荐接敌"
-	stable_debug_recommended_button.custom_minimum_size = Vector2(132, 32)
-	stable_debug_recommended_button.focus_mode = Control.FOCUS_NONE
-	stable_debug_recommended_button.pressed.connect(_on_recommended_battle_pressed)
-	stable_debug_actions_row.add_child(stable_debug_recommended_button)
 
 	stable_debug_continue_button = Button.new()
 	stable_debug_continue_button.text = "返回剧情"
