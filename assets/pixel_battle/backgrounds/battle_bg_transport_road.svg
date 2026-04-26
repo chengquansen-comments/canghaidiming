@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs><linearGradient id="p" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d8c9a5"/><stop offset="1" stop-color="#514a40"/></linearGradient></defs>
+  <rect width="1280" height="720" fill="url(#p)"/>
+  <path d="M0 380 C180 330 370 390 580 350 C820 305 1010 390 1280 330 L1280 720 L0 720 Z" fill="#354044" opacity="0.40"/>
+  <path d="M0 510 C260 435 520 555 760 490 C980 430 1120 520 1280 485 L1280 720 L0 720 Z" fill="#131313" opacity="0.82"/>
+  <rect x="190" y="365" width="360" height="64" rx="8" fill="#251c16" opacity="0.75"/><circle cx="260" cy="450" r="38" fill="#090909" opacity="0.74"/><circle cx="495" cy="450" r="38" fill="#090909" opacity="0.74"/>
+  <path d="M760 255 L805 510 L715 510 Z" fill="#101112" opacity="0.78"/><path d="M820 275 L910 512 L845 512 Z" fill="#151515" opacity="0.60"/>
+  <text x="64" y="664" font-size="30" fill="#7e2e28" opacity="0.86" font-family="serif">押运官对峙</text>
+</svg>
