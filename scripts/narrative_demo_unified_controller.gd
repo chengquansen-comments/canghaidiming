@@ -49,18 +49,13 @@ func _prologue_display_title(step_data: Dictionary) -> String:
 	var step_title := str(step_data.get("title", ""))
 	if not step_title.is_empty():
 		return step_title
-	return str(step_data.get("id", "prologue"))
+	return str(step_data.get("id", ""))
 
 func _prologue_display_status(step_data: Dictionary) -> String:
-	var column := str(step_data.get("column", ""))
 	var step_type := str(step_data.get("type", ""))
-	if not column.is_empty() and not step_type.is_empty():
-		return "%s / %s" % [column, step_type]
-	if not column.is_empty():
-		return column
 	if not step_type.is_empty():
 		return step_type
-	return str(step_data.get("id", "prologue"))
+	return ""
 
 func _prologue_map_title() -> String:
 	var steps := _prologue_steps()
@@ -69,8 +64,8 @@ func _prologue_map_title() -> String:
 		var title := str(first_step.get("title", ""))
 		if not title.is_empty():
 			return title
-		return str(first_step.get("id", "prologue"))
-	return "prologue"
+		return str(first_step.get("id", ""))
+	return ""
 
 func _current_world_map_title() -> String:
 	if in_prologue:
