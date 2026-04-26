@@ -43,6 +43,8 @@ const MVP_NODE_META := {
 	"military_coverup": {"column":"军门", "type":"结尾", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_military_coverup.svg"}
 }
 
+var node_sentence_index: int = 0
+
 func _canonical_state() -> Dictionary:
 	return {
 		VAR_MILITARY_MERIT: jun_gong,
@@ -104,6 +106,37 @@ func _configured_choices_for_node(node_id: String) -> Array:
 	var node_data := _node_config(node_id)
 	var choices = node_data.get("choices", [])
 	return choices if choices is Array else []
+
+func _node_story_segments(node: Dictionary) -> Array[String]:
+	var segments: Array[String] = []
+	_append_text_segments(segments, str(node.get("text", "")))
+	var combat = node.get("combat", {})
+	if combat is Dictionary and bool((combat as Dictionary).get("enabled", false)):
+		_append_text_segments(segments, str((combat as Dictionary).get("pre", "")))
+	if segments.is_empty():
+		segments.append("")
+	return segments
+
+func _append_text_segments(segments: Array[String], raw_text: String) -> void:
+	var normalized := raw_text.replace("\r", "")
+	var lines := normalized.split("\n")
+	for raw_line in lines:
+		var line := str(raw_line).strip_edges()
+		if not line.is_empty():
+			segments.append(line)
+
+func _is_node_story_complete(node: Dictionary) -> bool:
+	var segments := _node_story_segments(node)
+	return node_sentence_index >= segments.size() - 1
+
+func _current_node_story_text(node: Dictionary) -> String:
+	var segments := _node_story_segments(node)
+	var safe_index = clamp(node_sentence_index, 0, segments.size() - 1)
+	return str(segments[safe_index])
+
+func _on_continue_node_sentence() -> void:
+	node_sentence_index += 1
+	_render()
 
 func _choice_effects_for_index(index: int) -> Dictionary:
 	var node_id := _node_id_at(node_index)
@@ -215,6 +248,7 @@ func _consume_battle_result_if_needed() -> void:
 		_apply_battle_result_reward(node_index)
 		if node_index < MVP_NODE_IDS.size() - 1:
 			node_index += 1
+			node_sentence_index = 0
 		last_hint = str(growth.get("reward_text", "战斗胜利：已返回剧情，并自动推进到下一节点。"))
 	elif result == "lose":
 		last_hint = "战斗失败：已返回剧情。当前暂不扣除资源，可重试或视为胜利继续。"
@@ -226,28 +260,26 @@ func _consume_battle_result_if_needed() -> void:
 
 func _render_node() -> void:
 	var node: Dictionary = _node_data_at(node_index)
-	var node_id: String = str(node.get("id", ""))
 	title_label.text = str(node.get("title", ""))
 	status_label.text = "%s / %s" % [str(node.get("column", "")), str(node.get("type", ""))]
 	map_label.text = ""
 	scene_label.text = _format_scene_text(str(node.get("scene", "")))
 	_render_visual(str(node.get("visual_path", "")), str(node.get("scene", "")))
-	body_label.text = str(node.get("text", ""))
-	var combat = node.get("combat", {})
-	if combat is Dictionary and bool((combat as Dictionary).get("enabled", false)):
-		var pre_text: String = str((combat as Dictionary).get("pre", ""))
-		if not pre_text.is_empty() and body_label.text.find(pre_text) < 0:
-			body_label.text += "\n\n" + pre_text
-	if not last_hint.is_empty():
+	body_label.text = _current_node_story_text(node)
+	if not last_hint.is_empty() and _is_node_story_complete(node):
 		body_label.text += "\n\n[i]%s[/i]" % _fragmented_hint(last_hint)
 	vars_label.text = _vars_text()
 	_add_safe_map_buttons()
+	if not _is_node_story_complete(node):
+		_add_placeholder(combat_buttons_box, "")
+		_add_button(choices_box, "继续", _on_continue_node_sentence)
+		return
 	if _node_has_combat_data(node):
 		_add_button(combat_buttons_box, _combat_button_text(node), _on_request_battle)
 		_add_button(combat_buttons_box, _combat_mock_button_text(node), _on_mock_battle_win)
 	else:
 		_add_placeholder(combat_buttons_box, "")
-	var choices := _configured_choices_for_node(node_id)
+	var choices := _configured_choices_for_node(str(node.get("id", "")))
 	for i in range(choices.size()):
 		var choice: Dictionary = choices[i] if choices[i] is Dictionary else {}
 		_add_choice_button(choice, i)
@@ -266,7 +298,8 @@ func _on_request_battle() -> void:
 
 func _on_mock_battle_win() -> void:
 	var node: Dictionary = _node_data_at(node_index)
-	body_label.text = str(node.get("text", "")) + "\n\n[b]战斗占位胜利[/b]\n现在可选择战后处理。"
+	node_sentence_index = _node_story_segments(node).size() - 1
+	body_label.text = _current_node_story_text(node) + "\n\n[b]战斗占位胜利[/b]\n现在可选择战后处理。"
 	BattleFontHelper.enforce(self)
 
 func _current_node_id() -> String:
@@ -385,6 +418,7 @@ func _apply_default_map_reward(target_index: int) -> void:
 
 func _advance_to_node(target_index: int, hint: String = "") -> void:
 	last_hint = hint
+	node_sentence_index = 0
 	if target_index >= MVP_NODE_IDS.size():
 		_render_ending()
 		return
@@ -408,6 +442,7 @@ func _render_ending() -> void:
 func _restart() -> void:
 	step_index = 0
 	node_index = 0
+	node_sentence_index = 0
 	jun_gong = 0
 	qing_wang = 0
 	clues = 0
