@@ -183,7 +183,7 @@ func _add_prologue_combat_choice() -> void:
 	var choice := {
 		"label": str(combat.get("button", "换我。")),
 		"preview": "胜利后：旧案线索 +1",
-		"result": str(combat.get("post", "敌人还没死透。\n他吐出一个字：军……\n箭到了。")),
+		"result": "",
 		"effects": {VAR_CASE_CLUES: 1},
 		"combat": {
 			"enabled": true,
@@ -215,18 +215,20 @@ func _consume_battle_result_if_needed() -> void:
 	var result: String = NarrativeBattleContext.last_result
 	if source_id == "prologue_master_rescue":
 		in_prologue = true
-		step_index = PROLOGUE_MASTER_RESCUE_STEP
-		prologue_sentence_index = _prologue_story_segments().size() - 1
 		if result == "win":
 			var pending_choice := _load_pending_choice()
 			var effects := _choice_effects(pending_choice)
 			_apply_canonical_effects(effects)
-			prologue_choice_result_text = str(pending_choice.get("result", "敌人还没死透。\n他吐出一个字：军……\n箭到了。"))
-			prologue_choice_result_delta_text = _format_effect_delta(effects)
+			step_index = PROLOGUE_AFTER_MASTER_BATTLE_STEP
+			prologue_sentence_index = 0
 			prologue_result_sentence_index = 0
-			showing_prologue_choice_result = true
-			last_hint = "序章战斗胜利：请确认战后结果。"
+			showing_prologue_choice_result = false
+			prologue_choice_result_text = ""
+			prologue_choice_result_delta_text = ""
+			last_hint = ""
 		else:
+			step_index = PROLOGUE_MASTER_RESCUE_STEP
+			prologue_sentence_index = _prologue_story_segments().size() - 1
 			last_hint = "序章战斗返回：当前 Demo 按师父救场继续推进。"
 		NarrativeBattleContext.clear()
 		_clear_pending_choice()
