@@ -7,12 +7,12 @@
     "master_rescue": {"duration": 2.8, "zoom": 0.020, "pan_x": 8.0, "pan_y": -1.0, "dim": 0.24, "mist": 0.22, "fire": 0.14, "hero": false, "hero_push": 0.0, "master": true, "master_push": 10.0},
     "arrow_silence": {"duration": 2.4, "zoom": 0.015, "pan_x": -6.0, "pan_y": 0.0, "dim": 0.34, "mist": 0.24, "fire": 0.00, "hero": false, "hero_push": 0.0, "master": true, "master_push": -4.0},
     "departure": {"duration": 3.0, "zoom": 0.018, "pan_x": 5.0, "pan_y": -1.0, "dim": 0.18, "mist": 0.16, "fire": 0.00, "hero": true, "hero_push": -8.0, "master": false, "master_push": 0.0},
-    "military_order": {"duration": 2.8, "zoom": 0.018, "pan_x": 3.0, "pan_y": -1.0, "dim": 0.18, "mist": 0.12, "fire": 0.04, "hero": true, "hero_push": -5.0},
-    "beach_ambush": {"duration": 2.8, "zoom": 0.030, "pan_x": 10.0, "pan_y": -2.0, "dim": 0.27, "mist": 0.34, "fire": 0.08, "hero": true, "hero_push": -9.0},
-    "ming_firearm": {"duration": 3.2, "zoom": 0.072, "pan_x": 0.0, "pan_y": -4.0, "dim": 0.10, "mist": 0.04, "fire": 0.28, "hero": false, "hero_push": 0.0},
-    "transport_officer": {"duration": 2.8, "zoom": 0.024, "pan_x": 6.0, "pan_y": -1.0, "dim": 0.30, "mist": 0.28, "fire": 0.04, "hero": true, "hero_push": -6.0},
-    "wakou_boss": {"duration": 3.2, "zoom": 0.036, "pan_x": 12.0, "pan_y": -2.0, "dim": 0.34, "mist": 0.34, "fire": 0.16, "hero": true, "hero_push": -10.0},
-    "military_coverup": {"duration": 3.0, "zoom": 0.018, "pan_x": -4.0, "pan_y": 0.0, "dim": 0.42, "mist": 0.14, "fire": 0.02, "hero": false, "hero_push": 0.0},
+    "military_order": {"duration": 3.0, "zoom": 0.015, "pan_x": 2.0, "pan_y": -1.0, "dim": 0.16, "mist": 0.10, "fire": 0.035, "hero": true, "hero_push": -4.0},
+    "beach_ambush": {"duration": 2.6, "zoom": 0.040, "pan_x": 14.0, "pan_y": -3.0, "dim": 0.31, "mist": 0.42, "fire": 0.06, "hero": true, "hero_push": -11.0},
+    "ming_firearm": {"duration": 3.4, "zoom": 0.090, "pan_x": 0.0, "pan_y": -5.0, "dim": 0.08, "mist": 0.02, "fire": 0.34, "hero": false, "hero_push": 0.0},
+    "transport_officer": {"duration": 2.9, "zoom": 0.030, "pan_x": 8.0, "pan_y": -1.0, "dim": 0.34, "mist": 0.32, "fire": 0.035, "hero": true, "hero_push": -8.0},
+    "wakou_boss": {"duration": 3.3, "zoom": 0.050, "pan_x": 16.0, "pan_y": -3.0, "dim": 0.38, "mist": 0.42, "fire": 0.22, "hero": true, "hero_push": -13.0},
+    "military_coverup": {"duration": 3.4, "zoom": 0.020, "pan_x": -6.0, "pan_y": 0.0, "dim": 0.48, "mist": 0.12, "fire": 0.01, "hero": false, "hero_push": 0.0},
     "node": {"duration": 2.2, "zoom": 0.018, "pan_x": 4.0, "pan_y": 0.0, "dim": 0.22, "mist": 0.18, "fire": 0.02, "hero": false, "hero_push": 0.0}
   },
   "beats": {
@@ -23,12 +23,12 @@
     "master_rescue": [{"t": 0.25, "type": "fire", "power": 0.24}, {"t": 0.65, "type": "character", "power": 0.16}, {"t": 1.65, "type": "focus", "power": 0.10}],
     "arrow_silence": [{"t": 0.40, "type": "hold", "power": 0.18}, {"t": 1.10, "type": "focus", "power": 0.12}],
     "departure": [{"t": 0.45, "type": "character", "power": 0.10}, {"t": 1.40, "type": "mist", "power": 0.06}],
-    "military_order": [{"t": 0.35, "type": "character", "power": 0.08}],
-    "beach_ambush": [{"t": 0.45, "type": "mist", "power": 0.10}, {"t": 1.60, "type": "focus", "power": 0.08}],
-    "ming_firearm": [{"t": 0.30, "type": "fire", "power": 0.18}, {"t": 1.40, "type": "focus", "power": 0.10}],
-    "transport_officer": [{"t": 0.45, "type": "character", "power": 0.08}, {"t": 1.20, "type": "mist", "power": 0.08}],
-    "wakou_boss": [{"t": 0.30, "type": "mist", "power": 0.12}, {"t": 1.10, "type": "fire", "power": 0.18}, {"t": 1.80, "type": "character", "power": 0.10}],
-    "military_coverup": [{"t": 0.55, "type": "hold", "power": 0.15}],
+    "military_order": [{"t": 0.35, "type": "character", "power": 0.08}, {"t": 1.50, "type": "hold", "power": 0.06}],
+    "beach_ambush": [{"t": 0.35, "type": "mist", "power": 0.14}, {"t": 1.10, "type": "focus", "power": 0.10}, {"t": 1.75, "type": "character", "power": 0.08}],
+    "ming_firearm": [{"t": 0.25, "type": "fire", "power": 0.24}, {"t": 0.95, "type": "focus", "power": 0.14}, {"t": 2.10, "type": "hold", "power": 0.08}],
+    "transport_officer": [{"t": 0.40, "type": "character", "power": 0.10}, {"t": 1.10, "type": "mist", "power": 0.10}, {"t": 2.05, "type": "hold", "power": 0.08}],
+    "wakou_boss": [{"t": 0.25, "type": "mist", "power": 0.16}, {"t": 0.95, "type": "fire", "power": 0.24}, {"t": 1.70, "type": "character", "power": 0.12}, {"t": 2.60, "type": "focus", "power": 0.12}],
+    "military_coverup": [{"t": 0.35, "type": "hold", "power": 0.18}, {"t": 1.80, "type": "focus", "power": 0.10}],
     "node": []
   }
 }
