@@ -7,6 +7,7 @@ var showing_prologue_choice_result: bool = false
 var prologue_choice_result_text: String = ""
 var prologue_choice_result_delta_text: String = ""
 var prologue_sentence_index: int = 0
+var prologue_result_sentence_index: int = 0
 
 func _render_prologue() -> void:
 	var step_data: Dictionary = _prologue_step_data(step_index)
@@ -17,9 +18,11 @@ func _render_prologue() -> void:
 	_render_visual("", _prologue_visual_hint())
 
 	if showing_prologue_choice_result:
-		body_label.text = "%s\n\n[b]%s[/b]" % [prologue_choice_result_text, prologue_choice_result_delta_text]
-		if not last_hint.is_empty():
-			body_label.text += "\n\n[i]%s[/i]" % _fragmented_hint(last_hint)
+		body_label.text = _current_prologue_result_text()
+		if _is_prologue_result_complete():
+			body_label.text += "\n\n[b]%s[/b]" % prologue_choice_result_delta_text
+			if not last_hint.is_empty():
+				body_label.text += "\n\n[i]%s[/i]" % _fragmented_hint(last_hint)
 		vars_label.text = _vars_text()
 		_add_placeholder(map_buttons_box, "")
 		_add_placeholder(combat_buttons_box, "")
@@ -27,8 +30,6 @@ func _render_prologue() -> void:
 		return
 
 	body_label.text = _current_prologue_story_text()
-	if _is_prologue_story_complete() and step_index == PROLOGUE_CAREER_STEP:
-		body_label.text += "\n\n[b]%s[/b]" % _career_prompt_text()
 	if not last_hint.is_empty() and _is_prologue_story_complete():
 		body_label.text += "\n\n[i]%s[/i]" % _fragmented_hint(last_hint)
 	vars_label.text = _vars_text()
@@ -65,6 +66,15 @@ func _prologue_display_status(step_data: Dictionary) -> String:
 func _prologue_story_segments() -> Array[String]:
 	var segments: Array[String] = []
 	_append_text_segments(segments, _prologue_step_text(step_index))
+	if step_index == PROLOGUE_CAREER_STEP:
+		_append_text_segments(segments, _career_prompt_text())
+	if segments.is_empty():
+		segments.append("")
+	return segments
+
+func _prologue_result_segments() -> Array[String]:
+	var segments: Array[String] = []
+	_append_text_segments(segments, prologue_choice_result_text)
 	if segments.is_empty():
 		segments.append("")
 	return segments
@@ -73,13 +83,26 @@ func _is_prologue_story_complete() -> bool:
 	var segments := _prologue_story_segments()
 	return prologue_sentence_index >= segments.size() - 1
 
+func _is_prologue_result_complete() -> bool:
+	var segments := _prologue_result_segments()
+	return prologue_result_sentence_index >= segments.size() - 1
+
 func _current_prologue_story_text() -> String:
 	var segments := _prologue_story_segments()
 	var safe_index = clamp(prologue_sentence_index, 0, segments.size() - 1)
 	return str(segments[safe_index])
 
+func _current_prologue_result_text() -> String:
+	var segments := _prologue_result_segments()
+	var safe_index = clamp(prologue_result_sentence_index, 0, segments.size() - 1)
+	return str(segments[safe_index])
+
 func _on_continue_prologue_sentence() -> void:
 	prologue_sentence_index += 1
+	_render()
+
+func _on_continue_prologue_result_sentence() -> void:
+	prologue_result_sentence_index += 1
 	_render()
 
 func _on_continue_prologue() -> void:
@@ -200,6 +223,7 @@ func _consume_battle_result_if_needed() -> void:
 			_apply_canonical_effects(effects)
 			prologue_choice_result_text = str(pending_choice.get("result", "敌人还没死透。\n他吐出一个字：军……\n箭到了。"))
 			prologue_choice_result_delta_text = _format_effect_delta(effects)
+			prologue_result_sentence_index = 0
 			showing_prologue_choice_result = true
 			last_hint = "序章战斗胜利：请确认战后结果。"
 		else:
@@ -210,9 +234,13 @@ func _consume_battle_result_if_needed() -> void:
 	super._consume_battle_result_if_needed()
 
 func _on_continue_after_prologue_choice_result() -> void:
+	if not _is_prologue_result_complete():
+		_on_continue_prologue_result_sentence()
+		return
 	showing_prologue_choice_result = false
 	prologue_choice_result_text = ""
 	prologue_choice_result_delta_text = ""
+	prologue_result_sentence_index = 0
 	step_index = PROLOGUE_AFTER_MASTER_BATTLE_STEP
 	prologue_sentence_index = 0
 	last_hint = ""
@@ -223,4 +251,5 @@ func _restart() -> void:
 	prologue_choice_result_text = ""
 	prologue_choice_result_delta_text = ""
 	prologue_sentence_index = 0
+	prologue_result_sentence_index = 0
 	super._restart()
