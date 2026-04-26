@@ -20,6 +20,7 @@
 - 不允许复用上一场背景残留
 - 不允许只按敌人类型决定背景
 - 剧情战斗和测试战斗都必须走 battle_id
+- 战斗背景 / 雾 / 暗层 / 强调光必须在人物、格位、预览箭头之后方
 ```
 
 ---
@@ -154,6 +155,21 @@ MainVisual.tscn
 [x] 剧情战斗从 NarrativeBattleContext.get_battle_id() 读取
 [x] 测试入口按角色映射 test_spearman_duel / test_blademaster_duel
 [x] 不再允许上一场背景残留
+[x] 战斗背景层 z_index=-200，z_as_relative=false
+[x] 战斗雾 / 暗层 / 强调光 z_index=-190 到 -188，z_as_relative=false
+[x] 场景标签 z_index=250，不遮挡格位和人物主体
+[x] 背景层全部 mouse_filter=IGNORE，不参与鼠标交互
+```
+
+### 4.1 战斗层级安全规则
+
+```text
+必须遵守：
+- battle_scene_bg 永远在最底层
+- battle_scene_mist / battle_scene_dim / battle_scene_accent 只能做低透明度环境层
+- 不允许覆盖 stage_layer、grid、fighter sprite、preview ghost、preview arrow
+- 如果人物或格位不可见，优先检查 z_index，而不是调美术资源
+- mist / dim / accent 参数会在 controller 内二次收敛，避免压死战斗信息
 ```
 
 当前 battle_id 覆盖：
@@ -182,9 +198,9 @@ assets/pixel_battle/backgrounds/battle_bg_training_ground.svg
 
 ```text
 background：战斗背景图
-mist：战斗雾层强度
- dim：战斗暗层强度
-accent：朱砂火光 / 危险强调
+mist：战斗雾层强度（controller 内二次收敛）
+dim：战斗暗层强度（controller 内二次收敛）
+accent：朱砂火光 / 危险强调（controller 内二次收敛）
 camera_zoom：镜头推进
 camera_pan_x / camera_pan_y：镜头横移 / 纵移
 label：左上角战斗场景标题与 battle_id 诊断
@@ -230,8 +246,9 @@ enc_wakou_boss             → first_act_wakou_boss
 [x] 剧情—战斗—剧情闭环不受影响
 [x] data/performance_tracks.json 已生效
 [x] 明制火器证物节点可见
-[ ] MainVisual 按 battle_id 切换战斗场景待验收
-[ ] 多场战斗切换后无背景残留待验收
+[x] 战斗背景层级已修复为后景，不应遮挡人物和格位
+[ ] MainVisual 按 battle_id 切换战斗场景待复验
+[ ] 多场战斗切换后无背景残留待复验
 ```
 
 战斗场景验收建议：
@@ -244,6 +261,7 @@ enc_wakou_boss             → first_act_wakou_boss
 5. 测试枪手入口显示 test_spearman_duel
 6. 测试刀客入口显示 test_blademaster_duel
 7. 任意两场连续进入，旧背景不残留
+8. 人物、格位、预览箭头必须始终在背景、雾、暗层之上
 ```
 
 ---
@@ -282,6 +300,7 @@ battle_fg_firearm_crate.svg
 
 ```text
 让战斗背景不只是铺底，而有前景遮挡、空间层次和战场识别度。
+注意：前景层只能放在低透明、低遮挡区域，不能遮住格位核心信息。
 ```
 
 ---
@@ -308,5 +327,5 @@ battle_bg_broken_ship.png
 ## 8. 当前一句话结论
 
 ```text
-剧情美术管线已进入“数据驱动电影化演出”阶段；战斗美术管线已进入“battle_id 驱动场景加载”阶段。现在每场战斗都可以按唯一 battle_id 重置并加载独立战场，下一阶段应推进战斗人物立绘和前景层，继续减少剧情与战斗的视觉割裂。
+剧情美术管线已进入“数据驱动电影化演出”阶段；战斗美术管线已进入“battle_id 驱动场景加载”阶段。最新修复已将战斗背景层压到负 z-index 后景，避免遮挡人物、格位与预览箭头；下一阶段应推进战斗人物立绘和受控前景层。
 ```
