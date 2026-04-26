@@ -6,13 +6,19 @@ extends "res://scripts/narrative_demo_canonical_controller.gd"
 # 3. If a choice has combat, start combat from that choice.
 # 4. After victory, apply that choice's effects, show its result, then continue.
 # 5. If a choice has no combat, apply effects immediately, show result, then continue.
+# 6. Boss nodes may use post-battle stance choices: read -> fight -> choose stance.
 
 const META_PENDING_CHOICE_JSON := "canghai_pending_narrative_choice_json"
 const META_PENDING_CHOICE_NODE := "canghai_pending_narrative_choice_node"
+const META_PENDING_BOSS_NODE := "canghai_pending_boss_node"
+const BOSS_NODE_ID := "wakou_boss"
+const BOSS_ENCOUNTER_ID := "enc_wakou_boss"
+const BOSS_BATTLE_ID := "first_act_wakou_boss"
 
 var showing_choice_result: bool = false
 var choice_result_text: String = ""
 var choice_result_delta_text: String = ""
+var boss_battle_completed: bool = false
 
 func _node_level_combat(node: Dictionary) -> Dictionary:
 	var combat = node.get("combat", {})
@@ -56,6 +62,8 @@ func _choice_preview(choice: Dictionary, node: Dictionary) -> String:
 	if not preview.is_empty():
 		return preview
 	var prefix := "胜利后" if _choice_triggers_combat(choice, node) else "立即"
+	if str(node.get("id", "")) == BOSS_NODE_ID and boss_battle_completed:
+		prefix = "立场"
 	return "%s：%s" % [prefix, _format_effect_delta(_choice_effects(choice))]
 
 func _add_choice_button(choice: Dictionary, index: int) -> void:
@@ -108,12 +116,21 @@ func _clear_pending_choice() -> void:
 	if Engine.has_meta(META_PENDING_CHOICE_JSON):
 		Engine.remove_meta(META_PENDING_CHOICE_JSON)
 
+func _store_pending_boss_node(node_id: String) -> void:
+	Engine.set_meta(META_PENDING_BOSS_NODE, node_id)
+
+func _clear_pending_boss_node() -> void:
+	if Engine.has_meta(META_PENDING_BOSS_NODE):
+		Engine.remove_meta(META_PENDING_BOSS_NODE)
+
 func _battle_growth_reward_for_source(source_index: int) -> Dictionary:
 	if source_index < 0 or source_index >= MVP_NODE_IDS.size():
 		return {"hp_gain": 0, "posture_gain": 0, "martial_gain": 0, "heal_full": false}
 	var node: Dictionary = _node_data_at(source_index)
 	var combat := _node_level_combat(node)
 	var encounter_id := str(combat.get("encounter_id", ""))
+	if encounter_id.is_empty() and str(node.get("id", "")) == BOSS_NODE_ID:
+		encounter_id = BOSS_ENCOUNTER_ID
 	if has_method("_formal_reward_for_encounter"):
 		return _formal_reward_for_encounter(encounter_id, str(node.get("type", "")))
 	return {"hp_gain": 2, "posture_gain": 0, "martial_gain": 1, "heal_full": true}
@@ -150,16 +167,23 @@ func _consume_battle_result_if_needed() -> void:
 			break
 	if result == "win":
 		_apply_battle_growth(node_index)
-		var pending_choice := _load_pending_choice()
-		if pending_choice.is_empty():
-			last_hint = "战斗胜利：未找到待结算选择，暂不推进。"
+		if source_id == BOSS_NODE_ID:
+			boss_battle_completed = true
+			showing_choice_result = false
+			choice_result_text = ""
+			choice_result_delta_text = ""
+			last_hint = "首领倒下。现在决定这场战斗留下什么。"
 		else:
-			var effects := _choice_effects(pending_choice)
-			_apply_canonical_effects(effects)
-			choice_result_text = str(pending_choice.get("result", "战斗胜利。"))
-			choice_result_delta_text = _format_effect_delta(effects)
-			showing_choice_result = true
-			last_hint = "战斗胜利：请确认战后结果。"
+			var pending_choice := _load_pending_choice()
+			if pending_choice.is_empty():
+				last_hint = "战斗胜利：未找到待结算选择，暂不推进。"
+			else:
+				var effects := _choice_effects(pending_choice)
+				_apply_canonical_effects(effects)
+				choice_result_text = str(pending_choice.get("result", "战斗胜利。"))
+				choice_result_delta_text = _format_effect_delta(effects)
+				showing_choice_result = true
+				last_hint = "战斗胜利：请确认战后结果。"
 	elif result == "lose":
 		last_hint = "战斗失败：已返回剧情。当前暂不扣除资源，可重新选择。"
 		showing_choice_result = false
@@ -170,6 +194,7 @@ func _consume_battle_result_if_needed() -> void:
 		last_hint = "战斗结果未知：已返回剧情。"
 	NarrativeBattleContext.clear()
 	_clear_pending_choice()
+	_clear_pending_boss_node()
 	node_sentence_index = _node_story_segments(_node_data_at(node_index)).size() - 1
 
 func _render_node() -> void:
@@ -197,16 +222,28 @@ func _render_node() -> void:
 		_add_placeholder(combat_buttons_box, "")
 		_add_button(choices_box, "继续", _on_continue_node_sentence)
 		return
+	if str(node.get("id", "")) == BOSS_NODE_ID and not boss_battle_completed:
+		_add_button(combat_buttons_box, "决战", _on_request_boss_battle)
+		_add_placeholder(choices_box, "先击败首领。战后再决定立场。")
+		return
 	_add_placeholder(combat_buttons_box, "")
 	var choices := _configured_choices_for_node(str(node.get("id", "")))
 	for i in range(choices.size()):
 		var choice: Dictionary = choices[i] if choices[i] is Dictionary else {}
 		_add_choice_button(choice, i)
 
+func _on_request_boss_battle() -> void:
+	var node_id := _node_id_at(node_index)
+	_store_pending_boss_node(node_id)
+	NarrativeBattleContext.set_request(BOSS_ENCOUNTER_ID, node_id, BOSS_BATTLE_ID)
+	get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
+
 func _on_continue_after_choice_result() -> void:
 	showing_choice_result = false
 	choice_result_text = ""
 	choice_result_delta_text = ""
+	if _node_id_at(node_index) == BOSS_NODE_ID:
+		boss_battle_completed = false
 	if node_index < MVP_NODE_IDS.size() - 1:
 		_advance_to_node(node_index + 1, "")
 	else:
@@ -228,6 +265,7 @@ func _restart() -> void:
 	showing_choice_result = false
 	choice_result_text = ""
 	choice_result_delta_text = ""
+	boss_battle_completed = false
 	jun_gong = 0
 	qing_wang = 0
 	clues = 0
@@ -235,6 +273,7 @@ func _restart() -> void:
 	career_selected = false
 	last_hint = ""
 	_clear_pending_choice()
+	_clear_pending_boss_node()
 	NarrativeBattleContext.clear()
 	NarrativeBattleContext.clear_player_profile()
 	_render()
