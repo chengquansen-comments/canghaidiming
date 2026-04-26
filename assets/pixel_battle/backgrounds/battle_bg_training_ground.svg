@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs><linearGradient id="p" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e0d0aa"/><stop offset="1" stop-color="#77705f"/></linearGradient></defs>
+  <rect width="1280" height="720" fill="url(#p)"/>
+  <path d="M0 330 C240 280 450 345 680 300 C900 260 1060 335 1280 285 L1280 720 L0 720 Z" fill="#5d6760" opacity="0.32"/>
+  <path d="M0 520 C260 470 510 550 770 500 C1010 460 1100 540 1280 500 L1280 720 L0 720 Z" fill="#171614" opacity="0.72"/>
+  <path d="M180 430 L1120 430" stroke="#2b2118" stroke-width="8" opacity="0.48"/><path d="M280 390 L1000 390" stroke="#2b2118" stroke-width="5" opacity="0.28"/>
+  <text x="64" y="664" font-size="30" fill="#7e2e28" opacity="0.84" font-family="serif">校场试战</text>
+</svg>
