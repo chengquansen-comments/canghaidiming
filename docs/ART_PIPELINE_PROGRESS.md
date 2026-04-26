@@ -1,6 +1,6 @@
 # 《沧海嘀鸣》美术表现推进看板
 
-> 当前目标：从“纯文字 + 简单色块占位”推进到“配置化碎片叙事 + 独立敌人配置 + 明代海疆国风主视觉 + 数据驱动剧情演出 + 大地图节点推进 + battle_id 驱动战斗场景”的可见 MVP。
+> 当前目标：从“纯文字 + 简单色块占位”推进到“配置化碎片叙事 + 独立敌人配置 + 敌人牌组与行为配置化 + 明代海疆国风主视觉 + 数据驱动剧情演出 + 大地图节点推进 + battle_id 驱动战斗场景”的可见 MVP。
 >
 > 当前美术方向：青年明代武官、明制札甲、深绛红战袍、水墨海岸、宣纸背景、海雾、远崖、城墙、小船、低饱和、强剪影、家国情怀、风起沧海。
 >
@@ -28,8 +28,8 @@
 敌人：Enemy Manifest Layer
 - 完整敌人配置独立进入 data/enemy_manifest.json
 - narrative_mvp_nodes.json 只引用 encounter_id / battle_id / enemy_id
-- enemy_manifest.json 负责 enemy stat / role_sheet / AI 行为 / reward
-- NarrativeBattleContext 优先读取 enemy_manifest，失败时回退旧兜底
+- enemy_manifest.json 负责 enemy stat / role_sheet / deck / AI 意图权重 / 半血行为 / reward
+- NarrativeBattleContext 优先读取 enemy_manifest，失败时回退兜底
 
 大地图：World Map Layer
 - 从节点内抽出的行军图路线
@@ -101,7 +101,10 @@ enemy_manifest 当前管理内容：
 [x] max_hp / max_posture / start_posture：敌人数值
 [x] intent_style：AI 行为风格
 [x] behavior_tags：行为标签
-[x] preferred_intents：偏好意图
+[x] preferred_intents：偏好意图描述
+[x] intent_weights：意图权重
+[x] phase_behaviors：阶段行为 / 半血行为 / 濒死行为
+[x] deck：敌人招式牌组配置
 [x] ai_note：AI 设计说明
 [x] reward：战斗奖励
 ```
@@ -109,11 +112,21 @@ enemy_manifest 当前管理内容：
 当前覆盖敌人：
 
 ```text
-enemy_blademaster_prologue_raider  → 袭村倭寇刀手
-enemy_spearman_beach_ambush        → 敌方枪手
-enemy_blademaster_transport_officer→ 失械案押运官
-enemy_blademaster_wakou_leader     → 小股倭寇首领
-enemy_spearman_fallback            → 默认敌方枪手
+enemy_blademaster_prologue_raider   → 袭村倭寇刀手
+enemy_spearman_beach_ambush         → 敌方枪手
+enemy_blademaster_transport_officer → 失械案押运官
+enemy_blademaster_wakou_leader      → 小股倭寇首领
+enemy_spearman_fallback             → 默认敌方枪手
+```
+
+本次更新：
+
+```text
+[x] 已将测试用“海滩测试枪手 / HP 99 / 势 9-12”恢复为正式“敌方枪手 / HP 26 / 势 4-10”
+[x] 所有敌人新增 deck 字段，承载招式牌配置
+[x] 所有敌人新增 intent_weights 字段，承载意图选择权重
+[x] 所有敌人新增 phase_behaviors 字段，承载默认 / 半血 / 濒死阶段行为
+[x] enemy_manifest meta.version 升级为 2
 ```
 
 当前接入状态：
@@ -123,7 +136,8 @@ enemy_spearman_fallback            → 默认敌方枪手
 [x] NarrativeBattleContext.get_battle_mapping() 优先读取 enemy_manifest
 [x] enemy_manifest 读取失败时回退默认兜底敌人
 [x] battle_mapping_debug_text 显示 enemy_source=manifest / fallback
-[x] 旧硬编码大段敌人配置已收敛为最小 fallback
+[x] 运行时敌人数值链路已通过实机验收
+[ ] deck / intent_weights / phase_behaviors 是否已被战斗 AI 完整消费，需下一轮专项验收
 ```
 
 设计边界：
@@ -268,23 +282,25 @@ fallback                    → 默认接敌
 [x] 新增 data/enemy_manifest.json
 [x] 节点文本 / 场景短句 / 选项 / 战斗触发 / battle_id 已配置化
 [x] 敌人完整数值 / 行为标签 / 奖励已进入 enemy_manifest
+[x] 敌人 deck / intent_weights / phase_behaviors 已进入 enemy_manifest
 [x] fragmented controller 优先读取节点配置表
 [x] NarrativeBattleContext 优先读取 enemy_manifest
 [x] enemy_manifest 读取失败时有 fallback
+[x] enemy_manifest 运行时数值链路已实机验收通过
 [x] 大地图层已接入第一幕
 [x] 节点内不再显示节点线 / 行军图按钮组
-[ ] Web 端复验 enemy_source=manifest
-[ ] MainVisual 按 enemy_manifest 加载敌人配置待复验
-[ ] MainVisual 按 battle_id 切换战斗场景待复验
+[ ] Web 端复验海边伏击正式数值已恢复
+[ ] deck 是否实际由 enemy_manifest 驱动待复验
+[ ] intent_weights / phase_behaviors 是否实际进入 AI 决策待专项实现或复验
 ```
 
 配置化验收建议：
 
 ```text
-1. 修改 data/narrative_mvp_nodes.json 某个节点 text 后，游戏内文本随之变化
+1. 进入海边伏击，敌人应恢复为“敌方枪手”，HP=26，势=4/10
 2. 修改 data/enemy_manifest.json 某个敌人的 max_hp 后，战斗内敌人血量随之变化
 3. 修改 data/enemy_manifest.json 的 display_name 后，战斗内敌人名随之变化
-4. 修改 encounters[enc_*].battle_id 后，战斗场景随之变化
+4. 修改 enemies.*.deck 中某张牌的 damage 后，敌人持牌摘要或实际牌效应随之变化
 5. battle_mapping_debug_text 中应显示 enemy_source=manifest
 6. JSON 出错时，游戏仍回退 fallback，不应白屏
 ```
@@ -293,16 +309,16 @@ fallback                    → 默认接敌
 
 ## 8. 下一批优先级
 
-### P0：enemy_manifest 与战斗 UI 验收
+### P0：deck 字段实际消费验收
 
 ```text
-确认 MainVisual 实际敌人 HP、势、名称、行为标签都来自 data/enemy_manifest.json。
+确认 MainVisual 敌人实际持牌是否来自 enemy_manifest.enemies.*.deck，而不是仍然使用 GDScript 内置 _enemy_spear_cards / _enemy_officer_cards / _enemy_boss_cards。
 ```
 
-### P1：敌人牌组配置化
+### P1：intent_weights / phase_behaviors 接入 AI 决策
 
 ```text
-将敌人可用招式牌、意图权重、半血行为切换从代码中继续抽到 enemy_manifest。
+当前 enemy_manifest 已具备意图权重和阶段行为配置；下一步需要让敌人选牌 / 出招 AI 消费这些字段，形成半血行为切换和 Boss 阶段变化。
 ```
 
 ### P2：碎片文本与演出节拍对齐
@@ -316,5 +332,5 @@ fallback                    → 默认接敌
 ## 9. 当前一句话结论
 
 ```text
-MVP 已完成四层配置拆分：narrative_mvp_nodes 管剧情文本与战斗触发，enemy_manifest 管敌人完整数值与 AI 行为，battle_scene_manifest 管 battle_id 战斗场景，performance_tracks 管剧情演出。下一步重点是验收 enemy_manifest 是否真实驱动战斗数值，并继续把敌人牌组与意图权重配置化。
+MVP 已完成四层配置拆分，并将 enemy_manifest 扩展到敌人牌组、意图权重和阶段行为层：narrative_mvp_nodes 管剧情文本与战斗触发，enemy_manifest 管敌人数值 / deck / intent_weights / phase_behaviors / reward，battle_scene_manifest 管 battle_id 战斗场景，performance_tracks 管剧情演出。海边伏击测试数值已恢复正式配置，下一步应专项验收 deck 与 AI 行为是否真正消费 manifest。
 ```
