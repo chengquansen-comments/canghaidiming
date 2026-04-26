@@ -73,9 +73,9 @@ godot --path .
 - 效果类型缺少处理器或必填字段会直接报错
 - 敌人缺少关键字段或没有意图会直接报错
 
-## TSV / CSV 配表流程
+## TSV 配表流程
 
-现在推荐的编辑入口已经变成 `tables/` 目录，而不是直接改 `data/*.json`。
+`tables/*.tsv` 是唯一策划入口。不要直接编辑 `data/*.json`；运行编译器后 JSON 会被 TSV 覆盖生成。
 
 主要源表：
 
@@ -87,11 +87,16 @@ godot --path .
 - `tables/enemy_intents.tsv`：敌人招式意图，一行一个意图
 - `tables/routes.tsv`：路线节点、下一跳、地图长度、初始距离
 - `tables/rewards.tsv`：奖励池
+- `tables/battle_scene_manifest.tsv`：战斗 battle_id、背景、镜头参数
+- `tables/enemy_manifest_*.tsv`：剧情战斗 encounter、敌人数值、牌组、AI 权重、阶段行为、奖励
+- `tables/narrative_mvp_*.tsv`：MVP 剧情节点、序章、选项、战斗触发、结局提示
+- `tables/performance_*.tsv`：剧情演出 timeline 与 beats
+- `tables/raw_json_documents.tsv`：暂未拆表的大型叙事文档，由 TSV 原样生成到 `data/narrative/*.json`
 
 编译命令：
 
 ```bash
-cd /Users/happy/Documents/Codex/2026-04-19-files-mentioned-by-the-user-pdf
+cd /Users/happy/Documents/Codex/canghaidiming
 python3 scripts/compile_tables.py
 ```
 
@@ -103,6 +108,12 @@ python3 scripts/compile_tables.py
 - `data/enemies.json`
 - `data/routes.json`
 - `data/rewards.json`
+- `data/battle_scene_manifest.json`
+- `data/enemy_manifest.json`
+- `data/narrative_mvp_nodes.json`
+- `data/performance_tracks.json`
+- `data/narrative/mvp_compressed_narrative.json`
+- `data/narrative/mvp_static_map_layout.json`
 
 ### 表格字段约定
 
@@ -114,19 +125,20 @@ python3 scripts/compile_tables.py
 - `card_effects.tsv` 与 `enemy_intents.tsv` 的 `order` 用来决定执行顺序
 - 每条卡牌效果、每条敌人意图都单独占一行，这样更适合在表格里筛选、排序和批量编辑
 
-### TSV 与 CSV
+### TSV 规则
 
-- 编译器会优先读取同名 `.tsv`
-- 如果某张源表不存在 `.tsv`，也可以提供同名 `.csv`
-- 也就是说 `classes.tsv` 和 `classes.csv` 二选一即可，但同名文件建议只保留一种，避免混淆
+- 提交策划改动时应提交 `tables/*.tsv` 和由编译器生成的对应 `data/*.json`
+- 如果 JSON 和 TSV 不一致，以 TSV 为准，重新运行 `python3 scripts/compile_tables.py`
+- 编译器仍兼容历史 `.csv` fallback，但项目内规范只使用 TSV，避免双入口混淆
 
 ## 扩展效果类型
 
 现在新增一个效果类型的最小步骤是：
 
-1. 在 `data/effects.json` 注册新类型，声明 `handler` 和 `required_fields`
+1. 在 `tables/effect_types.tsv` 注册新类型，声明 `handler` 和 `required_fields`
 2. 在 `scripts/Main.gd` 中实现对应处理函数
-3. 在 `data/cards.json` 里把该效果写进某张卡牌的 `effects`
+3. 在 `tables/card_effects.tsv` 里把该效果写进某张卡牌的 `effects`
+4. 运行 `python3 scripts/compile_tables.py` 生成 JSON
 
 这意味着“效果类型目录”和“卡牌使用效果”的结构已经解耦；脚本不再直接硬编码支持哪些效果类型，而是先读取注册表再分发执行。
 

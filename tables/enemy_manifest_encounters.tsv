@@ -1,0 +1,8 @@
+encounter_id	battle_id	enemy_id	player_role	enemy_role	enemy_family	difficulty	label
+enc_prologue_master_rescue	prologue_master_rescue	enemy_blademaster_prologue_raider	blademaster	enemy_blademaster	blademaster	tutorial_elite	序章救场 / 袭村倭寇刀手
+enc_beach_ambush	first_act_beach_ambush	enemy_spearman_beach_ambush	spearman	enemy_spearman	spearman	normal	海边伏击 / 敌方枪手
+enc_fishing_village_embers	first_act_fishing_village_embers	enemy_wakou_raider_fishing_village	spearman	enemy_blademaster	blademaster	normal	渔村残火 / 倭寇杂兵
+enc_transport_officer	first_act_transport_officer	enemy_blademaster_transport_officer	blademaster	enemy_blademaster	blademaster	elite	失械案押运官 / 敌方刀客
+enc_mutiny_camp	first_act_mutiny_camp	enemy_mutiny_camp_leader	spearman	enemy_spearman	spearman	elite	欠饷营 / 兵变营头
+enc_wakou_boss	first_act_wakou_boss	enemy_blademaster_wakou_leader	blademaster	enemy_blademaster	blademaster	boss	破船 Boss / 小股倭寇首领
+fallback	fallback	enemy_spearman_fallback	spearman	enemy_spearman	spearman	fallback	默认战斗 / 枪手

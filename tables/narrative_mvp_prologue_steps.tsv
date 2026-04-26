@@ -1,0 +1,69 @@
+order	id	career_prompt	combat_json	text
+1	black_tide			"黑。
+
+潮声很近。
+
+有人在跑。"
+2	father			"父亲把你按进柴堆。
+
+他说：
+别出声。"
+3	door			"刀背敲门。
+
+有人问：
+东西在哪？
+
+父亲说：
+孩子不知道。"
+4	dead			"那人笑了。
+
+他说：
+死人也不知道。
+
+潮声停了一下。"
+5	wooden_blade			"你冲出去。
+
+木刀打在甲片上。
+
+零声。"
+6	fall			"天翻过来。
+
+火光很高。
+
+你看见母亲的鞋。"
+7	master_arrives		"{""enabled"":true,""button"":""换我。"",""skip_button"":""潮声跳过这一段"",""encounter_id"":""enc_prologue_master_rescue"",""battle_id"":""prologue_master_rescue"",""enemy_id"":""enemy_blademaster_prologue_raider"",""enemy_display"":""袭村倭寇刀手"",""enemy_hint"":""屠村后折返灭口。师父替你接下这一刀。""}"	"一只手挡住你的眼。
+
+那人说：
+还活着。
+
+换我。"
+8	three_cards			"刀。
+
+步。
+
+断气。"
+9	military_word			"敌人还没死透。
+
+他吐出一个字：
+军……
+
+箭到了。"
+10	hidden_arrow			"箭从黑处来。
+
+不是海上。
+
+不是倭人。"
+11	dont_look			"师父说：
+别看。
+
+可你已经看见了。"
+12	departure	"选一条路。
+不是为了升官。
+是为了知道那支箭从哪来。"		"十年。
+
+潮声没有远过。
+
+师父把刀还给你。
+
+他说：
+该走了。"

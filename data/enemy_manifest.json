@@ -82,21 +82,114 @@
       "max_posture": 10,
       "start_posture": 3,
       "intent_style": "tutorial_victim",
-      "behavior_tags": ["教学", "低血量", "可速杀", "临死线索"],
-      "preferred_intents": ["虚张声势", "挥刀", "退步"],
-      "intent_weights": {"gain_posture": 0.25, "attack": 0.35, "guard": 0.30, "break_posture": 0.10, "feint": 0.00},
+      "behavior_tags": [
+        "教学",
+        "低血量",
+        "可速杀",
+        "临死线索"
+      ],
+      "preferred_intents": [
+        "虚张声势",
+        "挥刀",
+        "退步"
+      ],
+      "intent_weights": {
+        "gain_posture": 0.25,
+        "attack": 0.35,
+        "guard": 0.3,
+        "break_posture": 0.1,
+        "feint": 0.0
+      },
       "phase_behaviors": [
-        {"phase": "default", "hp_below": 1.01, "intent_bias": "tutorial", "note": "低压教学，不抢节奏。"},
-        {"phase": "dying_clue", "hp_below": 0.35, "intent_bias": "desperate_attack", "note": "濒死时倾向乱砍，给出临死线索节奏。"}
+        {
+          "phase": "default",
+          "hp_below": 1.01,
+          "intent_bias": "tutorial",
+          "note": "低压教学，不抢节奏。"
+        },
+        {
+          "phase": "dying_clue",
+          "hp_below": 0.35,
+          "intent_bias": "desperate_attack",
+          "note": "濒死时倾向乱砍，给出临死线索节奏。"
+        }
       ],
       "deck": [
-        {"id":"e_i1","name":"乱步","min":0,"max":2,"cost":1,"role":"momentum","gain":1,"break":0,"damage":0,"guard":0,"tags":["教学"],"style":"短","facing":true},
-        {"id":"e_i2","name":"乱砍","min":0,"max":2,"cost":1,"role":"damage","gain":0,"break":0,"damage":3,"guard":0,"tags":["低威胁"],"style":"短","facing":true},
-        {"id":"e_i3","name":"退守","min":0,"max":3,"cost":1,"role":"guard","gain":0,"break":0,"damage":0,"guard":3,"tags":["守"],"style":"短","facing":false},
-        {"id":"e_i4","name":"困兽","min":0,"max":1,"cost":2,"role":"damage","gain":0,"break":0,"damage":5,"guard":0,"tags":["线索"],"style":"短","facing":true}
+        {
+          "id": "e_i1",
+          "name": "乱步",
+          "min": 0,
+          "max": 2,
+          "cost": 1,
+          "role": "momentum",
+          "gain": 1,
+          "break": 0,
+          "damage": 0,
+          "guard": 0,
+          "tags": [
+            "教学"
+          ],
+          "style": "短",
+          "facing": true
+        },
+        {
+          "id": "e_i2",
+          "name": "乱砍",
+          "min": 0,
+          "max": 2,
+          "cost": 1,
+          "role": "damage",
+          "gain": 0,
+          "break": 0,
+          "damage": 3,
+          "guard": 0,
+          "tags": [
+            "低威胁"
+          ],
+          "style": "短",
+          "facing": true
+        },
+        {
+          "id": "e_i3",
+          "name": "退守",
+          "min": 0,
+          "max": 3,
+          "cost": 1,
+          "role": "guard",
+          "gain": 0,
+          "break": 0,
+          "damage": 0,
+          "guard": 3,
+          "tags": [
+            "守"
+          ],
+          "style": "短",
+          "facing": false
+        },
+        {
+          "id": "e_i4",
+          "name": "困兽",
+          "min": 0,
+          "max": 1,
+          "cost": 2,
+          "role": "damage",
+          "gain": 0,
+          "break": 0,
+          "damage": 5,
+          "guard": 0,
+          "tags": [
+            "线索"
+          ],
+          "style": "短",
+          "facing": true
+        }
       ],
       "ai_note": "序章教学战，目标是让玩家体验师父三张强力牌压制敌人；敌人应弱于正式战斗。",
-      "reward": {"jun_gong": 0, "qing_wang": 0, "clues": 1}
+      "reward": {
+        "jun_gong": 0,
+        "qing_wang": 0,
+        "clues": 1
+      }
     },
     "enemy_spearman_beach_ambush": {
       "enemy_id": "enemy_spearman_beach_ambush",
@@ -108,22 +201,131 @@
       "max_posture": 10,
       "start_posture": 4,
       "intent_style": "poke_pressure",
-      "behavior_tags": ["试探", "抢势", "突刺", "低防御"],
-      "preferred_intents": ["刺探", "压步", "突刺"],
-      "intent_weights": {"gain_posture": 0.30, "attack": 0.32, "guard": 0.16, "break_posture": 0.18, "feint": 0.04},
+      "behavior_tags": [
+        "试探",
+        "抢势",
+        "突刺",
+        "低防御"
+      ],
+      "preferred_intents": [
+        "刺探",
+        "压步",
+        "突刺"
+      ],
+      "intent_weights": {
+        "gain_posture": 0.3,
+        "attack": 0.32,
+        "guard": 0.16,
+        "break_posture": 0.18,
+        "feint": 0.04
+      },
       "phase_behaviors": [
-        {"phase": "default", "hp_below": 1.01, "intent_bias": "poke_pressure", "note": "以试探、压步、突刺为主，逼玩家交防守。"},
-        {"phase": "wounded", "hp_below": 0.50, "intent_bias": "guard_then_poke", "note": "半血后略微增加防守和抢势，不做高爆发。"}
+        {
+          "phase": "default",
+          "hp_below": 1.01,
+          "intent_bias": "poke_pressure",
+          "note": "以试探、压步、突刺为主，逼玩家交防守。"
+        },
+        {
+          "phase": "wounded",
+          "hp_below": 0.5,
+          "intent_bias": "guard_then_poke",
+          "note": "半血后略微增加防守和抢势，不做高爆发。"
+        }
       ],
       "deck": [
-        {"id":"e_s1","name":"敌枪一","min":3,"max":5,"cost":1,"role":"momentum","gain":2,"break":0,"damage":0,"guard":0,"tags":["试探"],"style":"枪","facing":true},
-        {"id":"e_s2","name":"敌枪二","min":3,"max":5,"cost":1,"role":"momentum","gain":0,"break":2,"damage":0,"guard":0,"tags":["抢势"],"style":"枪","facing":true},
-        {"id":"e_s3","name":"敌枪三","min":3,"max":5,"cost":1,"role":"damage","gain":0,"break":0,"damage":4,"guard":0,"tags":["突刺"],"style":"枪","facing":true},
-        {"id":"e_s4","name":"敌枪守","min":0,"max":5,"cost":1,"role":"guard","gain":0,"break":0,"damage":0,"guard":4,"tags":["守"],"style":"枪","facing":false},
-        {"id":"e_s5","name":"敌枪终","min":4,"max":5,"cost":2,"role":"damage","gain":0,"break":1,"damage":7,"guard":0,"tags":["重击"],"style":"枪","facing":true}
+        {
+          "id": "e_s1",
+          "name": "敌枪一",
+          "min": 3,
+          "max": 5,
+          "cost": 1,
+          "role": "momentum",
+          "gain": 2,
+          "break": 0,
+          "damage": 0,
+          "guard": 0,
+          "tags": [
+            "试探"
+          ],
+          "style": "枪",
+          "facing": true
+        },
+        {
+          "id": "e_s2",
+          "name": "敌枪二",
+          "min": 3,
+          "max": 5,
+          "cost": 1,
+          "role": "momentum",
+          "gain": 0,
+          "break": 2,
+          "damage": 0,
+          "guard": 0,
+          "tags": [
+            "抢势"
+          ],
+          "style": "枪",
+          "facing": true
+        },
+        {
+          "id": "e_s3",
+          "name": "敌枪三",
+          "min": 3,
+          "max": 5,
+          "cost": 1,
+          "role": "damage",
+          "gain": 0,
+          "break": 0,
+          "damage": 4,
+          "guard": 0,
+          "tags": [
+            "突刺"
+          ],
+          "style": "枪",
+          "facing": true
+        },
+        {
+          "id": "e_s4",
+          "name": "敌枪守",
+          "min": 0,
+          "max": 5,
+          "cost": 1,
+          "role": "guard",
+          "gain": 0,
+          "break": 0,
+          "damage": 0,
+          "guard": 4,
+          "tags": [
+            "守"
+          ],
+          "style": "枪",
+          "facing": false
+        },
+        {
+          "id": "e_s5",
+          "name": "敌枪终",
+          "min": 4,
+          "max": 5,
+          "cost": 2,
+          "role": "damage",
+          "gain": 0,
+          "break": 1,
+          "damage": 7,
+          "guard": 0,
+          "tags": [
+            "重击"
+          ],
+          "style": "枪",
+          "facing": true
+        }
       ],
       "ai_note": "普通战斗，用连续小伤害与抢势逼玩家交出防守；不要做高爆发。",
-      "reward": {"jun_gong": 1, "qing_wang": 0, "clues": 1}
+      "reward": {
+        "jun_gong": 1,
+        "qing_wang": 0,
+        "clues": 1
+      }
     },
     "enemy_wakou_raider_fishing_village": {
       "enemy_id": "enemy_wakou_raider_fishing_village",
@@ -135,22 +337,134 @@
       "max_posture": 10,
       "start_posture": 4,
       "intent_style": "raid_burn_pressure",
-      "behavior_tags": ["烧村", "突袭", "低防御", "压血"],
-      "preferred_intents": ["乱斩", "纵火逼步", "退守"],
-      "intent_weights": {"gain_posture": 0.18, "attack": 0.42, "guard": 0.12, "break_posture": 0.18, "feint": 0.10},
+      "behavior_tags": [
+        "烧村",
+        "突袭",
+        "低防御",
+        "压血"
+      ],
+      "preferred_intents": [
+        "乱斩",
+        "纵火逼步",
+        "退守"
+      ],
+      "intent_weights": {
+        "gain_posture": 0.18,
+        "attack": 0.42,
+        "guard": 0.12,
+        "break_posture": 0.18,
+        "feint": 0.1
+      },
       "phase_behaviors": [
-        {"phase": "default", "hp_below": 1.01, "intent_bias": "feint_pressure", "note": "用乱斩和逼步制造村火压迫。"},
-        {"phase": "wounded", "hp_below": 0.45, "intent_bias": "desperate_attack", "note": "半血后更偏拼命伤害，逼玩家快速结束战斗。"}
+        {
+          "phase": "default",
+          "hp_below": 1.01,
+          "intent_bias": "feint_pressure",
+          "note": "用乱斩和逼步制造村火压迫。"
+        },
+        {
+          "phase": "wounded",
+          "hp_below": 0.45,
+          "intent_bias": "desperate_attack",
+          "note": "半血后更偏拼命伤害，逼玩家快速结束战斗。"
+        }
       ],
       "deck": [
-        {"id":"e_v1","name":"烟中乱步","min":0,"max":2,"cost":1,"role":"momentum","gain":2,"break":0,"damage":0,"guard":0,"tags":["烟", "突袭"],"style":"刀","facing":true},
-        {"id":"e_v2","name":"低身乱斩","min":0,"max":2,"cost":1,"role":"damage","gain":0,"break":0,"damage":5,"guard":0,"tags":["乱斩"],"style":"刀","facing":true},
-        {"id":"e_v3","name":"火边逼步","min":0,"max":2,"cost":1,"role":"momentum","gain":0,"break":2,"damage":0,"guard":0,"tags":["逼步", "破势"],"style":"刀","facing":true},
-        {"id":"e_v4","name":"残门遮身","min":0,"max":3,"cost":1,"role":"guard","gain":0,"break":0,"damage":0,"guard":4,"tags":["守"],"style":"刀","facing":false},
-        {"id":"e_v5","name":"余火一刀","min":0,"max":1,"cost":2,"role":"damage","gain":0,"break":1,"damage":8,"guard":0,"tags":["重击", "火"],"style":"刀","facing":true}
+        {
+          "id": "e_v1",
+          "name": "烟中乱步",
+          "min": 0,
+          "max": 2,
+          "cost": 1,
+          "role": "momentum",
+          "gain": 2,
+          "break": 0,
+          "damage": 0,
+          "guard": 0,
+          "tags": [
+            "烟",
+            "突袭"
+          ],
+          "style": "刀",
+          "facing": true
+        },
+        {
+          "id": "e_v2",
+          "name": "低身乱斩",
+          "min": 0,
+          "max": 2,
+          "cost": 1,
+          "role": "damage",
+          "gain": 0,
+          "break": 0,
+          "damage": 5,
+          "guard": 0,
+          "tags": [
+            "乱斩"
+          ],
+          "style": "刀",
+          "facing": true
+        },
+        {
+          "id": "e_v3",
+          "name": "火边逼步",
+          "min": 0,
+          "max": 2,
+          "cost": 1,
+          "role": "momentum",
+          "gain": 0,
+          "break": 2,
+          "damage": 0,
+          "guard": 0,
+          "tags": [
+            "逼步",
+            "破势"
+          ],
+          "style": "刀",
+          "facing": true
+        },
+        {
+          "id": "e_v4",
+          "name": "残门遮身",
+          "min": 0,
+          "max": 3,
+          "cost": 1,
+          "role": "guard",
+          "gain": 0,
+          "break": 0,
+          "damage": 0,
+          "guard": 4,
+          "tags": [
+            "守"
+          ],
+          "style": "刀",
+          "facing": false
+        },
+        {
+          "id": "e_v5",
+          "name": "余火一刀",
+          "min": 0,
+          "max": 1,
+          "cost": 2,
+          "role": "damage",
+          "gain": 0,
+          "break": 1,
+          "damage": 8,
+          "guard": 0,
+          "tags": [
+            "重击",
+            "火"
+          ],
+          "style": "刀",
+          "facing": true
+        }
       ],
       "ai_note": "渔村普通战，强调快速压血与低防御。让玩家在追击、救人、查痕之间形成选择压力。",
-      "reward": {"jun_gong": 1, "qing_wang": 0, "clues": 1}
+      "reward": {
+        "jun_gong": 1,
+        "qing_wang": 0,
+        "clues": 1
+      }
     },
     "enemy_blademaster_transport_officer": {
       "enemy_id": "enemy_blademaster_transport_officer",
@@ -162,23 +476,148 @@
       "max_posture": 10,
       "start_posture": 5,
       "intent_style": "counter_break",
-      "behavior_tags": ["架刀", "反击", "破防", "压迫"],
-      "preferred_intents": ["格挡反斩", "逼步", "横斩"],
-      "intent_weights": {"gain_posture": 0.22, "attack": 0.30, "guard": 0.22, "break_posture": 0.22, "feint": 0.04},
+      "behavior_tags": [
+        "架刀",
+        "反击",
+        "破防",
+        "压迫"
+      ],
+      "preferred_intents": [
+        "格挡反斩",
+        "逼步",
+        "横斩"
+      ],
+      "intent_weights": {
+        "gain_posture": 0.22,
+        "attack": 0.3,
+        "guard": 0.22,
+        "break_posture": 0.22,
+        "feint": 0.04
+      },
       "phase_behaviors": [
-        {"phase": "default", "hp_below": 1.01, "intent_bias": "counter_break", "note": "用反击和破防惩罚无脑进攻。"},
-        {"phase": "wounded", "hp_below": 0.50, "intent_bias": "guard_counter", "note": "半血后更偏架刀和反斩，形成精英压迫感。"}
+        {
+          "phase": "default",
+          "hp_below": 1.01,
+          "intent_bias": "counter_break",
+          "note": "用反击和破防惩罚无脑进攻。"
+        },
+        {
+          "phase": "wounded",
+          "hp_below": 0.5,
+          "intent_bias": "guard_counter",
+          "note": "半血后更偏架刀和反斩，形成精英压迫感。"
+        }
       ],
       "deck": [
-        {"id":"e_o1","name":"官式一","min":0,"max":2,"cost":1,"role":"momentum","gain":2,"break":0,"damage":0,"guard":0,"tags":["压迫"],"style":"刀","facing":true},
-        {"id":"e_o2","name":"官式二","min":0,"max":2,"cost":1,"role":"momentum","gain":0,"break":3,"damage":0,"guard":0,"tags":["破势"],"style":"刀","facing":true},
-        {"id":"e_o3","name":"官式三","min":0,"max":2,"cost":2,"role":"damage","gain":0,"break":1,"damage":7,"guard":3,"tags":["反击"],"style":"刀","facing":true},
-        {"id":"e_o4","name":"官式四","min":0,"max":2,"cost":1,"role":"damage","gain":0,"break":0,"damage":5,"guard":0,"tags":["压制"],"style":"刀","facing":true},
-        {"id":"e_o5","name":"官守式","min":0,"max":3,"cost":1,"role":"guard","gain":0,"break":0,"damage":0,"guard":6,"tags":["守"],"style":"刀","facing":false},
-        {"id":"e_o6","name":"官终式","min":0,"max":1,"cost":2,"role":"damage","gain":0,"break":1,"damage":9,"guard":0,"tags":["终结"],"style":"刀","facing":true}
+        {
+          "id": "e_o1",
+          "name": "官式一",
+          "min": 0,
+          "max": 2,
+          "cost": 1,
+          "role": "momentum",
+          "gain": 2,
+          "break": 0,
+          "damage": 0,
+          "guard": 0,
+          "tags": [
+            "压迫"
+          ],
+          "style": "刀",
+          "facing": true
+        },
+        {
+          "id": "e_o2",
+          "name": "官式二",
+          "min": 0,
+          "max": 2,
+          "cost": 1,
+          "role": "momentum",
+          "gain": 0,
+          "break": 3,
+          "damage": 0,
+          "guard": 0,
+          "tags": [
+            "破势"
+          ],
+          "style": "刀",
+          "facing": true
+        },
+        {
+          "id": "e_o3",
+          "name": "官式三",
+          "min": 0,
+          "max": 2,
+          "cost": 2,
+          "role": "damage",
+          "gain": 0,
+          "break": 1,
+          "damage": 7,
+          "guard": 3,
+          "tags": [
+            "反击"
+          ],
+          "style": "刀",
+          "facing": true
+        },
+        {
+          "id": "e_o4",
+          "name": "官式四",
+          "min": 0,
+          "max": 2,
+          "cost": 1,
+          "role": "damage",
+          "gain": 0,
+          "break": 0,
+          "damage": 5,
+          "guard": 0,
+          "tags": [
+            "压制"
+          ],
+          "style": "刀",
+          "facing": true
+        },
+        {
+          "id": "e_o5",
+          "name": "官守式",
+          "min": 0,
+          "max": 3,
+          "cost": 1,
+          "role": "guard",
+          "gain": 0,
+          "break": 0,
+          "damage": 0,
+          "guard": 6,
+          "tags": [
+            "守"
+          ],
+          "style": "刀",
+          "facing": false
+        },
+        {
+          "id": "e_o6",
+          "name": "官终式",
+          "min": 0,
+          "max": 1,
+          "cost": 2,
+          "role": "damage",
+          "gain": 0,
+          "break": 1,
+          "damage": 9,
+          "guard": 0,
+          "tags": [
+            "终结"
+          ],
+          "style": "刀",
+          "facing": true
+        }
       ],
       "ai_note": "精英战斗，强调反击与破防。玩家若只进攻，会被刀客借势反打。",
-      "reward": {"jun_gong": 1, "qing_wang": 1, "clues": 2}
+      "reward": {
+        "jun_gong": 1,
+        "qing_wang": 1,
+        "clues": 2
+      }
     },
     "enemy_mutiny_camp_leader": {
       "enemy_id": "enemy_mutiny_camp_leader",
@@ -190,22 +629,133 @@
       "max_posture": 12,
       "start_posture": 6,
       "intent_style": "mutiny_guard_pressure",
-      "behavior_tags": ["欠饷", "守城旧兵", "重守", "破势"],
-      "preferred_intents": ["横枪守门", "破阵逼步", "怒刺"],
-      "intent_weights": {"gain_posture": 0.24, "attack": 0.26, "guard": 0.26, "break_posture": 0.22, "feint": 0.02},
+      "behavior_tags": [
+        "欠饷",
+        "守城旧兵",
+        "重守",
+        "破势"
+      ],
+      "preferred_intents": [
+        "横枪守门",
+        "破阵逼步",
+        "怒刺"
+      ],
+      "intent_weights": {
+        "gain_posture": 0.24,
+        "attack": 0.26,
+        "guard": 0.26,
+        "break_posture": 0.22,
+        "feint": 0.02
+      },
       "phase_behaviors": [
-        {"phase": "default", "hp_below": 1.01, "intent_bias": "guard_then_poke", "note": "以守门、破势和逼步为主，体现老兵稳重。"},
-        {"phase": "wounded", "hp_below": 0.50, "intent_bias": "guard_counter", "note": "半血后更偏防守反击，不轻易乱打。"}
+        {
+          "phase": "default",
+          "hp_below": 1.01,
+          "intent_bias": "guard_then_poke",
+          "note": "以守门、破势和逼步为主，体现老兵稳重。"
+        },
+        {
+          "phase": "wounded",
+          "hp_below": 0.5,
+          "intent_bias": "guard_counter",
+          "note": "半血后更偏防守反击，不轻易乱打。"
+        }
       ],
       "deck": [
-        {"id":"e_m1","name":"横枪守门","min":0,"max":5,"cost":1,"role":"guard","gain":0,"break":0,"damage":0,"guard":7,"tags":["守", "营门"],"style":"枪","facing":false},
-        {"id":"e_m2","name":"欠饷压步","min":3,"max":5,"cost":1,"role":"momentum","gain":2,"break":1,"damage":0,"guard":0,"tags":["压步"],"style":"枪","facing":true},
-        {"id":"e_m3","name":"破阵一刺","min":3,"max":5,"cost":1,"role":"damage","gain":0,"break":1,"damage":5,"guard":0,"tags":["突刺", "破势"],"style":"枪","facing":true},
-        {"id":"e_m4","name":"旧兵反顶","min":2,"max":4,"cost":2,"role":"damage","gain":0,"break":2,"damage":7,"guard":3,"tags":["反击"],"style":"枪","facing":true},
-        {"id":"e_m5","name":"饷尽怒刺","min":3,"max":5,"cost":2,"role":"damage","gain":0,"break":1,"damage":9,"guard":0,"tags":["重击"],"style":"枪","facing":true}
+        {
+          "id": "e_m1",
+          "name": "横枪守门",
+          "min": 0,
+          "max": 5,
+          "cost": 1,
+          "role": "guard",
+          "gain": 0,
+          "break": 0,
+          "damage": 0,
+          "guard": 7,
+          "tags": [
+            "守",
+            "营门"
+          ],
+          "style": "枪",
+          "facing": false
+        },
+        {
+          "id": "e_m2",
+          "name": "欠饷压步",
+          "min": 3,
+          "max": 5,
+          "cost": 1,
+          "role": "momentum",
+          "gain": 2,
+          "break": 1,
+          "damage": 0,
+          "guard": 0,
+          "tags": [
+            "压步"
+          ],
+          "style": "枪",
+          "facing": true
+        },
+        {
+          "id": "e_m3",
+          "name": "破阵一刺",
+          "min": 3,
+          "max": 5,
+          "cost": 1,
+          "role": "damage",
+          "gain": 0,
+          "break": 1,
+          "damage": 5,
+          "guard": 0,
+          "tags": [
+            "突刺",
+            "破势"
+          ],
+          "style": "枪",
+          "facing": true
+        },
+        {
+          "id": "e_m4",
+          "name": "旧兵反顶",
+          "min": 2,
+          "max": 4,
+          "cost": 2,
+          "role": "damage",
+          "gain": 0,
+          "break": 2,
+          "damage": 7,
+          "guard": 3,
+          "tags": [
+            "反击"
+          ],
+          "style": "枪",
+          "facing": true
+        },
+        {
+          "id": "e_m5",
+          "name": "饷尽怒刺",
+          "min": 3,
+          "max": 5,
+          "cost": 2,
+          "role": "damage",
+          "gain": 0,
+          "break": 1,
+          "damage": 9,
+          "guard": 0,
+          "tags": [
+            "重击"
+          ],
+          "style": "枪",
+          "facing": true
+        }
       ],
       "ai_note": "精英战，节奏比普通枪手更稳：守、破势、反击。叙事上不是纯敌人，而是军伍腐坏的证明。",
-      "reward": {"jun_gong": 2, "qing_wang": 1, "clues": 1}
+      "reward": {
+        "jun_gong": 2,
+        "qing_wang": 1,
+        "clues": 1
+      }
     },
     "enemy_blademaster_wakou_leader": {
       "enemy_id": "enemy_blademaster_wakou_leader",
@@ -217,24 +767,154 @@
       "max_posture": 10,
       "start_posture": 6,
       "intent_style": "boss_feint_burst",
-      "behavior_tags": ["虚招", "抢势", "连斩", "临死线索"],
-      "preferred_intents": ["虚晃", "疾斩", "抢步连斩"],
-      "intent_weights": {"gain_posture": 0.24, "attack": 0.34, "guard": 0.12, "break_posture": 0.20, "feint": 0.10},
+      "behavior_tags": [
+        "虚招",
+        "抢势",
+        "连斩",
+        "临死线索"
+      ],
+      "preferred_intents": [
+        "虚晃",
+        "疾斩",
+        "抢步连斩"
+      ],
+      "intent_weights": {
+        "gain_posture": 0.24,
+        "attack": 0.34,
+        "guard": 0.12,
+        "break_posture": 0.2,
+        "feint": 0.1
+      },
       "phase_behaviors": [
-        {"phase": "default", "hp_below": 1.01, "intent_bias": "feint_pressure", "note": "用虚招和抢势制造 Boss 不确定性。"},
-        {"phase": "wounded", "hp_below": 0.50, "intent_bias": "burst_chain", "note": "半血后提高连斩和抢步连斩倾向。"},
-        {"phase": "dying_clue", "hp_below": 0.20, "intent_bias": "desperate_clue", "note": "濒死时偏向线索牌，配合暗箭灭口叙事。"}
+        {
+          "phase": "default",
+          "hp_below": 1.01,
+          "intent_bias": "feint_pressure",
+          "note": "用虚招和抢势制造 Boss 不确定性。"
+        },
+        {
+          "phase": "wounded",
+          "hp_below": 0.5,
+          "intent_bias": "burst_chain",
+          "note": "半血后提高连斩和抢步连斩倾向。"
+        },
+        {
+          "phase": "dying_clue",
+          "hp_below": 0.2,
+          "intent_bias": "desperate_clue",
+          "note": "濒死时偏向线索牌，配合暗箭灭口叙事。"
+        }
       ],
       "deck": [
-        {"id":"e_b1","name":"首领式一","min":0,"max":2,"cost":1,"role":"momentum","gain":2,"break":1,"damage":0,"guard":0,"tags":["虚招"],"style":"刀","facing":true},
-        {"id":"e_b2","name":"首领式二","min":0,"max":2,"cost":1,"role":"momentum","gain":0,"break":3,"damage":0,"guard":0,"tags":["抢势"],"style":"刀","facing":true},
-        {"id":"e_b3","name":"首领式三","min":0,"max":2,"cost":1,"role":"damage","gain":0,"break":0,"damage":6,"guard":0,"tags":["连段"],"style":"刀","facing":true},
-        {"id":"e_b4","name":"首领式四","min":0,"max":1,"cost":2,"role":"damage","gain":0,"break":1,"damage":10,"guard":0,"tags":["终结"],"style":"刀","facing":true},
-        {"id":"e_b5","name":"首领守式","min":0,"max":3,"cost":1,"role":"guard","gain":0,"break":0,"damage":0,"guard":6,"tags":["守"],"style":"刀","facing":false},
-        {"id":"e_b6","name":"首领终式","min":0,"max":1,"cost":2,"role":"damage","gain":0,"break":0,"damage":8,"guard":2,"tags":["线索"],"style":"刀","facing":true}
+        {
+          "id": "e_b1",
+          "name": "首领式一",
+          "min": 0,
+          "max": 2,
+          "cost": 1,
+          "role": "momentum",
+          "gain": 2,
+          "break": 1,
+          "damage": 0,
+          "guard": 0,
+          "tags": [
+            "虚招"
+          ],
+          "style": "刀",
+          "facing": true
+        },
+        {
+          "id": "e_b2",
+          "name": "首领式二",
+          "min": 0,
+          "max": 2,
+          "cost": 1,
+          "role": "momentum",
+          "gain": 0,
+          "break": 3,
+          "damage": 0,
+          "guard": 0,
+          "tags": [
+            "抢势"
+          ],
+          "style": "刀",
+          "facing": true
+        },
+        {
+          "id": "e_b3",
+          "name": "首领式三",
+          "min": 0,
+          "max": 2,
+          "cost": 1,
+          "role": "damage",
+          "gain": 0,
+          "break": 0,
+          "damage": 6,
+          "guard": 0,
+          "tags": [
+            "连段"
+          ],
+          "style": "刀",
+          "facing": true
+        },
+        {
+          "id": "e_b4",
+          "name": "首领式四",
+          "min": 0,
+          "max": 1,
+          "cost": 2,
+          "role": "damage",
+          "gain": 0,
+          "break": 1,
+          "damage": 10,
+          "guard": 0,
+          "tags": [
+            "终结"
+          ],
+          "style": "刀",
+          "facing": true
+        },
+        {
+          "id": "e_b5",
+          "name": "首领守式",
+          "min": 0,
+          "max": 3,
+          "cost": 1,
+          "role": "guard",
+          "gain": 0,
+          "break": 0,
+          "damage": 0,
+          "guard": 6,
+          "tags": [
+            "守"
+          ],
+          "style": "刀",
+          "facing": false
+        },
+        {
+          "id": "e_b6",
+          "name": "首领终式",
+          "min": 0,
+          "max": 1,
+          "cost": 2,
+          "role": "damage",
+          "gain": 0,
+          "break": 0,
+          "damage": 8,
+          "guard": 2,
+          "tags": [
+            "线索"
+          ],
+          "style": "刀",
+          "facing": true
+        }
       ],
       "ai_note": "Boss 战，强调虚招与爆发。半血后倾向连续进攻，死亡前触发火器箱线索。",
-      "reward": {"jun_gong": 2, "qing_wang": 0, "clues": 2}
+      "reward": {
+        "jun_gong": 2,
+        "qing_wang": 0,
+        "clues": 2
+      }
     },
     "enemy_spearman_fallback": {
       "enemy_id": "enemy_spearman_fallback",
@@ -246,21 +926,122 @@
       "max_posture": 10,
       "start_posture": 4,
       "intent_style": "fallback",
-      "behavior_tags": ["试探", "突刺"],
-      "preferred_intents": ["刺探", "突刺"],
-      "intent_weights": {"gain_posture": 0.30, "attack": 0.32, "guard": 0.18, "break_posture": 0.18, "feint": 0.02},
+      "behavior_tags": [
+        "试探",
+        "突刺"
+      ],
+      "preferred_intents": [
+        "刺探",
+        "突刺"
+      ],
+      "intent_weights": {
+        "gain_posture": 0.3,
+        "attack": 0.32,
+        "guard": 0.18,
+        "break_posture": 0.18,
+        "feint": 0.02
+      },
       "phase_behaviors": [
-        {"phase": "default", "hp_below": 1.01, "intent_bias": "fallback", "note": "兜底普通枪手行为。"}
+        {
+          "phase": "default",
+          "hp_below": 1.01,
+          "intent_bias": "fallback",
+          "note": "兜底普通枪手行为。"
+        }
       ],
       "deck": [
-        {"id":"e_s1","name":"敌枪一","min":3,"max":5,"cost":1,"role":"momentum","gain":2,"break":0,"damage":0,"guard":0,"tags":["试探"],"style":"枪","facing":true},
-        {"id":"e_s2","name":"敌枪二","min":3,"max":5,"cost":1,"role":"momentum","gain":0,"break":2,"damage":0,"guard":0,"tags":["抢势"],"style":"枪","facing":true},
-        {"id":"e_s3","name":"敌枪三","min":3,"max":5,"cost":1,"role":"damage","gain":0,"break":0,"damage":4,"guard":0,"tags":["突刺"],"style":"枪","facing":true},
-        {"id":"e_s4","name":"敌枪守","min":0,"max":5,"cost":1,"role":"guard","gain":0,"break":0,"damage":0,"guard":4,"tags":["守"],"style":"枪","facing":false},
-        {"id":"e_s5","name":"敌枪终","min":4,"max":5,"cost":2,"role":"damage","gain":0,"break":1,"damage":7,"guard":0,"tags":["重击"],"style":"枪","facing":true}
+        {
+          "id": "e_s1",
+          "name": "敌枪一",
+          "min": 3,
+          "max": 5,
+          "cost": 1,
+          "role": "momentum",
+          "gain": 2,
+          "break": 0,
+          "damage": 0,
+          "guard": 0,
+          "tags": [
+            "试探"
+          ],
+          "style": "枪",
+          "facing": true
+        },
+        {
+          "id": "e_s2",
+          "name": "敌枪二",
+          "min": 3,
+          "max": 5,
+          "cost": 1,
+          "role": "momentum",
+          "gain": 0,
+          "break": 2,
+          "damage": 0,
+          "guard": 0,
+          "tags": [
+            "抢势"
+          ],
+          "style": "枪",
+          "facing": true
+        },
+        {
+          "id": "e_s3",
+          "name": "敌枪三",
+          "min": 3,
+          "max": 5,
+          "cost": 1,
+          "role": "damage",
+          "gain": 0,
+          "break": 0,
+          "damage": 4,
+          "guard": 0,
+          "tags": [
+            "突刺"
+          ],
+          "style": "枪",
+          "facing": true
+        },
+        {
+          "id": "e_s4",
+          "name": "敌枪守",
+          "min": 0,
+          "max": 5,
+          "cost": 1,
+          "role": "guard",
+          "gain": 0,
+          "break": 0,
+          "damage": 0,
+          "guard": 4,
+          "tags": [
+            "守"
+          ],
+          "style": "枪",
+          "facing": false
+        },
+        {
+          "id": "e_s5",
+          "name": "敌枪终",
+          "min": 4,
+          "max": 5,
+          "cost": 2,
+          "role": "damage",
+          "gain": 0,
+          "break": 1,
+          "damage": 7,
+          "guard": 0,
+          "tags": [
+            "重击"
+          ],
+          "style": "枪",
+          "facing": true
+        }
       ],
       "ai_note": "默认安全配置。",
-      "reward": {"jun_gong": 1, "qing_wang": 0, "clues": 1}
+      "reward": {
+        "jun_gong": 1,
+        "qing_wang": 0,
+        "clues": 1
+      }
     }
   }
 }

@@ -8,64 +8,146 @@
       "column_id": "start",
       "title": "军令",
       "nodes": [
-        {"node_id": "military_order", "row": 0, "lane": "center"}
+        {
+          "node_id": "military_order",
+          "row": 0,
+          "lane": "center"
+        }
       ]
     },
     {
       "column_id": "early_contact",
       "title": "初遇",
       "nodes": [
-        {"node_id": "beach_ambush", "row": -1, "lane": "upper"},
-        {"node_id": "burnt_village", "row": 1, "lane": "lower"}
+        {
+          "node_id": "beach_ambush",
+          "row": -1,
+          "lane": "upper"
+        },
+        {
+          "node_id": "burnt_village",
+          "row": 1,
+          "lane": "lower"
+        }
       ]
     },
     {
       "column_id": "clue_or_deal",
       "title": "疑点",
       "nodes": [
-        {"node_id": "ming_firearm", "row": -1, "lane": "upper"},
-        {"node_id": "merchant_banquet", "row": 1, "lane": "lower"}
+        {
+          "node_id": "ming_firearm",
+          "row": -1,
+          "lane": "upper"
+        },
+        {
+          "node_id": "merchant_banquet",
+          "row": 1,
+          "lane": "lower"
+        }
       ]
     },
     {
       "column_id": "pressure",
       "title": "压迫",
       "nodes": [
-        {"node_id": "transport_officer", "row": -1, "lane": "upper"},
-        {"node_id": "night_sharpening", "row": 0, "lane": "center"},
-        {"node_id": "mutiny_camp", "row": 1, "lane": "lower"}
+        {
+          "node_id": "transport_officer",
+          "row": -1,
+          "lane": "upper"
+        },
+        {
+          "node_id": "night_sharpening",
+          "row": 0,
+          "lane": "center"
+        },
+        {
+          "node_id": "mutiny_camp",
+          "row": 1,
+          "lane": "lower"
+        }
       ]
     },
     {
       "column_id": "boss",
       "title": "破船",
       "nodes": [
-        {"node_id": "wakou_boss", "row": 0, "lane": "center"}
+        {
+          "node_id": "wakou_boss",
+          "row": 0,
+          "lane": "center"
+        }
       ]
     },
     {
       "column_id": "ending",
       "title": "军门",
       "nodes": [
-        {"node_id": "military_coverup", "row": 0, "lane": "center"}
+        {
+          "node_id": "military_coverup",
+          "row": 0,
+          "lane": "center"
+        }
       ]
     }
   ],
   "edges": [
-    {"from": "military_order", "to": "beach_ambush"},
-    {"from": "military_order", "to": "burnt_village"},
-    {"from": "beach_ambush", "to": "ming_firearm"},
-    {"from": "beach_ambush", "to": "merchant_banquet"},
-    {"from": "burnt_village", "to": "ming_firearm"},
-    {"from": "burnt_village", "to": "merchant_banquet"},
-    {"from": "ming_firearm", "to": "transport_officer"},
-    {"from": "ming_firearm", "to": "night_sharpening"},
-    {"from": "merchant_banquet", "to": "night_sharpening"},
-    {"from": "merchant_banquet", "to": "mutiny_camp"},
-    {"from": "transport_officer", "to": "wakou_boss"},
-    {"from": "night_sharpening", "to": "wakou_boss"},
-    {"from": "mutiny_camp", "to": "wakou_boss"},
-    {"from": "wakou_boss", "to": "military_coverup"}
+    {
+      "from": "military_order",
+      "to": "beach_ambush"
+    },
+    {
+      "from": "military_order",
+      "to": "burnt_village"
+    },
+    {
+      "from": "beach_ambush",
+      "to": "ming_firearm"
+    },
+    {
+      "from": "beach_ambush",
+      "to": "merchant_banquet"
+    },
+    {
+      "from": "burnt_village",
+      "to": "ming_firearm"
+    },
+    {
+      "from": "burnt_village",
+      "to": "merchant_banquet"
+    },
+    {
+      "from": "ming_firearm",
+      "to": "transport_officer"
+    },
+    {
+      "from": "ming_firearm",
+      "to": "night_sharpening"
+    },
+    {
+      "from": "merchant_banquet",
+      "to": "night_sharpening"
+    },
+    {
+      "from": "merchant_banquet",
+      "to": "mutiny_camp"
+    },
+    {
+      "from": "transport_officer",
+      "to": "wakou_boss"
+    },
+    {
+      "from": "night_sharpening",
+      "to": "wakou_boss"
+    },
+    {
+      "from": "mutiny_camp",
+      "to": "wakou_boss"
+    },
+    {
+      "from": "wakou_boss",
+      "to": "military_coverup"
+    }
   ],
   "node_type_icons": {
     "battle": "⚔",

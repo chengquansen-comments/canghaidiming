@@ -1,0 +1,86 @@
+order	id	title	scene	text	dialogue_json	combat_json	choices_json
+1	military_order	军令巡海	军门外。天未亮。旗湿着。	"军令压在案上。
+
+墨还没干。
+
+巡海三十里。
+见寇即剿。
+
+若见旧案，不得声张。"	"[""巡海三十里。"",""若见旧案，不得声张。"",""你听错了。""]"	"{""enabled"":false}"	"[{""label"":""领令"",""result"":""你低头。\n印落下。\n潮也落下。"",""effects"":{""jun_gong"":1}},{""label"":""问旧案"",""result"":""上官看了你一眼。\n像看见故人。\n\n他说：你听错了。"",""effects"":{""clues"":1}},{""label"":""沉默"",""result"":""你没有答。\n师父看了你一眼。"",""effects"":{}}]"
+2	beach_ambush	海边伏击	沙滩。脚印。整齐得不像海盗。	"沙滩上有脚印。
+
+脚印很整齐。
+
+不像海盗。
+
+风从芦苇里出来。
+枪尖也出来。"	"[""退。"",""这是军路。"",""没有喊杀，只有枪尖。""]"	"{""enabled"":true,""button"":""接敌"",""mock_button"":""尸身已经倒下"",""encounter_id"":""enc_beach_ambush"",""battle_id"":""first_act_beach_ambush"",""enemy_id"":""enemy_spearman_beach_ambush"",""enemy_display"":""敌方枪手"",""enemy_role"":""enemy_spearman"",""enemy_family"":""spearman"",""difficulty"":""normal"",""enemy_hint"":""伏击海滩的前哨枪手。靴上有官泥。"",""pre"":""他挡住去路。\n你看见他靴上的官泥。"",""post"":""你从尸体手上掰下一枚旧茧。\n\n那是练枪的人才有的茧。""}"	"[{""label"":""割首报功"",""result"":""头颅装进麻袋时，海风停了一下。"",""effects"":{""jun_gong"":1}},{""label"":""搜身留证"",""result"":""尸体里没有海盐味。\n只有营里的烟味。"",""effects"":{""clues"":1}},{""label"":""就地掩埋"",""result"":""你把沙子盖上。\n很快又被潮水掀开。"",""effects"":{""qing_wang"":1}}]"
+3	fishing_village_embers	渔村残火	残村。黑烟。孩子咳嗽。	"村子只剩烟。
+
+烟里有小孩咳嗽。
+
+火不是从海边烧起的。"	"[""船还没到，先烧干净。"",""哭声被烟压住。""]"	"{""enabled"":true,""button"":""接敌"",""mock_button"":""残敌已散"",""encounter_id"":""enc_fishing_village_embers"",""battle_id"":""first_act_fishing_village_embers"",""enemy_id"":""enemy_wakou_raider_fishing_village"",""enemy_display"":""倭寇杂兵"",""enemy_role"":""enemy_blademaster"",""enemy_family"":""blademaster"",""difficulty"":""normal"",""enemy_hint"":""烧村的残敌。人数不多，火势更危险。"",""pre"":""烟里有人影。\n刀光很低。"",""post"":""火还在。\n哭声也还在。""}"	"[{""label"":""追击残敌"",""result"":""你追得很快。\n身后的哭声也很快低下去。"",""effects"":{""jun_gong"":1}},{""label"":""救出百姓"",""result"":""孩子抓着你的甲片。\n不肯松手。"",""effects"":{""qing_wang"":1}},{""label"":""查烧痕"",""result"":""火不是从海边烧起的。\n有人先点了屋后。"",""effects"":{""clues"":1}}]"
+4	merchant_banquet	海商宴	雨夜。海商宅。鱼无腥味。屏风后有箱。	"酒是热的。
+
+屋外的兵是冷的。
+
+屏风后有火器箱。
+箱钥匙在酒盏旁。"	"[""海上无忠奸，只有风向。"",""将军要证据，还是要船？""]"	"{""enabled"":false}"	"[{""label"":""拒宴"",""result"":""我不吃来路不明的饭。\n\n海商笑了：那将军只好吃风。"",""effects"":{""qing_wang"":1}},{""label"":""赴宴取船"",""result"":""你喝了一杯。\n杯底没有毒，只有价钱。"",""effects"":{""jun_gong"":1,""next_normal_battle_easier"":1}},{""label"":""借宴查箱"",""result"":""火器箱上有官印。\n印泥很新。"",""effects"":{""clues"":2,""elite_chance"":1}}]"
+5	ming_firearm	明制火器	倭寇船舱。木箱半开。官造二字还在。	"箱子裂开。
+
+里面不是银。
+是火器。
+
+火器保养得很好。
+甚至比卫所库里的还好。
+
+官造二字还在。"	"[""不需要人。"",""只需要那枚印。""]"	"{""enabled"":false}"	"[{""label"":""上交军门"",""result"":""军门收得很快。\n快得像早在等它。"",""effects"":{""jun_gong"":1}},{""label"":""私下留证"",""result"":""火铳很沉。\n沉得不像证据，像人命。"",""effects"":{""clues"":2}},{""label"":""毁掉"",""result"":""火光吞掉官造二字。\n你却记得它。"",""effects"":{""qing_wang"":1,""clues"":1}}]"
+6	altered_military_report	涂改军报	破庙。倒神像。军报压在香炉下。	"神像倒着。
+
+军报压在香炉下。
+
+死者人数被涂过。
+涂得很急。
+
+墨比血新。"	"[""少的不是字。"",""少的是人。""]"	"{""enabled"":false}"	"[{""label"":""收起军报"",""result"":""纸角发脆。\n上面的名字没有全死。"",""effects"":{""clues"":2}},{""label"":""抄下涂改处"",""result"":""你只抄黑处。\n黑处反而最清楚。"",""effects"":{""clues"":1,""qing_wang"":1}},{""label"":""烧掉军报"",""result"":""火把改过的字烧平。\n你的手却记住了笔路。"",""effects"":{""jun_gong"":1}}]"
+7	transport_officer	失械案押运官	山道。空车。车辙很深。	"一辆空车停在山道。
+
+车辙很深。
+车上什么都没有。
+
+空车比满车更难解释。"	"[""我只押车。"",""车里是什么，不归我问。"",""死人。""]"	"{""enabled"":true,""button"":""接敌"",""mock_button"":""尸身已经倒下"",""encounter_id"":""enc_transport_officer"",""battle_id"":""first_act_transport_officer"",""enemy_id"":""enemy_blademaster_transport_officer"",""enemy_display"":""失械案押运官"",""enemy_role"":""enemy_blademaster"",""enemy_family"":""blademaster"",""difficulty"":""elite"",""enemy_hint"":""负责押运明制火器的人。袖中藏着半页名册。"",""pre"":""他没有拔刀。\n他说：你不该翻箱。"",""post"":""押运官跪地，手伸向怀里。\n\n你以为是刀。\n其实是一份押运名册。""}"	"[{""label"":""交军门"",""result"":""名册被封进木匣。\n木匣很快不见了。"",""effects"":{""jun_gong"":2}},{""label"":""私藏名册"",""result"":""纸很薄。\n压在甲里，却像一块铁。"",""effects"":{""clues"":2}},{""label"":""放押运官走"",""result"":""你会后悔。\n\n你说：你先活到那天。"",""effects"":{""qing_wang"":1,""clues"":1}}]"
+8	mutiny_camp	欠饷营	营门。军旗。旗下面没有军粮。	"营门挂着军旗。
+
+旗下面没有军粮。
+
+饷银没到。
+军令倒是到了。"	"[""你这是反。"",""我也守过城。"",""我也埋过兄弟。""]"	"{""enabled"":true,""button"":""接敌"",""mock_button"":""营门已静"",""encounter_id"":""enc_mutiny_camp"",""battle_id"":""first_act_mutiny_camp"",""enemy_id"":""enemy_mutiny_camp_leader"",""enemy_display"":""兵变营头"",""enemy_role"":""enemy_spearman"",""enemy_family"":""spearman"",""difficulty"":""elite"",""enemy_hint"":""欠饷营头。不是倭寇，却同样挡路。"",""pre"":""他举枪。\n不是为了海寇。"",""post"":""军旗重新挂正。\n下面少了几个人。""}"	"[{""label"":""镇压"",""result"":""军旗重新挂正。\n下面少了几个人。"",""effects"":{""jun_gong"":2,""qing_wang"":-1}},{""label"":""收编"",""result"":""他们跪得很慢。\n不是不服，是饿。"",""effects"":{""qing_wang"":1,""jun_gong"":1}},{""label"":""查饷银"",""result"":""账本泡烂了。\n名字还在。"",""effects"":{""clues"":1,""qing_wang"":1}}]"
+9	military_messenger	军门信使	雨中信使。马比人先喘。信封没有封泥。	"信使在雨里等你。
+
+马比人先喘。
+
+信封没有封泥。
+说明它已经被看过。"	"[""海寇首级要紧。"",""其余东西，不必带回来。"",""小的不识字。""]"	"{""enabled"":false}"	"[{""label"":""照令"",""result"":""知道了。\n你把信折回去。"",""effects"":{""jun_gong"":1}},{""label"":""追问"",""result"":""其余东西，指什么？\n\n信使低头：小的不识字。"",""effects"":{""clues"":1}},{""label"":""扣下信使"",""result"":""信使跪下时，怀里掉出第二封信。"",""effects"":{""clues"":2,""qing_wang"":-1}}]"
+10	night_knife_camp	夜半磨刀	营地深夜。雨停了。刀声没停。	"师父在磨一把早该断掉的刀。
+
+刀钝了。
+人就会多想。"	"[""刀钝了，人就会多想。"",""令迟了。"",""走得越远，越像回去。""]"	"{""enabled"":false}"	"[{""label"":""陪他坐着"",""result"":""你们坐到天亮。\n谁也没问。"",""effects"":{""heal"":1,""qing_wang"":1}},{""label"":""问旧案"",""result"":""那年，你迟了吗？\n\n师父说：令迟了。"",""effects"":{""clues"":1}},{""label"":""劝他休息"",""result"":""明日还要走。\n\n他说：走得越远，越像回去。"",""effects"":{""heal"":2}}]"
+11	wakou_boss	小股倭寇首领	破船。火器箱。倭首坐在箱上。	"船搁浅了。
+
+人没有。
+箱子还在。
+
+有个倭首坐在箱上。
+像在等你。
+
+他说：你找错海了。"	"[""你找错海了。"",""杀你爹娘的人，穿的可不是倭甲。"",""你来晚了，也来早了。""]"	"{""enabled"":true,""button"":""接敌"",""mock_button"":""尸身已经倒下"",""encounter_id"":""enc_wakou_boss"",""battle_id"":""first_act_wakou_boss"",""enemy_id"":""enemy_blademaster_wakou_leader"",""enemy_display"":""小股倭寇首领"",""enemy_role"":""enemy_blademaster"",""enemy_family"":""blademaster"",""difficulty"":""boss"",""enemy_hint"":""坐在火器箱上的倭首。看岸，不看海。"",""pre"":""他说：你找错海了。\n\n火器箱在他脚下。"",""post"":""他看向岸上。\n\n不是看海。\n\n箭声又响。""}"	"[{""label"":""查看火器箱"",""result"":""箱底有火漆。\n军门的火漆。"",""effects"":{""clues"":2}},{""label"":""逼问临死话"",""result"":""他说不完。\n箭比话快。"",""effects"":{""clues"":1,""qing_wang"":1}},{""label"":""烧船灭迹"",""result"":""火很快。\n证据也是。"",""effects"":{""jun_gong"":1}}]"
+12	military_coverup	军门压案	灯火。缺页。朱批。木匣不见了。	"军门灯火通明。
+
+案卷摊开。
+正好少了一页。
+
+上官说：倭患已平。
+
+你想起十年前。
+那支箭。
+也是从岸上来的。"	"[""倭患已平。"",""首级够了。"",""其余东西，不必再提。""]"	"{""enabled"":false}"	"[{""label"":""据实上报"",""result"":""你把话说完。\n屋里安静了很久。"",""effects"":{""qing_wang"":1,""ending_flag"":""truth_report""}},{""label"":""藏下一份证据"",""result"":""袖中有纸。\n心里有潮。"",""effects"":{""clues"":2,""ending_flag"":""private_investigation""}},{""label"":""借军功压案"",""result"":""你把首级摆出来。\n没人再问箱子。"",""effects"":{""jun_gong"":2,""ending_flag"":""merit_cover""}},{""label"":""沉默退下"",""result"":""门关上。\n灯还亮着。"",""effects"":{""ending_flag"":""silence""}}]"

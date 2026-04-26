@@ -1,0 +1,8 @@
+enemy_id	display_name	narrative_identity	weapon	role_sheet	max_hp	max_posture	start_posture	intent_style	behavior_tags	preferred_intents	ai_note	reward_jun_gong	reward_qing_wang	reward_clues
+enemy_blademaster_prologue_raider	袭村倭寇刀手	屠村后折返灭口的倭寇刀手，被师父截住。此战玩家名义上操控师父。	倭刀	enemy_blademaster	24	10	3	tutorial_victim	教学|低血量|可速杀|临死线索	虚张声势|挥刀|退步	序章教学战，目标是让玩家体验师父三张强力牌压制敌人；敌人应弱于正式战斗。	0	0	1
+enemy_spearman_beach_ambush	敌方枪手	伏击海滩的倭寇前哨枪手，熟悉芦苇与潮汐掩护。靴上有官泥。	长枪	enemy_spearman	26	10	4	poke_pressure	试探|抢势|突刺|低防御	刺探|压步|突刺	普通战斗，用连续小伤害与抢势逼玩家交出防守；不要做高爆发。	1	0	1
+enemy_wakou_raider_fishing_village	倭寇杂兵	渔村残火中的烧村残敌，人数不多，火势更危险。其刀法杂乱，却懂得避开火器箱。	倭刀	enemy_blademaster	28	10	4	raid_burn_pressure	烧村|突袭|低防御|压血	乱斩|纵火逼步|退守	渔村普通战，强调快速压血与低防御。让玩家在追击、救人、查痕之间形成选择压力。	1	0	1
+enemy_blademaster_transport_officer	失械案押运官	负责押运明制火器的军中押运官，试图切断名册线索。袖中藏着半页名册。	腰刀	enemy_blademaster	34	10	5	counter_break	架刀|反击|破防|压迫	格挡反斩|逼步|横斩	精英战斗，强调反击与破防。玩家若只进攻，会被刀客借势反打。	1	1	2
+enemy_mutiny_camp_leader	兵变营头	欠饷营头。不是倭寇，却同样挡路。他守过城，也埋过兄弟。	破损长枪	enemy_spearman	36	12	6	mutiny_guard_pressure	欠饷|守城旧兵|重守|破势	横枪守门|破阵逼步|怒刺	精英战，节奏比普通枪手更稳：守、破势、反击。叙事上不是纯敌人，而是军伍腐坏的证明。	2	1	1
+enemy_blademaster_wakou_leader	小股倭寇首领	破船火器箱旁的小股倭寇首领，知道军械流向但将被暗箭灭口。看岸，不看海。	倭刀	enemy_blademaster	42	10	6	boss_feint_burst	虚招|抢势|连斩|临死线索	虚晃|疾斩|抢步连斩	Boss 战，强调虚招与爆发。半血后倾向连续进攻，死亡前触发火器箱线索。	2	0	2
+enemy_spearman_fallback	默认敌方枪手	兜底用敌人配置。	长枪	enemy_spearman	26	10	4	fallback	试探|突刺	刺探|突刺	默认安全配置。	1	0	1
