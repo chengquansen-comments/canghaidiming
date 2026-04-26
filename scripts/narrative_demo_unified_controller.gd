@@ -10,7 +10,7 @@ var prologue_choice_result_delta_text: String = ""
 func _render_prologue() -> void:
 	var prologue: Dictionary = _prologue_data()
 	title_label.text = str(prologue.get("title", "《大明之沧海嘀鸣》"))
-	status_label.text = "序章 %d/%d" % [step_index + 1, _prologue_steps_count()]
+	status_label.text = "旧村 / 序章"
 	map_label.text = ""
 	scene_label.text = _format_scene_text(_prologue_scene_hint())
 	_render_visual("", _prologue_visual_hint())
