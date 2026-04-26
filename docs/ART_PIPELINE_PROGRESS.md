@@ -1,12 +1,30 @@
 # 《沧海嘀鸣》美术表现推进看板
 
-> 当前目标：从“纯文字 + 简单色块占位”推进到“明代海疆国风主视觉 + 数据驱动剧情演出”的可见 MVP。
+> 当前目标：从“纯文字 + 简单色块占位”推进到“明代海疆国风主视觉 + 数据驱动剧情演出 + battle_id 驱动战斗场景”的可见 MVP。
 >
 > 当前美术方向：青年明代武官、明制札甲、深绛红战袍、水墨海岸、宣纸背景、海雾、远崖、城墙、小船、低饱和、强剪影、家国情怀、风起沧海。
 
 ---
 
-## 0. 剧情 UI 布局规范
+## 0. 总体规范：剧情与战斗分层
+
+```text
+剧情：NarrativeDemo
+- 上方表演区：场景主视觉、人物剪影、雾、火光、暗层、镜头
+- 下方操作区：文本、状态、选择、滚动按钮
+- 由 node_id / step_index 加载剧情演出
+
+战斗：MainVisual
+- 所有战斗场景必须按 battle_id 加载
+- 进入战斗必须先 reset 旧视觉状态
+- 不允许复用上一场背景残留
+- 不允许只按敌人类型决定背景
+- 剧情战斗和测试战斗都必须走 battle_id
+```
+
+---
+
+## 1. 剧情 UI 布局规范
 
 ```text
 Narrative UI 采用明确上下分割：
@@ -32,43 +50,51 @@ Narrative UI 采用明确上下分割：
 
 ---
 
-## 1. 已完成：主视觉提示词规范
+## 2. 已完成：剧情电影化演出
 
 ```text
-docs/KEY_VISUAL_PROMPT_STANDARD.md
-docs/CHARACTER_IMAGE_PROMPTS_KEY_VISUAL_OVERRIDE.md
-docs/SCENE_IMAGE_PROMPTS_KEY_VISUAL_OVERRIDE.md
+scripts/narrative_demo_cinematic_controller.gd
+scenes/NarrativeDemo.tscn
+data/performance_tracks.json
 ```
 
-核心标准：
+当前架构：
 
 ```text
-Subject：young Ming dynasty military officer, hand on saber hilt, Ming-style lamellar armor, dark armor, deep crimson robe and cape
-Scene：parchment background, ink-wash coastline, distant cliffs, sea mist, faint city wall, small ships, smoke clouds, large empty space
-Mood：national spirit, loyalty, sacrifice, 家国情怀, 风起沧海
-Style：Chinese ink wash + realistic historical concept art, guofeng game key visual
-Typography：large vertical Chinese brush calligraphy title “沧海嘀鸣”, left side, red seal
+NarrativeDemo.tscn
+→ narrative_demo_cinematic_controller.gd
+→ narrative_demo_formal_controller.gd
+```
+
+当前状态：
+
+```text
+[x] 单文件 cinematic controller，避免多级继承解析问题
+[x] JSON 数据驱动演出已重新挂回
+[x] 序章按 step_index 自动切换背景
+[x] 第一幕按 node_id 自动切换背景
+[x] 表演区背景铺满
+[x] 下方操作区最小高度保护
+[x] 雾层移动
+[x] 火光脉冲
+[x] 暗层呼吸
+[x] 师父 / 主角剪影入镜
+[x] 镜头轻推、横移、局部节奏变化
 ```
 
 ---
 
-## 2. 已完成：剧情资源 SVG 占位升级
+## 3. 已完成：剧情资源 SVG 占位升级
 
-### 2.1 主视觉封面
+### 3.1 主视觉封面
 
 ```text
 assets/pixel_battle/backgrounds/key_visual_canghai_diming.svg
 ```
 
-用途：
-
-```text
-后续标题页、序章首页、宣传页可直接接入。
-```
-
 ---
 
-### 2.2 序章专用表演图
+### 3.2 序章专用表演图
 
 ```text
 assets/pixel_battle/backgrounds/prologue_black_tide.svg
@@ -77,15 +103,9 @@ assets/pixel_battle/backgrounds/prologue_arrow_silence.svg
 assets/pixel_battle/backgrounds/prologue_departure.svg
 ```
 
-用途：
-
-```text
-开局 12 段已具备独立表演背景，不再只依赖文字占位。
-```
-
 ---
 
-### 2.3 第一幕节点表演图
+### 3.3 第一幕节点表演图
 
 ```text
 assets/pixel_battle/backgrounds/narrative_military_order.svg
@@ -109,111 +129,93 @@ assets/pixel_battle/backgrounds/narrative_military_coverup.svg
 
 ---
 
-## 3. 已完成：NarrativeDemo 单文件电影化演出
+## 4. 新增：战斗场景 battle_id 加载体系
 
 ```text
-scripts/narrative_demo_cinematic_controller.gd
-scenes/NarrativeDemo.tscn
+data/battle_scene_manifest.json
+scripts/battle_controller_visual_scene_manifest.gd
+scenes/MainVisual.tscn
 ```
 
 当前架构：
 
 ```text
-NarrativeDemo.tscn
-→ narrative_demo_cinematic_controller.gd
-→ narrative_demo_formal_controller.gd
+MainVisual.tscn
+→ battle_controller_visual_scene_manifest.gd
+→ battle_controller_visual_narrative_formal.gd
 ```
 
-重要说明：
+硬规范：
 
 ```text
-之前 performance → art → formal 的多级继承链在 Web/Godot 解析中出现过 Could not resolve class。
-当前已改为单文件 cinematic controller 直接继承 formal，稳定性优先。
+[x] 每场战斗必须有 battle_id
+[x] 进入战斗先 reset 旧战斗视觉
+[x] 再按 battle_id 加载背景 / 雾 / 暗层 / 强调色 / 场景标题
+[x] 剧情战斗从 NarrativeBattleContext.get_battle_id() 读取
+[x] 测试入口按角色映射 test_spearman_duel / test_blademaster_duel
+[x] 不再允许上一场背景残留
 ```
 
-当前行为：
+当前 battle_id 覆盖：
 
 ```text
-[x] 表演区主体背景铺满
-[x] 下方操作区最小高度保护，选项不出屏
-[x] 序章按 step_index 自动切换背景
-[x] 第一幕按 node_id 自动切换背景
-[x] 支持雾层移动
-[x] 支持火光脉冲
-[x] 支持暗层呼吸
-[x] 支持师父 / 主角剪影入镜
-[x] 支持镜头轻推、横移、局部节奏变化
+prologue_master_rescue      → 黑潮救援
+first_act_beach_ambush      → 海边伏击
+first_act_transport_officer → 押运官对峙
+first_act_wakou_boss        → 破船决战
+test_spearman_duel          → 枪术试战
+test_blademaster_duel       → 刀术试战
+fallback                    → 默认接敌
+```
+
+当前战斗背景资源：
+
+```text
+assets/pixel_battle/backgrounds/battle_bg_black_tide.svg
+assets/pixel_battle/backgrounds/battle_bg_coast_ambush.svg
+assets/pixel_battle/backgrounds/battle_bg_transport_road.svg
+assets/pixel_battle/backgrounds/battle_bg_broken_ship.svg
+assets/pixel_battle/backgrounds/battle_bg_training_ground.svg
+```
+
+当前战斗场景表现能力：
+
+```text
+background：战斗背景图
+mist：战斗雾层强度
+ dim：战斗暗层强度
+accent：朱砂火光 / 危险强调
+camera_zoom：镜头推进
+camera_pan_x / camera_pan_y：镜头横移 / 纵移
+label：左上角战斗场景标题与 battle_id 诊断
 ```
 
 ---
 
-## 4. 已完成：数据驱动演出重新挂回
+## 5. NarrativeBattleContext 已支持 battle_id
 
 ```text
-data/performance_tracks.json
+scripts/narrative_battle_context.gd
 ```
 
 当前状态：
 
 ```text
-[x] 已重新挂回数据驱动
-[x] 没有使用二级 data controller
-[x] JSON 读取逻辑已内联到 narrative_demo_cinematic_controller.gd
-[x] 读取成功时 source=json
-[x] 读取失败时自动回退代码内置 NODE_PERFORMANCE
+[x] 新增 battle_id 元信息
+[x] set_request(encounter_id, source_node_id, battle_id="") 支持显式 battle_id
+[x] 未传 battle_id 时，自动从 encounter_id 映射
+[x] get_battle_id() 提供给战斗场景加载
+[x] debug_text / battle_mapping_debug_text 已显示 battle_id
 ```
 
-JSON 当前覆盖：
+当前默认映射：
 
 ```text
-序章：
-- black_tide_0
-- black_tide_1
-- black_tide_2
-- black_tide_3
-- master_rescue
-- arrow_silence
-- departure
-
-第一幕：
-- military_order
-- beach_ambush
-- ming_firearm
-- transport_officer
-- wakou_boss
-- military_coverup
-```
-
-当前可调字段：
-
-```text
-duration：阶段时长
-zoom：镜头推进强度
-pan_x / pan_y：镜头横移 / 纵移
-dim：暗层强度
-mist：雾层强度
-fire：火光强度
-hero / master：是否显示主角 / 师父剪影
-hero_push / master_push：人物入镜位移
-```
-
----
-
-## 5. 最新调优：第一幕演出节奏
-
-```text
-提交目标：让第一幕节点差异更明确，而不是所有节点都只是轻微动背景。
-```
-
-当前调优方向：
-
-```text
-军令巡海：降低 zoom 和雾，突出庄重、稳定、领命
-海边伏击：提高 zoom、pan、mist，突出危险接近
-明制火器：大幅提高 zoom 和 fire，降低 dim / mist，明确证物特写
-失械案押运官：提高 dim / mist / hero_push，突出雨雾对峙
-破船 Boss：提高 zoom / pan / mist / fire，成为第一幕最强演出节点
-军门压案：提高 dim、降低 fire，形成压抑收束
+enc_prologue_master_rescue → prologue_master_rescue
+enc_beach_ambush           → first_act_beach_ambush
+enc_transport_officer      → first_act_transport_officer
+enc_wakou_boss             → first_act_wakou_boss
+其他                       → source_node_id 或 fallback
 ```
 
 ---
@@ -223,50 +225,38 @@ hero_push / master_push：人物入镜位移
 ```text
 [x] Web 构建稳定，无 Could not resolve class
 [x] NarrativeDemo 正常打开
-[x] 上方表演区显示场景主视觉背景
+[x] 剧情表演区显示场景主视觉背景
 [x] 下方操作区完整显示选项
-[x] 选项可滚动、可点击
 [x] 剧情—战斗—剧情闭环不受影响
 [x] data/performance_tracks.json 已生效
 [x] 明制火器证物节点可见
+[ ] MainVisual 按 battle_id 切换战斗场景待验收
+[ ] 多场战斗切换后无背景残留待验收
 ```
 
-继续验收建议：
+战斗场景验收建议：
 
 ```text
-[ ] 检查第一幕 6 个节点的演出差异是否足够明显
-[ ] 检查海边伏击 / 破船 Boss 是否有明显紧张升级
-[ ] 检查军门压案是否形成压抑收束
-[ ] 检查 source=json 是否稳定显示
+1. 序章师父战显示 battle_id=prologue_master_rescue，背景为黑潮救援
+2. 海边伏击显示 battle_id=first_act_beach_ambush，背景为海岸伏击
+3. 押运官战显示 battle_id=first_act_transport_officer，背景为押运路
+4. 破船 Boss 显示 battle_id=first_act_wakou_boss，背景为破船决战
+5. 测试枪手入口显示 test_spearman_duel
+6. 测试刀客入口显示 test_blademaster_duel
+7. 任意两场连续进入，旧背景不残留
 ```
 
 ---
 
 ## 7. 下一批美术优先级
 
-### P0：战斗背景统一
+### P0：战斗人物立绘替换
 
 ```text
-battle_bg_coast_ambush.svg
-battle_bg_transport_road.svg
-battle_bg_broken_ship.svg
-```
-
-目标：
-
-```text
-让 MainVisual 战斗场景也统一到水墨海疆，而不是沿用旧测试背景。
-```
-
----
-
-### P1：角色战斗立绘
-
-```text
-hero_spearman.svg
-hero_blademaster.svg
-master_veteran.svg
-enemy_spearman.svg
+hero_spearman_battle.svg
+hero_blademaster_battle.svg
+master_veteran_battle.svg
+enemy_spearman_battle.svg
 transport_officer_battle.svg
 wakou_leader_battle.svg
 ```
@@ -274,7 +264,24 @@ wakou_leader_battle.svg
 目标：
 
 ```text
-让职业选择和战斗 UI 中的角色图，从色块占位升级成国风剪影立绘。
+让战斗中的人物也从测试色块 / 旧图转向国风剪影立绘。
+```
+
+---
+
+### P1：战斗前景层
+
+```text
+battle_fg_reeds.svg
+battle_fg_transport_cart.svg
+battle_fg_broken_ship_debris.svg
+battle_fg_firearm_crate.svg
+```
+
+目标：
+
+```text
+让战斗背景不只是铺底，而有前景遮挡、空间层次和战场识别度。
 ```
 
 ---
@@ -286,7 +293,8 @@ prologue_black_tide.png
 prologue_master_rescue.png
 narrative_military_order.png
 narrative_beach_ambush.png
-relic_ming_firearm.png
+battle_bg_coast_ambush.png
+battle_bg_broken_ship.png
 ```
 
 目标：
@@ -300,5 +308,5 @@ relic_ming_firearm.png
 ## 8. 当前一句话结论
 
 ```text
-剧情美术管线已进入“数据驱动电影化演出”阶段：序章与第一幕均已接入表演区背景、镜头、雾、火光、人物剪影与 JSON 参数调优；下一阶段应把战斗场景也统一到同一套水墨海疆视觉体系。
+剧情美术管线已进入“数据驱动电影化演出”阶段；战斗美术管线已进入“battle_id 驱动场景加载”阶段。现在每场战斗都可以按唯一 battle_id 重置并加载独立战场，下一阶段应推进战斗人物立绘和前景层，继续减少剧情与战斗的视觉割裂。
 ```
