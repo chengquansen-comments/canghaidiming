@@ -3,6 +3,7 @@ extends "res://scripts/narrative_demo_formal_controller.gd"
 const PERFORMANCE_RATIO: float = 0.6667
 const OPERATION_BOTTOM: float = 0.99
 const MIN_OPERATION_HEIGHT: float = 340.0
+const PERFORMANCE_TRACKS_PATH := "res://data/performance_tracks.json"
 const PROLOGUE_BLACK_TIDE := "res://assets/pixel_battle/backgrounds/prologue_black_tide.svg"
 const PROLOGUE_RESCUE := "res://assets/pixel_battle/backgrounds/prologue_master_rescue.svg"
 const PROLOGUE_ARROW := "res://assets/pixel_battle/backgrounds/prologue_arrow_silence.svg"
@@ -11,13 +12,13 @@ const CHAR_MASTER := "res://assets/pixel_battle/portraits/performance_master_vet
 const CHAR_HERO := "res://assets/pixel_battle/portraits/performance_hero_young.svg"
 
 const NODE_PERFORMANCE := {
-	"military_order": {"zoom":0.018, "pan_x":3.0, "pan_y":-1.0, "dim":0.18, "mist":0.12, "fire":0.04, "hero":true, "hero_push":-5.0},
-	"beach_ambush": {"zoom":0.030, "pan_x":10.0, "pan_y":-2.0, "dim":0.27, "mist":0.34, "fire":0.08, "hero":true, "hero_push":-9.0},
-	"ming_firearm": {"zoom":0.072, "pan_x":0.0, "pan_y":-4.0, "dim":0.10, "mist":0.04, "fire":0.28, "hero":false, "hero_push":0.0},
-	"transport_officer": {"zoom":0.024, "pan_x":6.0, "pan_y":-1.0, "dim":0.30, "mist":0.28, "fire":0.04, "hero":true, "hero_push":-6.0},
-	"wakou_boss": {"zoom":0.036, "pan_x":12.0, "pan_y":-2.0, "dim":0.34, "mist":0.34, "fire":0.16, "hero":true, "hero_push":-10.0},
-	"military_coverup": {"zoom":0.018, "pan_x":-4.0, "pan_y":0.0, "dim":0.42, "mist":0.14, "fire":0.02, "hero":false, "hero_push":0.0},
-	"node": {"zoom":0.018, "pan_x":4.0, "pan_y":0.0, "dim":0.22, "mist":0.18, "fire":0.02, "hero":false, "hero_push":0.0}
+	"military_order": {"zoom":0.018, "pan_x":3.0, "pan_y":-1.0, "dim":0.18, "mist":0.12, "fire":0.04, "hero":true, "hero_push":-5.0, "duration":2.8},
+	"beach_ambush": {"zoom":0.030, "pan_x":10.0, "pan_y":-2.0, "dim":0.27, "mist":0.34, "fire":0.08, "hero":true, "hero_push":-9.0, "duration":2.8},
+	"ming_firearm": {"zoom":0.072, "pan_x":0.0, "pan_y":-4.0, "dim":0.10, "mist":0.04, "fire":0.28, "hero":false, "hero_push":0.0, "duration":3.2},
+	"transport_officer": {"zoom":0.024, "pan_x":6.0, "pan_y":-1.0, "dim":0.30, "mist":0.28, "fire":0.04, "hero":true, "hero_push":-6.0, "duration":2.8},
+	"wakou_boss": {"zoom":0.036, "pan_x":12.0, "pan_y":-2.0, "dim":0.34, "mist":0.34, "fire":0.16, "hero":true, "hero_push":-10.0, "duration":3.2},
+	"military_coverup": {"zoom":0.018, "pan_x":-4.0, "pan_y":0.0, "dim":0.42, "mist":0.14, "fire":0.02, "hero":false, "hero_push":0.0, "duration":3.0},
+	"node": {"zoom":0.018, "pan_x":4.0, "pan_y":0.0, "dim":0.22, "mist":0.18, "fire":0.02, "hero":false, "hero_push":0.0, "duration":2.2}
 }
 
 var cinematic_bg: TextureRect
@@ -30,8 +31,11 @@ var cinematic_hero: TextureRect
 var cinematic_time: float = 0.0
 var cinematic_stage: String = ""
 var cinematic_stage_time: float = 0.0
+var performance_tracks: Dictionary = {}
+var performance_tracks_loaded: bool = false
 
 func _ready() -> void:
+	_load_performance_tracks()
 	_add_cinematic_layers()
 	super._ready()
 	_apply_cinematic_layout()
@@ -41,6 +45,20 @@ func _process(delta: float) -> void:
 	cinematic_stage_time += delta
 	_update_cinematic_motion(delta)
 	_apply_cinematic_layout()
+
+func _load_performance_tracks() -> void:
+	performance_tracks_loaded = false
+	performance_tracks.clear()
+	if not FileAccess.file_exists(PERFORMANCE_TRACKS_PATH):
+		return
+	var file: FileAccess = FileAccess.open(PERFORMANCE_TRACKS_PATH, FileAccess.READ)
+	if file == null:
+		return
+	var raw_text: String = file.get_as_text()
+	var parsed = JSON.parse_string(raw_text)
+	if parsed is Dictionary:
+		performance_tracks = parsed
+		performance_tracks_loaded = true
 
 func _render_visual(path: String, fallback_text: String) -> void:
 	var resolved_path: String = _cinematic_background_path(path)
@@ -176,10 +194,27 @@ func _cinematic_background_path(path: String) -> String:
 	return path
 
 func _node_performance_data(stage: String) -> Dictionary:
-	var data_variant = NODE_PERFORMANCE.get(stage, NODE_PERFORMANCE["node"])
-	if data_variant is Dictionary:
-		return data_variant
+	if performance_tracks_loaded:
+		var timeline_variant = performance_tracks.get("timeline", {})
+		if timeline_variant is Dictionary:
+			var timeline: Dictionary = timeline_variant
+			var data_variant = timeline.get(stage, timeline.get("node", {}))
+			if data_variant is Dictionary:
+				return _merge_performance_defaults(stage, data_variant)
+	var fallback_variant = NODE_PERFORMANCE.get(stage, NODE_PERFORMANCE["node"])
+	if fallback_variant is Dictionary:
+		return fallback_variant
 	return NODE_PERFORMANCE["node"]
+
+func _merge_performance_defaults(stage: String, data: Dictionary) -> Dictionary:
+	var fallback_variant = NODE_PERFORMANCE.get(stage, NODE_PERFORMANCE["node"])
+	var merged: Dictionary = {}
+	if fallback_variant is Dictionary:
+		for key in (fallback_variant as Dictionary).keys():
+			merged[key] = (fallback_variant as Dictionary)[key]
+	for key in data.keys():
+		merged[key] = data[key]
+	return merged
 
 func _update_cinematic_background(path: String) -> void:
 	if cinematic_bg == null:
@@ -196,16 +231,18 @@ func _update_cinematic_characters() -> void:
 	if cinematic_hero != null:
 		cinematic_hero.visible = false
 	var stage: String = _cinematic_stage_key()
-	if stage == "master_rescue" or stage == "arrow_silence":
-		if cinematic_master != null:
-			cinematic_master.visible = true
-	elif stage == "departure":
-		if cinematic_hero != null:
-			cinematic_hero.visible = true
-	elif not in_prologue:
-		var data: Dictionary = _node_performance_data(stage)
-		if bool(data.get("hero", false)) and cinematic_hero != null:
-			cinematic_hero.visible = true
+	var data: Dictionary = _node_performance_data(stage)
+	if bool(data.get("master", false)) and cinematic_master != null:
+		cinematic_master.visible = true
+	if bool(data.get("hero", false)) and cinematic_hero != null:
+		cinematic_hero.visible = true
+	if in_prologue and not bool(data.get("master", false)) and not bool(data.get("hero", false)):
+		if stage == "master_rescue" or stage == "arrow_silence":
+			if cinematic_master != null:
+				cinematic_master.visible = true
+		elif stage == "departure":
+			if cinematic_hero != null:
+				cinematic_hero.visible = true
 
 func _hide_inline_visual(path: String) -> void:
 	if visual_texture != null:
@@ -216,59 +253,30 @@ func _hide_inline_visual(path: String) -> void:
 		visual_label.visible = false
 		visual_label.custom_minimum_size = Vector2.ZERO
 	if visual_debug_label != null:
-		visual_debug_label.visible = false
-		visual_debug_label.text = "演出诊断：single-file｜stage=%s｜path=%s" % [_cinematic_stage_key(), path]
+		visual_debug_label.visible = true
+		visual_debug_label.text = "演出诊断：single-file｜source=%s｜stage=%s｜path=%s" % [_track_source(), _cinematic_stage_key(), path]
 	if visual_texture != null and visual_texture.get_parent() != null and visual_texture.get_parent().get_parent() != null:
 		var frame: Node = visual_texture.get_parent().get_parent()
 		if frame is Control:
 			(frame as Control).custom_minimum_size = Vector2.ZERO
 
+func _track_source() -> String:
+	return "json" if performance_tracks_loaded else "code"
+
 func _update_cinematic_motion(delta: float) -> void:
 	var stage: String = _cinematic_stage_key()
-	var progress: float = clamp(cinematic_stage_time / 3.0, 0.0, 1.0)
-	var eased: float = progress * progress * (3.0 - 2.0 * progress)
-	if not in_prologue:
-		_update_first_act_motion(stage, eased)
-		return
-	var zoom: float = 0.012 + 0.022 * eased
-	var pan_x: float = 0.0
-	var pan_y: float = 0.0
-	var dim_alpha: float = 0.20
-	var mist_alpha: float = 0.18
-	var fire_alpha: float = 0.0
-	if stage.begins_with("black_tide"):
-		pan_x = -8.0 + 18.0 * eased
-		pan_y = 2.0 - 3.0 * eased
-		dim_alpha = 0.42 - 0.16 * eased + 0.035 * sin(cinematic_time * 0.9)
-		mist_alpha = 0.18 + 0.22 * eased
-		var flash: float = max(0.0, sin(cinematic_time * 2.1)) * 0.05
-		if step_index >= 2:
-			flash += max(0.0, sin(cinematic_time * 5.5)) * 0.05
-		fire_alpha = clamp(0.02 + flash, 0.0, 0.18)
-	elif stage == "master_rescue":
-		pan_x = 8.0 * eased
-		dim_alpha = 0.24 + 0.035 * sin(cinematic_time * 0.8)
-		mist_alpha = 0.22
-		fire_alpha = 0.14 * max(0.0, sin(cinematic_time * 2.6))
-	elif stage == "arrow_silence":
-		pan_x = -6.0 * eased
-		dim_alpha = 0.34
-		mist_alpha = 0.24
-	elif stage == "departure":
-		pan_x = 5.0 * eased
-		dim_alpha = 0.18
-		mist_alpha = 0.16
-	_update_layer_motion(zoom, pan_x, pan_y, dim_alpha, mist_alpha, fire_alpha)
-
-func _update_first_act_motion(stage: String, eased: float) -> void:
 	var data: Dictionary = _node_performance_data(stage)
+	var duration: float = max(0.2, float(data.get("duration", 3.0)))
+	var progress: float = clamp(cinematic_stage_time / duration, 0.0, 1.0)
+	var eased: float = progress * progress * (3.0 - 2.0 * progress)
 	var zoom: float = float(data.get("zoom", 0.018)) * eased
 	var pan_x: float = float(data.get("pan_x", 0.0)) * eased
 	var pan_y: float = float(data.get("pan_y", 0.0)) * eased
 	var dim_base: float = float(data.get("dim", 0.22))
 	var mist_base: float = float(data.get("mist", 0.18))
 	var fire_base: float = float(data.get("fire", 0.02))
-	var dim_alpha: float = dim_base + 0.030 * sin(cinematic_time * 0.75)
+	var pulse: float = float(data.get("pulse", 0.030))
+	var dim_alpha: float = dim_base + pulse * sin(cinematic_time * 0.75)
 	var mist_alpha: float = mist_base + 0.055 * eased
 	var fire_alpha: float = fire_base + fire_base * max(0.0, sin(cinematic_time * 2.4))
 	_update_layer_motion(zoom, pan_x, pan_y, dim_alpha, mist_alpha, fire_alpha)
@@ -291,14 +299,13 @@ func _update_layer_motion(zoom: float, pan_x: float, pan_y: float, dim_alpha: fl
 
 func _update_character_motion(zoom: float) -> void:
 	var stage: String = _cinematic_stage_key()
-	var hero_push: float = -8.0
-	if not in_prologue:
-		var data: Dictionary = _node_performance_data(stage)
-		hero_push = float(data.get("hero_push", -6.0))
+	var data: Dictionary = _node_performance_data(stage)
+	var hero_push: float = float(data.get("hero_push", -6.0))
+	var master_push: float = float(data.get("master_push", 10.0))
 	if cinematic_master != null and cinematic_master.visible:
 		var s: float = 1.0 + zoom + 0.018 * sin(cinematic_time * 1.05)
 		cinematic_master.scale = Vector2(s, s)
-		cinematic_master.position.x = 10.0 * clamp(cinematic_stage_time / 2.8, 0.0, 1.0)
+		cinematic_master.position.x = master_push * clamp(cinematic_stage_time / 2.8, 0.0, 1.0)
 		cinematic_master.position.y = 3.0 * sin(cinematic_time * 0.8)
 	if cinematic_hero != null and cinematic_hero.visible:
 		var h: float = 1.0 + zoom + 0.014 * sin(cinematic_time * 1.2)
