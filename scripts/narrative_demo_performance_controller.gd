@@ -10,14 +10,28 @@ const BLACK_TIDE_RHYTHM := {
 	3: {"dim": 0.24, "mist": 0.58, "speed": 1.18, "pulse": 0.046, "fade": 0.42}
 }
 
+const STAGE_TIMELINE := {
+	"black_tide_0": {"duration": 3.2, "zoom": 0.012, "pan_x": -8.0, "pan_y": 2.0, "mist_boost": 0.00, "fire_flash_at": -1.0},
+	"black_tide_1": {"duration": 3.0, "zoom": 0.018, "pan_x": -4.0, "pan_y": 1.0, "mist_boost": 0.05, "fire_flash_at": 2.2},
+	"black_tide_2": {"duration": 3.0, "zoom": 0.026, "pan_x": 4.0, "pan_y": 0.0, "mist_boost": 0.10, "fire_flash_at": 1.6},
+	"black_tide_3": {"duration": 3.4, "zoom": 0.034, "pan_x": 10.0, "pan_y": -2.0, "mist_boost": 0.16, "fire_flash_at": 1.2},
+	"master_rescue": {"duration": 2.8, "zoom": 0.020, "pan_x": 8.0, "pan_y": -1.0, "mist_boost": 0.04, "fire_flash_at": 0.4},
+	"arrow_silence": {"duration": 2.4, "zoom": 0.015, "pan_x": -6.0, "pan_y": 0.0, "mist_boost": 0.02, "fire_flash_at": -1.0},
+	"departure": {"duration": 3.0, "zoom": 0.018, "pan_x": 5.0, "pan_y": -1.0, "mist_boost": 0.00, "fire_flash_at": -1.0},
+	"node": {"duration": 2.2, "zoom": 0.010, "pan_x": 3.0, "pan_y": 0.0, "mist_boost": 0.00, "fire_flash_at": -1.0}
+}
+
 var performance_fade: ColorRect
 var shader_mist: ColorRect
 var fire_pulse: ColorRect
 var last_performance_path: String = ""
+var last_stage_key: String = ""
+var director_time: float = 0.0
 var current_rhythm_dim: float = 0.18
 var current_rhythm_mist: float = 0.18
 var current_rhythm_speed: float = 1.0
 var current_rhythm_pulse: float = 0.035
+var timeline_fire_boost: float = 0.0
 
 func _ready() -> void:
 	super._ready()
@@ -28,19 +42,78 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	super._process(delta)
+	director_time += delta
 	_apply_black_tide_rhythm()
+	_update_director_timeline(delta)
 	_update_shader_mist(delta)
 	_update_fire_pulse(delta)
 	_lock_performance_operation_layout()
 
 func _render_visual(path: String, fallback_text: String) -> void:
 	var final_path: String = _resolve_background_path(path)
-	var changed: bool = final_path != last_performance_path
+	var stage_key: String = _current_stage_key()
+	var changed: bool = final_path != last_performance_path or stage_key != last_stage_key
 	super._render_visual(path, fallback_text)
 	if changed:
 		last_performance_path = final_path
+		last_stage_key = stage_key
+		_reset_director_track()
 		_play_performance_fade()
 	_update_performance_debug(final_path)
+
+func _current_stage_key() -> String:
+	if step_index <= 3:
+		return "black_tide_%d" % step_index
+	elif step_index <= 8:
+		return "master_rescue"
+	elif step_index <= 11:
+		return "arrow_silence"
+	elif step_index == PROLOGUE_CAREER_STEP:
+		return "departure"
+	return "node"
+
+func _reset_director_track() -> void:
+	director_time = 0.0
+	timeline_fire_boost = 0.0
+	if background_texture != null:
+		background_texture.scale = Vector2.ONE
+		background_texture.position = Vector2.ZERO
+	if char_master != null:
+		char_master.scale = Vector2.ONE
+		char_master.position = Vector2.ZERO
+	if char_hero != null:
+		char_hero.scale = Vector2.ONE
+		char_hero.position = Vector2.ZERO
+
+func _stage_data() -> Dictionary:
+	var key: String = _current_stage_key()
+	return STAGE_TIMELINE.get(key, STAGE_TIMELINE["node"])
+
+func _timeline_progress() -> float:
+	var data: Dictionary = _stage_data()
+	var duration: float = max(0.1, float(data.get("duration", 2.0)))
+	return clamp(director_time / duration, 0.0, 1.0)
+
+func _ease_in_out(t: float) -> float:
+	return t * t * (3.0 - 2.0 * t)
+
+func _update_director_timeline(delta: float) -> void:
+	var data: Dictionary = _stage_data()
+	var progress: float = _ease_in_out(_timeline_progress())
+	var zoom: float = float(data.get("zoom", 0.01)) * progress
+	var pan_x: float = float(data.get("pan_x", 0.0)) * progress
+	var pan_y: float = float(data.get("pan_y", 0.0)) * progress
+	if background_texture != null:
+		var breath: float = 0.004 * sin(art_time * 0.42)
+		background_texture.scale = Vector2(1.0 + zoom + breath, 1.0 + zoom + breath)
+		background_texture.position = Vector2(pan_x, pan_y)
+	var fire_at: float = float(data.get("fire_flash_at", -1.0))
+	if fire_at >= 0.0:
+		var dist: float = abs(director_time - fire_at)
+		var flash: float = clamp(1.0 - dist / 0.32, 0.0, 1.0)
+		timeline_fire_boost = max(timeline_fire_boost * 0.86, flash * flash * 0.22)
+	else:
+		timeline_fire_boost *= 0.84
 
 func _add_shader_mist_layer() -> void:
 	shader_mist = ColorRect.new()
@@ -139,8 +212,9 @@ func _current_black_tide_rhythm() -> Dictionary:
 
 func _apply_black_tide_rhythm() -> void:
 	var rhythm: Dictionary = _current_black_tide_rhythm()
+	var timeline_data: Dictionary = _stage_data()
 	current_rhythm_dim = float(rhythm.get("dim", 0.18))
-	current_rhythm_mist = float(rhythm.get("mist", 0.24))
+	current_rhythm_mist = float(rhythm.get("mist", 0.24)) + float(timeline_data.get("mist_boost", 0.0)) * _timeline_progress()
 	current_rhythm_speed = float(rhythm.get("speed", 0.75))
 	current_rhythm_pulse = float(rhythm.get("pulse", 0.018))
 	if background_dim != null:
@@ -167,7 +241,8 @@ func _update_fire_pulse(delta: float) -> void:
 	var flicker: float = 0.045 + 0.035 * max(0.0, sin(art_time * 2.1)) + 0.018 * max(0.0, sin(art_time * 5.7))
 	if step_index >= 2:
 		flicker += 0.035
-	fire_pulse.color = Color(0.55, 0.12, 0.08, clamp(flicker, 0.0, 0.16))
+	flicker += timeline_fire_boost
+	fire_pulse.color = Color(0.55, 0.12, 0.08, clamp(flicker, 0.0, 0.32))
 
 func _lock_performance_operation_layout() -> void:
 	var viewport_size: Vector2 = get_viewport_rect().size
@@ -213,15 +288,5 @@ func _lock_performance_operation_layout() -> void:
 func _update_performance_debug(path: String) -> void:
 	if visual_debug_label == null:
 		return
-	var stage: String = "black_tide"
-	if step_index <= 3:
-		stage = "black_tide_%d" % step_index
-	elif step_index <= 8:
-		stage = "master_rescue"
-	elif step_index <= 11:
-		stage = "arrow_silence"
-	elif step_index == PROLOGUE_CAREER_STEP:
-		stage = "departure"
-	else:
-		stage = "node"
-	visual_debug_label.text = "演出诊断：stage=%s｜path=%s｜shader_mist=on｜dim=%.2f｜mist=%.2f｜speed=%.2f" % [stage, path, current_rhythm_dim, current_rhythm_mist, current_rhythm_speed]
+	var stage: String = _current_stage_key()
+	visual_debug_label.text = "演出诊断：stage=%s｜t=%.2f｜path=%s｜director=on｜zoom=on｜shader_mist=on｜dim=%.2f｜mist=%.2f｜speed=%.2f" % [stage, director_time, path, current_rhythm_dim, current_rhythm_mist, current_rhythm_speed]
