@@ -64,7 +64,11 @@ order	id	title	scene	text	dialogue_json	combat_json	choices_json
 10	night_knife_camp	夜半磨刀	营地深夜。雨停了。刀声没停。	"师父在磨一把早该断掉的刀。
 
 刀钝了。
-人就会多想。"	"[""刀钝了，人就会多想。"",""令迟了。"",""走得越远，越像回去。""]"	"{""enabled"":false}"	"[{""label"":""陪他坐着"",""result"":""你们坐到天亮。\n谁也没问。"",""effects"":{""heal"":1,""clean_reputation"":1}},{""label"":""问旧案"",""result"":""那年，你迟了吗？\n\n师父说：令迟了。"",""effects"":{""case_clues"":1}},{""label"":""劝他休息"",""result"":""明日还要走。\n\n他说：走得越远，越像回去。"",""effects"":{""heal"":2}}]"
+人就会多想。
+
+你把火器刻印放在火边。
+
+师父的手停了一下。"	"[""刀钝了，人就会多想。"",""令迟了。"",""那枚刻印，我见过。"",""走得越远，越像回去。""]"	"{""enabled"":false}"	"[{""label"":""陪他坐着"",""result"":""你们坐到天亮。\n刻印在火边冷下去。\n谁也没问。"",""effects"":{""heal"":1,""clean_reputation"":1}},{""label"":""问火器刻印"",""result"":""那枚火器刻印，你见过？\n\n师父说：见过。\n\n再问，人就会死。"",""effects"":{""case_clues"":2}},{""label"":""劝他休息"",""result"":""明日还要走。\n\n他用袖口盖住刻印。\n\n他说：走得越远，越像回去。"",""effects"":{""heal"":2}}]"
 11	wakou_boss	小股倭寇首领	破船。火器箱。倭首坐在箱上。	"船搁浅了。
 
 人没有。
