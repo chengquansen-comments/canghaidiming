@@ -13,7 +13,7 @@ const CHAR_HERO := "res://assets/pixel_battle/portraits/performance_hero_young.s
 const NODE_PERFORMANCE := {
 	"military_order": {"zoom":0.018, "pan_x":3.0, "pan_y":-1.0, "dim":0.18, "mist":0.12, "fire":0.04, "hero":true, "hero_push":-5.0},
 	"beach_ambush": {"zoom":0.030, "pan_x":10.0, "pan_y":-2.0, "dim":0.27, "mist":0.34, "fire":0.08, "hero":true, "hero_push":-9.0},
-	"ming_firearm": {"zoom":0.026, "pan_x":-6.0, "pan_y":0.0, "dim":0.32, "mist":0.18, "fire":0.12, "hero":false, "hero_push":0.0},
+	"ming_firearm": {"zoom":0.072, "pan_x":0.0, "pan_y":-4.0, "dim":0.10, "mist":0.04, "fire":0.28, "hero":false, "hero_push":0.0},
 	"transport_officer": {"zoom":0.024, "pan_x":6.0, "pan_y":-1.0, "dim":0.30, "mist":0.28, "fire":0.04, "hero":true, "hero_push":-6.0},
 	"wakou_boss": {"zoom":0.036, "pan_x":12.0, "pan_y":-2.0, "dim":0.34, "mist":0.34, "fire":0.16, "hero":true, "hero_push":-10.0},
 	"military_coverup": {"zoom":0.018, "pan_x":-4.0, "pan_y":0.0, "dim":0.42, "mist":0.14, "fire":0.02, "hero":false, "hero_push":0.0},
