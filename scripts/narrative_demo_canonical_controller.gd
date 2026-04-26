@@ -425,13 +425,49 @@ func _advance_to_node(target_index: int, hint: String = "") -> void:
 	node_index = target_index
 	_render()
 
+func _ending_data() -> Dictionary:
+	if clues >= 4:
+		return {
+			"title": "结局：旧案浮起",
+			"status": "旧案浮起",
+			"text": "你藏下一份证据。\n\n纸很薄。\n\n却压得甲很沉。\n\n师父说：不要再问。\n\n你第一次没有听。",
+			"feedback": "你接近了真相，但军门与师父都开始变得沉默。"
+		}
+	if jun_gong >= 4 and clues < 4:
+		return {
+			"title": "结局：军功入册",
+			"status": "军功入册",
+			"text": "捷报写得很好。\n\n首级数得很准。\n\n案卷少了一页。\n\n你升了一级。",
+			"feedback": "你立下了功名，但旧案从案卷里退后了一步。"
+		}
+	if qing_wang >= 4 and clues < 4:
+		return {
+			"title": "结局：清名在外",
+			"status": "清名在外",
+			"text": "百姓记得你救过人。\n\n军门记得你误过令。\n\n师父说：好名声也会杀人。\n\n潮声没有回答。",
+			"feedback": "你保住了道义，却还没有把真相从潮声里拉出来。"
+		}
+	return {
+		"title": "结局：沉默退下",
+		"status": "沉默退下",
+		"text": "门关上。\n\n灯还亮着。\n\n案卷少了一页。\n\n你什么都没有说。\n\n潮声替你说了一夜。",
+		"feedback": "你没有站上任何一边，悬念被保留下来。"
+	}
+
 func _render_ending() -> void:
-	title_label.text = "结局：潮声还在"
-	status_label.text = "单局结算"
+	var ending := _ending_data()
+	title_label.text = str(ending.get("title", "结局"))
+	status_label.text = str(ending.get("status", "单局结算"))
 	map_label.text = _map_text()
-	scene_label.text = _format_scene_text("结局图占位：上报 / 掩盖 / 私查 / 借势四类结局图后续接入。")
-	_render_visual("", "结局图占位：上报 / 掩盖 / 私查 / 借势四类结局图后续接入。")
-	body_label.text = "军功 %d / 清望 %d / 旧案线索 %d\n%s\n\n案卷缺页，潮声仍在。" % [jun_gong, qing_wang, clues, NarrativeBattleContext.player_profile_debug_text()]
+	scene_label.text = _format_scene_text("第一幕结局：变量评价已生效。")
+	_render_visual("", "第一幕结局：变量评价已生效。")
+	body_label.text = "%s\n\n[b]评价[/b]\n%s\n\n军功 %d / 清望 %d / 旧案线索 %d" % [
+		str(ending.get("text", "")),
+		str(ending.get("feedback", "")),
+		jun_gong,
+		qing_wang,
+		clues
+	]
 	vars_label.text = _vars_text()
 	_clear_dynamic_boxes()
 	_add_placeholder(map_buttons_box, "单局已结束。")
