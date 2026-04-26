@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d8c9a8"/>
+      <stop offset="0.54" stop-color="#879195"/>
+      <stop offset="1" stop-color="#2e3435"/>
+    </linearGradient>
+    <linearGradient id="tide" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3d525b" stop-opacity="0.42"/>
+      <stop offset="0.58" stop-color="#5d6b6e" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#263436" stop-opacity="0.48"/>
+    </linearGradient>
+    <radialGradient id="ember" cx="50%" cy="55%" r="58%">
+      <stop offset="0" stop-color="#b94a2e" stop-opacity="0.68"/>
+      <stop offset="0.46" stop-color="#7b261f" stop-opacity="0.36"/>
+      <stop offset="1" stop-color="#2a1513" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softBlur" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="720" fill="url(#sky)"/>
+  <rect width="1280" height="720" fill="#1a1b1a" opacity="0.12"/>
+
+  <!-- distant coast and low tide -->
+  <path d="M0 362 C160 330 310 368 470 342 C650 314 805 356 960 332 C1090 312 1180 326 1280 304 L1280 441 L0 446 Z" fill="url(#tide)"/>
+  <path d="M0 430 C210 398 365 438 556 410 C760 382 924 426 1130 398 C1195 389 1235 394 1280 386 L1280 506 L0 506 Z" fill="#566063" opacity="0.26"/>
+  <path d="M0 497 C170 472 316 504 494 486 C704 462 874 492 1086 468 C1175 458 1230 462 1280 453 L1280 544 L0 544 Z" fill="#111718" opacity="0.36"/>
+
+  <!-- distant boats -->
+  <path d="M944 324 L1002 314 L1048 324 L1014 333 Z" fill="#1d2527" opacity="0.44"/>
+  <path d="M989 277 L1004 314 L974 319 Z" fill="#222b2d" opacity="0.34"/>
+  <path d="M1072 337 L1120 331 L1152 339 L1112 346 Z" fill="#202728" opacity="0.34"/>
+
+  <!-- village roof silhouettes -->
+  <path d="M78 425 L188 360 L312 428 Z" fill="#181b1a" opacity="0.76"/>
+  <path d="M136 425 L278 425 L262 512 L118 512 Z" fill="#111312" opacity="0.68"/>
+  <path d="M328 446 L470 374 L646 452 Z" fill="#1b1c1a" opacity="0.74"/>
+  <path d="M392 448 L590 448 L566 544 L370 548 Z" fill="#111211" opacity="0.70"/>
+  <path d="M662 430 L792 370 L928 434 Z" fill="#191c1b" opacity="0.70"/>
+  <path d="M710 432 L884 432 L860 526 L698 526 Z" fill="#101211" opacity="0.62"/>
+  <path d="M948 454 L1068 390 L1208 460 Z" fill="#151817" opacity="0.66"/>
+  <path d="M1004 457 L1172 457 L1150 540 L988 540 Z" fill="#0e100f" opacity="0.58"/>
+
+  <!-- fire from behind the village, not from sea side -->
+  <ellipse cx="512" cy="476" rx="138" ry="88" fill="url(#ember)" filter="url(#softBlur)"/>
+  <ellipse cx="805" cy="468" rx="110" ry="70" fill="url(#ember)" filter="url(#softBlur)" opacity="0.75"/>
+  <path d="M450 505 C468 456 500 458 496 408 C524 452 552 454 536 510 Z" fill="#8b2c21" opacity="0.72"/>
+  <path d="M774 502 C790 466 824 460 816 418 C844 454 872 468 858 512 Z" fill="#7d2920" opacity="0.64"/>
+  <path d="M496 502 C508 478 528 474 532 444 C548 472 566 484 560 512 Z" fill="#c45b32" opacity="0.36"/>
+
+  <!-- smoke layers -->
+  <ellipse cx="470" cy="310" rx="116" ry="58" fill="#2f3332" opacity="0.25" filter="url(#softBlur)"/>
+  <ellipse cx="612" cy="246" rx="170" ry="78" fill="#343837" opacity="0.24" filter="url(#softBlur)"/>
+  <ellipse cx="780" cy="298" rx="132" ry="64" fill="#272c2c" opacity="0.23" filter="url(#softBlur)"/>
+  <path d="M365 388 C444 344 402 272 520 248 C622 228 638 174 760 156" stroke="#303635" stroke-width="24" stroke-linecap="round" fill="none" opacity="0.22"/>
+  <path d="M672 392 C748 340 736 278 848 252 C956 226 1004 182 1124 170" stroke="#252c2d" stroke-width="18" stroke-linecap="round" fill="none" opacity="0.20"/>
+
+  <!-- broken foreground fence, beams, ruined silhouettes -->
+  <path d="M0 584 C168 560 278 596 446 572 C668 542 814 594 1016 566 C1134 548 1200 560 1280 546 L1280 720 L0 720 Z" fill="#090b0b" opacity="0.84"/>
+  <path d="M76 560 L102 706 L62 706 Z M174 540 L202 706 L164 706 Z M290 566 L318 706 L280 706 Z M1112 548 L1142 706 L1100 706 Z M1218 530 L1248 706 L1204 706 Z" fill="#080909" opacity="0.92"/>
+  <path d="M36 610 L344 562" stroke="#080909" stroke-width="18" stroke-linecap="round" opacity="0.95"/>
+  <path d="M224 635 L540 570" stroke="#080909" stroke-width="16" stroke-linecap="round" opacity="0.88"/>
+  <path d="M870 608 L1260 552" stroke="#070808" stroke-width="20" stroke-linecap="round" opacity="0.92"/>
+  <path d="M760 628 L1018 540" stroke="#090a0a" stroke-width="14" stroke-linecap="round" opacity="0.85"/>
+  <path d="M38 650 L238 614 L458 642 L646 602" stroke="#111" stroke-width="7" stroke-linecap="round" fill="none" opacity="0.58"/>
+  <path d="M900 646 L1034 612 L1268 632" stroke="#111" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.54"/>
+
+  <!-- subtle vignette -->
+  <rect width="1280" height="720" fill="#050606" opacity="0.10"/>
+</svg>
