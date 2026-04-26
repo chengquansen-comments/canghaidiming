@@ -33,7 +33,7 @@ order	id	title	column	type	career_prompt	combat_json	text
 父亲没有再说话。
 
 母亲的鞋停在火边。"
-7	master_arrives	序章：黑海潮生	序章	师父救场		"{""enabled"":true,""button"":""换我。"",""skip_button"":""潮声跳过这一段"",""encounter_id"":""enc_prologue_master_rescue"",""battle_id"":""prologue_master_rescue"",""enemy_id"":""enemy_blademaster_prologue_raider"",""enemy_display"":""袭村倭寇刀手"",""enemy_hint"":""屠村后折返灭口。师父替你接下这一刀。""}"	"一只手挡住你的眼。
+7	master_arrives	序章：黑海潮生	序章	救场		"{""enabled"":true,""button"":""换我。"",""skip_button"":""潮声跳过这一段"",""encounter_id"":""enc_prologue_master_rescue"",""battle_id"":""prologue_master_rescue"",""enemy_id"":""enemy_blademaster_prologue_raider"",""enemy_display"":""袭村倭寇刀手"",""enemy_hint"":""屠村后折返灭口。师父替你接下这一刀。""}"	"一只手挡住你的眼。
 
 那人身上有旧甲味。
 
@@ -41,7 +41,7 @@ order	id	title	column	type	career_prompt	combat_json	text
 还活着。
 
 换我。"
-8	three_cards	序章：黑海潮生	序章	师父救场			"刀。
+8	three_cards	序章：黑海潮生	序章	救场			"刀。
 
 步。
 
@@ -57,10 +57,9 @@ order	id	title	column	type	career_prompt	combat_json	text
 不是海上。
 
 不是倭人。"
-11	dont_look	序章：黑海潮生	序章	旧案			"那老兵说：
-别看。
+11	dont_look	序章：黑海潮生	序章	旧案			"那老兵看着黑箭。
 
-可你已经看见了。
+很久没有说话。
 
 后来，你叫他师父。"
 12	departure	序章：黑海潮生	序章	出山	"选一条路。
