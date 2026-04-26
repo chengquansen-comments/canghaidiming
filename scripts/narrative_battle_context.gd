@@ -59,14 +59,12 @@ static func _battle_id_for_encounter(p_encounter_id: String, p_source_node_id: S
 		"enc_transport_officer": return "first_act_transport_officer"
 		"enc_wakou_boss": return "first_act_wakou_boss"
 		_:
-			if not p_source_node_id.is_empty():
-				return p_source_node_id
+			if not p_source_node_id.is_empty(): return p_source_node_id
 			return "fallback"
 
 static func get_battle_id() -> String:
 	_pull_meta()
-	if battle_id.is_empty():
-		battle_id = _battle_id_for_encounter(encounter_id, source_node_id)
+	if battle_id.is_empty(): battle_id = _battle_id_for_encounter(encounter_id, source_node_id)
 	return battle_id
 
 static func set_result(p_result: String) -> void:
@@ -124,8 +122,7 @@ static func has_player_profile() -> bool:
 
 static func get_player_profile() -> Dictionary:
 	_pull_meta()
-	if not has_player_profile():
-		return {}
+	if not has_player_profile(): return {}
 	return {"role": player_role, "career": player_career, "weapon": player_weapon, "max_hp": player_max_hp, "hp": player_hp, "max_posture": player_max_posture, "posture": player_posture, "martial_level": player_martial_level, "battles_won": player_battles_won}
 
 static func apply_player_growth(source: String, hp_gain: int = 0, posture_gain: int = 0, martial_gain: int = 0, heal_full: bool = false) -> void:
@@ -145,8 +142,7 @@ static func apply_player_growth(source: String, hp_gain: int = 0, posture_gain: 
 
 static func player_profile_debug_text() -> String:
 	_pull_meta()
-	if not has_player_profile():
-		return "玩家数据=未初始化"
+	if not has_player_profile(): return "玩家数据=未初始化"
 	return "玩家数据=%s｜职业=%s｜武器=%s｜HP=%d/%d｜势=%d/%d｜武境=%d｜胜场=%d" % [player_role, player_career, player_weapon, player_hp, player_max_hp, player_posture, player_max_posture, player_martial_level, player_battles_won]
 
 static func has_request() -> bool:
@@ -157,15 +153,21 @@ static func has_result() -> bool:
 	_pull_meta()
 	return result_ready and not last_result.is_empty()
 
+static func enemy_source_text() -> String:
+	if NarrativeEnemyManifest.is_loaded():
+		var mapping: Dictionary = NarrativeEnemyManifest.get_mapping(encounter_id, get_battle_id())
+		if not mapping.is_empty():
+			return "manifest"
+	return "fallback"
+
 static func debug_text() -> String:
 	_pull_meta()
-	return "encounter_id=%s｜battle_id=%s｜source_node_id=%s｜return_after_battle=%s｜last_result=%s｜%s" % [encounter_id, get_battle_id(), source_node_id, str(return_after_battle), last_result, player_profile_debug_text()]
+	return "encounter_id=%s｜battle_id=%s｜enemy_source=%s｜source_node_id=%s｜return_after_battle=%s｜last_result=%s｜%s" % [encounter_id, get_battle_id(), enemy_source_text(), source_node_id, str(return_after_battle), last_result, player_profile_debug_text()]
 
 static func get_battle_mapping() -> Dictionary:
 	_pull_meta()
 	var mapping: Dictionary = NarrativeEnemyManifest.get_mapping(encounter_id, get_battle_id())
-	if not mapping.is_empty():
-		return _with_current_player_role(mapping)
+	if not mapping.is_empty(): return _with_current_player_role(mapping)
 	return _with_current_player_role(_fallback_mapping())
 
 static func _fallback_mapping() -> Dictionary:
@@ -174,6 +176,7 @@ static func _fallback_mapping() -> Dictionary:
 static func _with_current_player_role(mapping: Dictionary) -> Dictionary:
 	_pull_meta()
 	mapping["battle_id"] = get_battle_id()
+	mapping["enemy_source"] = enemy_source_text()
 	if has_player_profile():
 		mapping["player_role"] = player_role
 		mapping["player_career"] = player_career
@@ -187,17 +190,17 @@ static func get_enemy_config() -> Dictionary:
 
 static func battle_mapping_debug_text() -> String:
 	var mapping := get_battle_mapping()
-	return "battle_id=%s｜battle_mapping=%s｜player=%s｜enemy=%s｜difficulty=%s｜enemy_source=%s｜%s" % [get_battle_id(), str(mapping.get("label", "")), str(mapping.get("player_role", "")), str(mapping.get("enemy_role", "")), str(mapping.get("difficulty", "")), "manifest" if NarrativeEnemyManifest.is_loaded() else "fallback", player_profile_debug_text()]
+	return "battle_id=%s｜battle_mapping=%s｜player=%s｜enemy=%s｜difficulty=%s｜enemy_source=%s｜%s" % [get_battle_id(), str(mapping.get("label", "")), str(mapping.get("player_role", "")), str(mapping.get("enemy_role", "")), str(mapping.get("difficulty", "")), enemy_source_text(), player_profile_debug_text()]
 
 static func enemy_config_debug_text() -> String:
 	var config := get_enemy_config()
-	if config.is_empty(): return "enemy_config=空"
-	return "敌人配置=%s｜武器=%s｜HP=%s｜势=%s/%s｜行为=%s｜标签=%s｜意图=%s" % [str(config.get("display_name", "")), str(config.get("weapon", "")), str(config.get("max_hp", "")), str(config.get("start_posture", "")), str(config.get("max_posture", "")), str(config.get("intent_style", "")), ", ".join(config.get("behavior_tags", [])), ", ".join(config.get("preferred_intents", []))]
+	if config.is_empty(): return "enemy_source=%s｜enemy_config=空" % enemy_source_text()
+	return "enemy_source=%s｜敌人配置=%s｜武器=%s｜HP=%s｜势=%s/%s｜行为=%s｜标签=%s｜意图=%s" % [enemy_source_text(), str(config.get("display_name", "")), str(config.get("weapon", "")), str(config.get("max_hp", "")), str(config.get("start_posture", "")), str(config.get("max_posture", "")), str(config.get("intent_style", "")), ", ".join(config.get("behavior_tags", [])), ", ".join(config.get("preferred_intents", []))]
 
 static func enemy_config_full_text() -> String:
 	var config := get_enemy_config()
-	if config.is_empty(): return "敌人详细配置：空｜%s" % player_profile_debug_text()
-	return "%s｜battle_id=%s｜敌人详细配置：%s｜身份=%s｜武器=%s｜HP=%s｜势=%s/%s｜行为=%s｜标签=%s｜意图=%s｜说明=%s" % [player_profile_debug_text(), get_battle_id(), str(config.get("display_name", "")), str(config.get("narrative_identity", "")), str(config.get("weapon", "")), str(config.get("max_hp", "")), str(config.get("start_posture", "")), str(config.get("max_posture", "")), str(config.get("intent_style", "")), ", ".join(config.get("behavior_tags", [])), ", ".join(config.get("preferred_intents", [])), str(config.get("ai_note", ""))]
+	if config.is_empty(): return "enemy_source=%s｜敌人详细配置：空｜%s" % [enemy_source_text(), player_profile_debug_text()]
+	return "%s｜enemy_source=%s｜battle_id=%s｜敌人详细配置：%s｜身份=%s｜武器=%s｜HP=%s｜势=%s/%s｜行为=%s｜标签=%s｜意图=%s｜说明=%s" % [player_profile_debug_text(), enemy_source_text(), get_battle_id(), str(config.get("display_name", "")), str(config.get("narrative_identity", "")), str(config.get("weapon", "")), str(config.get("max_hp", "")), str(config.get("start_posture", "")), str(config.get("max_posture", "")), str(config.get("intent_style", "")), ", ".join(config.get("behavior_tags", [])), ", ".join(config.get("preferred_intents", [])), str(config.get("ai_note", ""))]
 
 static func _write_meta() -> void:
 	Engine.set_meta(META_ENCOUNTER_ID, encounter_id)
