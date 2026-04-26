@@ -1,0 +1,17 @@
+id	flow_enabled	implementation_status	note
+military_order	true	playable	当前 MVP 主流程节点：军令巡海
+beach_ambush	true	playable	当前 MVP 主流程战斗节点：海边伏击
+beach_ambush_aftermath	true	playable	当前 MVP 主流程战后处理节点：海边伏击后处理
+fishing_village_embers	true	playable	当前 MVP 主流程战斗节点：渔村残火
+fishing_village_embers_aftermath	true	playable	当前 MVP 主流程战后处理节点：渔村残火后处理
+merchant_banquet	false	reserved	保留节点；当前不进入 MVP 主流程
+ming_firearm	true	playable	当前 MVP 主流程旧物节点：明制火器
+altered_military_report	true	playable	当前 MVP 主流程旧物节点：涂改军报
+transport_officer	true	playable	当前 MVP 主流程精英战斗节点：失械案押运官
+transport_officer_aftermath	true	playable	当前 MVP 主流程战后处理节点：押运官后处理
+mutiny_camp	false	reserved	保留节点；已按战斗/战后处理规范拆分，但当前不进入 MVP 主流程
+mutiny_camp_aftermath	false	reserved	保留节点；欠饷营战后处理，当前不进入 MVP 主流程
+military_messenger	false	reserved	保留节点；当前不进入 MVP 主流程
+night_knife_camp	true	playable	当前 MVP 主流程事件节点：夜半磨刀
+wakou_boss	true	playable	当前 MVP 主流程 Boss 节点：小股倭寇首领
+military_coverup	true	playable	当前 MVP 主流程结尾节点：军门压案
