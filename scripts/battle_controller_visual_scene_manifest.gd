@@ -91,7 +91,7 @@ func _update_original_background_motion(delta: float) -> void:
 	background_texture.position = Vector2(pan_x, pan_y)
 
 func _update_original_scene_label(config: Dictionary) -> void:
-	var label_text: String = "战斗场景｜%s｜battle_id=%s" % [str(config.get("label", battle_scene_id)), battle_scene_id]
+	var label_text: String = "战斗场景｜%s｜battle_id=%s｜enemy_source=%s" % [str(config.get("label", battle_scene_id)), battle_scene_id, NarrativeBattleContext.enemy_source_text()]
 	if phase_label != null:
 		phase_label.text = label_text
 	if battle_log_strip != null and not battle_active:
