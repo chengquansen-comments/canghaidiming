@@ -252,15 +252,66 @@ func _player_config(role_id: String, profile: Dictionary) -> Dictionary:
 	return {"name":str(profile.get("career", "长枪武官")), "weapon":str(profile.get("weapon", "长枪")), "max_hp":int(profile.get("max_hp", 38)), "hp":int(profile.get("hp", profile.get("max_hp", 38))), "max_momentum":int(profile.get("max_posture", 10)), "momentum":int(profile.get("posture", 6)), "realm":realm, "qinggong":1, "position":2, "facing":"right", "preferred":[3,4,5], "deck":_spear_cards(realm)}
 
 func _enemy_config(encounter: String) -> Dictionary:
+	var manifest_enemy: Dictionary = NarrativeBattleContext.get_enemy_config()
+	if not manifest_enemy.is_empty() and NarrativeBattleContext.enemy_source_text() == "manifest":
+		return _enemy_runtime_config_from_manifest(encounter, manifest_enemy)
+	return _enemy_fallback_config(encounter)
+
+func _enemy_runtime_config_from_manifest(encounter: String, manifest_enemy: Dictionary) -> Dictionary:
+	var mapping: Dictionary = NarrativeBattleContext.get_battle_mapping()
+	var role_sheet: String = str(manifest_enemy.get("role_sheet", "enemy_spearman"))
+	var enemy_family: String = str(mapping.get("enemy_family", "spearman"))
+	return {
+		"name": str(manifest_enemy.get("display_name", "敌人")),
+		"weapon": str(manifest_enemy.get("weapon", "兵器")),
+		"max_hp": int(manifest_enemy.get("max_hp", 26)),
+		"hp": int(manifest_enemy.get("max_hp", 26)),
+		"max_momentum": int(manifest_enemy.get("max_posture", 10)),
+		"momentum": int(manifest_enemy.get("start_posture", 4)),
+		"realm": _enemy_realm_from_manifest(mapping),
+		"qinggong": _enemy_qinggong_from_manifest(role_sheet),
+		"position": 6,
+		"facing": "left",
+		"preferred": _enemy_preferred_from_manifest(role_sheet, enemy_family),
+		"deck": _enemy_deck_from_manifest(encounter, role_sheet, enemy_family)
+	}
+
+func _enemy_realm_from_manifest(mapping: Dictionary) -> int:
+	var difficulty: String = str(mapping.get("difficulty", "normal"))
+	match difficulty:
+		"tutorial_elite": return 1
+		"normal": return 1
+		"elite": return 2
+		"boss": return 3
+		_: return 1
+
+func _enemy_qinggong_from_manifest(role_sheet: String) -> int:
+	if role_sheet.find("blademaster") >= 0:
+		return 2
+	return 1
+
+func _enemy_preferred_from_manifest(role_sheet: String, enemy_family: String) -> Array:
+	if role_sheet.find("blademaster") >= 0 or enemy_family == "blademaster":
+		return [0, 1, 2]
+	return [3, 4, 5]
+
+func _enemy_deck_from_manifest(encounter: String, role_sheet: String, enemy_family: String) -> Array:
+	if encounter == "enc_prologue_master_rescue":
+		return _enemy_intro_cards()
+	if encounter == "enc_transport_officer":
+		return _enemy_officer_cards()
+	if encounter == "enc_wakou_boss":
+		return _enemy_boss_cards()
+	if role_sheet.find("blademaster") >= 0 or enemy_family == "blademaster":
+		return _enemy_officer_cards()
+	return _enemy_spear_cards()
+
+func _enemy_fallback_config(encounter: String) -> Dictionary:
 	match encounter:
-		"enc_prologue_master_rescue":
-			return {"name":"袭村刀手", "weapon":"短刃", "max_hp":22, "hp":22, "max_momentum":8, "momentum":2, "realm":1, "qinggong":1, "position":6, "facing":"left", "preferred":[0,1,2], "deck":_enemy_intro_cards()}
-		"enc_transport_officer":
-			return {"name":"押运官", "weapon":"腰刀", "max_hp":34, "hp":34, "max_momentum":10, "momentum":5, "realm":2, "qinggong":2, "position":6, "facing":"left", "preferred":[0,1,2], "deck":_enemy_officer_cards()}
-		"enc_wakou_boss":
-			return {"name":"小股首领", "weapon":"倭刀", "max_hp":42, "hp":42, "max_momentum":12, "momentum":6, "realm":3, "qinggong":2, "position":6, "facing":"left", "preferred":[0,1,2], "deck":_enemy_boss_cards()}
-		_:
-			return {"name":"敌方枪手", "weapon":"长枪", "max_hp":26, "hp":26, "max_momentum":10, "momentum":4, "realm":1, "qinggong":1, "position":6, "facing":"left", "preferred":[3,4,5], "deck":_enemy_spear_cards()}
+		"enc_prologue_master_rescue": return {"name":"袭村刀手", "weapon":"短刃", "max_hp":22, "hp":22, "max_momentum":8, "momentum":2, "realm":1, "qinggong":1, "position":6, "facing":"left", "preferred":[0,1,2], "deck":_enemy_intro_cards()}
+		"enc_transport_officer": return {"name":"押运官", "weapon":"腰刀", "max_hp":34, "hp":34, "max_momentum":10, "momentum":5, "realm":2, "qinggong":2, "position":6, "facing":"left", "preferred":[0,1,2], "deck":_enemy_officer_cards()}
+		"enc_wakou_boss": return {"name":"小股首领", "weapon":"倭刀", "max_hp":42, "hp":42, "max_momentum":12, "momentum":6, "realm":3, "qinggong":2, "position":6, "facing":"left", "preferred":[0,1,2], "deck":_enemy_boss_cards()}
+		_: return {"name":"敌方枪手", "weapon":"长枪", "max_hp":26, "hp":26, "max_momentum":10, "momentum":4, "realm":1, "qinggong":1, "position":6, "facing":"left", "preferred":[3,4,5], "deck":_enemy_spear_cards()}
 
 func _c(id: String, name: String, min_d: int, max_d: int, cost: int, role: String, gain: int, brk: int, dmg: int, guard: int, tags: Array, style: String, facing: bool = true) -> Dictionary:
 	return {"id":id, "name":name, "min":min_d, "max":max_d, "cost":cost, "role":role, "gain":gain, "break":brk, "damage":dmg, "guard":guard, "tags":tags, "style":style, "facing":facing}
