@@ -6,6 +6,7 @@ extends "res://scripts/narrative_demo_choice_combat_controller.gd"
 var showing_prologue_choice_result: bool = false
 var prologue_choice_result_text: String = ""
 var prologue_choice_result_delta_text: String = ""
+var prologue_sentence_index: int = 0
 
 func _render_prologue() -> void:
 	var step_data: Dictionary = _prologue_step_data(step_index)
@@ -25,14 +26,18 @@ func _render_prologue() -> void:
 		_add_button(choices_box, "继续", _on_continue_after_prologue_choice_result)
 		return
 
-	body_label.text = _prologue_step_text(step_index)
-	if step_index == PROLOGUE_CAREER_STEP:
+	body_label.text = _current_prologue_story_text()
+	if _is_prologue_story_complete() and step_index == PROLOGUE_CAREER_STEP:
 		body_label.text += "\n\n[b]%s[/b]" % _career_prompt_text()
-	if not last_hint.is_empty():
+	if not last_hint.is_empty() and _is_prologue_story_complete():
 		body_label.text += "\n\n[i]%s[/i]" % _fragmented_hint(last_hint)
 	vars_label.text = _vars_text()
 	_add_placeholder(map_buttons_box, "")
 	_add_placeholder(combat_buttons_box, "")
+
+	if not _is_prologue_story_complete():
+		_add_button(choices_box, "继续", _on_continue_prologue_sentence)
+		return
 
 	if step_index == PROLOGUE_CAREER_STEP:
 		for i in range(CAREERS.size()):
@@ -56,6 +61,30 @@ func _prologue_display_status(step_data: Dictionary) -> String:
 	if not step_type.is_empty():
 		return step_type
 	return ""
+
+func _prologue_story_segments() -> Array[String]:
+	var segments: Array[String] = []
+	_append_text_segments(segments, _prologue_step_text(step_index))
+	if segments.is_empty():
+		segments.append("")
+	return segments
+
+func _is_prologue_story_complete() -> bool:
+	var segments := _prologue_story_segments()
+	return prologue_sentence_index >= segments.size() - 1
+
+func _current_prologue_story_text() -> String:
+	var segments := _prologue_story_segments()
+	var safe_index = clamp(prologue_sentence_index, 0, segments.size() - 1)
+	return str(segments[safe_index])
+
+func _on_continue_prologue_sentence() -> void:
+	prologue_sentence_index += 1
+	_render()
+
+func _on_continue_prologue() -> void:
+	prologue_sentence_index = 0
+	super._on_continue_prologue()
 
 func _prologue_map_title() -> String:
 	var steps := _prologue_steps()
@@ -164,6 +193,7 @@ func _consume_battle_result_if_needed() -> void:
 	if source_id == "prologue_master_rescue":
 		in_prologue = true
 		step_index = PROLOGUE_MASTER_RESCUE_STEP
+		prologue_sentence_index = _prologue_story_segments().size() - 1
 		if result == "win":
 			var pending_choice := _load_pending_choice()
 			var effects := _choice_effects(pending_choice)
@@ -184,6 +214,7 @@ func _on_continue_after_prologue_choice_result() -> void:
 	prologue_choice_result_text = ""
 	prologue_choice_result_delta_text = ""
 	step_index = PROLOGUE_AFTER_MASTER_BATTLE_STEP
+	prologue_sentence_index = 0
 	last_hint = ""
 	_render()
 
@@ -191,4 +222,5 @@ func _restart() -> void:
 	showing_prologue_choice_result = false
 	prologue_choice_result_text = ""
 	prologue_choice_result_delta_text = ""
+	prologue_sentence_index = 0
 	super._restart()
