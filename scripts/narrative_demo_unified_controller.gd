@@ -52,12 +52,14 @@ func _prologue_display_title(step_data: Dictionary) -> String:
 	return str(step_data.get("id", "prologue"))
 
 func _prologue_display_status(step_data: Dictionary) -> String:
-	var status := str(step_data.get("status", ""))
-	if not status.is_empty():
-		return status
-	var step_title := str(step_data.get("title", ""))
-	if not step_title.is_empty():
-		return step_title
+	var column := str(step_data.get("column", ""))
+	var step_type := str(step_data.get("type", ""))
+	if not column.is_empty() and not step_type.is_empty():
+		return "%s / %s" % [column, step_type]
+	if not column.is_empty():
+		return column
+	if not step_type.is_empty():
+		return step_type
 	return str(step_data.get("id", "prologue"))
 
 func _prologue_map_title() -> String:
