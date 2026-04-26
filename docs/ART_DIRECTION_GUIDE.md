@@ -1,96 +1,115 @@
 # 《大明之沧海嘀鸣》美术风格基准文档
 
-> 版本：v0.2  
+> 版本：v0.3  
 > 对齐分支：`main`  
-> 对齐依据：`data/narrative_mvp_nodes.json` v2、`data/battle_scene_manifest.json`、`data/performance_tracks.json`  
+> 当前叙事源表：`tables/narrative_mvp_prologue_steps.tsv`、`tables/narrative_mvp_nodes.tsv`  
+> 辅助参考：`data/battle_scene_manifest.json`、`data/performance_tracks.json`  
 > 适用范围：战斗背景、剧情演出背景、叙事道具、角色剪影、UI 包装、主视觉方向。
 
 ---
 
-## 0. 当前实装状态摘要
+## 0. 当前口径声明
 
-当前实装剧情已经形成稳定的“序章十二拍 + 第一幕节点链 + 多结局变体”结构。
+当前美术管线以 `tables/` 下 TSV 为叙事源表，不再以旧版 `data/narrative_mvp_nodes.json` 作为剧情判断主依据。
 
-### 0.1 序章核心节拍
-
-序章不是完整说明，而是一组压缩镜头：
+必须优先对齐：
 
 ```text
-黑潮 → 父亲藏子 → 倭刀敲门 → 父母遇害 → 木刀无效 → 主角倒地 → 师父接敌 → 敌人口吐“军” → 岸上暗箭 → 十年后出山
+tables/narrative_mvp_prologue_steps.tsv
+tables/narrative_mvp_nodes.tsv
 ```
 
-序章视觉基准：
+这意味着：
 
-- 黑潮、柴堆、火光、母亲的鞋、木刀、师父挡眼、箭从岸上来。
-- 不能提前解释“谁是内鬼”，只强调“不是海上，不是倭人”。
-
-### 0.2 第一幕实装节点
-
-当前第一幕节点：
-
-```text
-military_order
-beach_ambush
-fishing_village_embers
-merchant_banquet
-ming_firearm
-altered_military_report
-transport_officer
-mutiny_camp
-military_messenger
-night_knife_camp
-wakou_boss
-military_coverup
-```
-
-其中已有正式战斗背景挂接的战斗节点：
-
-```text
-prologue_master_rescue
-first_act_beach_ambush
-first_act_fishing_village_embers
-first_act_transport_officer
-first_act_mutiny_camp
-first_act_wakou_boss
-```
-
-当前 `performance_tracks.json` 已有演出 track 的节点 / 镜头：
-
-```text
-black_tide_0
-black_tide_1
-black_tide_2
-black_tide_3
-master_rescue
-arrow_silence
-departure
-military_order
-beach_ambush
-ming_firearm
-transport_officer
-wakou_boss
-military_coverup
-node
-```
-
-仍需补专属演出 track 的重点节点：
-
-```text
-fishing_village_embers
-merchant_banquet
-altered_military_report
-mutiny_camp
-military_messenger
-night_knife_camp
-```
+- 第一幕节点已从原先的连续事件节点，拆成“遭遇 → 战斗 → 战后处理”的更明确结构。
+- 关键战斗节点的 `combat.enabled` 不再直接放在 node 顶层，而是放在 choice 的 `combat` 字段里触发。
+- 资源和演出必须支持 aftermath 节点，而不是只服务战斗前节点。
+- 数值变量名以 TSV 为准：`military_merit`、`clean_reputation`、`case_clues`。
 
 ---
 
-## 1. 项目美术定位
+## 1. 当前实装剧情结构
+
+### 1.1 序章十二拍：黑海潮生
+
+源表：`tables/narrative_mvp_prologue_steps.tsv`
+
+当前序章标题为：
+
+```text
+序章：黑海潮生
+```
+
+序章按 `column` 分为四段：
+
+| column | steps | 视觉主题 |
+|---|---|---|
+| 旧村 | `black_tide` / `father` / `door` / `dead` / `wooden_blade` / `fall` | 黑潮、旧村、柴堆、敲门、父母遇害、木刀无效、母亲的鞋 |
+| 救场 | `master_arrives` / `three_cards` | 旧甲味、师父挡眼、换我、刀/步/断气 |
+| 旧案 | `military_word` / `hidden_arrow` / `dont_look` | “军……”、黑箭、不是海上、不是倭人、老兵一直看着箭 |
+| 出山 | `departure` | 十年后，学刀学枪学活，师父还刀，该走了 |
+
+序章的核心视觉句：
+
+```text
+黑潮没有远过。
+箭从岸上来。
+后来，你叫他师父。
+```
+
+序章美术重点：
+
+- 师父不只是“救援者”，而是“旧甲味 + 看着黑箭的人”。
+- 主角成长不是升官动机，而是追问那支箭从哪来。
+- `fall` 已更新为“父亲没有再说话，母亲的鞋停在火边”，需补母亲鞋 / 火边小物件。
+- `departure` 已更新为“学刀，学枪，学怎么活”，需支持训练、还刀、十年潮声。
+
+### 1.2 第一幕节点链：16 个 TSV 节点
+
+源表：`tables/narrative_mvp_nodes.tsv`
+
+当前第一幕节点顺序：
+
+```text
+1. military_order
+2. beach_ambush
+3. beach_ambush_aftermath
+4. fishing_village_embers
+5. fishing_village_embers_aftermath
+6. merchant_banquet
+7. ming_firearm
+8. altered_military_report
+9. transport_officer
+10. transport_officer_aftermath
+11. mutiny_camp
+12. mutiny_camp_aftermath
+13. military_messenger
+14. night_knife_camp
+15. wakou_boss
+16. military_coverup
+```
+
+当前结构特征：
+
+- `beach_ambush` / `fishing_village_embers` / `transport_officer` / `mutiny_camp` 是“遭遇节点”，通过 choice 触发战斗。
+- `beach_ambush_aftermath` / `fishing_village_embers_aftermath` / `transport_officer_aftermath` / `mutiny_camp_aftermath` 是“战后处理节点”，负责军功、清望、线索分流。
+- `wakou_boss` 当前没有单独 aftermath 节点，三种处理直接放在本节点 choice 中。
+- `night_knife_camp` 已加入“火器刻印”线索，师父反应成为重点美术信号。
+
+---
+
+## 2. 项目美术定位
 
 《大明之沧海嘀鸣》的美术不是泛古风、泛武侠，而是：
 
 > 明代海疆军武世界中的旧案、压案、忠义与牺牲。
+
+当前叙事更准确的美术主轴是：
+
+```text
+海上来的未必是真凶。
+岸上射来的箭，军门压下的案，才是潮声不散的原因。
+```
 
 玩家第一眼应感受到：
 
@@ -99,53 +118,46 @@ night_knife_camp
 - 卫所、军旗、军械、火器与案卷
 - 倭寇暗袭与海商阴影
 - 旧案未明、证据残缺、官泥未干
+- 战后处理的道德压力：报功、留证、救人、收编、压案
 - 动作先于解释，情绪先于真相
-
-当前实装叙事的核心视觉句：
-
-```text
-倭寇从海上来。
-箭从岸上来。
-```
-
-这句话应成为第一幕所有美术资源的主控原则。
 
 ---
 
-## 2. 视觉总原则
+## 3. 视觉总原则
 
-### 2.1 不直接解释阴谋，只呈现痕迹
+### 3.1 不直接解释阴谋，只呈现痕迹
 
 美术不应直接画出“谁是幕后黑手”，而应画出：
 
 - 官泥
 - 官造二字
+- 新封泥
+- 火器刻印
 - 缺页案卷
-- 未干封泥
-- 火器箱
-- 被涂改的军报
+- 涂改军报
+- 半页名册
+- 无封泥信封
+- 第二封信
+- 空车
 - 空粮袋
-- 深车辙
-- 暗箭
-- 破船
-- 低垂军旗
-- 师父旧刀
+- 账本泡烂
+- 火器箱
+- 黑箭
 - 木匣不见
+- 师父旧刀
 
-### 2.2 动作先于说明
+### 3.2 遭遇与战后处理要区分美术语法
 
-当前剧情已经明确要求“动作先于解释；不说真相，只说痕迹”。美术执行时必须优先给行动瞬间：
+TSV 已把多个节点拆成“遭遇 / 战后处理”。美术上必须区分：
 
-- 师父挡眼 / 挡箭
-- 主角木刀打在甲片上
-- 枪尖从芦苇里出来
-- 烟里有人影，刀光很低
-- 押运官说“你不该翻箱”
-- 欠饷营头举枪，不是为了海寇
-- 倭首坐在火器箱上，看岸，不看海
-- 军门案卷正好少了一页
+| 类型 | 美术重心 | 示例 |
+|---|---|---|
+| 遭遇节点 | 动作、压迫、战斗触发 | 枪尖出来、烟里刀光、押运官阻拦、营头举枪 |
+| 战后处理节点 | 证据、选择、后果 | 尸体脚印、村后火痕、半页名册、跪下的人、账本泡烂 |
 
-### 2.3 情绪克制，不做热血爽图
+不能把 aftermath 继续做成战斗前同一张图的重复。
+
+### 3.3 情绪克制，不做热血爽图
 
 整体气质应为：
 
@@ -153,21 +165,23 @@ night_knife_camp
 冷、压、旧、沉、黑、湿、雾、火光很少但刺眼。
 ```
 
+尤其 aftermath 节点要更冷、更静、更像“战斗结束后证据还在”。
+
 避免：
 
 - 大面积高饱和红色
 - 仙侠光效
 - 过度华丽粒子
-- 过亮的火焰
+- 过亮火焰
 - 卡通化人物
 - 日漫式二次元立绘感
-- 把阴谋人物直接画成反派脸
+- 直接画明幕后反派
 
 ---
 
-## 3. 色彩规范
+## 4. 色彩规范
 
-### 3.1 主色板
+### 4.1 主色板
 
 | 用途 | 色值 | 说明 |
 |---|---:|---|
@@ -180,23 +194,30 @@ night_knife_camp
 | 暗朱红 | `#7e2e28` / `#8f2f27` | 火光、血线、军旗、封泥、箭线 |
 | 暗金 | `#8a6a3a` | 官印、甲片边缘、火器铭痕 |
 
-### 3.2 按节点的色彩分组
+### 4.2 按节点组色彩策略
 
 | 节点组 | 色彩策略 |
 |---|---|
-| 序章黑潮 | 黑灰、海雾灰蓝、少量暗朱红远火 |
-| 海边伏击 / Boss | 冷灰蓝、黑礁、暗箭朱线 |
-| 渔村残火 | 烟灰、米色、后场暗火 |
+| 序章旧村 | 黑灰、海雾灰蓝、火边暗朱红 |
+| 海边伏击 | 冷灰蓝、黑礁、官泥土黄、暗箭朱线 |
+| 海边战后 | 更低饱和沙灰、尸体黑影、脚印残留 |
+| 渔村残火 | 烟灰、米色、村后暗火 |
+| 渔村战后 | 黑烟渐低、冷灰、火痕暗红、孩子线索 |
 | 海商 / 火器 | 暗金、铁黑、热酒暗红、雨灰 |
-| 军报 / 军门压案 | 宣纸米、墨黑、封泥暗红 |
-| 押运官 / 欠饷营 | 土黄灰、黑灰、低饱和军旗红 |
-| 夜半磨刀 | 深夜黑灰、铁黑、极少营火红 |
+| 涂改军报 | 宣纸米、墨黑、破庙灰、血暗红 |
+| 押运官 | 土黄灰、泥路黑灰、名册米色 |
+| 押运官战后 | 湿纸、空车、泥水、半页名册焦点 |
+| 欠饷营 | 土黄灰、低饱和军旗红、饥饿黑影 |
+| 欠饷营战后 | 更静、更冷，重点在跪下的人和账本 |
+| 军门信使 | 雨灰、冷蓝、马影黑、信封米色 |
+| 夜半磨刀 | 深夜黑灰、铁黑、火边火器刻印暗金 |
+| Boss / 压案 | 破船冷蓝灰、火器箱暗金、军门案房米黑 |
 
 ---
 
-## 4. 构图规范
+## 5. 构图规范
 
-### 4.1 战斗背景构图
+### 5.1 战斗背景构图
 
 战斗背景需要兼顾氛围与可读性：
 
@@ -218,33 +239,18 @@ battle_bg_broken_ship.svg
 battle_bg_training_ground.svg
 ```
 
-### 4.2 剧情演出背景构图
+### 5.2 剧情演出背景构图
 
 剧情表演区比战斗背景更强调叙事痕迹：
 
-- 可增加局部特写，例如封泥、案卷、火器箱、旧刀。
-- 人物多用剪影，不急于使用精绘立绘。
-- 镜头可从物件推进到人物，而不是直接给完整解释。
-- 同一节点至少保留一个“可记忆物件”。
-
-当前已有资源池但尚未全部挂接：
-
-```text
-assets/narrative/props/prop_casefile_missing_page.svg
-assets/narrative/props/prop_firearm_crate.svg
-assets/narrative/props/prop_unsealed_letter.svg
-assets/narrative/silhouettes/sil_master_blocks_arrow.svg
-assets/narrative/silhouettes/sil_wakou_ambusher.svg
-assets/narrative/silhouettes/sil_transport_officer_shadow.svg
-assets/narrative/silhouettes/sil_starving_soldier_shadow.svg
-assets/narrative/silhouettes/sil_wakou_boss_shadow.svg
-```
-
-下一步重点不是继续散做资源，而是把这些资源挂入 `performance_tracks.json` 或对应演出配置结构。
+- 遭遇节点：人物压迫 + 场景主体。
+- aftermath 节点：物证特写 + 沉默空间。
+- 线索节点：道具焦点，如军报、火器刻印、信封、名册。
+- 师父相关节点：避免直说秘密，表现“手停了一下”“一直看着黑箭”“用袖口盖住刻印”。
 
 ---
 
-## 5. SVG 资产规范
+## 6. SVG 资产规范
 
 当前 Web 构建阶段优先使用 SVG。要求：
 
@@ -269,9 +275,9 @@ assets/narrative/silhouettes/sil_<role_or_action>.svg
 
 ---
 
-## 6. 场景资产标准
+## 7. 场景资产标准
 
-### 6.1 战斗背景完成标准
+### 7.1 战斗背景完成标准
 
 一张正式战斗背景至少满足：
 
@@ -281,7 +287,7 @@ assets/narrative/silhouettes/sil_<role_or_action>.svg
 4. 不遮挡战斗角色、格位和 UI。
 5. 色调与项目主色板一致。
 6. 不含内嵌标题文字。
-7. 与对应 narrative node 的视觉意象一致。
+7. 与对应 TSV node 的视觉意象一致。
 
 当前 battle 背景状态：
 
@@ -295,62 +301,75 @@ assets/narrative/silhouettes/sil_<role_or_action>.svg
 | `battle_bg_broken_ship.svg` | `DONE_BASE` | 已有破船、火器箱、倭首、岸上暗箭 |
 | `battle_bg_training_ground.svg` | `DONE_BASE` | 已有枪架、刀靶、校场木架 |
 
-### 6.2 剧情演出完成标准
+### 7.2 剧情演出完成标准
 
 一段正式剧情演出至少满足：
 
-1. 有专属 `timeline` track，不能长期只走 `node` fallback。
-2. 有明确 focus：人物、物件、火光、雾、暗层之一。
-3. 有一个可挂接的 prop 或 silhouette。
-4. 与 narrative node 的文案痕迹一致。
-5. 不直接揭示幕后真相。
+1. 对应 TSV node，而不是只对应旧 JSON node。
+2. 有专属 `timeline` track，不能长期只走 `node` fallback。
+3. 有明确 focus：人物、物件、火光、雾、暗层之一。
+4. 有一个可挂接的 prop 或 silhouette。
+5. 与 TSV 文案痕迹一致。
+6. 不直接揭示幕后真相。
 
-当前需要优先补 track 的节点：
+当前需要优先补 track 的节点包括：
 
 ```text
+beach_ambush_aftermath
 fishing_village_embers
+fishing_village_embers_aftermath
 merchant_banquet
 altered_military_report
+transport_officer_aftermath
 mutiny_camp
+mutiny_camp_aftermath
 military_messenger
 night_knife_camp
 ```
 
 ---
 
-## 7. 角色资产规范
+## 8. 角色与道具资产规范
 
-### 7.1 角色风格
-
-角色方向应为：
+### 8.1 当前已有资源池
 
 ```text
-国风写实概念设定
-明代甲胄与军服参考
-半剪影式剧情表现
-少表情，多姿态
-人物像从案卷、海雾和火光里浮出来
+assets/narrative/props/prop_casefile_missing_page.svg
+assets/narrative/props/prop_firearm_crate.svg
+assets/narrative/props/prop_unsealed_letter.svg
+assets/narrative/silhouettes/sil_master_blocks_arrow.svg
+assets/narrative/silhouettes/sil_wakou_ambusher.svg
+assets/narrative/silhouettes/sil_transport_officer_shadow.svg
+assets/narrative/silhouettes/sil_starving_soldier_shadow.svg
+assets/narrative/silhouettes/sil_wakou_boss_shadow.svg
 ```
 
-第一阶段优先使用剪影，避免过早进入精绘立绘。
+### 8.2 TSV 口径下的 P0 新增资源
 
-### 7.2 当前 P0 角色资产状态
-
-| 角色 / 动作 | 当前资产 | 状态 | 下一步 |
-|---|---|---|---|
-| 师父挡箭 / 挡刀 | `sil_master_blocks_arrow.svg` | `DONE_BASE` | 挂入序章演出 |
-| 倭寇伏击者 | `sil_wakou_ambusher.svg` | `DONE_BASE` | 挂入 beach_ambush 或演出资源池 |
-| 押运官 | `sil_transport_officer_shadow.svg` | `DONE_BASE` | 挂入 transport_officer |
-| 饥饿士兵 | `sil_starving_soldier_shadow.svg` | `DONE_BASE` | 挂入 mutiny_camp |
-| 倭寇首领 | `sil_wakou_boss_shadow.svg` | `DONE_BASE` | 挂入 wakou_boss |
-| 主角青年武官 | 暂无独立正式立绘 | `NEEDS_ASSET` | 半身、战斗站姿、头像 |
-| 海商 | 暂无 | `NEEDS_ASSET` | 宴席剪影、半身剪影 |
-| 军门信使 | 暂无骑马剪影 | `NEEDS_ASSET` | 雨中信使、马影 |
-| 师父旧刀 | 暂无 prop | `NEEDS_ASSET` | 夜半磨刀节点优先 |
+```text
+prop_mother_shoe_by_fire.svg
+prop_wooden_training_blade.svg
+prop_military_order_seal.svg
+prop_coastal_patrol_map.svg
+prop_official_mud_bootprint.svg
+prop_burnt_bowl.svg
+prop_wine_cup_key.svg
+prop_firearm_seal_mark.svg
+prop_altered_military_report.svg
+prop_half_roster_wet.svg
+prop_soaked_payroll_book.svg
+prop_old_master_saber.svg
+prop_empty_wooden_case.svg
+sil_father_hiding_child.svg
+sil_coughing_child_shadow.svg
+sil_merchant_shadow.svg
+sil_messenger_on_horse_shadow.svg
+sil_grinding_saber_shadow.svg
+```
 
 ---
 
-## 8. UI 视觉规范
+## 9. UI 视觉规范
 
 UI 不应是泛古风边框，而应围绕：
 
@@ -364,55 +383,44 @@ UI 不应是泛古风边框，而应围绕：
 刀谱残页
 ```
 
-### 8.1 关键 UI 组件方向
-
-| UI 组件 | 美术方向 |
-|---|---|
-| 剧情文本框 | 案卷纸、淡墨边缘、缺页纹理 |
-| 选项按钮 | 军令牌 / 木签 / 朱砂批注 |
-| 战斗卡牌 | 武学招式谱 / 兵书残页 |
-| 敌人意图 | 刀光、枪势、火器、暗箭图标 |
-| 势 Posture | 墨痕 / 气势槽 |
-| 血量 | 暗朱红封线 |
-| 地图节点 | 海防图上的朱砂点 / 官印点 |
-
-UI 下一阶段应优先服务三类信息：
+UI 下一阶段应优先服务 TSV 中的三类变量：
 
 ```text
-军功 jun_gong
-清望 qing_wang
-线索 clues
+military_merit
+clean_reputation
+case_clues
 ```
 
-因为当前结局已经围绕这三类变量分化。
+不要再使用旧口径 `jun_gong / qing_wang / clues`。
 
 ---
 
-## 9. 节点视觉一致性规则
+## 10. 节点视觉一致性规则
 
-每个 narrative node 与 battle_id 应共享同一套视觉意象。
+每个美术资源必须回查 TSV node，而不是旧 JSON 文案。
 
-| 节点 | 当前实装视觉意象 |
+| 节点 | 当前 TSV 视觉意象 |
 |---|---|
-| 序章 | 黑潮、柴堆、火光、木刀、师父、岸上暗箭 |
-| 军令巡海 | 湿旗、军令、未干墨、旧案禁声 |
-| 海边伏击 | 整齐脚印、官泥、芦苇枪尖、伏击倭影 |
-| 渔村残火 | 残村、黑烟、孩子咳嗽、火从村后起 |
-| 海商宴 | 雨夜海商宅、热酒、冷兵、屏风后火器箱 |
-| 明制火器 | 倭船舱、官造火器、木箱半开 |
-| 涂改军报 | 破庙、倒神像、香炉下军报、墨比血新 |
-| 押运官 | 山道、空车、深车辙、押运名册 |
-| 欠饷营 | 营门、军旗、无粮、欠饷、不是倭寇也挡路 |
-| 军门信使 | 雨、喘马、无封泥信封、第二封信 |
-| 夜半磨刀 | 深夜营地、雨停、旧刀、令迟了 |
-| 倭寇首领 | 破船、火器箱、倭首坐箱、看岸不看海 |
-| 军门压案 | 灯火、缺页案卷、朱批、木匣不见 |
-
-如果剧情背景、战斗背景、文案和角色剪影的意象不一致，优先调整美术资源，不优先改叙事配置。
+| `military_order` | 军令压案、墨未干、旧案不得声张、师父没有抬头 |
+| `beach_ambush` | 整齐脚印、像营里走出来、芦苇枪尖、官泥 |
+| `beach_ambush_aftermath` | 尸体、脚印还在、割首/搜身/掩埋 |
+| `fishing_village_embers` | 残村、孩子咳嗽、船未靠岸、村心先烧、烟里刀光 |
+| `fishing_village_embers_aftermath` | 黑烟渐低、村后火痕、追人/救人/看火 |
+| `merchant_banquet` | 雨夜海商宅、热酒冷兵、屏风后火器箱、酒盏旁钥匙 |
+| `ming_firearm` | 倭船舱、木箱半开、官造火器、新封泥 |
+| `altered_military_report` | 破庙、倒神像、香炉下军报、墨比血新、少的是人 |
+| `transport_officer` | 山道空车、深车辙、不该翻箱、袖口半页名册 |
+| `transport_officer_aftermath` | 空车、半页湿名册、押运官还活着、交给谁 |
+| `mutiny_camp` | 营门、军旗、无粮、饷银没到、营头举枪不是为了海寇 |
+| `mutiny_camp_aftermath` | 跪下的人、军粮仍无、写成反/饥/账 |
+| `military_messenger` | 雨中信使、马先喘、无封泥信封、第二封信 |
+| `night_knife_camp` | 深夜磨旧刀、火器刻印、师父手停、见过但不能再问 |
+| `wakou_boss` | 破船、火器箱、倭首坐箱、看岸上、军门火漆 |
+| `military_coverup` | 军门灯火、缺页案卷、朱批、木匣不见、师父站在门外 |
 
 ---
 
-## 10. 禁止事项
+## 11. 禁止事项
 
 1. 禁止把背景路径写死在 GDScript。
 2. 禁止新增第二套战斗背景层。
@@ -424,11 +432,12 @@ UI 下一阶段应优先服务三类信息：
 8. 禁止卡通化、Q版化。
 9. 禁止直接画明阴谋真相。
 10. 禁止为了单张图好看破坏整体色板。
-11. 禁止将未挂接资源误标为已实装演出。
+11. 禁止将旧 JSON 文案误标为最新实装剧情。
+12. 禁止继续使用旧变量名 `jun_gong / qing_wang / clues` 作为 UI 口径。
 
 ---
 
-## 11. 阶段验收口径
+## 12. 阶段验收口径
 
 ### 阶段 A：统一风格样张
 
@@ -445,10 +454,10 @@ UI 下一阶段应优先服务三类信息：
 需完成：
 
 ```text
-1. 把现有 props / silhouettes 挂入 performance_tracks 或演出配置。
-2. 补 fishing_village_embers / merchant_banquet / altered_military_report / mutiny_camp / military_messenger / night_knife_camp 专属演出。
-3. 补主角青年武官、海商、军门信使、师父旧刀等 P0 资源。
-4. UI 形成案卷 / 军令风格。
+1. 补 aftermath 节点的剧情演出资源。
+2. 把现有 props / silhouettes 挂入 performance_tracks 或演出配置。
+3. 补 TSV 新增线索资源：火器刻印、半页湿名册、泡烂账本、母亲鞋、师父旧刀。
+4. UI 变量口径改为 military_merit / clean_reputation / case_clues。
 ```
 
 ### 阶段 C：正式展示包
