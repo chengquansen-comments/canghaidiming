@@ -1,77 +1,104 @@
 # 《大明之沧海嘀鸣》Godot 4 单局 Demo
 
-这是根据 `/Users/happy/Downloads/《大明之沧海嘀鸣》单局设计方案.pdf` 落地的一个 Godot 4 可运行原型，范围按文档第 15 节 MVP 收敛。
+这是一个 Godot 4 可运行原型，当前已经拆成三条入口：剧情 MVP、字符版战斗、视觉版战斗。主入口会按平台路由到桌面或 Web 版 launcher。
 
-## 已实现内容
+## 当前入口
+
+- `scenes/Main.tscn`：总入口，挂载 `scripts/main_runtime_router.gd`
+- 桌面端：`scenes/MainDesktop.tscn`
+  - 进入剧情 MVP：`scenes/NarrativeDemo.tscn`
+  - 进入字符版战斗：`scenes/MainText.tscn`
+  - 进入视觉版战斗：`scenes/MainVisual.tscn`
+- Web 端：`scenes/MainWeb.tscn`
+  - 支持直接进入剧情 MVP 或战斗测试
+  - 支持 query flag：`narrative_mvp` / `smoke_battle`
+
+## 当前已实现内容
 
 - 2 个开局模板
   - `戚家军枪手`：优势距离 `2-3`，强调压势与打断
   - `单刀快手`：优势距离 `1-2`，强调连压与爆发
-- 3 个核心资源
-  - `血`
-  - `势`
-  - `距离（0-3）`
-- 4 类核心卡牌
-  - `步法`
-  - `架势`
-  - `攻击`
-  - `杀招`
-- 6 场连续战斗
-  - 普通敌人 3 个
-  - 精英 2 个
-  - Boss 1 个
-- 1 张带分支的单局路线图
-  - `遭遇战`
-  - `校场`
-  - `行营`
-  - `军令`
-- 3 个关键验证点
-  - `削敌势打断招式`
-  - `完美格挡吸势`
-  - `崩塌后处决`
+- 剧情 MVP
+  - 序章：父母遇害、师父救场、十年后出山
+  - 行军图一：初出山
+  - 剧情节点可跳转到视觉战斗
+  - 战斗结果可返回剧情并继续推进
+- 视觉战斗
+  - 支持 `battle_scene_manifest.json` 场景背景与镜头参数
+  - 支持 `enemy_manifest.json` 中的剧情战敌人、AI 权重与阶段行为
+- 表格编译链路
+  - `tables/*.tsv` 是唯一策划入口
+  - `scripts/compile_tables.py` 生成运行所需 JSON
 
 ## 运行方式
 
 如果本机 `godot` 已在 PATH 中：
 
 ```bash
-cd /Users/happy/Documents/Codex/2026-04-19-files-mentioned-by-the-user-pdf
+cd /Users/happy/Documents/Codex/canghaidiming
 godot --path .
 ```
 
-如果你更习惯编辑器，也可以直接用 Godot 4 打开这个目录。
+如果你更习惯编辑器，也可以直接用 Godot 4 打开项目目录。
 
-## 项目结构
+## 运行源与文档源
 
-- `/Users/happy/Documents/Codex/2026-04-19-files-mentioned-by-the-user-pdf/project.godot`
-- `/Users/happy/Documents/Codex/2026-04-19-files-mentioned-by-the-user-pdf/scenes/Main.tscn`
-- `/Users/happy/Documents/Codex/2026-04-19-files-mentioned-by-the-user-pdf/scripts/Main.gd`
-- `/Users/happy/Documents/Codex/2026-04-19-files-mentioned-by-the-user-pdf/data/classes.json`
-- `/Users/happy/Documents/Codex/2026-04-19-files-mentioned-by-the-user-pdf/data/cards.json`
-- `/Users/happy/Documents/Codex/2026-04-19-files-mentioned-by-the-user-pdf/data/effects.json`
-- `/Users/happy/Documents/Codex/2026-04-19-files-mentioned-by-the-user-pdf/data/enemies.json`
-- `/Users/happy/Documents/Codex/2026-04-19-files-mentioned-by-the-user-pdf/data/routes.json`
-- `/Users/happy/Documents/Codex/2026-04-19-files-mentioned-by-the-user-pdf/data/rewards.json`
-- `/Users/happy/Documents/Codex/2026-04-19-files-mentioned-by-the-user-pdf/tables/*.tsv`
-- `/Users/happy/Documents/Codex/2026-04-19-files-mentioned-by-the-user-pdf/scripts/compile_tables.py`
+当前项目明确区分“运行源”和“文档/布局源”：
+
+| 类型 | 文件 | 用途 |
+|---|---|---|
+| 运行源 | `data/narrative_mvp_nodes.json` | 剧情 MVP 实际读取的序章、节点、选项、战斗触发与结局提示 |
+| 运行源 | `data/enemy_manifest.json` | 剧情战斗 encounter、敌人数值、敌人牌组、AI 权重、阶段行为、奖励 |
+| 运行源 | `data/battle_scene_manifest.json` | 视觉战斗 battle_id 对应的背景、标签、镜头参数 |
+| 运行源 | `data/performance_tracks.json` | 剧情演出镜头、角色、雾、暗角、火光等表现参数 |
+| 文档/布局源 | `data/narrative/mvp_compressed_narrative.json` | 初出山压缩叙事文档，不作为当前剧情推进逻辑源 |
+| 文档/布局源 | `data/narrative/mvp_static_map_layout.json` | 静态地图布局数据，用于后续地图 UI 展示，不作为当前节点推进逻辑源 |
+
+短期规则：
+
+- 剧情推进以 `data/narrative_mvp_nodes.json` 为准。
+- 地图视觉布局可参考 `data/narrative/mvp_static_map_layout.json`。
+- `data/narrative/mvp_compressed_narrative.json` 只作为设计文档/备份，不参与当前运行逻辑。
+
+## 叙事变量命名规范
+
+运行期统一使用英文工程名作为 canonical variable names：
+
+| 变量 | 中文 | 含义 |
+|---|---|---|
+| `military_merit` | 军功 | 军门、捷报、升赏认可的胜利 |
+| `clean_reputation` | 清望 | 百姓、言官、道义评价 |
+| `case_clues` | 旧案线索 | 十年前旧案、失械案、师父旧事的线索进度 |
+| `soldier_trust` | 兵心 | 士兵、乡勇、部下是否愿意跟随 |
+
+历史兼容别名：
+
+| Legacy | Canonical |
+|---|---|
+| `jun_gong` | `military_merit` |
+| `qing_wang` | `clean_reputation` |
+| `clues` | `case_clues` |
+| `public_repute` | `clean_reputation` |
+| `dg` | `military_merit`，旧静态节点选择字段 |
+| `dq` | `clean_reputation`，旧静态节点选择字段 |
+| `dc` | `case_clues`，旧静态节点选择字段 |
+
+`scenes/NarrativeDemo.tscn` 当前挂载 `scripts/narrative_demo_canonical_controller.gd`，该控制器会把旧字段自动映射到 canonical variables，避免旧 Demo 节点和新 TSV 运行源混用时出现变量含义漂移。
 
 ## 数据驱动说明
+
+核心 JSON：
 
 - `classes.json`：开局模板、武器、优势距离、初始牌组
 - `cards.json`：卡牌文字、费用、类别、效果列表
 - `effects.json`：效果类型注册表，定义处理器名、必填字段、效果说明
-- `enemies.json`：敌人基础属性、优势距离、意图序列
-- `routes.json`：路线节点、分支连接、地图长度、初始距离
+- `enemies.json`：旧字符版/基础战斗敌人基础属性、优势距离、意图序列
+- `routes.json`：旧字符版/基础战斗路线节点、分支连接、地图长度、初始距离
 - `rewards.json`：战后可进入奖励池的卡牌 id
-
-当前主脚本会在启动时自动加载并校验这些 JSON：
-
-- 文件不存在会直接报错
-- JSON 格式错误会直接报错
-- 模板/奖励池引用不存在卡牌会直接报错
-- 卡牌引用未注册效果类型会直接报错
-- 效果类型缺少处理器或必填字段会直接报错
-- 敌人缺少关键字段或没有意图会直接报错
+- `narrative_mvp_nodes.json`：剧情 MVP 当前运行源
+- `enemy_manifest.json`：剧情战斗当前敌人运行源
+- `battle_scene_manifest.json`：视觉战斗场景运行源
+- `performance_tracks.json`：剧情演出运行源
 
 ## TSV 配表流程
 
@@ -136,26 +163,13 @@ python3 scripts/compile_tables.py
 现在新增一个效果类型的最小步骤是：
 
 1. 在 `tables/effect_types.tsv` 注册新类型，声明 `handler` 和 `required_fields`
-2. 在 `scripts/Main.gd` 中实现对应处理函数
+2. 在对应战斗控制器中实现处理函数
 3. 在 `tables/card_effects.tsv` 里把该效果写进某张卡牌的 `effects`
 4. 运行 `python3 scripts/compile_tables.py` 生成 JSON
 
-这意味着“效果类型目录”和“卡牌使用效果”的结构已经解耦；脚本不再直接硬编码支持哪些效果类型，而是先读取注册表再分发执行。
-
 ## 当前 demo 的设计取舍
 
-- 地图层现在已经改成简化分支路线，但仍是固定模板，不是随机生成。
-- `校场 / 行营 / 军令` 已有基础节点功能，但事件文本与后果还比较简化。
-- `完美格挡` 采用文档建议：完全挡住伤害且超额格挡不超过 3 时触发吸势。
-- `崩塌` 的处理为：
-  - 本回合动作取消
-  - 下次受击必暴击
-  - 为 `崩枪 / 拖刀杀 / 斩首` 提供处决窗口
-
-## 建议下一步
-
-如果继续扩成正式原型，优先补下面三块：
-
-1. `路线图层`
-2. `事件/器械所/兵书房`
-3. `数据驱动卡牌与敌人配置`
+- 当前剧情 MVP 不是随机地图，而是静态压缩路线，用于验证碎片化叙事和战斗桥接。
+- `data/narrative/mvp_static_map_layout.json` 只作为后续地图 UI 展示参考。
+- `data/narrative_mvp_nodes.json` 是当前剧情推进的唯一运行源。
+- 视觉战斗优先服务剧情 MVP，字符版战斗保留用于规则调试。
