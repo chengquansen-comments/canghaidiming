@@ -289,15 +289,19 @@ fallback                    → 默认接敌
 [x] enemy_manifest 运行时数值链路已实机验收通过
 [x] 大地图层已接入第一幕
 [x] 节点内不再显示节点线 / 行军图按钮组
-[ ] Web 端复验海边伏击正式数值已恢复
-[ ] deck 是否实际由 enemy_manifest 驱动待复验
-[ ] intent_weights / phase_behaviors 是否实际进入 AI 决策待专项实现或复验
+[x] MainVisual 剧情战斗改为 BattleLoadout 单入口加载
+[x] data/enemy_manifest.json 真正驱动剧情敌人数值
+[x] data/battle_scene_manifest.json 通过同一 loadout 驱动原 background_texture
+[x] 敌人 deck / intent_weights / phase_behaviors 已接入运行时配置链路
+[ ] Web 端复验 JSON 配置加载
+[ ] 大地图节点点击推进待复验
+[ ] MainVisual 剧情战斗链路 Web 端复验
 ```
 
 配置化验收建议：
 
 ```text
-1. 进入海边伏击，敌人应恢复为“敌方枪手”，HP=26，势=4/10
+1. 进入海边伏击，敌人应显示“海滩测试枪手”，HP=99，势=9/12
 2. 修改 data/enemy_manifest.json 某个敌人的 max_hp 后，战斗内敌人血量随之变化
 3. 修改 data/enemy_manifest.json 的 display_name 后，战斗内敌人名随之变化
 4. 修改 enemies.*.deck 中某张牌的 damage 后，敌人持牌摘要或实际牌效应随之变化
@@ -309,10 +313,19 @@ fallback                    → 默认接敌
 
 ## 8. 下一批优先级
 
-### P0：deck 字段实际消费验收
+### P0：BattleLoadout 链路复验
 
 ```text
-确认 MainVisual 敌人实际持牌是否来自 enemy_manifest.enemies.*.deck，而不是仍然使用 GDScript 内置 _enemy_spear_cards / _enemy_officer_cards / _enemy_boss_cards。
+剧情进入 MainVisual 时只允许 battle_controller_visual_narrative_context.gd 生成 BattleLoadout：
+NarrativeBattleContext 提供 encounter_id/source_node_id/battle_id/player_profile；
+data/enemy_manifest.json 提供 encounter → enemy_id → enemy_config；
+data/battle_scene_manifest.json 提供 battle_id → background/camera。
+
+_apply_battle_loadout_once(loadout) 是唯一运行时写入入口，必须在 player/enemy 都创建后才设置 battle_loadout_applied=true。
+角色选择、_start_session、_start_battle 若重建 fighter，之后必须重新调用同一 loadout 入口。
+scene_manifest 只负责把 loadout 的 battle_id 背景写入原 background_texture，不再持有敌人配置。
+NarrativeBattleContext.get_battle_mapping() 只作为旧调试/兜底，不再作为剧情敌人数值来源。
+同时复验 MainVisual 敌人实际持牌来自 enemy_manifest.enemies.*.deck，AI 行为来自 intent_weights / phase_behaviors。
 ```
 
 ### P1：intent_weights / phase_behaviors 接入 AI 决策
@@ -332,5 +345,5 @@ fallback                    → 默认接敌
 ## 9. 当前一句话结论
 
 ```text
-MVP 已完成四层配置拆分，并将 enemy_manifest 扩展到敌人牌组、意图权重和阶段行为层：narrative_mvp_nodes 管剧情文本与战斗触发，enemy_manifest 管敌人数值 / deck / intent_weights / phase_behaviors / reward，battle_scene_manifest 管 battle_id 战斗场景，performance_tracks 管剧情演出。海边伏击测试数值已恢复正式配置，下一步应专项验收 deck 与 AI 行为是否真正消费 manifest。
+MVP 叙事内容已进入“配置化管理 + BattleLoadout 单入口”阶段：剧情节点负责触发，enemy_manifest 负责敌人数值 / deck / intent_weights / phase_behaviors / reward，battle_scene_manifest 负责背景；MainVisual 在最终 player/enemy 存在后一次性应用 loadout，避免角色选择或测试入口覆盖剧情战斗。
 ```
