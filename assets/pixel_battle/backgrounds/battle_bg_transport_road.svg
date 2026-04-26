@@ -1,9 +1,35 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
-  <defs><linearGradient id="p" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d8c9a5"/><stop offset="1" stop-color="#514a40"/></linearGradient></defs>
-  <rect width="1280" height="720" fill="url(#p)"/>
-  <path d="M0 380 C180 330 370 390 580 350 C820 305 1010 390 1280 330 L1280 720 L0 720 Z" fill="#354044" opacity="0.40"/>
-  <path d="M0 510 C260 435 520 555 760 490 C980 430 1120 520 1280 485 L1280 720 L0 720 Z" fill="#131313" opacity="0.82"/>
-  <rect x="190" y="365" width="360" height="64" rx="8" fill="#251c16" opacity="0.75"/><circle cx="260" cy="450" r="38" fill="#090909" opacity="0.74"/><circle cx="495" cy="450" r="38" fill="#090909" opacity="0.74"/>
-  <path d="M760 255 L805 510 L715 510 Z" fill="#101112" opacity="0.78"/><path d="M820 275 L910 512 L845 512 Z" fill="#151515" opacity="0.60"/>
-  <text x="64" y="664" font-size="30" fill="#7e2e28" opacity="0.86" font-family="serif">押运官对峙</text>
+  <defs>
+    <linearGradient id="roadSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d8c9a5"/>
+      <stop offset="0.45" stop-color="#7a7468"/>
+      <stop offset="1" stop-color="#242321"/>
+    </linearGradient>
+    <linearGradient id="rut" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#121211" stop-opacity="0.70"/>
+      <stop offset="0.52" stop-color="#4a3d2d" stop-opacity="0.44"/>
+      <stop offset="1" stop-color="#111314" stop-opacity="0.78"/>
+    </linearGradient>
+    <filter id="soft" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="6"/></filter>
+  </defs>
+  <rect width="1280" height="720" fill="url(#roadSky)"/>
+  <rect width="1280" height="720" fill="#111" opacity="0.10"/>
+  <ellipse cx="414" cy="214" rx="250" ry="76" fill="#3f4644" opacity="0.18" filter="url(#soft)"/>
+  <ellipse cx="920" cy="184" rx="330" ry="86" fill="#313a3e" opacity="0.16" filter="url(#soft)"/>
+  <path d="M0 358 C180 312 346 374 548 330 C760 284 940 370 1280 300 L1280 512 L0 522 Z" fill="#394448" opacity="0.34"/>
+  <path d="M0 492 C210 432 390 508 610 458 C840 402 1035 502 1280 442 L1280 720 L0 720 Z" fill="url(#rut)"/>
+  <path d="M112 626 C346 558 564 650 812 584 C984 538 1112 594 1280 548" stroke="#080909" stroke-width="18" stroke-linecap="round" opacity="0.52" fill="none"/>
+  <path d="M0 666 C218 612 454 696 732 628 C948 574 1110 648 1280 604" stroke="#0b0c0c" stroke-width="24" stroke-linecap="round" opacity="0.48" fill="none"/>
+  <path d="M170 405 L522 372 L570 432 L216 468 Z" fill="#241b15" opacity="0.76"/>
+  <circle cx="260" cy="474" r="42" fill="#070808" opacity="0.78"/>
+  <circle cx="492" cy="454" r="40" fill="#070808" opacity="0.74"/>
+  <path d="M208 394 L250 350 L424 336 L512 372 Z" fill="#0d0f0e" opacity="0.62"/>
+  <path d="M618 404 C674 378 734 384 786 410 C730 426 672 426 618 404 Z" fill="#17130f" opacity="0.68"/>
+  <path d="M760 252 L810 526 L720 526 Z" fill="#080909" opacity="0.78"/>
+  <path d="M830 278 L918 528 L846 528 Z" fill="#0d0d0c" opacity="0.60"/>
+  <path d="M1012 292 L1058 528 L980 528 Z" fill="#0b0c0c" opacity="0.52"/>
+  <path d="M180 560 L228 706 L160 706 Z M1096 546 L1156 706 L1070 706 Z" fill="#050606" opacity="0.90"/>
+  <path d="M72 600 L282 560" stroke="#060707" stroke-width="16" stroke-linecap="round" opacity="0.82"/>
+  <path d="M1000 602 L1238 542" stroke="#050606" stroke-width="18" stroke-linecap="round" opacity="0.86"/>
+  <rect width="1280" height="720" fill="#050606" opacity="0.07"/>
 </svg>
