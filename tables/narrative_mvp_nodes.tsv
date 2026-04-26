@@ -108,7 +108,7 @@ order	id	title	scene	text	dialogue_json	combat_json	choices_json
 
 火器箱在他脚下。
 
-他说话时看着岸上。"	"[""你找错海了。"",""杀你爹娘的人，穿的可不是倭甲。"",""你来晚了，也来早了。""]"	"{""enabled"":false}"	"[{""label"":""查看火器箱"",""result"":""箱底有火漆。\n军门的火漆。"",""effects"":{""case_clues"":2},""combat"":{""enabled"":true,""encounter_id"":""enc_wakou_boss"",""battle_id"":""first_act_wakou_boss""}},{""label"":""逼问临死话"",""result"":""他说不完。\n箭比话快。\n又是岸上。"",""effects"":{""case_clues"":1,""clean_reputation"":1},""combat"":{""enabled"":true,""encounter_id"":""enc_wakou_boss"",""battle_id"":""first_act_wakou_boss""}},{""label"":""烧船灭迹"",""result"":""火很快。\n证据也是。"",""effects"":{""military_merit"":1},""combat"":{""enabled"":true,""encounter_id"":""enc_wakou_boss"",""battle_id"":""first_act_wakou_boss""}}]"
+他说话时看着岸上。"	"[""你找错海了。"",""杀你爹娘的人，穿的可不是倭甲。"",""你来晚了，也来早了。""]"	"{""enabled"":false}"	"[{""label"":""斩首报功"",""result"":""首级落进麻袋。\n火器箱还在船底。\n你没有再看。"",""effects"":{""military_merit"":2}},{""label"":""留证追查"",""result"":""箱底有火漆。\n军门的火漆。\n师父看见时，手停了一下。"",""effects"":{""case_clues"":2}},{""label"":""烧船灭迹"",""result"":""火很快。\n证据也是。\n海风把灰吹回岸上。"",""effects"":{""military_merit"":1,""case_clues"":-1}}]"
 12	military_coverup	军门压案	灯火。缺页。朱批。木匣不见了。	"军门灯火通明。
 
 案卷摊开。
