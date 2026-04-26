@@ -2,6 +2,9 @@ extends "res://scripts/battle_controller_visual_narrative_formal.gd"
 
 const BATTLE_SCENE_MANIFEST_PATH := "res://data/battle_scene_manifest.json"
 const DEFAULT_SCENE_ID := "fallback"
+const BACKGROUND_Z := -200
+const FX_Z := -190
+const LABEL_Z := 250
 
 var battle_scene_manifest: Dictionary = {}
 var battle_scene_loaded: bool = false
@@ -15,8 +18,8 @@ var battle_scene_time: float = 0.0
 
 func _ready() -> void:
 	_load_battle_scene_manifest()
-	_add_battle_scene_layers()
 	super._ready()
+	_add_battle_scene_layers()
 	_apply_battle_scene_from_context()
 
 func _process(delta: float) -> void:
@@ -51,8 +54,9 @@ func _add_battle_scene_layers() -> void:
 	battle_scene_bg.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	battle_scene_bg.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	battle_scene_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	battle_scene_bg.z_index = BACKGROUND_Z
+	battle_scene_bg.z_as_relative = false
 	add_child(battle_scene_bg)
-	move_child(battle_scene_bg, 0)
 
 	battle_scene_mist = ColorRect.new()
 	battle_scene_mist.name = "BattleSceneMistById"
@@ -63,8 +67,9 @@ func _add_battle_scene_layers() -> void:
 	battle_scene_mist.offset_left = -320
 	battle_scene_mist.offset_right = 320
 	battle_scene_mist.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	battle_scene_mist.z_index = FX_Z
+	battle_scene_mist.z_as_relative = false
 	add_child(battle_scene_mist)
-	move_child(battle_scene_mist, 1)
 
 	battle_scene_accent = ColorRect.new()
 	battle_scene_accent.name = "BattleSceneAccentById"
@@ -73,8 +78,9 @@ func _add_battle_scene_layers() -> void:
 	battle_scene_accent.anchor_right = 1.0
 	battle_scene_accent.anchor_bottom = 0.78
 	battle_scene_accent.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	battle_scene_accent.z_index = FX_Z + 1
+	battle_scene_accent.z_as_relative = false
 	add_child(battle_scene_accent)
-	move_child(battle_scene_accent, 2)
 
 	battle_scene_dim = ColorRect.new()
 	battle_scene_dim.name = "BattleSceneDimById"
@@ -83,8 +89,9 @@ func _add_battle_scene_layers() -> void:
 	battle_scene_dim.anchor_right = 1.0
 	battle_scene_dim.anchor_bottom = 1.0
 	battle_scene_dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	battle_scene_dim.z_index = FX_Z + 2
+	battle_scene_dim.z_as_relative = false
 	add_child(battle_scene_dim)
-	move_child(battle_scene_dim, 3)
 
 	battle_scene_label = Label.new()
 	battle_scene_label.name = "BattleSceneIdLabel"
@@ -94,10 +101,11 @@ func _add_battle_scene_layers() -> void:
 	battle_scene_label.anchor_bottom = 0.08
 	battle_scene_label.offset_top = 0
 	battle_scene_label.offset_bottom = 34
-	battle_scene_label.add_theme_font_size_override("font_size", 20)
+	battle_scene_label.add_theme_font_size_override("font_size", 18)
 	battle_scene_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	battle_scene_label.z_index = LABEL_Z
+	battle_scene_label.z_as_relative = false
 	add_child(battle_scene_label)
-	move_child(battle_scene_label, 4)
 
 func _apply_battle_scene_from_context() -> void:
 	var id: String = NarrativeBattleContext.get_battle_id()
@@ -135,12 +143,12 @@ func _apply_battle_scene_by_id(id: String) -> void:
 	var accent: float = float(config.get("accent", 0.0))
 	if battle_scene_mist != null:
 		battle_scene_mist.visible = mist > 0.001
-		battle_scene_mist.color = Color(0.75, 0.80, 0.80, clamp(mist, 0.0, 0.60))
+		battle_scene_mist.color = Color(0.75, 0.80, 0.80, clamp(mist * 0.45, 0.0, 0.26))
 	if battle_scene_dim != null:
-		battle_scene_dim.color = Color(0.02, 0.018, 0.016, clamp(dim, 0.0, 0.75))
+		battle_scene_dim.color = Color(0.02, 0.018, 0.016, clamp(dim * 0.42, 0.0, 0.28))
 	if battle_scene_accent != null:
 		battle_scene_accent.visible = accent > 0.001
-		battle_scene_accent.color = Color(0.55, 0.12, 0.08, clamp(accent, 0.0, 0.40))
+		battle_scene_accent.color = Color(0.55, 0.12, 0.08, clamp(accent * 0.55, 0.0, 0.18))
 	if battle_scene_label != null:
 		battle_scene_label.text = "战斗场景｜%s｜battle_id=%s" % [str(config.get("label", battle_scene_id)), battle_scene_id]
 		battle_scene_label.visible = true
@@ -190,5 +198,5 @@ func _update_battle_scene_motion(delta: float) -> void:
 		battle_scene_mist.offset_left = -320.0 + mist_offset
 		battle_scene_mist.offset_right = 320.0 + mist_offset
 	if battle_scene_accent != null and battle_scene_accent.visible:
-		var base_alpha: float = float(config.get("accent", 0.0))
-		battle_scene_accent.color = Color(0.55, 0.12, 0.08, clamp(base_alpha + base_alpha * max(0.0, sin(battle_scene_time * 2.2)), 0.0, 0.42))
+		var config_accent: float = float(config.get("accent", 0.0)) * 0.55
+		battle_scene_accent.color = Color(0.55, 0.12, 0.08, clamp(config_accent + config_accent * 0.65 * max(0.0, sin(battle_scene_time * 2.2)), 0.0, 0.18))
