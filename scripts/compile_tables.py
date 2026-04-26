@@ -354,9 +354,10 @@ def build_narrative_mvp_nodes() -> dict[str, Any]:
             "id": required(row, "id", "narrative_mvp_prologue_steps"),
             "text": required(row, "text", "narrative_mvp_prologue_steps"),
         }
-        title = row.get("title", "").strip()
-        if title != "":
-            step["title"] = title
+        for optional_field in ["title", "column", "type"]:
+            value = row.get(optional_field, "").strip()
+            if value != "":
+                step[optional_field] = value
         career_prompt = row.get("career_prompt", "").strip()
         if career_prompt != "":
             step["career_prompt"] = career_prompt
