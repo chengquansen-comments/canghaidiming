@@ -8,10 +8,9 @@ var prologue_choice_result_text: String = ""
 var prologue_choice_result_delta_text: String = ""
 
 func _render_prologue() -> void:
-	var prologue: Dictionary = _prologue_data()
 	var step_data: Dictionary = _prologue_step_data(step_index)
-	title_label.text = _prologue_display_title(prologue, step_data)
-	status_label.text = _prologue_display_status(prologue, step_data)
+	title_label.text = _prologue_display_title(step_data)
+	status_label.text = _prologue_display_status(step_data)
 	map_label.text = ""
 	scene_label.text = _format_scene_text(_prologue_scene_hint())
 	_render_visual("", _prologue_visual_hint())
@@ -46,29 +45,30 @@ func _render_prologue() -> void:
 
 	_add_button(choices_box, "继续", _on_continue_prologue)
 
-func _prologue_display_title(prologue: Dictionary, step_data: Dictionary) -> String:
+func _prologue_display_title(step_data: Dictionary) -> String:
 	var step_title := str(step_data.get("title", ""))
 	if not step_title.is_empty():
 		return step_title
-	return str(prologue.get("title", "《大明之沧海嘀鸣》"))
+	return str(step_data.get("id", "prologue"))
 
-func _prologue_display_status(prologue: Dictionary, step_data: Dictionary) -> String:
+func _prologue_display_status(step_data: Dictionary) -> String:
 	var status := str(step_data.get("status", ""))
 	if not status.is_empty():
 		return status
 	var step_title := str(step_data.get("title", ""))
 	if not step_title.is_empty():
 		return step_title
-	return str(prologue.get("title", "《大明之沧海嘀鸣》"))
+	return str(step_data.get("id", "prologue"))
 
 func _prologue_map_title() -> String:
 	var steps := _prologue_steps()
 	if not steps.is_empty() and steps[0] is Dictionary:
-		var title := str((steps[0] as Dictionary).get("title", ""))
+		var first_step := steps[0] as Dictionary
+		var title := str(first_step.get("title", ""))
 		if not title.is_empty():
 			return title
-	var prologue := _prologue_data()
-	return str(prologue.get("title", "《大明之沧海嘀鸣》"))
+		return str(first_step.get("id", "prologue"))
+	return "prologue"
 
 func _current_world_map_title() -> String:
 	if in_prologue:
