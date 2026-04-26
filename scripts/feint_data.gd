@@ -1,6 +1,7 @@
 extends RefCounted
 class_name FeintData
 
+@warning_ignore("shadowed_global_identifier")
 const CardData = preload("res://scripts/card_data.gd")
 
 var display_card: CardData

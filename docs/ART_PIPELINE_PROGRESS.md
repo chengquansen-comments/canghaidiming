@@ -70,6 +70,30 @@ scripts/narrative_demo_fragmented_controller.gd
 [x] hints：通用提示覆写
 ```
 
+JSON 字段示例：
+
+```json
+{
+  "id": "beach_ambush",
+  "title": "海边伏击",
+  "scene": "芦苇。湿沙。先动的影子。",
+  "text": "风从芦苇里出来。\n\n枪尖也出来。",
+  "combat": {
+	"enabled": true,
+	"encounter_id": "enc_beach_ambush",
+	"battle_id": "first_act_beach_ambush",
+	"enemy_id": "enemy_spearman_beach_ambush",
+	"enemy_display": "敌方枪手",
+	"difficulty": "normal",
+	"pre": "他挡住去路。",
+	"post": "尸身很轻。"
+  },
+  "choices": [
+	{"label":"搜身留证","result":"绳结是军中的打法。","effects":{"clues":1}}
+  ]
+}
+```
+
 当前接入状态：
 
 ```text
