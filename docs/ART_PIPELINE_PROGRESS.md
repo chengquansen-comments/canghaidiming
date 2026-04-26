@@ -1,12 +1,14 @@
 # 《沧海嘀鸣》美术表现推进看板
 
-> 当前目标：从“纯文字 + 简单色块占位”推进到“明代海疆国风主视觉 + 数据驱动剧情演出 + 大地图节点推进 + battle_id 驱动战斗场景”的可见 MVP。
+> 当前目标：从“纯文字 + 简单色块占位”推进到“极简碎片化叙事 + 明代海疆国风主视觉 + 数据驱动剧情演出 + 大地图节点推进 + battle_id 驱动战斗场景”的可见 MVP。
 >
 > 当前美术方向：青年明代武官、明制札甲、深绛红战袍、水墨海岸、宣纸背景、海雾、远崖、城墙、小船、低饱和、强剪影、家国情怀、风起沧海。
+>
+> 当前叙事方向：极度压缩、碎片化、隐晦叙事、动作先于解释、案情缺页、潮声反复、箭从岸上来。
 
 ---
 
-## 0. 总体规范：剧情 / 大地图 / 战斗分层
+## 0. 总体规范：剧情 / 文本 / 大地图 / 战斗分层
 
 ```text
 剧情：NarrativeDemo
@@ -14,6 +16,13 @@
 - 下方操作区：文本、状态、选择、滚动按钮
 - 由 node_id / step_index 加载剧情演出
 - 节点内不再显示节点线 / 行军路线
+
+文本：Fragmented Narrative Layer
+- 文本不再长段解释
+- 单句尽量短
+- 不直说阴谋，只说痕迹
+- 不交代完整案情，只给碎片
+- 序章、第一幕、结局统一为隐晦碎片节奏
 
 大地图：World Map Layer
 - 从节点内抽出的行军图路线
@@ -32,7 +41,82 @@
 
 ---
 
-## 1. 剧情 UI 布局规范
+## 1. 新增：碎片化 MVP 叙事脚本
+
+```text
+docs/NARRATIVE_MVP_SCRIPT_FRAGMENTED.md
+scripts/narrative_demo_fragmented_controller.gd
+scenes/NarrativeDemo.tscn
+```
+
+当前架构：
+
+```text
+NarrativeDemo.tscn
+→ narrative_demo_fragmented_controller.gd
+→ narrative_demo_cinematic_controller.gd
+→ narrative_demo_formal_controller.gd
+```
+
+接入策略：
+
+```text
+保留机制：职业选择、战斗桥接、大地图、节点推进、结算
+保留演出：背景、雾、火光、人物剪影、镜头、performance_tracks.json
+只覆写文本：序章文本、第一幕正文、场景短句、选项文案、结局文案
+```
+
+文本风格规则：
+
+```text
+[x] 极度压缩
+[x] 碎片化
+[x] 隐晦叙事
+[x] 动作先于解释
+[x] 不说“阴谋”，只说“缺页、暗箭、火器、名册”
+[x] 不说“真相”，只说“痕迹”
+[x] 每个节点只给一个核心意象
+[x] 战斗前不解释敌人是谁，只说明“他挡路”
+[x] 战斗后只掉下一枚碎片
+```
+
+序章核心节奏：
+
+```text
+黑。
+潮声很近。
+有人在跑。
+
+父亲。
+柴堆。
+别出声。
+
+死人也不知道。
+
+换我。
+
+箭从黑处来。
+不是海上。
+不是倭人。
+
+十年。
+该走了。
+```
+
+第一幕核心节奏：
+
+```text
+军令巡海：军令压在案上，最后一行被墨盖住。
+海边伏击：枪尖从芦苇里出来，靴上有官泥。
+明制火器：箱子裂开，铸印还在，不是倭物。
+押运官：雨打在名册上，墨开始散。
+破船 Boss：你来晚了，也来早了。
+军门压案：案卷少了一页，上官说倭患已平。
+```
+
+---
+
+## 2. 剧情 UI 布局规范
 
 ```text
 Narrative UI 采用明确上下分割：
@@ -61,7 +145,7 @@ Narrative UI 采用明确上下分割：
 
 ---
 
-## 2. 已完成：剧情电影化演出 + 大地图层
+## 3. 已完成：剧情电影化演出 + 大地图层
 
 ```text
 scripts/narrative_demo_cinematic_controller.gd
@@ -69,18 +153,10 @@ scenes/NarrativeDemo.tscn
 data/performance_tracks.json
 ```
 
-当前架构：
-
-```text
-NarrativeDemo.tscn
-→ narrative_demo_cinematic_controller.gd
-→ narrative_demo_formal_controller.gd
-```
-
 当前状态：
 
 ```text
-[x] 单文件 cinematic controller，避免多级继承解析问题
+[x] cinematic controller 稳定承载演出层
 [x] JSON 数据驱动演出已重新挂回
 [x] 序章按 step_index 自动切换背景
 [x] 第一幕按 node_id 自动切换背景
@@ -98,7 +174,7 @@ NarrativeDemo.tscn
 
 ---
 
-## 3. 新增：大地图 / 海疆行军图
+## 4. 大地图 / 海疆行军图
 
 ```text
 CinematicWorldMapLayer
@@ -129,37 +205,16 @@ WorldMapNodesRow
 军令巡海 ━━ 海边伏击 ━━ 明制火器 ━━ 失械案押运官 ━━ 破船 Boss ━━ 军门压案
 ```
 
-交互规则：
-
-```text
-点击当前节点：提示当前节点
-点击已过节点：提示已走过
-点击下一节点：可推进，并获得默认行军收益
-点击未开放节点：按钮禁用
-```
-
 ---
 
-## 4. 已完成：剧情资源 SVG 占位升级
-
-### 4.1 主视觉封面
+## 5. 已完成：剧情资源 SVG 占位升级
 
 ```text
 assets/pixel_battle/backgrounds/key_visual_canghai_diming.svg
-```
-
-### 4.2 序章专用表演图
-
-```text
 assets/pixel_battle/backgrounds/prologue_black_tide.svg
 assets/pixel_battle/backgrounds/prologue_master_rescue.svg
 assets/pixel_battle/backgrounds/prologue_arrow_silence.svg
 assets/pixel_battle/backgrounds/prologue_departure.svg
-```
-
-### 4.3 第一幕节点表演图
-
-```text
 assets/pixel_battle/backgrounds/narrative_military_order.svg
 assets/pixel_battle/backgrounds/narrative_beach_ambush.svg
 assets/pixel_battle/relics/relic_ming_firearm.svg
@@ -168,7 +223,7 @@ assets/pixel_battle/portraits/wakou_leader.svg
 assets/pixel_battle/backgrounds/narrative_military_coverup.svg
 ```
 
-当前状态：
+当前节点表现：
 
 ```text
 [x] 军令巡海：庄重军令演出
@@ -181,7 +236,7 @@ assets/pixel_battle/backgrounds/narrative_military_coverup.svg
 
 ---
 
-## 5. 战斗场景 battle_id 加载体系
+## 6. 战斗场景 battle_id 加载体系
 
 ```text
 data/battle_scene_manifest.json
@@ -222,32 +277,12 @@ test_blademaster_duel       → 刀术试战
 fallback                    → 默认接敌
 ```
 
-当前战斗背景资源：
-
-```text
-assets/pixel_battle/backgrounds/battle_bg_black_tide.svg
-assets/pixel_battle/backgrounds/battle_bg_coast_ambush.svg
-assets/pixel_battle/backgrounds/battle_bg_transport_road.svg
-assets/pixel_battle/backgrounds/battle_bg_broken_ship.svg
-assets/pixel_battle/backgrounds/battle_bg_training_ground.svg
-```
-
 ---
 
-## 6. NarrativeBattleContext 已支持 battle_id
+## 7. NarrativeBattleContext 已支持 battle_id
 
 ```text
 scripts/narrative_battle_context.gd
-```
-
-当前状态：
-
-```text
-[x] 新增 battle_id 元信息
-[x] set_request(encounter_id, source_node_id, battle_id="") 支持显式 battle_id
-[x] 未传 battle_id 时，自动从 encounter_id 映射
-[x] get_battle_id() 提供给战斗场景加载
-[x] debug_text / battle_mapping_debug_text 已显示 battle_id
 ```
 
 当前默认映射：
@@ -262,11 +297,15 @@ enc_wakou_boss             → first_act_wakou_boss
 
 ---
 
-## 7. 当前验收状态
+## 8. 当前验收状态
 
 ```text
 [x] Web 构建稳定，无 Could not resolve class
-[x] NarrativeDemo 正常打开
+[x] NarrativeDemo 已切到 fragmented controller
+[x] 序章文本已改为碎片化节奏
+[x] 第一幕 6 个节点正文已改为隐晦碎片叙事
+[x] 选项文案已压缩
+[x] 结局文案已重写为“潮声还在”
 [x] 剧情表演区显示场景主视觉背景
 [x] 下方操作区完整显示选项
 [x] 剧情—战斗—剧情闭环不受影响
@@ -274,42 +313,33 @@ enc_wakou_boss             → first_act_wakou_boss
 [x] 明制火器证物节点可见
 [x] 大地图层已接入第一幕
 [x] 节点内不再显示节点线 / 行军图按钮组
-[ ] 大地图节点点击推进待验收
+[ ] fragmented controller 在 Web 端待复验
+[ ] 大地图节点点击推进待复验
 [ ] MainVisual 按 battle_id 切换战斗场景待复验
-[ ] 多场战斗切换后无背景残留待复验
 ```
 
-大地图验收建议：
+文本验收建议：
 
 ```text
-1. 序章不显示大地图
-2. 出山进入第一幕后，表演区上方显示“海疆行军图”
-3. 节点内下方操作区不再出现“行军图操作”节点线
-4. 当前节点显示 ◆ 当前
-5. 已过节点显示 ● 已过
-6. 下一节点显示 ◎ 可前往
-7. 未开放节点禁用
-8. 点击下一节点仍能推进
-```
-
-战斗场景验收建议：
-
-```text
-1. 序章师父战显示 battle_id=prologue_master_rescue，背景为黑潮救援
-2. 海边伏击显示 battle_id=first_act_beach_ambush，背景为海岸伏击
-3. 押运官战显示 battle_id=first_act_transport_officer，背景为押运路
-4. 破船 Boss 显示 battle_id=first_act_wakou_boss，背景为破船决战
-5. 测试枪手入口显示 test_spearman_duel
-6. 测试刀客入口显示 test_blademaster_duel
-7. 任意两场连续进入，旧背景不残留
-8. 人物、格位、预览箭头必须始终在背景之上
+1. 序章每屏都是短句，不再长解释
+2. 第一幕节点正文不再完整解释案情
+3. 明制火器只强调“铸印还在，不是倭物”
+4. 破船 Boss 不说明真相，只留下“来晚了 / 来早了”
+5. 军门压案不揭幕后，只留下“案卷少了一页”
+6. 结局只告诉玩家：倭寇从海上来，箭从岸上来
 ```
 
 ---
 
-## 8. 下一批美术优先级
+## 9. 下一批优先级
 
-### P0：大地图视觉正式化
+### P0：碎片文本与演出节拍对齐
+
+```text
+让短句节奏与背景切换、雾、火光、人物入镜更贴合。
+```
+
+### P1：大地图视觉正式化
 
 ```text
 world_map_canghai_act1.svg
@@ -318,13 +348,7 @@ world_map_node_locked.svg
 world_map_route_line.svg
 ```
 
-目标：
-
-```text
-把当前按钮式大地图升级为真正的海疆航路图：海岸线、船路、军门、破船、证物点。
-```
-
-### P1：战斗人物立绘替换
+### P2：战斗人物立绘替换
 
 ```text
 hero_spearman_battle.svg
@@ -335,32 +359,10 @@ transport_officer_battle.svg
 wakou_leader_battle.svg
 ```
 
-目标：
-
-```text
-让战斗中的人物也从测试色块 / 旧图转向国风剪影立绘。
-```
-
-### P2：战斗前景层
-
-```text
-battle_fg_reeds.svg
-battle_fg_transport_cart.svg
-battle_fg_broken_ship_debris.svg
-battle_fg_firearm_crate.svg
-```
-
-目标：
-
-```text
-让战斗背景不只是铺底，而有前景遮挡、空间层次和战场识别度。
-注意：前景层只能放在低透明、低遮挡区域，不能遮住格位核心信息。
-```
-
 ---
 
-## 9. 当前一句话结论
+## 10. 当前一句话结论
 
 ```text
-剧情美术管线已进入“数据驱动电影化演出 + 大地图节点推进”阶段；第一幕节点线已从节点内抽出，成为表演区独立海疆行军图。战斗美术管线已进入“battle_id 驱动原背景层加载”阶段，不再使用第二套背景层。
+MVP 文本层已从说明型叙事切换为碎片化隐晦叙事：序章、第一幕、结局都围绕“潮声、缺页、火器、暗箭”展开；演出层、大地图层和战斗 battle_id 场景系统继续保留。下一阶段应把碎片文本与镜头节拍进一步对齐。
 ```
