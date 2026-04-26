@@ -10,6 +10,16 @@ const PROLOGUE_DEPARTURE := "res://assets/pixel_battle/backgrounds/prologue_depa
 const CHAR_MASTER := "res://assets/pixel_battle/portraits/performance_master_veteran.svg"
 const CHAR_HERO := "res://assets/pixel_battle/portraits/performance_hero_young.svg"
 
+const NODE_PERFORMANCE := {
+	"military_order": {"zoom":0.018, "pan_x":3.0, "pan_y":-1.0, "dim":0.18, "mist":0.12, "fire":0.04, "hero":true, "hero_push":-5.0},
+	"beach_ambush": {"zoom":0.030, "pan_x":10.0, "pan_y":-2.0, "dim":0.27, "mist":0.34, "fire":0.08, "hero":true, "hero_push":-9.0},
+	"ming_firearm": {"zoom":0.026, "pan_x":-6.0, "pan_y":0.0, "dim":0.32, "mist":0.18, "fire":0.12, "hero":false, "hero_push":0.0},
+	"transport_officer": {"zoom":0.024, "pan_x":6.0, "pan_y":-1.0, "dim":0.30, "mist":0.28, "fire":0.04, "hero":true, "hero_push":-6.0},
+	"wakou_boss": {"zoom":0.036, "pan_x":12.0, "pan_y":-2.0, "dim":0.34, "mist":0.34, "fire":0.16, "hero":true, "hero_push":-10.0},
+	"military_coverup": {"zoom":0.018, "pan_x":-4.0, "pan_y":0.0, "dim":0.42, "mist":0.14, "fire":0.02, "hero":false, "hero_push":0.0},
+	"node": {"zoom":0.018, "pan_x":4.0, "pan_y":0.0, "dim":0.22, "mist":0.18, "fire":0.02, "hero":false, "hero_push":0.0}
+}
+
 var cinematic_bg: TextureRect
 var cinematic_mist: ColorRect
 var cinematic_fire: ColorRect
@@ -131,7 +141,17 @@ func _make_character_layer(layer_name: String, path: String, left_anchor: float,
 			layer.texture = resource
 	return layer
 
+func _current_node_id() -> String:
+	if in_prologue:
+		return "prologue"
+	if node_index >= 0 and node_index < NODES.size():
+		var node: Dictionary = NODES[node_index]
+		return str(node.get("id", "node"))
+	return "node"
+
 func _cinematic_stage_key() -> String:
+	if not in_prologue:
+		return _current_node_id()
 	if step_index <= 3:
 		return "black_tide_%d" % step_index
 	if step_index <= 8:
@@ -143,6 +163,8 @@ func _cinematic_stage_key() -> String:
 	return "node"
 
 func _cinematic_background_path(path: String) -> String:
+	if not in_prologue:
+		return path
 	if step_index <= 3:
 		return PROLOGUE_BLACK_TIDE
 	if step_index <= 8:
@@ -152,6 +174,12 @@ func _cinematic_background_path(path: String) -> String:
 	if step_index == PROLOGUE_CAREER_STEP:
 		return PROLOGUE_DEPARTURE
 	return path
+
+func _node_performance_data(stage: String) -> Dictionary:
+	var data_variant = NODE_PERFORMANCE.get(stage, NODE_PERFORMANCE["node"])
+	if data_variant is Dictionary:
+		return data_variant
+	return NODE_PERFORMANCE["node"]
 
 func _update_cinematic_background(path: String) -> void:
 	if cinematic_bg == null:
@@ -174,6 +202,10 @@ func _update_cinematic_characters() -> void:
 	elif stage == "departure":
 		if cinematic_hero != null:
 			cinematic_hero.visible = true
+	elif not in_prologue:
+		var data: Dictionary = _node_performance_data(stage)
+		if bool(data.get("hero", false)) and cinematic_hero != null:
+			cinematic_hero.visible = true
 
 func _hide_inline_visual(path: String) -> void:
 	if visual_texture != null:
@@ -195,6 +227,9 @@ func _update_cinematic_motion(delta: float) -> void:
 	var stage: String = _cinematic_stage_key()
 	var progress: float = clamp(cinematic_stage_time / 3.0, 0.0, 1.0)
 	var eased: float = progress * progress * (3.0 - 2.0 * progress)
+	if not in_prologue:
+		_update_first_act_motion(stage, eased)
+		return
 	var zoom: float = 0.012 + 0.022 * eased
 	var pan_x: float = 0.0
 	var pan_y: float = 0.0
@@ -225,6 +260,19 @@ func _update_cinematic_motion(delta: float) -> void:
 		mist_alpha = 0.16
 	_update_layer_motion(zoom, pan_x, pan_y, dim_alpha, mist_alpha, fire_alpha)
 
+func _update_first_act_motion(stage: String, eased: float) -> void:
+	var data: Dictionary = _node_performance_data(stage)
+	var zoom: float = float(data.get("zoom", 0.018)) * eased
+	var pan_x: float = float(data.get("pan_x", 0.0)) * eased
+	var pan_y: float = float(data.get("pan_y", 0.0)) * eased
+	var dim_base: float = float(data.get("dim", 0.22))
+	var mist_base: float = float(data.get("mist", 0.18))
+	var fire_base: float = float(data.get("fire", 0.02))
+	var dim_alpha: float = dim_base + 0.030 * sin(cinematic_time * 0.75)
+	var mist_alpha: float = mist_base + 0.055 * eased
+	var fire_alpha: float = fire_base + fire_base * max(0.0, sin(cinematic_time * 2.4))
+	_update_layer_motion(zoom, pan_x, pan_y, dim_alpha, mist_alpha, fire_alpha)
+
 func _update_layer_motion(zoom: float, pan_x: float, pan_y: float, dim_alpha: float, mist_alpha: float, fire_alpha: float) -> void:
 	if cinematic_bg != null:
 		var breath: float = 0.004 * sin(cinematic_time * 0.42)
@@ -242,6 +290,11 @@ func _update_layer_motion(zoom: float, pan_x: float, pan_y: float, dim_alpha: fl
 	_update_character_motion(zoom)
 
 func _update_character_motion(zoom: float) -> void:
+	var stage: String = _cinematic_stage_key()
+	var hero_push: float = -8.0
+	if not in_prologue:
+		var data: Dictionary = _node_performance_data(stage)
+		hero_push = float(data.get("hero_push", -6.0))
 	if cinematic_master != null and cinematic_master.visible:
 		var s: float = 1.0 + zoom + 0.018 * sin(cinematic_time * 1.05)
 		cinematic_master.scale = Vector2(s, s)
@@ -250,7 +303,7 @@ func _update_character_motion(zoom: float) -> void:
 	if cinematic_hero != null and cinematic_hero.visible:
 		var h: float = 1.0 + zoom + 0.014 * sin(cinematic_time * 1.2)
 		cinematic_hero.scale = Vector2(h, h)
-		cinematic_hero.position.x = -8.0 * clamp(cinematic_stage_time / 3.0, 0.0, 1.0)
+		cinematic_hero.position.x = hero_push * clamp(cinematic_stage_time / 3.0, 0.0, 1.0)
 		cinematic_hero.position.y = 2.0 * sin(cinematic_time * 0.9)
 
 func _apply_cinematic_layout() -> void:
