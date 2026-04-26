@@ -1,9 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
-  <defs><linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ddcfad"/><stop offset="1" stop-color="#6d746c"/></linearGradient></defs>
-  <rect width="1280" height="720" fill="url(#paper)"/>
-  <path d="M0 350 C210 300 380 360 600 318 C820 275 1020 348 1280 285 L1280 720 L0 720 Z" fill="#3f5255" opacity="0.48"/>
-  <path d="M0 500 C240 430 450 525 700 465 C950 405 1070 510 1280 450 L1280 720 L0 720 Z" fill="#101413" opacity="0.78"/>
-  <path d="M110 430 C210 370 300 455 410 390 M870 420 C980 350 1065 450 1180 390" stroke="#111" stroke-width="16" opacity="0.48" fill="none"/>
-  <path d="M690 240 L725 505 L645 505 Z" fill="#111" opacity="0.45"/><path d="M740 250 L780 510 L700 510 Z" fill="#111" opacity="0.36"/>
-  <text x="64" y="664" font-size="30" fill="#7e2e28" opacity="0.86" font-family="serif">海边伏击</text>
+  <defs>
+    <linearGradient id="coast" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d9caaa"/>
+      <stop offset="0.46" stop-color="#768388"/>
+      <stop offset="1" stop-color="#151817"/>
+    </linearGradient>
+    <radialGradient id="coldMist" cx="68%" cy="36%" r="58%">
+      <stop offset="0" stop-color="#b7b2a0" stop-opacity="0.20"/>
+      <stop offset="1" stop-color="#202729" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="blur" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="6"/></filter>
+  </defs>
+  <rect width="1280" height="720" fill="url(#coast)"/>
+  <rect width="1280" height="720" fill="url(#coldMist)"/>
+  <path d="M0 324 C154 282 312 330 486 294 C670 256 824 328 1005 286 C1124 260 1202 270 1280 250 L1280 442 L0 452 Z" fill="#40565b" opacity="0.42"/>
+  <path d="M0 408 C206 370 370 422 566 392 C774 360 945 414 1170 382 C1212 376 1248 374 1280 370 L1280 512 L0 512 Z" fill="#697174" opacity="0.24"/>
+  <path d="M0 500 C230 448 430 526 658 472 C890 416 1056 506 1280 452 L1280 720 L0 720 Z" fill="#0d1111" opacity="0.84"/>
+  <ellipse cx="420" cy="270" rx="220" ry="72" fill="#323938" opacity="0.22" filter="url(#blur)"/>
+  <ellipse cx="980" cy="245" rx="240" ry="78" fill="#2a3335" opacity="0.22" filter="url(#blur)"/>
+  <path d="M128 420 C205 372 300 430 388 386" stroke="#101211" stroke-width="15" stroke-linecap="round" opacity="0.48" fill="none"/>
+  <path d="M828 402 C930 344 1030 426 1176 372" stroke="#0e1111" stroke-width="17" stroke-linecap="round" opacity="0.54" fill="none"/>
+  <path d="M700 235 L744 520 L662 520 Z" fill="#090a0a" opacity="0.74"/>
+  <path d="M760 250 L810 525 L724 525 Z" fill="#090a0a" opacity="0.62"/>
+  <path d="M846 272 L902 522 L818 522 Z" fill="#080909" opacity="0.45"/>
+  <path d="M190 572 L240 706 L172 706 Z M286 548 L330 706 L266 706 Z M1040 540 L1096 706 L1016 706 Z M1140 520 L1196 706 L1112 706 Z" fill="#050606" opacity="0.92"/>
+  <path d="M150 618 L390 552" stroke="#050606" stroke-width="15" stroke-linecap="round" opacity="0.88"/>
+  <path d="M914 600 L1238 532" stroke="#050606" stroke-width="18" stroke-linecap="round" opacity="0.90"/>
+  <path d="M64 662 C240 625 422 672 608 632" stroke="#111" stroke-width="6" stroke-linecap="round" opacity="0.40" fill="none"/>
+  <rect width="1280" height="720" fill="#050606" opacity="0.08"/>
 </svg>
