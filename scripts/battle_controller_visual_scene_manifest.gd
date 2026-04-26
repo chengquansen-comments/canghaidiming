@@ -99,3 +99,39 @@ func _update_original_scene_label(config: Dictionary) -> void:
 		phase_label.text = label_text
 	if battle_log_strip != null and not battle_active:
 		battle_log_strip.text = label_text
+
+func _apply_narrative_numbers_once() -> void:
+	super._apply_narrative_numbers_once()
+	_apply_enemy_ai_manifest_behavior_once()
+
+func _enemy_runtime_config_from_manifest(encounter: String, manifest_enemy: Dictionary) -> Dictionary:
+	var config: Dictionary = super._enemy_runtime_config_from_manifest(encounter, manifest_enemy)
+	var manifest_deck = manifest_enemy.get("deck", [])
+	if manifest_deck is Array and not (manifest_deck as Array).is_empty():
+		config["deck"] = manifest_deck
+	return config
+
+func _apply_enemy_ai_manifest_behavior_once() -> void:
+	if enemy_ai == null:
+		return
+	var manifest_enemy: Dictionary = NarrativeBattleContext.get_enemy_config()
+	if manifest_enemy.is_empty() or NarrativeBattleContext.enemy_source_text() != "manifest":
+		if enemy_ai.has_method("clear_manifest_behavior"):
+			enemy_ai.call("clear_manifest_behavior")
+		return
+	var weights: Dictionary = {}
+	var phases: Array = []
+	var weights_variant = manifest_enemy.get("intent_weights", {})
+	if weights_variant is Dictionary:
+		weights = weights_variant
+	var phases_variant = manifest_enemy.get("phase_behaviors", [])
+	if phases_variant is Array:
+		phases = phases_variant
+	if enemy_ai.has_method("set_manifest_behavior"):
+		enemy_ai.call("set_manifest_behavior", weights, phases)
+	_update_manifest_ai_debug_text(weights, phases)
+
+func _update_manifest_ai_debug_text(weights: Dictionary, phases: Array) -> void:
+	if enemy_config_strip == null:
+		return
+	enemy_config_strip.text = "%s\nAI配置：enemy_manifest｜weights=%s｜phases=%d" % [enemy_config_strip.text, str(weights), phases.size()]
