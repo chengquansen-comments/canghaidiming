@@ -1,9 +1,10 @@
 {
   "meta": {
-    "version": 2,
+    "version": 3,
     "purpose": "Enemy stat, identity, deck, AI intent weights, phase behavior and reward configuration for narrative battles.",
     "rule": "Narrative nodes only reference enemy_id / encounter_id / battle_id. Full enemy data lives here.",
-    "runtime_note": "Deck, intent_weights and phase_behaviors are now configured here. Runtime loaders should prefer these fields over hardcoded enemy card tables."
+    "runtime_note": "Deck, intent_weights and phase_behaviors are configured here. Runtime loaders should prefer these fields over hardcoded enemy card tables.",
+    "aligned_with": "data/narrative_mvp_nodes.json version 2"
   },
   "encounters": {
     "enc_prologue_master_rescue": {
@@ -22,7 +23,16 @@
       "enemy_role": "enemy_spearman",
       "enemy_family": "spearman",
       "difficulty": "normal",
-      "label": "海边伏击 / 海滩测试枪手"
+      "label": "海边伏击 / 敌方枪手"
+    },
+    "enc_fishing_village_embers": {
+      "battle_id": "first_act_fishing_village_embers",
+      "enemy_id": "enemy_wakou_raider_fishing_village",
+      "player_role": "spearman",
+      "enemy_role": "enemy_blademaster",
+      "enemy_family": "blademaster",
+      "difficulty": "normal",
+      "label": "渔村残火 / 倭寇杂兵"
     },
     "enc_transport_officer": {
       "battle_id": "first_act_transport_officer",
@@ -32,6 +42,15 @@
       "enemy_family": "blademaster",
       "difficulty": "elite",
       "label": "失械案押运官 / 敌方刀客"
+    },
+    "enc_mutiny_camp": {
+      "battle_id": "first_act_mutiny_camp",
+      "enemy_id": "enemy_mutiny_camp_leader",
+      "player_role": "spearman",
+      "enemy_role": "enemy_spearman",
+      "enemy_family": "spearman",
+      "difficulty": "elite",
+      "label": "欠饷营 / 兵变营头"
     },
     "enc_wakou_boss": {
       "battle_id": "first_act_wakou_boss",
@@ -81,16 +100,16 @@
     },
     "enemy_spearman_beach_ambush": {
       "enemy_id": "enemy_spearman_beach_ambush",
-      "display_name": "海滩测试枪手",
-      "narrative_identity": "【配置验证用】伏击海滩的前哨枪手。若你看到这个名字和 99 HP，说明 enemy_manifest 已真实驱动战斗。",
-      "weapon": "测试长枪",
+      "display_name": "敌方枪手",
+      "narrative_identity": "伏击海滩的倭寇前哨枪手，熟悉芦苇与潮汐掩护。靴上有官泥。",
+      "weapon": "长枪",
       "role_sheet": "enemy_spearman",
-      "max_hp": 99,
-      "max_posture": 12,
-      "start_posture": 9,
-      "intent_style": "manifest_validation_pressure",
-      "behavior_tags": ["MANIFEST验证", "高血量", "高起势", "海滩伏击"],
-      "preferred_intents": ["配置刺探", "配置压步", "配置突刺"],
+      "max_hp": 26,
+      "max_posture": 10,
+      "start_posture": 4,
+      "intent_style": "poke_pressure",
+      "behavior_tags": ["试探", "抢势", "突刺", "低防御"],
+      "preferred_intents": ["刺探", "压步", "突刺"],
       "intent_weights": {"gain_posture": 0.30, "attack": 0.32, "guard": 0.16, "break_posture": 0.18, "feint": 0.04},
       "phase_behaviors": [
         {"phase": "default", "hp_below": 1.01, "intent_bias": "poke_pressure", "note": "以试探、压步、突刺为主，逼玩家交防守。"},
@@ -103,8 +122,35 @@
         {"id":"e_s4","name":"敌枪守","min":0,"max":5,"cost":1,"role":"guard","gain":0,"break":0,"damage":0,"guard":4,"tags":["守"],"style":"枪","facing":false},
         {"id":"e_s5","name":"敌枪终","min":4,"max":5,"cost":2,"role":"damage","gain":0,"break":1,"damage":7,"guard":0,"tags":["重击"],"style":"枪","facing":true}
       ],
-      "ai_note": "这是用于验证 enemy_manifest 是否真实接入运行时的显眼配置。验收通过后可改回正式数值。",
-      "reward": {"jun_gong": 9, "qing_wang": 0, "clues": 9}
+      "ai_note": "普通战斗，用连续小伤害与抢势逼玩家交出防守；不要做高爆发。",
+      "reward": {"jun_gong": 1, "qing_wang": 0, "clues": 1}
+    },
+    "enemy_wakou_raider_fishing_village": {
+      "enemy_id": "enemy_wakou_raider_fishing_village",
+      "display_name": "倭寇杂兵",
+      "narrative_identity": "渔村残火中的烧村残敌，人数不多，火势更危险。其刀法杂乱，却懂得避开火器箱。",
+      "weapon": "倭刀",
+      "role_sheet": "enemy_blademaster",
+      "max_hp": 28,
+      "max_posture": 10,
+      "start_posture": 4,
+      "intent_style": "raid_burn_pressure",
+      "behavior_tags": ["烧村", "突袭", "低防御", "压血"],
+      "preferred_intents": ["乱斩", "纵火逼步", "退守"],
+      "intent_weights": {"gain_posture": 0.18, "attack": 0.42, "guard": 0.12, "break_posture": 0.18, "feint": 0.10},
+      "phase_behaviors": [
+        {"phase": "default", "hp_below": 1.01, "intent_bias": "feint_pressure", "note": "用乱斩和逼步制造村火压迫。"},
+        {"phase": "wounded", "hp_below": 0.45, "intent_bias": "desperate_attack", "note": "半血后更偏拼命伤害，逼玩家快速结束战斗。"}
+      ],
+      "deck": [
+        {"id":"e_v1","name":"烟中乱步","min":0,"max":2,"cost":1,"role":"momentum","gain":2,"break":0,"damage":0,"guard":0,"tags":["烟", "突袭"],"style":"刀","facing":true},
+        {"id":"e_v2","name":"低身乱斩","min":0,"max":2,"cost":1,"role":"damage","gain":0,"break":0,"damage":5,"guard":0,"tags":["乱斩"],"style":"刀","facing":true},
+        {"id":"e_v3","name":"火边逼步","min":0,"max":2,"cost":1,"role":"momentum","gain":0,"break":2,"damage":0,"guard":0,"tags":["逼步", "破势"],"style":"刀","facing":true},
+        {"id":"e_v4","name":"残门遮身","min":0,"max":3,"cost":1,"role":"guard","gain":0,"break":0,"damage":0,"guard":4,"tags":["守"],"style":"刀","facing":false},
+        {"id":"e_v5","name":"余火一刀","min":0,"max":1,"cost":2,"role":"damage","gain":0,"break":1,"damage":8,"guard":0,"tags":["重击", "火"],"style":"刀","facing":true}
+      ],
+      "ai_note": "渔村普通战，强调快速压血与低防御。让玩家在追击、救人、查痕之间形成选择压力。",
+      "reward": {"jun_gong": 1, "qing_wang": 0, "clues": 1}
     },
     "enemy_blademaster_transport_officer": {
       "enemy_id": "enemy_blademaster_transport_officer",
@@ -133,6 +179,33 @@
       ],
       "ai_note": "精英战斗，强调反击与破防。玩家若只进攻，会被刀客借势反打。",
       "reward": {"jun_gong": 1, "qing_wang": 1, "clues": 2}
+    },
+    "enemy_mutiny_camp_leader": {
+      "enemy_id": "enemy_mutiny_camp_leader",
+      "display_name": "兵变营头",
+      "narrative_identity": "欠饷营头。不是倭寇，却同样挡路。他守过城，也埋过兄弟。",
+      "weapon": "破损长枪",
+      "role_sheet": "enemy_spearman",
+      "max_hp": 36,
+      "max_posture": 12,
+      "start_posture": 6,
+      "intent_style": "mutiny_guard_pressure",
+      "behavior_tags": ["欠饷", "守城旧兵", "重守", "破势"],
+      "preferred_intents": ["横枪守门", "破阵逼步", "怒刺"],
+      "intent_weights": {"gain_posture": 0.24, "attack": 0.26, "guard": 0.26, "break_posture": 0.22, "feint": 0.02},
+      "phase_behaviors": [
+        {"phase": "default", "hp_below": 1.01, "intent_bias": "guard_then_poke", "note": "以守门、破势和逼步为主，体现老兵稳重。"},
+        {"phase": "wounded", "hp_below": 0.50, "intent_bias": "guard_counter", "note": "半血后更偏防守反击，不轻易乱打。"}
+      ],
+      "deck": [
+        {"id":"e_m1","name":"横枪守门","min":0,"max":5,"cost":1,"role":"guard","gain":0,"break":0,"damage":0,"guard":7,"tags":["守", "营门"],"style":"枪","facing":false},
+        {"id":"e_m2","name":"欠饷压步","min":3,"max":5,"cost":1,"role":"momentum","gain":2,"break":1,"damage":0,"guard":0,"tags":["压步"],"style":"枪","facing":true},
+        {"id":"e_m3","name":"破阵一刺","min":3,"max":5,"cost":1,"role":"damage","gain":0,"break":1,"damage":5,"guard":0,"tags":["突刺", "破势"],"style":"枪","facing":true},
+        {"id":"e_m4","name":"旧兵反顶","min":2,"max":4,"cost":2,"role":"damage","gain":0,"break":2,"damage":7,"guard":3,"tags":["反击"],"style":"枪","facing":true},
+        {"id":"e_m5","name":"饷尽怒刺","min":3,"max":5,"cost":2,"role":"damage","gain":0,"break":1,"damage":9,"guard":0,"tags":["重击"],"style":"枪","facing":true}
+      ],
+      "ai_note": "精英战，节奏比普通枪手更稳：守、破势、反击。叙事上不是纯敌人，而是军伍腐坏的证明。",
+      "reward": {"jun_gong": 2, "qing_wang": 1, "clues": 1}
     },
     "enemy_blademaster_wakou_leader": {
       "enemy_id": "enemy_blademaster_wakou_leader",
