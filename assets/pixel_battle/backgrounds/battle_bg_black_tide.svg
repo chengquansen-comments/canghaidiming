@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#161716"/><stop offset="0.52" stop-color="#34302a"/><stop offset="1" stop-color="#7b604a"/></linearGradient><radialGradient id="fire" cx="72%" cy="36%" r="42%"><stop offset="0" stop-color="#8f2f27" stop-opacity="0.42"/><stop offset="1" stop-color="#111" stop-opacity="0"/></radialGradient></defs>
+  <rect width="1280" height="720" fill="url(#g)"/><rect width="1280" height="720" fill="url(#fire)"/>
+  <path d="M0 320 C190 265 345 335 530 286 C760 230 920 315 1280 245 L1280 720 L0 720 Z" fill="#263237" opacity="0.58"/>
+  <path d="M0 480 C220 410 420 525 665 455 C900 390 1060 500 1280 430 L1280 720 L0 720 Z" fill="#090c0d" opacity="0.86"/>
+  <path d="M760 265 L805 505 L710 505 Z" fill="#080909" opacity="0.76"/><path d="M840 245 L895 510 L805 510 Z" fill="#080909" opacity="0.70"/>
+  <text x="64" y="664" font-size="30" fill="#8c2f29" opacity="0.80" font-family="serif">黑潮救援</text>
+</svg>
