@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <defs><linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d8c9a5"/><stop offset="1" stop-color="#8b806a"/></linearGradient><filter id="soft"><feGaussianBlur stdDeviation="2"/></filter></defs>
+  <rect width="640" height="360" fill="none"/>
+  <path d="M112 54 L522 38 L548 310 L86 326 Z" fill="url(#paper)" opacity="0.88"/>
+  <path d="M330 48 L504 42 L520 292 L352 300 C386 236 360 164 330 48 Z" fill="#0b0d0c" opacity="0.18"/>
+  <path d="M150 104 L438 92 M150 144 L476 130 M148 184 L390 174 M150 224 L460 208" stroke="#111312" stroke-width="8" opacity="0.28" stroke-linecap="round"/>
+  <path d="M408 72 C392 120 418 160 392 210 C374 246 394 282 360 306" stroke="#111312" stroke-width="7" opacity="0.42" fill="none" stroke-dasharray="12 10"/>
+  <path d="M92 292 C164 270 220 314 300 286 C374 260 440 318 548 284" stroke="#7e2e28" stroke-width="8" opacity="0.36" fill="none"/>
+  <circle cx="492" cy="278" r="34" fill="#7e2e28" opacity="0.28" filter="url(#soft)"/>
+</svg>
