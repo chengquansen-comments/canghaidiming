@@ -21,7 +21,7 @@
       "enemy_role": "enemy_spearman",
       "enemy_family": "spearman",
       "difficulty": "normal",
-      "label": "海边伏击 / 敌方枪手"
+      "label": "海边伏击 / 测试海滩枪手"
     },
     "enc_transport_officer": {
       "battle_id": "first_act_transport_officer",
@@ -69,18 +69,18 @@
     },
     "enemy_spearman_beach_ambush": {
       "enemy_id": "enemy_spearman_beach_ambush",
-      "display_name": "敌方枪手",
-      "narrative_identity": "伏击海滩的倭寇前哨枪手，熟悉芦苇与潮汐掩护。靴上有官泥。",
-      "weapon": "长枪",
+      "display_name": "海滩测试枪手",
+      "narrative_identity": "【配置验证用】伏击海滩的前哨枪手。若你看到这个名字和 99 HP，说明 enemy_manifest 已真实驱动战斗。",
+      "weapon": "测试长枪",
       "role_sheet": "enemy_spearman",
-      "max_hp": 26,
-      "max_posture": 10,
-      "start_posture": 4,
-      "intent_style": "poke_pressure",
-      "behavior_tags": ["试探", "抢势", "突刺", "低防御"],
-      "preferred_intents": ["刺探", "压步", "突刺"],
-      "ai_note": "普通战斗，用连续小伤害与抢势逼玩家交出防守；不要做高爆发。",
-      "reward": {"jun_gong": 1, "qing_wang": 0, "clues": 1}
+      "max_hp": 99,
+      "max_posture": 12,
+      "start_posture": 9,
+      "intent_style": "manifest_validation_pressure",
+      "behavior_tags": ["MANIFEST验证", "高血量", "高起势", "海滩伏击"],
+      "preferred_intents": ["配置刺探", "配置压步", "配置突刺"],
+      "ai_note": "这是用于验证 enemy_manifest 是否真实接入运行时的显眼配置。验收通过后可改回正式数值。",
+      "reward": {"jun_gong": 9, "qing_wang": 0, "clues": 9}
     },
     "enemy_blademaster_transport_officer": {
       "enemy_id": "enemy_blademaster_transport_officer",
