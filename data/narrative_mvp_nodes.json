@@ -1,0 +1,112 @@
+{
+  "meta": {
+    "style": "fragmented, compressed, implicit",
+    "rule": "动作先于解释；不说真相，只说痕迹。"
+  },
+  "prologue": {
+    "title": "《大明之沧海嘀鸣》",
+    "steps": [
+      {"id":"black_tide","text":"黑。\n\n潮声很近。\n\n有人在跑。"},
+      {"id":"father","text":"父亲把你按进柴堆。\n\n他说：\n别出声。"},
+      {"id":"door","text":"刀背敲门。\n\n有人问：\n东西在哪？\n\n父亲说：\n孩子不知道。"},
+      {"id":"dead","text":"那人笑了。\n\n他说：\n死人也不知道。\n\n潮声停了一下。"},
+      {"id":"wooden_blade","text":"你冲出去。\n\n木刀打在甲片上。\n\n零声。"},
+      {"id":"fall","text":"天翻过来。\n\n火光很高。\n\n你看见母亲的鞋。"},
+      {"id":"master_arrives","text":"一只手挡住你的眼。\n\n那人说：\n还活着。\n\n换我。","combat":{"enabled":true,"button":"换我。","skip_button":"潮声跳过这一段","encounter_id":"enc_prologue_master_rescue","battle_id":"prologue_master_rescue","enemy_id":"enemy_blademaster_prologue_raider","enemy_display":"袭村倭寇刀手","enemy_hint":"屠村后折返灭口。师父替你接下这一刀。"}},
+      {"id":"three_cards","text":"刀。\n\n步。\n\n断气。"},
+      {"id":"military_word","text":"敌人还没死透。\n\n他吐出一个字：\n军……\n\n箭到了。"},
+      {"id":"hidden_arrow","text":"箭从黑处来。\n\n不是海上。\n\n不是倭人。"},
+      {"id":"dont_look","text":"师父说：\n别看。\n\n可你已经看见了。"},
+      {"id":"departure","text":"十年。\n\n潮声没有远过。\n\n师父把刀还给你。\n\n他说：\n该走了。","career_prompt":"选一条路。\n不是为了升官。\n是为了知道那支箭从哪来。"}
+    ],
+    "career_choices": {
+      "spearman": "长枪。远一点。活久一点。",
+      "blademaster": "腰刀。近一点。快一点。"
+    }
+  },
+  "nodes": [
+    {
+      "id": "military_order",
+      "title": "军令巡海",
+      "scene": "军门。湿案牍。朱批没干。",
+      "text": "军令压在案上。\n\n出海。\n巡岸。\n剿寇。\n\n最后一行被墨盖住。",
+      "dialogue": ["上官看了你一眼。", "像看见故人。"],
+      "combat": {"enabled": false},
+      "choices": [
+        {"label":"问旧案","result":"上官看了你一眼。\n像看见故人。","effects":{"clues":1}},
+        {"label":"领命出发","result":"印落下。\n潮也落下。","effects":{"jun_gong":1}}
+      ]
+    },
+    {
+      "id": "beach_ambush",
+      "title": "海边伏击",
+      "scene": "芦苇。湿沙。先动的影子。",
+      "text": "风从芦苇里出来。\n\n枪尖也出来。\n\n对方没有喊杀。\n\n他挡住去路。\n你看见他靴上的官泥。",
+      "dialogue": ["没有喊杀。", "只有枪尖。"],
+      "combat": {"enabled": true,"button":"接敌","mock_button":"尸身已经倒下","encounter_id":"enc_beach_ambush","battle_id":"first_act_beach_ambush","enemy_id":"enemy_spearman_beach_ambush","enemy_display":"敌方枪手","enemy_role":"enemy_spearman","enemy_family":"spearman","difficulty":"normal","enemy_hint":"伏击海滩的前哨枪手。靴上有官泥。","pre":"他挡住去路。\n你看见他靴上的官泥。","post":"尸身很轻。\n\n腰间却有军绳。"},
+      "choices": [
+        {"label":"搜身留证","result":"绳结是军中的打法。\n你记住了。","effects":{"clues":1}},
+        {"label":"斩首报功","result":"头颅能换功。\n绳结不能。","effects":{"jun_gong":1}}
+      ]
+    },
+    {
+      "id": "ming_firearm",
+      "title": "明制火器",
+      "scene": "木箱。潮水。官造铸印。这里只有那枚印。",
+      "text": "箱子裂开。\n\n火器没有锈完。\n\n铸印还在。\n\n不是倭物。",
+      "dialogue": ["不需要人。", "只需要那枚印。"],
+      "combat": {"enabled": false},
+      "choices": [
+        {"label":"私下留证","result":"你掰下一小片铸印。\n藏进袖中。","effects":{"clues":2}},
+        {"label":"上交火器","result":"他们说：\n做得好。\n\n箱子很快被抬走。","effects":{"qing_wang":1}}
+      ]
+    },
+    {
+      "id": "transport_officer",
+      "title": "失械案押运官",
+      "scene": "雨夜。车辙。空箱。",
+      "text": "押运官在等你。\n\n他没有拔刀。\n\n他说：\n你不该翻箱。\n\n雨打在名册上。\n墨开始散。",
+      "dialogue": ["你不该翻箱。", "墨开始散。"],
+      "combat": {"enabled": true,"button":"接敌","mock_button":"尸身已经倒下","encounter_id":"enc_transport_officer","battle_id":"first_act_transport_officer","enemy_id":"enemy_blademaster_transport_officer","enemy_display":"失械案押运官","enemy_role":"enemy_blademaster","enemy_family":"blademaster","difficulty":"elite","enemy_hint":"负责押运明制火器的人。袖中藏着半页名册。","pre":"雨打在名册上。\n墨开始散。","post":"他倒下时，手还按着袖口。\n\n袖里没有刀。\n\n只有半页名册。"},
+      "choices": [
+        {"label":"私藏名册","result":"名字少了一列。\n少得很整齐。","effects":{"clues":2}},
+        {"label":"当众审问","result":"旁人都听见了。\n\n他也就死得更快。","effects":{"qing_wang":1}}
+      ]
+    },
+    {
+      "id": "wakou_boss",
+      "title": "破船 Boss",
+      "scene": "破船。火器箱。黑处的箭位。",
+      "text": "船搁浅了。\n\n人没有。\n\n箱子还在。\n\n有个倭首坐在箱上。\n像在等你。\n\n他说：\n你来晚了。\n\n又说：\n也来早了。",
+      "dialogue": ["你来晚了。", "也来早了。"],
+      "combat": {"enabled": true,"button":"接敌","mock_button":"尸身已经倒下","encounter_id":"enc_wakou_boss","battle_id":"first_act_wakou_boss","enemy_id":"enemy_blademaster_wakou_leader","enemy_display":"小股倭寇首领","enemy_role":"enemy_blademaster","enemy_family":"blademaster","difficulty":"boss","enemy_hint":"坐在火器箱上的倭首。看岸，不看海。","pre":"他说：\n你来晚了。\n\n又说：\n也来早了。","post":"他看向岸上。\n\n不是看海。\n\n箭声又响。"},
+      "choices": [
+        {"label":"查看火器箱","result":"箱底有火漆。\n军门的火漆。","effects":{"clues":2}},
+        {"label":"烧船灭迹","result":"火很快。\n\n证据也是。","effects":{"jun_gong":1}}
+      ]
+    },
+    {
+      "id": "military_coverup",
+      "title": "军门压案",
+      "scene": "灯火。缺页。朱批。",
+      "text": "军门灯火通明。\n\n案卷摊开。\n\n正好少了一页。\n\n上官说：\n倭患已平。\n\n你想起十年前。\n那支箭。\n\n也是从岸上来的。",
+      "dialogue": ["倭患已平。", "案卷少了一页。"],
+      "combat": {"enabled": false},
+      "choices": [
+        {"label":"据实上报","result":"你把话说完。\n屋里安静了很久。","effects":{"qing_wang":1}},
+        {"label":"藏下一份证据","result":"袖中有纸。\n心里有潮。","effects":{"clues":2}},
+        {"label":"沉默退下","result":"门关上。\n灯还亮着。","effects":{}}
+      ]
+    }
+  ],
+  "ending": {
+    "title": "潮声还在",
+    "scene": "案卷缺页。灯还亮着。",
+    "text": "军功写进册里。\n\n清望写在别人嘴里。\n\n线索藏在袖中。\n\n案卷少了一页。\n\n潮声没有少。\n\n你赢了几场。\n升了几分。\n也只多知道一点：\n\n倭寇从海上来。\n箭从岸上来。",
+    "restart_label": "重开"
+  },
+  "hints": {
+    "battle_win": "尸身很轻。\n袖中多了一点东西。",
+    "career_selected": "路选好了。\n潮声仍在。"
+  }
+}
