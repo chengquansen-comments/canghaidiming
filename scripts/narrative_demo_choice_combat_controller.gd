@@ -4,8 +4,8 @@ extends "res://scripts/narrative_demo_canonical_controller.gd"
 # 1. Read node segments sentence by sentence.
 # 2. Show narrative choices only after reading is complete.
 # 3. If a choice has combat, start combat from that choice.
-# 4. After victory, apply that choice's effects, show result sentence by sentence, show delta as its own step, then continue.
-# 5. If a choice has no combat, apply effects immediately, show result sentence by sentence, show delta as its own step, then continue.
+# 4. After victory, apply that choice's effects, show result sentence by sentence, then continue.
+# 5. If a choice has no combat, apply effects immediately, show result sentence by sentence, then continue.
 # 6. Boss nodes may use post-battle stance choices: read -> fight -> choose stance.
 
 const META_PENDING_CHOICE_JSON := "canghai_pending_narrative_choice_json"
@@ -70,9 +70,6 @@ func _choice_preview(choice: Dictionary, node: Dictionary) -> String:
 func _choice_result_segments() -> Array[String]:
 	var segments: Array[String] = []
 	_append_text_segments(segments, choice_result_text)
-	var delta := choice_result_delta_text.strip_edges()
-	if not delta.is_empty():
-		segments.append("[b]%s[/b]" % delta)
 	if segments.is_empty():
 		segments.append("")
 	return segments
@@ -116,7 +113,7 @@ func _apply_choice_and_show_result(choice: Dictionary) -> void:
 	_apply_canonical_effects(effects)
 	NarrativeBattleContext.apply_player_growth("choice", 0, 0, 0, false)
 	choice_result_text = str(choice.get("result", ""))
-	choice_result_delta_text = _format_effect_delta(effects)
+	choice_result_delta_text = ""
 	choice_result_sentence_index = 0
 	showing_choice_result = true
 	_render()
@@ -203,7 +200,7 @@ func _consume_battle_result_if_needed() -> void:
 				var effects := _choice_effects(pending_choice)
 				_apply_canonical_effects(effects)
 				choice_result_text = str(pending_choice.get("result", "战斗胜利。"))
-				choice_result_delta_text = _format_effect_delta(effects)
+				choice_result_delta_text = ""
 				choice_result_sentence_index = 0
 				showing_choice_result = true
 				last_hint = ""
