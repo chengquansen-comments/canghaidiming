@@ -1,9 +1,9 @@
 {
   "prologue_master_rescue": {"background":"res://assets/pixel_battle/backgrounds/battle_bg_black_tide.svg","label":"黑潮救援","mist":0.34,"dim":0.18,"accent":0.12,"camera_zoom":0.030,"camera_pan_x":8.0,"camera_pan_y":-2.0},
   "first_act_beach_ambush": {"background":"res://assets/pixel_battle/backgrounds/battle_bg_coast_ambush.svg","label":"海边伏击","mist":0.28,"dim":0.12,"accent":0.06,"camera_zoom":0.024,"camera_pan_x":10.0,"camera_pan_y":-2.0},
-  "first_act_fishing_village_embers": {"background":"res://assets/pixel_battle/backgrounds/battle_bg_coast_ambush.svg","label":"渔村残火","mist":0.18,"dim":0.24,"accent":0.20,"camera_zoom":0.030,"camera_pan_x":7.0,"camera_pan_y":-2.0},
+  "first_act_fishing_village_embers": {"background":"res://assets/pixel_battle/backgrounds/battle_bg_fishing_village_embers.svg","label":"渔村残火","mist":0.18,"dim":0.24,"accent":0.20,"camera_zoom":0.030,"camera_pan_x":7.0,"camera_pan_y":-2.0},
   "first_act_transport_officer": {"background":"res://assets/pixel_battle/backgrounds/battle_bg_transport_road.svg","label":"押运官对峙","mist":0.20,"dim":0.16,"accent":0.04,"camera_zoom":0.018,"camera_pan_x":5.0,"camera_pan_y":-1.0},
-  "first_act_mutiny_camp": {"background":"res://assets/pixel_battle/backgrounds/battle_bg_transport_road.svg","label":"欠饷营门","mist":0.16,"dim":0.20,"accent":0.08,"camera_zoom":0.020,"camera_pan_x":4.0,"camera_pan_y":-1.0},
+  "first_act_mutiny_camp": {"background":"res://assets/pixel_battle/backgrounds/battle_bg_mutiny_camp.svg","label":"欠饷营门","mist":0.16,"dim":0.20,"accent":0.08,"camera_zoom":0.020,"camera_pan_x":4.0,"camera_pan_y":-1.0},
   "first_act_wakou_boss": {"background":"res://assets/pixel_battle/backgrounds/battle_bg_broken_ship.svg","label":"破船决战","mist":0.32,"dim":0.20,"accent":0.16,"camera_zoom":0.038,"camera_pan_x":12.0,"camera_pan_y":-3.0},
   "test_spearman_duel": {"background":"res://assets/pixel_battle/backgrounds/battle_bg_training_ground.svg","label":"枪术试战","mist":0.06,"dim":0.06,"accent":0.02,"camera_zoom":0.010,"camera_pan_x":0.0,"camera_pan_y":0.0},
   "test_blademaster_duel": {"background":"res://assets/pixel_battle/backgrounds/battle_bg_training_ground.svg","label":"刀术试战","mist":0.06,"dim":0.06,"accent":0.02,"camera_zoom":0.010,"camera_pan_x":0.0,"camera_pan_y":0.0},
