@@ -1,6 +1,6 @@
 # 《沧海嘀鸣》美术表现推进看板
 
-> 当前目标：从“纯文字 + 简单色块占位”推进到“配置化碎片叙事 + 明代海疆国风主视觉 + 数据驱动剧情演出 + 大地图节点推进 + battle_id 驱动战斗场景”的可见 MVP。
+> 当前目标：从“纯文字 + 简单色块占位”推进到“配置化碎片叙事 + 独立敌人配置 + 明代海疆国风主视觉 + 数据驱动剧情演出 + 大地图节点推进 + battle_id 驱动战斗场景”的可见 MVP。
 >
 > 当前美术方向：青年明代武官、明制札甲、深绛红战袍、水墨海岸、宣纸背景、海雾、远崖、城墙、小船、低饱和、强剪影、家国情怀、风起沧海。
 >
@@ -8,7 +8,7 @@
 
 ---
 
-## 0. 总体规范：剧情 / 文本 / 大地图 / 战斗分层
+## 0. 总体规范：剧情 / 文本 / 敌人 / 大地图 / 战斗分层
 
 ```text
 剧情：NarrativeDemo
@@ -18,13 +18,18 @@
 - 节点内不再显示节点线 / 行军路线
 
 文本：Configurable Fragmented Narrative Layer
-- 节点文本、场景短句、选项、战斗触发、battle_id、敌人信息统一进入 data/narrative_mvp_nodes.json
+- 节点文本、场景短句、选项、战斗触发、battle_id、enemy_id 进入 data/narrative_mvp_nodes.json
 - controller 只负责读取、渲染、桥接战斗
 - 文本不再长段解释
 - 单句尽量短
 - 不直说阴谋，只说痕迹
 - 不交代完整案情，只给碎片
-- 序章、第一幕、结局统一为隐晦碎片节奏
+
+敌人：Enemy Manifest Layer
+- 完整敌人配置独立进入 data/enemy_manifest.json
+- narrative_mvp_nodes.json 只引用 encounter_id / battle_id / enemy_id
+- enemy_manifest.json 负责 enemy stat / role_sheet / AI 行为 / reward
+- NarrativeBattleContext 优先读取 enemy_manifest，失败时回退旧兜底
 
 大地图：World Map Layer
 - 从节点内抽出的行军图路线
@@ -43,7 +48,7 @@
 
 ---
 
-## 1. 新增：MVP 叙事节点配置表
+## 1. MVP 叙事节点配置表
 
 ```text
 data/narrative_mvp_nodes.json
@@ -55,38 +60,14 @@ scripts/narrative_demo_fragmented_controller.gd
 
 ```text
 [x] prologue.steps：序章十二拍文本
-[x] prologue.steps[].combat：序章战斗触发、encounter_id、battle_id、敌人标识
+[x] prologue.steps[].combat：序章战斗触发、encounter_id、battle_id、enemy_id
 [x] prologue.career_choices：职业选择文案
 [x] nodes[].id/title/scene/text：第一幕节点文本
 [x] nodes[].dialogue：节点短对白/碎片信息
-[x] nodes[].combat：战斗触发、encounter_id、battle_id、enemy_id、enemy_display、difficulty、战前/战后碎片
+[x] nodes[].combat：战斗触发、encounter_id、battle_id、enemy_id、战前/战后碎片
 [x] nodes[].choices：选项文案、结果文本、效果字段
 [x] ending：结局标题、场景短句、结局正文
 [x] hints：通用提示覆写
-```
-
-JSON 字段示例：
-
-```json
-{
-  "id": "beach_ambush",
-  "title": "海边伏击",
-  "scene": "芦苇。湿沙。先动的影子。",
-  "text": "风从芦苇里出来。\n\n枪尖也出来。",
-  "combat": {
-    "enabled": true,
-    "encounter_id": "enc_beach_ambush",
-    "battle_id": "first_act_beach_ambush",
-    "enemy_id": "enemy_spearman_beach_ambush",
-    "enemy_display": "敌方枪手",
-    "difficulty": "normal",
-    "pre": "他挡住去路。",
-    "post": "尸身很轻。"
-  },
-  "choices": [
-    {"label":"搜身留证","result":"绳结是军中的打法。","effects":{"clues":1}}
-  ]
-}
 ```
 
 当前接入状态：
@@ -95,13 +76,68 @@ JSON 字段示例：
 [x] fragmented controller 优先读取 data/narrative_mvp_nodes.json
 [x] JSON 不存在或字段缺失时回退代码内置文本
 [x] NarrativeDemo 不再需要为每个文本改 GDScript
-[x] 新增 NarrativeMvpData 通用读取器，为 BattleContext 读取敌人信息做准备
-[ ] NarrativeBattleContext 仍有一部分硬编码敌人兜底，下一步将完全改为读取 NarrativeMvpData
+[x] NarrativeMvpData 通用读取器已新增
 ```
 
 ---
 
-## 2. 碎片化 MVP 叙事脚本
+## 2. 独立敌人配置表
+
+```text
+data/enemy_manifest.json
+scripts/narrative_enemy_manifest.gd
+scripts/narrative_battle_context.gd
+```
+
+enemy_manifest 当前管理内容：
+
+```text
+[x] encounters：encounter_id 到 battle_id / enemy_id / difficulty / label 的映射
+[x] enemies：enemy_id 到完整敌人配置的映射
+[x] display_name：敌人显示名
+[x] narrative_identity：叙事身份
+[x] weapon：武器
+[x] role_sheet：战斗角色模板
+[x] max_hp / max_posture / start_posture：敌人数值
+[x] intent_style：AI 行为风格
+[x] behavior_tags：行为标签
+[x] preferred_intents：偏好意图
+[x] ai_note：AI 设计说明
+[x] reward：战斗奖励
+```
+
+当前覆盖敌人：
+
+```text
+enemy_blademaster_prologue_raider  → 袭村倭寇刀手
+enemy_spearman_beach_ambush        → 敌方枪手
+enemy_blademaster_transport_officer→ 失械案押运官
+enemy_blademaster_wakou_leader     → 小股倭寇首领
+enemy_spearman_fallback            → 默认敌方枪手
+```
+
+当前接入状态：
+
+```text
+[x] NarrativeEnemyManifest 可读取 data/enemy_manifest.json
+[x] NarrativeBattleContext.get_battle_mapping() 优先读取 enemy_manifest
+[x] enemy_manifest 读取失败时回退默认兜底敌人
+[x] battle_mapping_debug_text 显示 enemy_source=manifest / fallback
+[x] 旧硬编码大段敌人配置已收敛为最小 fallback
+```
+
+设计边界：
+
+```text
+narrative_mvp_nodes.json：负责“剧情里发生了什么”
+enemy_manifest.json：负责“敌人是谁、怎么打、掉什么”
+battle_scene_manifest.json：负责“这场战斗在哪里打、背景是什么”
+performance_tracks.json：负责“剧情画面怎么演”
+```
+
+---
+
+## 3. 碎片化 MVP 叙事脚本
 
 ```text
 docs/NARRATIVE_MVP_SCRIPT_FRAGMENTED.md
@@ -124,6 +160,7 @@ NarrativeDemo.tscn
 保留机制：职业选择、战斗桥接、大地图、节点推进、结算
 保留演出：背景、雾、火光、人物剪影、镜头、performance_tracks.json
 文本读取：优先 data/narrative_mvp_nodes.json，失败时回退内置常量
+敌人读取：优先 data/enemy_manifest.json，失败时回退默认敌人
 ```
 
 文本风格规则：
@@ -138,28 +175,6 @@ NarrativeDemo.tscn
 [x] 每个节点只给一个核心意象
 [x] 战斗前不解释敌人是谁，只说明“他挡路”
 [x] 战斗后只掉下一枚碎片
-```
-
----
-
-## 3. 剧情 UI 布局规范
-
-```text
-Narrative UI 采用明确上下分割：
-
-上方：表演区（Performance Area）
-- 承载场景主视觉（SVG / PNG / AI 图）
-- 用于表现人物、环境、情绪、叙事氛围
-- 可叠加暗层 / 雾层 / 火光 / 人物剪影
-- 第一幕后叠加大地图层，显示整体节点路线
-
-下方：操作区（Operation Area）
-- 承载剧情文本（body）
-- 承载选项按钮（choices）
-- 承载状态提示（hint / vars）
-- 承载战斗桥接按钮
-- 不再承载节点线 / 行军图按钮组
-- 必须保证滚动与点击优先级
 ```
 
 ---
@@ -186,7 +201,7 @@ data/performance_tracks.json
 [x] 暗层呼吸
 [x] 师父 / 主角剪影入镜
 [x] 镜头轻推、横移、局部节奏变化
-[x] 新增 CinematicWorldMapLayer
+[x] CinematicWorldMapLayer 已接入
 [x] 第一幕节点线已从节点内抽出，成为大地图节点
 [x] 节点内不再显示行军图节点线
 ```
@@ -199,14 +214,6 @@ data/performance_tracks.json
 CinematicWorldMapLayer
 WorldMapPanel
 WorldMapNodesRow
-```
-
-显示规则：
-
-```text
-序章：不显示大地图
-第一幕：显示海疆行军图
-节点内：不再显示旧行军图按钮组
 ```
 
 当前路线：
@@ -258,15 +265,16 @@ fallback                    → 默认接敌
 [x] Web 构建稳定，无 Could not resolve class
 [x] NarrativeDemo 已切到 fragmented controller
 [x] 新增 data/narrative_mvp_nodes.json
-[x] 节点文本 / 场景短句 / 选项 / 战斗触发 / battle_id / 敌人摘要已配置化
-[x] fragmented controller 优先读取配置表
-[x] 配置读取失败时可回退内置文本
-[x] 新增 NarrativeMvpData 通用读取器
+[x] 新增 data/enemy_manifest.json
+[x] 节点文本 / 场景短句 / 选项 / 战斗触发 / battle_id 已配置化
+[x] 敌人完整数值 / 行为标签 / 奖励已进入 enemy_manifest
+[x] fragmented controller 优先读取节点配置表
+[x] NarrativeBattleContext 优先读取 enemy_manifest
+[x] enemy_manifest 读取失败时有 fallback
 [x] 大地图层已接入第一幕
 [x] 节点内不再显示节点线 / 行军图按钮组
-[ ] Web 端复验 JSON 配置加载
-[ ] NarrativeBattleContext 敌人完整数值后续改为读取 NarrativeMvpData
-[ ] 大地图节点点击推进待复验
+[ ] Web 端复验 enemy_source=manifest
+[ ] MainVisual 按 enemy_manifest 加载敌人配置待复验
 [ ] MainVisual 按 battle_id 切换战斗场景待复验
 ```
 
@@ -274,35 +282,33 @@ fallback                    → 默认接敌
 
 ```text
 1. 修改 data/narrative_mvp_nodes.json 某个节点 text 后，游戏内文本随之变化
-2. 修改 choices[].label 后，按钮文案随之变化
-3. 修改 combat.button 后，战斗按钮文案随之变化
-4. 修改 combat.battle_id 后，进入战斗传入新 battle_id
-5. JSON 出错时，游戏仍回退内置文本，不应白屏
+2. 修改 data/enemy_manifest.json 某个敌人的 max_hp 后，战斗内敌人血量随之变化
+3. 修改 data/enemy_manifest.json 的 display_name 后，战斗内敌人名随之变化
+4. 修改 encounters[enc_*].battle_id 后，战斗场景随之变化
+5. battle_mapping_debug_text 中应显示 enemy_source=manifest
+6. JSON 出错时，游戏仍回退 fallback，不应白屏
 ```
 
 ---
 
 ## 8. 下一批优先级
 
-### P0：BattleContext 完全配置化
+### P0：enemy_manifest 与战斗 UI 验收
 
 ```text
-把 NarrativeBattleContext.get_battle_mapping() 中的敌人完整数值、行为标签、奖励等硬编码迁移到 data/narrative_mvp_nodes.json 或独立 data/enemy_manifest.json。
+确认 MainVisual 实际敌人 HP、势、名称、行为标签都来自 data/enemy_manifest.json。
 ```
 
-### P1：碎片文本与演出节拍对齐
+### P1：敌人牌组配置化
+
+```text
+将敌人可用招式牌、意图权重、半血行为切换从代码中继续抽到 enemy_manifest。
+```
+
+### P2：碎片文本与演出节拍对齐
 
 ```text
 让短句节奏与背景切换、雾、火光、人物入镜更贴合。
-```
-
-### P2：大地图视觉正式化
-
-```text
-world_map_canghai_act1.svg
-world_map_node_current.svg
-world_map_node_locked.svg
-world_map_route_line.svg
 ```
 
 ---
@@ -310,5 +316,5 @@ world_map_route_line.svg
 ## 9. 当前一句话结论
 
 ```text
-MVP 叙事内容已进入“配置化管理”阶段：序章、节点正文、对话碎片、选项、战斗触发、battle_id 与敌人摘要已经从 controller 中抽出到 data/narrative_mvp_nodes.json；下一步应把 BattleContext 中仍残留的敌人完整数值和 AI 行为配置继续迁出。
+MVP 已完成四层配置拆分：narrative_mvp_nodes 管剧情文本与战斗触发，enemy_manifest 管敌人完整数值与 AI 行为，battle_scene_manifest 管 battle_id 战斗场景，performance_tracks 管剧情演出。下一步重点是验收 enemy_manifest 是否真实驱动战斗数值，并继续把敌人牌组与意图权重配置化。
 ```
