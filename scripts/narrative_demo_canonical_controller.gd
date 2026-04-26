@@ -19,6 +19,30 @@ const LEGACY_VAR_ALIASES := {
 	"soldier_trust": VAR_SOLDIER_TRUST
 }
 
+const MVP_NODE_IDS := [
+	"military_order",
+	"beach_ambush",
+	"fishing_village_embers",
+	"ming_firearm",
+	"altered_military_report",
+	"transport_officer",
+	"night_knife_camp",
+	"wakou_boss",
+	"military_coverup"
+]
+
+const MVP_NODE_META := {
+	"military_order": {"column":"军令", "type":"事件", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_military_order.svg"},
+	"beach_ambush": {"column":"初遇", "type":"普通战斗", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_beach_ambush.svg"},
+	"fishing_village_embers": {"column":"初遇", "type":"普通战斗", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_fishing_village_embers.svg"},
+	"ming_firearm": {"column":"疑点", "type":"旧物", "visual_path":"res://assets/pixel_battle/relics/relic_ming_firearm.svg"},
+	"altered_military_report": {"column":"疑点", "type":"旧物", "visual_path":"res://assets/pixel_battle/relics/relic_altered_military_report.svg"},
+	"transport_officer": {"column":"压迫", "type":"精英战斗", "visual_path":"res://assets/pixel_battle/portraits/transport_officer.svg"},
+	"night_knife_camp": {"column":"压迫", "type":"事件", "visual_path":"res://assets/pixel_battle/backgrounds/prologue_departure.svg"},
+	"wakou_boss": {"column":"破船", "type":"Boss", "visual_path":"res://assets/pixel_battle/portraits/wakou_leader.svg"},
+	"military_coverup": {"column":"军门", "type":"结尾", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_military_coverup.svg"}
+}
+
 func _canonical_state() -> Dictionary:
 	return {
 		VAR_MILITARY_MERIT: jun_gong,
@@ -47,31 +71,52 @@ func _apply_canonical_effects(effects: Dictionary) -> void:
 	qing_wang += int(normalized[VAR_CLEAN_REPUTATION])
 	clues += int(normalized[VAR_CASE_CLUES])
 
-func _choice_effects_for_index(index: int) -> Dictionary:
-	var node: Dictionary = NODES[node_index]
-	var node_id := str(node.get("id", ""))
+func _node_id_at(index: int) -> String:
+	if index >= 0 and index < MVP_NODE_IDS.size():
+		return str(MVP_NODE_IDS[index])
+	return ""
+
+func _node_meta(node_id: String) -> Dictionary:
+	var meta = MVP_NODE_META.get(node_id, {})
+	return meta if meta is Dictionary else {}
+
+func _node_data_at(index: int) -> Dictionary:
+	var node_id := _node_id_at(index)
+	var node: Dictionary = {}
+	var meta := _node_meta(node_id)
+	for key in meta.keys():
+		node[key] = meta[key]
+	var configured := _node_config(node_id)
+	for key in configured.keys():
+		node[key] = configured[key]
+	node["id"] = node_id
+	if not node.has("title"):
+		node["title"] = node_id
+	if not node.has("column"):
+		node["column"] = ""
+	if not node.has("type"):
+		node["type"] = "事件"
+	if not node.has("visual_path"):
+		node["visual_path"] = ""
+	return node
+
+func _configured_choices_for_node(node_id: String) -> Array:
 	var node_data := _node_config(node_id)
-	var configured_choices = node_data.get("choices", [])
-	if configured_choices is Array and index >= 0 and index < (configured_choices as Array).size():
-		var configured = (configured_choices as Array)[index]
-		if configured is Dictionary:
-			var effects = (configured as Dictionary).get("effects", {})
-			if effects is Dictionary:
-				return _normalize_effects(effects)
-	var static_choices: Array = node.get("choices", [])
-	if index >= 0 and index < static_choices.size() and static_choices[index] is Dictionary:
-		var choice: Dictionary = static_choices[index]
-		return {
-			VAR_MILITARY_MERIT: int(choice.get("dg", 0)),
-			VAR_CLEAN_REPUTATION: int(choice.get("dq", 0)),
-			VAR_CASE_CLUES: int(choice.get("dc", 0)),
-			VAR_SOLDIER_TRUST: 0
-		}
+	var choices = node_data.get("choices", [])
+	return choices if choices is Array else []
+
+func _choice_effects_for_index(index: int) -> Dictionary:
+	var node_id := _node_id_at(node_index)
+	var configured_choices := _configured_choices_for_node(node_id)
+	if index >= 0 and index < configured_choices.size() and configured_choices[index] is Dictionary:
+		var configured: Dictionary = configured_choices[index]
+		var effects = configured.get("effects", {})
+		if effects is Dictionary:
+			return _normalize_effects(effects)
 	return {VAR_MILITARY_MERIT: 0, VAR_CLEAN_REPUTATION: 0, VAR_CASE_CLUES: 0, VAR_SOLDIER_TRUST: 0}
 
 func _add_choice_button(choice: Dictionary, index: int) -> void:
-	var node: Dictionary = NODES[node_index]
-	var node_id := str(node.get("id", ""))
+	var node_id := _node_id_at(node_index)
 	var effects := _choice_effects_for_index(index)
 	var btn := Button.new()
 	btn.text = "%s（军功 %+d / 清望 %+d / 旧案 %+d）" % [
@@ -86,15 +131,13 @@ func _add_choice_button(choice: Dictionary, index: int) -> void:
 	choices_box.add_child(btn)
 
 func _on_choice(index: int) -> void:
-	var node: Dictionary = NODES[node_index]
-	var static_choices: Array = node.get("choices", [])
-	if index < 0:
-		return
-	if static_choices.size() > 0 and index >= static_choices.size():
+	var node_id := _node_id_at(node_index)
+	var choices := _configured_choices_for_node(node_id)
+	if index < 0 or index >= choices.size():
 		return
 	_apply_canonical_effects(_choice_effects_for_index(index))
 	NarrativeBattleContext.apply_player_growth("choice", 0, 0, 0, false)
-	if node_index < NODES.size() - 1:
+	if node_index < MVP_NODE_IDS.size() - 1:
 		_advance_to_node(node_index + 1, "")
 	else:
 		_render_ending()
@@ -112,9 +155,9 @@ func _battle_reward_for_source(source_index: int) -> Dictionary:
 	var context_reward = NarrativeBattleContext.get_enemy_config().get("reward", {})
 	if context_reward is Dictionary and not (context_reward as Dictionary).is_empty():
 		return _normalize_effects(context_reward)
-	if source_index < 0 or source_index >= NODES.size():
+	if source_index < 0 or source_index >= MVP_NODE_IDS.size():
 		return {VAR_MILITARY_MERIT: 0, VAR_CLEAN_REPUTATION: 0, VAR_CASE_CLUES: 0, VAR_SOLDIER_TRUST: 0}
-	var node: Dictionary = NODES[source_index]
+	var node: Dictionary = _node_data_at(source_index)
 	var encounter_id := str(node.get("combat", ""))
 	if has_method("_formal_reward_for_encounter"):
 		var formal_reward: Dictionary = _formal_reward_for_encounter(encounter_id, str(node.get("type", "")))
@@ -128,9 +171,9 @@ func _battle_reward_for_source(source_index: int) -> Dictionary:
 			return {VAR_MILITARY_MERIT: 1, VAR_CLEAN_REPUTATION: 0, VAR_CASE_CLUES: 0, VAR_SOLDIER_TRUST: 0}
 
 func _battle_growth_reward_for_source(source_index: int) -> Dictionary:
-	if source_index < 0 or source_index >= NODES.size():
+	if source_index < 0 or source_index >= MVP_NODE_IDS.size():
 		return {"hp_gain": 0, "posture_gain": 0, "martial_gain": 0, "heal_full": false}
-	var node: Dictionary = NODES[source_index]
+	var node: Dictionary = _node_data_at(source_index)
 	var encounter_id := str(node.get("combat", ""))
 	if has_method("_formal_reward_for_encounter"):
 		return _formal_reward_for_encounter(encounter_id, str(node.get("type", "")))
@@ -147,8 +190,206 @@ func _apply_battle_result_reward(source_index: int) -> void:
 		bool(growth.get("heal_full", true))
 	)
 
+func _consume_battle_result_if_needed() -> void:
+	if not NarrativeBattleContext.has_result():
+		return
+	var source_id: String = NarrativeBattleContext.source_node_id
+	var result: String = NarrativeBattleContext.last_result
+	if source_id == PROLOGUE_MASTER_SOURCE_ID:
+		in_prologue = true
+		step_index = PROLOGUE_AFTER_MASTER_BATTLE_STEP
+		if result == "win":
+			clues += 1
+			last_hint = "序章战斗胜利：师父斩敌，敌人临死吐出旧案线索。"
+		else:
+			last_hint = "序章战斗返回：当前 Demo 按师父救场继续推进。"
+		NarrativeBattleContext.clear()
+		return
+	for i in range(MVP_NODE_IDS.size()):
+		if _node_id_at(i) == source_id:
+			node_index = i
+			in_prologue = false
+			break
+	if result == "win":
+		var growth := _battle_growth_reward_for_source(node_index)
+		_apply_battle_result_reward(node_index)
+		if node_index < MVP_NODE_IDS.size() - 1:
+			node_index += 1
+		last_hint = str(growth.get("reward_text", "战斗胜利：已返回剧情，并自动推进到下一节点。"))
+	elif result == "lose":
+		last_hint = "战斗失败：已返回剧情。当前暂不扣除资源，可重试或视为胜利继续。"
+	elif result == "draw":
+		last_hint = "战斗同归于尽：已返回剧情。线索保留，暂不推进。"
+	else:
+		last_hint = "战斗结果未知：已返回剧情。"
+	NarrativeBattleContext.clear()
+
+func _render_node() -> void:
+	var node: Dictionary = _node_data_at(node_index)
+	var node_id: String = str(node.get("id", ""))
+	title_label.text = str(node.get("title", ""))
+	status_label.text = "%s / %s" % [str(node.get("column", "")), str(node.get("type", ""))]
+	map_label.text = ""
+	scene_label.text = _format_scene_text(str(node.get("scene", "")))
+	_render_visual(str(node.get("visual_path", "")), str(node.get("scene", "")))
+	body_label.text = str(node.get("text", ""))
+	var combat = node.get("combat", {})
+	if combat is Dictionary and bool((combat as Dictionary).get("enabled", false)):
+		var pre_text: String = str((combat as Dictionary).get("pre", ""))
+		if not pre_text.is_empty() and body_label.text.find(pre_text) < 0:
+			body_label.text += "\n\n" + pre_text
+	if not last_hint.is_empty():
+		body_label.text += "\n\n[i]%s[/i]" % _fragmented_hint(last_hint)
+	vars_label.text = _vars_text()
+	_add_safe_map_buttons()
+	if _node_has_combat_data(node):
+		_add_button(combat_buttons_box, _combat_button_text(node), _on_request_battle)
+		_add_button(combat_buttons_box, _combat_mock_button_text(node), _on_mock_battle_win)
+	else:
+		_add_placeholder(combat_buttons_box, "")
+	var choices := _configured_choices_for_node(node_id)
+	for i in range(choices.size()):
+		var choice: Dictionary = choices[i] if choices[i] is Dictionary else {}
+		_add_choice_button(choice, i)
+
+func _on_request_battle() -> void:
+	var node: Dictionary = _node_data_at(node_index)
+	var node_id: String = str(node.get("id", ""))
+	var combat = node.get("combat", {})
+	if combat is Dictionary and bool((combat as Dictionary).get("enabled", false)):
+		var encounter_id: String = str((combat as Dictionary).get("encounter_id", ""))
+		var battle_id: String = str((combat as Dictionary).get("battle_id", ""))
+		NarrativeBattleContext.set_request(encounter_id, node_id, battle_id)
+		get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
+		return
+	super._on_request_battle()
+
+func _on_mock_battle_win() -> void:
+	var node: Dictionary = _node_data_at(node_index)
+	body_label.text = str(node.get("text", "")) + "\n\n[b]战斗占位胜利[/b]\n现在可选择战后处理。"
+	BattleFontHelper.enforce(self)
+
+func _current_node_id() -> String:
+	if in_prologue:
+		return "prologue"
+	return _node_id_at(node_index)
+
+func _current_world_map_title() -> String:
+	var node: Dictionary = _node_data_at(node_index)
+	return str(node.get("title", ""))
+
 func _vars_text() -> String:
 	return "军功 %d / 清望 %d / 旧案线索 %d" % [jun_gong, qing_wang, clues]
+
+func _map_text() -> String:
+	var lines: Array[String] = []
+	for col in MAP_COLUMNS:
+		var items: Array[String] = []
+		for i in range(MVP_NODE_IDS.size()):
+			var n: Dictionary = _node_data_at(i)
+			if str(n.get("column", "")) == col:
+				items.append("%s %s" % [_map_marker_for_index(i), str(n.get("title", ""))])
+		lines.append("【%s】%s" % [col, " / ".join(items)])
+	return "\n".join(lines)
+
+func _add_safe_map_buttons() -> void:
+	var column_row := HBoxContainer.new()
+	column_row.add_theme_constant_override("separation", 8)
+	map_buttons_box.add_child(column_row)
+	for column_name in MAP_COLUMNS:
+		var column_box := VBoxContainer.new()
+		column_box.custom_minimum_size = Vector2(142, 0)
+		column_box.add_theme_constant_override("separation", 4)
+		column_row.add_child(column_box)
+		var title := Label.new()
+		title.text = column_name
+		title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		title.add_theme_font_size_override("font_size", 13)
+		column_box.add_child(title)
+		for i in range(MVP_NODE_IDS.size()):
+			var node: Dictionary = _node_data_at(i)
+			if str(node.get("column", "")) == column_name:
+				var btn := Button.new()
+				btn.text = "%s %s" % [_map_marker_for_index(i), str(node.get("title", ""))]
+				btn.custom_minimum_size = Vector2(136, 38)
+				btn.pressed.connect(_on_map_node_pressed.bind(i))
+				column_box.add_child(btn)
+
+func _refresh_world_map() -> void:
+	if world_map_layer == null or world_map_panel == null or world_map_nodes_row == null:
+		return
+	world_map_panel.visible = not in_prologue
+	if in_prologue:
+		return
+	if world_map_status_label != null:
+		world_map_status_label.text = "海疆行军图｜当前：%s｜军功 %d｜清望 %d｜旧案 %d" % [_current_world_map_title(), jun_gong, qing_wang, clues]
+	for child: Node in world_map_nodes_row.get_children():
+		child.queue_free()
+	for i in range(MVP_NODE_IDS.size()):
+		if i > 0:
+			world_map_nodes_row.add_child(_make_world_map_line(i))
+		world_map_nodes_row.add_child(_make_world_map_node_button(i))
+
+func _make_world_map_line(index: int) -> Label:
+	var line := Label.new()
+	line.text = "━━"
+	line.custom_minimum_size = Vector2(24, 34)
+	line.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	line.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	line.add_theme_font_size_override("font_size", 13)
+	line.add_theme_color_override("font_color", Color("c9a35b") if index <= node_index else Color(0.60, 0.55, 0.46, 0.45))
+	line.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return line
+
+func _make_world_map_node_button(index: int) -> Button:
+	var node: Dictionary = _node_data_at(index)
+	var btn := Button.new()
+	btn.text = "%s\n%s" % [_world_map_marker_for_index(index), str(node.get("title", ""))]
+	btn.custom_minimum_size = Vector2(116, 48)
+	btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	btn.focus_mode = Control.FOCUS_NONE
+	btn.mouse_filter = Control.MOUSE_FILTER_STOP
+	btn.disabled = index > node_index + 1
+	btn.pressed.connect(_on_map_node_pressed.bind(index))
+	return btn
+
+func _on_map_node_pressed(target_index: int) -> void:
+	if target_index == node_index:
+		last_hint = "地图节点：当前节点。"
+	elif target_index < node_index:
+		last_hint = "地图节点：已走过。"
+	elif target_index != node_index + 1:
+		last_hint = "地图节点：未开放。"
+	else:
+		_apply_default_map_reward(target_index)
+		_advance_to_node(target_index, "地图节点：可前往，已通过地图选路推进，并获得默认行军收益。")
+		return
+	_render()
+
+func _apply_default_map_reward(target_index: int) -> void:
+	if target_index < 0 or target_index >= MVP_NODE_IDS.size():
+		return
+	var node: Dictionary = _node_data_at(target_index)
+	match str(node.get("type", "")):
+		"普通战斗", "精英战斗":
+			jun_gong += 1
+			clues += 1
+		"Boss":
+			jun_gong += 2
+			clues += 1
+		"旧物":
+			clues += 2
+			NarrativeBattleContext.apply_player_growth("relic", 0, 1, 0, false)
+		_:
+			qing_wang += 1
+
+func _advance_to_node(target_index: int, hint: String = "") -> void:
+	last_hint = hint
+	if target_index >= MVP_NODE_IDS.size():
+		_render_ending()
+		return
+	node_index = target_index
+	_render()
 
 func _render_ending() -> void:
 	title_label.text = "结局：潮声还在"
