@@ -1,35 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
-  <defs>
-    <linearGradient id="roadSky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#d8c9a5"/>
-      <stop offset="0.45" stop-color="#7a7468"/>
-      <stop offset="1" stop-color="#242321"/>
-    </linearGradient>
-    <linearGradient id="rut" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#121211" stop-opacity="0.70"/>
-      <stop offset="0.52" stop-color="#4a3d2d" stop-opacity="0.44"/>
-      <stop offset="1" stop-color="#111314" stop-opacity="0.78"/>
-    </linearGradient>
-    <filter id="soft" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="6"/></filter>
-  </defs>
-  <rect width="1280" height="720" fill="url(#roadSky)"/>
-  <rect width="1280" height="720" fill="#111" opacity="0.10"/>
-  <ellipse cx="414" cy="214" rx="250" ry="76" fill="#3f4644" opacity="0.18" filter="url(#soft)"/>
-  <ellipse cx="920" cy="184" rx="330" ry="86" fill="#313a3e" opacity="0.16" filter="url(#soft)"/>
+  <defs><linearGradient id="roadSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d8c9a5"/><stop offset="0.45" stop-color="#7a7468"/><stop offset="1" stop-color="#242321"/></linearGradient><linearGradient id="rut" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#121211" stop-opacity="0.70"/><stop offset="0.52" stop-color="#4a3d2d" stop-opacity="0.44"/><stop offset="1" stop-color="#111314" stop-opacity="0.78"/></linearGradient><filter id="soft" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="6"/></filter></defs>
+  <rect width="1280" height="720" fill="url(#roadSky)"/><rect width="1280" height="720" fill="#111" opacity="0.10"/>
+  <ellipse cx="414" cy="214" rx="250" ry="76" fill="#3f4644" opacity="0.18" filter="url(#soft)"/><ellipse cx="920" cy="184" rx="330" ry="86" fill="#313a3e" opacity="0.16" filter="url(#soft)"/>
   <path d="M0 358 C180 312 346 374 548 330 C760 284 940 370 1280 300 L1280 512 L0 522 Z" fill="#394448" opacity="0.34"/>
   <path d="M0 492 C210 432 390 508 610 458 C840 402 1035 502 1280 442 L1280 720 L0 720 Z" fill="url(#rut)"/>
   <path d="M112 626 C346 558 564 650 812 584 C984 538 1112 594 1280 548" stroke="#080909" stroke-width="18" stroke-linecap="round" opacity="0.52" fill="none"/>
   <path d="M0 666 C218 612 454 696 732 628 C948 574 1110 648 1280 604" stroke="#0b0c0c" stroke-width="24" stroke-linecap="round" opacity="0.48" fill="none"/>
-  <path d="M170 405 L522 372 L570 432 L216 468 Z" fill="#241b15" opacity="0.76"/>
-  <circle cx="260" cy="474" r="42" fill="#070808" opacity="0.78"/>
-  <circle cx="492" cy="454" r="40" fill="#070808" opacity="0.74"/>
-  <path d="M208 394 L250 350 L424 336 L512 372 Z" fill="#0d0f0e" opacity="0.62"/>
-  <path d="M618 404 C674 378 734 384 786 410 C730 426 672 426 618 404 Z" fill="#17130f" opacity="0.68"/>
-  <path d="M760 252 L810 526 L720 526 Z" fill="#080909" opacity="0.78"/>
-  <path d="M830 278 L918 528 L846 528 Z" fill="#0d0d0c" opacity="0.60"/>
-  <path d="M1012 292 L1058 528 L980 528 Z" fill="#0b0c0c" opacity="0.52"/>
+  <!-- empty escort cart with broken seal -->
+  <path d="M170 405 L522 372 L570 432 L216 468 Z" fill="#241b15" opacity="0.78"/>
+  <path d="M208 394 L250 350 L424 336 L512 372 Z" fill="#0d0f0e" opacity="0.64"/>
+  <circle cx="260" cy="474" r="42" fill="#070808" opacity="0.78"/><circle cx="492" cy="454" r="40" fill="#070808" opacity="0.74"/>
+  <rect x="356" y="386" width="66" height="24" rx="3" fill="#d8c9a5" opacity="0.40"/>
+  <path d="M374 386 L404 410" stroke="#7e2e28" stroke-width="5" opacity="0.62"/>
+  <path d="M620 408 C678 376 738 384 792 412 C728 430 674 426 620 408 Z" fill="#17130f" opacity="0.68"/>
+  <!-- scattered weapons / lost evidence -->
+  <path d="M590 536 L716 496" stroke="#0a0b0b" stroke-width="9" stroke-linecap="round" opacity="0.76"/>
+  <path d="M704 492 L740 482 L716 510 Z" fill="#0a0b0b" opacity="0.76"/>
+  <path d="M642 570 L760 560" stroke="#202323" stroke-width="7" stroke-linecap="round" opacity="0.58"/>
+  <rect x="805" y="522" width="92" height="34" rx="4" fill="#2b2118" opacity="0.46"/>
+  <path d="M760 252 L810 526 L720 526 Z M830 278 L918 528 L846 528 Z M1012 292 L1058 528 L980 528 Z" fill="#0b0c0c" opacity="0.64"/>
   <path d="M180 560 L228 706 L160 706 Z M1096 546 L1156 706 L1070 706 Z" fill="#050606" opacity="0.90"/>
-  <path d="M72 600 L282 560" stroke="#060707" stroke-width="16" stroke-linecap="round" opacity="0.82"/>
-  <path d="M1000 602 L1238 542" stroke="#050606" stroke-width="18" stroke-linecap="round" opacity="0.86"/>
+  <path d="M72 600 L282 560 M1000 602 L1238 542" stroke="#060707" stroke-width="17" stroke-linecap="round" opacity="0.84"/>
   <rect width="1280" height="720" fill="#050606" opacity="0.07"/>
 </svg>
