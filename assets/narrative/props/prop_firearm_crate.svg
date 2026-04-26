@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <defs><linearGradient id="wood" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b2b1d"/><stop offset="1" stop-color="#15100d"/></linearGradient><radialGradient id="ember" cx="55%" cy="45%" r="55%"><stop offset="0" stop-color="#8f2f27" stop-opacity="0.38"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs>
+  <rect width="640" height="360" fill="none"/>
+  <rect x="116" y="132" width="408" height="126" rx="8" fill="url(#wood)" opacity="0.92"/>
+  <rect x="146" y="104" width="336" height="58" rx="6" fill="#2b2118" opacity="0.86"/>
+  <path d="M128 172 L512 244 M150 104 L482 162 M188 128 L188 258 M458 120 L458 258" stroke="#0b0d0c" stroke-width="8" opacity="0.58"/>
+  <path d="M180 200 L438 164" stroke="#202323" stroke-width="15" stroke-linecap="round" opacity="0.86"/>
+  <path d="M422 160 L490 148 L450 190 Z" fill="#202323" opacity="0.80"/>
+  <rect x="254" y="182" width="92" height="30" rx="3" fill="#8a6a3a" opacity="0.34"/>
+  <rect width="640" height="360" fill="url(#ember)"/>
+</svg>
