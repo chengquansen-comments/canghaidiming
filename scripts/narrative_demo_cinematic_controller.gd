@@ -1,8 +1,8 @@
 extends "res://scripts/narrative_demo_formal_controller.gd"
 
 const PERFORMANCE_RATIO: float = 0.6667
-const OPERATION_TOP: float = 0.6667
-const OPERATION_BOTTOM: float = 0.98
+const OPERATION_BOTTOM: float = 0.99
+const MIN_OPERATION_HEIGHT: float = 340.0
 const PROLOGUE_BLACK_TIDE := "res://assets/pixel_battle/backgrounds/prologue_black_tide.svg"
 const PROLOGUE_RESCUE := "res://assets/pixel_battle/backgrounds/prologue_master_rescue.svg"
 const PROLOGUE_ARROW := "res://assets/pixel_battle/backgrounds/prologue_arrow_silence.svg"
@@ -184,11 +184,12 @@ func _hide_inline_visual(path: String) -> void:
 		visual_label.visible = false
 		visual_label.custom_minimum_size = Vector2.ZERO
 	if visual_debug_label != null:
+		visual_debug_label.visible = false
 		visual_debug_label.text = "演出诊断：single-file｜stage=%s｜path=%s" % [_cinematic_stage_key(), path]
 	if visual_texture != null and visual_texture.get_parent() != null and visual_texture.get_parent().get_parent() != null:
 		var frame: Node = visual_texture.get_parent().get_parent()
 		if frame is Control:
-			(frame as Control).custom_minimum_size = Vector2(0, 18)
+			(frame as Control).custom_minimum_size = Vector2.ZERO
 
 func _update_cinematic_motion(delta: float) -> void:
 	var stage: String = _cinematic_stage_key()
@@ -253,39 +254,55 @@ func _update_character_motion(zoom: float) -> void:
 		cinematic_hero.position.y = 2.0 * sin(cinematic_time * 0.9)
 
 func _apply_cinematic_layout() -> void:
+	var viewport_size: Vector2 = get_viewport_rect().size
+	var operation_height: float = max(MIN_OPERATION_HEIGHT, viewport_size.y * (1.0 - PERFORMANCE_RATIO))
+	var operation_top: float = max(0.48, OPERATION_BOTTOM - operation_height / max(1.0, viewport_size.y))
+	var performance_bottom: float = operation_top
 	if cinematic_bg != null:
-		cinematic_bg.anchor_bottom = PERFORMANCE_RATIO
+		cinematic_bg.anchor_bottom = performance_bottom
 	if cinematic_mist != null:
-		cinematic_mist.anchor_bottom = PERFORMANCE_RATIO
+		cinematic_mist.anchor_bottom = performance_bottom
 	if cinematic_fire != null:
-		cinematic_fire.anchor_bottom = PERFORMANCE_RATIO
+		cinematic_fire.anchor_bottom = performance_bottom
 	if cinematic_master != null:
-		cinematic_master.anchor_bottom = PERFORMANCE_RATIO
+		cinematic_master.anchor_bottom = performance_bottom
 	if cinematic_hero != null:
-		cinematic_hero.anchor_bottom = PERFORMANCE_RATIO
+		cinematic_hero.anchor_bottom = performance_bottom
 	if cinematic_dim != null:
-		cinematic_dim.anchor_bottom = PERFORMANCE_RATIO
+		cinematic_dim.anchor_bottom = performance_bottom
 	if cinematic_focus != null:
-		cinematic_focus.anchor_bottom = PERFORMANCE_RATIO
+		cinematic_focus.anchor_bottom = performance_bottom
 	var root_panel: PanelContainer = _find_operation_panel()
 	if root_panel != null:
-		root_panel.anchor_left = 0.035
-		root_panel.anchor_right = 0.965
-		root_panel.anchor_top = OPERATION_TOP
+		root_panel.anchor_left = 0.02
+		root_panel.anchor_right = 0.98
+		root_panel.anchor_top = operation_top
 		root_panel.anchor_bottom = OPERATION_BOTTOM
 		root_panel.offset_left = 0
 		root_panel.offset_right = 0
 		root_panel.offset_top = 0
 		root_panel.offset_bottom = 0
+	if title_label != null:
+		title_label.add_theme_font_size_override("font_size", 21)
+	if status_label != null:
+		status_label.add_theme_font_size_override("font_size", 13)
 	if map_label != null:
-		map_label.custom_minimum_size = Vector2(0, 38)
+		map_label.custom_minimum_size = Vector2(0, 0)
+		map_label.visible = false
 	if scene_label != null:
-		scene_label.custom_minimum_size = Vector2(0, 28)
+		scene_label.custom_minimum_size = Vector2(0, 0)
+		scene_label.visible = false
 	if body_label != null:
-		body_label.custom_minimum_size = Vector2(0, 62)
+		body_label.custom_minimum_size = Vector2(0, 54)
+		body_label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		body_label.add_theme_font_size_override("normal_font_size", 18)
+	if vars_label != null:
+		vars_label.add_theme_font_size_override("font_size", 13)
 	if action_scroll != null:
-		action_scroll.custom_minimum_size = Vector2(0, 138)
+		action_scroll.custom_minimum_size = Vector2(0, max(150.0, operation_height - 170.0))
 		action_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	if action_content != null:
+		action_content.add_theme_constant_override("separation", 4)
 
 func _find_operation_panel() -> PanelContainer:
 	for child: Node in get_children():
