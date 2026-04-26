@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs><linearGradient id="p" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b9ad91"/><stop offset="1" stop-color="#25292a"/></linearGradient><radialGradient id="r" cx="64%" cy="42%" r="50%"><stop offset="0" stop-color="#8f2f27" stop-opacity="0.36"/><stop offset="1" stop-color="#111" stop-opacity="0"/></radialGradient></defs>
+  <rect width="1280" height="720" fill="url(#p)"/><rect width="1280" height="720" fill="url(#r)"/>
+  <path d="M0 355 C210 295 380 365 610 310 C835 255 1010 350 1280 290 L1280 720 L0 720 Z" fill="#2f4144" opacity="0.45"/>
+  <path d="M0 520 C260 445 500 555 780 480 C1010 420 1100 535 1280 480 L1280 720 L0 720 Z" fill="#0b0d0d" opacity="0.86"/>
+  <path d="M250 420 L760 350 L900 430 L320 485 Z" fill="#19120e" opacity="0.78"/><path d="M560 260 L610 410" stroke="#0a0a0a" stroke-width="18" opacity="0.8"/><path d="M610 280 L850 380" stroke="#0a0a0a" stroke-width="14" opacity="0.66"/>
+  <rect x="700" y="405" width="190" height="56" rx="8" fill="#2b2118" opacity="0.86"/>
+  <path d="M900 240 L950 520 L855 520 Z" fill="#070707" opacity="0.70"/>
+  <text x="64" y="664" font-size="30" fill="#8c2f29" opacity="0.88" font-family="serif">破船决战</text>
+</svg>
