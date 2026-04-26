@@ -1,30 +1,31 @@
 # 《沧海嘀鸣》美术表现推进看板
 
-> 当前目标：从“纯文字 + 简单色块占位”推进到“明代海疆国风主视觉”的可见 MVP。
+> 当前目标：从“纯文字 + 简单色块占位”推进到“明代海疆国风主视觉 + 数据驱动剧情演出”的可见 MVP。
 >
 > 当前美术方向：青年明代武官、明制札甲、深绛红战袍、水墨海岸、宣纸背景、海雾、远崖、城墙、小船、低饱和、强剪影、家国情怀、风起沧海。
 
 ---
 
-## 0. 剧情 UI 布局规范（新增）
+## 0. 剧情 UI 布局规范
 
 ```text
 Narrative UI 采用明确上下分割：
 
-上方 2/3：表演区（Performance Area）
+上方：表演区（Performance Area）
 - 承载场景主视觉（SVG / PNG / AI 图）
 - 用于表现人物、环境、情绪、叙事氛围
 - 不放交互按钮
-- 可叠加轻度暗色遮罩（保证前景文字可读）
+- 可叠加暗层 / 雾层 / 火光 / 人物剪影
 
-下方 1/3：操作区（Operation Area）
+下方：操作区（Operation Area）
 - 承载剧情文本（body）
 - 承载选项按钮（choices）
-- 承载状态提示（map / scene / hint）
+- 承载状态提示（hint / vars）
 - 必须保证滚动与点击优先级
 
-设计原则：
-- 表演区优先“沉浸感”，操作区优先“可用性”
+实现约束：
+- 理想比例：上方约 2/3 表演区，下方约 1/3 操作区
+- 实际运行：操作区有最小高度保护，小屏幕时自动压缩表演区，优先保证选项可见
 - 禁止再使用“中间一小块插图”的旧结构
 - 所有剧情场景图默认作为表演区背景，而不是 UI 元素
 ```
@@ -67,142 +68,183 @@ assets/pixel_battle/backgrounds/key_visual_canghai_diming.svg
 
 ---
 
-### 2.2 军令巡海
+### 2.2 序章专用表演图
+
+```text
+assets/pixel_battle/backgrounds/prologue_black_tide.svg
+assets/pixel_battle/backgrounds/prologue_master_rescue.svg
+assets/pixel_battle/backgrounds/prologue_arrow_silence.svg
+assets/pixel_battle/backgrounds/prologue_departure.svg
+```
+
+用途：
+
+```text
+开局 12 段已具备独立表演背景，不再只依赖文字占位。
+```
+
+---
+
+### 2.3 第一幕节点表演图
 
 ```text
 assets/pixel_battle/backgrounds/narrative_military_order.svg
-```
-
-视觉内容：
-
-```text
-宣纸背景、水墨远岸、军令案牍、朱砂印、青年武官剪影。
-```
-
----
-
-### 2.3 海边伏击
-
-```text
 assets/pixel_battle/backgrounds/narrative_beach_ambush.svg
-```
-
-视觉内容：
-
-```text
-水墨海岸、芦苇、敌影、伏兵剪影、海雾、低饱和朱砂提示语。
-```
-
----
-
-### 2.4 明制火器
-
-```text
 assets/pixel_battle/relics/relic_ming_firearm.svg
-```
-
-视觉内容：
-
-```text
-破船舱、官造火器、火器箱、官造印记、旧案证据感。
-```
-
----
-
-### 2.5 失械案押运官
-
-```text
 assets/pixel_battle/portraits/transport_officer.svg
-```
-
-视觉内容：
-
-```text
-雨后泥路、押运车、押运官剪影、腰刀、军务压迫。
-```
-
----
-
-### 2.6 破船 Boss
-
-```text
 assets/pixel_battle/portraits/wakou_leader.svg
-```
-
-视觉内容：
-
-```text
-破船、火器箱、海寇首领、倭刀、旧案线索、海雾。
-```
-
----
-
-### 2.7 军门压案
-
-```text
 assets/pixel_battle/backgrounds/narrative_military_coverup.svg
 ```
 
-视觉内容：
+当前状态：
 
 ```text
-军门案牍、缺页案卷、朱砂印、阴影中的人物剪影、压案气氛。
+[x] 军令巡海：庄重军令演出
+[x] 海边伏击：强雾、快速推进、紧张感
+[x] 明制火器：证物特写，火器箱成为主体
+[x] 失械案押运官：雨雾对峙压迫感
+[x] 破船 Boss：强雾、火光、主角入镜，高潮节点
+[x] 军门压案：高暗度、低火光、压抑收束
 ```
 
 ---
 
-## 3. 已完成：NarrativeDemo 美术显示增强
+## 3. 已完成：NarrativeDemo 单文件电影化演出
 
 ```text
-scripts/narrative_demo_art_controller.gd
+scripts/narrative_demo_cinematic_controller.gd
 scenes/NarrativeDemo.tscn
+```
+
+当前架构：
+
+```text
+NarrativeDemo.tscn
+→ narrative_demo_cinematic_controller.gd
+→ narrative_demo_formal_controller.gd
+```
+
+重要说明：
+
+```text
+之前 performance → art → formal 的多级继承链在 Web/Godot 解析中出现过 Could not resolve class。
+当前已改为单文件 cinematic controller 直接继承 formal，稳定性优先。
 ```
 
 当前行为：
 
 ```text
-[x] 上方 2/3 作为表演区，场景图铺满
-[x] 下方 1/3 作为操作区（文本 + 选项）
-[x] 表演区使用半透明暗层保证可读性
-[x] 旧“中间小图”结构已废弃
+[x] 表演区主体背景铺满
+[x] 下方操作区最小高度保护，选项不出屏
+[x] 序章按 step_index 自动切换背景
+[x] 第一幕按 node_id 自动切换背景
+[x] 支持雾层移动
+[x] 支持火光脉冲
+[x] 支持暗层呼吸
+[x] 支持师父 / 主角剪影入镜
+[x] 支持镜头轻推、横移、局部节奏变化
 ```
 
 ---
 
-## 4. 当前仍需验收
+## 4. 已完成：数据驱动演出重新挂回
 
 ```text
-[ ] Web 构建稳定，无 Parser Error
-[ ] NarrativeDemo 正常打开
-[ ] 上方约 2/3 区域显示场景主视觉背景
-[ ] 下方约 1/3 区域完整显示选项
-[ ] 选项可滚动、可点击
-[ ] 文字在背景上清晰可读
-[ ] 剧情—战斗—剧情闭环不受影响
+data/performance_tracks.json
+```
+
+当前状态：
+
+```text
+[x] 已重新挂回数据驱动
+[x] 没有使用二级 data controller
+[x] JSON 读取逻辑已内联到 narrative_demo_cinematic_controller.gd
+[x] 读取成功时 source=json
+[x] 读取失败时自动回退代码内置 NODE_PERFORMANCE
+```
+
+JSON 当前覆盖：
+
+```text
+序章：
+- black_tide_0
+- black_tide_1
+- black_tide_2
+- black_tide_3
+- master_rescue
+- arrow_silence
+- departure
+
+第一幕：
+- military_order
+- beach_ambush
+- ming_firearm
+- transport_officer
+- wakou_boss
+- military_coverup
+```
+
+当前可调字段：
+
+```text
+duration：阶段时长
+zoom：镜头推进强度
+pan_x / pan_y：镜头横移 / 纵移
+dim：暗层强度
+mist：雾层强度
+fire：火光强度
+hero / master：是否显示主角 / 师父剪影
+hero_push / master_push：人物入镜位移
 ```
 
 ---
 
-## 5. 下一批美术优先级
-
-### P0：序章专用 SVG
+## 5. 最新调优：第一幕演出节奏
 
 ```text
-prologue_black_tide.svg
-prologue_master_rescue.svg
-prologue_arrow_silence.svg
-prologue_departure.svg
+提交目标：让第一幕节点差异更明确，而不是所有节点都只是轻微动背景。
 ```
 
-目标：
+当前调优方向：
 
 ```text
-让开局 12 段不再使用纯文字视觉占位，而是根据段落切换图。
+军令巡海：降低 zoom 和雾，突出庄重、稳定、领命
+海边伏击：提高 zoom、pan、mist，突出危险接近
+明制火器：大幅提高 zoom 和 fire，降低 dim / mist，明确证物特写
+失械案押运官：提高 dim / mist / hero_push，突出雨雾对峙
+破船 Boss：提高 zoom / pan / mist / fire，成为第一幕最强演出节点
+军门压案：提高 dim、降低 fire，形成压抑收束
 ```
 
 ---
 
-### P1：战斗背景统一
+## 6. 当前验收状态
+
+```text
+[x] Web 构建稳定，无 Could not resolve class
+[x] NarrativeDemo 正常打开
+[x] 上方表演区显示场景主视觉背景
+[x] 下方操作区完整显示选项
+[x] 选项可滚动、可点击
+[x] 剧情—战斗—剧情闭环不受影响
+[x] data/performance_tracks.json 已生效
+[x] 明制火器证物节点可见
+```
+
+继续验收建议：
+
+```text
+[ ] 检查第一幕 6 个节点的演出差异是否足够明显
+[ ] 检查海边伏击 / 破船 Boss 是否有明显紧张升级
+[ ] 检查军门压案是否形成压抑收束
+[ ] 检查 source=json 是否稳定显示
+```
+
+---
+
+## 7. 下一批美术优先级
+
+### P0：战斗背景统一
 
 ```text
 battle_bg_coast_ambush.svg
@@ -218,7 +260,7 @@ battle_bg_broken_ship.svg
 
 ---
 
-### P2：角色战斗立绘
+### P1：角色战斗立绘
 
 ```text
 hero_spearman.svg
@@ -237,8 +279,26 @@ wakou_leader_battle.svg
 
 ---
 
-## 6. 当前一句话结论
+### P2：正式 PNG 替换
 
 ```text
-剧情 UI 已从“中间插图”结构升级为“上方表演区 + 下方操作区”的标准叙事布局，场景图成为主体背景。
+prologue_black_tide.png
+prologue_master_rescue.png
+narrative_military_order.png
+narrative_beach_ambush.png
+relic_ming_firearm.png
+```
+
+目标：
+
+```text
+将 SVG 高级占位逐步替换为 AI 生成或正式绘制 PNG，提升观感上限。
+```
+
+---
+
+## 8. 当前一句话结论
+
+```text
+剧情美术管线已进入“数据驱动电影化演出”阶段：序章与第一幕均已接入表演区背景、镜头、雾、火光、人物剪影与 JSON 参数调优；下一阶段应把战斗场景也统一到同一套水墨海疆视觉体系。
 ```
