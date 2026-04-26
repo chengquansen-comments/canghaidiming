@@ -46,7 +46,10 @@ func _test_battle_id_for_role() -> String:
 
 func _select_role_and_start(role_id: String) -> void:
 	super._select_role_and_start(role_id)
-	_apply_battle_scene_by_id(_test_battle_id_for_role())
+	if NarrativeBattleContext.has_request():
+		_apply_battle_scene_from_context()
+	else:
+		_apply_battle_scene_by_id(_test_battle_id_for_role())
 
 func _try_recommended_role_entry(role_id: String) -> bool:
 	var ok: bool = super._try_recommended_role_entry(role_id)
@@ -96,59 +99,3 @@ func _update_original_scene_label(config: Dictionary) -> void:
 		phase_label.text = label_text
 	if battle_log_strip != null and not battle_active:
 		battle_log_strip.text = label_text
-
-func _enemy_config(encounter: String) -> Dictionary:
-	var manifest_enemy: Dictionary = NarrativeBattleContext.get_enemy_config()
-	if not manifest_enemy.is_empty() and NarrativeBattleContext.enemy_source_text() == "manifest":
-		return _enemy_runtime_config_from_manifest(encounter, manifest_enemy)
-	return super._enemy_config(encounter)
-
-func _enemy_runtime_config_from_manifest(encounter: String, manifest_enemy: Dictionary) -> Dictionary:
-	var role_sheet: String = str(manifest_enemy.get("role_sheet", "enemy_spearman"))
-	var enemy_family: String = str(NarrativeBattleContext.get_battle_mapping().get("enemy_family", "spearman"))
-	var deck: Array = _enemy_deck_for_manifest(encounter, role_sheet, enemy_family)
-	return {
-		"name": str(manifest_enemy.get("display_name", "敌人")),
-		"weapon": str(manifest_enemy.get("weapon", "兵器")),
-		"max_hp": int(manifest_enemy.get("max_hp", 26)),
-		"hp": int(manifest_enemy.get("max_hp", 26)),
-		"max_momentum": int(manifest_enemy.get("max_posture", 10)),
-		"momentum": int(manifest_enemy.get("start_posture", 4)),
-		"realm": _enemy_realm_from_manifest(encounter, manifest_enemy),
-		"qinggong": _enemy_qinggong_from_manifest(manifest_enemy),
-		"position": 6,
-		"facing": "left",
-		"preferred": _enemy_preferred_from_manifest(role_sheet, enemy_family),
-		"deck": deck
-	}
-
-func _enemy_realm_from_manifest(encounter: String, manifest_enemy: Dictionary) -> int:
-	var difficulty: String = str(NarrativeBattleContext.get_battle_mapping().get("difficulty", "normal"))
-	match difficulty:
-		"tutorial_elite": return 1
-		"normal": return 1
-		"elite": return 2
-		"boss": return 3
-		_: return 1
-
-func _enemy_qinggong_from_manifest(manifest_enemy: Dictionary) -> int:
-	var role_sheet: String = str(manifest_enemy.get("role_sheet", "enemy_spearman"))
-	if role_sheet.find("blademaster") >= 0:
-		return 2
-	return 1
-
-func _enemy_preferred_from_manifest(role_sheet: String, enemy_family: String) -> Array:
-	if role_sheet.find("blademaster") >= 0 or enemy_family == "blademaster":
-		return [0, 1, 2]
-	return [3, 4, 5]
-
-func _enemy_deck_for_manifest(encounter: String, role_sheet: String, enemy_family: String) -> Array:
-	if encounter == "enc_prologue_master_rescue":
-		return _enemy_intro_cards()
-	if encounter == "enc_transport_officer":
-		return _enemy_officer_cards()
-	if encounter == "enc_wakou_boss":
-		return _enemy_boss_cards()
-	if role_sheet.find("blademaster") >= 0 or enemy_family == "blademaster":
-		return _enemy_officer_cards()
-	return _enemy_spear_cards()
