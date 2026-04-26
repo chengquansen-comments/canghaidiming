@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs><linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ddcfad"/><stop offset="1" stop-color="#6d746c"/></linearGradient></defs>
+  <rect width="1280" height="720" fill="url(#paper)"/>
+  <path d="M0 350 C210 300 380 360 600 318 C820 275 1020 348 1280 285 L1280 720 L0 720 Z" fill="#3f5255" opacity="0.48"/>
+  <path d="M0 500 C240 430 450 525 700 465 C950 405 1070 510 1280 450 L1280 720 L0 720 Z" fill="#101413" opacity="0.78"/>
+  <path d="M110 430 C210 370 300 455 410 390 M870 420 C980 350 1065 450 1180 390" stroke="#111" stroke-width="16" opacity="0.48" fill="none"/>
+  <path d="M690 240 L725 505 L645 505 Z" fill="#111" opacity="0.45"/><path d="M740 250 L780 510 L700 510 Z" fill="#111" opacity="0.36"/>
+  <text x="64" y="664" font-size="30" fill="#7e2e28" opacity="0.86" font-family="serif">海边伏击</text>
+</svg>
