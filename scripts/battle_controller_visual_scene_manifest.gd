@@ -16,12 +16,15 @@ var stable_debug_enemy_label: Label
 var stable_debug_deck_label: Label
 var stable_debug_ai_label: Label
 var stable_debug_runtime_label: Label
+var stable_debug_actions_row: HBoxContainer
+var stable_debug_recommended_button: Button
+var stable_debug_continue_button: Button
 var stable_debug_last_values: Dictionary = {}
 
 func _ready() -> void:
 	_load_battle_scene_manifest()
 	super._ready()
-	_hide_legacy_top_debug_strip()
+	_hide_legacy_debug_window()
 	_build_stable_debug_panel()
 	_apply_battle_scene_from_context()
 	_refresh_stable_debug_panel()
@@ -130,34 +133,38 @@ func _update_original_scene_label(config: Dictionary) -> void:
 		battle_log_strip.text = label_text
 	_refresh_stable_debug_panel()
 
-func _hide_legacy_top_debug_strip() -> void:
+func _hide_legacy_debug_window() -> void:
+	# 旧调试窗口由父类创建，包含“关卡信息 / 接战映射 / 敌人配置”等内容。
+	# 这些信息已合并到 StableBattleDebugPanel；旧层整体隐藏，避免与新面板重复。
 	if enemy_config_strip != null:
 		enemy_config_strip.visible = false
+	if narrative_debug_layer != null:
+		narrative_debug_layer.visible = false
 
 func _build_stable_debug_panel() -> void:
 	if stable_debug_layer != null:
 		return
 	stable_debug_layer = CanvasLayer.new()
 	stable_debug_layer.name = "StableBattleDebugLayer"
-	stable_debug_layer.layer = 140
+	stable_debug_layer.layer = 150
 	add_child(stable_debug_layer)
 
 	stable_debug_panel = PanelContainer.new()
 	stable_debug_panel.name = "StableBattleDebugPanel"
-	stable_debug_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	stable_debug_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	stable_debug_panel.anchor_left = 0.0
 	stable_debug_panel.anchor_right = 0.0
 	stable_debug_panel.anchor_top = 0.0
 	stable_debug_panel.anchor_bottom = 0.0
 	stable_debug_panel.offset_left = 12
 	stable_debug_panel.offset_top = 8
-	stable_debug_panel.offset_right = 640
-	stable_debug_panel.offset_bottom = 164
+	stable_debug_panel.offset_right = 720
+	stable_debug_panel.offset_bottom = 214
 	stable_debug_panel.add_theme_stylebox_override("panel", _stable_debug_panel_style())
 	stable_debug_layer.add_child(stable_debug_panel)
 
 	var margin := MarginContainer.new()
-	margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	margin.mouse_filter = Control.MOUSE_FILTER_PASS
 	margin.add_theme_constant_override("margin_left", 12)
 	margin.add_theme_constant_override("margin_top", 8)
 	margin.add_theme_constant_override("margin_right", 12)
@@ -165,7 +172,7 @@ func _build_stable_debug_panel() -> void:
 	stable_debug_panel.add_child(margin)
 
 	var box := VBoxContainer.new()
-	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	box.mouse_filter = Control.MOUSE_FILTER_PASS
 	box.add_theme_constant_override("separation", 3)
 	margin.add_child(box)
 
@@ -187,6 +194,25 @@ func _build_stable_debug_panel() -> void:
 
 	stable_debug_runtime_label = _make_stable_debug_label(13)
 	box.add_child(stable_debug_runtime_label)
+
+	stable_debug_actions_row = HBoxContainer.new()
+	stable_debug_actions_row.mouse_filter = Control.MOUSE_FILTER_PASS
+	stable_debug_actions_row.add_theme_constant_override("separation", 8)
+	box.add_child(stable_debug_actions_row)
+
+	stable_debug_recommended_button = Button.new()
+	stable_debug_recommended_button.text = "按推荐接敌"
+	stable_debug_recommended_button.custom_minimum_size = Vector2(132, 32)
+	stable_debug_recommended_button.focus_mode = Control.FOCUS_NONE
+	stable_debug_recommended_button.pressed.connect(_on_recommended_battle_pressed)
+	stable_debug_actions_row.add_child(stable_debug_recommended_button)
+
+	stable_debug_continue_button = Button.new()
+	stable_debug_continue_button.text = "返回剧情"
+	stable_debug_continue_button.custom_minimum_size = Vector2(132, 32)
+	stable_debug_continue_button.focus_mode = Control.FOCUS_NONE
+	stable_debug_continue_button.pressed.connect(_on_continue_narrative_pressed)
+	stable_debug_actions_row.add_child(stable_debug_continue_button)
 
 func _stable_debug_panel_style() -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
