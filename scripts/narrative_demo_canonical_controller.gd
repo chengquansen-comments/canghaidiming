@@ -22,10 +22,13 @@ const LEGACY_VAR_ALIASES := {
 const MVP_NODE_IDS := [
 	"military_order",
 	"beach_ambush",
+	"beach_ambush_aftermath",
 	"fishing_village_embers",
+	"fishing_village_embers_aftermath",
 	"ming_firearm",
 	"altered_military_report",
 	"transport_officer",
+	"transport_officer_aftermath",
 	"night_knife_camp",
 	"wakou_boss",
 	"military_coverup"
@@ -34,10 +37,13 @@ const MVP_NODE_IDS := [
 const MVP_NODE_META := {
 	"military_order": {"column":"军令", "type":"事件", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_military_order.svg"},
 	"beach_ambush": {"column":"初遇", "type":"普通战斗", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_beach_ambush.svg"},
+	"beach_ambush_aftermath": {"column":"初遇", "type":"战后处理", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_beach_ambush.svg"},
 	"fishing_village_embers": {"column":"初遇", "type":"普通战斗", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_fishing_village_embers.svg"},
+	"fishing_village_embers_aftermath": {"column":"初遇", "type":"战后处理", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_fishing_village_embers.svg"},
 	"ming_firearm": {"column":"疑点", "type":"旧物", "visual_path":"res://assets/pixel_battle/relics/relic_ming_firearm.svg"},
 	"altered_military_report": {"column":"疑点", "type":"旧物", "visual_path":"res://assets/pixel_battle/relics/relic_altered_military_report.svg"},
 	"transport_officer": {"column":"压迫", "type":"精英战斗", "visual_path":"res://assets/pixel_battle/portraits/transport_officer.svg"},
+	"transport_officer_aftermath": {"column":"压迫", "type":"战后处理", "visual_path":"res://assets/pixel_battle/portraits/transport_officer.svg"},
 	"night_knife_camp": {"column":"压迫", "type":"事件", "visual_path":"res://assets/pixel_battle/backgrounds/prologue_departure.svg"},
 	"wakou_boss": {"column":"破船", "type":"Boss", "visual_path":"res://assets/pixel_battle/portraits/wakou_leader.svg"},
 	"military_coverup": {"column":"军门", "type":"结尾", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_military_coverup.svg"}
