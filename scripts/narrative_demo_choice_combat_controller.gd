@@ -4,8 +4,8 @@ extends "res://scripts/narrative_demo_canonical_controller.gd"
 # 1. Read node segments sentence by sentence.
 # 2. Show narrative choices only after reading is complete.
 # 3. If a choice has combat, start combat from that choice.
-# 4. After victory, apply that choice's effects, show its result, then continue.
-# 5. If a choice has no combat, apply effects immediately, show result, then continue.
+# 4. After victory, apply that choice's effects, show its result sentence by sentence, then continue.
+# 5. If a choice has no combat, apply effects immediately, show result sentence by sentence, then continue.
 # 6. Boss nodes may use post-battle stance choices: read -> fight -> choose stance.
 
 const META_PENDING_CHOICE_JSON := "canghai_pending_narrative_choice_json"
@@ -18,6 +18,7 @@ const BOSS_BATTLE_ID := "first_act_wakou_boss"
 var showing_choice_result: bool = false
 var choice_result_text: String = ""
 var choice_result_delta_text: String = ""
+var choice_result_sentence_index: int = 0
 var boss_battle_completed: bool = false
 
 func _node_level_combat(node: Dictionary) -> Dictionary:
@@ -66,6 +67,22 @@ func _choice_preview(choice: Dictionary, node: Dictionary) -> String:
 		prefix = "立场"
 	return "%s：%s" % [prefix, _format_effect_delta(_choice_effects(choice))]
 
+func _choice_result_segments() -> Array[String]:
+	var segments: Array[String] = []
+	_append_text_segments(segments, choice_result_text)
+	if segments.is_empty():
+		segments.append("")
+	return segments
+
+func _is_choice_result_complete() -> bool:
+	var segments := _choice_result_segments()
+	return choice_result_sentence_index >= segments.size() - 1
+
+func _current_choice_result_text() -> String:
+	var segments := _choice_result_segments()
+	var safe_index = clamp(choice_result_sentence_index, 0, segments.size() - 1)
+	return str(segments[safe_index])
+
 func _add_choice_button(choice: Dictionary, index: int) -> void:
 	var node := _node_data_at(node_index)
 	var node_id := str(node.get("id", ""))
@@ -97,6 +114,7 @@ func _apply_choice_and_show_result(choice: Dictionary) -> void:
 	NarrativeBattleContext.apply_player_growth("choice", 0, 0, 0, false)
 	choice_result_text = str(choice.get("result", ""))
 	choice_result_delta_text = _format_effect_delta(effects)
+	choice_result_sentence_index = 0
 	showing_choice_result = true
 	_render()
 
@@ -172,6 +190,7 @@ func _consume_battle_result_if_needed() -> void:
 			showing_choice_result = false
 			choice_result_text = ""
 			choice_result_delta_text = ""
+			choice_result_sentence_index = 0
 			last_hint = "首领倒下。现在决定这场战斗留下什么。"
 		else:
 			var pending_choice := _load_pending_choice()
@@ -182,6 +201,7 @@ func _consume_battle_result_if_needed() -> void:
 				_apply_canonical_effects(effects)
 				choice_result_text = str(pending_choice.get("result", "战斗胜利。"))
 				choice_result_delta_text = _format_effect_delta(effects)
+				choice_result_sentence_index = 0
 				showing_choice_result = true
 				last_hint = "战斗胜利：请确认战后结果。"
 	elif result == "lose":
@@ -205,9 +225,11 @@ func _render_node() -> void:
 	scene_label.text = _format_scene_text(str(node.get("scene", "")))
 	_render_visual(str(node.get("visual_path", "")), str(node.get("scene", "")))
 	if showing_choice_result:
-		body_label.text = "%s\n\n[b]%s[/b]" % [choice_result_text, choice_result_delta_text]
-		if not last_hint.is_empty():
-			body_label.text += "\n\n[i]%s[/i]" % _fragmented_hint(last_hint)
+		body_label.text = _current_choice_result_text()
+		if _is_choice_result_complete():
+			body_label.text += "\n\n[b]%s[/b]" % choice_result_delta_text
+			if not last_hint.is_empty():
+				body_label.text += "\n\n[i]%s[/i]" % _fragmented_hint(last_hint)
 		vars_label.text = _vars_text()
 		_add_safe_map_buttons()
 		_add_placeholder(combat_buttons_box, "")
@@ -239,9 +261,14 @@ func _on_request_boss_battle() -> void:
 	get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
 
 func _on_continue_after_choice_result() -> void:
+	if not _is_choice_result_complete():
+		choice_result_sentence_index += 1
+		_render()
+		return
 	showing_choice_result = false
 	choice_result_text = ""
 	choice_result_delta_text = ""
+	choice_result_sentence_index = 0
 	if _node_id_at(node_index) == BOSS_NODE_ID:
 		boss_battle_completed = false
 	if node_index < MVP_NODE_IDS.size() - 1:
@@ -265,6 +292,7 @@ func _restart() -> void:
 	showing_choice_result = false
 	choice_result_text = ""
 	choice_result_delta_text = ""
+	choice_result_sentence_index = 0
 	boss_battle_completed = false
 	jun_gong = 0
 	qing_wang = 0
