@@ -7,11 +7,9 @@ import sys
 from pathlib import Path
 from typing import Any
 
-
 ROOT = Path(__file__).resolve().parents[1]
 TABLES_DIR = ROOT / "tables"
 DATA_DIR = ROOT / "data"
-
 
 CARD_EFFECT_FIELDS = [
     "amount",
@@ -74,6 +72,21 @@ BOOL_FIELDS = {
     "force_crit_if_collapsed",
 }
 
+NARRATIVE_ALLOWED_EFFECT_FIELDS = {
+    "military_merit",
+    "clean_reputation",
+    "case_clues",
+    "jun_gong",
+    "qing_wang",
+    "clues",
+    "heal",
+    "ending_flag",
+    "next_normal_battle_easier",
+    "elite_chance",
+}
+
+NARRATIVE_REQUIRED_STATUS_FIELDS = ["flow_order", "column", "type", "visual_path"]
+
 
 def main() -> int:
     try:
@@ -111,9 +124,8 @@ def main() -> int:
 
 
 def build_classes() -> dict[str, Any]:
-    rows = read_table("classes")
     classes: dict[str, Any] = {}
-    for row in rows:
+    for row in read_table("classes"):
         class_id = required(row, "id", "classes")
         classes[class_id] = {
             "id": class_id,
@@ -127,14 +139,11 @@ def build_classes() -> dict[str, Any]:
 
 
 def build_cards() -> dict[str, Any]:
-    card_rows = read_table("cards")
-    effect_rows = sorted(read_table("card_effects"), key=lambda row: int(required(row, "order", "card_effects")))
-
     effects_by_card: dict[str, list[dict[str, Any]]] = {}
+    effect_rows = sorted(read_table("card_effects"), key=lambda row: int(required(row, "order", "card_effects")))
     for row in effect_rows:
         card_id = required(row, "card_id", "card_effects")
-        effect_type = required(row, "type", f"card effect {card_id}")
-        effect: dict[str, Any] = {"type": effect_type}
+        effect: dict[str, Any] = {"type": required(row, "type", f"card effect {card_id}")}
         for field in CARD_EFFECT_FIELDS:
             parsed = parse_optional_value(field, row.get(field, ""))
             if parsed is not None:
@@ -142,7 +151,7 @@ def build_cards() -> dict[str, Any]:
         effects_by_card.setdefault(card_id, []).append(effect)
 
     cards: dict[str, Any] = {}
-    for row in card_rows:
+    for row in read_table("cards"):
         card_id = required(row, "id", "cards")
         cards[card_id] = {
             "name": required(row, "name", f"card {card_id}"),
@@ -155,9 +164,8 @@ def build_cards() -> dict[str, Any]:
 
 
 def build_effect_types() -> dict[str, Any]:
-    rows = read_table("effect_types")
     effect_types: dict[str, Any] = {}
-    for row in rows:
+    for row in read_table("effect_types"):
         effect_type = required(row, "type", "effect_types")
         effect_types[effect_type] = {
             "handler": required(row, "handler", f"effect type {effect_type}"),
@@ -168,13 +176,11 @@ def build_effect_types() -> dict[str, Any]:
 
 
 def build_enemies() -> list[dict[str, Any]]:
-    enemy_rows = read_table("enemies")
-    intent_rows = sorted(read_table("enemy_intents"), key=lambda row: int(required(row, "order", "enemy_intents")))
-
     intents_by_enemy: dict[str, list[dict[str, Any]]] = {}
+    intent_rows = sorted(read_table("enemy_intents"), key=lambda row: int(required(row, "order", "enemy_intents")))
     for row in intent_rows:
         enemy_id = required(row, "enemy_id", "enemy_intents")
-        intent = {
+        intent: dict[str, Any] = {
             "name": required(row, "name", f"enemy intent {enemy_id}"),
             "cost": int(required(row, "cost", f"enemy intent {enemy_id}")),
         }
@@ -185,7 +191,7 @@ def build_enemies() -> list[dict[str, Any]]:
         intents_by_enemy.setdefault(enemy_id, []).append(intent)
 
     enemies: list[dict[str, Any]] = []
-    for row in enemy_rows:
+    for row in read_table("enemies"):
         enemy_id = required(row, "id", "enemies")
         enemies.append(
             {
@@ -204,41 +210,31 @@ def build_enemies() -> list[dict[str, Any]]:
 
 
 def build_routes() -> dict[str, Any]:
-    rows = read_table("routes")
     routes: dict[str, Any] = {}
-    for row in rows:
+    for row in read_table("routes"):
         route_id = required(row, "id", "routes")
         route: dict[str, Any] = {
             "title": required(row, "title", f"route {route_id}"),
             "kind": required(row, "kind", f"route {route_id}"),
             "next": parse_str_list(row.get("next", "")),
         }
-        enemy_id = row.get("enemy_id", "").strip()
-        if enemy_id != "":
-            route["enemy_id"] = enemy_id
-        heal = row.get("heal", "").strip()
-        if heal != "":
-            route["heal"] = int(heal)
-        map_length = row.get("map_length", "").strip()
-        if map_length != "":
-            route["map_length"] = int(map_length)
-        initial_distance = row.get("initial_distance", "").strip()
-        if initial_distance != "":
-            route["initial_distance"] = int(initial_distance)
+        for field in ["enemy_id", "heal", "map_length", "initial_distance"]:
+            value = row.get(field, "").strip()
+            if value == "":
+                continue
+            route[field] = int(value) if field != "enemy_id" else value
         routes[route_id] = route
     return routes
 
 
 def build_rewards() -> list[str]:
-    rows = read_table("rewards")
-    return [required(row, "card_id", "rewards") for row in rows]
+    return [required(row, "card_id", "rewards") for row in read_table("rewards")]
 
 
 def build_battle_scene_manifest() -> dict[str, Any]:
-    rows = read_table("battle_scene_manifest")
     manifest: dict[str, Any] = {}
     float_fields = ["mist", "dim", "accent", "camera_zoom", "camera_pan_x", "camera_pan_y"]
-    for row in rows:
+    for row in read_table("battle_scene_manifest"):
         scene_id = required(row, "id", "battle_scene_manifest")
         scene: dict[str, Any] = {
             "background": required(row, "background", f"battle scene {scene_id}"),
@@ -253,10 +249,7 @@ def build_battle_scene_manifest() -> dict[str, Any]:
 
 
 def build_enemy_manifest() -> dict[str, Any]:
-    meta: dict[str, Any] = {}
-    for row in read_table("enemy_manifest_meta"):
-        key = required(row, "key", "enemy_manifest_meta")
-        meta[key] = parse_json_or_string(row.get("value", ""))
+    meta = {required(row, "key", "enemy_manifest_meta"): parse_json_or_string(row.get("value", "")) for row in read_table("enemy_manifest_meta")}
 
     encounters: dict[str, Any] = {}
     for row in read_table("enemy_manifest_encounters"):
@@ -274,12 +267,7 @@ def build_enemy_manifest() -> dict[str, Any]:
     weights_by_enemy: dict[str, dict[str, float]] = {}
     for row in read_table("enemy_manifest_intent_weights"):
         enemy_id = required(row, "enemy_id", "enemy_manifest_intent_weights")
-        weights: dict[str, float] = {}
-        for field in ["gain_posture", "attack", "guard", "break_posture", "feint"]:
-            value = row.get(field, "").strip()
-            if value != "":
-                weights[field] = float(value)
-        weights_by_enemy[enemy_id] = weights
+        weights_by_enemy[enemy_id] = {field: float(row[field]) for field in ["gain_posture", "attack", "guard", "break_posture", "feint"] if row.get(field, "").strip() != ""}
 
     phases_by_enemy: dict[str, list[dict[str, Any]]] = {}
     phase_rows = sorted(read_table("enemy_manifest_phase_behaviors"), key=lambda row: (required(row, "enemy_id", "enemy_manifest_phase_behaviors"), int(required(row, "order", "enemy_manifest_phase_behaviors"))))
@@ -319,11 +307,6 @@ def build_enemy_manifest() -> dict[str, Any]:
     enemies: dict[str, Any] = {}
     for row in read_table("enemy_manifest_enemies"):
         enemy_id = required(row, "enemy_id", "enemy_manifest_enemies")
-        reward = {
-            "jun_gong": int(required(row, "reward_jun_gong", f"enemy {enemy_id}")),
-            "qing_wang": int(required(row, "reward_qing_wang", f"enemy {enemy_id}")),
-            "clues": int(required(row, "reward_clues", f"enemy {enemy_id}")),
-        }
         enemies[enemy_id] = {
             "enemy_id": enemy_id,
             "display_name": required(row, "display_name", f"enemy {enemy_id}"),
@@ -340,25 +323,45 @@ def build_enemy_manifest() -> dict[str, Any]:
             "phase_behaviors": phases_by_enemy.get(enemy_id, []),
             "deck": deck_by_enemy.get(enemy_id, []),
             "ai_note": row.get("ai_note", "").strip(),
-            "reward": reward,
+            "reward": {
+                "jun_gong": int(required(row, "reward_jun_gong", f"enemy {enemy_id}")),
+                "qing_wang": int(required(row, "reward_qing_wang", f"enemy {enemy_id}")),
+                "clues": int(required(row, "reward_clues", f"enemy {enemy_id}")),
+            },
         }
     return {"meta": meta, "encounters": encounters, "enemies": enemies}
 
 
 def build_narrative_mvp_node_status() -> tuple[list[str], dict[str, Any]]:
-    flow_node_ids: list[str] = []
+    rows = read_table("narrative_mvp_node_status")
+    flow_rows: list[tuple[int, str]] = []
     node_status: dict[str, Any] = {}
-    for row in read_table("narrative_mvp_node_status"):
+    seen_orders: dict[int, str] = {}
+
+    for row in rows:
         node_id = required(row, "id", "narrative_mvp_node_status")
         flow_enabled = parse_bool(row.get("flow_enabled", "false"))
+        raw_order = row.get("flow_order", "").strip()
+        flow_order = int(raw_order) if raw_order != "" else None
         status = {
             "flow_enabled": flow_enabled,
+            "flow_order": flow_order,
+            "column": row.get("column", "").strip(),
+            "type": row.get("type", "").strip(),
+            "visual_path": row.get("visual_path", "").strip(),
             "implementation_status": row.get("implementation_status", "").strip(),
             "note": row.get("note", "").strip(),
         }
         node_status[node_id] = status
         if flow_enabled:
-            flow_node_ids.append(node_id)
+            if flow_order is None:
+                raise ValueError(f"narrative_mvp_node_status: flow_enabled node '{node_id}' is missing flow_order")
+            if flow_order in seen_orders:
+                raise ValueError(f"narrative_mvp_node_status: duplicate flow_order {flow_order} for '{seen_orders[flow_order]}' and '{node_id}'")
+            seen_orders[flow_order] = node_id
+            flow_rows.append((flow_order, node_id))
+
+    flow_node_ids = [node_id for _, node_id in sorted(flow_rows, key=lambda pair: pair[0])]
     return flow_node_ids, node_status
 
 
@@ -366,7 +369,8 @@ def build_narrative_mvp_nodes() -> dict[str, Any]:
     meta = {required(row, "key", "narrative_mvp_meta"): parse_json_or_string(row.get("value", "")) for row in read_table("narrative_mvp_meta")}
     prologue_values = {required(row, "key", "narrative_mvp_prologue"): parse_json_or_string(row.get("value", "")) for row in read_table("narrative_mvp_prologue")}
     flow_node_ids, node_status = build_narrative_mvp_node_status()
-    steps = []
+
+    steps: list[dict[str, Any]] = []
     for row in sorted(read_table("narrative_mvp_prologue_steps"), key=lambda r: int(required(r, "order", "narrative_mvp_prologue_steps"))):
         step: dict[str, Any] = {
             "id": required(row, "id", "narrative_mvp_prologue_steps"),
@@ -376,33 +380,38 @@ def build_narrative_mvp_nodes() -> dict[str, Any]:
             value = row.get(optional_field, "").strip()
             if value != "":
                 step[optional_field] = value
-        career_prompt = row.get("career_prompt", "").strip()
-        if career_prompt != "":
-            step["career_prompt"] = career_prompt
-        combat_json = row.get("combat_json", "").strip()
-        if combat_json != "":
-            step["combat"] = parse_json_field(combat_json)
+        if row.get("career_prompt", "").strip() != "":
+            step["career_prompt"] = row["career_prompt"].strip()
+        if row.get("combat_json", "").strip() != "":
+            step["combat"] = parse_json_field(row["combat_json"].strip())
         steps.append(step)
+
     career_choices = {required(row, "role", "narrative_mvp_career_choices"): required(row, "label", "narrative_mvp_career_choices") for row in read_table("narrative_mvp_career_choices")}
 
-    nodes = []
+    nodes: list[dict[str, Any]] = []
     for row in sorted(read_table("narrative_mvp_nodes"), key=lambda r: int(required(r, "order", "narrative_mvp_nodes"))):
+        node_id = required(row, "id", "narrative_mvp_nodes")
         node: dict[str, Any] = {
-            "id": required(row, "id", "narrative_mvp_nodes"),
+            "id": node_id,
             "title": required(row, "title", "narrative_mvp_nodes"),
             "scene": required(row, "scene", "narrative_mvp_nodes"),
             "text": required(row, "text", "narrative_mvp_nodes"),
         }
-        dialogue_json = row.get("dialogue_json", "").strip()
-        if dialogue_json != "":
-            node["dialogue"] = parse_json_field(dialogue_json)
-        combat_json = row.get("combat_json", "").strip()
-        if combat_json != "":
-            node["combat"] = parse_json_field(combat_json)
-        choices_json = row.get("choices_json", "").strip()
-        if choices_json != "":
-            node["choices"] = parse_json_field(choices_json)
+        if node_id in node_status:
+            status = node_status[node_id]
+            for field in ["column", "type", "visual_path", "implementation_status", "flow_enabled", "flow_order"]:
+                value = status.get(field)
+                if value not in (None, ""):
+                    node[field] = value
+        if row.get("dialogue_json", "").strip() != "":
+            node["dialogue"] = parse_json_field(row["dialogue_json"].strip())
+        if row.get("combat_json", "").strip() != "":
+            node["combat"] = parse_json_field(row["combat_json"].strip())
+        if row.get("choices_json", "").strip() != "":
+            node["choices"] = parse_json_field(row["choices_json"].strip())
         nodes.append(node)
+
+    validate_narrative_mvp_config(nodes, flow_node_ids, node_status)
 
     ending = {required(row, "key", "narrative_mvp_ending"): parse_json_or_string(row.get("value", "")) for row in read_table("narrative_mvp_ending")}
     hints = {required(row, "key", "narrative_mvp_hints"): required(row, "value", "narrative_mvp_hints") for row in read_table("narrative_mvp_hints")}
@@ -421,6 +430,76 @@ def build_narrative_mvp_nodes() -> dict[str, Any]:
     }
 
 
+def validate_narrative_mvp_config(nodes: list[dict[str, Any]], flow_node_ids: list[str], node_status: dict[str, Any]) -> None:
+    errors: list[str] = []
+    node_by_id = {str(node.get("id", "")): node for node in nodes}
+    node_ids = set(node_by_id.keys())
+
+    if not flow_node_ids:
+        errors.append("narrative_mvp_node_status: at least one node must have flow_enabled=true")
+
+    for node_id in node_status.keys():
+        if node_id not in node_ids:
+            errors.append(f"narrative_mvp_node_status: node '{node_id}' is not present in narrative_mvp_nodes.tsv")
+
+    for node_id in flow_node_ids:
+        if node_id not in node_ids:
+            errors.append(f"flow_node_ids: node '{node_id}' is not present in narrative_mvp_nodes.tsv")
+            continue
+        status = node_status.get(node_id, {})
+        if status.get("implementation_status") != "playable":
+            errors.append(f"flow node '{node_id}' must have implementation_status=playable")
+        for field in NARRATIVE_REQUIRED_STATUS_FIELDS:
+            if status.get(field) in (None, ""):
+                errors.append(f"flow node '{node_id}' is missing required status field '{field}'")
+
+    for node in nodes:
+        node_id = str(node.get("id", ""))
+        node_type = str(node.get("type", ""))
+        choices = node.get("choices", [])
+        if choices is None:
+            choices = []
+        if not isinstance(choices, list):
+            errors.append(f"node '{node_id}' choices must be a list")
+            continue
+
+        if node_id.endswith("_aftermath") and node_type != "战后处理":
+            errors.append(f"node '{node_id}' ends with _aftermath but type is not 战后处理")
+
+        node_combat = node.get("combat", {})
+        if node_type == "战后处理" and isinstance(node_combat, dict) and bool(node_combat.get("enabled", False)):
+            errors.append(f"post-battle node '{node_id}' must not have enabled combat_json")
+
+        shared_battle_counts: dict[tuple[str, str], int] = {}
+        for idx, choice in enumerate(choices):
+            if not isinstance(choice, dict):
+                errors.append(f"node '{node_id}' choice {idx} must be a dictionary")
+                continue
+            effects = choice.get("effects", {})
+            if effects is not None and not isinstance(effects, dict):
+                errors.append(f"node '{node_id}' choice {idx} effects must be a dictionary")
+            if isinstance(effects, dict):
+                for effect_key in effects.keys():
+                    if str(effect_key) not in NARRATIVE_ALLOWED_EFFECT_FIELDS:
+                        errors.append(f"node '{node_id}' choice '{choice.get('label', idx)}' has unsupported effect '{effect_key}'")
+            choice_combat = choice.get("combat", {})
+            if isinstance(choice_combat, dict) and bool(choice_combat.get("enabled", False)):
+                if node_type == "战后处理":
+                    errors.append(f"post-battle node '{node_id}' choice '{choice.get('label', idx)}' must not trigger combat")
+                battle_key = (str(choice_combat.get("encounter_id", "")), str(choice_combat.get("battle_id", "")))
+                shared_battle_counts[battle_key] = shared_battle_counts.get(battle_key, 0) + 1
+
+        for battle_key, count in shared_battle_counts.items():
+            if count > 1:
+                errors.append(
+                    f"node '{node_id}' has {count} choices pointing to the same combat {battle_key}; split battle and aftermath nodes instead"
+                )
+
+    if errors:
+        joined = "\n  - ".join(errors)
+        raise ValueError(f"Narrative MVP validation failed:\n  - {joined}")
+
+
 def build_performance_tracks() -> dict[str, Any]:
     timeline: dict[str, Any] = {}
     for row in read_table("performance_timeline"):
@@ -432,10 +511,7 @@ def build_performance_tracks() -> dict[str, Any]:
             value = raw.strip()
             if value == "":
                 continue
-            if key in {"hero", "master"}:
-                config[key] = parse_bool(value)
-            else:
-                config[key] = float(value)
+            config[key] = parse_bool(value) if key in {"hero", "master"} else float(value)
         timeline[track_id] = config
 
     beats: dict[str, list[dict[str, Any]]] = {track_id: [] for track_id in timeline.keys()}
@@ -471,7 +547,7 @@ def read_table(base_name: str) -> list[dict[str, str]]:
 def read_delimited(path: Path, delimiter: str) -> list[dict[str, str]]:
     with path.open("r", encoding="utf-8-sig", newline="") as handle:
         reader = csv.DictReader(handle, delimiter=delimiter)
-        rows = []
+        rows: list[dict[str, str]] = []
         for row in reader:
             cleaned = {str(key).strip(): (value or "").strip() for key, value in row.items() if key is not None}
             if any(value != "" for value in cleaned.values()):
@@ -488,9 +564,7 @@ def parse_optional_value(field: str, raw_value: str) -> Any | None:
     if field in INT_FIELDS:
         return int(value)
     if field in LIST_FIELDS:
-        if field == "range_bonus":
-            return parse_int_list(value)
-        return parse_str_list(value)
+        return parse_int_list(value) if field == "range_bonus" else parse_str_list(value)
     return value
 
 
@@ -503,10 +577,10 @@ def parse_str_list(raw_value: str) -> list[str]:
 
 
 def parse_bool(raw_value: str) -> bool:
-    lowered = raw_value.lower()
+    lowered = raw_value.strip().lower()
     if lowered in {"true", "1", "yes", "y"}:
         return True
-    if lowered in {"false", "0", "no", "n"}:
+    if lowered in {"false", "0", "no", "n", ""}:
         return False
     raise ValueError(f"Invalid boolean value: {raw_value}")
 
