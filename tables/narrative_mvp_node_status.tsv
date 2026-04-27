@@ -1,17 +1,17 @@
-id	flow_enabled	implementation_status	note
-military_order	true	playable	当前 MVP 主流程节点：军令巡海
-beach_ambush	true	playable	当前 MVP 主流程战斗节点：海边伏击
-beach_ambush_aftermath	true	playable	当前 MVP 主流程战后处理节点：海边伏击后处理
-fishing_village_embers	true	playable	当前 MVP 主流程战斗节点：渔村残火
-fishing_village_embers_aftermath	true	playable	当前 MVP 主流程战后处理节点：渔村残火后处理
-merchant_banquet	false	reserved	保留节点；当前不进入 MVP 主流程
-ming_firearm	true	playable	当前 MVP 主流程旧物节点：明制火器
-altered_military_report	true	playable	当前 MVP 主流程旧物节点：涂改军报
-transport_officer	true	playable	当前 MVP 主流程精英战斗节点：失械案押运官
-transport_officer_aftermath	true	playable	当前 MVP 主流程战后处理节点：押运官后处理
-mutiny_camp	false	reserved	保留节点；已按战斗/战后处理规范拆分，但当前不进入 MVP 主流程
-mutiny_camp_aftermath	false	reserved	保留节点；欠饷营战后处理，当前不进入 MVP 主流程
-military_messenger	false	reserved	保留节点；当前不进入 MVP 主流程
-night_knife_camp	true	playable	当前 MVP 主流程事件节点：夜半磨刀
-wakou_boss	true	playable	当前 MVP 主流程 Boss 节点：小股倭寇首领
-military_coverup	true	playable	当前 MVP 主流程结尾节点：军门压案
+id	flow_enabled	flow_order	column	type	visual_path	implementation_status	note
+military_order	true	10	军令	事件	res://assets/pixel_battle/backgrounds/narrative_military_order.svg	playable	当前 MVP 主流程节点：军令巡海
+beach_ambush	true	20	初遇	普通战斗	res://assets/pixel_battle/backgrounds/narrative_beach_ambush.svg	playable	当前 MVP 主流程战斗节点：海边伏击
+beach_ambush_aftermath	true	30	初遇	战后处理	res://assets/pixel_battle/backgrounds/narrative_beach_ambush.svg	playable	当前 MVP 主流程战后处理节点：海边伏击后处理
+fishing_village_embers	true	40	初遇	普通战斗	res://assets/pixel_battle/backgrounds/narrative_fishing_village_embers.svg	playable	当前 MVP 主流程战斗节点：渔村残火
+fishing_village_embers_aftermath	true	50	初遇	战后处理	res://assets/pixel_battle/backgrounds/narrative_fishing_village_embers.svg	playable	当前 MVP 主流程战后处理节点：渔村残火后处理
+merchant_banquet	false		疑点	事件		reserved	保留节点；当前不进入 MVP 主流程
+ming_firearm	true	60	疑点	旧物	res://assets/pixel_battle/relics/relic_ming_firearm.svg	playable	当前 MVP 主流程旧物节点：明制火器
+altered_military_report	true	70	疑点	旧物	res://assets/pixel_battle/relics/relic_altered_military_report.svg	playable	当前 MVP 主流程旧物节点：涂改军报
+transport_officer	true	80	压迫	精英战斗	res://assets/pixel_battle/portraits/transport_officer.svg	playable	当前 MVP 主流程精英战斗节点：失械案押运官
+transport_officer_aftermath	true	90	压迫	战后处理	res://assets/pixel_battle/portraits/transport_officer.svg	playable	当前 MVP 主流程战后处理节点：押运官后处理
+mutiny_camp	false		压迫	精英战斗		reserved	保留节点；已按战斗/战后处理规范拆分，但当前不进入 MVP 主流程
+mutiny_camp_aftermath	false		压迫	战后处理		reserved	保留节点；欠饷营战后处理，当前不进入 MVP 主流程
+military_messenger	false		军门	事件		reserved	保留节点；当前不进入 MVP 主流程
+night_knife_camp	true	100	压迫	事件	res://assets/pixel_battle/backgrounds/prologue_departure.svg	playable	当前 MVP 主流程事件节点：夜半磨刀
+wakou_boss	true	110	破船	Boss	res://assets/pixel_battle/portraits/wakou_leader.svg	playable	当前 MVP 主流程 Boss 节点：小股倭寇首领
+military_coverup	true	120	军门	结尾	res://assets/pixel_battle/backgrounds/narrative_military_coverup.svg	playable	当前 MVP 主流程结尾节点：军门压案
