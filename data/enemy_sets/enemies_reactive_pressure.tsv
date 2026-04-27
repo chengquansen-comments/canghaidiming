@@ -1,3 +1,3 @@
 enemy_id	display_name	weapon_style	max_hp	max_momentum	starting_momentum	starting_realm	qinggong	start_position	start_facing	preferred_distances	deck	ai_style	aggression	keep_distance	break_focus	guard_focus	move_bias	notes
-blade_raider	突进倭刀手	blademaster	24	7	5	1	1	6	left	1,2	blade_step:3,blade_cut:2,blade_hook:2	rusher	0.90	0.20	0.65	0.05	advance	持续贴身，高压测试
-spear_blocker	拒马枪手	spearman	26	8	6	2	1	6	left	2,3	spear_gate:3,spear_thrust:2,spear_shunbu:1,guard_spear:1	keeper	0.65	0.90	0.75	0.30	adaptive	击退控距强，测试破解压力
+blade_raider	突进倭刀手	blademaster	24	7	5	1	1	6	left	1,2	blade_cut:2,blade_press:3,blade_senki:1,blade_guard:1	rusher	0.90	0.20	0.65	0.05	advance	持续贴身，高压测试
+spear_blocker	拒马枪手	spearman	26	8	6	2	1	6	left	2,3	spear_break:3,spear_mid:2,spear_senki:1,spear_wall:1	keeper	0.65	0.90	0.75	0.30	adaptive	击退控距强，测试破解压力
