@@ -1,10 +1,10 @@
 # 《大明之沧海嘀鸣》战斗演出层说明
 
-> 版本：v0.4  
+> 版本：v0.5  
 > 分支：`main`  
-> 状态：Phase 1 已验收通过；Phase 2 / Phase 3 / Phase 5 已接入，待统一本地验收  
+> 状态：Phase 1 已验收通过；Phase 2 / Phase 3 / Phase 5 / Phase 6 已接入，待统一本地验收  
 > 入口场景：`scenes/MainVisual.tscn`  
-> 入口脚本：`scripts/battle_controller_visual_presentation.gd`
+> 当前入口脚本：`scripts/battle_controller_visual_presentation_assets.gd`
 
 ---
 
@@ -27,13 +27,14 @@
 `MainVisual.tscn` 当前挂载：
 
 ```text
-res://scripts/battle_controller_visual_presentation.gd
+res://scripts/battle_controller_visual_presentation_assets.gd
 ```
 
-该脚本继承：
+当前继承链路：
 
 ```text
-battle_controller_visual_presentation.gd
+battle_controller_visual_presentation_assets.gd
+→ battle_controller_visual_presentation.gd
 → battle_controller_visual_scene_manifest.gd
 → battle_controller_visual_narrative_formal.gd
 → battle_controller_visual_narrative_context.gd
@@ -54,6 +55,20 @@ battle_controller_visual_presentation.gd
 ```text
 只在最外层加表现，不侵入已有战斗结算、AI、背景 manifest、叙事接敌逻辑。
 ```
+
+其中：
+
+```text
+battle_controller_visual_presentation.gd
+```
+
+负责 Phase 1 / 2 / 3 / 5 的节奏、结算反馈和位移表现；
+
+```text
+battle_controller_visual_presentation_assets.gd
+```
+
+只负责 Phase 6：把部分 ColorRect 临时 FX 替换为 SVG 资产，加载失败时回退到父类 ColorRect 表现。
 
 ---
 
@@ -79,10 +94,42 @@ battle_controller_visual_presentation.gd
 | Phase 5 | 破势墨裂 | 目标破势时出现墨裂 FX 和“破势”提示 | `DONE / NEEDS_LOCAL_VERIFY` |
 | Phase 5 | 擦中轻反馈 | 擦中降低前冲、击退、震动和 FX 强度 | `DONE / NEEDS_LOCAL_VERIFY` |
 | Phase 5 | 火器反馈 | 根据卡牌名称 / weapon_style 推断火器式，播放火光闪烁 | `DONE / NEEDS_LOCAL_VERIFY` |
+| Phase 6 | 火器 SVG FX | `fx_firearm_flash_ink.svg` 替代 ColorRect 火光 | `DONE / NEEDS_LOCAL_VERIFY` |
+| Phase 6 | 破势 SVG FX | `fx_break_ink_crack.svg` 替代 ColorRect 墨裂 | `DONE / NEEDS_LOCAL_VERIFY` |
+| Phase 6 | 未中 SVG FX | `fx_miss_wisp.svg` 替代 ColorRect 掠影 | `DONE / NEEDS_LOCAL_VERIFY` |
+| Phase 6 | 资源加载回退 | SVG 加载失败时自动回退父类 ColorRect 实现 | `DONE / NEEDS_LOCAL_VERIFY` |
 
 ---
 
-## 4. 动画分类规则
+## 4. Phase 6 资产
+
+新增 FX 资源：
+
+```text
+assets/pixel_battle/fx/fx_firearm_flash_ink.svg
+assets/pixel_battle/fx/fx_break_ink_crack.svg
+assets/pixel_battle/fx/fx_miss_wisp.svg
+```
+
+新增包装脚本：
+
+```text
+scripts/battle_controller_visual_presentation_assets.gd
+```
+
+该脚本只重写：
+
+```gdscript
+_show_presentation_firearm_flash()
+_show_miss_wisp()
+_play_break_ink_fx()
+```
+
+未改动刀光 / 枪影父类逻辑，降低对已验收 Phase 1 的影响。
+
+---
+
+## 5. 动画分类规则
 
 当前按卡牌信息自动推断演出类型：
 
@@ -99,7 +146,7 @@ battle_controller_visual_presentation.gd
 
 ---
 
-## 5. 关键原则
+## 6. 关键原则
 
 必须保持：
 
@@ -121,9 +168,9 @@ battle_controller_visual_presentation.gd
 
 ---
 
-## 6. 当前实现入口
+## 7. 当前实现入口
 
-### 6.1 玩家确认招式
+### 7.1 玩家确认招式
 
 入口：
 
@@ -144,7 +191,7 @@ func _confirm_player_intent() -> void
 call_deferred 后表现层读取结算后 slot，并用 offset 保持旧位置视觉起点
 ```
 
-### 6.2 角色位置偏移
+### 7.2 角色位置偏移
 
 表现层不直接改角色格位，只维护 presentation offset：
 
@@ -161,9 +208,9 @@ enemy_presentation_offset
 
 作为最终显示位置。
 
-### 6.3 真实位移平滑化
+### 7.3 真实位移平滑化
 
-Phase 2 新增逻辑：
+Phase 2 逻辑：
 
 ```text
 old_slot → battle state 结算成 new_slot
@@ -173,11 +220,9 @@ old_slot → battle state 结算成 new_slot
 角色平滑落到 new_slot
 ```
 
-这让“进身、后撤、推开、拉近”等位移牌不再瞬间跳格。
+### 7.4 真实结果反馈
 
-### 6.4 真实结果反馈
-
-Phase 3 新增逻辑：
+Phase 3 逻辑：
 
 ```text
 表现层复用 _ordered_preview_simulation()
@@ -196,9 +241,9 @@ Phase 3 新增逻辑：
 | `miss_range` | 灰色 FX，显示“距外”，不播放受击闪红，追加掠影 |
 | `miss_facing` | 灰色 FX，显示“背向”，不播放受击闪红，追加掠影 |
 
-### 6.5 节奏精修
+### 7.5 节奏精修
 
-Phase 5 新增：
+Phase 5 逻辑：
 
 ```text
 轻命中：短暂停顿
@@ -210,7 +255,7 @@ Phase 5 新增：
 
 ---
 
-## 7. 统一验收方式
+## 8. 统一验收方式
 
 进入：
 
@@ -264,6 +309,16 @@ Main → 进入视觉版战斗
 7. 终结类招式确认震动 / 火光 / 命中停顿略强
 ```
 
+### Phase 6 验收
+
+```text
+1. MainVisual.tscn 是否挂载 battle_controller_visual_presentation_assets.gd
+2. 火器类招式是否显示水墨火光 SVG，而不是纯方块
+3. 破势时是否显示墨裂 SVG，而不是纯 ColorRect 线条
+4. 未中 / 距外 / 背向时是否显示灰色水墨掠影 SVG
+5. 如果 SVG 资源加载失败，是否仍能回退到父类 ColorRect 效果，不导致报错中断
+```
+
 当前验收状态：
 
 ```text
@@ -271,11 +326,12 @@ Phase 1: PASSED
 Phase 2: NEEDS_LOCAL_VERIFY
 Phase 3: NEEDS_LOCAL_VERIFY
 Phase 5: NEEDS_LOCAL_VERIFY
+Phase 6: NEEDS_LOCAL_VERIFY
 ```
 
 ---
 
-## 8. 下一阶段计划
+## 9. 下一阶段计划
 
 ### Phase 4：演出数据化
 
@@ -307,25 +363,26 @@ Phase 5: NEEDS_LOCAL_VERIFY
 4. presentation layer 优先读取显式字段，再 fallback 到当前推断规则
 ```
 
-### Phase 6：演出资产化
+### Phase 7：更细的演出资产化
 
-在 Phase 2 / Phase 3 / Phase 5 验收后，可以继续做：
+在当前阶段验收后，可以继续做：
 
 ```text
-1. 把 ColorRect 临时 FX 替换成水墨 / 火器 / 刀光 SVG 或 shader 资源
-2. 增加专属破势墨裂 SVG
-3. 增加火器烟雾 SVG
+1. 把父类刀光 / 枪影也替换成水墨 SVG 或 shader 资源
+2. 增加火器烟雾 SVG
+3. 增加受击血墨 / 火星 SVG
 4. 为不同武器制作专属 slash / thrust / firearm 动画配置
 ```
 
 ---
 
-## 9. 当前最小可维护边界
+## 10. 当前最小可维护边界
 
 当前演出层是外层包装脚本，不应下沉到核心战斗规则层。后续如果要扩展，也优先在：
 
 ```text
 scripts/battle_controller_visual_presentation.gd
+scripts/battle_controller_visual_presentation_assets.gd
 ```
 
 内完成，除非出现必须数据化的需求。
