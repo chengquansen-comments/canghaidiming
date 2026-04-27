@@ -1,4 +1,4 @@
-extends "res://scripts/battle_controller_visual_presentation_guarded.gd"
+extends "res://scripts/battle_controller_visual_presentation_stepwise.gd"
 
 # Thin runtime wrapper for story-battle selection and settlement-mode switching.
 #
@@ -311,15 +311,9 @@ func _reactive_player_preview_position() -> int:
 	return player.position
 
 
-func _reactive_player_preview_facing(player_pos: int) -> String:
+func _reactive_player_preview_facing(_player_pos: int) -> String:
 	if draft_player_facing != "":
 		return draft_player_facing
-	if enemy == null:
-		return player.facing
-	if enemy.position > player_pos:
-		return "right"
-	if enemy.position < player_pos:
-		return "left"
 	return player.facing
 
 
