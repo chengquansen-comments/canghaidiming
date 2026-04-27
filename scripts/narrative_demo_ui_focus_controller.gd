@@ -4,14 +4,19 @@ extends "res://scripts/narrative_demo_unified_controller.gd"
 # - Operation area shows only story text and actionable buttons.
 # - Metadata moves into a top-right debug overlay.
 # - Story and option text are enlarged for playtest readability.
+# - Narrative MVP flow is sourced from tables/narrative_mvp_node_status.tsv.
 
 const STORY_FONT_SIZE := 54
 const OPTION_FONT_SIZE := 42
 const DEBUG_FONT_SIZE := 13
+const NODE_STATUS_PATH := "res://tables/narrative_mvp_node_status.tsv"
 
 var focus_debug_layer: Control
 var focus_debug_panel: PanelContainer
 var focus_debug_label: RichTextLabel
+var focus_flow_node_ids: Array = []
+var focus_flow_loaded: bool = false
+var focus_flow_source: String = "fallback"
 
 func _ready() -> void:
 	super._ready()
@@ -25,6 +30,161 @@ func _process(delta: float) -> void:
 func _render() -> void:
 	super._render()
 	_apply_focus_ui()
+
+func _flow_node_ids() -> Array:
+	if focus_flow_loaded:
+		return focus_flow_node_ids
+	focus_flow_loaded = true
+	focus_flow_node_ids.clear()
+	focus_flow_source = "fallback"
+	if FileAccess.file_exists(NODE_STATUS_PATH):
+		var file := FileAccess.open(NODE_STATUS_PATH, FileAccess.READ)
+		if file != null:
+			var lines := file.get_as_text().replace("\r", "").split("\n", false)
+			_parse_flow_status_lines(lines)
+			if not focus_flow_node_ids.is_empty():
+				focus_flow_source = NODE_STATUS_PATH
+	if focus_flow_node_ids.is_empty():
+		for node_id in MVP_NODE_IDS:
+			focus_flow_node_ids.append(str(node_id))
+	return focus_flow_node_ids
+
+func _parse_flow_status_lines(lines: PackedStringArray) -> void:
+	if lines.is_empty():
+		return
+	var header := str(lines[0]).split("\t")
+	var id_idx := header.find("id")
+	var flow_idx := header.find("flow_enabled")
+	if id_idx < 0 or flow_idx < 0:
+		return
+	for i in range(1, lines.size()):
+		var raw_line := str(lines[i]).strip_edges()
+		if raw_line.is_empty():
+			continue
+		var cols := raw_line.split("\t")
+		if cols.size() <= max(id_idx, flow_idx):
+			continue
+		var node_id := str(cols[id_idx]).strip_edges()
+		var enabled := _parse_flow_bool(str(cols[flow_idx]))
+		if enabled and not node_id.is_empty():
+			focus_flow_node_ids.append(node_id)
+
+func _parse_flow_bool(raw: String) -> bool:
+	var value := raw.strip_edges().to_lower()
+	return value == "true" or value == "1" or value == "yes" or value == "y"
+
+func _flow_count() -> int:
+	return _flow_node_ids().size()
+
+func _node_id_at(index: int) -> String:
+	var ids := _flow_node_ids()
+	if index >= 0 and index < ids.size():
+		return str(ids[index])
+	return ""
+
+func _world_map_total_count() -> int:
+	return _flow_count() + 1
+
+func _battle_growth_reward_for_source(source_index: int) -> Dictionary:
+	if source_index < 0 or source_index >= _flow_count():
+		return {"hp_gain": 0, "posture_gain": 0, "martial_gain": 0, "heal_full": false}
+	var node: Dictionary = _node_data_at(source_index)
+	var combat := _node_level_combat(node)
+	var encounter_id := str(combat.get("encounter_id", ""))
+	if encounter_id.is_empty() and str(node.get("id", "")) == BOSS_NODE_ID:
+		encounter_id = BOSS_ENCOUNTER_ID
+	if has_method("_formal_reward_for_encounter"):
+		return _formal_reward_for_encounter(encounter_id, str(node.get("type", "")))
+	return {"hp_gain": 2, "posture_gain": 0, "martial_gain": 1, "heal_full": true}
+
+func _consume_battle_result_if_needed() -> void:
+	if not NarrativeBattleContext.has_result():
+		return
+	var source_id: String = NarrativeBattleContext.source_node_id
+	var result: String = NarrativeBattleContext.last_result
+	if source_id == "prologue_master_rescue":
+		in_prologue = true
+		if result == "win":
+			var pending_choice := _load_pending_choice()
+			var effects := _choice_effects(pending_choice)
+			_apply_canonical_effects(effects)
+			step_index = PROLOGUE_AFTER_MASTER_BATTLE_STEP
+			prologue_sentence_index = 0
+			prologue_result_sentence_index = 0
+			showing_prologue_choice_result = false
+			prologue_choice_result_text = ""
+			prologue_choice_result_delta_text = ""
+			last_hint = ""
+		else:
+			step_index = PROLOGUE_MASTER_RESCUE_STEP
+			prologue_sentence_index = _prologue_story_segments().size() - 1
+			last_hint = "序章战斗返回：当前 Demo 按师父救场继续推进。"
+		NarrativeBattleContext.clear()
+		_clear_pending_choice()
+		return
+	for i in range(_flow_count()):
+		if _node_id_at(i) == source_id:
+			node_index = i
+			in_prologue = false
+			break
+	if result == "win":
+		_apply_battle_growth(node_index)
+		if source_id == BOSS_NODE_ID:
+			boss_battle_completed = true
+			showing_choice_result = false
+			choice_result_text = ""
+			choice_result_delta_text = ""
+			choice_result_sentence_index = 0
+			last_hint = "首领倒下。现在决定这场战斗留下什么。"
+		else:
+			var pending_choice := _load_pending_choice()
+			if pending_choice.is_empty():
+				last_hint = "战斗胜利：未找到待结算选择，暂不推进。"
+			else:
+				var effects := _choice_effects(pending_choice)
+				_apply_canonical_effects(effects)
+				choice_result_text = str(pending_choice.get("result", "战斗胜利。"))
+				choice_result_delta_text = ""
+				choice_result_sentence_index = 0
+				showing_choice_result = true
+				last_hint = ""
+	elif result == "lose":
+		last_hint = "战斗失败：已返回剧情。当前暂不扣除资源，可重新选择。"
+		showing_choice_result = false
+	elif result == "draw":
+		last_hint = "战斗同归于尽：已返回剧情。线索保留，可重新选择。"
+		showing_choice_result = false
+	else:
+		last_hint = "战斗结果未知：已返回剧情。"
+	NarrativeBattleContext.clear()
+	_clear_pending_choice()
+	_clear_pending_boss_node()
+	node_sentence_index = _node_story_segments(_node_data_at(node_index)).size() - 1
+
+func _on_continue_after_choice_result() -> void:
+	if not _is_choice_result_complete():
+		choice_result_sentence_index += 1
+		_render()
+		return
+	showing_choice_result = false
+	choice_result_text = ""
+	choice_result_delta_text = ""
+	choice_result_sentence_index = 0
+	if _node_id_at(node_index) == BOSS_NODE_ID:
+		boss_battle_completed = false
+	if node_index < _flow_count() - 1:
+		_advance_to_node(node_index + 1, "")
+	else:
+		_render_ending()
+
+func _advance_to_node(target_index: int, hint: String = "") -> void:
+	last_hint = hint
+	node_sentence_index = 0
+	if target_index >= _flow_count():
+		_render_ending()
+		return
+	node_index = target_index
+	_render()
 
 func _ensure_focus_debug_panel() -> void:
 	if focus_debug_layer != null:
@@ -187,6 +347,8 @@ func _focus_debug_text() -> String:
 	lines.append("节点：%s" % node_id)
 	lines.append("分类：%s / %s" % [column_text, type_text])
 	lines.append("索引：step=%d / node=%d" % [step_index, node_index])
+	lines.append("流程源：%s" % focus_flow_source)
+	lines.append("流程数：%d" % _flow_count())
 	lines.append("变量：军功 %d / 清望 %d / 旧案 %d" % [jun_gong, qing_wang, clues])
 	lines.append("职业：%s" % profile)
 	lines.append("演出：%s" % _current_node_id())
