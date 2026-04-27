@@ -345,9 +345,27 @@ def build_enemy_manifest() -> dict[str, Any]:
     return {"meta": meta, "encounters": encounters, "enemies": enemies}
 
 
+def build_narrative_mvp_node_status() -> tuple[list[str], dict[str, Any]]:
+    flow_node_ids: list[str] = []
+    node_status: dict[str, Any] = {}
+    for row in read_table("narrative_mvp_node_status"):
+        node_id = required(row, "id", "narrative_mvp_node_status")
+        flow_enabled = parse_bool(row.get("flow_enabled", "false"))
+        status = {
+            "flow_enabled": flow_enabled,
+            "implementation_status": row.get("implementation_status", "").strip(),
+            "note": row.get("note", "").strip(),
+        }
+        node_status[node_id] = status
+        if flow_enabled:
+            flow_node_ids.append(node_id)
+    return flow_node_ids, node_status
+
+
 def build_narrative_mvp_nodes() -> dict[str, Any]:
     meta = {required(row, "key", "narrative_mvp_meta"): parse_json_or_string(row.get("value", "")) for row in read_table("narrative_mvp_meta")}
     prologue_values = {required(row, "key", "narrative_mvp_prologue"): parse_json_or_string(row.get("value", "")) for row in read_table("narrative_mvp_prologue")}
+    flow_node_ids, node_status = build_narrative_mvp_node_status()
     steps = []
     for row in sorted(read_table("narrative_mvp_prologue_steps"), key=lambda r: int(required(r, "order", "narrative_mvp_prologue_steps"))):
         step: dict[str, Any] = {
@@ -390,6 +408,8 @@ def build_narrative_mvp_nodes() -> dict[str, Any]:
     hints = {required(row, "key", "narrative_mvp_hints"): required(row, "value", "narrative_mvp_hints") for row in read_table("narrative_mvp_hints")}
     return {
         "meta": meta,
+        "flow_node_ids": flow_node_ids,
+        "node_status": node_status,
         "prologue": {
             "title": str(prologue_values.get("title", "")),
             "steps": steps,
@@ -484,9 +504,9 @@ def parse_str_list(raw_value: str) -> list[str]:
 
 def parse_bool(raw_value: str) -> bool:
     lowered = raw_value.lower()
-    if lowered in {"true", "1", "yes"}:
+    if lowered in {"true", "1", "yes", "y"}:
         return True
-    if lowered in {"false", "0", "no"}:
+    if lowered in {"false", "0", "no", "n"}:
         return False
     raise ValueError(f"Invalid boolean value: {raw_value}")
 
