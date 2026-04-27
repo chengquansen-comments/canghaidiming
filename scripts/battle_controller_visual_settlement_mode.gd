@@ -17,10 +17,14 @@ var _story_encounter_selected := false
 var _reactive_pre_move_round := -1
 var _story_encounters: Array[Dictionary] = []
 var _pending_story_battle: Dictionary = {}
+var _story_validation_report: Dictionary = {}
 
 
 func _ready() -> void:
 	super()
+	var card_catalog: Dictionary = _build_story_card_catalog()
+	_story_validation_report = StoryBattleLoader.validate_all(card_catalog)
+	print(StoryBattleLoader.format_validation_report(_story_validation_report))
 	_story_encounters = StoryBattleLoader.load_encounters()
 	_apply_visual_settlement_mode()
 
@@ -54,7 +58,10 @@ func _show_story_encounter_selection() -> void:
 	if overlay_title != null:
 		overlay_title.text = "选择剧情遭遇"
 	if overlay_body != null:
-		overlay_body.text = "剧情遭遇会自动决定：\n- 玩家模板 / 玩家剧情卡组 / 玩家数值\n- 对手模板 / 对手剧情卡组 / 对手数值\n- 结算模式\n\n模板、卡组、数值本身不区分敌我，只有遭遇配置分配双方。"
+		var validation_text := ""
+		if not _story_validation_report.is_empty():
+			validation_text = "\n\n配置校验：%s" % ("通过" if bool(_story_validation_report.get("ok", false)) else "存在错误，请看控制台")
+		overlay_body.text = "剧情遭遇会自动决定：\n- 玩家模板 / 玩家剧情卡组 / 玩家数值\n- 对手模板 / 对手剧情卡组 / 对手数值\n- 结算模式\n\n模板、卡组、数值本身不区分敌我，只有遭遇配置分配双方。" + validation_text
 	_clear_overlay_actions()
 	for row: Dictionary in _story_encounters:
 		_add_story_encounter_button(row)
