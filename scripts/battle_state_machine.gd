@@ -13,7 +13,13 @@ enum BattlePhase {
 	RESULT
 }
 
+enum SettlementMode {
+	SYMMETRIC,
+	REACTIVE
+}
+
 var phase: BattlePhase = BattlePhase.NODE_SELECTION
+var settlement_mode: SettlementMode = SettlementMode.SYMMETRIC
 var current_distance: int = 2
 var round_index: int = 1
 var player_tie_advantage := true
@@ -22,6 +28,8 @@ const RANGE_HIT := "hit"
 const RANGE_GRAZE := "graze"
 const RANGE_MISS_RANGE := "miss_range"
 const RANGE_MISS_FACING := "miss_facing"
+const MODE_SYMMETRIC_ID := "symmetric"
+const MODE_REACTIVE_ID := "reactive"
 
 
 func reset_for_session() -> void:
@@ -37,7 +45,33 @@ func begin_battle(initial_distance: int = 2) -> void:
 	round_index = 1
 
 
+func set_settlement_mode(value: SettlementMode) -> void:
+	settlement_mode = value
+
+
+func set_settlement_mode_id(value: String) -> void:
+	match value:
+		MODE_REACTIVE_ID:
+			settlement_mode = SettlementMode.REACTIVE
+		_:
+			settlement_mode = SettlementMode.SYMMETRIC
+
+
+func settlement_mode_id() -> String:
+	return MODE_REACTIVE_ID if settlement_mode == SettlementMode.REACTIVE else MODE_SYMMETRIC_ID
+
+
+func settlement_mode_label() -> String:
+	return "反应式" if settlement_mode == SettlementMode.REACTIVE else "对称式"
+
+
+func is_reactive_mode() -> bool:
+	return settlement_mode == SettlementMode.REACTIVE
+
+
 func get_declaration_order(player: Fighter, enemy: Fighter) -> PackedStringArray:
+	if is_reactive_mode():
+		return PackedStringArray([enemy.data.id, player.data.id])
 	if player.is_broken() and not enemy.is_broken():
 		return PackedStringArray([player.data.id, enemy.data.id])
 	if enemy.is_broken() and not player.is_broken():
@@ -52,6 +86,10 @@ func get_declaration_order(player: Fighter, enemy: Fighter) -> PackedStringArray
 
 
 func get_resolution_order(player: Fighter, enemy: Fighter, player_intent: IntentData, enemy_intent: IntentData) -> Array[IntentData]:
+	if is_reactive_mode():
+		if player.is_broken() and not enemy.is_broken():
+			return [enemy_intent, player_intent]
+		return [player_intent, enemy_intent]
 	if player_intent.has_senki() and not enemy_intent.has_senki():
 		return [player_intent, enemy_intent]
 	if enemy_intent.has_senki() and not player_intent.has_senki():
@@ -67,6 +105,10 @@ func get_resolution_order(player: Fighter, enemy: Fighter, player_intent: Intent
 	if player_tie_advantage:
 		return [player_intent, enemy_intent]
 	return [enemy_intent, player_intent]
+
+
+func should_cancel_enemy_reactive_action(enemy: Fighter) -> bool:
+	return is_reactive_mode() and enemy != null and enemy.pending_control_state == Fighter.CONTROL_BROKEN
 
 
 func get_visible_intent_text(intent: IntentData, viewer: Fighter) -> String:
@@ -132,6 +174,8 @@ func evaluate_card_range(card: CardData, actor: Fighter, target: Fighter) -> Str
 
 func resolve_intent(intent: IntentData, actor: Fighter, target: Fighter) -> Array[String]:
 	var lines: Array[String] = []
+	if intent == null:
+		return lines
 	if actor.hp <= 0:
 		return lines
 
@@ -168,7 +212,6 @@ func resolve_intent(intent: IntentData, actor: Fighter, target: Fighter) -> Arra
 		if range_result == RANGE_GRAZE:
 			lines.append("%s 距离 %d 略失准头，只擦中目标。" % [card.display_name, current_distance])
 
-	# 位移必须在命中成立后立刻写回。这样先手击退/拉近/自移会立即改变后手的真实距离与朝向。
 	_apply_resolved_positions(actor, target, sim)
 
 	var raw_damage: int = int(CombatResolver.resolve_card_effect(card, range_result, actor.is_broken(), target.is_broken(), 0).get("damage", 0))
@@ -230,7 +273,7 @@ func finish_round(player: Fighter, enemy: Fighter) -> void:
 	enemy.reset_guard()
 	player.activate_pending_round_state()
 	enemy.activate_pending_round_state()
-	if player.realm == enemy.realm:
+	if settlement_mode == SettlementMode.SYMMETRIC and player.realm == enemy.realm:
 		player_tie_advantage = not player_tie_advantage
 	round_index += 1
 
@@ -252,6 +295,8 @@ func pressure_state_text(player: Fighter, enemy: Fighter) -> String:
 
 
 func tie_rule_text(player: Fighter, enemy: Fighter) -> String:
+	if is_reactive_mode():
+		return "反应式结算：敌方先移动并亮出攻击意图，玩家后行动；本模式不按武境决定先后。"
 	if player.realm != enemy.realm:
 		return "当前非同武境，按武境高低处理识机权。"
 	return "同武境轮流：本回合%s占识机权与先发权。" % ("玩家" if player_tie_advantage else "敌方")
