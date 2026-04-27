@@ -203,12 +203,12 @@ func _compute_ordered_preview() -> Dictionary:
 func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> Dictionary:
 	var p_card: CardData = p_intent.actual_card if p_intent != null else null
 	var e_card: CardData = e_intent.actual_card if e_intent != null else null
-	var p_move_delta: int = _intent_move_delta(true, p_intent)
-	var e_move_delta: int = _intent_move_delta(false, e_intent)
-	var p_subjective: int = clampi(player.position + p_move_delta, 0, GRID_SLOT_COUNT - 1)
-	var e_subjective: int = clampi(enemy.position + e_move_delta, 0, GRID_SLOT_COUNT - 1)
+	var p_subjective: int = _intent_target_position(true, p_intent)
+	var e_subjective: int = _intent_target_position(false, e_intent)
 	var p_final: int = player.position
 	var e_final: int = enemy.position
+	var p_facing: String = player.facing
+	var e_facing: String = enemy.facing
 	var p_hp_delta := 0
 	var e_hp_delta := 0
 	var p_momentum_delta := 0
@@ -222,12 +222,13 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 	for side: String in order:
 		if side == "player":
 			var before_move: int = p_final
-			p_final = clampi(p_final + p_move_delta, 0, GRID_SLOT_COUNT - 1)
+			p_final = _intent_target_position(true, p_intent)
+			p_facing = _intent_target_facing(true, p_intent)
 			p_subjective = p_final
 			player_move_applied = true
-			steps.append({"side": "player", "phase": "move", "from": before_move, "to": p_final})
+			steps.append({"side": "player", "phase": "move", "from": before_move, "to": p_final, "facing": p_facing})
 			if p_card != null:
-				var result_p: Dictionary = _resolve_one_preview_step(true, p_card, p_final, e_final)
+				var result_p: Dictionary = _resolve_one_preview_step(true, p_card, p_final, e_final, p_facing, e_facing)
 				p_range_result = str(result_p.get("range", CombatResolver.RANGE_NONE))
 				e_hp_delta += int(result_p.get("target_hp_delta", 0))
 				e_momentum_delta += int(result_p.get("target_momentum_delta", 0))
@@ -240,12 +241,13 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 				steps.append({"side": "player", "phase": "effect_move", "actor_from": before_effect_move_p, "actor_to": p_final, "target_from": before_effect_move_e, "target_to": e_final, "range": p_range_result})
 		else:
 			var before_enemy_move: int = e_final
-			e_final = clampi(e_final + e_move_delta, 0, GRID_SLOT_COUNT - 1)
+			e_final = _intent_target_position(false, e_intent)
+			e_facing = _intent_target_facing(false, e_intent)
 			e_subjective = e_final
 			enemy_move_applied = true
-			steps.append({"side": "enemy", "phase": "move", "from": before_enemy_move, "to": e_final})
+			steps.append({"side": "enemy", "phase": "move", "from": before_enemy_move, "to": e_final, "facing": e_facing})
 			if e_card != null:
-				var result_e: Dictionary = _resolve_one_preview_step(false, e_card, e_final, p_final)
+				var result_e: Dictionary = _resolve_one_preview_step(false, e_card, e_final, p_final, e_facing, p_facing)
 				e_range_result = str(result_e.get("range", CombatResolver.RANGE_NONE))
 				p_hp_delta += int(result_e.get("target_hp_delta", 0))
 				p_momentum_delta += int(result_e.get("target_momentum_delta", 0))
@@ -257,13 +259,17 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 				p_final = int(result_e.get("target_final", p_final))
 				steps.append({"side": "enemy", "phase": "effect_move", "actor_from": before_effect_move_e2, "actor_to": e_final, "target_from": before_effect_move_p2, "target_to": p_final, "range": e_range_result})
 	if not player_move_applied and draft_player_has_position:
-		p_final = clampi(p_final + p_move_delta, 0, GRID_SLOT_COUNT - 1)
+		var before_player_fallback: int = p_final
+		p_final = _intent_target_position(true, p_intent)
+		p_facing = _intent_target_facing(true, p_intent)
 		p_subjective = p_final
-		steps.append({"side": "player", "phase": "move", "from": player.position, "to": p_subjective})
+		steps.append({"side": "player", "phase": "move", "from": before_player_fallback, "to": p_subjective, "facing": p_facing})
 	if not enemy_move_applied and e_intent != null and e_intent.target_position >= 0:
-		e_final = clampi(e_final + e_move_delta, 0, GRID_SLOT_COUNT - 1)
+		var before_enemy_fallback: int = e_final
+		e_final = _intent_target_position(false, e_intent)
+		e_facing = _intent_target_facing(false, e_intent)
 		e_subjective = e_final
-		steps.append({"side": "enemy", "phase": "move", "from": enemy.position, "to": e_subjective})
+		steps.append({"side": "enemy", "phase": "move", "from": before_enemy_fallback, "to": e_subjective, "facing": e_facing})
 	if p_card == null:
 		p_final = p_subjective
 	if e_card == null:
@@ -283,14 +289,26 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 		"steps": steps
 	}
 
+func _intent_target_position(is_player_side: bool, intent: IntentData) -> int:
+	if is_player_side:
+		return clampi(_player_preview_position(), 0, GRID_SLOT_COUNT - 1)
+	if intent != null and intent.target_position >= 0:
+		return clampi(intent.target_position, 0, GRID_SLOT_COUNT - 1)
+	return clampi(enemy.position, 0, GRID_SLOT_COUNT - 1)
+
+func _intent_target_facing(is_player_side: bool, intent: IntentData) -> String:
+	if is_player_side:
+		return _player_preview_facing()
+	if intent != null and (intent.target_facing == "left" or intent.target_facing == "right"):
+		return intent.target_facing
+	return _enemy_preview_facing()
+
 func _intent_move_delta(is_player_side: bool, intent: IntentData) -> int:
 	if is_player_side:
-		return _player_preview_position() - player.position
-	if intent != null and intent.target_position >= 0:
-		return intent.target_position - enemy.position
-	return 0
+		return _intent_target_position(true, intent) - player.position
+	return _intent_target_position(false, intent) - enemy.position
 
-func _resolve_one_preview_step(is_player_side: bool, card: CardData, actor_pos: int, target_pos: int) -> Dictionary:
+func _resolve_one_preview_step(is_player_side: bool, card: CardData, actor_pos: int, target_pos: int, actor_facing: String, target_facing: String) -> Dictionary:
 	var actor: Fighter = player if is_player_side else enemy
 	var target: Fighter = enemy if is_player_side else player
 	var actor_state: Dictionary = {
@@ -298,7 +316,7 @@ func _resolve_one_preview_step(is_player_side: bool, card: CardData, actor_pos: 
 		"momentum": actor.momentum,
 		"guard": actor.guard_points,
 		"position": actor_pos,
-		"facing": _player_preview_facing() if is_player_side else _enemy_preview_facing(),
+		"facing": actor_facing,
 		"broken": actor.is_broken()
 	}
 	var target_state: Dictionary = {
@@ -306,7 +324,7 @@ func _resolve_one_preview_step(is_player_side: bool, card: CardData, actor_pos: 
 		"momentum": target.momentum,
 		"guard": target.guard_points,
 		"position": target_pos,
-		"facing": _enemy_preview_facing() if is_player_side else _player_preview_facing(),
+		"facing": target_facing,
 		"broken": target.is_broken()
 	}
 	var order: Array[String] = []
@@ -340,7 +358,7 @@ func _resolver_preview_state(is_player: bool, intent: IntentData) -> Dictionary:
 	else:
 		if intent != null and intent.target_position >= 0:
 			pos = intent.target_position
-		facing = _enemy_preview_facing()
+		facing = _intent_target_facing(false, intent)
 	return {"hp": fighter.hp, "momentum": fighter.momentum, "guard": fighter.guard_points, "position": pos, "facing": facing, "broken": fighter.is_broken()}
 
 func _effect_preview_text() -> String:
@@ -377,7 +395,8 @@ func _step_text(step: Dictionary) -> String:
 	var side_text := "我方" if str(step.get("side", "player")) == "player" else "敌方"
 	var phase := str(step.get("phase", ""))
 	if phase == "move":
-		return "%s移动：%s → %s" % [side_text, _slot_label(int(step.get("from", 0))), _slot_label(int(step.get("to", 0)))]
+		var facing_text := "朝右" if str(step.get("facing", "")) == "right" else "朝左" if str(step.get("facing", "")) == "left" else ""
+		return "%s目标：%s → %s %s" % [side_text, _slot_label(int(step.get("from", 0))), _slot_label(int(step.get("to", 0))), facing_text]
 	if phase == "effect":
 		var range_result := str(step.get("range", CombatResolver.RANGE_NONE))
 		if range_result == CombatResolver.RANGE_MISS_FACING or range_result == CombatResolver.RANGE_MISS_RANGE:
