@@ -8,7 +8,7 @@ extends "res://scripts/narrative_demo_unified_controller.gd"
 #   Hardcoded MVP_NODE_IDS is only a crash-safe fallback.
 # - Top world map node panel remains visible; only operation-area map/debug controls are hidden.
 
-const STORY_FONT_SIZE := 108
+const STORY_FONT_SIZE := 72
 const OPTION_FONT_SIZE := 42
 const DEBUG_FONT_SIZE := 13
 const PERFORMANCE_CAPTION_TOP := 0.48
@@ -235,14 +235,14 @@ func _ensure_focus_story_caption() -> void:
 	focus_story_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	focus_story_panel.z_index = 91
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.018, 0.015, 0.012, 0.50)
-	style.border_color = Color(0.78, 0.62, 0.36, 0.18)
-	style.set_border_width_all(1)
-	style.set_corner_radius_all(10)
-	style.content_margin_left = 24
-	style.content_margin_right = 24
-	style.content_margin_top = 16
-	style.content_margin_bottom = 16
+	style.bg_color = Color(0.0, 0.0, 0.0, 0.0)
+	style.border_color = Color(0.0, 0.0, 0.0, 0.0)
+	style.set_border_width_all(0)
+	style.set_corner_radius_all(0)
+	style.content_margin_left = 0
+	style.content_margin_right = 0
+	style.content_margin_top = 0
+	style.content_margin_bottom = 0
 	focus_story_panel.add_theme_stylebox_override("panel", style)
 	focus_story_layer.add_child(focus_story_panel)
 
@@ -265,7 +265,7 @@ func _update_focus_story_caption() -> void:
 	if body_label != null:
 		story_text = body_label.text.strip_edges()
 	focus_story_panel.visible = not story_text.is_empty()
-	focus_story_label.text = story_text
+	focus_story_label.text = "[center]%s[/center]" % story_text
 
 func _battle_growth_reward_for_source(source_index: int) -> Dictionary:
 	if source_index < 0 or source_index >= _flow_count():
