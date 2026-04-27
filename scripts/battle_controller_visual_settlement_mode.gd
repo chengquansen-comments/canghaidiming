@@ -5,6 +5,7 @@ extends "res://scripts/battle_controller_visual_presentation_assets.gd"
 #
 # Default remains "symmetric" to preserve current main behavior.
 # The opening overlay now lets the player choose symmetric/reactive before role selection.
+# F8 toggles the mode during local testing.
 
 @export_enum("symmetric", "reactive") var settlement_mode_id: String = "symmetric"
 
@@ -14,6 +15,14 @@ var _settlement_mode_selected := false
 func _ready() -> void:
 	super()
 	_apply_visual_settlement_mode()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_F8:
+			toggle_visual_settlement_mode()
+			get_viewport().set_input_as_handled()
+			return
 
 
 func _show_role_selection() -> void:
@@ -34,7 +43,7 @@ func _show_settlement_mode_selection() -> void:
 	if overlay_title != null:
 		overlay_title.text = "选择结算模式"
 	if overlay_body != null:
-		overlay_body.text = "对称式：敌我同时拆招，按先机/崩势/武境决定顺序。\n反应式：敌方先亮出威胁，玩家后行动并尝试破解。"
+		overlay_body.text = "对称式：敌我同时拆招，按先机/崩势/武境决定顺序。\n反应式：敌方先亮出威胁，玩家后行动并尝试破解。\n\n测试快捷键：战斗中按 F8 可切换模式。"
 	_clear_overlay_actions()
 	_add_settlement_mode_button(BattleStateMachine.MODE_SYMMETRIC_ID, "对称式：双向拆招")
 	_add_settlement_mode_button(BattleStateMachine.MODE_REACTIVE_ID, "反应式：看招破解")
@@ -69,6 +78,7 @@ func _select_settlement_mode_and_continue(mode_id: String) -> void:
 func set_visual_settlement_mode(value: String) -> void:
 	settlement_mode_id = value
 	_apply_visual_settlement_mode()
+	_show_combat_banner("结算模式：%s" % ("反应式" if settlement_mode_id == BattleStateMachine.MODE_REACTIVE_ID else "对称式"), Color("1c2a36") if settlement_mode_id == BattleStateMachine.MODE_REACTIVE_ID else Color("2a2018"), Color("8fd3ff") if settlement_mode_id == BattleStateMachine.MODE_REACTIVE_ID else Color("ffd479"))
 	_refresh_ui()
 
 
@@ -89,7 +99,11 @@ func _apply_visual_settlement_mode() -> void:
 func _mode_status_suffix() -> String:
 	if state_machine == null:
 		return ""
-	return "\n结算模式：%s（%s）" % [state_machine.settlement_mode_label(), state_machine.settlement_mode_id()]
+	var text := "\n结算模式：%s（%s）" % [state_machine.settlement_mode_label(), state_machine.settlement_mode_id()]
+	text += "\n快捷键：F8 切换结算模式"
+	if state_machine.is_reactive_mode():
+		text += "\n反应式规则：玩家响应后先结算；若打出崩势，敌方本回合攻击中断。"
+	return text
 
 
 func _refresh_ui() -> void:
