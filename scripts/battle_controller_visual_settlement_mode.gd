@@ -157,7 +157,7 @@ func _reactive_threat_preview_text() -> String:
 		lines.append("敌方威胁：%s / 已被崩势打断" % (enemy_card.display_name if enemy_card != null else "无"))
 		lines.append("结果重点：预计打出崩势，敌方本回合攻击中断。")
 	else:
-		lines.append("敌方威胁：%s / %s / 结算距离 %d" % [enemy_card.display_name if enemy_card != null else "无", _range_text_safe(str(result.get("enemy_range_after_player", CombatResolver.RANGE_NONE))), int(result.get("final_distance_before_enemy", 0))])
+		lines.append("敌方威胁：%s / %s / 伤%d / 势-%d / 结算距离 %d" % [enemy_card.display_name if enemy_card != null else "无", _range_text_safe(str(result.get("enemy_range_after_player", CombatResolver.RANGE_NONE))), int(result.get("enemy_damage", 0)), int(result.get("enemy_break", 0)), int(result.get("final_distance_before_enemy", 0))])
 		lines.append("结果重点：敌方将基于我方响应后的最终站位重新判定命中。")
 	lines.append("最终预估：我方 %s；敌方 %s" % [_slot_label_safe(int(result.get("player_after_player_action", player.position))), _slot_label_safe(int(result.get("enemy_after_player_action", enemy.position)))])
 	return "\n".join(lines)
@@ -175,6 +175,8 @@ func _reactive_resolution_preview() -> Dictionary:
 	var will_interrupt := false
 	var player_damage := 0
 	var player_break := 0
+	var enemy_damage := 0
+	var enemy_break := 0
 	if player_card != null:
 		var player_state := {"hp": player.hp, "momentum": player.momentum, "guard": player.guard_points, "position": player_pos, "facing": player_facing, "broken": player.is_broken()}
 		var enemy_state := {"hp": enemy.hp, "momentum": enemy.momentum, "guard": enemy.guard_points, "position": enemy.position, "facing": enemy.facing, "broken": enemy.is_broken()}
@@ -188,7 +190,14 @@ func _reactive_resolution_preview() -> Dictionary:
 		enemy_after = int(sim.get("enemy_final", enemy.position))
 		will_interrupt = enemy.momentum > 0 and enemy.momentum + enemy_momentum_delta <= 0
 	if enemy_card != null and not will_interrupt:
-		enemy_range_after_player = CombatResolver.evaluate_range(enemy_card, enemy_after, enemy.facing, player_after)
+		var enemy_state_after := {"hp": enemy.hp, "momentum": enemy.momentum, "guard": enemy.guard_points, "position": enemy_after, "facing": enemy.facing, "broken": enemy.is_broken()}
+		var player_state_after := {"hp": player.hp, "momentum": player.momentum, "guard": player.guard_points, "position": player_after, "facing": player_facing, "broken": player.is_broken()}
+		var enemy_sim: Dictionary = CombatResolver.resolve_exchange(enemy_state_after, player_state_after, enemy_card, null, ["player"])
+		var player_hp_delta: int = int(enemy_sim.get("enemy_hp_delta", 0))
+		var player_momentum_delta: int = int(enemy_sim.get("enemy_momentum_delta", 0))
+		enemy_damage = absi(player_hp_delta) if player_hp_delta < 0 else 0
+		enemy_break = absi(player_momentum_delta) if player_momentum_delta < 0 else 0
+		enemy_range_after_player = str(enemy_sim.get("player_range_result", CombatResolver.RANGE_NONE))
 	return {
 		"initial_distance": absi(enemy.position - player.position),
 		"player_range": player_range,
@@ -198,6 +207,8 @@ func _reactive_resolution_preview() -> Dictionary:
 		"player_after_player_action": player_after,
 		"enemy_after_player_action": enemy_after,
 		"enemy_range_after_player": enemy_range_after_player,
+		"enemy_damage": enemy_damage,
+		"enemy_break": enemy_break,
 		"final_distance_before_enemy": absi(enemy_after - player_after)
 	}
 
