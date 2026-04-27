@@ -1,8 +1,8 @@
 # 《大明之沧海嘀鸣》战斗演出层说明
 
-> 版本：v0.6  
+> 版本：v0.7  
 > 分支：`main`  
-> 状态：Phase 1 已验收通过；Phase 2 / Phase 3 / Phase 5 / Phase 6 / Phase 7 已接入，待统一本地验收  
+> 状态：Phase 1 已验收通过；Phase 2 / Phase 3 / Phase 5 / Phase 6 / Phase 7 / Phase 8 已接入，待统一本地验收  
 > 入口场景：`scenes/MainVisual.tscn`  
 > 当前入口脚本：`scripts/battle_controller_visual_presentation_assets.gd`
 
@@ -15,7 +15,7 @@
 当前目标：
 
 ```text
-确认招式 → 保持旧格位视觉起点 → 角色前冲 / 水墨枪线 / 水墨刀光 / 火器闪光 → 目标受击或落空提示 → 真实结算飘字 → 破势墨裂 / 命中停顿 → 平滑落到结算后格位 → 死亡反馈
+确认招式 → 保持旧格位视觉起点 → 角色前冲 / 水墨枪线 / 水墨刀光 / 火器闪光与烟雾 → 目标受击或落空提示 → 防御墨盾 / 聚势气纹 → 真实结算飘字 → 破势墨裂 / 命中停顿 → 平滑落到结算后格位 → 死亡反馈
 ```
 
 演出层只负责表现，不负责规则。
@@ -68,7 +68,7 @@ battle_controller_visual_presentation.gd
 battle_controller_visual_presentation_assets.gd
 ```
 
-负责 Phase 6 / 7：把部分 ColorRect 临时 FX 替换为 SVG 资产，加载失败时回退到父类 ColorRect 表现。
+负责 Phase 6 / 7 / 8：把部分 ColorRect 临时 FX 替换为 SVG 资产，加载失败时回退到父类 ColorRect 表现。
 
 ---
 
@@ -101,6 +101,9 @@ battle_controller_visual_presentation_assets.gd
 | Phase 7 | 刀光 SVG FX | `fx_slash_ink_arc.svg` 替代父类刀光表现 | `DONE / NEEDS_LOCAL_VERIFY` |
 | Phase 7 | 枪线 SVG FX | `fx_thrust_ink_line.svg` 替代父类枪线表现 | `DONE / NEEDS_LOCAL_VERIFY` |
 | Phase 7 | 命中点 SVG FX | `fx_hit_ink_burst.svg` 替代父类命中点表现 | `DONE / NEEDS_LOCAL_VERIFY` |
+| Phase 8 | 格挡墨盾 | `fx_guard_ink_shield.svg` 叠加在防御动作上 | `DONE / NEEDS_LOCAL_VERIFY` |
+| Phase 8 | 聚势气纹 | `fx_focus_ink_ripple.svg` 叠加在聚势动作上 | `DONE / NEEDS_LOCAL_VERIFY` |
+| Phase 8 | 火器烟雾 | `fx_firearm_smoke_wisp.svg` 跟随火器闪光出现 | `DONE / NEEDS_LOCAL_VERIFY` |
 
 ---
 
@@ -115,6 +118,9 @@ assets/pixel_battle/fx/fx_miss_wisp.svg
 assets/pixel_battle/fx/fx_slash_ink_arc.svg
 assets/pixel_battle/fx/fx_thrust_ink_line.svg
 assets/pixel_battle/fx/fx_hit_ink_burst.svg
+assets/pixel_battle/fx/fx_guard_ink_shield.svg
+assets/pixel_battle/fx/fx_focus_ink_ripple.svg
+assets/pixel_battle/fx/fx_firearm_smoke_wisp.svg
 ```
 
 包装脚本：
@@ -126,6 +132,8 @@ scripts/battle_controller_visual_presentation_assets.gd
 该脚本当前重写：
 
 ```gdscript
+_play_guard_presentation()
+_play_focus_presentation()
 _show_slash_cut()
 _show_pierce_line()
 _show_target_hit_mark()
@@ -322,17 +330,20 @@ Main → 进入视觉版战斗
 7. 终结类招式确认震动 / 火光 / 命中停顿略强
 ```
 
-### Phase 6 / 7 验收
+### Phase 6 / 7 / 8 验收
 
 ```text
 1. MainVisual.tscn 是否挂载 battle_controller_visual_presentation_assets.gd
 2. 火器类招式是否显示水墨火光 SVG，而不是纯方块
-3. 破势时是否显示墨裂 SVG，而不是纯 ColorRect 线条
-4. 未中 / 距外 / 背向时是否显示灰色水墨掠影 SVG
-5. 刀类攻击是否显示水墨弧形刀光 SVG
-6. 枪类攻击是否显示水墨直线枪影 SVG
-7. 正常命中时是否显示水墨命中爆点 SVG
-8. 如果 SVG 资源加载失败，是否仍能回退到父类 ColorRect 效果，不导致报错中断
+3. 火器类招式火光后是否有烟雾 SVG
+4. 破势时是否显示墨裂 SVG，而不是纯 ColorRect 线条
+5. 未中 / 距外 / 背向时是否显示灰色水墨掠影 SVG
+6. 刀类攻击是否显示水墨弧形刀光 SVG
+7. 枪类攻击是否显示水墨直线枪影 SVG
+8. 正常命中时是否显示水墨命中爆点 SVG
+9. 防御牌是否额外显示墨盾 SVG
+10. 聚势牌是否额外显示气纹 SVG
+11. 如果 SVG 资源加载失败，是否仍能回退到父类 ColorRect 效果，不导致报错中断
 ```
 
 当前验收状态：
@@ -344,6 +355,7 @@ Phase 3: NEEDS_LOCAL_VERIFY
 Phase 5: NEEDS_LOCAL_VERIFY
 Phase 6: NEEDS_LOCAL_VERIFY
 Phase 7: NEEDS_LOCAL_VERIFY
+Phase 8: NEEDS_LOCAL_VERIFY
 ```
 
 ---
@@ -380,16 +392,14 @@ Phase 7: NEEDS_LOCAL_VERIFY
 4. presentation layer 优先读取显式字段，再 fallback 到当前推断规则
 ```
 
-### Phase 8：进一步演出资产化
+### Phase 9：表现层收口与调参
 
-后续可以继续做：
+后续建议进入收口，不继续无限堆 FX：
 
 ```text
-1. 增加火器烟雾 SVG
-2. 增加受击血墨 / 火星 SVG
-3. 增加格挡墨盾 SVG
-4. 增加聚势气纹 SVG
-5. 为不同武器制作专属 slash / thrust / firearm 动画配置
+1. 本地统一验收 Phase 2 / 3 / 5 / 6 / 7 / 8
+2. 根据实机观感调整大小、透明度、位置和停顿时间
+3. 再决定是否进入 CardData 演出字段数据化
 ```
 
 ---
