@@ -1,8 +1,8 @@
 # 《大明之沧海嘀鸣》战斗演出层说明
 
-> 版本：v0.3  
+> 版本：v0.4  
 > 分支：`main`  
-> 状态：Phase 1 已验收通过；Phase 2 / Phase 3 已接入，待统一本地验收  
+> 状态：Phase 1 已验收通过；Phase 2 / Phase 3 / Phase 5 已接入，待统一本地验收  
 > 入口场景：`scenes/MainVisual.tscn`  
 > 入口脚本：`scripts/battle_controller_visual_presentation.gd`
 
@@ -15,7 +15,7 @@
 当前目标：
 
 ```text
-确认招式 → 保持旧格位视觉起点 → 角色前冲 / 枪刺 / 刀光 → 目标受击或落空提示 → 真实结算飘字 → 平滑落到结算后格位 → 死亡反馈
+确认招式 → 保持旧格位视觉起点 → 角色前冲 / 枪刺 / 刀光 / 火器闪光 → 目标受击或落空提示 → 真实结算飘字 → 破势墨裂 / 命中停顿 → 平滑落到结算后格位 → 死亡反馈
 ```
 
 演出层只负责表现，不负责规则。
@@ -74,7 +74,11 @@ battle_controller_visual_presentation.gd
 | Phase 2 | 真实格位平滑落点 | 从旧格位视觉 offset tween 到新格位锚点 | `DONE / NEEDS_LOCAL_VERIFY` |
 | Phase 3 | range 结果反馈 | 命中、擦中、距外、背向等结果进入飘字和 FX 色彩 | `DONE / NEEDS_LOCAL_VERIFY` |
 | Phase 3 | 真实结算飘字 | 使用 `_ordered_preview_simulation()` 结果显示实际 damage / break / gain | `DONE / NEEDS_LOCAL_VERIFY` |
-| Phase 3 | 未中反馈 | 未命中不再强制受击闪红，改为灰色“未中”提示 | `DONE / NEEDS_LOCAL_VERIFY` |
+| Phase 3 | 未中反馈 | 未命中不再强制受击闪红，改为灰色掠影和提示 | `DONE / NEEDS_LOCAL_VERIFY` |
+| Phase 5 | 命中停顿 | 根据伤害 / 削势 / 破势追加轻重 hit pause | `DONE / NEEDS_LOCAL_VERIFY` |
+| Phase 5 | 破势墨裂 | 目标破势时出现墨裂 FX 和“破势”提示 | `DONE / NEEDS_LOCAL_VERIFY` |
+| Phase 5 | 擦中轻反馈 | 擦中降低前冲、击退、震动和 FX 强度 | `DONE / NEEDS_LOCAL_VERIFY` |
+| Phase 5 | 火器反馈 | 根据卡牌名称 / weapon_style 推断火器式，播放火光闪烁 | `DONE / NEEDS_LOCAL_VERIFY` |
 
 ---
 
@@ -86,6 +90,7 @@ battle_controller_visual_presentation.gd
 |---|---|
 | `card.is_guard_card()` | `guard` |
 | `card.is_momentum_card()` 且 `damage <= 0` | `focus` |
+| `weapon_style` / `id` / `display_name` 包含火器相关词 | `firearm` |
 | `weapon_style` 包含 `枪` 或 `spear` | `thrust` |
 | `card.id` 包含 `spear` | `thrust` |
 | 其他伤害牌 | `slash` |
@@ -186,10 +191,22 @@ Phase 3 新增逻辑：
 
 | range | 表现 |
 |---|---|
-| `hit` | 正常刀光 / 枪影、受击、红色伤害 / 削势飘字 |
-| `graze` | 暗化 FX，显示“擦中”，使用实际减半 / 修正后的数值 |
-| `miss_range` | 灰色 FX，显示“距外 / 未中”，不播放受击闪红 |
-| `miss_facing` | 灰色 FX，显示“背向 / 未中”，不播放受击闪红 |
+| `hit` | 正常刀光 / 枪影 / 火器闪光、受击、红色伤害 / 削势飘字 |
+| `graze` | 暗化 FX，显示“擦中”，使用实际减半 / 修正后的数值，降低前冲与受击强度 |
+| `miss_range` | 灰色 FX，显示“距外”，不播放受击闪红，追加掠影 |
+| `miss_facing` | 灰色 FX，显示“背向”，不播放受击闪红，追加掠影 |
+
+### 6.5 节奏精修
+
+Phase 5 新增：
+
+```text
+轻命中：短暂停顿
+重伤 / 重削势：更长停顿
+破势：最长停顿 + 墨裂 FX + 破势提示
+火器：低前冲 + 火光扩散
+终结：更大火光 / 更强震动
+```
 
 ---
 
@@ -229,10 +246,22 @@ Main → 进入视觉版战斗
 ```text
 1. 用距离正确的攻击牌，检查正常伤害 / 削势飘字
 2. 用差 1 格距离的攻击牌，检查是否出现“擦中”，且数值低于正常命中
-3. 用距离过远 / 过近的攻击牌，检查是否出现“距外 / 未中”，且目标不闪红后退
-4. 用背向或朝向错误场景，检查是否出现“背向 / 未中”
+3. 用距离过远 / 过近的攻击牌，检查是否出现“距外”，且目标不闪红后退
+4. 用背向或朝向错误场景，检查是否出现“背向”
 5. 检查防御牌显示“守”或“守+数值”
 6. 检查聚势牌显示“势”或“势+数值”
+```
+
+### Phase 5 验收
+
+```text
+1. 普通命中时确认有轻微 hit pause，但不拖沓
+2. 高伤害 / 高削势时确认停顿更明显
+3. 打空时确认不会触发目标受击闪红，只出现灰色掠影
+4. 擦中时确认反馈弱于正常命中
+5. 破势时确认出现墨裂 FX 和“破势”提示
+6. 火器类招式若存在，确认表现为火光闪烁，而不是刀光 / 枪影
+7. 终结类招式确认震动 / 火光 / 命中停顿略强
 ```
 
 当前验收状态：
@@ -241,6 +270,7 @@ Main → 进入视觉版战斗
 Phase 1: PASSED
 Phase 2: NEEDS_LOCAL_VERIFY
 Phase 3: NEEDS_LOCAL_VERIFY
+Phase 5: NEEDS_LOCAL_VERIFY
 ```
 
 ---
@@ -277,16 +307,15 @@ Phase 3: NEEDS_LOCAL_VERIFY
 4. presentation layer 优先读取显式字段，再 fallback 到当前推断规则
 ```
 
-### Phase 5：演出节奏调优
+### Phase 6：演出资产化
 
-在 Phase 2 / Phase 3 验收后，可以继续调：
+在 Phase 2 / Phase 3 / Phase 5 验收后，可以继续做：
 
 ```text
-hit pause
-镜头震动幅度
-受击回弹时间
-飘字位置
-枪 / 刀 / 火器差异化
+1. 把 ColorRect 临时 FX 替换成水墨 / 火器 / 刀光 SVG 或 shader 资源
+2. 增加专属破势墨裂 SVG
+3. 增加火器烟雾 SVG
+4. 为不同武器制作专属 slash / thrust / firearm 动画配置
 ```
 
 ---
