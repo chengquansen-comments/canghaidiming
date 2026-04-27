@@ -1,8 +1,8 @@
 # 《大明之沧海嘀鸣》战斗演出层说明
 
-> 版本：v1.0  
+> 版本：v1.1  
 > 分支：`main`  
-> 状态：Phase 1 已验收通过；Phase 2 / 3 / 5 / 6 / 7 / 8 / 9 / 10 / 11 已接入，待统一本地验收  
+> 状态：Phase 1 已验收通过；Phase 2 / 3 / 5 / 6 / 7 / 8 / 9 / 10 / 11 / 12 已接入，待统一本地验收  
 > 入口场景：`scenes/MainVisual.tscn`  
 > 当前场景入口脚本：`scripts/battle_controller_visual_story_return.gd`
 
@@ -15,7 +15,9 @@
 当前完整表现链路：
 
 ```text
-确认招式
+选择目标格位 / 目标朝向
+→ 招式范围按目标格位 + 目标朝向预览
+→ 确认招式
 → 保持旧格位视觉起点
 → 角色前冲 / 水墨枪线 / 水墨刀光 / 火器闪光与烟雾
 → 目标受击或落空提示
@@ -37,6 +39,7 @@
 
 ```text
 不会仅因敌我相对位置变化自动转身。
+移动目标格位与目标朝向是两个独立选择状态。
 ```
 
 ---
@@ -78,7 +81,7 @@ battle_controller_visual_story_return.gd
 |---|---|
 | `story_return` | 剧情战斗结束后返回剧情选择；压力规则 |
 | `settlement_mode` | 剧情遭遇选择；对称 / 反应式结算切换 |
-| `presentation_stepwise` | 逐格移动；事件驱动转身 |
+| `presentation_stepwise` | 逐格移动；事件驱动转身；目标格位 / 目标朝向输入规则 |
 | `presentation_assets` | SVG FX 资产化与调参常量 |
 | `presentation` | 攻击、受击、命中反馈、真实结果飘字、死亡、基础落位 |
 
@@ -98,6 +101,7 @@ battle_controller_visual_story_return.gd
 | Phase 9 | FX 尺寸、透明度、层级、偏移、淡出时间集中成常量 | `DONE / NEEDS_LOCAL_VERIFY` |
 | Phase 10 | 结算后位置变化从“一次滑动”改为“一格一格移动” | `DONE / NEEDS_LOCAL_VERIFY` |
 | Phase 11 | 事件驱动转身：背击受击、行动目标反向、招式自带转身 | `DONE / NEEDS_LOCAL_VERIFY` |
+| Phase 12 | 目标格位 / 目标朝向解耦；范围预览按目标状态推算 | `DONE / NEEDS_LOCAL_VERIFY` |
 
 ---
 
@@ -114,17 +118,6 @@ battle_controller_visual_story_return.gd
 
 ```text
 scripts/battle_controller_visual_presentation_stepwise.gd
-```
-
-该层覆盖最终结算落位流程，不改：
-
-```text
-伤害结算
-势结算
-卡牌消耗
-敌人意图
-背景 manifest
-剧情返回
 ```
 
 当前规则：
@@ -228,29 +221,85 @@ tag / id / display_name 包含：转身、回身、反身、翻身、回马、tu
 出招前先转身 → 再执行攻击 / 防御 / 聚势表现
 ```
 
-### 5.6 转身表现
+---
 
-当前第一版使用轻量表现：
+## 6. Phase 12：目标格位 / 目标朝向输入规则
+
+### 6.1 总原则
 
 ```text
-收身压缩
-水平翻转
-回正
+目标格位决定站到哪里。
+目标朝向决定站定后面向哪里。
+点击新格位只改站位。
+再次点击当前目标格位才改朝向。
+所有招式范围预览都按目标格位与目标朝向计算。
 ```
 
-默认参数：
+### 6.2 回合开始默认值
+
+```text
+目标格位 = 当前实际格位
+目标朝向 = 当前实际朝向
+```
+
+玩家不做任何操作时：
+
+```text
+原地，不转向。
+```
+
+### 6.3 点击规则
+
+| 操作 | 目标格位 | 目标朝向 | 招式范围预览 |
+|---|---:|---|---|
+| 回合开始不操作 | 当前格 | 当前实际朝向 | 当前格 + 当前朝向 |
+| 点击原地格 | 当前格 | 当前朝向反转 | 当前格 + 反转朝向 |
+| 点击其他格 | 新格 | 当前实际朝向 | 新格 + 当前实际朝向 |
+| 再点该目标格 | 新格 | 目标朝向反转 | 新格 + 反转朝向 |
+
+### 6.4 实现口径
+
+实现文件：
+
+```text
+scripts/battle_controller_visual_presentation_stepwise.gd
+```
+
+核心入口：
 
 ```gdscript
-PRESENTATION_TURN_PREP_DURATION = 0.06
-PRESENTATION_TURN_FLIP_DURATION = 0.08
-PRESENTATION_TURN_SETTLE_DURATION = 0.06
-PRESENTATION_TURN_COMPRESS_X = 0.82
-PRESENTATION_TURN_SETTLE_Y = 1.04
+_on_stage_grid_slot_pressed(slot)
 ```
+
+当前行为：
+
+```text
+1. 点击非目标格位：draft_player_position = 点击格位；draft_player_facing = player.facing。
+2. 点击已选目标格位：draft_player_position 不变；draft_player_facing 在 left / right 间反转。
+3. 若 draft_player_intent 已存在，则同步 set_stance(draft_player_position, draft_player_facing)。
+4. 确认出招前再次同步 draft intent，避免“先点格位后选招式”造成预览和结算不一致。
+```
+
+### 6.5 范围预览
+
+已有预览链路会读取：
+
+```gdscript
+_player_preview_position()
+_player_preview_facing()
+```
+
+因此范围预览统一按：
+
+```text
+目标格位 + 目标朝向
+```
+
+推算，而不是按玩家当前实际格位 / 实际朝向推算。
 
 ---
 
-## 6. FX 资产
+## 7. FX 资产
 
 当前 FX 资源：
 
@@ -284,7 +333,7 @@ FX_OFFSET_*
 
 ---
 
-## 7. 动画分类规则
+## 8. 动画分类规则
 
 当前按卡牌信息自动推断演出类型：
 
@@ -301,7 +350,7 @@ FX_OFFSET_*
 
 ---
 
-## 8. 禁止事项
+## 9. 禁止事项
 
 1. 不要让动画决定伤害。
 2. 不要在动画层修改 HP / 势 / 卡牌消耗。
@@ -312,10 +361,11 @@ FX_OFFSET_*
 7. 不要恢复旧 Debug 按钮。
 8. 不要把背景路径写死到 GDScript。
 9. 不要因为敌我相对位置自动转身。
+10. 不要让点击新格位自动改变目标朝向。
 
 ---
 
-## 9. 统一验收重点
+## 10. 统一验收重点
 
 ### 基础攻击 / 受击
 
@@ -362,6 +412,18 @@ FX_OFFSET_*
 8. 背向未中时，不应视觉上自动转正。
 ```
 
+### 目标格位 / 目标朝向输入
+
+```text
+1. 回合开始不操作：目标格位为当前格，目标朝向为当前实际朝向。
+2. 回合开始不操作直接确认：玩家原地，不转向。
+3. 点击原地格：目标格位不变，目标朝向反转一次。
+4. 点击其他格：目标格位变为新格，目标朝向保持当前实际朝向。
+5. 再点击该目标格：目标格位不变，目标朝向反转一次。
+6. 先点格位 / 朝向，再选招式，确认时仍按最终目标格位和目标朝向结算。
+7. 招式攻击范围预览始终按目标格位 + 目标朝向推算。
+```
+
 ### FX 资产化
 
 ```text
@@ -386,11 +448,12 @@ Phase 8: NEEDS_LOCAL_VERIFY
 Phase 9: NEEDS_LOCAL_VERIFY
 Phase 10: NEEDS_LOCAL_VERIFY
 Phase 11: NEEDS_LOCAL_VERIFY
+Phase 12: NEEDS_LOCAL_VERIFY
 ```
 
 ---
 
-## 10. 后续建议
+## 11. 后续建议
 
 下一步不建议继续新增演出逻辑，建议进入：
 
@@ -407,4 +470,5 @@ Phase 11: NEEDS_LOCAL_VERIFY
 4. FX 大小与透明度
 5. 飘字位置
 6. 命中停顿时长
+7. 目标格位 / 目标朝向的 UI 提示清晰度
 ```
