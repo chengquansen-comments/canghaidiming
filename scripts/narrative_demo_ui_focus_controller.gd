@@ -4,13 +4,12 @@ extends "res://scripts/narrative_demo_unified_controller.gd"
 # - Operation area shows only story text and actionable buttons.
 # - Metadata moves into a top-right debug overlay.
 # - Story and option text are enlarged for playtest readability.
-# - Narrative MVP flow prefers compiled data/narrative_mvp_nodes.json flow_node_ids;
-#   falls back to tables/narrative_mvp_node_status.tsv, then hardcoded MVP_NODE_IDS.
+# - Narrative MVP flow is sourced from compiled data/narrative_mvp_nodes.json.
+#   Hardcoded MVP_NODE_IDS is only a crash-safe fallback.
 
 const STORY_FONT_SIZE := 54
 const OPTION_FONT_SIZE := 42
 const DEBUG_FONT_SIZE := 13
-const NODE_STATUS_PATH := "res://tables/narrative_mvp_node_status.tsv"
 
 var focus_debug_layer: Control
 var focus_debug_panel: PanelContainer
@@ -40,8 +39,6 @@ func _flow_node_ids() -> Array:
 	focus_flow_source = "fallback"
 	_load_flow_from_compiled_data()
 	if focus_flow_node_ids.is_empty():
-		_load_flow_from_status_tsv()
-	if focus_flow_node_ids.is_empty():
 		for node_id in MVP_NODE_IDS:
 			focus_flow_node_ids.append(str(node_id))
 	return focus_flow_node_ids
@@ -58,41 +55,6 @@ func _load_flow_from_compiled_data() -> void:
 			focus_flow_node_ids.append(clean_id)
 	if not focus_flow_node_ids.is_empty():
 		focus_flow_source = NARRATIVE_MVP_DATA_PATH
-
-func _load_flow_from_status_tsv() -> void:
-	if not FileAccess.file_exists(NODE_STATUS_PATH):
-		return
-	var file := FileAccess.open(NODE_STATUS_PATH, FileAccess.READ)
-	if file == null:
-		return
-	var lines := file.get_as_text().replace("\r", "").split("\n", false)
-	_parse_flow_status_lines(lines)
-	if not focus_flow_node_ids.is_empty():
-		focus_flow_source = NODE_STATUS_PATH
-
-func _parse_flow_status_lines(lines: PackedStringArray) -> void:
-	if lines.is_empty():
-		return
-	var header := str(lines[0]).split("\t")
-	var id_idx := header.find("id")
-	var flow_idx := header.find("flow_enabled")
-	if id_idx < 0 or flow_idx < 0:
-		return
-	for i in range(1, lines.size()):
-		var raw_line := str(lines[i]).strip_edges()
-		if raw_line.is_empty():
-			continue
-		var cols := raw_line.split("\t")
-		if cols.size() <= max(id_idx, flow_idx):
-			continue
-		var node_id := str(cols[id_idx]).strip_edges()
-		var enabled := _parse_flow_bool(str(cols[flow_idx]))
-		if enabled and not node_id.is_empty():
-			focus_flow_node_ids.append(node_id)
-
-func _parse_flow_bool(raw: String) -> bool:
-	var value := raw.strip_edges().to_lower()
-	return value == "true" or value == "1" or value == "yes" or value == "y"
 
 func _flow_count() -> int:
 	return _flow_node_ids().size()
