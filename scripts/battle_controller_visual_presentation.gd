@@ -3,7 +3,8 @@ extends "res://scripts/battle_controller_visual_scene_manifest.gd"
 # Lightweight battle presentation layer.
 # This wrapper does not resolve damage or change battle rules. It only consumes
 # the already selected player/enemy intents and plays Tween-based feedback:
-# lunge, attack FX, hit reaction, floating text, death fade, and committed slot settling.
+# lunge, attack FX, hit reaction, floating text, death fade, committed slot settling,
+# and resolver-preview result text.
 
 const PRESENTATION_BUSY_META := &"battle_presentation_busy"
 const PLAYER_OFFSET_META := &"player_presentation_offset"
@@ -23,14 +24,17 @@ func _confirm_player_intent() -> void:
 	var visible_enemy_card: CardData = _enemy_preview_card()
 	var p_intent: IntentData = draft_player_intent if draft_player_intent != null else player_intent
 	var order: Array[String] = _preview_resolution_order(p_intent, enemy_intent)
-	_start_presentation_exchange(selected_player_card, visible_enemy_card, order, old_player_slot, old_enemy_slot)
+	var preview_sim: Dictionary = {}
+	if player != null and enemy != null:
+		preview_sim = _ordered_preview_simulation(p_intent, enemy_intent)
+	_start_presentation_exchange(selected_player_card, visible_enemy_card, order, old_player_slot, old_enemy_slot, preview_sim)
 	super()
 
 func _force_real_actor_positions() -> void:
 	super()
 	_apply_presentation_offsets()
 
-func _start_presentation_exchange(player_card: CardData, enemy_card: CardData, order: Array[String], old_player_slot: int, old_enemy_slot: int) -> void:
+func _start_presentation_exchange(player_card: CardData, enemy_card: CardData, order: Array[String], old_player_slot: int, old_enemy_slot: int, preview_sim: Dictionary) -> void:
 	if _presentation_busy():
 		return
 	if player == null or enemy == null or not battle_active:
@@ -41,16 +45,16 @@ func _start_presentation_exchange(player_card: CardData, enemy_card: CardData, o
 	var safe_order: Array[String] = order.duplicate()
 	if safe_order.is_empty():
 		safe_order = ["player", "enemy"]
-	call_deferred("_run_presentation_exchange", player_card, enemy_card, safe_order, old_player_slot, old_enemy_slot)
+	call_deferred("_run_presentation_exchange", player_card, enemy_card, safe_order, old_player_slot, old_enemy_slot, preview_sim)
 
-func _run_presentation_exchange(player_card: CardData, enemy_card: CardData, order: Array[String], old_player_slot: int, old_enemy_slot: int) -> void:
+func _run_presentation_exchange(player_card: CardData, enemy_card: CardData, order: Array[String], old_player_slot: int, old_enemy_slot: int, preview_sim: Dictionary) -> void:
 	_reset_presentation_offsets()
 	_apply_pre_resolution_slot_offsets(old_player_slot, old_enemy_slot)
 	for side: String in order:
 		if side == "player" and player_card != null:
-			await _play_one_presentation_action(true, player_card)
+			await _play_one_presentation_action(true, player_card, _presentation_result_for_side(preview_sim, "player"))
 		elif side == "enemy" and enemy_card != null:
-			await _play_one_presentation_action(false, enemy_card)
+			await _play_one_presentation_action(false, enemy_card, _presentation_result_for_side(preview_sim, "enemy"))
 	await _settle_committed_slot_offsets()
 	if enemy != null and enemy.hp <= 0:
 		await _play_presentation_death(false)
@@ -59,63 +63,77 @@ func _run_presentation_exchange(player_card: CardData, enemy_card: CardData, ord
 	_reset_presentation_offsets()
 	_set_presentation_busy(false)
 
-func _play_one_presentation_action(is_player_actor: bool, card: CardData) -> void:
+func _play_one_presentation_action(is_player_actor: bool, card: CardData, result: Dictionary) -> void:
 	if card == null:
 		return
 	var style: String = _presentation_style_for_card(card)
 	if style == "guard":
-		await _play_guard_presentation(is_player_actor, card)
+		await _play_guard_presentation(is_player_actor, card, result)
 		return
 	if style == "focus":
-		await _play_focus_presentation(is_player_actor, card)
+		await _play_focus_presentation(is_player_actor, card, result)
 		return
-	await _play_attack_presentation(is_player_actor, card, style)
+	await _play_attack_presentation(is_player_actor, card, style, result)
 
-func _play_attack_presentation(is_player_actor: bool, card: CardData, style: String) -> void:
+func _play_attack_presentation(is_player_actor: bool, card: CardData, style: String, result: Dictionary) -> void:
 	var dir: float = 1.0 if is_player_actor else -1.0
 	var lunge_distance: float = PRESENTATION_LUNGE_THRUST if style == "thrust" else PRESENTATION_LUNGE_SLASH
 	var lunge_offset := Vector2(dir * lunge_distance, -5.0)
-	var base_offset: Vector2 = _presentation_offset(is_player_actor)
 	var target_is_enemy: bool = is_player_actor
+	var should_hit: bool = _presentation_result_should_hit(card, result)
+	var base_offset: Vector2 = _presentation_offset(is_player_actor)
 	_tween_actor_offset(is_player_actor, base_offset, base_offset + lunge_offset, 0.10, Tween.TRANS_QUAD, Tween.EASE_OUT)
 	await get_tree().create_timer(0.08).timeout
-	_play_presentation_attack_fx(is_player_actor, card, style)
+	_play_presentation_attack_fx(is_player_actor, card, style, result)
 	await get_tree().create_timer(0.04).timeout
-	_play_presentation_hit_reaction(not is_player_actor, card, dir)
+	if should_hit:
+		_play_presentation_hit_reaction(not is_player_actor, card, dir)
+	else:
+		_play_presentation_miss_feedback(not is_player_actor)
 	_tween_actor_offset(is_player_actor, base_offset + lunge_offset, base_offset, 0.16, Tween.TRANS_QUAD, Tween.EASE_IN)
-	_show_presentation_result_text(target_is_enemy, card)
+	_show_presentation_result_text(target_is_enemy, card, result)
 	await get_tree().create_timer(0.24).timeout
 
-func _play_guard_presentation(is_player_actor: bool, _card: CardData) -> void:
+func _play_guard_presentation(is_player_actor: bool, _card: CardData, result: Dictionary) -> void:
 	var base_offset: Vector2 = _presentation_offset(is_player_actor)
 	_tween_actor_offset(is_player_actor, base_offset, base_offset + Vector2(0, 9), 0.08, Tween.TRANS_SINE, Tween.EASE_OUT)
-	_show_presentation_float_text("守", is_player_actor, Color("d8c9a5"))
+	var guard_value: int = int(result.get("guard", 0))
+	var label: String = "守+%d" % guard_value if guard_value > 0 else "守"
+	_show_presentation_float_text(label, is_player_actor, Color("d8c9a5"))
 	_play_presentation_guard_flash(is_player_actor)
 	await get_tree().create_timer(0.10).timeout
 	_tween_actor_offset(is_player_actor, base_offset + Vector2(0, 9), base_offset, 0.13, Tween.TRANS_SINE, Tween.EASE_OUT)
 	await get_tree().create_timer(0.14).timeout
 
-func _play_focus_presentation(is_player_actor: bool, _card: CardData) -> void:
+func _play_focus_presentation(is_player_actor: bool, _card: CardData, result: Dictionary) -> void:
 	var dir: float = 1.0 if is_player_actor else -1.0
 	var base_offset: Vector2 = _presentation_offset(is_player_actor)
 	var focus_offset := Vector2(dir * PRESENTATION_LUNGE_FOCUS, -2)
 	_tween_actor_offset(is_player_actor, base_offset, base_offset + focus_offset, 0.08, Tween.TRANS_SINE, Tween.EASE_OUT)
-	_show_presentation_float_text("势", is_player_actor, Color("d9b66c"))
+	var gain_value: int = int(result.get("gain", 0))
+	var label: String = "势+%d" % gain_value if gain_value > 0 else "势"
+	_show_presentation_float_text(label, is_player_actor, Color("d9b66c"))
 	_play_presentation_guard_flash(is_player_actor)
 	await get_tree().create_timer(0.10).timeout
 	_tween_actor_offset(is_player_actor, base_offset + focus_offset, base_offset, 0.12, Tween.TRANS_SINE, Tween.EASE_OUT)
 	await get_tree().create_timer(0.12).timeout
 
-func _play_presentation_attack_fx(is_player_actor: bool, card: CardData, style: String) -> void:
+func _play_presentation_attack_fx(is_player_actor: bool, card: CardData, style: String, result: Dictionary) -> void:
 	var is_finisher: bool = _card_has_tag(card, "终结")
 	var color: Color = Color("9fd8ff") if style == "thrust" else Color("ff9f73")
+	var range_result: String = str(result.get("range", "hit"))
+	if range_result == "graze":
+		color = color.darkened(0.22)
+	if range_result == "miss_range" or range_result == "miss_facing":
+		color = Color(0.72, 0.72, 0.68, 0.62)
 	if style == "thrust":
 		_show_pierce_line(color, is_finisher)
 	else:
 		_show_slash_cut(color, is_finisher)
-	var profession_id: String = "spearman" if style == "thrust" else "blademaster"
-	_show_target_hit_mark(is_player_actor, color, profession_id, is_finisher)
-	_impact_feedback(color, 3.8 if not is_finisher else 6.2, style == "thrust", is_finisher)
+	if _presentation_result_should_hit(card, result):
+		var profession_id: String = "spearman" if style == "thrust" else "blademaster"
+		_show_target_hit_mark(is_player_actor, color, profession_id, is_finisher)
+		_impact_feedback(color, 3.8 if not is_finisher else 6.2, style == "thrust", is_finisher)
 
 func _play_presentation_hit_reaction(target_is_player: bool, _card: CardData, attack_dir: float) -> void:
 	var target_node: CanvasItem = _presentation_visual_node(target_is_player)
@@ -131,6 +149,9 @@ func _play_presentation_hit_reaction(target_is_player: bool, _card: CardData, at
 	await get_tree().create_timer(0.06).timeout
 	_tween_actor_offset(target_is_player, knock, base_offset, 0.14, Tween.TRANS_QUAD, Tween.EASE_OUT)
 
+func _play_presentation_miss_feedback(target_is_player: bool) -> void:
+	_show_presentation_float_text("未中", target_is_player, Color(0.72, 0.72, 0.68, 0.9))
+
 func _play_presentation_guard_flash(is_player_actor: bool) -> void:
 	var target_node: CanvasItem = _presentation_visual_node(is_player_actor)
 	if target_node == null:
@@ -140,17 +161,34 @@ func _play_presentation_guard_flash(is_player_actor: bool) -> void:
 	tween.tween_property(target_node, "modulate", start_modulate.lightened(0.28), 0.05)
 	tween.tween_property(target_node, "modulate", start_modulate, 0.12)
 
-func _show_presentation_result_text(target_is_enemy: bool, card: CardData) -> void:
+func _show_presentation_result_text(target_is_enemy: bool, card: CardData, result: Dictionary) -> void:
 	if card == null:
 		return
 	var parts: Array[String] = []
-	if int(card.damage) > 0:
-		parts.append("-%d" % int(card.damage))
-	if int(card.break_momentum) > 0:
-		parts.append("势-%d" % int(card.break_momentum))
+	var range_result: String = str(result.get("range", "hit"))
+	var damage_value: int = int(result.get("damage", card.damage))
+	var break_value: int = int(result.get("break", card.break_momentum))
+	var gain_value: int = int(result.get("gain", card.gain_momentum))
+	if range_result == "graze":
+		parts.append("擦中")
+	elif range_result == "miss_range":
+		parts.append("距外")
+	elif range_result == "miss_facing":
+		parts.append("背向")
+	if damage_value > 0:
+		parts.append("-%d" % damage_value)
+	if break_value > 0:
+		parts.append("势-%d" % break_value)
+	if damage_value <= 0 and break_value <= 0 and gain_value > 0 and not target_is_enemy:
+		parts.append("势+%d" % gain_value)
 	if parts.is_empty():
 		return
-	_show_presentation_float_text(" / ".join(parts), not target_is_enemy, Color("c44a3f"))
+	var color: Color = Color("c44a3f")
+	if range_result == "graze":
+		color = Color("d9b66c")
+	elif range_result == "miss_range" or range_result == "miss_facing":
+		color = Color(0.72, 0.72, 0.68, 0.9)
+	_show_presentation_float_text(" / ".join(parts), not target_is_enemy, color)
 
 func _show_presentation_float_text(text: String, target_is_player: bool, color: Color) -> void:
 	var layer: Control = center_fx_layer if center_fx_layer != null else self
@@ -198,6 +236,36 @@ func _presentation_style_for_card(card: CardData) -> String:
 	if str(card.id).findn("spear") >= 0:
 		return "thrust"
 	return "slash"
+
+func _presentation_result_for_side(preview_sim: Dictionary, side: String) -> Dictionary:
+	var fallback := {"range": "hit", "damage": 0, "break": 0, "gain": 0, "guard": 0}
+	var steps_value = preview_sim.get("steps", [])
+	if not (steps_value is Array):
+		return fallback
+	for step_value in steps_value:
+		if not (step_value is Dictionary):
+			continue
+		var step: Dictionary = step_value
+		if str(step.get("side", "")) != side:
+			continue
+		if str(step.get("phase", "")) != "effect":
+			continue
+		return {
+			"range": str(step.get("range", "hit")),
+			"damage": int(step.get("damage", 0)),
+			"break": int(step.get("break", 0)),
+			"gain": int(step.get("gain", 0)),
+			"guard": int(step.get("guard", 0))
+		}
+	return fallback
+
+func _presentation_result_should_hit(card: CardData, result: Dictionary) -> bool:
+	if card == null:
+		return false
+	if not card.requires_hit_check():
+		return true
+	var range_result: String = str(result.get("range", "hit"))
+	return range_result == "hit" or range_result == "graze"
 
 func _presentation_visual_node(is_player_actor: bool) -> CanvasItem:
 	var sprite: TextureRect = player_sprite if is_player_actor else enemy_sprite
