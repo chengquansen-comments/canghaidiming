@@ -4,6 +4,7 @@ class_name StoryBattleLoader
 const FighterData = preload("res://scripts/fighter_data.gd")
 const CardData = preload("res://scripts/card_data.gd")
 const EnemySetLoader = preload("res://scripts/enemy_set_loader.gd")
+const BattleEffectApplier = preload("res://scripts/battle_effect_applier.gd")
 
 const BASE_DIR := "res://data/story_battles/"
 const FIGHTER_TEMPLATES_PATH := BASE_DIR + "fighter_templates.tsv"
@@ -119,6 +120,9 @@ static func validate_all(card_catalog: Dictionary) -> Dictionary:
 		var mode: String = str(encounter.get("settlement_mode", MODE_SYMMETRIC_ID))
 		if mode != MODE_SYMMETRIC_ID and mode != MODE_REACTIVE_ID:
 			errors.append("story_encounters.%s has invalid settlement_mode: %s" % [encounter_id, mode])
+		var pressure_profile: String = str(encounter.get("pressure_profile", BattleEffectApplier.PRESSURE_NONE))
+		if not BattleEffectApplier.is_valid_pressure_profile(pressure_profile):
+			errors.append("story_encounters.%s has invalid pressure_profile: %s" % [encounter_id, pressure_profile])
 
 		var player_deck: Dictionary = deck_ids.get(str(encounter.get("player_deck_id", "")), {})
 		var opponent_deck: Dictionary = deck_ids.get(str(encounter.get("opponent_deck_id", "")), {})
