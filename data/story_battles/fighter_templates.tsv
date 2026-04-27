@@ -1,0 +1,8 @@
+fighter_template_id	display_name	weapon_style	default_position	default_facing	story_role	notes
+player_blademaster	少年刀客	blademaster	2	right	玩家单位	主角刀客模板
+player_spearman	少年枪手	spearman	2	right	玩家单位	主角枪手模板
+prologue_blade_recruit	倭刀喽啰	blademaster	6	left	海边初战教学单位	普通倭寇刀手
+prologue_spear_guard	持枪哨兵	spearman	6	left	海边控距单位	控距型枪兵
+master_veteran	退伍老兵	spearman	2	right	师傅单位	救场与教学角色
+blade_duelist	倭刀精锐	blademaster	6	left	高手对决单位	对称式拆招测试敌人
+spear_duelist	长枪教头	spearman	6	left	高手对决单位	对称式控距测试敌人
