@@ -104,7 +104,6 @@ func _tween_actor_one_grid_step(is_player_actor: bool, from_offset: Vector2, to_
 
 func _capture_presentation_facing_context() -> void:
 	var old_player_slot: int = player.position if player != null else -1
-	var old_enemy_slot: int = enemy.position if enemy != null else -1
 	var old_player_facing: String = player.facing if player != null else ""
 	var old_enemy_facing: String = enemy.facing if enemy != null else ""
 	var old_player_hp: int = player.hp if player != null else 0
@@ -120,9 +119,7 @@ func _capture_presentation_facing_context() -> void:
 	set_meta(FACING_CTX_PLAYER_ACTION_TARGET_FACING, _action_target_facing(p_intent, old_player_slot))
 	set_meta(FACING_CTX_PLAYER_TURN_DURING_ACTION, _card_has_turn_during_action(p_card))
 	set_meta(FACING_CTX_ENEMY_TURN_DURING_ACTION, _card_has_turn_during_action(e_card))
-	# Keep old_enemy_slot intentionally local for future debugging; no automatic turn
-	# is derived from relative position.
-	var _unused_enemy_slot := old_enemy_slot
+	# No automatic turn is derived from relative position.
 
 func _maybe_turn_player_after_action_target() -> void:
 	if player == null or player.hp <= 0:
@@ -219,20 +216,39 @@ func _play_facing_turn(is_player_actor: bool, to_facing: String, from_facing: St
 		return
 	_apply_visual_facing(is_player_actor, safe_from)
 	if node is Control:
-		var control := node as Control
-		control.pivot_offset = control.size * 0.5
+		await _play_control_facing_turn(node as Control, safe_from, to_facing)
+	elif node is Node2D:
+		await _play_node2d_facing_turn(node as Node2D, safe_from, to_facing)
+	else:
+		_set_actor_facing_state(is_player_actor, to_facing)
+		return
+	_set_actor_facing_state(is_player_actor, to_facing)
+	_apply_visual_facing(is_player_actor, to_facing)
+
+func _play_control_facing_turn(node: Control, from_facing: String, to_facing: String) -> void:
+	node.pivot_offset = node.size * 0.5
 	var base_scale := node.scale
 	var base_x: float = maxf(absf(base_scale.x), 1.0)
 	var base_y: float = maxf(absf(base_scale.y), 1.0)
-	var from_sign: float = _facing_sign(safe_from)
+	var from_sign: float = _facing_sign(from_facing)
 	var to_sign: float = _facing_sign(to_facing)
 	var tween := create_tween()
 	tween.tween_property(node, "scale", Vector2(base_x * from_sign * PRESENTATION_TURN_COMPRESS_X, base_y * PRESENTATION_TURN_SETTLE_Y), PRESENTATION_TURN_PREP_DURATION)
 	tween.tween_property(node, "scale", Vector2(base_x * to_sign * PRESENTATION_TURN_COMPRESS_X, base_y * PRESENTATION_TURN_SETTLE_Y), PRESENTATION_TURN_FLIP_DURATION)
 	tween.tween_property(node, "scale", Vector2(base_x * to_sign, base_y), PRESENTATION_TURN_SETTLE_DURATION)
 	await tween.finished
-	_set_actor_facing_state(is_player_actor, to_facing)
-	_apply_visual_facing(is_player_actor, to_facing)
+
+func _play_node2d_facing_turn(node: Node2D, from_facing: String, to_facing: String) -> void:
+	var base_scale := node.scale
+	var base_x: float = maxf(absf(base_scale.x), 1.0)
+	var base_y: float = maxf(absf(base_scale.y), 1.0)
+	var from_sign: float = _facing_sign(from_facing)
+	var to_sign: float = _facing_sign(to_facing)
+	var tween := create_tween()
+	tween.tween_property(node, "scale", Vector2(base_x * from_sign * PRESENTATION_TURN_COMPRESS_X, base_y * PRESENTATION_TURN_SETTLE_Y), PRESENTATION_TURN_PREP_DURATION)
+	tween.tween_property(node, "scale", Vector2(base_x * to_sign * PRESENTATION_TURN_COMPRESS_X, base_y * PRESENTATION_TURN_SETTLE_Y), PRESENTATION_TURN_FLIP_DURATION)
+	tween.tween_property(node, "scale", Vector2(base_x * to_sign, base_y), PRESENTATION_TURN_SETTLE_DURATION)
+	await tween.finished
 
 func _apply_visual_facing(is_player_actor: bool, facing_value: String) -> void:
 	var node: CanvasItem = _presentation_visual_node(is_player_actor)
@@ -241,10 +257,16 @@ func _apply_visual_facing(is_player_actor: bool, facing_value: String) -> void:
 	if node is Control:
 		var control := node as Control
 		control.pivot_offset = control.size * 0.5
-	var scale_value := node.scale
-	var base_x: float = maxf(absf(scale_value.x), 1.0)
-	var base_y: float = maxf(absf(scale_value.y), 1.0)
-	node.scale = Vector2(base_x * _facing_sign(facing_value), base_y)
+		var control_scale := control.scale
+		var control_base_x: float = maxf(absf(control_scale.x), 1.0)
+		var control_base_y: float = maxf(absf(control_scale.y), 1.0)
+		control.scale = Vector2(control_base_x * _facing_sign(facing_value), control_base_y)
+	elif node is Node2D:
+		var node2d := node as Node2D
+		var node2d_scale := node2d.scale
+		var node2d_base_x: float = maxf(absf(node2d_scale.x), 1.0)
+		var node2d_base_y: float = maxf(absf(node2d_scale.y), 1.0)
+		node2d.scale = Vector2(node2d_base_x * _facing_sign(facing_value), node2d_base_y)
 
 func _set_actor_facing_state(is_player_actor: bool, facing_value: String) -> void:
 	if not _is_valid_facing(facing_value):
