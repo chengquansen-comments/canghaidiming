@@ -204,7 +204,8 @@ func _show_firearm_smoke_wisp(is_player_actor: bool, origin: Vector2) -> void:
 	)
 
 func _stage_center_position() -> Vector2:
-	return Vector2(size.x * 0.5, STAGE_AREA_TOP + STAGE_AREA_HEIGHT * 0.48)
+	var stage_area_height := STAGE_AREA_BOTTOM - STAGE_AREA_TOP
+	return Vector2(size.x * 0.5, STAGE_AREA_TOP + stage_area_height * 0.48)
 
 func _spawn_svg_fx(path: String, pos: Vector2, size_value: Vector2, rotation_value: float, color: Color, alpha: float, z: int) -> TextureRect:
 	var texture := load(path)
