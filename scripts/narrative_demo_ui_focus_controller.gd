@@ -2,11 +2,11 @@ extends "res://scripts/narrative_demo_unified_controller.gd"
 
 # UI focus layer:
 # - Operation area shows only story text and actionable buttons.
-# - Metadata moves into a top-right debug overlay.
+# - Metadata moves into a right-side debug overlay.
 # - Story and option text are enlarged for playtest readability.
 # - Narrative MVP flow is sourced from compiled data/narrative_mvp_nodes.json.
 #   Hardcoded MVP_NODE_IDS is only a crash-safe fallback.
-# - World map UI is hidden in this focus mode; map state is represented only in debug.
+# - Top world map node panel remains visible; only operation-area map/debug controls are hidden.
 
 const STORY_FONT_SIZE := 54
 const OPTION_FONT_SIZE := 42
@@ -71,23 +71,20 @@ func _world_map_total_count() -> int:
 
 func _add_world_map_layer() -> void:
 	super._add_world_map_layer()
-	_hide_world_map_ui()
+	_show_world_map_ui()
 
 func _refresh_world_map() -> void:
-	_hide_world_map_ui()
+	super._refresh_world_map()
+	_show_world_map_ui()
 
-func _hide_world_map_ui() -> void:
-	if world_map_panel != null:
-		world_map_panel.visible = false
-		world_map_panel.custom_minimum_size = Vector2.ZERO
+func _show_world_map_ui() -> void:
+	var should_show := not in_prologue
 	if world_map_layer != null:
-		world_map_layer.visible = false
+		world_map_layer.visible = should_show
 		world_map_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	if world_map_nodes_row != null:
-		for child in world_map_nodes_row.get_children():
-			child.queue_free()
-	if world_map_status_label != null:
-		world_map_status_label.text = ""
+	if world_map_panel != null:
+		world_map_panel.visible = should_show
+		world_map_panel.custom_minimum_size = Vector2.ZERO
 
 func _battle_growth_reward_for_source(source_index: int) -> Dictionary:
 	if source_index < 0 or source_index >= _flow_count():
@@ -206,10 +203,10 @@ func _ensure_focus_debug_panel() -> void:
 
 	focus_debug_panel = PanelContainer.new()
 	focus_debug_panel.name = "NarrativeFocusDebugPanel"
-	focus_debug_panel.anchor_left = 0.66
-	focus_debug_panel.anchor_top = 0.025
+	focus_debug_panel.anchor_left = 0.68
+	focus_debug_panel.anchor_top = 0.225
 	focus_debug_panel.anchor_right = 0.985
-	focus_debug_panel.anchor_bottom = 0.34
+	focus_debug_panel.anchor_bottom = 0.56
 	focus_debug_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	focus_debug_panel.z_index = 121
 	var style := StyleBoxFlat.new()
@@ -240,6 +237,7 @@ func _apply_focus_ui() -> void:
 	_hide_operation_metadata()
 	_style_story_text()
 	_style_action_buttons()
+	_show_world_map_ui()
 	_update_focus_debug_panel()
 
 func _hide_operation_metadata() -> void:
@@ -258,7 +256,6 @@ func _hide_operation_metadata() -> void:
 		map_buttons_box.custom_minimum_size = Vector2.ZERO
 		for child in map_buttons_box.get_children():
 			child.queue_free()
-	_hide_world_map_ui()
 	_hide_section_titles()
 	_hide_placeholder_labels(combat_buttons_box)
 	_hide_placeholder_labels(choices_box)
