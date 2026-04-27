@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <radialGradient id="fire" cx="50%" cy="50%" r="48%">
+      <stop offset="0" stop-color="#f6d28a" stop-opacity="0.92"/>
+      <stop offset="0.28" stop-color="#e4572e" stop-opacity="0.78"/>
+      <stop offset="0.64" stop-color="#7e2e28" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#080909" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="3"/></filter>
+  </defs>
+  <rect width="256" height="256" fill="none"/>
+  <ellipse cx="128" cy="128" rx="92" ry="54" fill="url(#fire)" filter="url(#soft)"/>
+  <path d="M126 44 C142 86 190 92 224 126 C184 134 154 154 126 214 C108 160 70 142 32 132 C78 110 104 88 126 44 Z" fill="#e4572e" opacity="0.42"/>
+  <path d="M70 126 L218 88 M50 150 L210 154 M88 84 L166 210" stroke="#f6d28a" stroke-width="9" stroke-linecap="round" opacity="0.38"/>
+  <path d="M74 176 C116 146 154 152 194 178" stroke="#080909" stroke-width="8" stroke-linecap="round" opacity="0.18" fill="none"/>
+</svg>
