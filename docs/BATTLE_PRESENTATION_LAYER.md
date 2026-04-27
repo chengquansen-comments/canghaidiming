@@ -1,6 +1,6 @@
 # 《大明之沧海嘀鸣》战斗演出层说明
 
-> 版本：v1.6  
+> 版本：v1.7  
 > 分支：`main`  
 > 状态：Phase 1 已验收通过；Phase 2 / 3 / 5 / 6 / 7 / 8 / 9 / 10 / 11 / 12 / 12.5 / 12.6 / 12.7 / 12.8 / 12.9 已接入，待统一本地验收  
 > 入口场景：`scenes/MainVisual.tscn`  
@@ -307,7 +307,86 @@ scripts/battle_controller_visual_presentation_stepwise.gd
 
 ---
 
-## 8. 已知后续调参项
+## 8. 大文件修改流程
+
+当目标文件较大，尤其是：
+
+```text
+scripts/battle_controller_visual_presentation_stepwise.gd
+scripts/battle_controller_visual_cached_ui.gd
+scripts/battle_controller_visual_settlement_mode.gd
+```
+
+必须遵守以下原则：
+
+```text
+1. 不通过 GitHub API / AI 工具全量读取后再全量覆盖大文件。
+2. 如果工具输出疑似截断，立即停止，不基于截断内容重写文件。
+3. 不为了绕开大文件 patch 而继续新增 wrapper / bridge / helper 文件。
+4. 不一次性修改十几个函数。
+5. 不把历史 Phase 拆成新的长期文件；Phase 只是历史记录，不是架构边界。
+```
+
+推荐流程：
+
+```bash
+git pull
+python tools/patch_xxx.py
+git diff -- scripts/<target_file>.gd
+rm -rf build/web build/web.zip
+./tools/build_and_serve_web.sh
+```
+
+对于大文件修改，应优先使用本地 patch 脚本：
+
+```text
+1. 先定位目标函数名。
+2. 用脚本按 `func xxx` 到下一个 `func` 的范围替换单个函数。
+3. 每次 patch 只处理少量函数。
+4. patch 后必须先看 git diff。
+5. diff 确认无误后再构建。
+6. 构建通过后再进入玩法验收。
+```
+
+推荐的本地 patch 思路：
+
+```python
+from pathlib import Path
+
+p = Path("scripts/battle_controller_visual_presentation_stepwise.gd")
+text = p.read_text(encoding="utf-8")
+
+start = text.index("func _target_func_name(")
+next_start = text.find("\nfunc ", start + 1)
+if next_start == -1:
+    next_start = len(text)
+
+replacement = '''func _target_func_name() -> void:
+\tpass
+'''
+
+text = text[:start] + replacement + text[next_start + 1:]
+p.write_text(text, encoding="utf-8")
+```
+
+注意：
+
+```text
+1. 上面只是示例，真实 patch 必须替换成具体函数签名和函数体。
+2. patch 脚本应放在本地临时执行，或放入 tools/ 并在确认后再提交。
+3. 修改大文件时，优先让本地环境执行 patch；AI 只负责生成 patch 脚本和 review git diff。
+```
+
+后续策略：
+
+```text
+先完成 Phase 12.9 本地构建与玩法验收。
+验收稳定前，暂停继续拆文件、叠 wrapper、重构大文件。
+```
+
+---
+
+## 9. 已知后续调参项
 
 ```text
 1. runtime 人物动画与 presentation FX 的重复感，需要实机观察后再降噪。
