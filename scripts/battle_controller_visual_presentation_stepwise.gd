@@ -1,12 +1,14 @@
 extends "res://scripts/battle_controller_visual_presentation_assets.gd"
 
-# Phase 10/11/12/12.5 presentation wrapper.
+# Phase 10/11/12/12.5/12.6 presentation wrapper.
 # Phase 10 replaces final committed slot settling with clear grid-by-grid movement.
 # Phase 11 adds event-driven facing turns. Facing never auto-turns merely because
 # the opponent is now on the other side.
 # Phase 12 decouples target slot and target facing selection.
 # Phase 12.5 makes presentation consume the same target slot/facing sequence as
 # preview and real resolution: stance move -> stance facing -> action -> effect move.
+# Phase 12.6 validates target slot input and consumes explicit hit-time snapshots
+# for back-hit turn rules.
 
 const PRESENTATION_STEP_MOVE_DURATION := 0.12
 const PRESENTATION_STEP_MOVE_PAUSE := 0.045
@@ -37,9 +39,32 @@ func _on_stage_grid_slot_pressed(slot: int) -> void:
 	if clicked_slot == current_target_slot:
 		next_facing = _opposite_facing(current_target_facing)
 	else:
+		if not _is_legal_player_target_slot(clicked_slot):
+			_show_illegal_target_feedback(clicked_slot)
+			return
 		next_facing = player.facing
 	_set_player_draft_target(clicked_slot, next_facing)
 	_refresh_ui()
+
+func _is_legal_player_target_slot(slot: int) -> bool:
+	if player == null:
+		return false
+	if not _is_valid_presentation_slot(slot):
+		return false
+	if enemy != null and enemy.hp > 0 and slot == enemy.position:
+		return false
+	var max_steps: int = maxi(player.qinggong, 0)
+	return absi(slot - player.position) <= max_steps
+
+func _show_illegal_target_feedback(slot: int) -> void:
+	if has_method("_show_combat_banner"):
+		_show_combat_banner("无法移动到%s" % _slot_label_safe_local(slot), Color("2a2018"), Color("ffd479"))
+
+func _slot_label_safe_local(slot: int) -> String:
+	var labels := ["零位", "一位", "二位", "三位", "四位", "五位", "六位", "七位", "八位"]
+	if slot >= 0 and slot < labels.size():
+		return labels[slot]
+	return "%d位" % slot
 
 func _current_player_target_slot() -> int:
 	if player == null:
@@ -229,19 +254,15 @@ func _maybe_turn_player_after_action_target() -> void:
 func _maybe_turn_player_after_back_hit(result: Dictionary) -> void:
 	if player == null or enemy == null:
 		return
-	if not _is_back_hit_on_player(result):
+	if not bool(result.get("was_back_hit", _is_back_hit_on_player(result))):
 		return
-	var old_hp: int = int(get_meta(FACING_CTX_OLD_PLAYER_HP, player.hp))
-	var old_momentum: int = int(get_meta(FACING_CTX_OLD_PLAYER_MOMENTUM, player.momentum))
-	var damage_value: int = int(result.get("damage", 0))
-	var break_value: int = int(result.get("break", 0))
-	if old_hp > 0 and old_hp - damage_value <= 0:
-		return
-	if old_momentum > 0 and old_momentum - break_value <= 0:
+	if bool(result.get("will_die", false)) or bool(result.get("will_break", false)):
 		return
 	if player.hp <= 0:
 		return
-	var turn_to := _facing_toward_slot(player.position, enemy.position)
+	var turn_to: String = str(result.get("back_hit_turn_to", ""))
+	if not _is_valid_facing(turn_to):
+		turn_to = _facing_toward_slot(player.position, enemy.position)
 	if not _is_valid_facing(turn_to):
 		return
 	await _play_facing_turn(true, turn_to, player.facing)
