@@ -1,3 +1,3 @@
 enemy_id	display_name	weapon_style	max_hp	max_momentum	starting_momentum	starting_realm	qinggong	start_position	start_facing	preferred_distances	deck	ai_style	aggression	keep_distance	break_focus	guard_focus	move_bias	notes
-blade_recruit	倭刀喽啰	blademaster	18	6	4	1	1	6	left	1,2	blade_step:2,blade_cut:2,blade_hook:1,guard_basic:1	rusher	0.75	0.20	0.45	0.10	advance	教学敌人，持续进身
-spear_scout	持枪哨兵	spearman	20	7	5	1	1	6	left	2,3	spear_thrust:2,spear_gate:2,spear_shunbu:1,guard_spear:1	keeper	0.55	0.80	0.55	0.25	adaptive	保持2-3格，适合测试看招破解
+blade_recruit	倭刀喽啰	blademaster	18	6	4	1	1	6	left	1,2	blade_cut:2,blade_press:2,blade_probe:1,blade_guard:1	rusher	0.75	0.20	0.45	0.10	advance	教学敌人，持续进身
+spear_scout	持枪哨兵	spearman	20	7	5	1	1	6	left	2,3	spear_mid:2,spear_break:2,spear_senki:1,spear_guard:1	keeper	0.55	0.80	0.55	0.25	adaptive	保持2-3格，适合测试看招破解
