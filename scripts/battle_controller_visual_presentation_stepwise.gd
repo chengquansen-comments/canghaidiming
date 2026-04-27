@@ -8,7 +8,7 @@ extends "res://scripts/battle_controller_visual_presentation_assets.gd"
 # Phase 12.5 makes presentation consume the same target slot/facing sequence as
 # preview and real resolution: stance move -> stance facing -> action -> effect move.
 # Phase 12.6 validates target slot input and consumes explicit hit-time snapshots
-# for back-hit turn rules.
+# for break/back-hit/death presentation rules.
 
 const PRESENTATION_STEP_MOVE_DURATION := 0.12
 const PRESENTATION_STEP_MOVE_PAUSE := 0.045
@@ -180,6 +180,34 @@ func _play_one_presentation_action(is_player_actor: bool, card: CardData, result
 	await super._play_one_presentation_action(is_player_actor, card, result)
 	if not is_player_actor:
 		await _maybe_turn_player_after_back_hit(result)
+
+func _presentation_result_for_side(preview_sim: Dictionary, side: String) -> Dictionary:
+	var result: Dictionary = super._presentation_result_for_side(preview_sim, side)
+	var effect_step: Dictionary = _presentation_step_for_side(preview_sim, side, "effect")
+	if effect_step.is_empty():
+		return result
+	result["will_break"] = bool(effect_step.get("will_break", false))
+	result["will_die"] = bool(effect_step.get("will_die", false))
+	result["was_back_hit"] = bool(effect_step.get("was_back_hit", false))
+	result["back_hit_turn_to"] = str(effect_step.get("back_hit_turn_to", ""))
+	return result
+
+func _presentation_target_will_break(_target_is_player: bool, result: Dictionary) -> bool:
+	if result.has("will_break"):
+		return bool(result.get("will_break", false))
+	return super._presentation_target_will_break(_target_is_player, result)
+
+func _play_presentation_death(is_player_actor: bool) -> void:
+	var node: CanvasItem = _presentation_visual_node(is_player_actor)
+	if node == null:
+		return
+	var start_offset: Vector2 = _presentation_offset(is_player_actor)
+	var end_offset := start_offset + Vector2(0, 30)
+	_tween_actor_offset(is_player_actor, start_offset, end_offset, 0.26, Tween.TRANS_QUAD, Tween.EASE_IN)
+	var tween := create_tween()
+	tween.tween_property(node, "modulate:a", 0.0, 0.26)
+	await get_tree().create_timer(0.28).timeout
+	node.visible = false
 
 func _settle_committed_slot_offsets_stepwise(old_player_slot: int, old_enemy_slot: int) -> void:
 	var did_stepwise_settle := false
