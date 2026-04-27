@@ -1,0 +1,7 @@
+stat_set_id	display_name	max_hp	max_momentum	starting_momentum	starting_realm	qinggong	notes
+easy	简单	18	6	4	1	1	教学用
+normal	标准	22	7	5	1	1	标准敌人
+pressure	压迫	26	8	6	2	1	高压敌人
+duel	高手	30	9	7	2	1	对称式高手对决
+master	师傅	32	10	8	3	1	师傅救场演示
+player_start	主角起手	24	6	5	1	1	主角初始数值
