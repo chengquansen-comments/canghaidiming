@@ -1,6 +1,6 @@
 extends "res://scripts/battle_controller_visual_presentation.gd"
 
-# Phase 6/7 assetized battle FX wrapper.
+# Phase 6/7/8 assetized battle FX wrapper.
 # Keep the timing/result presentation logic in battle_controller_visual_presentation.gd,
 # and only replace selected ColorRect placeholder FX with lightweight SVG assets.
 
@@ -10,6 +10,17 @@ const FX_MISS_WISP := "res://assets/pixel_battle/fx/fx_miss_wisp.svg"
 const FX_SLASH_INK_ARC := "res://assets/pixel_battle/fx/fx_slash_ink_arc.svg"
 const FX_THRUST_INK_LINE := "res://assets/pixel_battle/fx/fx_thrust_ink_line.svg"
 const FX_HIT_INK_BURST := "res://assets/pixel_battle/fx/fx_hit_ink_burst.svg"
+const FX_GUARD_INK_SHIELD := "res://assets/pixel_battle/fx/fx_guard_ink_shield.svg"
+const FX_FOCUS_INK_RIPPLE := "res://assets/pixel_battle/fx/fx_focus_ink_ripple.svg"
+const FX_FIREARM_SMOKE_WISP := "res://assets/pixel_battle/fx/fx_firearm_smoke_wisp.svg"
+
+func _play_guard_presentation(is_player_actor: bool, card: CardData, result: Dictionary) -> void:
+	_show_guard_ink_shield(is_player_actor)
+	await super._play_guard_presentation(is_player_actor, card, result)
+
+func _play_focus_presentation(is_player_actor: bool, card: CardData, result: Dictionary) -> void:
+	_show_focus_ink_ripple(is_player_actor)
+	await super._play_focus_presentation(is_player_actor, card, result)
 
 func _show_slash_cut(color: Color, is_finisher: bool = false) -> void:
 	var center := _stage_center_position()
@@ -70,6 +81,7 @@ func _show_presentation_firearm_flash(is_player_actor: bool, color: Color, shoul
 	tween.finished.connect(func() -> void:
 		fx.queue_free()
 	)
+	_show_firearm_smoke_wisp(is_player_actor, origin)
 
 func _show_miss_wisp(target_is_player: bool) -> void:
 	var start_pos := _presentation_float_position(target_is_player) + Vector2(-66, 8)
@@ -98,6 +110,43 @@ func _play_break_ink_fx(target_is_player: bool) -> void:
 		fx.queue_free()
 	)
 	_show_presentation_float_text("破势", target_is_player, Color("c44a3f"))
+
+func _show_guard_ink_shield(is_player_actor: bool) -> void:
+	var pos := _presentation_float_position(is_player_actor) + Vector2(-58, -38)
+	var fx := _spawn_svg_fx(FX_GUARD_INK_SHIELD, pos, Vector2(132, 112), 0.0, Color(1, 1, 1, 1), 0.78, 90)
+	if fx == null:
+		return
+	var tween := create_tween()
+	tween.tween_property(fx, "scale", Vector2(1.12, 1.12), 0.12)
+	tween.parallel().tween_property(fx, "modulate:a", 0.0, 0.34)
+	tween.finished.connect(func() -> void:
+		fx.queue_free()
+	)
+
+func _show_focus_ink_ripple(is_player_actor: bool) -> void:
+	var pos := _presentation_float_position(is_player_actor) + Vector2(-72, 18)
+	var fx := _spawn_svg_fx(FX_FOCUS_INK_RIPPLE, pos, Vector2(152, 96), 0.0, Color(1, 1, 1, 1), 0.72, 87)
+	if fx == null:
+		return
+	var tween := create_tween()
+	tween.tween_property(fx, "scale", Vector2(1.22, 1.22), 0.18)
+	tween.parallel().tween_property(fx, "modulate:a", 0.0, 0.34)
+	tween.finished.connect(func() -> void:
+		fx.queue_free()
+	)
+
+func _show_firearm_smoke_wisp(is_player_actor: bool, origin: Vector2) -> void:
+	var pos := origin + Vector2(-82 if is_player_actor else -118, -28)
+	var fx := _spawn_svg_fx(FX_FIREARM_SMOKE_WISP, pos, Vector2(150, 84), 0.0, Color(1, 1, 1, 1), 0.58, 86)
+	if fx == null:
+		return
+	var drift := 34.0 if is_player_actor else -34.0
+	var tween := create_tween()
+	tween.tween_property(fx, "position:x", fx.position.x + drift, 0.38)
+	tween.parallel().tween_property(fx, "modulate:a", 0.0, 0.44)
+	tween.finished.connect(func() -> void:
+		fx.queue_free()
+	)
 
 func _stage_center_position() -> Vector2:
 	return Vector2(size.x * 0.5, STAGE_AREA_TOP + STAGE_AREA_HEIGHT * 0.48)
