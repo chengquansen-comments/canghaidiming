@@ -1,15 +1,11 @@
 extends "res://scripts/battle_controller_visual_presentation_stepwise.gd"
 
 # Phase 12.6 guard wrapper.
-# Prevent death fade from being undone by later visual UI refreshes.
+# Prevent death fade from being undone by later UI refreshes.
 # This layer does not alter combat resolution, input, movement, or FX logic.
 
-func _set_battle_chrome_visible(visible: bool) -> void:
-	super._set_battle_chrome_visible(visible)
-	_apply_dead_actor_visibility_guard()
-
-func _refresh_character_visuals() -> void:
-	super._refresh_character_visuals()
+func _refresh_ui() -> void:
+	super._refresh_ui()
 	_apply_dead_actor_visibility_guard()
 
 func _apply_dead_actor_visibility_guard() -> void:
