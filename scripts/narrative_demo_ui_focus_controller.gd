@@ -18,9 +18,14 @@ var focus_debug_label: RichTextLabel
 var focus_flow_node_ids: Array = []
 var focus_flow_loaded: bool = false
 var focus_flow_source: String = "fallback"
+var focus_world_map_layer: Control
+var focus_world_map_panel: PanelContainer
+var focus_world_map_status_label: Label
+var focus_world_map_nodes_row: HBoxContainer
 
 func _ready() -> void:
 	super._ready()
+	_add_world_map_layer()
 	_ensure_focus_debug_panel()
 	_apply_focus_ui()
 
@@ -70,21 +75,135 @@ func _world_map_total_count() -> int:
 	return _flow_count() + 1
 
 func _add_world_map_layer() -> void:
-	super._add_world_map_layer()
-	_show_world_map_ui()
+	if focus_world_map_layer != null:
+		return
+	focus_world_map_layer = Control.new()
+	focus_world_map_layer.name = "FocusWorldMapLayer"
+	focus_world_map_layer.anchor_left = 0.0
+	focus_world_map_layer.anchor_top = 0.0
+	focus_world_map_layer.anchor_right = 1.0
+	focus_world_map_layer.anchor_bottom = 0.33
+	focus_world_map_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	focus_world_map_layer.z_index = 60
+	focus_world_map_layer.z_as_relative = false
+	add_child(focus_world_map_layer)
+
+	focus_world_map_panel = PanelContainer.new()
+	focus_world_map_panel.name = "FocusWorldMapPanel"
+	focus_world_map_panel.anchor_left = 0.055
+	focus_world_map_panel.anchor_top = 0.035
+	focus_world_map_panel.anchor_right = 0.945
+	focus_world_map_panel.anchor_bottom = 0.205
+	focus_world_map_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	focus_world_map_panel.z_index = 61
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.035, 0.030, 0.024, 0.66)
+	style.border_color = Color(0.74, 0.60, 0.38, 0.62)
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(10)
+	style.content_margin_left = 12
+	style.content_margin_right = 12
+	style.content_margin_top = 8
+	style.content_margin_bottom = 8
+	focus_world_map_panel.add_theme_stylebox_override("panel", style)
+	focus_world_map_layer.add_child(focus_world_map_panel)
+
+	var root := VBoxContainer.new()
+	root.add_theme_constant_override("separation", 5)
+	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	focus_world_map_panel.add_child(root)
+
+	focus_world_map_status_label = Label.new()
+	focus_world_map_status_label.name = "FocusWorldMapStatusLabel"
+	focus_world_map_status_label.add_theme_font_size_override("font_size", 14)
+	focus_world_map_status_label.add_theme_color_override("font_color", Color("f0dfb8"))
+	focus_world_map_status_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.85))
+	focus_world_map_status_label.add_theme_constant_override("shadow_offset_x", 1)
+	focus_world_map_status_label.add_theme_constant_override("shadow_offset_y", 1)
+	focus_world_map_status_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	root.add_child(focus_world_map_status_label)
+
+	focus_world_map_nodes_row = HBoxContainer.new()
+	focus_world_map_nodes_row.name = "FocusWorldMapNodesRow"
+	focus_world_map_nodes_row.add_theme_constant_override("separation", 5)
+	focus_world_map_nodes_row.mouse_filter = Control.MOUSE_FILTER_PASS
+	focus_world_map_nodes_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	root.add_child(focus_world_map_nodes_row)
+	_refresh_world_map()
 
 func _refresh_world_map() -> void:
-	super._refresh_world_map()
-	_show_world_map_ui()
+	if focus_world_map_layer == null or focus_world_map_panel == null or focus_world_map_nodes_row == null:
+		return
+	var should_show := not in_prologue
+	focus_world_map_layer.visible = should_show
+	focus_world_map_panel.visible = should_show
+	if not should_show:
+		return
+	if focus_world_map_status_label != null:
+		focus_world_map_status_label.text = "海疆行军图｜当前：%s｜军功 %d｜清望 %d｜旧案 %d" % [_current_world_map_title(), jun_gong, qing_wang, clues]
+	for child in focus_world_map_nodes_row.get_children():
+		child.queue_free()
+	for i in range(_world_map_total_count()):
+		if i > 0:
+			focus_world_map_nodes_row.add_child(_make_world_map_line(i))
+		focus_world_map_nodes_row.add_child(_make_world_map_node_button(i))
 
 func _show_world_map_ui() -> void:
-	var should_show := not in_prologue
-	if world_map_layer != null:
-		world_map_layer.visible = should_show
-		world_map_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	if world_map_panel != null:
-		world_map_panel.visible = should_show
-		world_map_panel.custom_minimum_size = Vector2.ZERO
+	_refresh_world_map()
+
+func _current_world_map_title() -> String:
+	if in_prologue:
+		return _prologue_map_title()
+	var node: Dictionary = _node_data_at(node_index)
+	return str(node.get("title", ""))
+
+func _world_map_current_index() -> int:
+	return 0 if in_prologue else node_index + 1
+
+func _world_map_title_at(map_index: int) -> String:
+	if map_index == 0:
+		return _prologue_map_title()
+	var node: Dictionary = _node_data_at(map_index - 1)
+	return str(node.get("title", ""))
+
+func _world_map_marker_for_index(index: int) -> String:
+	var current := _world_map_current_index()
+	if index == current:
+		return "◆ 当前"
+	if index < current:
+		return "● 已过"
+	if index == current + 1:
+		return "◎ 可前往"
+	return "○ 未开放"
+
+func _make_world_map_line(index: int) -> Label:
+	var line := Label.new()
+	line.text = "━━"
+	line.custom_minimum_size = Vector2(24, 34)
+	line.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	line.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	line.add_theme_font_size_override("font_size", 13)
+	line.add_theme_color_override("font_color", Color("c9a35b") if index <= _world_map_current_index() else Color(0.60, 0.55, 0.46, 0.45))
+	line.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return line
+
+func _make_world_map_node_button(index: int) -> Button:
+	var btn := Button.new()
+	btn.text = "%s\n%s" % [_world_map_marker_for_index(index), _world_map_title_at(index)]
+	btn.custom_minimum_size = Vector2(116, 48)
+	btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	btn.focus_mode = Control.FOCUS_NONE
+	btn.mouse_filter = Control.MOUSE_FILTER_STOP
+	btn.disabled = index > _world_map_current_index() + 1
+	btn.pressed.connect(_on_world_map_node_pressed.bind(index))
+	return btn
+
+func _on_world_map_node_pressed(map_index: int) -> void:
+	if map_index == 0:
+		last_hint = "地图节点：序章。"
+		_render()
+		return
+	_on_map_node_pressed(map_index - 1)
 
 func _battle_growth_reward_for_source(source_index: int) -> Dictionary:
 	if source_index < 0 or source_index >= _flow_count():
@@ -237,7 +356,7 @@ func _apply_focus_ui() -> void:
 	_hide_operation_metadata()
 	_style_story_text()
 	_style_action_buttons()
-	_show_world_map_ui()
+	_refresh_world_map()
 	_update_focus_debug_panel()
 
 func _hide_operation_metadata() -> void:
