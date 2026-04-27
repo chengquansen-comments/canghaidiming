@@ -1,0 +1,10 @@
+story_deck_id	display_name	fighter_template_id	deck	tags	notes
+player_blade_start	主角刀客起手	player_blademaster	blade_cut:2,blade_probe:2,blade_guard:1	player_start	主角刀客初始牌组
+player_spear_start	主角枪手起手	player_spearman	spear_mid:2,spear_read:2,spear_guard:1	player_start	主角枪手初始牌组
+prologue_blade_teach	海边刀客·教学	prologue_blade_recruit	blade_cut:2,blade_guard:1	teaching,easy	只教基础攻防
+prologue_blade_pressure	海边刀客·逼身	prologue_blade_recruit	blade_cut:2,blade_press:2,blade_probe:1	pressure	强调贴身压力
+prologue_blade_break	海边刀客·破势	prologue_blade_recruit	blade_press:3,blade_probe:1	break_focus	强调削势和崩势
+prologue_spear_keep	海边枪手·控距	prologue_spear_guard	spear_mid:2,spear_break:2,spear_guard:1	keep_distance	强调2-3格控距
+master_veteran_rescue	师傅救场枪法	master_veteran	spear_mid:2,spear_break:2,spear_senki:1	story,rescue	救场演示用
+blade_duelist_pressure	倭刀精锐·压迫	blade_duelist	blade_cut:2,blade_press:2,blade_senki:2,blade_heavy:1	duel,pressure	高手刀客测试
+spear_duelist_keep	长枪教头·控距	spear_duelist	spear_mid:2,spear_break:2,spear_senki:2,spear_wall:1	duel,keep_distance	高手枪手测试
