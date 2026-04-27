@@ -30,6 +30,7 @@ const RANGE_MISS_RANGE := "miss_range"
 const RANGE_MISS_FACING := "miss_facing"
 const MODE_SYMMETRIC_ID := "symmetric"
 const MODE_REACTIVE_ID := "reactive"
+const BATTLE_SLOT_COUNT := 9
 
 
 func reset_for_session() -> void:
@@ -149,6 +150,9 @@ func apply_pull_target(actor: Fighter, target: Fighter, amount: int) -> void:
 
 
 func face_target(actor: Fighter, target: Fighter) -> void:
+	# Legacy helper kept for older callers. The Phase 12.5 combat flow no longer
+	# calls this automatically after movement; facing should come from intent stance
+	# or explicit event/card rules, not from relative position.
 	if target.position > actor.position:
 		actor.facing = "right"
 	elif target.position < actor.position:
@@ -159,8 +163,6 @@ func apply_card_movement(card: CardData, actor: Fighter, target: Fighter, range_
 	var moved: Dictionary = CombatResolver.apply_card_movement(card, true, actor.position, target.position, actor.facing, range_result, target.pending_control_state == Fighter.CONTROL_BROKEN)
 	actor.position = int(moved.get("player", actor.position))
 	target.position = int(moved.get("enemy", target.position))
-	face_target(actor, target)
-	face_target(target, actor)
 	update_distance_from_positions(actor, target)
 
 
@@ -181,6 +183,9 @@ func resolve_intent(intent: IntentData, actor: Fighter, target: Fighter) -> Arra
 	if is_reactive_mode() and actor.pending_control_state == Fighter.CONTROL_BROKEN:
 		lines.append("%s 被打入崩势，本回合攻击被中断。" % actor.data.display_name)
 		return lines
+
+	_commit_intent_stance(intent, actor)
+	update_distance_from_positions(actor, target)
 
 	var card: CardData = intent.actual_card
 	lines.append("%s 施展 [b]%s[/b]。" % [actor.data.display_name, card.display_name])
@@ -251,6 +256,15 @@ func resolve_intent(intent: IntentData, actor: Fighter, target: Fighter) -> Arra
 	return lines
 
 
+func _commit_intent_stance(intent: IntentData, actor: Fighter) -> void:
+	if intent == null or actor == null:
+		return
+	if intent.target_position >= 0:
+		actor.position = clampi(intent.target_position, 0, BATTLE_SLOT_COUNT - 1)
+	if intent.target_facing == "left" or intent.target_facing == "right":
+		actor.facing = intent.target_facing
+
+
 func _fighter_to_resolver_state(fighter: Fighter) -> Dictionary:
 	return {
 		"hp": fighter.hp,
@@ -265,8 +279,6 @@ func _fighter_to_resolver_state(fighter: Fighter) -> Dictionary:
 func _apply_resolved_positions(actor: Fighter, target: Fighter, sim: Dictionary) -> void:
 	actor.position = int(sim.get("player_final", actor.position))
 	target.position = int(sim.get("enemy_final", target.position))
-	face_target(actor, target)
-	face_target(target, actor)
 	update_distance_from_positions(actor, target)
 
 
