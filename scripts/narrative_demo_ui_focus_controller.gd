@@ -6,6 +6,7 @@ extends "res://scripts/narrative_demo_unified_controller.gd"
 # - Story and option text are enlarged for playtest readability.
 # - Narrative MVP flow is sourced from compiled data/narrative_mvp_nodes.json.
 #   Hardcoded MVP_NODE_IDS is only a crash-safe fallback.
+# - World map UI is hidden in this focus mode; map state is represented only in debug.
 
 const STORY_FONT_SIZE := 54
 const OPTION_FONT_SIZE := 42
@@ -67,6 +68,26 @@ func _node_id_at(index: int) -> String:
 
 func _world_map_total_count() -> int:
 	return _flow_count() + 1
+
+func _add_world_map_layer() -> void:
+	super._add_world_map_layer()
+	_hide_world_map_ui()
+
+func _refresh_world_map() -> void:
+	_hide_world_map_ui()
+
+func _hide_world_map_ui() -> void:
+	if world_map_panel != null:
+		world_map_panel.visible = false
+		world_map_panel.custom_minimum_size = Vector2.ZERO
+	if world_map_layer != null:
+		world_map_layer.visible = false
+		world_map_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if world_map_nodes_row != null:
+		for child in world_map_nodes_row.get_children():
+			child.queue_free()
+	if world_map_status_label != null:
+		world_map_status_label.text = ""
 
 func _battle_growth_reward_for_source(source_index: int) -> Dictionary:
 	if source_index < 0 or source_index >= _flow_count():
@@ -237,11 +258,10 @@ func _hide_operation_metadata() -> void:
 		map_buttons_box.custom_minimum_size = Vector2.ZERO
 		for child in map_buttons_box.get_children():
 			child.queue_free()
+	_hide_world_map_ui()
 	_hide_section_titles()
 	_hide_placeholder_labels(combat_buttons_box)
 	_hide_placeholder_labels(choices_box)
-	if world_map_panel != null:
-		world_map_panel.visible = false
 
 func _hide_control(control: Control) -> void:
 	if control == null:
