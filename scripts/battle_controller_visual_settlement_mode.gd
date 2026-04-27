@@ -1,20 +1,26 @@
 extends "res://scripts/battle_controller_visual_presentation_assets.gd"
 
-# Thin runtime wrapper for switching battle settlement mode without touching the
-# existing visual presentation chain.
+# Thin runtime wrapper for switching battle settlement mode and enemy TSV sets
+# without touching the existing visual presentation chain.
 #
-# Default remains "symmetric" to preserve current main behavior.
-# The opening overlay now lets the player choose symmetric/reactive before role selection.
-# F8 toggles the mode during local testing.
+# Default remains "symmetric" + "base" to preserve current main behavior.
+# Opening flow: settlement mode -> enemy set -> role selection.
+# F8 toggles settlement mode during local testing.
+
+const EnemySetLoader = preload("res://scripts/enemy_set_loader.gd")
 
 @export_enum("symmetric", "reactive") var settlement_mode_id: String = "symmetric"
+@export var enemy_set_id: String = "base"
 
 var _settlement_mode_selected := false
+var _enemy_set_selected := false
 var _reactive_pre_move_round := -1
+var _enemy_set_manifest: Array[Dictionary] = []
 
 
 func _ready() -> void:
 	super()
+	_enemy_set_manifest = EnemySetLoader.load_enabled_manifest()
 	_apply_visual_settlement_mode()
 
 
@@ -29,6 +35,9 @@ func _unhandled_input(event: InputEvent) -> void:
 func _show_role_selection() -> void:
 	if not _settlement_mode_selected:
 		_show_settlement_mode_selection()
+		return
+	if not _enemy_set_selected:
+		_show_enemy_set_selection()
 		return
 	super._show_role_selection()
 
@@ -50,6 +59,30 @@ func _show_settlement_mode_selection() -> void:
 	_add_settlement_mode_button(BattleStateMachine.MODE_REACTIVE_ID, "反应式：看招破解")
 
 
+func _show_enemy_set_selection() -> void:
+	battle_active = false
+	awaiting_player_input = false
+	player_role_id = ""
+	if _enemy_set_manifest.is_empty():
+		_enemy_set_manifest = EnemySetLoader.load_enabled_manifest()
+	if overlay_scrim != null:
+		overlay_scrim.visible = true
+	if overlay_panel != null:
+		overlay_panel.visible = true
+	if overlay_title != null:
+		overlay_title.text = "选择敌人套装"
+	if overlay_body != null:
+		overlay_body.text = "当前结算模式：%s\n选择一套 TSV 敌人数值。第一版会读取套装中的第一名敌人。" % ("反应式" if settlement_mode_id == BattleStateMachine.MODE_REACTIVE_ID else "对称式")
+	_clear_overlay_actions()
+	for row: Dictionary in _enemy_set_manifest:
+		var mode: String = str(row.get("mode", "any"))
+		if mode != "any" and mode != settlement_mode_id:
+			continue
+		_add_enemy_set_button(row)
+	if overlay_actions != null and overlay_actions.get_child_count() == 0:
+		_add_enemy_set_button({"set_id": "base", "display_name": "基础敌人", "description": "默认敌人配置"})
+
+
 func _clear_overlay_actions() -> void:
 	if overlay_actions == null:
 		return
@@ -69,12 +102,74 @@ func _add_settlement_mode_button(mode_id: String, title: String) -> void:
 	overlay_actions.add_child(button)
 
 
+func _add_enemy_set_button(row: Dictionary) -> void:
+	if overlay_actions == null:
+		return
+	var selected_set_id: String = str(row.get("set_id", "base"))
+	var display_name: String = str(row.get("display_name", selected_set_id))
+	var description: String = str(row.get("description", ""))
+	var button := Button.new()
+	button.text = "%s（%s）" % [display_name, selected_set_id]
+	if description != "":
+		button.tooltip_text = description
+	button.pressed.connect(func() -> void:
+		_select_enemy_set_and_continue(selected_set_id)
+	)
+	overlay_actions.add_child(button)
+
+
 func _select_settlement_mode_and_continue(mode_id: String) -> void:
 	settlement_mode_id = mode_id
 	_settlement_mode_selected = true
+	_enemy_set_selected = false
 	_reactive_pre_move_round = -1
 	_apply_visual_settlement_mode()
+	_show_enemy_set_selection()
+
+
+func _select_enemy_set_and_continue(set_id: String) -> void:
+	enemy_set_id = set_id
+	_enemy_set_selected = true
+	_show_combat_banner("敌人套装：%s" % enemy_set_id, Color("1c2a36"), Color("8fd3ff"))
 	super._show_role_selection()
+
+
+func _select_role_and_start(role_id: String) -> void:
+	super._select_role_and_start(role_id)
+	_apply_selected_enemy_set_to_current_enemy()
+
+
+func _apply_selected_enemy_set_to_current_enemy() -> void:
+	if enemy_set_id == "" or enemy_set_id == "base":
+		return
+	if enemy == null:
+		return
+	var card_catalog: Dictionary = _build_enemy_set_card_catalog()
+	var enemy_data: FighterData = EnemySetLoader.load_first_enemy_data(enemy_set_id, card_catalog)
+	if enemy_data == null:
+		push_warning("Enemy TSV set failed to load: %s" % enemy_set_id)
+		return
+	if enemy_data.starting_deck.is_empty() and enemy.data != null:
+		# Avoid breaking battle start when TSV card ids lag behind current card ids.
+		enemy_data.starting_deck = enemy.data.clone_deck()
+	enemy = Fighter.new(enemy_data)
+	enemy.set_session_realm(enemy_data.starting_realm)
+	enemy.reset_for_battle(HAND_SIZE)
+	state_machine.update_distance_from_positions(player, enemy)
+	if log_label != null:
+		log_label.append_text("\n[color=#8fd3ff]已加载敌人套装：%s → %s[/color]" % [enemy_set_id, enemy_data.display_name])
+	_refresh_ui()
+
+
+func _build_enemy_set_card_catalog() -> Dictionary:
+	var catalog: Dictionary = {}
+	for fighter_id in fighter_catalog.keys():
+		var data: FighterData = fighter_catalog[fighter_id]
+		for card: CardData in data.starting_deck:
+			catalog[card.id] = card
+	for card: CardData in reward_pool:
+		catalog[card.id] = card
+	return catalog
 
 
 func set_visual_settlement_mode(value: String) -> void:
@@ -135,6 +230,7 @@ func _mode_status_suffix() -> String:
 	if state_machine == null:
 		return ""
 	var text := "\n结算模式：%s（%s）" % [state_machine.settlement_mode_label(), state_machine.settlement_mode_id()]
+	text += "\n敌人套装：%s" % enemy_set_id
 	text += "\n快捷键：F8 切换结算模式"
 	if state_machine.is_reactive_mode():
 		text += "\n反应式规则：敌方先移动并亮意图；玩家响应后先结算；若打出崩势，敌方本回合攻击中断。"
