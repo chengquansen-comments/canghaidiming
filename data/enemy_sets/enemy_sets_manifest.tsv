@@ -1,0 +1,5 @@
+set_id	display_name	file	mode	description	enabled
+base	基础敌人	enemies_base.tsv	any	默认敌人配置	1
+reactive_easy	反应式简单敌人	enemies_reactive_easy.tsv	reactive	适合测试敌方先移动与看招破解	1
+reactive_pressure	反应式压迫敌人	enemies_reactive_pressure.tsv	reactive	适合测试高压破解和崩势打断	1
+symmetric_duel	对称式高手敌人	enemies_symmetric_duel.tsv	symmetric	适合测试双向拆招和武境先后手	1
