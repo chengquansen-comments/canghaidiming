@@ -1,8 +1,8 @@
 # 《大明之沧海嘀鸣》战斗演出层说明
 
-> 版本：v1.6  
+> 版本：v1.7  
 > 分支：`main`  
-> 状态：Phase 1 已验收通过；Phase 2 / 3 / 5 / 6 / 7 / 8 / 9 / 10 / 11 / 12 / 12.5 / 12.6 / 12.7 / 12.8 / 12.9 已接入，待统一本地验收  
+> 状态：Phase 1 已验收通过；Phase 2 / 3 / 5 / 6 / 7 / 8 / 9 / 10 / 11 / 12 / 12.5 / 12.6 / 12.7 / 12.8 / 12.9 已接入，待统一本地验收；Phase 13.0 已完成 helper 抽出，主演出层接入待本地 patch  
 > 入口场景：`scenes/MainVisual.tscn`  
 > 当前场景入口脚本：`scripts/battle_controller_visual_story_return.gd`
 
@@ -83,6 +83,8 @@ battle_controller_visual_story_return.gd
 | `presentation` | 攻击、受击、命中反馈、真实结果飘字、死亡、基础落位 |
 | `resolver_preview` | 正式效果预览：按 target stance 推算范围、顺序结算和最终格位，并输出破势/死亡/背击快照 |
 | `cached_ui` | UI 缓存、格位刷新、ActorRuntime；旧效果预览已降级为 legacy fallback |
+| `battle_target_selection` | Phase 13.0 新增 helper：目标格位/目标朝向选择纯规则；待接入主演出层 |
+| `battle_facing_rules` | Phase 13.0 新增 helper：朝向、背击、转身招式纯规则；待接入主演出层 |
 | `battle_state_machine` | 真实结算；提交 intent target stance；不再默认自动 face_target |
 
 ---
@@ -107,12 +109,11 @@ battle_controller_visual_story_return.gd
 | Phase 12.7 | 合层整理：删除临时 `presentation_guarded` wrapper；死亡刷新保护合回 `presentation_stepwise`；反应式预览不再自动面向敌人 | `DONE / NEEDS_LOCAL_VERIFY` |
 | Phase 12.8 | 清理旧效果预览入口：`cached_ui.gd` 的旧 `_effect_preview_text()` 降级为 `_legacy_effect_preview_text()`，正式效果预览只由 `resolver_preview.gd` 提供 | `DONE / NEEDS_LOCAL_VERIFY` |
 | Phase 12.9 | 合并 SVG FX wrapper：删除 `presentation_assets.gd`，SVG FX 常量与方法合入 `presentation_stepwise.gd`，继承链减少一层 | `DONE / NEEDS_LOCAL_VERIFY` |
+| Phase 13.0 | 抽出目标选择与朝向规则 helper：新增 `battle_target_selection.gd`、`battle_facing_rules.gd`；因 `presentation_stepwise.gd` 文件较大，主演出层局部接入建议使用本地 patch 工具完成 | `PARTIAL / HELPER_READY` |
 
 ---
 
 ## 4. Phase 10：逐格移动规则
-
-用户目标：
 
 ```text
 不要 old_slot → new_slot 一次滑过去；
@@ -258,8 +259,6 @@ back_hit_turn_to
 
 ## 9. Phase 12.7：合层整理
 
-调整内容：
-
 ```text
 1. 将临时 wrapper `battle_controller_visual_presentation_guarded.gd` 的死亡可见性保护合回 `battle_controller_visual_presentation_stepwise.gd`。
 2. 删除 `battle_controller_visual_presentation_guarded.gd`。
@@ -270,14 +269,6 @@ back_hit_turn_to
 ---
 
 ## 10. Phase 12.8：旧预览入口清理
-
-调整文件：
-
-```text
-scripts/battle_controller_visual_cached_ui.gd
-```
-
-调整内容：
 
 ```text
 1. 原 `_effect_preview_text()` 改名为 `_legacy_effect_preview_text()`。
@@ -291,15 +282,6 @@ scripts/battle_controller_visual_cached_ui.gd
 
 ## 11. Phase 12.9：SVG FX 合层
 
-调整文件：
-
-```text
-scripts/battle_controller_visual_presentation_stepwise.gd
-scripts/battle_controller_visual_presentation_assets.gd
-```
-
-调整内容：
-
 ```text
 1. `battle_controller_visual_presentation_stepwise.gd` 改为直接继承 `battle_controller_visual_presentation.gd`。
 2. 将 `presentation_assets.gd` 中的 SVG FX 资源路径、尺寸、透明度、层级、偏移、淡出时间等常量合入 `presentation_stepwise.gd`。
@@ -308,17 +290,63 @@ scripts/battle_controller_visual_presentation_assets.gd
 5. 保留原 fallback：若 SVG 加载失败，仍回退到 `presentation.gd` 的基础 ColorRect/形状反馈。
 ```
 
-目的：
+---
+
+## 12. Phase 13.0：目标选择与朝向规则 helper 抽出
+
+新增文件：
 
 ```text
-减少一层纯 FX wrapper。
-让当前主演出层集中管理逐格移动、转身、死亡保护和正式 SVG FX。
-不改变战斗规则、结算规则、移动参数、FX 参数。
+scripts/battle_target_selection.gd
+scripts/battle_facing_rules.gd
+```
+
+`battle_target_selection.gd` 职责：
+
+```text
+1. 判断合法目标格位。
+2. 根据点击格位推导下一目标格位和目标朝向。
+3. 处理“点击当前目标格 = 反转朝向”。
+4. 提供 slot label 等纯 helper。
+```
+
+`battle_facing_rules.gd` 职责：
+
+```text
+1. 判断合法朝向。
+2. 计算 opposite_facing / facing_sign / facing_toward_slot。
+3. 判断是否背对攻击者。
+4. 判断卡牌是否属于转身类招式。
+5. 判断背击后是否应该转身。
+```
+
+当前状态：
+
+```text
+helper 已新增。
+为避免 `presentation_stepwise.gd` 大文件在 GitHub API 中被截断覆盖，主演出层的局部接入暂未强行提交。
+下一步建议在本地使用 patch 工具，将 stepwise 中的同名函数替换为 helper 转发。
+```
+
+建议接入目标：
+
+```text
+presentation_stepwise.gd:
+- _is_legal_player_target_slot() → BattleTargetSelection.is_legal_target_slot()
+- _current_player_target_slot() → BattleTargetSelection.current_target_slot()
+- _current_player_target_facing() → BattleTargetSelection.current_target_facing()
+- _on_stage_grid_slot_pressed() → BattleTargetSelection.next_selection_for_click()
+- _card_has_turn_during_action() → BattleFacingRules.card_has_turn_during_action()
+- _facing_exposes_back_to_slot() → BattleFacingRules.exposes_back_to_slot()
+- _facing_toward_slot() → BattleFacingRules.facing_toward_slot()
+- _opposite_facing() → BattleFacingRules.opposite_facing()
+- _facing_sign() → BattleFacingRules.facing_sign()
+- _is_valid_facing() → BattleFacingRules.is_valid_facing()
 ```
 
 ---
 
-## 12. FX 资产
+## 13. FX 资产
 
 当前 FX 资源：
 
@@ -342,83 +370,32 @@ scripts/battle_controller_visual_presentation_stepwise.gd
 
 ---
 
-## 13. 统一验收重点
-
-### 目标格位 / 目标朝向输入
+## 14. 统一验收重点
 
 ```text
 1. 回合开始不操作：目标格位为当前格，目标朝向为当前实际朝向。
-2. 回合开始不操作直接确认：玩家原地，保持当前朝向。
-3. 点击原地格：目标格位不变，目标朝向反转一次。
-4. 点击其他合法格：目标格位变为新格，目标朝向保持当前实际朝向。
-5. 点击非法格：目标格位和目标朝向不变，并给出不可移动反馈。
-6. 再点击该目标格：目标格位不变，目标朝向反转一次。
-7. 先点格位 / 朝向，再选招式，确认时仍按最终目标格位和目标朝向结算。
-8. 招式攻击范围预览始终按目标格位 + 目标朝向推算。
-```
-
-### Phase 12.5 / 12.6 / 12.7 / 12.8 / 12.9 一致性验收
-
-```text
-1. 预览显示的目标格位，就是确认后角色先逐格移动到的位置。
-2. 预览显示的目标朝向，就是确认后角色出招前的朝向。
-3. 真实命中 / 距外 / 背向判定与预览一致。
-4. 不发生“旧格位先出招，最后才站到目标格”的表现错位。
-5. 招式造成的击退 / 拉近 / 进身 / 后撤在出招后再逐格表现。
-6. 移动或效果位移后，若没有事件触发，不会自动面向敌人。
-7. 破势时稳定出现墨裂和“破势”，不因结算后势为 0 而漏播。
-8. 背击转身遵守 was_back_hit / will_break / will_die 快照。
-9. 角色死亡淡出后，不应被后续 UI 刷新重新显示。
-10. 反应式预览中，玩家未选择朝向时，不会因为敌方位置自动改朝向。
-11. 效果预览面板显示的内容来自 resolver_preview 的顺序模拟，而不是 cached_ui 的 legacy 近似预览。
-12. SVG FX 仍正常显示；若 SVG 缺失，应回退到基础表现而不阻断战斗。
-```
-
-### 逐格移动 / FX
-
-```text
-1. 单格位移：能看清 old → new。
-2. 双格位移：必须看清 old → 中间格 → new。
-3. 攻击后击退目标 2 格时，目标应一格一格退。
-4. 刀类攻击有水墨弧形刀光。
-5. 枪类攻击有水墨直线枪影。
-6. 命中有受击闪红、后退、飘字、命中爆点。
-7. 火器有火光和烟雾。
-8. 破势有墨裂和“破势”。
-9. 防御有墨盾。
-10. 聚势有气纹。
-```
-
-当前验收状态：
-
-```text
-Phase 1: PASSED
-Phase 2: SUPERSEDED_BY_PHASE_10
-Phase 3: NEEDS_LOCAL_VERIFY
-Phase 5: NEEDS_LOCAL_VERIFY
-Phase 6: NEEDS_LOCAL_VERIFY
-Phase 7: NEEDS_LOCAL_VERIFY
-Phase 8: NEEDS_LOCAL_VERIFY
-Phase 9: NEEDS_LOCAL_VERIFY
-Phase 10: NEEDS_LOCAL_VERIFY
-Phase 11: NEEDS_LOCAL_VERIFY
-Phase 12: NEEDS_LOCAL_VERIFY
-Phase 12.5: NEEDS_LOCAL_VERIFY
-Phase 12.6: NEEDS_LOCAL_VERIFY
-Phase 12.7: NEEDS_LOCAL_VERIFY
-Phase 12.8: NEEDS_LOCAL_VERIFY
-Phase 12.9: NEEDS_LOCAL_VERIFY
+2. 点击原地格：目标格位不变，目标朝向反转一次。
+3. 点击其他合法格：目标格位变为新格，目标朝向保持当前实际朝向。
+4. 点击非法格：目标格位和目标朝向不变，并给出不可移动反馈。
+5. 预览显示的目标格位，就是确认后角色先逐格移动到的位置。
+6. 预览显示的目标朝向，就是确认后角色出招前的朝向。
+7. 真实命中 / 距外 / 背向判定与预览一致。
+8. 移动或效果位移后，若没有事件触发，不会自动面向敌人。
+9. 破势时稳定出现墨裂和“破势”。
+10. 背击转身遵守 was_back_hit / will_break / will_die 快照。
+11. 角色死亡淡出后，不应被后续 UI 刷新重新显示。
+12. 反应式预览中，玩家未选择朝向时，不会因为敌方位置自动改朝向。
+13. 效果预览面板显示的内容来自 resolver_preview 的顺序模拟，而不是 cached_ui 的 legacy 近似预览。
+14. SVG FX 仍正常显示；若 SVG 缺失，应回退到基础表现而不阻断战斗。
 ```
 
 ---
 
-## 14. 已知后续调参项
-
-以下不是规则正确性阻塞，建议统一验收后再决定是否处理：
+## 15. 已知后续调参项
 
 ```text
 1. runtime 人物动画与 presentation FX 的重复感，需要实机观察后再降噪。
 2. 双方同时位移目前仍偏串行表现，后续可做并行逐格移动优化。
 3. 目标格位 / 目标朝向 UI 提示仍可进一步强化，例如目标格箭头。
-4. Phase 13.0 可评估是否进一步合并 presentation.gd 与 presentation_stepwise.gd，但建议等本地构建与玩法验收稳定后再做。
+4. Phase 13.0 helper 接入主演出层后，再评估是否拆 Movement Presenter / FX Presenter。
 ```
