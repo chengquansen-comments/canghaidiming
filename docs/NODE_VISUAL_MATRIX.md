@@ -1,262 +1,283 @@
 # 《大明之沧海嘀鸣》节点视觉矩阵
 
-> 版本：v0.3  
+> 版本：v0.4  
 > 对齐分支：`main`  
-> 当前叙事源表：`tables/narrative_mvp_prologue_steps.tsv`、`tables/narrative_mvp_nodes.tsv`  
-> 辅助参考：`data/battle_scene_manifest.json`、`data/performance_tracks.json`  
-> 用途：统一 TSV node、battle_id、剧情演出 track、战斗背景、叙事道具和角色剪影状态。
+> 更新时间：按 narrative TSV / node_status / 编译产物重新校准  
+> 用途：统一剧情源头、MVP 流程、visual_path、战斗背景、叙事道具和后续挂接优先级。
 
 ---
 
-## 1. 状态标记
+## 1. 当前文件口径
+
+本矩阵必须同时参考三层文件：
+
+```text
+剧情内容源头：
+- tables/narrative_mvp_prologue_steps.tsv
+- tables/narrative_mvp_nodes.tsv
+
+节点流程 / 实装 / 美术挂接源头：
+- tables/narrative_mvp_node_status.tsv
+
+编译产物 / 游戏运行读取：
+- data/narrative_mvp_nodes.json
+```
+
+优先级规则：
+
+1. 节点是否进入当前 MVP 主流程，以 `tables/narrative_mvp_node_status.tsv` 的 `flow_enabled` 为准。
+2. 节点当前挂接的视觉资源，以 `visual_path` 为准。
+3. 游戏运行验收，以 `data/narrative_mvp_nodes.json` 是否包含对应节点和选择为准。
+4. TSV 中 `reserved` 节点可以规划资源，但不作为当前 P0 主流程资源。
+5. 若 TSV 源头节点与 JSON 产物结构不同，以运行产物验收为准，同时回查编译脚本。
+
+---
+
+## 2. 状态标记
 
 | 状态 | 含义 |
 |---|---|
-| `DONE_BASE` | 已有基础资源或配置，能支撑 Demo 演示 |
-| `DONE_POLISH_PASS` | 已完成一轮正式分镜级强化 |
-| `TRACK_DONE` | `performance_tracks.json` 已有专属 timeline / beats |
-| `TRACK_MISSING` | 当前缺少专属演出 track，可能走 fallback |
-| `ASSET_READY_UNWIRED` | 资源已存在，但尚未挂接到演出配置 |
+| `FLOW_PLAYABLE` | `node_status.tsv` 中 `flow_enabled=true` 且 `implementation_status=playable` |
+| `FLOW_RESERVED` | `node_status.tsv` 中 `flow_enabled=false`，当前不进入 MVP 主流程 |
+| `RUNTIME_PRESENT` | 当前 `data/narrative_mvp_nodes.json` 中存在运行节点 |
+| `RUNTIME_MERGED` | TSV 有独立节点，但 JSON 产物中被合并到其他节点选择里或缺失 |
+| `VISUAL_WIRED` | `node_status.tsv` 已有 `visual_path` |
+| `VISUAL_REUSED` | 当前 `visual_path` 与相邻节点复用，需后续拆专属资源 |
+| `ASSET_READY_UNWIRED` | 资源已存在，但尚未作为 `visual_path` 或 performance track 挂接 |
 | `NEEDS_ASSET` | 资源缺失，需要新增 |
-| `CONFIG_ONLY` | 当前只有 TSV 剧情配置或文案，没有对应美术资产 |
-| `AFTERMATH` | 战后处理节点，重点是证据、选择和后果，不是战斗动作 |
-| `LOCKED` | 当前阶段不建议继续改，除非发现明显问题 |
-
----
-
-## 2. 当前叙事源表结构
-
-当前应以 TSV 为准：
-
-```text
-tables/narrative_mvp_prologue_steps.tsv
-tables/narrative_mvp_nodes.tsv
-```
-
-当前第一幕主节点数量为 16，不是旧版 12。
-
-关键结构变化：
-
-```text
-beach_ambush → beach_ambush_aftermath
-fishing_village_embers → fishing_village_embers_aftermath
-transport_officer → transport_officer_aftermath
-mutiny_camp → mutiny_camp_aftermath
-```
-
-战斗触发方式：
-
-- 多数遭遇节点顶层 `combat_json.enabled=false`。
-- 战斗通过 `choices_json` 中的 `combat` 字段触发。
-- 美术矩阵仍需记录对应 battle_id，便于剧情视觉与战斗背景一致。
-
-数值变量口径：
-
-```text
-military_merit
-clean_reputation
-case_clues
-```
-
-旧口径 `jun_gong / qing_wang / clues` 不再作为美术 UI 命名依据。
+| `DONE_POLISH_PASS` | 已完成一轮正式分镜级强化 |
+| `P0` | 当前 MVP 主流程优先处理 |
+| `P1` | 主流程可后置优化，或已有资源但需精修 |
+| `P2` | reserved 节点规划，暂不优先 |
 
 ---
 
 ## 3. 序章十二拍矩阵：黑海潮生
 
-| order | step_id | column | 视觉主题 | 演出状态 | 关键资源 / 缺口 | 下一步 |
+源头：`tables/narrative_mvp_prologue_steps.tsv`  
+运行：`data/narrative_mvp_nodes.json.prologue.steps`
+
+| order | step_id | column | 视觉主题 | 已有 / 相关资源 | 当前状态 | 下一步 |
 |---:|---|---|---|---|---|---|
-| 1 | `black_tide` | 旧村 | 黑、潮声、奔跑 | `TRACK_DONE`：`black_tide_0` | 黑潮背景已有 | 可保持 |
-| 2 | `father` | 旧村 | 父亲把主角按进柴堆、别出声 | `TRACK_DONE`：`black_tide_1` | 缺 `sil_father_hiding_child.svg` | P1 补 |
-| 3 | `door` | 旧村 | 刀背敲门、东西在哪 | `TRACK_DONE`：`black_tide_2` | 缺门影 / 刀背敲门 prop | P1 补 |
-| 4 | `dead` | 旧村 | 死人也不知道、潮声停顿 | `TRACK_DONE`：`black_tide_3` | 缺死亡瞬间抽象暗层 | P2 |
-| 5 | `wooden_blade` | 旧村 | 木刀打在甲片上，零声 | 复用黑潮段 | 缺 `prop_wooden_training_blade.svg` | P1 补 |
-| 6 | `fall` | 旧村 | 火光高、父亲无声、母亲的鞋停在火边 | 复用黑潮段 | 缺 `prop_mother_shoe_by_fire.svg` | P0 补 |
-| 7 | `master_arrives` | 救场 | 一只手挡眼、旧甲味、还活着、换我 | `TRACK_DONE`：`master_rescue` | `sil_master_blocks_arrow.svg` 已有但未挂接 | 挂接 |
-| 8 | `three_cards` | 救场 | 刀、步、断气 | 复用演出 | 缺刀谱 / 三卡抽象 prop | P2 |
-| 9 | `military_word` | 旧案 | 敌人口吐“军……”，箭到 | `TRACK_DONE`：`arrow_silence` | 缺“军”字断句焦点 | P2 |
-| 10 | `hidden_arrow` | 旧案 | 箭从黑处来，不是海上，不是倭人 | `TRACK_DONE`：`arrow_silence` | 战斗背景已有箭线 | 可保持 |
-| 11 | `dont_look` | 旧案 | 老兵说别看，自己一直看黑箭，后来叫他师父 | `TRACK_DONE`：`arrow_silence` | 缺老兵看黑箭剪影 | P1 补 |
-| 12 | `departure` | 出山 | 十年，学刀学枪学活，师父还刀，该走了 | `TRACK_DONE`：`departure` | 缺 `prop_old_master_saber.svg` | P0 补 |
+| 1 | `black_tide` | 旧村 | 黑、潮声、奔跑 | `battle_bg_black_tide.svg` 可借用色调 | `RUNTIME_PRESENT` | 保持 |
+| 2 | `father` | 旧村 | 父亲把主角按进柴堆，别出声 | 无 | `RUNTIME_PRESENT` + `NEEDS_ASSET` | 补 `sil_father_hiding_child.svg` |
+| 3 | `door` | 旧村 | 刀背敲门，东西在哪 | 无 | `RUNTIME_PRESENT` + `NEEDS_ASSET` | 补门影 / 刀背敲门 prop |
+| 4 | `dead` | 旧村 | 死人也不知道，潮声停顿 | 无 | `RUNTIME_PRESENT` | P2 抽象暗层 |
+| 5 | `wooden_blade` | 旧村 | 木刀打在甲片上，零声 | 无 | `RUNTIME_PRESENT` + `NEEDS_ASSET` | 补 `prop_wooden_training_blade.svg` |
+| 6 | `fall` | 旧村 | 火光高、父亲无声、母亲鞋停在火边 | 无 | `RUNTIME_PRESENT` + `NEEDS_ASSET` | P0 补 `prop_mother_shoe_by_fire.svg` |
+| 7 | `master_arrives` | 救场 | 旧甲味、挡眼、还活着、换我 | `sil_master_blocks_arrow.svg` | `RUNTIME_PRESENT` + `ASSET_READY_UNWIRED` | 挂接到序章演出 |
+| 8 | `three_cards` | 救场 | 刀、步、断气 | 无 | `RUNTIME_PRESENT` | P2 补刀谱 / 三卡抽象 prop |
+| 9 | `military_word` | 旧案 | 敌人口吐“军……”，箭到 | `battle_bg_black_tide.svg` 有箭线语法 | `RUNTIME_PRESENT` | P2 补断字焦点 |
+| 10 | `hidden_arrow` | 旧案 | 箭从黑处来，不是海上，不是倭人 | `sil_master_blocks_arrow.svg` 可复用箭线 | `RUNTIME_PRESENT` | 保持 / 后续补黑箭 prop |
+| 11 | `dont_look` | 旧案 | 老兵说别看，自己一直看黑箭 | 无 | `RUNTIME_PRESENT` + `NEEDS_ASSET` | 补 `sil_master_looking_at_black_arrow.svg` |
+| 12 | `departure` | 出山 | 十年，学刀学枪学活，师父还刀 | 无 | `RUNTIME_PRESENT` + `NEEDS_ASSET` | P0 补 `prop_old_master_saber.svg` |
 
 ---
 
-## 4. 第一幕 16 节点视觉矩阵
+## 4. MVP 主流程节点矩阵
 
-| order | node_id | 类型 | battle_id | 当前 TSV 视觉意象 | performance track | 已有资源 | 当前状态 | 下一步动作 |
+以下以 `tables/narrative_mvp_node_status.tsv` 的 `flow_enabled=true` 为 P0/P1 依据。
+
+| flow_order | node_id | type | TSV 视觉意象 | runtime | visual_path | 当前美术状态 | 优先级 | 下一步 |
 |---:|---|---|---|---|---|---|---|---|
-| 1 | `military_order` | 事件 | 无 | 军令压案、墨未干、旧案不得声张、师父没有抬头 | `TRACK_DONE`：`military_order` | 暂无军令 / 海防图 prop | `CONFIG_ONLY` + `TRACK_DONE` | 新增 `prop_military_order_seal.svg`、`prop_coastal_patrol_map.svg` |
-| 2 | `beach_ambush` | 遭遇战前 | `first_act_beach_ambush` | 整齐脚印、像营里走出来、芦苇枪尖、官泥 | `TRACK_DONE`：`beach_ambush` | `sil_wakou_ambusher.svg` 已有但未挂接；战斗背景已强化 | `DONE_POLISH_PASS` + `ASSET_READY_UNWIRED` | 挂接伏击剪影；补 `prop_official_mud_bootprint.svg` |
-| 3 | `beach_ambush_aftermath` | 战后处理 | 无 | 沙滩、尸体、脚印还在、割首/搜身/掩埋 | `TRACK_MISSING` | 暂无 aftermath 专用 prop | `AFTERMATH` + `NEEDS_ASSET` | 新增尸体脚印 / 麻袋首级 / 搜身证物焦点 |
-| 4 | `fishing_village_embers` | 遭遇战前 | `first_act_fishing_village_embers` | 残村、黑烟、孩子咳嗽、船未靠岸、村心先烧、烟里刀光 | `TRACK_MISSING` | 战斗背景已强化，含孩子线索 | `DONE_POLISH_PASS` + `TRACK_MISSING` | 新增专属 track；补 `sil_coughing_child_shadow.svg` |
-| 5 | `fishing_village_embers_aftermath` | 战后处理 | 无 | 黑烟渐低、村后火痕、追人/救人/看火 | `TRACK_MISSING` | 暂无 aftermath prop | `AFTERMATH` + `NEEDS_ASSET` | 新增 `prop_burnt_bowl.svg`、村后火痕焦点 |
-| 6 | `merchant_banquet` | 事件 | 无 | 雨夜海商宅、热酒冷兵、屏风后火器箱、酒盏旁钥匙 | `TRACK_MISSING` | `prop_firearm_crate.svg` 已有但未挂接 | `CONFIG_ONLY` + `ASSET_READY_UNWIRED` | 新增 `sil_merchant_shadow.svg`、`prop_wine_cup_key.svg`、宴席背景 |
-| 7 | `ming_firearm` | 线索 | 无 | 倭船舱、木箱半开、官造火器、保养很好、新封泥 | `TRACK_DONE`：`ming_firearm` | `prop_firearm_crate.svg` 已有但未挂接 | `TRACK_DONE` + `ASSET_READY_UNWIRED` | 新增 / 强化 `prop_firearm_seal_mark.svg`；挂接火器箱 |
-| 8 | `altered_military_report` | 线索 | 无 | 破庙、倒神像、香炉下军报、涂改人数、墨比血新、少的是人 | `TRACK_MISSING` | `prop_casefile_missing_page.svg` 可复用但不准确 | `CONFIG_ONLY` + `TRACK_MISSING` | 新增 `prop_altered_military_report.svg`、倒神像剪影、专属 track |
-| 9 | `transport_officer` | 遭遇战前 | `first_act_transport_officer` | 山道空车、深车辙、不该翻箱、袖口半页名册 | `TRACK_DONE`：`transport_officer` | `sil_transport_officer_shadow.svg` 已有；战斗背景已强化 | `DONE_POLISH_PASS` + `ASSET_READY_UNWIRED` | 挂接押运官剪影；新增半页名册露出焦点 |
-| 10 | `transport_officer_aftermath` | 战后处理 | 无 | 空车、半页湿名册、押运官还活着、交给谁 | `TRACK_MISSING` | 暂无湿名册 prop | `AFTERMATH` + `NEEDS_ASSET` | 新增 `prop_half_roster_wet.svg`；专属 aftermath track |
-| 11 | `mutiny_camp` | 遭遇战前 | `first_act_mutiny_camp` | 营门、军旗、无粮、饷银没到、营头举枪不是为了海寇 | `TRACK_MISSING` | `sil_starving_soldier_shadow.svg` 已有；战斗背景已强化 | `DONE_POLISH_PASS` + `TRACK_MISSING` | 新增专属 track；挂饥饿士兵剪影 / 空锅 focus |
-| 12 | `mutiny_camp_aftermath` | 战后处理 | 无 | 营门仍在、军粮仍无、跪下的人、写成反/饥/账 | `TRACK_MISSING` | 暂无账本 prop | `AFTERMATH` + `NEEDS_ASSET` | 新增 `prop_soaked_payroll_book.svg`；跪兵剪影 |
-| 13 | `military_messenger` | 事件 | 无 | 雨中信使、马比人先喘、信封无封泥、第二封信 | `TRACK_MISSING` | `prop_unsealed_letter.svg` 已有但未挂接 | `CONFIG_ONLY` + `ASSET_READY_UNWIRED` | 新增 `sil_messenger_on_horse_shadow.svg`；挂无封泥信封 |
-| 14 | `night_knife_camp` | 营地旧案 | 无 | 深夜磨旧刀、火器刻印放火边、师父手停、见过、再问人会死 | `TRACK_MISSING` | 暂无旧刀 / 刻印 prop | `CONFIG_ONLY` + `NEEDS_ASSET` | 新增 `prop_old_master_saber.svg`、`prop_firearm_seal_mark.svg`、`sil_grinding_saber_shadow.svg` |
-| 15 | `wakou_boss` | Boss 处理 | `first_act_wakou_boss` | 破船、火器箱、倭首坐箱、看岸上、军门火漆、三种处理 | `TRACK_DONE`：`wakou_boss` | `sil_wakou_boss_shadow.svg`、`prop_firearm_crate.svg` 已有但未挂接；战斗背景已强化 | `DONE_POLISH_PASS` + `ASSET_READY_UNWIRED` | 挂接倭首剪影 / 火器箱；补军门火漆焦点 |
-| 16 | `military_coverup` | 终局压案 | 无 | 军门灯火、缺页案卷、朱批、木匣不见、师父站在门外 | `TRACK_DONE`：`military_coverup` | `prop_casefile_missing_page.svg` 已有但未挂接 | `TRACK_DONE` + `ASSET_READY_UNWIRED` | 挂接缺页案卷；新增 `prop_empty_wooden_case.svg`、门外师父剪影 |
+| 10 | `military_order` | 事件 | 军令压案、墨未干、旧案不得声张、师父没有抬头 | `RUNTIME_PRESENT` | `res://assets/pixel_battle/backgrounds/narrative_military_order.svg` | `VISUAL_WIRED`，但缺军令 / 海防图 props | `P0` | 补 `prop_military_order_seal.svg`、`prop_coastal_patrol_map.svg`；检查 visual_path 资源完成度 |
+| 20 | `beach_ambush` | 普通战斗 | 整齐脚印、像营里走出来、芦苇枪尖、官泥 | `RUNTIME_PRESENT` | `res://assets/pixel_battle/backgrounds/narrative_beach_ambush.svg` | 战斗背景 `DONE_POLISH_PASS`；剧情图需核查 | `P0` | 补 `prop_official_mud_bootprint.svg`；挂 `sil_wakou_ambusher.svg` |
+| 30 | `beach_ambush_aftermath` | 战后处理 | 沙滩、尸体、脚印还在、割首/搜身/掩埋 | `RUNTIME_MERGED_OR_ABSENT`：JSON 中当前未独立列出该 node | 与 `beach_ambush` 复用 | `VISUAL_REUSED` | `P0` | 若编译后恢复独立节点，应补专属 aftermath visual；先规划尸体脚印 / 搜身证据 prop |
+| 40 | `fishing_village_embers` | 普通战斗 | 残村、黑烟、孩子咳嗽、船未靠岸、村心先烧 | `RUNTIME_PRESENT` | `res://assets/pixel_battle/backgrounds/narrative_fishing_village_embers.svg` | 战斗背景 `DONE_POLISH_PASS`；剧情图需核查 | `P0` | 补 `sil_coughing_child_shadow.svg`、村后火痕 focus |
+| 50 | `fishing_village_embers_aftermath` | 战后处理 | 黑烟渐低、村后火痕、追人/救人/看火 | `RUNTIME_MERGED_OR_ABSENT`：JSON 中当前未独立列出该 node | 与 `fishing_village_embers` 复用 | `VISUAL_REUSED` | `P0` | 补 `prop_burnt_bowl.svg`、村后火痕专属图；确认编译产物结构 |
+| 60 | `ming_firearm` | 旧物 | 倭船舱、木箱半开、官造火器、保养很好、新封泥 | `RUNTIME_PRESENT` | `res://assets/pixel_battle/relics/relic_ming_firearm.svg` | `VISUAL_WIRED`，已有 `prop_firearm_crate.svg` 未挂 | `P0` | 补 `prop_firearm_seal_mark.svg`；检查 relic 图是否需要替换为正式版 |
+| 70 | `altered_military_report` | 旧物 | 破庙、倒神像、香炉下军报、墨比血新 | `RUNTIME_PRESENT` | `res://assets/pixel_battle/relics/relic_altered_military_report.svg` | `VISUAL_WIRED`，但缺专属涂改军报 prop | `P0` | 补 `prop_altered_military_report.svg`、倒神像剪影 |
+| 80 | `transport_officer` | 精英战斗 | 山道空车、深车辙、不该翻箱、袖口半页名册 | `RUNTIME_PRESENT` | `res://assets/pixel_battle/portraits/transport_officer.svg` | 战斗背景 `DONE_POLISH_PASS`；已有押运官剪影未挂 | `P0` | 补 `prop_half_roster_wet.svg`；挂 `sil_transport_officer_shadow.svg` |
+| 90 | `transport_officer_aftermath` | 战后处理 | 空车、半页湿名册、押运官还活着、交给谁 | `RUNTIME_MERGED_OR_ABSENT`：JSON 当前未独立列出该 node | 与 `transport_officer` 复用 | `VISUAL_REUSED` | `P0` | 补半页湿名册、空车 aftermath visual；确认编译产物结构 |
+| 100 | `night_knife_camp` | 事件 | 深夜磨旧刀、火器刻印、师父手停、见过、再问人会死 | `RUNTIME_PRESENT` | `res://assets/pixel_battle/backgrounds/prologue_departure.svg` | `VISUAL_REUSED`，当前用出山背景不够准确 | `P0` | 补 `prop_old_master_saber.svg`、`prop_firearm_seal_mark.svg`、`sil_grinding_saber_shadow.svg`；替换 visual_path |
+| 110 | `wakou_boss` | Boss | 破船、火器箱、倭首坐箱、看岸上、军门火漆 | `RUNTIME_PRESENT` | `res://assets/pixel_battle/portraits/wakou_leader.svg` | 战斗背景 `DONE_POLISH_PASS`；已有 Boss 剪影 / 火器箱未挂 | `P1` | 补军门火漆 focus；挂 `sil_wakou_boss_shadow.svg`、`prop_firearm_crate.svg` |
+| 120 | `military_coverup` | 结尾 | 军门灯火、缺页案卷、朱批、木匣不见、师父站门外 | `RUNTIME_PRESENT` | `res://assets/pixel_battle/backgrounds/narrative_military_coverup.svg` | `VISUAL_WIRED`，已有缺页案卷未挂 | `P0` | 补 `prop_empty_wooden_case.svg`、门外师父剪影；挂 `prop_casefile_missing_page.svg` |
 
 ---
 
-## 5. 战斗背景矩阵
+## 5. Reserved 节点矩阵
 
-| battle_id | label | background | 对应 TSV 节点 | 当前状态 | 备注 |
+这些节点存在于剧情源表，但当前 `flow_enabled=false`，不进入 MVP 主流程。
+
+| node_id | type | TSV 视觉意象 | 当前状态 | 建议优先级 |
+|---|---|---|---|---|
+| `merchant_banquet` | 事件 | 雨夜海商宅、热酒冷兵、屏风后火器箱、酒盏旁钥匙 | 已有 `prop_firearm_crate.svg` 可用，但未挂 | `P2`：先规划，暂不抢 P0 |
+| `mutiny_camp` | 精英战斗 | 营门、军旗、无粮、饷银没到、举枪不是为海寇 | 战斗背景已 `DONE_POLISH_PASS`，但当前 reserved | `P2`：资源已备，暂不挂主流程 |
+| `mutiny_camp_aftermath` | 战后处理 | 跪下的人、军粮仍无、写成反/饥/账 | 缺账本 / 跪兵资源 | `P2` |
+| `military_messenger` | 事件 | 雨中信使、马比人先喘、信封无封泥、第二封信 | 已有 `prop_unsealed_letter.svg`，但节点 reserved | `P2` |
+
+---
+
+## 6. 战斗背景矩阵
+
+| battle_id | label | background | 对应节点 | 当前状态 | 备注 |
 |---|---|---|---|---|---|
-| `prologue_master_rescue` | 黑潮救援 | `battle_bg_black_tide.svg` | `master_arrives` | `DONE_POLISH_PASS` | 已包含师父挡箭、箭线、远火村影 |
-| `first_act_beach_ambush` | 海边伏击 | `battle_bg_coast_ambush.svg` | `beach_ambush` choice: 迎战 | `DONE_POLISH_PASS` | 已包含暗礁、倭影、斜向暗箭 |
-| `first_act_fishing_village_embers` | 渔村残火 | `battle_bg_fishing_village_embers.svg` | `fishing_village_embers` choice: 迎战 | `DONE_POLISH_PASS` | 已包含残村、黑烟、孩子线索、村后火 |
-| `first_act_transport_officer` | 押运官对峙 | `battle_bg_transport_road.svg` | `transport_officer` choice: 迎战 | `DONE_POLISH_PASS` | 已包含空车、断封条、散落军械、车辙 |
-| `first_act_mutiny_camp` | 欠饷营门 | `battle_bg_mutiny_camp.svg` | `mutiny_camp` choice: 迎战 | `DONE_POLISH_PASS` | 已包含营门、低旗、空锅、饥饿士兵 |
-| `first_act_wakou_boss` | 破船决战 | `battle_bg_broken_ship.svg` | `wakou_boss` | `DONE_POLISH_PASS` | 已包含破船、火器箱、倭首、岸上暗箭 |
+| `prologue_master_rescue` | 黑潮救援 | `battle_bg_black_tide.svg` | `master_arrives` | `DONE_POLISH_PASS` | 已有师父挡箭、箭线、远火村影 |
+| `first_act_beach_ambush` | 海边伏击 | `battle_bg_coast_ambush.svg` | `beach_ambush` | `DONE_POLISH_PASS` | 已有暗礁、倭影、斜向暗箭 |
+| `first_act_fishing_village_embers` | 渔村残火 | `battle_bg_fishing_village_embers.svg` | `fishing_village_embers` | `DONE_POLISH_PASS` | 已有残村、黑烟、孩子线索、村后火 |
+| `first_act_transport_officer` | 押运官对峙 | `battle_bg_transport_road.svg` | `transport_officer` | `DONE_POLISH_PASS` | 已有空车、断封条、散落军械、车辙 |
+| `first_act_mutiny_camp` | 欠饷营门 | `battle_bg_mutiny_camp.svg` | `mutiny_camp` | `DONE_POLISH_PASS` | 当前节点 reserved，背景资源保留 |
+| `first_act_wakou_boss` | 破船决战 | `battle_bg_broken_ship.svg` | `wakou_boss` | `DONE_POLISH_PASS` | 已有破船、火器箱、倭首、岸上暗箭 |
 | `test_spearman_duel` | 枪术试战 | `battle_bg_training_ground.svg` | 测试 | `DONE_POLISH_PASS` | 已有枪架、刀靶、校场木架 |
-| `test_blademaster_duel` | 刀术试战 | `battle_bg_training_ground.svg` | 测试 | `DONE_POLISH_PASS` | 与枪术共用背景 |
+| `test_blademaster_duel` | 刀术试战 | `battle_bg_training_ground.svg` | 测试 | `DONE_POLISH_PASS` | 与枪术共用 |
 | `fallback` | 默认接敌 | `battle_bg_training_ground.svg` | fallback | `DONE_BASE` | 可保持 |
 
 ---
 
-## 6. 叙事资源池矩阵
+## 7. 已有叙事资源池
 
-### 6.1 已有 Props
+### 7.1 Props
 
-| 资源 | 可服务节点 | 当前状态 | 下一步 |
+| 资源 | 适用节点 | 当前状态 | 注意 |
 |---|---|---|---|
-| `assets/narrative/props/prop_casefile_missing_page.svg` | `military_coverup` | `ASSET_READY_UNWIRED` | 挂入压案演出；不再泛用于涂改军报 |
-| `assets/narrative/props/prop_firearm_crate.svg` | `merchant_banquet`、`ming_firearm`、`wakou_boss` | `ASSET_READY_UNWIRED` | 挂入火器相关 track |
-| `assets/narrative/props/prop_unsealed_letter.svg` | `military_messenger` | `ASSET_READY_UNWIRED` | 挂入信使 track |
+| `assets/narrative/props/prop_casefile_missing_page.svg` | `military_coverup` | `ASSET_READY_UNWIRED` | 适合压案，不适合作为涂改军报主资源 |
+| `assets/narrative/props/prop_firearm_crate.svg` | `ming_firearm`、`wakou_boss`、`merchant_banquet` | `ASSET_READY_UNWIRED` | `merchant_banquet` 当前 reserved |
+| `assets/narrative/props/prop_unsealed_letter.svg` | `military_messenger` | `ASSET_READY_UNWIRED` | 节点当前 reserved，暂不 P0 |
 
-### 6.2 已有 Silhouettes
+### 7.2 Silhouettes
 
-| 资源 | 可服务节点 | 当前状态 | 下一步 |
+| 资源 | 适用节点 | 当前状态 | 注意 |
 |---|---|---|---|
-| `assets/narrative/silhouettes/sil_master_blocks_arrow.svg` | `master_arrives` / `hidden_arrow` | `ASSET_READY_UNWIRED` | 挂入 `master_rescue` / `arrow_silence` |
-| `assets/narrative/silhouettes/sil_wakou_ambusher.svg` | `beach_ambush` | `ASSET_READY_UNWIRED` | 挂入 `beach_ambush` |
-| `assets/narrative/silhouettes/sil_transport_officer_shadow.svg` | `transport_officer` | `ASSET_READY_UNWIRED` | 挂入 `transport_officer` |
-| `assets/narrative/silhouettes/sil_starving_soldier_shadow.svg` | `mutiny_camp` | `ASSET_READY_UNWIRED` | 挂入 `mutiny_camp` |
-| `assets/narrative/silhouettes/sil_wakou_boss_shadow.svg` | `wakou_boss` | `ASSET_READY_UNWIRED` | 挂入 `wakou_boss` |
+| `assets/narrative/silhouettes/sil_master_blocks_arrow.svg` | 序章 `master_arrives` / `hidden_arrow` | `ASSET_READY_UNWIRED` | 可挂序章演出 |
+| `assets/narrative/silhouettes/sil_wakou_ambusher.svg` | `beach_ambush` | `ASSET_READY_UNWIRED` | 可挂海边伏击剧情图 |
+| `assets/narrative/silhouettes/sil_transport_officer_shadow.svg` | `transport_officer` | `ASSET_READY_UNWIRED` | 可挂押运官 visual |
+| `assets/narrative/silhouettes/sil_starving_soldier_shadow.svg` | `mutiny_camp` | `ASSET_READY_UNWIRED` | 节点当前 reserved |
+| `assets/narrative/silhouettes/sil_wakou_boss_shadow.svg` | `wakou_boss` | `ASSET_READY_UNWIRED` | 可挂 Boss 演出 |
 
 ---
 
-## 7. TSV 口径 P0 缺口
+## 8. 当前 P0 缺口清单
 
-### 7.1 需要补专属 performance track
+按 `flow_enabled=true` 和当前 visual_path 价值排序：
 
-```text
-beach_ambush_aftermath
-fishing_village_embers
-fishing_village_embers_aftermath
-merchant_banquet
-altered_military_report
-transport_officer_aftermath
-mutiny_camp
-mutiny_camp_aftermath
-military_messenger
-night_knife_camp
-```
-
-### 7.2 需要挂接已有资源
-
-```text
-sil_master_blocks_arrow.svg
-sil_wakou_ambusher.svg
-sil_transport_officer_shadow.svg
-sil_starving_soldier_shadow.svg
-sil_wakou_boss_shadow.svg
-prop_casefile_missing_page.svg
-prop_firearm_crate.svg
-prop_unsealed_letter.svg
-```
-
-### 7.3 需要新增的 P0 资源
+### 8.1 需要新增的 P0 道具 / 剪影
 
 ```text
 prop_mother_shoe_by_fire.svg
-prop_wooden_training_blade.svg
+prop_old_master_saber.svg
 prop_military_order_seal.svg
 prop_coastal_patrol_map.svg
 prop_official_mud_bootprint.svg
 prop_burnt_bowl.svg
-prop_wine_cup_key.svg
 prop_firearm_seal_mark.svg
 prop_altered_military_report.svg
 prop_half_roster_wet.svg
-prop_soaked_payroll_book.svg
-prop_old_master_saber.svg
 prop_empty_wooden_case.svg
 sil_father_hiding_child.svg
 sil_coughing_child_shadow.svg
-sil_merchant_shadow.svg
-sil_messenger_on_horse_shadow.svg
 sil_grinding_saber_shadow.svg
+sil_master_looking_at_black_arrow.svg
 ```
+
+### 8.2 需要检查 / 替换的 visual_path
+
+```text
+res://assets/pixel_battle/backgrounds/narrative_military_order.svg
+res://assets/pixel_battle/backgrounds/narrative_beach_ambush.svg
+res://assets/pixel_battle/backgrounds/narrative_fishing_village_embers.svg
+res://assets/pixel_battle/relics/relic_ming_firearm.svg
+res://assets/pixel_battle/relics/relic_altered_military_report.svg
+res://assets/pixel_battle/portraits/transport_officer.svg
+res://assets/pixel_battle/backgrounds/prologue_departure.svg
+res://assets/pixel_battle/portraits/wakou_leader.svg
+res://assets/pixel_battle/backgrounds/narrative_military_coverup.svg
+```
+
+尤其：
+
+```text
+night_knife_camp 当前复用 prologue_departure.svg，优先级最高，应替换成专属夜半磨刀 visual。
+```
+
+### 8.3 需要确认的编译差异
+
+`node_status.tsv` 中以下节点为主流程 playable，但当前 `data/narrative_mvp_nodes.json` 可能未作为独立 node 出现：
+
+```text
+beach_ambush_aftermath
+fishing_village_embers_aftermath
+transport_officer_aftermath
+```
+
+处理策略：
+
+1. 先确认编译脚本是否应保留 aftermath 独立节点。
+2. 若运行层确实合并，则美术不应盲目挂独立 visual_path。
+3. 若后续恢复独立节点，则优先拆专属 aftermath visual。
 
 ---
 
-## 8. 推荐下一步执行顺序
+## 9. 下一步执行顺序
 
-### Step 1：先补 TSV 新增线索资源
+### Step 1：检查并补齐当前 visual_path 对应资源
+
+优先检查：
+
+```text
+narrative_military_order.svg
+narrative_beach_ambush.svg
+narrative_fishing_village_embers.svg
+relic_ming_firearm.svg
+relic_altered_military_report.svg
+transport_officer.svg
+prologue_departure.svg
+wakou_leader.svg
+narrative_military_coverup.svg
+```
+
+### Step 2：新增 P0 道具资源
 
 优先补：
 
 ```text
 prop_firearm_seal_mark.svg
 prop_half_roster_wet.svg
-prop_soaked_payroll_book.svg
 prop_old_master_saber.svg
 prop_mother_shoe_by_fire.svg
+prop_empty_wooden_case.svg
 ```
 
-原因：这些是新版 TSV 明确新增或强化的线索。
+### Step 3：修正夜半磨刀 visual_path
 
-### Step 2：补 aftermath 专属 track
-
-优先：
+为 `night_knife_camp` 新增专属 visual 后，更新：
 
 ```text
-beach_ambush_aftermath
-fishing_village_embers_aftermath
-transport_officer_aftermath
-mutiny_camp_aftermath
+tables/narrative_mvp_node_status.tsv
 ```
 
-原因：新版 TSV 已把战后处理拆成独立节点，美术不能继续只覆盖遭遇战。
-
-### Step 3：挂接已有资源
-
-将已有 props / silhouettes 挂入当前 track 或新增 track。
-
-### Step 4：UI 美术化
-
-围绕三个 TSV 变量做 UI：
+将：
 
 ```text
-military_merit
-clean_reputation
-case_clues
+res://assets/pixel_battle/backgrounds/prologue_departure.svg
 ```
+
+替换为：
+
+```text
+res://assets/pixel_battle/backgrounds/narrative_night_knife_camp.svg
+```
+
+### Step 4：再处理 aftermath 独立节点差异
+
+先确认编译产物结构，再决定是否让 aftermath 独立出现在 runtime。
 
 ---
 
-## 9. 视觉一致性检查清单
+## 10. 视觉一致性检查清单
 
 每新增或替换一个节点美术资源，必须检查：
 
 ```text
-1. node_id 是否对应 tables/narrative_mvp_nodes.tsv 当前实装？
-2. 序章 step_id 是否对应 tables/narrative_mvp_prologue_steps.tsv 当前实装？
-3. battle_id 是否来自 choices_json.combat 或 battle_scene_manifest.json？
-4. performance track 是否存在，还是仍在走 fallback？
-5. 是否区分遭遇节点与 aftermath 节点？
+1. node_id 是否存在于 tables/narrative_mvp_nodes.tsv？
+2. node_id 在 node_status.tsv 中是 flow_enabled=true 还是 reserved？
+3. 当前 visual_path 是什么？是否复用？
+4. data/narrative_mvp_nodes.json 是否运行可读到该节点？
+5. 如果是 aftermath，运行层是否独立存在？
 6. 是否存在一个可记忆物件？
 7. 是否只留下线索，而不是直接解释阴谋？
 8. SVG 是否纯本地、无字体、无外链？
 9. 背景内是否没有标题文字？
 10. 是否没有新增第二套背景层？
 11. 是否没有把路径写死到 GDScript？
-12. 是否使用 TSV 变量名：military_merit / clean_reputation / case_clues？
+12. 是否兼容当前 visual_path 体系？
 ```
