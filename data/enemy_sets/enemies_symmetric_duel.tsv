@@ -1,3 +1,3 @@
 enemy_id	display_name	weapon_style	max_hp	max_momentum	starting_momentum	starting_realm	qinggong	start_position	start_facing	preferred_distances	deck	ai_style	aggression	keep_distance	break_focus	guard_focus	move_bias	notes
-blade_duelist	倭刀精锐	blademaster	28	8	6	2	1	6	left	1,2	blade_step:2,blade_cut:2,blade_hook:2,blade_flash:1	duelist	0.75	0.45	0.75	0.20	adaptive	对称式拆招测试刀客
-spear_duelist	长枪教头	spearman	30	9	7	2	1	6	left	2,3	spear_thrust:2,spear_gate:2,spear_shunbu:2,guard_spear:1	duelist	0.70	0.90	0.75	0.35	adaptive	对称式控距测试枪手
+blade_duelist	倭刀精锐	blademaster	28	8	6	2	1	6	left	1,2	blade_cut:2,blade_press:2,blade_senki:2,blade_heavy:1	duelist	0.75	0.45	0.75	0.20	adaptive	对称式拆招测试刀客
+spear_duelist	长枪教头	spearman	30	9	7	2	1	6	left	2,3	spear_mid:2,spear_break:2,spear_senki:2,spear_wall:1	duelist	0.70	0.90	0.75	0.35	adaptive	对称式控距测试枪手
