@@ -1,13 +1,33 @@
 # 《大明之沧海嘀鸣》美术风格基准文档
 
-> 版本：v0.4  
+> 版本：v0.5  
 > 对齐分支：`main`  
-> 更新时间：按当前 narrative TSV / node_status / 编译产物重新校准  
+> 更新时间：按《美术规划.pdf》review 后，结合 narrative TSV / node_status / 编译产物重新校准  
 > 适用范围：战斗背景、剧情演出背景、叙事道具、角色剪影、UI 包装、主视觉方向。
 
 ---
 
-## 0. 当前口径声明：源头 / 实装 / 运行三层分开
+## 0. 执行入口
+
+本文件定义“风格标准”。具体生产路线以：
+
+```text
+docs/ART_PRODUCTION_ROADMAP.md
+```
+
+为准。
+
+三份文档分工：
+
+| 文档 | 作用 |
+|---|---|
+| `ART_DIRECTION_GUIDE.md` | 定义美术目标、风格边界、色彩、构图、禁止事项 |
+| `NODE_VISUAL_MATRIX.md` | 定义每个 node / battle_id / visual_path / 资源状态 |
+| `ART_PRODUCTION_ROADMAP.md` | 定义阶段计划、P0/P1/P2 交付包、验收路线 |
+
+---
+
+## 1. 当前口径声明：源头 / 实装 / 运行三层分开
 
 当前美术规划必须同时理解三层文件：
 
@@ -33,7 +53,43 @@
 
 ---
 
-## 1. 当前 MVP 主流程
+## 2. 正式美术目标
+
+《大明之沧海嘀鸣》的正式美术不是泛古风、泛武侠，而是：
+
+> 明代海疆旧案感 + 军武压迫感 + 隐晦叙事痕迹。
+
+玩家不读字，也应感受到：
+
+- 这是明代。
+- 这是海疆。
+- 这是军武世界。
+- 这里有旧案、压案、阴影和牺牲。
+
+核心关键词：
+
+```text
+明代海疆
+军门案卷
+残火黑潮
+卫所营门
+倭寇暗袭
+火器木匣
+缺页名册
+官泥封缄
+忠义牺牲
+风起沧海
+```
+
+美术服务隐晦叙事：
+
+- 不直接画“有人通敌”，而画“火器箱、官造刻印、新封泥”。
+- 不直接画“军门压案”，而画“案卷缺页、朱批、空木匣”。
+- 不直接画“师父有秘密”，而画“师父旧刀、火器刻印、手停了一下”。
+
+---
+
+## 3. 当前 MVP 主流程
 
 根据 `tables/narrative_mvp_node_status.tsv`，当前主流程节点为：
 
@@ -61,42 +117,9 @@ mutiny_camp_aftermath
 military_messenger
 ```
 
-美术推进优先级：
-
-```text
-P0：flow_enabled=true 且 visual_path 已有挂接的 playable 节点
-P1：flow_enabled=true 但 visual_path 仍复用或不够准确的 playable 节点
-P2：reserved 节点，先规划，不优先挂接
-```
-
 ---
 
-## 2. 当前叙事核心：不是打倭寇，而是查岸上的箭
-
-当前叙事由序章十二拍建立核心问题：
-
-```text
-倭寇从海上来。
-箭从岸上来。
-```
-
-美术主轴因此不是“抗倭爽战”，而是：
-
-> 明代海疆军武世界中的旧案、压案、忠义与牺牲。
-
-玩家应一眼感到：
-
-- 海疆风浪压迫
-- 明代军门秩序
-- 卫所、军旗、军械、火器与案卷
-- 倭寇暗袭与海商阴影
-- 旧案未明、证据残缺、官泥未干
-- 战后处理的道德压力：报功、留证、救人、收编、压案
-- 动作先于解释，情绪先于真相
-
----
-
-## 3. 序章视觉基准：黑海潮生
+## 4. 序章视觉基准：黑海潮生
 
 序章源头：`tables/narrative_mvp_prologue_steps.tsv`
 
@@ -105,7 +128,7 @@ P2：reserved 节点，先规划，不优先挂接
 | column | step_id | 美术主题 |
 |---|---|---|
 | 旧村 | `black_tide` / `father` / `door` / `dead` / `wooden_blade` / `fall` | 黑潮、柴堆、敲门、木刀无效、父母遇害、母亲鞋停火边 |
-| 救场 | `master_arrives` / `three_cards` | 旧甲味、师父挡眼、换我、刀/步/断气 |
+| 救场 | `master_arrives` / `three_cards` | 旧甲味、师父挡眼、换我、刀 / 步 / 断气 |
 | 旧案 | `military_word` / `hidden_arrow` / `dont_look` | “军……”、黑箭、不是海上、不是倭人、师父一直看箭 |
 | 出山 | `departure` | 十年、学刀学枪学活、师父还刀、该走了 |
 
@@ -115,19 +138,9 @@ P2：reserved 节点，先规划，不优先挂接
 - 师父不是普通救援者，而是“旧甲味 + 一直看黑箭的人”。
 - 主角动机不是升官，而是追问那支箭从哪来。
 
-P0 资源缺口：
-
-```text
-prop_mother_shoe_by_fire.svg
-prop_wooden_training_blade.svg
-prop_old_master_saber.svg
-sil_father_hiding_child.svg
-sil_master_looking_at_black_arrow.svg
-```
-
 ---
 
-## 4. 遭遇节点与战后处理节点必须区分
+## 5. 遭遇节点与战后处理节点必须区分
 
 `tables/narrative_mvp_nodes.tsv` 中多个节点被拆成“遭遇 / 战后处理”，但 `data/narrative_mvp_nodes.json` 当前运行编译产物可能将部分战后选择合并进战斗节点。因此美术规划要同时标注：
 
@@ -147,7 +160,7 @@ sil_master_looking_at_black_arrow.svg
 
 ---
 
-## 5. 色彩规范
+## 6. 色彩规范
 
 | 用途 | 色值 | 说明 |
 |---|---:|---|
@@ -160,25 +173,9 @@ sil_master_looking_at_black_arrow.svg
 | 暗朱红 | `#7e2e28` / `#8f2f27` | 火光、血线、军旗、封泥、箭线 |
 | 暗金 | `#8a6a3a` | 官印、甲片边缘、火器铭痕 |
 
-按节点组策略：
-
-| 节点组 | 色彩策略 |
-|---|---|
-| 序章旧村 | 黑灰、海雾灰蓝、火边暗朱红 |
-| 海边伏击 | 冷灰蓝、黑礁、官泥土黄、暗箭朱线 |
-| 海边战后 | 低饱和沙灰、尸体黑影、脚印残留 |
-| 渔村残火 | 烟灰、米色、村后暗火 |
-| 渔村战后 | 黑烟渐低、冷灰、火痕暗红、孩子线索 |
-| 明制火器 | 铁黑、暗金铭痕、新封泥朱红 |
-| 涂改军报 | 宣纸米、墨黑、破庙灰、血暗红 |
-| 押运官 | 土黄灰、泥路黑灰、名册米色 |
-| 押运官战后 | 湿纸、空车、泥水、半页名册焦点 |
-| 夜半磨刀 | 深夜黑灰、铁黑、火边火器刻印暗金 |
-| Boss / 压案 | 破船冷蓝灰、火器箱暗金、军门案房米黑 |
-
 ---
 
-## 6. 资产规范
+## 7. 资产规范
 
 当前 Web 构建阶段优先使用 SVG。要求：
 
@@ -201,13 +198,14 @@ assets/pixel_battle/relics/relic_<node_id>.svg
 assets/pixel_battle/portraits/<role_id>.svg
 assets/narrative/props/prop_<object_name>.svg
 assets/narrative/silhouettes/sil_<role_or_action>.svg
+art_reference/generated/ref_<asset_name>.png
 ```
 
-注意：`node_status.tsv` 当前 visual_path 仍指向 `assets/pixel_battle/...`，所以正式挂接时应优先兼容现有路径体系，而不是只新增 `assets/narrative/...` 后不挂接。
+参考 PNG 只作风格锚点，不直接作为运行资源挂接。
 
 ---
 
-## 7. 当前战斗背景状态
+## 8. 当前战斗背景状态
 
 当前 7 张战斗背景已进入“正式分镜样张”阶段：
 
@@ -225,7 +223,7 @@ assets/narrative/silhouettes/sil_<role_or_action>.svg
 
 ---
 
-## 8. 当前 P0 美术缺口
+## 9. 当前 P0 美术缺口
 
 按 `flow_enabled=true` 排序，当前 P0 缺口是：
 
@@ -240,24 +238,11 @@ assets/narrative/silhouettes/sil_<role_or_action>.svg
 8. military_coverup：缺页案卷、空木匣、门外师父资源
 ```
 
-已有但未完全挂接的资源：
-
-```text
-prop_casefile_missing_page.svg
-prop_firearm_crate.svg
-prop_unsealed_letter.svg
-sil_master_blocks_arrow.svg
-sil_wakou_ambusher.svg
-sil_transport_officer_shadow.svg
-sil_starving_soldier_shadow.svg
-sil_wakou_boss_shadow.svg
-```
-
-其中 `prop_unsealed_letter.svg` 当前对应 `military_messenger`，但该节点是 reserved，不作为 MVP P0。
+下一步执行包以 `docs/ART_PRODUCTION_ROADMAP.md` 的 P0 为准。
 
 ---
 
-## 9. UI 视觉规范
+## 10. UI 视觉规范
 
 UI 不应是泛古风边框，而应围绕：
 
@@ -280,7 +265,7 @@ UI 不应是泛古风边框，而应围绕：
 
 ---
 
-## 10. 禁止事项
+## 11. 禁止事项
 
 1. 禁止把背景路径写死在 GDScript。
 2. 禁止新增第二套战斗背景层。
@@ -294,10 +279,11 @@ UI 不应是泛古风边框，而应围绕：
 10. 禁止为了单张图好看破坏整体色板。
 11. 禁止只看 TSV 不看 `node_status.tsv` 和编译产物。
 12. 禁止把 reserved 节点当成当前 MVP P0 主线优先级。
+13. 禁止把 AI 参考 PNG 直接挂进运行 visual_path。
 
 ---
 
-## 11. 下一阶段验收口径
+## 12. 下一阶段验收口径
 
 ### 阶段 A：统一风格样张
 
