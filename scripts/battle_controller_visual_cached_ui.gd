@@ -81,10 +81,13 @@ func _make_momentum_dot_style(filled: bool) -> StyleBoxFlat:
 func _intent_bubble_text(card: CardData, actor_slot: int, opponent_slot: int, target_slot: int) -> String:
 	return BattleHudHelper.intent_bubble_text(card, actor_slot, opponent_slot, target_slot)
 
-func _effect_preview_text() -> String:
-	return BattleHudHelper.effect_preview_text(_effect_preview_context())
+func _legacy_effect_preview_text() -> String:
+	# Legacy approximate preview retained only for debugging fallback.
+	# The active battle preview is provided by battle_controller_visual_resolver_preview.gd,
+	# which uses _ordered_preview_simulation() and target_position/target_facing.
+	return BattleHudHelper.effect_preview_text(_legacy_effect_preview_context())
 
-func _effect_preview_context() -> Dictionary:
+func _legacy_effect_preview_context() -> Dictionary:
 	if player == null or enemy == null or state_machine == null:
 		return {"has_data": false}
 	var positions: Dictionary = _current_grid_positions()
