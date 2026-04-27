@@ -1,20 +1,26 @@
 extends "res://scripts/narrative_demo_unified_controller.gd"
 
 # UI focus layer:
-# - Operation area shows only story text and actionable buttons.
+# - Story text is displayed as a large caption at the bottom of the performance area.
+# - Operation area shows only actionable buttons.
 # - Metadata moves into a right-side debug overlay.
-# - Story and option text are enlarged for playtest readability.
 # - Narrative MVP flow is sourced from compiled data/narrative_mvp_nodes.json.
 #   Hardcoded MVP_NODE_IDS is only a crash-safe fallback.
 # - Top world map node panel remains visible; only operation-area map/debug controls are hidden.
 
-const STORY_FONT_SIZE := 54
+const STORY_FONT_SIZE := 108
 const OPTION_FONT_SIZE := 42
 const DEBUG_FONT_SIZE := 13
+const PERFORMANCE_CAPTION_TOP := 0.48
+const PERFORMANCE_CAPTION_BOTTOM := 0.70
+const OPERATION_TOP := 0.74
 
 var focus_debug_layer: Control
 var focus_debug_panel: PanelContainer
 var focus_debug_label: RichTextLabel
+var focus_story_layer: Control
+var focus_story_panel: PanelContainer
+var focus_story_label: RichTextLabel
 var focus_flow_node_ids: Array = []
 var focus_flow_loaded: bool = false
 var focus_flow_source: String = "fallback"
@@ -26,6 +32,7 @@ var focus_world_map_nodes_row: HBoxContainer
 func _ready() -> void:
 	super._ready()
 	_add_world_map_layer()
+	_ensure_focus_story_caption()
 	_ensure_focus_debug_panel()
 	_apply_focus_ui()
 
@@ -205,6 +212,61 @@ func _on_world_map_node_pressed(map_index: int) -> void:
 		return
 	_on_map_node_pressed(map_index - 1)
 
+func _ensure_focus_story_caption() -> void:
+	if focus_story_layer != null:
+		return
+	focus_story_layer = Control.new()
+	focus_story_layer.name = "NarrativePerformanceCaptionLayer"
+	focus_story_layer.anchor_left = 0.0
+	focus_story_layer.anchor_top = 0.0
+	focus_story_layer.anchor_right = 1.0
+	focus_story_layer.anchor_bottom = 1.0
+	focus_story_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	focus_story_layer.z_index = 90
+	focus_story_layer.z_as_relative = false
+	add_child(focus_story_layer)
+
+	focus_story_panel = PanelContainer.new()
+	focus_story_panel.name = "NarrativePerformanceCaptionPanel"
+	focus_story_panel.anchor_left = 0.06
+	focus_story_panel.anchor_top = PERFORMANCE_CAPTION_TOP
+	focus_story_panel.anchor_right = 0.94
+	focus_story_panel.anchor_bottom = PERFORMANCE_CAPTION_BOTTOM
+	focus_story_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	focus_story_panel.z_index = 91
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.018, 0.015, 0.012, 0.50)
+	style.border_color = Color(0.78, 0.62, 0.36, 0.18)
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(10)
+	style.content_margin_left = 24
+	style.content_margin_right = 24
+	style.content_margin_top = 16
+	style.content_margin_bottom = 16
+	focus_story_panel.add_theme_stylebox_override("panel", style)
+	focus_story_layer.add_child(focus_story_panel)
+
+	focus_story_label = RichTextLabel.new()
+	focus_story_label.name = "NarrativePerformanceCaptionText"
+	focus_story_label.bbcode_enabled = true
+	focus_story_label.fit_content = false
+	focus_story_label.scroll_active = false
+	focus_story_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	focus_story_label.add_theme_font_size_override("normal_font_size", STORY_FONT_SIZE)
+	focus_story_label.add_theme_font_size_override("bold_font_size", STORY_FONT_SIZE)
+	focus_story_label.add_theme_font_size_override("italics_font_size", STORY_FONT_SIZE)
+	focus_story_label.add_theme_color_override("default_color", Color("f6ead2"))
+	focus_story_panel.add_child(focus_story_label)
+
+func _update_focus_story_caption() -> void:
+	if focus_story_label == null:
+		return
+	var story_text := ""
+	if body_label != null:
+		story_text = body_label.text.strip_edges()
+	focus_story_panel.visible = not story_text.is_empty()
+	focus_story_label.text = story_text
+
 func _battle_growth_reward_for_source(source_index: int) -> Dictionary:
 	if source_index < 0 or source_index >= _flow_count():
 		return {"hp_gain": 0, "posture_gain": 0, "martial_gain": 0, "heal_full": false}
@@ -352,9 +414,11 @@ func _ensure_focus_debug_panel() -> void:
 	focus_debug_panel.add_child(focus_debug_label)
 
 func _apply_focus_ui() -> void:
+	_ensure_focus_story_caption()
 	_ensure_focus_debug_panel()
+	_update_focus_story_caption()
 	_hide_operation_metadata()
-	_style_story_text()
+	_apply_operation_only_choice_layout()
 	_style_action_buttons()
 	_refresh_world_map()
 	_update_focus_debug_panel()
@@ -367,6 +431,7 @@ func _hide_operation_metadata() -> void:
 	_hide_control(vars_label)
 	_hide_control(visual_label)
 	_hide_control(visual_debug_label)
+	_hide_control(body_label)
 	if visual_texture != null:
 		visual_texture.texture = null
 		_hide_control(visual_texture)
@@ -386,24 +451,27 @@ func _hide_control(control: Control) -> void:
 	control.custom_minimum_size = Vector2.ZERO
 	control.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 
-func _style_story_text() -> void:
-	if body_label == null:
-		return
-	body_label.visible = true
-	body_label.custom_minimum_size = Vector2(0, 140)
-	body_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	body_label.add_theme_font_size_override("normal_font_size", STORY_FONT_SIZE)
-	body_label.add_theme_font_size_override("bold_font_size", STORY_FONT_SIZE)
-	body_label.add_theme_font_size_override("italics_font_size", STORY_FONT_SIZE)
-
-func _style_action_buttons() -> void:
+func _apply_operation_only_choice_layout() -> void:
+	var operation_panel := _find_operation_panel()
+	if operation_panel != null:
+		operation_panel.anchor_left = 0.04
+		operation_panel.anchor_top = OPERATION_TOP
+		operation_panel.anchor_right = 0.96
+		operation_panel.anchor_bottom = 0.985
+		operation_panel.offset_left = 0
+		operation_panel.offset_top = 0
+		operation_panel.offset_right = 0
+		operation_panel.offset_bottom = 0
+	if action_scroll != null:
+		action_scroll.visible = true
+		action_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		action_scroll.custom_minimum_size = Vector2(0, 170)
 	if action_content != null:
 		action_content.add_theme_constant_override("separation", 16)
+
+func _style_action_buttons() -> void:
 	_style_button_box(combat_buttons_box)
 	_style_button_box(choices_box)
-	if action_scroll != null:
-		action_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		action_scroll.custom_minimum_size = Vector2(0, 190)
 
 func _style_button_box(box: VBoxContainer) -> void:
 	if box == null:
@@ -491,3 +559,9 @@ func _safe_label_text(label: Label, fallback: String) -> String:
 		return fallback
 	var text := label.text.strip_edges()
 	return fallback if text.is_empty() else text
+
+func _find_operation_panel() -> PanelContainer:
+	for child in get_children():
+		if child is PanelContainer:
+			return child as PanelContainer
+	return null
