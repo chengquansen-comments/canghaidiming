@@ -1,9 +1,14 @@
 extends "res://scripts/battle_controller_visual_presentation_assets.gd"
 
-# Phase 10/11 presentation wrapper.
+# Phase 10/11/12 presentation wrapper.
 # Phase 10 replaces final committed slot settling with clear grid-by-grid movement.
 # Phase 11 adds event-driven facing turns. Facing never auto-turns merely because
 # the opponent is now on the other side.
+# Phase 12 decouples target slot and target facing selection:
+# - round start defaults to current slot + current facing
+# - clicking a new slot changes target slot only and keeps current facing
+# - clicking the already selected target slot flips target facing once
+# - range preview is computed from target slot + target facing
 
 const PRESENTATION_STEP_MOVE_DURATION := 0.12
 const PRESENTATION_STEP_MOVE_PAUSE := 0.045
@@ -23,6 +28,45 @@ const FACING_CTX_OLD_PLAYER_MOMENTUM := &"facing_ctx_old_player_momentum"
 const FACING_CTX_PLAYER_ACTION_TARGET_FACING := &"facing_ctx_player_action_target_facing"
 const FACING_CTX_PLAYER_TURN_DURING_ACTION := &"facing_ctx_player_turn_during_action"
 const FACING_CTX_ENEMY_TURN_DURING_ACTION := &"facing_ctx_enemy_turn_during_action"
+
+func _on_stage_grid_slot_pressed(slot: int) -> void:
+	if player == null or not battle_active or not awaiting_player_input:
+		return
+	var clicked_slot: int = clampi(slot, 0, GRID_SLOT_COUNT - 1)
+	var current_target_slot: int = _current_player_target_slot()
+	var current_target_facing: String = _current_player_target_facing()
+	var next_facing: String = current_target_facing
+	if clicked_slot == current_target_slot:
+		next_facing = _opposite_facing(current_target_facing)
+	else:
+		next_facing = player.facing
+	_set_player_draft_target(clicked_slot, next_facing)
+	_refresh_ui()
+
+func _current_player_target_slot() -> int:
+	if player == null:
+		return 0
+	if draft_player_has_position:
+		return clampi(draft_player_position, 0, GRID_SLOT_COUNT - 1)
+	if draft_player_intent != null and draft_player_intent.target_position >= 0:
+		return clampi(draft_player_intent.target_position, 0, GRID_SLOT_COUNT - 1)
+	return clampi(player.position, 0, GRID_SLOT_COUNT - 1)
+
+func _current_player_target_facing() -> String:
+	if player == null:
+		return "right"
+	if draft_player_has_position and _is_valid_facing(draft_player_facing):
+		return draft_player_facing
+	if draft_player_intent != null and _is_valid_facing(draft_player_intent.target_facing):
+		return draft_player_intent.target_facing
+	return player.facing if _is_valid_facing(player.facing) else "right"
+
+func _set_player_draft_target(slot: int, facing_value: String) -> void:
+	draft_player_position = clampi(slot, 0, GRID_SLOT_COUNT - 1)
+	draft_player_facing = facing_value if _is_valid_facing(facing_value) else (player.facing if player != null and _is_valid_facing(player.facing) else "right")
+	draft_player_has_position = true
+	if draft_player_intent != null:
+		draft_player_intent.set_stance(draft_player_position, draft_player_facing)
 
 func _confirm_player_intent() -> void:
 	_capture_presentation_facing_context()
