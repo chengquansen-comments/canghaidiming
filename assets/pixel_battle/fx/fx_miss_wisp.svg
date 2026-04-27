@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="120" viewBox="0 0 320 120">
+  <defs><filter id="soft"><feGaussianBlur stdDeviation="2.5"/></filter></defs>
+  <rect width="320" height="120" fill="none"/>
+  <path d="M24 62 C76 38 118 70 160 52 C206 32 248 46 296 28" stroke="#b7b2a0" stroke-width="9" stroke-linecap="round" opacity="0.42" fill="none" filter="url(#soft)"/>
+  <path d="M42 82 C94 66 130 92 178 72 C220 54 258 66 302 52" stroke="#5f6665" stroke-width="7" stroke-linecap="round" opacity="0.38" fill="none"/>
+  <path d="M70 38 L114 30 M190 84 L236 76" stroke="#d8c9a5" stroke-width="5" stroke-linecap="round" opacity="0.28"/>
+</svg>
