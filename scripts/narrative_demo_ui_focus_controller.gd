@@ -4,7 +4,8 @@ extends "res://scripts/narrative_demo_unified_controller.gd"
 # - Operation area shows only story text and actionable buttons.
 # - Metadata moves into a top-right debug overlay.
 # - Story and option text are enlarged for playtest readability.
-# - Narrative MVP flow is sourced from tables/narrative_mvp_node_status.tsv.
+# - Narrative MVP flow prefers compiled data/narrative_mvp_nodes.json flow_node_ids;
+#   falls back to tables/narrative_mvp_node_status.tsv, then hardcoded MVP_NODE_IDS.
 
 const STORY_FONT_SIZE := 54
 const OPTION_FONT_SIZE := 42
@@ -37,17 +38,37 @@ func _flow_node_ids() -> Array:
 	focus_flow_loaded = true
 	focus_flow_node_ids.clear()
 	focus_flow_source = "fallback"
-	if FileAccess.file_exists(NODE_STATUS_PATH):
-		var file := FileAccess.open(NODE_STATUS_PATH, FileAccess.READ)
-		if file != null:
-			var lines := file.get_as_text().replace("\r", "").split("\n", false)
-			_parse_flow_status_lines(lines)
-			if not focus_flow_node_ids.is_empty():
-				focus_flow_source = NODE_STATUS_PATH
+	_load_flow_from_compiled_data()
+	if focus_flow_node_ids.is_empty():
+		_load_flow_from_status_tsv()
 	if focus_flow_node_ids.is_empty():
 		for node_id in MVP_NODE_IDS:
 			focus_flow_node_ids.append(str(node_id))
 	return focus_flow_node_ids
+
+func _load_flow_from_compiled_data() -> void:
+	if not narrative_mvp_data_loaded:
+		return
+	var ids = narrative_mvp_data.get("flow_node_ids", [])
+	if not (ids is Array):
+		return
+	for node_id in ids:
+		var clean_id := str(node_id).strip_edges()
+		if not clean_id.is_empty():
+			focus_flow_node_ids.append(clean_id)
+	if not focus_flow_node_ids.is_empty():
+		focus_flow_source = NARRATIVE_MVP_DATA_PATH
+
+func _load_flow_from_status_tsv() -> void:
+	if not FileAccess.file_exists(NODE_STATUS_PATH):
+		return
+	var file := FileAccess.open(NODE_STATUS_PATH, FileAccess.READ)
+	if file == null:
+		return
+	var lines := file.get_as_text().replace("\r", "").split("\n", false)
+	_parse_flow_status_lines(lines)
+	if not focus_flow_node_ids.is_empty():
+		focus_flow_source = NODE_STATUS_PATH
 
 func _parse_flow_status_lines(lines: PackedStringArray) -> void:
 	if lines.is_empty():
