@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="220" viewBox="0 0 320 220">
+  <defs>
+    <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.075" numOctaves="2" seed="8"/><feDisplacementMap in="SourceGraphic" scale="7"/></filter>
+  </defs>
+  <rect width="320" height="220" fill="none"/>
+  <path d="M22 112 C78 72 120 120 164 78 C202 42 236 82 296 36" stroke="#080909" stroke-width="16" stroke-linecap="round" fill="none" opacity="0.84" filter="url(#rough)"/>
+  <path d="M56 156 C104 120 146 150 198 112 C236 84 262 112 306 92" stroke="#151312" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.68" filter="url(#rough)"/>
+  <path d="M94 54 L128 112 L104 188 M178 80 L168 128 L206 176 M236 62 L232 104 L268 146" stroke="#080909" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.72"/>
+  <ellipse cx="160" cy="112" rx="112" ry="42" fill="#080909" opacity="0.08"/>
+</svg>
