@@ -65,10 +65,17 @@ func _set_player_draft_target(slot: int, facing_value: String) -> void:
 	draft_player_position = clampi(slot, 0, GRID_SLOT_COUNT - 1)
 	draft_player_facing = facing_value if _is_valid_facing(facing_value) else (player.facing if player != null and _is_valid_facing(player.facing) else "right")
 	draft_player_has_position = true
-	if draft_player_intent != null:
-		draft_player_intent.set_stance(draft_player_position, draft_player_facing)
+	_sync_draft_intent_to_target()
+
+func _sync_draft_intent_to_target() -> void:
+	if not draft_player_has_position:
+		return
+	if draft_player_intent == null:
+		return
+	draft_player_intent.set_stance(draft_player_position, draft_player_facing)
 
 func _confirm_player_intent() -> void:
+	_sync_draft_intent_to_target()
 	_capture_presentation_facing_context()
 	super._confirm_player_intent()
 
