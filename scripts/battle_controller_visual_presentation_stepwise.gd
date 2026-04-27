@@ -1,6 +1,6 @@
 extends "res://scripts/battle_controller_visual_presentation_assets.gd"
 
-# Phase 10/11/12/12.5/12.6 presentation wrapper.
+# Phase 10/11/12/12.5/12.6/12.7 presentation wrapper.
 # Phase 10 replaces final committed slot settling with clear grid-by-grid movement.
 # Phase 11 adds event-driven facing turns. Facing never auto-turns merely because
 # the opponent is now on the other side.
@@ -9,6 +9,7 @@ extends "res://scripts/battle_controller_visual_presentation_assets.gd"
 # preview and real resolution: stance move -> stance facing -> action -> effect move.
 # Phase 12.6 validates target slot input and consumes explicit hit-time snapshots
 # for break/back-hit/death presentation rules.
+# Phase 12.7 folds the temporary death visibility guard back into this layer.
 
 const PRESENTATION_STEP_MOVE_DURATION := 0.12
 const PRESENTATION_STEP_MOVE_PAUSE := 0.045
@@ -28,6 +29,22 @@ const FACING_CTX_OLD_PLAYER_MOMENTUM := &"facing_ctx_old_player_momentum"
 const FACING_CTX_PLAYER_ACTION_TARGET_FACING := &"facing_ctx_player_action_target_facing"
 const FACING_CTX_PLAYER_TURN_DURING_ACTION := &"facing_ctx_player_turn_during_action"
 const FACING_CTX_ENEMY_TURN_DURING_ACTION := &"facing_ctx_enemy_turn_during_action"
+
+func _refresh_ui() -> void:
+	super._refresh_ui()
+	_apply_dead_actor_visibility_guard()
+
+func _apply_dead_actor_visibility_guard() -> void:
+	if player != null and player.hp <= 0:
+		if player_sprite != null:
+			player_sprite.visible = false
+		if player_fallback_actor != null:
+			player_fallback_actor.visible = false
+	if enemy != null and enemy.hp <= 0:
+		if enemy_sprite != null:
+			enemy_sprite.visible = false
+		if enemy_fallback_actor != null:
+			enemy_fallback_actor.visible = false
 
 func _on_stage_grid_slot_pressed(slot: int) -> void:
 	if player == null or not battle_active or not awaiting_player_input:
