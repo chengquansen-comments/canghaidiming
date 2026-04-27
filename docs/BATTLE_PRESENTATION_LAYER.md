@@ -1,8 +1,8 @@
 # 《大明之沧海嘀鸣》战斗演出层说明
 
-> 版本：v0.1  
+> 版本：v0.2  
 > 分支：`main`  
-> 状态：第一版已验收通过  
+> 状态：Phase 1 已验收通过；Phase 2 已接入，待本地复验  
 > 入口场景：`scenes/MainVisual.tscn`  
 > 入口脚本：`scripts/battle_controller_visual_presentation.gd`
 
@@ -12,10 +12,10 @@
 
 当前战斗是回合制卡牌单局，不是实时动作游戏。演出层目标是让结算结果有“武打反馈”，而不是重写动作系统。
 
-第一版目标：
+当前目标：
 
 ```text
-确认招式 → 角色前冲 / 枪刺 / 刀光 → 目标受击 → 飘字 → 回位 / 死亡反馈
+确认招式 → 保持旧格位视觉起点 → 角色前冲 / 枪刺 / 刀光 → 目标受击 → 飘字 → 平滑落到结算后格位 → 死亡反馈
 ```
 
 演出层只负责表现，不负责规则。
@@ -59,19 +59,19 @@ battle_controller_visual_presentation.gd
 
 ## 3. 已实现演出
 
-第一版已实现：
-
-| 演出 | 说明 |
-|---|---|
-| 攻击前冲 | 攻击者向目标方向短距离抢步 |
-| 攻击回撤 | 攻击后回到当前格位锚点 |
-| 枪刺 | `thrust`，使用直线枪影 / pierce feedback |
-| 刀击 | `slash`，使用斜向刀光 / slash feedback |
-| 防御 | `guard`，角色轻微下沉并闪亮 |
-| 聚势 | `focus`，角色轻微压步并出现“势”飘字 |
-| 受击 | 目标闪红、后退、回位 |
-| 飘字 | 显示伤害与削势文本 |
-| 死亡 | 下沉 + 淡出 |
+| 阶段 | 演出 | 说明 | 状态 |
+|---|---|---|---|
+| Phase 1 | 攻击前冲 | 攻击者向目标方向短距离抢步 | `DONE / PASSED` |
+| Phase 1 | 攻击回撤 | 攻击后回到当前格位锚点 | `DONE / PASSED` |
+| Phase 1 | 枪刺 | `thrust`，使用直线枪影 / pierce feedback | `DONE / PASSED` |
+| Phase 1 | 刀击 | `slash`，使用斜向刀光 / slash feedback | `DONE / PASSED` |
+| Phase 1 | 防御 | `guard`，角色轻微下沉并闪亮 | `DONE / PASSED` |
+| Phase 1 | 聚势 | `focus`，角色轻微压步并出现“势”飘字 | `DONE / PASSED` |
+| Phase 1 | 受击 | 目标闪红、后退、回位 | `DONE / PASSED` |
+| Phase 1 | 飘字 | 显示伤害与削势文本 | `DONE / PASSED` |
+| Phase 1 | 死亡 | 下沉 + 淡出 | `DONE / PASSED` |
+| Phase 2 | 旧格位起点保持 | 结算后用 offset 把角色视觉暂时拉回旧格位 | `DONE / NEEDS_LOCAL_VERIFY` |
+| Phase 2 | 真实格位平滑落点 | 从旧格位视觉 offset tween 到新格位锚点 | `DONE / NEEDS_LOCAL_VERIFY` |
 
 ---
 
@@ -126,11 +126,13 @@ func _confirm_player_intent() -> void
 当前流程：
 
 ```text
+记录结算前 player / enemy slot
 读取玩家已选卡牌
 读取敌方可见意图卡牌
 读取结算顺序 _preview_resolution_order
 启动表现层 _start_presentation_exchange
 调用 super() 继续原结算
+call_deferred 后表现层读取结算后 slot，并用 offset 保持旧位置视觉起点
 ```
 
 ### 6.2 角色位置偏移
@@ -142,7 +144,27 @@ player_presentation_offset
 enemy_presentation_offset
 ```
 
-每次父类刷新真实格位后，表现层把 offset 叠加到当前格位锚点上。
+父类真实格位刷新后，表现层将：
+
+```text
+真实格位锚点 + presentation offset
+```
+
+作为最终显示位置。
+
+### 6.3 真实位移平滑化
+
+Phase 2 新增逻辑：
+
+```text
+old_slot → battle state 结算成 new_slot
+表现层计算：old_slot_top_left - new_slot_top_left
+先把 offset 设为该差值，让角色视觉上仍停在 old_slot
+演出完成后 tween offset → Vector2.ZERO
+角色平滑落到 new_slot
+```
+
+这让“进身、后撤、推开、拉近”等位移牌不再瞬间跳格。
 
 ---
 
@@ -154,7 +176,7 @@ enemy_presentation_offset
 Main → 进入视觉版战斗
 ```
 
-验收：
+Phase 1 验收：
 
 ```text
 1. 选择枪手或刀客
@@ -167,30 +189,26 @@ Main → 进入视觉版战斗
 8. 击杀时检查下沉淡出
 ```
 
-第一版本地验收状态：
+Phase 2 追加验收：
 
 ```text
-PASSED
+1. 选择带位移效果的卡牌，例如进身、击退、拉近、后撤类招式
+2. 确认结算后角色是否从旧格位平滑滑到新格位
+3. 检查不是瞬间跳格
+4. 检查攻击前冲仍叠加在旧格位视觉起点上
+5. 检查敌方位移同样平滑
+```
+
+当前验收状态：
+
+```text
+Phase 1: PASSED
+Phase 2: NEEDS_LOCAL_VERIFY
 ```
 
 ---
 
 ## 8. 下一阶段计划
-
-### Phase 2：实际格位移动平滑化
-
-当前第一版已解决“攻击/受击反馈”，下一步要处理：
-
-```text
-位移牌结算后，角色真实格位变化不应瞬间跳格，而应从旧格位滑到新格位。
-```
-
-实现原则：
-
-```text
-真实 position 仍由 battle state 决定；
-表现层只在检测到 position 变化时，从旧 slot 视觉偏移 tween 到新 slot。
-```
 
 ### Phase 3：结果精确化
 
@@ -221,6 +239,18 @@ PASSED
   "hit_pause": 0.08,
   "fx": "pierce_streak"
 }
+```
+
+### Phase 5：演出节奏调优
+
+在 Phase 2 验收后，可以继续调：
+
+```text
+hit pause
+镜头震动幅度
+受击回弹时间
+飘字位置
+枪 / 刀 / 火器差异化
 ```
 
 ---
