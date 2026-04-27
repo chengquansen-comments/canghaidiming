@@ -1,9 +1,27 @@
 # 《大明之沧海嘀鸣》节点视觉矩阵
 
-> 版本：v0.4  
+> 版本：v0.5  
 > 对齐分支：`main`  
-> 更新时间：按 narrative TSV / node_status / 编译产物重新校准  
+> 更新时间：按《美术规划.pdf》review 后，结合 narrative TSV / node_status / 编译产物重新校准  
 > 用途：统一剧情源头、MVP 流程、visual_path、战斗背景、叙事道具和后续挂接优先级。
+
+---
+
+## 0. 执行入口
+
+本矩阵只负责“节点级状态”。生产节奏和阶段交付见：
+
+```text
+docs/ART_PRODUCTION_ROADMAP.md
+```
+
+三份文档分工：
+
+| 文档 | 作用 |
+|---|---|
+| `ART_DIRECTION_GUIDE.md` | 美术目标、风格边界、色彩、构图、禁止事项 |
+| `NODE_VISUAL_MATRIX.md` | 每个 node / battle_id / visual_path / 资源状态 |
+| `ART_PRODUCTION_ROADMAP.md` | 阶段计划、P0/P1/P2 交付包、验收路线 |
 
 ---
 
@@ -89,7 +107,7 @@
 | 70 | `altered_military_report` | 旧物 | 破庙、倒神像、香炉下军报、墨比血新 | `RUNTIME_PRESENT` | `res://assets/pixel_battle/relics/relic_altered_military_report.svg` | `VISUAL_WIRED`，但缺专属涂改军报 prop | `P0` | 补 `prop_altered_military_report.svg`、倒神像剪影 |
 | 80 | `transport_officer` | 精英战斗 | 山道空车、深车辙、不该翻箱、袖口半页名册 | `RUNTIME_PRESENT` | `res://assets/pixel_battle/portraits/transport_officer.svg` | 战斗背景 `DONE_POLISH_PASS`；已有押运官剪影未挂 | `P0` | 补 `prop_half_roster_wet.svg`；挂 `sil_transport_officer_shadow.svg` |
 | 90 | `transport_officer_aftermath` | 战后处理 | 空车、半页湿名册、押运官还活着、交给谁 | `RUNTIME_MERGED_OR_ABSENT`：JSON 当前未独立列出该 node | 与 `transport_officer` 复用 | `VISUAL_REUSED` | `P0` | 补半页湿名册、空车 aftermath visual；确认编译产物结构 |
-| 100 | `night_knife_camp` | 事件 | 深夜磨旧刀、火器刻印、师父手停、见过、再问人会死 | `RUNTIME_PRESENT` | `res://assets/pixel_battle/backgrounds/prologue_departure.svg` | `VISUAL_REUSED`，当前用出山背景不够准确 | `P0` | 补 `prop_old_master_saber.svg`、`prop_firearm_seal_mark.svg`、`sil_grinding_saber_shadow.svg`；替换 visual_path |
+| 100 | `night_knife_camp` | 事件 | 深夜磨旧刀、火器刻印、师父手停、见过、再问人会死 | `RUNTIME_PRESENT` | `res://assets/pixel_battle/backgrounds/prologue_departure.svg` | `VISUAL_REUSED`，当前用出山背景不够准确 | `P0` | 执行 `ART_PRODUCTION_ROADMAP.md` P0：新增 `narrative_night_knife_camp.svg`、旧刀 / 火器刻印 prop，并替换 visual_path |
 | 110 | `wakou_boss` | Boss | 破船、火器箱、倭首坐箱、看岸上、军门火漆 | `RUNTIME_PRESENT` | `res://assets/pixel_battle/portraits/wakou_leader.svg` | 战斗背景 `DONE_POLISH_PASS`；已有 Boss 剪影 / 火器箱未挂 | `P1` | 补军门火漆 focus；挂 `sil_wakou_boss_shadow.svg`、`prop_firearm_crate.svg` |
 | 120 | `military_coverup` | 结尾 | 军门灯火、缺页案卷、朱批、木匣不见、师父站门外 | `RUNTIME_PRESENT` | `res://assets/pixel_battle/backgrounds/narrative_military_coverup.svg` | `VISUAL_WIRED`，已有缺页案卷未挂 | `P0` | 补 `prop_empty_wooden_case.svg`、门外师父剪影；挂 `prop_casefile_missing_page.svg` |
 
@@ -148,9 +166,19 @@
 
 ## 8. 当前 P0 缺口清单
 
-按 `flow_enabled=true` 和当前 visual_path 价值排序：
+当前 P0 缺口以 `docs/ART_PRODUCTION_ROADMAP.md` 为准。最小立即执行包：
 
-### 8.1 需要新增的 P0 道具 / 剪影
+```text
+assets/pixel_battle/backgrounds/narrative_night_knife_camp.svg
+assets/narrative/props/prop_old_master_saber.svg
+assets/narrative/props/prop_firearm_seal_mark.svg
+assets/narrative/props/prop_half_roster_wet.svg
+assets/narrative/props/prop_empty_wooden_case.svg
+tables/narrative_mvp_node_status.tsv
+docs/NODE_VISUAL_MATRIX.md
+```
+
+### 8.1 仍需新增的 P0 道具 / 剪影
 
 ```text
 prop_mother_shoe_by_fire.svg
@@ -189,7 +217,9 @@ res://assets/pixel_battle/backgrounds/narrative_military_coverup.svg
 night_knife_camp 当前复用 prologue_departure.svg，优先级最高，应替换成专属夜半磨刀 visual。
 ```
 
-### 8.3 需要确认的编译差异
+---
+
+## 9. 需要确认的编译差异
 
 `node_status.tsv` 中以下节点为主流程 playable，但当前 `data/narrative_mvp_nodes.json` 可能未作为独立 node 出现：
 
@@ -207,63 +237,37 @@ transport_officer_aftermath
 
 ---
 
-## 9. 下一步执行顺序
+## 10. 下一步执行顺序
 
-### Step 1：检查并补齐当前 visual_path 对应资源
-
-优先检查：
+### Step 1：执行 P0 night_knife_camp 包
 
 ```text
-narrative_military_order.svg
-narrative_beach_ambush.svg
-narrative_fishing_village_embers.svg
-relic_ming_firearm.svg
-relic_altered_military_report.svg
-transport_officer.svg
-prologue_departure.svg
-wakou_leader.svg
-narrative_military_coverup.svg
+1. 参考 art_reference/generated/ref_night_knife_camp.png
+2. 生成 narrative_night_knife_camp.svg
+3. 生成 old_master_saber / firearm_seal_mark / half_roster_wet / empty_wooden_case SVG
+4. 修改 night_knife_camp visual_path
+5. 更新本矩阵状态
 ```
 
-### Step 2：新增 P0 道具资源
+### Step 2：补证据链资源
 
-优先补：
+优先：
 
 ```text
-prop_firearm_seal_mark.svg
-prop_half_roster_wet.svg
-prop_old_master_saber.svg
-prop_mother_shoe_by_fire.svg
-prop_empty_wooden_case.svg
+prop_altered_military_report.svg
+prop_official_mud_bootprint.svg
+prop_burnt_bowl.svg
+prop_military_order_seal.svg
+prop_coastal_patrol_map.svg
 ```
 
-### Step 3：修正夜半磨刀 visual_path
-
-为 `night_knife_camp` 新增专属 visual 后，更新：
-
-```text
-tables/narrative_mvp_node_status.tsv
-```
-
-将：
-
-```text
-res://assets/pixel_battle/backgrounds/prologue_departure.svg
-```
-
-替换为：
-
-```text
-res://assets/pixel_battle/backgrounds/narrative_night_knife_camp.svg
-```
-
-### Step 4：再处理 aftermath 独立节点差异
+### Step 3：处理 aftermath 独立节点差异
 
 先确认编译产物结构，再决定是否让 aftermath 独立出现在 runtime。
 
 ---
 
-## 10. 视觉一致性检查清单
+## 11. 视觉一致性检查清单
 
 每新增或替换一个节点美术资源，必须检查：
 
