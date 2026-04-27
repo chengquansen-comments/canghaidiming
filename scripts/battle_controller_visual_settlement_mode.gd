@@ -1,26 +1,27 @@
 extends "res://scripts/battle_controller_visual_presentation_assets.gd"
 
-# Thin runtime wrapper for switching battle settlement mode and enemy TSV sets
-# without touching the existing visual presentation chain.
+# Thin runtime wrapper for story-battle selection and settlement-mode switching.
 #
-# Default remains "symmetric" + "base" to preserve current main behavior.
-# Opening flow: settlement mode -> enemy set -> role selection.
-# F8 toggles settlement mode during local testing.
+# Opening flow: story encounter -> battle.
+# The encounter decides player template/deck/stat, opponent template/deck/stat,
+# and settlement mode. Templates/decks/stats do not encode enemy/player identity;
+# only encounter assigns sides.
+# F8 still toggles settlement mode during local testing.
 
-const EnemySetLoader = preload("res://scripts/enemy_set_loader.gd")
+const StoryBattleLoader = preload("res://scripts/story_battle_loader.gd")
 
+@export var story_encounter_id: String = "prologue_beach_teach"
 @export_enum("symmetric", "reactive") var settlement_mode_id: String = "symmetric"
-@export var enemy_set_id: String = "base"
 
-var _settlement_mode_selected := false
-var _enemy_set_selected := false
+var _story_encounter_selected := false
 var _reactive_pre_move_round := -1
-var _enemy_set_manifest: Array[Dictionary] = []
+var _story_encounters: Array[Dictionary] = []
+var _pending_story_battle: Dictionary = {}
 
 
 func _ready() -> void:
 	super()
-	_enemy_set_manifest = EnemySetLoader.load_enabled_manifest()
+	_story_encounters = StoryBattleLoader.load_encounters()
 	_apply_visual_settlement_mode()
 
 
@@ -33,54 +34,30 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _show_role_selection() -> void:
-	if not _settlement_mode_selected:
-		_show_settlement_mode_selection()
+	if not _story_encounter_selected:
+		_show_story_encounter_selection()
 		return
-	if not _enemy_set_selected:
-		_show_enemy_set_selection()
-		return
-	super._show_role_selection()
+	_start_selected_story_encounter()
 
 
-func _show_settlement_mode_selection() -> void:
+func _show_story_encounter_selection() -> void:
 	battle_active = false
 	awaiting_player_input = false
 	player_role_id = ""
+	_pending_story_battle = {}
+	if _story_encounters.is_empty():
+		_story_encounters = StoryBattleLoader.load_encounters()
 	if overlay_scrim != null:
 		overlay_scrim.visible = true
 	if overlay_panel != null:
 		overlay_panel.visible = true
 	if overlay_title != null:
-		overlay_title.text = "选择结算模式"
+		overlay_title.text = "选择剧情遭遇"
 	if overlay_body != null:
-		overlay_body.text = "对称式：敌我同时拆招，按先机/崩势/武境决定顺序。\n反应式：敌方先移动并亮出威胁，玩家后行动并尝试破解。\n\n测试快捷键：战斗中按 F8 可切换模式。"
+		overlay_body.text = "剧情遭遇会自动决定：\n- 玩家模板 / 玩家剧情卡组 / 玩家数值\n- 对手模板 / 对手剧情卡组 / 对手数值\n- 结算模式\n\n模板、卡组、数值本身不区分敌我，只有遭遇配置分配双方。"
 	_clear_overlay_actions()
-	_add_settlement_mode_button(BattleStateMachine.MODE_SYMMETRIC_ID, "对称式：双向拆招")
-	_add_settlement_mode_button(BattleStateMachine.MODE_REACTIVE_ID, "反应式：看招破解")
-
-
-func _show_enemy_set_selection() -> void:
-	battle_active = false
-	awaiting_player_input = false
-	player_role_id = ""
-	if _enemy_set_manifest.is_empty():
-		_enemy_set_manifest = EnemySetLoader.load_enabled_manifest()
-	if overlay_scrim != null:
-		overlay_scrim.visible = true
-	if overlay_panel != null:
-		overlay_panel.visible = true
-	if overlay_title != null:
-		overlay_title.text = "选择敌人套装"
-	if overlay_body != null:
-		overlay_body.text = "当前结算模式：%s\n选择一套 TSV 敌人数值。第一版会读取套装中的第一名敌人。" % ("反应式" if settlement_mode_id == BattleStateMachine.MODE_REACTIVE_ID else "对称式")
-	_clear_overlay_actions()
-	for row: Dictionary in _enemy_set_manifest:
-		var mode: String = str(row.get("mode", "any"))
-		if mode != "any" and mode != settlement_mode_id:
-			continue
-		_add_enemy_set_button(row)
-	if overlay_actions != null and overlay_actions.get_child_count() == 0:
-		_add_enemy_set_button({"set_id": "base", "display_name": "基础敌人", "description": "默认敌人配置"})
+	for row: Dictionary in _story_encounters:
+		_add_story_encounter_button(row)
 
 
 func _clear_overlay_actions() -> void:
@@ -90,78 +67,84 @@ func _clear_overlay_actions() -> void:
 		child.queue_free()
 
 
-func _add_settlement_mode_button(mode_id: String, title: String) -> void:
+func _add_story_encounter_button(row: Dictionary) -> void:
 	if overlay_actions == null:
 		return
-	var selected_mode_id: String = mode_id
+	var selected_id: String = str(row.get("encounter_id", ""))
+	if selected_id == "":
+		return
+	var display_name: String = str(row.get("display_name", selected_id))
+	var mode: String = str(row.get("settlement_mode", "symmetric"))
+	var notes: String = str(row.get("notes", ""))
 	var button := Button.new()
-	button.text = title
+	button.text = "%s（%s）" % [display_name, mode]
+	if notes != "":
+		button.tooltip_text = notes
 	button.pressed.connect(func() -> void:
-		_select_settlement_mode_and_continue(selected_mode_id)
+		_select_story_encounter_and_start(selected_id)
 	)
 	overlay_actions.add_child(button)
 
 
-func _add_enemy_set_button(row: Dictionary) -> void:
-	if overlay_actions == null:
-		return
-	var selected_set_id: String = str(row.get("set_id", "base"))
-	var display_name: String = str(row.get("display_name", selected_set_id))
-	var description: String = str(row.get("description", ""))
-	var button := Button.new()
-	button.text = "%s（%s）" % [display_name, selected_set_id]
-	if description != "":
-		button.tooltip_text = description
-	button.pressed.connect(func() -> void:
-		_select_enemy_set_and_continue(selected_set_id)
-	)
-	overlay_actions.add_child(button)
-
-
-func _select_settlement_mode_and_continue(mode_id: String) -> void:
-	settlement_mode_id = mode_id
-	_settlement_mode_selected = true
-	_enemy_set_selected = false
+func _select_story_encounter_and_start(encounter_id: String) -> void:
+	story_encounter_id = encounter_id
+	_story_encounter_selected = true
 	_reactive_pre_move_round = -1
+	var card_catalog: Dictionary = _build_story_card_catalog()
+	_pending_story_battle = StoryBattleLoader.build_story_battle(story_encounter_id, card_catalog)
+	if _pending_story_battle.is_empty():
+		push_warning("Story encounter failed to load: %s" % story_encounter_id)
+		_story_encounter_selected = false
+		_show_story_encounter_selection()
+		return
+	settlement_mode_id = str(_pending_story_battle.get("settlement_mode", "symmetric"))
 	_apply_visual_settlement_mode()
-	_show_enemy_set_selection()
+	var encounter: Dictionary = _pending_story_battle.get("encounter", {})
+	_show_combat_banner("剧情遭遇：%s" % str(encounter.get("display_name", story_encounter_id)), Color("1c2a36"), Color("8fd3ff"))
+	_start_selected_story_encounter()
 
 
-func _select_enemy_set_and_continue(set_id: String) -> void:
-	enemy_set_id = set_id
-	_enemy_set_selected = true
-	_show_combat_banner("敌人套装：%s" % enemy_set_id, Color("1c2a36"), Color("8fd3ff"))
-	super._show_role_selection()
-
-
-func _select_role_and_start(role_id: String) -> void:
+func _start_selected_story_encounter() -> void:
+	if _pending_story_battle.is_empty():
+		var card_catalog: Dictionary = _build_story_card_catalog()
+		_pending_story_battle = StoryBattleLoader.build_story_battle(story_encounter_id, card_catalog)
+		if _pending_story_battle.is_empty():
+			_show_story_encounter_selection()
+			return
+	var encounter: Dictionary = _pending_story_battle.get("encounter", {})
+	var role_id: String = _core_role_id_for_template(str(encounter.get("player_template_id", "player_blademaster")))
 	super._select_role_and_start(role_id)
-	_apply_selected_enemy_set_to_current_enemy()
+	_apply_selected_story_battle_to_current_battle()
 
 
-func _apply_selected_enemy_set_to_current_enemy() -> void:
-	if enemy_set_id == "" or enemy_set_id == "base":
+func _apply_selected_story_battle_to_current_battle() -> void:
+	if _pending_story_battle.is_empty():
 		return
-	if enemy == null:
+	var player_data: FighterData = _pending_story_battle.get("player_data", null)
+	var opponent_data: FighterData = _pending_story_battle.get("opponent_data", null)
+	var encounter: Dictionary = _pending_story_battle.get("encounter", {})
+	if player_data == null or opponent_data == null:
+		push_warning("Story encounter has null fighter data: %s" % story_encounter_id)
 		return
-	var card_catalog: Dictionary = _build_enemy_set_card_catalog()
-	var enemy_data: FighterData = EnemySetLoader.load_first_enemy_data(enemy_set_id, card_catalog)
-	if enemy_data == null:
-		push_warning("Enemy TSV set failed to load: %s" % enemy_set_id)
-		return
-	if enemy_data.starting_deck.is_empty() and enemy.data != null:
-		# Avoid breaking battle start when TSV card ids lag behind current card ids.
-		enemy_data.starting_deck = enemy.data.clone_deck()
-	enemy = Fighter.new(enemy_data)
-	enemy.set_session_realm(enemy_data.starting_realm)
+	if player_data.starting_deck.is_empty() and player != null and player.data != null:
+		player_data.starting_deck = player.data.clone_deck()
+	if opponent_data.starting_deck.is_empty() and enemy != null and enemy.data != null:
+		opponent_data.starting_deck = enemy.data.clone_deck()
+	player = Fighter.new(player_data)
+	player.set_session_realm(player_data.starting_realm)
+	player.reset_for_battle(HAND_SIZE)
+	enemy = Fighter.new(opponent_data)
+	enemy.set_session_realm(opponent_data.starting_realm)
 	enemy.reset_for_battle(HAND_SIZE)
+	settlement_mode_id = str(_pending_story_battle.get("settlement_mode", settlement_mode_id))
+	_apply_visual_settlement_mode()
 	state_machine.update_distance_from_positions(player, enemy)
 	if log_label != null:
-		log_label.append_text("\n[color=#8fd3ff]已加载敌人套装：%s → %s[/color]" % [enemy_set_id, enemy_data.display_name])
+		log_label.append_text("\n[color=#8fd3ff]已加载剧情遭遇：%s → 我方 %s / 对手 %s / 模式 %s[/color]" % [str(encounter.get("display_name", story_encounter_id)), player_data.display_name, opponent_data.display_name, settlement_mode_id])
 	_refresh_ui()
 
 
-func _build_enemy_set_card_catalog() -> Dictionary:
+func _build_story_card_catalog() -> Dictionary:
 	var catalog: Dictionary = {}
 	for fighter_id in fighter_catalog.keys():
 		var data: FighterData = fighter_catalog[fighter_id]
@@ -170,6 +153,12 @@ func _build_enemy_set_card_catalog() -> Dictionary:
 	for card: CardData in reward_pool:
 		catalog[card.id] = card
 	return catalog
+
+
+func _core_role_id_for_template(template_id: String) -> String:
+	if template_id.find("spear") >= 0 or template_id == "master_veteran":
+		return "spearman"
+	return "blademaster"
 
 
 func set_visual_settlement_mode(value: String) -> void:
@@ -229,8 +218,8 @@ func _slot_label_safe(slot: int) -> String:
 func _mode_status_suffix() -> String:
 	if state_machine == null:
 		return ""
-	var text := "\n结算模式：%s（%s）" % [state_machine.settlement_mode_label(), state_machine.settlement_mode_id()]
-	text += "\n敌人套装：%s" % enemy_set_id
+	var text := "\n剧情遭遇：%s" % story_encounter_id
+	text += "\n结算模式：%s（%s）" % [state_machine.settlement_mode_label(), state_machine.settlement_mode_id()]
 	text += "\n快捷键：F8 切换结算模式"
 	if state_machine.is_reactive_mode():
 		text += "\n反应式规则：敌方先移动并亮意图；玩家响应后先结算；若打出崩势，敌方本回合攻击中断。"
