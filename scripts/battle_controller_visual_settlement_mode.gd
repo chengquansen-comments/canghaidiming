@@ -141,8 +141,79 @@ func _mode_status_suffix() -> String:
 	return text
 
 
+func _reactive_threat_preview_text() -> String:
+	if state_machine == null or not state_machine.is_reactive_mode():
+		return ""
+	if player == null or enemy == null or enemy_intent == null:
+		return ""
+	var enemy_card: CardData = enemy_intent.actual_card
+	var player_card: CardData = draft_player_intent.actual_card if draft_player_intent != null else null
+	var player_pos: int = _reactive_player_preview_position()
+	var player_facing: String = _reactive_player_preview_facing(player_pos)
+	var enemy_distance_now: int = absi(enemy.position - player.position)
+	var enemy_distance_after_player_move: int = absi(enemy.position - player_pos)
+	var enemy_range_now: String = CombatResolver.evaluate_range(enemy_card, enemy.position, enemy.facing, player_pos) if enemy_card != null else CombatResolver.RANGE_NONE
+	var player_range: String = CombatResolver.evaluate_range(player_card, player_pos, player_facing, enemy.position) if player_card != null else CombatResolver.RANGE_NONE
+	var will_interrupt := false
+	var player_damage := 0
+	var player_break := 0
+	if player_card != null:
+		var player_state := {"hp": player.hp, "momentum": player.momentum, "guard": player.guard_points, "position": player_pos, "facing": player_facing, "broken": player.is_broken()}
+		var enemy_state := {"hp": enemy.hp, "momentum": enemy.momentum, "guard": enemy.guard_points, "position": enemy.position, "facing": enemy.facing, "broken": enemy.is_broken()}
+		var sim: Dictionary = CombatResolver.resolve_exchange(player_state, enemy_state, player_card, null, ["player"])
+		var enemy_hp_delta: int = int(sim.get("enemy_hp_delta", 0))
+		var enemy_momentum_delta: int = int(sim.get("enemy_momentum_delta", 0))
+		player_damage = absi(enemy_hp_delta) if enemy_hp_delta < 0 else 0
+		player_break = absi(enemy_momentum_delta) if enemy_momentum_delta < 0 else 0
+		will_interrupt = enemy.momentum > 0 and enemy.momentum + enemy_momentum_delta <= 0
+	var lines: Array[String] = []
+	lines.append("\n[font_size=18][b]反应式威胁摘要[/b][/font_size]")
+	lines.append("敌方已落位：%s，当前距离 %d" % [_slot_label_safe(enemy.position), enemy_distance_now])
+	lines.append("敌方威胁：%s / %s / 响应后距离 %d" % [enemy_card.display_name if enemy_card != null else "无", _range_text_safe(enemy_range_now), enemy_distance_after_player_move])
+	lines.append("我方响应：%s / %s / 伤%d / 势-%d" % [player_card.display_name if player_card != null else "未选招式", _range_text_safe(player_range), player_damage, player_break])
+	if will_interrupt:
+		lines.append("结果重点：预计打出崩势，敌方本回合攻击中断。")
+	else:
+		lines.append("结果重点：敌方若仍可行动，将按当前位置重新判定命中。")
+	return "\n".join(lines)
+
+
+func _reactive_player_preview_position() -> int:
+	if draft_player_has_position:
+		return clampi(draft_player_position, 0, BATTLE_SLOT_COUNT - 1)
+	return player.position
+
+
+func _reactive_player_preview_facing(player_pos: int) -> String:
+	if draft_player_facing != "":
+		return draft_player_facing
+	if enemy == null:
+		return player.facing
+	if enemy.position > player_pos:
+		return "right"
+	if enemy.position < player_pos:
+		return "left"
+	return player.facing
+
+
+func _range_text_safe(range_result: String) -> String:
+	match range_result:
+		CombatResolver.RANGE_HIT:
+			return "命中"
+		CombatResolver.RANGE_GRAZE:
+			return "擦中"
+		CombatResolver.RANGE_MISS_FACING:
+			return "朝向未中"
+		CombatResolver.RANGE_MISS_RANGE:
+			return "距离未中"
+		_:
+			return "无"
+
+
 func _refresh_ui() -> void:
 	_try_apply_reactive_enemy_pre_move()
 	super()
 	if status_label != null and state_machine != null:
 		status_label.append_text(_mode_status_suffix())
+	if preview_label != null:
+		preview_label.append_text(_reactive_threat_preview_text())
