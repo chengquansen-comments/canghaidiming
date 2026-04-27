@@ -178,6 +178,9 @@ func resolve_intent(intent: IntentData, actor: Fighter, target: Fighter) -> Arra
 		return lines
 	if actor.hp <= 0:
 		return lines
+	if is_reactive_mode() and actor.pending_control_state == Fighter.CONTROL_BROKEN:
+		lines.append("%s 被打入崩势，本回合攻击被中断。" % actor.data.display_name)
+		return lines
 
 	var card: CardData = intent.actual_card
 	lines.append("%s 施展 [b]%s[/b]。" % [actor.data.display_name, card.display_name])
