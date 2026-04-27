@@ -1,8 +1,8 @@
 # 《大明之沧海嘀鸣》战斗演出层说明
 
-> 版本：v1.5  
+> 版本：v1.6  
 > 分支：`main`  
-> 状态：Phase 1 已验收通过；Phase 2 / 3 / 5 / 6 / 7 / 8 / 9 / 10 / 11 / 12 / 12.5 / 12.6 / 12.7 / 12.8 已接入，待统一本地验收  
+> 状态：Phase 1 已验收通过；Phase 2 / 3 / 5 / 6 / 7 / 8 / 9 / 10 / 11 / 12 / 12.5 / 12.6 / 12.7 / 12.8 / 12.9 已接入，待统一本地验收  
 > 入口场景：`scenes/MainVisual.tscn`  
 > 当前场景入口脚本：`scripts/battle_controller_visual_story_return.gd`
 
@@ -57,7 +57,6 @@ res://scripts/battle_controller_visual_story_return.gd
 battle_controller_visual_story_return.gd
 → battle_controller_visual_settlement_mode.gd
 → battle_controller_visual_presentation_stepwise.gd
-→ battle_controller_visual_presentation_assets.gd
 → battle_controller_visual_presentation.gd
 → battle_controller_visual_scene_manifest.gd
 → battle_controller_visual_narrative_formal.gd
@@ -80,8 +79,7 @@ battle_controller_visual_story_return.gd
 |---|---|
 | `story_return` | 剧情战斗结束后返回剧情选择；压力规则 |
 | `settlement_mode` | 剧情遭遇选择；对称 / 反应式结算切换 |
-| `presentation_stepwise` | 逐格移动；事件驱动转身；目标格位 / 目标朝向输入规则；死亡刷新保护；目标站位与效果位移分段演出 |
-| `presentation_assets` | SVG FX 资产化与调参常量 |
+| `presentation_stepwise` | 当前主演出层：逐格移动、事件驱动转身、目标格位/目标朝向输入、死亡刷新保护、SVG FX 资产化与调参常量、目标站位与效果位移分段演出 |
 | `presentation` | 攻击、受击、命中反馈、真实结果飘字、死亡、基础落位 |
 | `resolver_preview` | 正式效果预览：按 target stance 推算范围、顺序结算和最终格位，并输出破势/死亡/背击快照 |
 | `cached_ui` | UI 缓存、格位刷新、ActorRuntime；旧效果预览已降级为 legacy fallback |
@@ -108,6 +106,7 @@ battle_controller_visual_story_return.gd
 | Phase 12.6 | 输入合法性；破势/死亡/背击快照；死亡淡出不复现 | `DONE / NEEDS_LOCAL_VERIFY` |
 | Phase 12.7 | 合层整理：删除临时 `presentation_guarded` wrapper；死亡刷新保护合回 `presentation_stepwise`；反应式预览不再自动面向敌人 | `DONE / NEEDS_LOCAL_VERIFY` |
 | Phase 12.8 | 清理旧效果预览入口：`cached_ui.gd` 的旧 `_effect_preview_text()` 降级为 `_legacy_effect_preview_text()`，正式效果预览只由 `resolver_preview.gd` 提供 | `DONE / NEEDS_LOCAL_VERIFY` |
+| Phase 12.9 | 合并 SVG FX wrapper：删除 `presentation_assets.gd`，SVG FX 常量与方法合入 `presentation_stepwise.gd`，继承链减少一层 | `DONE / NEEDS_LOCAL_VERIFY` |
 
 ---
 
@@ -272,8 +271,6 @@ back_hit_turn_to
 
 ## 10. Phase 12.8：旧预览入口清理
 
-本阶段只清理 UI 预览入口，不改玩法规则、结算规则、移动参数、FX 参数。
-
 调整文件：
 
 ```text
@@ -290,16 +287,38 @@ scripts/battle_controller_visual_cached_ui.gd
 5. 正式效果预览继续基于 `_ordered_preview_simulation()`，保持与 target_position / target_facing / will_break / will_die / was_back_hit 同口径。
 ```
 
+---
+
+## 11. Phase 12.9：SVG FX 合层
+
+调整文件：
+
+```text
+scripts/battle_controller_visual_presentation_stepwise.gd
+scripts/battle_controller_visual_presentation_assets.gd
+```
+
+调整内容：
+
+```text
+1. `battle_controller_visual_presentation_stepwise.gd` 改为直接继承 `battle_controller_visual_presentation.gd`。
+2. 将 `presentation_assets.gd` 中的 SVG FX 资源路径、尺寸、透明度、层级、偏移、淡出时间等常量合入 `presentation_stepwise.gd`。
+3. 将 SVG FX 方法合入 `presentation_stepwise.gd`，包括刀光、枪线、命中爆点、火器闪光、烟雾、破势墨裂、防御墨盾、聚势气纹、未中烟痕。
+4. 删除 `battle_controller_visual_presentation_assets.gd`。
+5. 保留原 fallback：若 SVG 加载失败，仍回退到 `presentation.gd` 的基础 ColorRect/形状反馈。
+```
+
 目的：
 
 ```text
-避免 cached_ui 的旧近似预览覆盖 resolver_preview 的真实顺序预览。
-确保效果预览来源唯一、口径统一。
+减少一层纯 FX wrapper。
+让当前主演出层集中管理逐格移动、转身、死亡保护和正式 SVG FX。
+不改变战斗规则、结算规则、移动参数、FX 参数。
 ```
 
 ---
 
-## 11. FX 资产
+## 12. FX 资产
 
 当前 FX 资源：
 
@@ -315,15 +334,15 @@ assets/pixel_battle/fx/fx_focus_ink_ripple.svg
 assets/pixel_battle/fx/fx_firearm_smoke_wisp.svg
 ```
 
-FX 调参入口：
+FX 调参入口现在是：
 
 ```text
-scripts/battle_controller_visual_presentation_assets.gd
+scripts/battle_controller_visual_presentation_stepwise.gd
 ```
 
 ---
 
-## 12. 统一验收重点
+## 13. 统一验收重点
 
 ### 目标格位 / 目标朝向输入
 
@@ -338,7 +357,7 @@ scripts/battle_controller_visual_presentation_assets.gd
 8. 招式攻击范围预览始终按目标格位 + 目标朝向推算。
 ```
 
-### Phase 12.5 / 12.6 / 12.7 / 12.8 一致性验收
+### Phase 12.5 / 12.6 / 12.7 / 12.8 / 12.9 一致性验收
 
 ```text
 1. 预览显示的目标格位，就是确认后角色先逐格移动到的位置。
@@ -352,6 +371,7 @@ scripts/battle_controller_visual_presentation_assets.gd
 9. 角色死亡淡出后，不应被后续 UI 刷新重新显示。
 10. 反应式预览中，玩家未选择朝向时，不会因为敌方位置自动改朝向。
 11. 效果预览面板显示的内容来自 resolver_preview 的顺序模拟，而不是 cached_ui 的 legacy 近似预览。
+12. SVG FX 仍正常显示；若 SVG 缺失，应回退到基础表现而不阻断战斗。
 ```
 
 ### 逐格移动 / FX
@@ -387,11 +407,12 @@ Phase 12.5: NEEDS_LOCAL_VERIFY
 Phase 12.6: NEEDS_LOCAL_VERIFY
 Phase 12.7: NEEDS_LOCAL_VERIFY
 Phase 12.8: NEEDS_LOCAL_VERIFY
+Phase 12.9: NEEDS_LOCAL_VERIFY
 ```
 
 ---
 
-## 13. 已知后续调参项
+## 14. 已知后续调参项
 
 以下不是规则正确性阻塞，建议统一验收后再决定是否处理：
 
@@ -399,5 +420,5 @@ Phase 12.8: NEEDS_LOCAL_VERIFY
 1. runtime 人物动画与 presentation FX 的重复感，需要实机观察后再降噪。
 2. 双方同时位移目前仍偏串行表现，后续可做并行逐格移动优化。
 3. 目标格位 / 目标朝向 UI 提示仍可进一步强化，例如目标格箭头。
-4. Phase 12.9 可继续评估是否将 presentation_assets.gd 合入 presentation_stepwise.gd。
+4. Phase 13.0 可评估是否进一步合并 presentation.gd 与 presentation_stepwise.gd，但建议等本地构建与玩法验收稳定后再做。
 ```
