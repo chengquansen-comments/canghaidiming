@@ -1,8 +1,8 @@
 # 《大明之沧海嘀鸣》战斗演出层说明
 
-> 版本：v1.2  
+> 版本：v1.3  
 > 分支：`main`  
-> 状态：Phase 1 已验收通过；Phase 2 / 3 / 5 / 6 / 7 / 8 / 9 / 10 / 11 / 12 / 12.5 已接入，待统一本地验收  
+> 状态：Phase 1 已验收通过；Phase 2 / 3 / 5 / 6 / 7 / 8 / 9 / 10 / 11 / 12 / 12.5 / 12.6 已接入，待统一本地验收  
 > 入口场景：`scenes/MainVisual.tscn`  
 > 当前场景入口脚本：`scripts/battle_controller_visual_story_return.gd`
 
@@ -60,6 +60,7 @@ res://scripts/battle_controller_visual_story_return.gd
 ```text
 battle_controller_visual_story_return.gd
 → battle_controller_visual_settlement_mode.gd
+→ battle_controller_visual_presentation_guarded.gd
 → battle_controller_visual_presentation_stepwise.gd
 → battle_controller_visual_presentation_assets.gd
 → battle_controller_visual_presentation.gd
@@ -84,11 +85,12 @@ battle_controller_visual_story_return.gd
 |---|---|
 | `story_return` | 剧情战斗结束后返回剧情选择；压力规则 |
 | `settlement_mode` | 剧情遭遇选择；对称 / 反应式结算切换 |
+| `presentation_guarded` | 防止死亡淡出后被 UI 刷新重新显示 |
 | `presentation_stepwise` | 逐格移动；事件驱动转身；目标格位 / 目标朝向输入规则；目标站位与效果位移分段演出 |
 | `presentation_assets` | SVG FX 资产化与调参常量 |
 | `presentation` | 攻击、受击、命中反馈、真实结果飘字、死亡、基础落位 |
 | `battle_state_machine` | 真实结算；提交 intent target stance；不再默认自动 face_target |
-| `resolver_preview` | 按 target stance 推算范围、顺序结算和最终格位 |
+| `resolver_preview` | 按 target stance 推算范围、顺序结算和最终格位，并输出破势/死亡/背击快照 |
 
 ---
 
@@ -108,6 +110,7 @@ battle_controller_visual_story_return.gd
 | Phase 11 | 事件驱动转身：背击受击、行动目标反向、招式自带转身 | `DONE / NEEDS_LOCAL_VERIFY` |
 | Phase 12 | 目标格位 / 目标朝向解耦；范围预览按目标状态推算 | `DONE / NEEDS_LOCAL_VERIFY` |
 | Phase 12.5 | 预览 / 真实结算 / 演出统一提交 target_position + target_facing；移除默认自动面向；修复 FX stage center 编译风险 | `DONE / NEEDS_LOCAL_VERIFY` |
+| Phase 12.6 | 输入合法性；破势/死亡/背击快照；死亡淡出不复现 | `DONE / NEEDS_LOCAL_VERIFY` |
 
 ---
 
@@ -178,54 +181,6 @@ PRESENTATION_STEP_MOVE_MAX_STEPS = 8
 | 玩家移动后相对敌人位置改变，但行动目标未要求转身 | 不转身 | 保持当前朝向 |
 | 规则判定背向未中 | 不自动转正 | 显示“背向 / 未中” |
 
-### 5.3 背击受击转身
-
-触发条件：
-
-```text
-玩家背对攻击者
-敌方攻击 range = hit 或 graze
-本次攻击造成 damage 或 break
-玩家未死亡
-玩家未崩势
-```
-
-例外：
-
-```text
-背击时被打到崩势：不转身
-背击后死亡：不转身
-```
-
-### 5.4 行动目标反向转身
-
-触发条件来自玩家行动本身，而不是敌我相对位置：
-
-```text
-1. intent.target_facing
-2. intent.target_position 相对行动前 old_slot 的方向
-```
-
-若行动目标方向与行动前朝向相反，则：
-
-```text
-逐格移动到目标格位 → 播放转身 → 再出招
-```
-
-### 5.5 招式过程中转身
-
-识别方式：
-
-```text
-tag / id / display_name 包含：转身、回身、反身、翻身、回马、turn、reverse、backturn
-```
-
-表现时机：
-
-```text
-出招前先转身 → 再执行攻击 / 防御 / 聚势表现
-```
-
 ---
 
 ## 6. Phase 12：目标格位 / 目标朝向输入规则
@@ -259,8 +214,9 @@ tag / id / display_name 包含：转身、回身、反身、翻身、回马、tu
 |---|---:|---|---|
 | 回合开始不操作 | 当前格 | 当前实际朝向 | 当前格 + 当前朝向 |
 | 点击原地格 | 当前格 | 当前朝向反转 | 当前格 + 反转朝向 |
-| 点击其他格 | 新格 | 当前实际朝向 | 新格 + 当前实际朝向 |
+| 点击其他合法格 | 新格 | 当前实际朝向 | 新格 + 当前实际朝向 |
 | 再点该目标格 | 新格 | 目标朝向反转 | 新格 + 反转朝向 |
+| 点击非法格 | 不变 | 不变 | 不变 |
 
 ### 6.4 实现口径
 
@@ -279,10 +235,12 @@ _on_stage_grid_slot_pressed(slot)
 当前行为：
 
 ```text
-1. 点击非目标格位：draft_player_position = 点击格位；draft_player_facing = player.facing。
-2. 点击已选目标格位：draft_player_position 不变；draft_player_facing 在 left / right 间反转。
-3. 若 draft_player_intent 已存在，则同步 set_stance(draft_player_position, draft_player_facing)。
-4. 确认出招前再次同步 draft intent，避免“先点格位后选招式”造成预览和结算不一致。
+1. 点击非目标格位：必须通过合法性校验。
+2. 合法性校验包括：格位范围内、不能落到存活敌人所在格、不能超过 player.qinggong 步数。
+3. 点击非目标合法格：draft_player_position = 点击格位；draft_player_facing = player.facing。
+4. 点击已选目标格位：draft_player_position 不变；draft_player_facing 在 left / right 间反转。
+5. 若 draft_player_intent 已存在，则同步 set_stance(draft_player_position, draft_player_facing)。
+6. 确认出招前再次同步 draft intent，避免“先点格位后选招式”造成预览和结算不一致。
 ```
 
 ---
@@ -340,12 +298,6 @@ scripts/battle_controller_visual_resolver_preview.gd
 scripts/battle_controller_visual_presentation_stepwise.gd
 ```
 
-原问题：
-
-```text
-旧流程容易表现成：旧格位出招 → 最后落位。
-```
-
 现流程：
 
 ```text
@@ -357,24 +309,73 @@ scripts/battle_controller_visual_presentation_stepwise.gd
 6. 最后兜底落到真实 committed position。
 ```
 
-### 7.5 编译风险修复
+---
+
+## 8. Phase 12.6：补充修复
+
+### 8.1 输入合法性
+
+```text
+点击新目标格位时，必须满足：
+1. slot 在 0 到 GRID_SLOT_COUNT - 1 内。
+2. 不能是存活敌人所在格。
+3. 距离当前玩家格位不超过 player.qinggong。
+```
+
+点击当前目标格位用于反转朝向，不走新格位合法性分支。
+
+### 8.2 破势 / 死亡 / 背击快照
 
 文件：
 
 ```text
-scripts/battle_controller_visual_presentation_assets.gd
+scripts/battle_controller_visual_resolver_preview.gd
+scripts/battle_controller_visual_presentation_stepwise.gd
 ```
 
-修复：
+预览 effect step 现在输出：
 
 ```text
-_stage_center_position() 不再引用未定义 STAGE_AREA_HEIGHT。
-改为局部计算 STAGE_AREA_BOTTOM - STAGE_AREA_TOP。
+will_break
+will_die
+was_back_hit
+back_hit_turn_to
+```
+
+表现层消费这些字段：
+
+```text
+1. 破势 FX 直接读 will_break，不再用结算后的 momentum 反推。
+2. 背击转身直接读 was_back_hit。
+3. 背击后若 will_break 或 will_die，则不转身。
+4. 背击后若可转身，使用 back_hit_turn_to。
+```
+
+### 8.3 死亡淡出不复现
+
+新增文件：
+
+```text
+scripts/battle_controller_visual_presentation_guarded.gd
+```
+
+该层只做：
+
+```text
+1. 继承 presentation_stepwise。
+2. 在 _refresh_character_visuals() / _set_battle_chrome_visible() 后检查死亡角色。
+3. 若角色 hp <= 0，则强制隐藏对应 sprite / fallback actor。
+```
+
+`battle_controller_visual_settlement_mode.gd` 现在继承：
+
+```gdscript
+extends "res://scripts/battle_controller_visual_presentation_guarded.gd"
 ```
 
 ---
 
-## 8. FX 资产
+## 9. FX 资产
 
 当前 FX 资源：
 
@@ -396,19 +397,9 @@ FX 调参入口：
 scripts/battle_controller_visual_presentation_assets.gd
 ```
 
-主要常量：
-
-```gdscript
-FX_Z_*
-FX_ALPHA_*
-FX_FADE_*
-FX_SIZE_*
-FX_OFFSET_*
-```
-
 ---
 
-## 9. 禁止事项
+## 10. 禁止事项
 
 1. 不要让动画决定伤害。
 2. 不要在动画层修改 HP / 势 / 卡牌消耗。
@@ -424,7 +415,7 @@ FX_OFFSET_*
 
 ---
 
-## 10. 统一验收重点
+## 11. 统一验收重点
 
 ### 目标格位 / 目标朝向输入
 
@@ -432,13 +423,14 @@ FX_OFFSET_*
 1. 回合开始不操作：目标格位为当前格，目标朝向为当前实际朝向。
 2. 回合开始不操作直接确认：玩家原地，保持当前朝向。
 3. 点击原地格：目标格位不变，目标朝向反转一次。
-4. 点击其他格：目标格位变为新格，目标朝向保持当前实际朝向。
-5. 再点击该目标格：目标格位不变，目标朝向反转一次。
-6. 先点格位 / 朝向，再选招式，确认时仍按最终目标格位和目标朝向结算。
-7. 招式攻击范围预览始终按目标格位 + 目标朝向推算。
+4. 点击其他合法格：目标格位变为新格，目标朝向保持当前实际朝向。
+5. 点击非法格：目标格位和目标朝向不变，并给出不可移动反馈。
+6. 再点击该目标格：目标格位不变，目标朝向反转一次。
+7. 先点格位 / 朝向，再选招式，确认时仍按最终目标格位和目标朝向结算。
+8. 招式攻击范围预览始终按目标格位 + 目标朝向推算。
 ```
 
-### Phase 12.5 一致性验收
+### Phase 12.5 / 12.6 一致性验收
 
 ```text
 1. 预览显示的目标格位，就是确认后角色先逐格移动到的位置。
@@ -447,6 +439,9 @@ FX_OFFSET_*
 4. 不发生“旧格位先出招，最后才站到目标格”的表现错位。
 5. 招式造成的击退 / 拉近 / 进身 / 后撤在出招后再逐格表现。
 6. 移动或效果位移后，若没有事件触发，不会自动面向敌人。
+7. 破势时稳定出现墨裂和“破势”，不因结算后势为 0 而漏播。
+8. 背击转身遵守 was_back_hit / will_break / will_die 快照。
+9. 角色死亡淡出后，不应被后续 UI 刷新重新显示。
 ```
 
 ### 转身逻辑
@@ -504,26 +499,17 @@ Phase 10: NEEDS_LOCAL_VERIFY
 Phase 11: NEEDS_LOCAL_VERIFY
 Phase 12: NEEDS_LOCAL_VERIFY
 Phase 12.5: NEEDS_LOCAL_VERIFY
+Phase 12.6: NEEDS_LOCAL_VERIFY
 ```
 
 ---
 
-## 11. 后续建议
+## 12. 已知后续调参项
 
-下一步建议进入：
-
-```text
-本地构建 → 统一验收 → 观感调参
-```
-
-如果验收后需要继续优化，优先调：
+以下不是规则正确性阻塞，建议统一验收后再决定是否处理：
 
 ```text
-1. 目标格位 / 目标朝向的 UI 提示清晰度
-2. 逐格移动单格时长
-3. 逐格移动停顿
-4. 转身压缩 / 翻转 / 回正时长
-5. FX 大小与透明度
-6. 飘字位置
-7. 命中停顿时长
+1. runtime 人物动画与 presentation FX 的重复感，需要实机观察后再降噪。
+2. 双方同时位移目前仍偏串行表现，后续可做并行逐格移动优化。
+3. 目标格位 / 目标朝向 UI 提示仍可进一步强化，例如目标格箭头。
 ```
