@@ -1,8 +1,8 @@
 # 《大明之沧海嘀鸣》战斗演出层说明
 
-> 版本：v0.9  
+> 版本：v1.0  
 > 分支：`main`  
-> 状态：Phase 1 已验收通过；Phase 2 / 3 / 5 / 6 / 7 / 8 / 9 / 10 已接入，待统一本地验收  
+> 状态：Phase 1 已验收通过；Phase 2 / 3 / 5 / 6 / 7 / 8 / 9 / 10 / 11 已接入，待统一本地验收  
 > 入口场景：`scenes/MainVisual.tscn`  
 > 当前场景入口脚本：`scripts/battle_controller_visual_story_return.gd`
 
@@ -23,13 +23,20 @@
 → 真实结算飘字
 → 破势墨裂 / 命中停顿
 → 若结算后格位变化，则一格一格移动到最终格位
+→ 若事件要求转身，则播放转身
 → 死亡反馈
 ```
 
 核心原则：
 
 ```text
-战斗结算决定结果；演出层只消费结果、意图、卡牌信息和最终格位。
+战斗结算决定结果；演出层只消费结果、意图、卡牌信息、最终格位和事件触发的朝向变化。
+```
+
+特别注意：
+
+```text
+不会仅因敌我相对位置变化自动转身。
 ```
 
 ---
@@ -71,7 +78,7 @@ battle_controller_visual_story_return.gd
 |---|---|
 | `story_return` | 剧情战斗结束后返回剧情选择；压力规则 |
 | `settlement_mode` | 剧情遭遇选择；对称 / 反应式结算切换 |
-| `presentation_stepwise` | 结算后格位变化按格逐段移动 |
+| `presentation_stepwise` | 逐格移动；事件驱动转身 |
 | `presentation_assets` | SVG FX 资产化与调参常量 |
 | `presentation` | 攻击、受击、命中反馈、真实结果飘字、死亡、基础落位 |
 
@@ -90,6 +97,7 @@ battle_controller_visual_story_return.gd
 | Phase 8 | 格挡墨盾、聚势气纹、火器烟雾 FX 资产化 | `DONE / NEEDS_LOCAL_VERIFY` |
 | Phase 9 | FX 尺寸、透明度、层级、偏移、淡出时间集中成常量 | `DONE / NEEDS_LOCAL_VERIFY` |
 | Phase 10 | 结算后位置变化从“一次滑动”改为“一格一格移动” | `DONE / NEEDS_LOCAL_VERIFY` |
+| Phase 11 | 事件驱动转身：背击受击、行动目标反向、招式自带转身 | `DONE / NEEDS_LOCAL_VERIFY` |
 
 ---
 
@@ -108,7 +116,7 @@ battle_controller_visual_story_return.gd
 scripts/battle_controller_visual_presentation_stepwise.gd
 ```
 
-该层只覆盖最终结算落位流程，不改：
+该层覆盖最终结算落位流程，不改：
 
 ```text
 伤害结算
@@ -139,18 +147,110 @@ PRESENTATION_STEP_MOVE_BOB_Y = -7.0
 PRESENTATION_STEP_MOVE_MAX_STEPS = 8
 ```
 
-调参建议：
+---
 
-| 问题 | 调整项 |
-|---|---|
-| 逐格移动太快 | 增大 `PRESENTATION_STEP_MOVE_DURATION` 或 `PRESENTATION_STEP_MOVE_PAUSE` |
-| 移动太拖沓 | 减小 `PRESENTATION_STEP_MOVE_DURATION` 或 `PRESENTATION_STEP_MOVE_PAUSE` |
-| 踏步感不明显 | 增大 `PRESENTATION_STEP_MOVE_BOB_Y` 的绝对值 |
-| 上下跳动太夸张 | 减小 `PRESENTATION_STEP_MOVE_BOB_Y` 的绝对值 |
+## 5. Phase 11：事件驱动转身规则
+
+### 5.1 总原则
+
+```text
+转身不是默认行为。
+转身必须由事件触发。
+玩家不会因为和敌人的相对关系自动转身。
+```
+
+明确禁止：
+
+```text
+敌人在左边 → 自动面向左
+敌人在右边 → 自动面向右
+移动后相对位置变化 → 自动面向敌人
+```
+
+### 5.2 会触发转身的情况
+
+| 场景 | 是否转身 | 时机 |
+|---|---|---|
+| 玩家背面受击，未死亡，未崩势 | 转身 | 受击反馈后 |
+| 玩家背面受击，并被打到崩势 | 不转身 | 保持被打崩状态 |
+| 玩家背面受击，并死亡 | 不转身 | 直接死亡淡出 |
+| 玩家行动目标方向与当前朝向相反 | 转身 | 移动完成后 |
+| 招式自带转身语义 | 转身 | 招式过程中，出招前 |
+| 敌人在玩家身后，但无触发事件 | 不转身 | 保持当前朝向 |
+| 玩家移动后相对敌人位置改变，但行动目标未要求转身 | 不转身 | 保持当前朝向 |
+| 规则判定背向未中 | 不自动转正 | 显示“背向 / 未中” |
+
+### 5.3 背击受击转身
+
+触发条件：
+
+```text
+玩家背对攻击者
+敌方攻击 range = hit 或 graze
+本次攻击造成 damage 或 break
+玩家未死亡
+玩家未崩势
+```
+
+例外：
+
+```text
+背击时被打到崩势：不转身
+背击后死亡：不转身
+```
+
+### 5.4 行动目标反向转身
+
+触发条件来自玩家行动本身，而不是敌我相对位置：
+
+```text
+1. intent.target_facing
+2. intent.target_position 相对行动前 old_slot 的方向
+```
+
+若行动目标方向与行动前朝向相反，则：
+
+```text
+逐格移动完成后 → 播放转身
+```
+
+### 5.5 招式过程中转身
+
+识别方式：
+
+```text
+tag / id / display_name 包含：转身、回身、反身、翻身、回马、turn、reverse、backturn
+```
+
+表现时机：
+
+```text
+出招前先转身 → 再执行攻击 / 防御 / 聚势表现
+```
+
+### 5.6 转身表现
+
+当前第一版使用轻量表现：
+
+```text
+收身压缩
+水平翻转
+回正
+```
+
+默认参数：
+
+```gdscript
+PRESENTATION_TURN_PREP_DURATION = 0.06
+PRESENTATION_TURN_FLIP_DURATION = 0.08
+PRESENTATION_TURN_SETTLE_DURATION = 0.06
+PRESENTATION_TURN_COMPRESS_X = 0.82
+PRESENTATION_TURN_SETTLE_Y = 1.04
+```
 
 ---
 
-## 5. FX 资产
+## 6. FX 资产
 
 当前 FX 资源：
 
@@ -184,7 +284,7 @@ FX_OFFSET_*
 
 ---
 
-## 6. 动画分类规则
+## 7. 动画分类规则
 
 当前按卡牌信息自动推断演出类型：
 
@@ -201,7 +301,7 @@ FX_OFFSET_*
 
 ---
 
-## 7. 禁止事项
+## 8. 禁止事项
 
 1. 不要让动画决定伤害。
 2. 不要在动画层修改 HP / 势 / 卡牌消耗。
@@ -211,10 +311,11 @@ FX_OFFSET_*
 6. 不要新增第二套战斗背景层。
 7. 不要恢复旧 Debug 按钮。
 8. 不要把背景路径写死到 GDScript。
+9. 不要因为敌我相对位置自动转身。
 
 ---
 
-## 8. 统一验收重点
+## 9. 统一验收重点
 
 ### 基础攻击 / 受击
 
@@ -248,6 +349,19 @@ FX_OFFSET_*
 6. 攻击前冲仍然只作为攻击动作，不应替代真实格位移动。
 ```
 
+### 转身逻辑
+
+```text
+1. 玩家背面受击后，若未死亡且未崩势，应转身。
+2. 玩家背面受击后，若被打到崩势，不应转身。
+3. 玩家背面受击后，若死亡，不应转身。
+4. 玩家行动目标方向与当前朝向相反时，应在移动完成后转身。
+5. 带“转身 / 回身 / 反身 / 翻身 / 回马”等语义的招式，应在出招过程中转身。
+6. 敌人在玩家身后但没有触发事件时，玩家不应自动转身。
+7. 玩家移动后相对敌人位置改变，但行动目标未要求转身时，不应自动转身。
+8. 背向未中时，不应视觉上自动转正。
+```
+
 ### FX 资产化
 
 ```text
@@ -271,11 +385,12 @@ Phase 7: NEEDS_LOCAL_VERIFY
 Phase 8: NEEDS_LOCAL_VERIFY
 Phase 9: NEEDS_LOCAL_VERIFY
 Phase 10: NEEDS_LOCAL_VERIFY
+Phase 11: NEEDS_LOCAL_VERIFY
 ```
 
 ---
 
-## 9. 后续建议
+## 10. 后续建议
 
 下一步不建议继续新增演出逻辑，建议进入：
 
@@ -288,7 +403,8 @@ Phase 10: NEEDS_LOCAL_VERIFY
 ```text
 1. 逐格移动单格时长
 2. 逐格移动停顿
-3. FX 大小与透明度
-4. 飘字位置
-5. 命中停顿时长
+3. 转身压缩 / 翻转 / 回正时长
+4. FX 大小与透明度
+5. 飘字位置
+6. 命中停顿时长
 ```
