@@ -1,8 +1,8 @@
 # 《大明之沧海嘀鸣》战斗演出层说明
 
-> 版本：v0.7  
+> 版本：v0.8  
 > 分支：`main`  
-> 状态：Phase 1 已验收通过；Phase 2 / Phase 3 / Phase 5 / Phase 6 / Phase 7 / Phase 8 已接入，待统一本地验收  
+> 状态：Phase 1 已验收通过；Phase 2 / Phase 3 / Phase 5 / Phase 6 / Phase 7 / Phase 8 / Phase 9 已接入，待统一本地验收  
 > 入口场景：`scenes/MainVisual.tscn`  
 > 当前入口脚本：`scripts/battle_controller_visual_presentation_assets.gd`
 
@@ -68,7 +68,7 @@ battle_controller_visual_presentation.gd
 battle_controller_visual_presentation_assets.gd
 ```
 
-负责 Phase 6 / 7 / 8：把部分 ColorRect 临时 FX 替换为 SVG 资产，加载失败时回退到父类 ColorRect 表现。
+负责 Phase 6 / 7 / 8 / 9：把部分 ColorRect 临时 FX 替换为 SVG 资产，并把尺寸、透明度、偏移、层级和淡出时间集中成常量，加载失败时回退到父类 ColorRect 表现。
 
 ---
 
@@ -104,6 +104,7 @@ battle_controller_visual_presentation_assets.gd
 | Phase 8 | 格挡墨盾 | `fx_guard_ink_shield.svg` 叠加在防御动作上 | `DONE / NEEDS_LOCAL_VERIFY` |
 | Phase 8 | 聚势气纹 | `fx_focus_ink_ripple.svg` 叠加在聚势动作上 | `DONE / NEEDS_LOCAL_VERIFY` |
 | Phase 8 | 火器烟雾 | `fx_firearm_smoke_wisp.svg` 跟随火器闪光出现 | `DONE / NEEDS_LOCAL_VERIFY` |
+| Phase 9 | FX 调参常量集中 | 将尺寸、透明度、层级、淡出时间、偏移集中在 assets wrapper 顶部 | `DONE / NEEDS_LOCAL_VERIFY` |
 
 ---
 
@@ -150,7 +151,34 @@ FX 资产化只替换表现，不改变结算、命中、伤害、势、位移�
 
 ---
 
-## 5. 动画分类规则
+## 5. Phase 9 调参入口
+
+当前所有 SVG FX 的主要调参项集中在 `scripts/battle_controller_visual_presentation_assets.gd` 顶部：
+
+```gdscript
+FX_Z_*
+FX_ALPHA_*
+FX_FADE_*
+FX_SIZE_*
+FX_OFFSET_*
+```
+
+调参优先级：
+
+| 问题 | 优先调 |
+|---|---|
+| 特效遮挡角色 / UI | `FX_SIZE_*`、`FX_ALPHA_*` |
+| 特效位置偏高 / 偏低 / 偏左 / 偏右 | `FX_OFFSET_*` |
+| 特效消失太快 / 太慢 | `FX_FADE_*` |
+| 特效被其他元素盖住 | `FX_Z_*` |
+| 火器烟雾太抢戏 | `FX_ALPHA_SMOKE`、`FX_SIZE_SMOKE`、`FX_FADE_SMOKE` |
+| 防御 / 聚势太花 | `FX_ALPHA_GUARD`、`FX_ALPHA_FOCUS`、`FX_SIZE_GUARD`、`FX_SIZE_FOCUS` |
+
+本阶段不再继续新增 FX，除非验收后明确缺少某类反馈。
+
+---
+
+## 6. 动画分类规则
 
 当前按卡牌信息自动推断演出类型：
 
@@ -167,7 +195,7 @@ FX 资产化只替换表现，不改变结算、命中、伤害、势、位移�
 
 ---
 
-## 6. 关键原则
+## 7. 关键原则
 
 必须保持：
 
@@ -189,9 +217,9 @@ FX 资产化只替换表现，不改变结算、命中、伤害、势、位移�
 
 ---
 
-## 7. 当前实现入口
+## 8. 当前实现入口
 
-### 7.1 玩家确认招式
+### 8.1 玩家确认招式
 
 入口：
 
@@ -212,7 +240,7 @@ func _confirm_player_intent() -> void
 call_deferred 后表现层读取结算后 slot，并用 offset 保持旧位置视觉起点
 ```
 
-### 7.2 角色位置偏移
+### 8.2 角色位置偏移
 
 表现层不直接改角色格位，只维护 presentation offset：
 
@@ -229,7 +257,7 @@ enemy_presentation_offset
 
 作为最终显示位置。
 
-### 7.3 真实位移平滑化
+### 8.3 真实位移平滑化
 
 Phase 2 逻辑：
 
@@ -241,7 +269,7 @@ old_slot → battle state 结算成 new_slot
 角色平滑落到 new_slot
 ```
 
-### 7.4 真实结果反馈
+### 8.4 真实结果反馈
 
 Phase 3 逻辑：
 
@@ -262,7 +290,7 @@ Phase 3 逻辑：
 | `miss_range` | 灰色 FX，显示“距外”，不播放受击闪红，追加掠影 |
 | `miss_facing` | 灰色 FX，显示“背向”，不播放受击闪红，追加掠影 |
 
-### 7.5 节奏精修
+### 8.5 节奏精修
 
 Phase 5 逻辑：
 
@@ -276,7 +304,7 @@ Phase 5 逻辑：
 
 ---
 
-## 8. 统一验收方式
+## 9. 统一验收方式
 
 进入：
 
@@ -330,7 +358,7 @@ Main → 进入视觉版战斗
 7. 终结类招式确认震动 / 火光 / 命中停顿略强
 ```
 
-### Phase 6 / 7 / 8 验收
+### Phase 6 / 7 / 8 / 9 验收
 
 ```text
 1. MainVisual.tscn 是否挂载 battle_controller_visual_presentation_assets.gd
@@ -343,7 +371,8 @@ Main → 进入视觉版战斗
 8. 正常命中时是否显示水墨命中爆点 SVG
 9. 防御牌是否额外显示墨盾 SVG
 10. 聚势牌是否额外显示气纹 SVG
-11. 如果 SVG 资源加载失败，是否仍能回退到父类 ColorRect 效果，不导致报错中断
+11. 所有效果是否没有明显遮挡卡牌、角色、格位和 Debug 信息
+12. 如果 SVG 资源加载失败，是否仍能回退到父类 ColorRect 效果，不导致报错中断
 ```
 
 当前验收状态：
@@ -356,11 +385,12 @@ Phase 5: NEEDS_LOCAL_VERIFY
 Phase 6: NEEDS_LOCAL_VERIFY
 Phase 7: NEEDS_LOCAL_VERIFY
 Phase 8: NEEDS_LOCAL_VERIFY
+Phase 9: NEEDS_LOCAL_VERIFY
 ```
 
 ---
 
-## 9. 下一阶段计划
+## 10. 下一阶段计划
 
 ### Phase 4：演出数据化
 
@@ -392,19 +422,19 @@ Phase 8: NEEDS_LOCAL_VERIFY
 4. presentation layer 优先读取显式字段，再 fallback 到当前推断规则
 ```
 
-### Phase 9：表现层收口与调参
+### Phase 10：验收后调参
 
-后续建议进入收口，不继续无限堆 FX：
+后续建议进入验收与调参，不继续无限堆 FX：
 
 ```text
-1. 本地统一验收 Phase 2 / 3 / 5 / 6 / 7 / 8
+1. 本地统一验收 Phase 2 / 3 / 5 / 6 / 7 / 8 / 9
 2. 根据实机观感调整大小、透明度、位置和停顿时间
 3. 再决定是否进入 CardData 演出字段数据化
 ```
 
 ---
 
-## 10. 当前最小可维护边界
+## 11. 当前最小可维护边界
 
 当前演出层是外层包装脚本，不应下沉到核心战斗规则层。后续如果要扩展，也优先在：
 
