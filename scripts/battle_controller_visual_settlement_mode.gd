@@ -9,6 +9,7 @@ extends "res://scripts/battle_controller_visual_presentation_stepwise.gd"
 # F8 still toggles settlement mode during local testing.
 
 const StoryBattleLoader = preload("res://scripts/story_battle_loader.gd")
+const BattleEffectApplier = preload("res://scripts/battle_effect_applier.gd")
 
 @export var story_encounter_id: String = "prologue_beach_teach"
 @export_enum("symmetric", "reactive") var settlement_mode_id: String = "symmetric"
@@ -191,27 +192,14 @@ func _apply_visual_settlement_mode() -> void:
 
 
 func _try_apply_reactive_enemy_pre_move() -> void:
-	if state_machine == null or not state_machine.is_reactive_mode():
-		return
 	if not battle_active or not awaiting_player_input:
 		return
-	if enemy == null or enemy_intent == null:
+	var result: Dictionary = BattleEffectApplier.apply_reactive_enemy_pre_move(state_machine, player, enemy, enemy_intent, _reactive_pre_move_round)
+	_reactive_pre_move_round = int(result.get("round", _reactive_pre_move_round))
+	if not bool(result.get("applied", false)):
 		return
-	if _reactive_pre_move_round == state_machine.round_index:
-		return
-	if enemy_intent.target_position < 0:
-		return
-	var from_position: int = enemy.position
-	var from_facing: String = enemy.facing
-	var to_position: int = clampi(enemy_intent.target_position, 0, BATTLE_SLOT_COUNT - 1)
-	var to_facing: String = enemy_intent.target_facing if enemy_intent.target_facing != "" else enemy.facing
-	enemy.position = to_position
-	enemy.facing = "left" if to_facing == "left" else "right"
-	enemy_intent.set_stance(enemy.position, enemy.facing)
-	state_machine.update_distance_from_positions(player, enemy)
-	_reactive_pre_move_round = state_machine.round_index
-	if log_label != null and (from_position != enemy.position or from_facing != enemy.facing):
-		log_label.append_text("\n[color=#8fd3ff]反应式：敌方先移动 %s → %s，并亮出攻击意图。[/color]" % [_slot_label_safe(from_position), _slot_label_safe(enemy.position)])
+	if log_label != null and bool(result.get("changed", false)):
+		log_label.append_text("\n[color=#8fd3ff]反应式：敌方先移动 %s → %s，并亮出攻击意图。[/color]" % [_slot_label_safe(int(result.get("from_position", 0))), _slot_label_safe(int(result.get("to_position", 0)))])
 	_show_combat_banner("敌方先移动，亮出威胁", Color("1c2a36"), Color("8fd3ff"))
 
 
