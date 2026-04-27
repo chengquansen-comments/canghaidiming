@@ -10,6 +10,7 @@ extends "res://scripts/battle_controller_visual_presentation_assets.gd"
 @export_enum("symmetric", "reactive") var settlement_mode_id: String = "symmetric"
 
 var _settlement_mode_selected := false
+var _reactive_pre_move_round := -1
 
 
 func _ready() -> void:
@@ -43,7 +44,7 @@ func _show_settlement_mode_selection() -> void:
 	if overlay_title != null:
 		overlay_title.text = "选择结算模式"
 	if overlay_body != null:
-		overlay_body.text = "对称式：敌我同时拆招，按先机/崩势/武境决定顺序。\n反应式：敌方先亮出威胁，玩家后行动并尝试破解。\n\n测试快捷键：战斗中按 F8 可切换模式。"
+		overlay_body.text = "对称式：敌我同时拆招，按先机/崩势/武境决定顺序。\n反应式：敌方先移动并亮出威胁，玩家后行动并尝试破解。\n\n测试快捷键：战斗中按 F8 可切换模式。"
 	_clear_overlay_actions()
 	_add_settlement_mode_button(BattleStateMachine.MODE_SYMMETRIC_ID, "对称式：双向拆招")
 	_add_settlement_mode_button(BattleStateMachine.MODE_REACTIVE_ID, "反应式：看招破解")
@@ -71,12 +72,14 @@ func _add_settlement_mode_button(mode_id: String, title: String) -> void:
 func _select_settlement_mode_and_continue(mode_id: String) -> void:
 	settlement_mode_id = mode_id
 	_settlement_mode_selected = true
+	_reactive_pre_move_round = -1
 	_apply_visual_settlement_mode()
 	super._show_role_selection()
 
 
 func set_visual_settlement_mode(value: String) -> void:
 	settlement_mode_id = value
+	_reactive_pre_move_round = -1
 	_apply_visual_settlement_mode()
 	_show_combat_banner("结算模式：%s" % ("反应式" if settlement_mode_id == BattleStateMachine.MODE_REACTIVE_ID else "对称式"), Color("1c2a36") if settlement_mode_id == BattleStateMachine.MODE_REACTIVE_ID else Color("2a2018"), Color("8fd3ff") if settlement_mode_id == BattleStateMachine.MODE_REACTIVE_ID else Color("ffd479"))
 	_refresh_ui()
@@ -96,17 +99,50 @@ func _apply_visual_settlement_mode() -> void:
 	print("[settlement-mode] ", state_machine.settlement_mode_id())
 
 
+func _try_apply_reactive_enemy_pre_move() -> void:
+	if state_machine == null or not state_machine.is_reactive_mode():
+		return
+	if not battle_active or not awaiting_player_input:
+		return
+	if enemy == null or enemy_intent == null:
+		return
+	if _reactive_pre_move_round == state_machine.round_index:
+		return
+	if enemy_intent.target_position < 0:
+		return
+	var from_position: int = enemy.position
+	var from_facing: String = enemy.facing
+	var to_position: int = clampi(enemy_intent.target_position, 0, BATTLE_SLOT_COUNT - 1)
+	var to_facing: String = enemy_intent.target_facing if enemy_intent.target_facing != "" else enemy.facing
+	enemy.position = to_position
+	enemy.facing = "left" if to_facing == "left" else "right"
+	enemy_intent.set_stance(enemy.position, enemy.facing)
+	state_machine.update_distance_from_positions(player, enemy)
+	_reactive_pre_move_round = state_machine.round_index
+	if log_label != null and (from_position != enemy.position or from_facing != enemy.facing):
+		log_label.append_text("\n[color=#8fd3ff]反应式：敌方先移动 %s → %s，并亮出攻击意图。[/color]" % [_slot_label_safe(from_position), _slot_label_safe(enemy.position)])
+	_show_combat_banner("敌方先移动，亮出威胁", Color("1c2a36"), Color("8fd3ff"))
+
+
+func _slot_label_safe(slot: int) -> String:
+	var labels := ["零位", "一位", "二位", "三位", "四位", "五位", "六位", "七位", "八位"]
+	if slot >= 0 and slot < labels.size():
+		return labels[slot]
+	return "%d位" % slot
+
+
 func _mode_status_suffix() -> String:
 	if state_machine == null:
 		return ""
 	var text := "\n结算模式：%s（%s）" % [state_machine.settlement_mode_label(), state_machine.settlement_mode_id()]
 	text += "\n快捷键：F8 切换结算模式"
 	if state_machine.is_reactive_mode():
-		text += "\n反应式规则：玩家响应后先结算；若打出崩势，敌方本回合攻击中断。"
+		text += "\n反应式规则：敌方先移动并亮意图；玩家响应后先结算；若打出崩势，敌方本回合攻击中断。"
 	return text
 
 
 func _refresh_ui() -> void:
+	_try_apply_reactive_enemy_pre_move()
 	super()
 	if status_label != null and state_machine != null:
 		status_label.append_text(_mode_status_suffix())
