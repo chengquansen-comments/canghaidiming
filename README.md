@@ -127,6 +127,26 @@ cd /Users/happy/Documents/Codex/canghaidiming
 python3 scripts/compile_tables.py
 ```
 
+编译器会同时校验剧情 visual_path 与 performance track 的运行资源路径，避免 TSV 指到缺失资源、非法 SVG、外链图片或远程资源。只想单独验收剧情演出资源时可运行：
+
+```bash
+python3 tools/validate_performance_tracks.py
+```
+
+## 美术管线文档
+
+当前美术文档入口：
+
+- `docs/ART_PIPELINE.md`：美术管线总入口、TSV/JSON/运行资源规则、正式美术分层
+- `docs/ART_DIRECTION_GUIDE.md`：风格基准、色板、构图和禁止事项
+- `docs/NODE_VISUAL_MATRIX.md`：节点、battle_id、visual_path、performance track、资源状态
+- `docs/ART_PRODUCTION_ROADMAP.md`：正式美术质量路线、截图验收和展示包计划
+- `docs/ART_REFERENCE_PROMPTS.md`：参考图 / 概念图提示词，不作为运行资源清单
+
+当前规则：运行资源优先使用纯 SVG；参考 PNG 只放在 `art_reference/generated/`，不直接写入 `visual_path`。
+
+正式运行 SVG 可用 `tools/generate_formal_art_assets.py` 生成；当前主角枪版 / 刀版半身与演出立绘已按 `NarrativeBattleContext.player_profile.role` 在剧情界面自动切换。
+
 编译完成后会自动覆盖生成：
 
 - `data/classes.json`

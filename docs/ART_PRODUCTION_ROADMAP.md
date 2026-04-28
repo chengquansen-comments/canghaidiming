@@ -1,454 +1,380 @@
-# 《大明之沧海嘀鸣》正式美术生产路线图
+# 《大明之沧海嘀鸣》正式美术质量路线图
 
-> 版本：v0.1  
-> 分支：`main`  
-> 来源：基于《美术规划.pdf》review 后，结合当前仓库 TSV / JSON / SVG 资源状态刷新。  
-> 用途：把“正式上线级美术目标”转成可执行的资源生产、挂接、验收路线。
+> 版本：v0.2
+> 分支：`main`
+> 文档入口：`docs/ART_PIPELINE.md`
+> 用途：把当前“可运行风格样张”升级为“正式美术质量”的生产、挂接、验收路线。
 
 ---
 
 ## 0. 总判断
 
-当前项目已经从“纯占位”推进到“可运行风格样张阶段”，但还不是正式美术资产阶段。
-
-当前正确方向不是继续随机补图，而是建立稳定闭环：
+当前项目已经完成第一阶段：
 
 ```text
-叙事源头 → 节点状态 → 参考图 → SVG 运行资源 → visual_path / track 挂接 → 游戏内截图验收
+TSV 策划入口
+→ JSON 编译产物
+→ 高质量 PNG 运行资源
+→ visual_path / performance_tracks 挂接
+→ NarrativeDemo 可见
 ```
 
-正式美术目标不是“古风漂亮图”，而是：
+这说明“美术管线能跑通”，但不等于“正式美术质量已经达标”。下一阶段目标从“补资源缺口”切换为：
 
 ```text
-明代海疆旧案感 + 军武压迫感 + 隐晦叙事痕迹
+正式源画定调
+→ 节点级精修
+→ 角色 / UI / 战斗背景统一精修
+→ 游戏内截图验收
+→ 对外展示包
 ```
 
-核心关键词：
+核心判断：
+
+```text
+P0 主流程已有运行接线基础。
+当前最大短板不是缺图，而是旧运行级 SVG 无法承载正式美术细节；下一阶段必须切到高质量 PNG，提升角色辨识度、空间真实感、材质和展示截图质量。
+```
+
+---
+
+## 1. 正式美术质量定义
+
+正式美术质量不是单张图更复杂，而是玩家不读 debug、不看文档，也能从画面上稳定读出：
 
 ```text
 明代海疆
-军门案卷
-残火黑潮
-卫所营门
-倭寇暗袭
-火器木匣
-缺页名册
-官泥封缄
+军武秩序
+旧案痕迹
+压案阴影
 忠义牺牲
 风起沧海
 ```
 
----
+每张正式资产必须满足 6 个维度：
 
-## 1. 当前完成度复评
-
-| 模块 | 旧评估 | 当前复评 | 判断 |
-|---|---:|---:|---|
-| 战斗背景 | 45% | 60% | 7 张 battle_bg 已完成一轮正式分镜级强化，可支撑 Demo 展示，但仍非宣发 key art |
-| 剧情表演区 | 25% | 30% | 结构已清楚，参考图与资源池开始建立，但 performance_tracks 尚未正式挂接 |
-| 角色美术 | 15% | 20% | 已有师父、倭寇、押运官等剪影资源池，但主角 / 师父 / Boss 正式半身仍缺 |
-| UI 美术 | 35% | 35% | 结构正确，但案卷 / 军令 / 兵书视觉包装未开始系统落地 |
-| 证据道具 | 10% | 35% | 已有火器箱、缺页案卷、无封泥信等基础 SVG；还需旧刀、火器刻印、湿名册、空木匣 |
-
-结论：
-
-```text
-战斗场景已可看；剧情演出和证据链还没真正跑起来。
-```
-
-下一步最重要的是：
-
-```text
-把“参考图”转成“SVG 运行资源”，再通过 node_status / performance_tracks 挂到主流程节点。
-```
-
----
-
-## 2. 当前文件口径
-
-美术生产必须遵守三层文件关系：
-
-```text
-剧情内容源头：
-- tables/narrative_mvp_prologue_steps.tsv
-- tables/narrative_mvp_nodes.tsv
-
-节点流程 / 实装 / 美术挂接源头：
-- tables/narrative_mvp_node_status.tsv
-
-编译产物 / 游戏运行读取：
-- data/narrative_mvp_nodes.json
-```
-
-执行规则：
-
-1. 美术意象看 TSV。
-2. 当前主流程优先级看 `node_status.tsv` 的 `flow_enabled=true`。
-3. 节点视觉挂接优先看 `node_status.tsv.visual_path`。
-4. 游戏内验收看 `data/narrative_mvp_nodes.json` 实际是否读到节点。
-5. `reserved` 节点先规划，不抢 P0。
-
----
-
-## 3. 正式美术三条生产线
-
-### 3.1 运行 SVG 线
-
-用于 Godot 实际读取。
-
-```text
-assets/pixel_battle/backgrounds/*.svg
-assets/pixel_battle/relics/*.svg
-assets/pixel_battle/portraits/*.svg
-assets/narrative/props/*.svg
-assets/narrative/silhouettes/*.svg
-```
-
-要求：
-
-- 纯 SVG。
-- 无外链。
-- 无字体。
-- 不内嵌标题文字。
-- 不新增第二套战斗背景层。
-- 不把路径写死到 GDScript。
-
-### 3.2 参考图线
-
-用于正式美术方向，不直接运行。
-
-```text
-art_reference/generated/*.png
-```
-
-当前建议保留：
-
-```text
-ref_night_knife_camp.png
-ref_old_master_saber.png
-ref_firearm_seal_mark.png
-ref_half_roster_wet.png
-ref_empty_wooden_case.png
-```
-
-这些图只作为：
-
-```text
-风格锚点 / 构图母版 / SVG 临摹参考
-```
-
-不要直接写入 `visual_path`。
-
-### 3.3 演出配置线
-
-用于剧情表演区升级。
-
-```text
-data/performance_tracks.json
-```
-
-目标不是单图替换，而是形成：
-
-```text
-background + prop + silhouette + mist + dim + fire_glow + camera_focus
-```
-
----
-
-## 4. 当前主流程 P0 节点
-
-按 `node_status.tsv` 当前主流程，P0 节点为：
-
-```text
-military_order
-beach_ambush
-beach_ambush_aftermath
-fishing_village_embers
-fishing_village_embers_aftermath
-ming_firearm
-altered_military_report
-transport_officer
-transport_officer_aftermath
-night_knife_camp
-wakou_boss
-military_coverup
-```
-
-其中最需要马上处理的是：
-
-| 优先级 | 节点 | 原因 | 下一步 |
-|---:|---|---|---|
-| 1 | `night_knife_camp` | 当前仍复用 `prologue_departure.svg`，但已有高质量参考图 | 新增 `narrative_night_knife_camp.svg` 并改 visual_path |
-| 2 | `ming_firearm` | 证据链核心，火器/官造/封泥需要明确 | 新增 / 强化火器刻印、火器 relic |
-| 3 | `altered_military_report` | 旧案线索核心，当前需要专属涂改军报视觉 | 新增 `prop_altered_military_report.svg` / relic 强化 |
-| 4 | `transport_officer_aftermath` | 半页名册是证据链关键 | 新增 `prop_half_roster_wet.svg`，确认 runtime 是否独立 |
-| 5 | `military_coverup` | 第一幕收束，必须有缺页 / 空木匣 / 师父门外 | 新增 `prop_empty_wooden_case.svg` 并挂接 |
-
----
-
-## 5. P0 立即执行包
-
-### 5.1 生成运行资源
-
-新增：
-
-```text
-assets/pixel_battle/backgrounds/narrative_night_knife_camp.svg
-assets/narrative/props/prop_old_master_saber.svg
-assets/narrative/props/prop_firearm_seal_mark.svg
-assets/narrative/props/prop_half_roster_wet.svg
-assets/narrative/props/prop_empty_wooden_case.svg
-```
-
-### 5.2 更新挂接
-
-修改：
-
-```text
-tables/narrative_mvp_node_status.tsv
-```
-
-将：
-
-```text
-night_knife_camp	...	res://assets/pixel_battle/backgrounds/prologue_departure.svg	...
-```
-
-改为：
-
-```text
-night_knife_camp	...	res://assets/pixel_battle/backgrounds/narrative_night_knife_camp.svg	...
-```
-
-### 5.3 刷新矩阵
-
-更新：
-
-```text
-docs/NODE_VISUAL_MATRIX.md
-```
-
-将 `night_knife_camp` 从：
-
-```text
-VISUAL_REUSED / NEEDS_ASSET
-```
-
-更新为：
-
-```text
-VISUAL_WIRED / DONE_BASE
-```
-
-道具资源标记为：
-
-```text
-ASSET_READY_UNWIRED
-```
-
----
-
-## 6. P1 证据链补齐包
-
-目标：玩家不看文字，也能看出旧案证据链。
-
-需要补齐：
-
-```text
-黑箭
-官泥脚印
-火器箱
-官造刻印
-涂改军报
-半页名册
-缺页案卷
-空木匣
-```
-
-建议新增 / 强化：
-
-```text
-assets/narrative/props/prop_official_mud_bootprint.svg
-assets/narrative/props/prop_altered_military_report.svg
-assets/narrative/props/prop_burnt_bowl.svg
-assets/narrative/props/prop_military_order_seal.svg
-assets/narrative/props/prop_coastal_patrol_map.svg
-assets/pixel_battle/relics/relic_ming_firearm.svg
-assets/pixel_battle/relics/relic_altered_military_report.svg
-```
-
----
-
-## 7. P2 剧情演出升级包
-
-优先升级这些 `performance_tracks`：
-
-```text
-night_knife_camp
-military_coverup
-ming_firearm
-altered_military_report
-transport_officer
-fishing_village_embers
-beach_ambush
-```
-
-每个 track 至少包含：
-
-```text
-scene_bg
-foreground_prop
-silhouette
-mist / dim / fire_glow
-camera_push / focus_target
-```
-
-示例：`night_knife_camp`
-
-```text
-背景：narrative_night_knife_camp.svg
-道具：prop_old_master_saber.svg + prop_firearm_seal_mark.svg
-剪影：sil_grinding_saber_shadow.svg
-效果：low_fire_glow + damp_mist + slow_push
-焦点：师父手停 / 火器刻印
-```
-
----
-
-## 8. P3 角色资产路线
-
-目标：先剪影和半身概念，不急着全套立绘。
-
-| 角色 | 资产规格 | 用途 |
-|---|---|---|
-| 主角青年武官 | 半身、战斗站姿、头像、剪影 | 主视觉 / 剧情 / 战斗 |
-| 师父 / 退伍老兵 | 半身、救援剪影、磨刀剪影、旧刀特写 | 序章 / 夜半磨刀 |
-| 小股倭寇首领 | 半身、Boss 剪影、坐火器箱姿态 | Boss 节点 |
-| 押运官 | 半身剪影、袖中半页名册姿态 | 押运官节点 |
-| 军门官员 | 案房剪影、朱批手势 | 军门压案 |
-
----
-
-## 9. P4 UI 美术路线
-
-UI 方向不是普通古风，而是：
-
-```text
-军令牌
-案卷纸
-官印封泥
-兵册名录
-海防图
-火器图纸
-刀谱残页
-```
-
-优先组件：
-
-| UI 组件 | 美术方向 |
+| 维度 | 达标要求 |
 |---|---|
-| 剧情文本框 | 案卷纸、淡墨边缘、缺页纹理 |
-| 选择按钮 | 军令牌 / 木签 / 朱砂批注 |
-| 战斗卡牌 | 武学招式谱 / 兵书残页 |
-| 敌人意图 | 刀光、枪势、火器、暗箭图标 |
-| 势 Posture | 墨痕 / 气势槽 |
-| 血量 | 暗朱红封线 |
-| 地图节点 | 海防图上的朱砂点 / 官印点 |
+| 叙事可读 | 一眼能读到节点核心物件或行动，不靠标题文字解释 |
+| 明代可信 | 服饰、武器、军械、营帐、案卷、船、官印不现代化、不玄幻化 |
+| 构图稳定 | 主视觉焦点清楚，字幕区和操作区不被关键物遮挡 |
+| 材质成立 | 金属、湿沙、木箱、纸张、火光、雾气有区分，不是一层平涂 |
+| 色彩统一 | 黑灰、宣纸米色、海雾灰蓝、暗朱红、少量暗金，不跑成泛古风 |
+| 实机有效 | 在 `NarrativeDemo` / `MainVisual` 中截图仍清楚、无错位、无过曝、无脏糊 |
 
 ---
 
-## 10. P5 展示包装路线
+## 2. 资产分层
 
-在 P0-P2 基本完成后，再启动：
+正式美术生产分四层，不混用：
 
-```text
-主视觉 key art
-标题字“沧海嘀鸣”
-Steam / itch capsule 草案
-3-5 张高质量游戏截图
-角色概念设定页
-```
+| 层级 | 路径 / 产物 | 用途 | 是否运行读取 |
+|---|---|---|---|
+| 叙事源头 | `tables/narrative_mvp_*.tsv` | 节点语义、visual_path、战斗触发 | 编译后读取 |
+| 参考 / 概念草案 | `art_reference/generated/*.png` | 构图、光色、角色设计、方向探索 | 不直接运行 |
+| 正式源画 / 母版 | `art_reference/final/*.png` | 精修母版、对外展示、运行导出来源 | 不直接运行 |
+| 正式运行导出 | `assets/**/*.png` | Godot / Web 实际读取 | 是 |
+| 矢量 / 回退资源 | `assets/**/*.svg` | UI 矢量、FX、调试占位、旧资源回退 | 仅限对应用途 |
+| 演出配置 | `tables/performance_*.tsv` → `data/performance_tracks.json` | 多焦点、镜头、雾、火光、角色 / 道具位置 | 是 |
 
-推荐截图：
-
-```text
-1. 黑潮救援
-2. 渔村残火
-3. 押运官对峙
-4. 夜半磨刀
-5. 军门压案
-```
-
----
-
-## 11. 里程碑
-
-### Milestone 1：主流程视觉不再明显复用
-
-完成标准：
+当前规则保持：
 
 ```text
-flow_enabled=true 的节点，不再出现明显不匹配的复用图。
-```
-
-当前最大缺口：
-
-```text
-night_knife_camp → prologue_departure.svg
-```
-
-### Milestone 2：证据链视觉成型
-
-完成标准：
-
-```text
-黑箭 / 官泥 / 火器箱 / 官造刻印 / 涂改军报 / 半页名册 / 缺页案卷 / 空木匣
-```
-
-这些证据在主流程中都有可见视觉表达。
-
-### Milestone 3：剧情节点有演出
-
-完成标准：
-
-```text
-背景 + 道具焦点 + 剪影 + 雾/火光/暗层 + 镜头推进
-```
-
-### Milestone 4：可截图展示
-
-完成标准：
-
-```text
-5 张截图能讲清楚“明代海疆 + 军门旧案 + 隐晦叙事 + 战斗先于解释”。
+art_reference/generated 不直接写入 visual_path。
+正式运行层优先使用 assets/**/*.png。
+SVG 不再作为正式场景 / 角色 / 道具美术目标，只保留 UI、FX、调试占位和旧资源回退。
+PNG 接入仍必须走 TSV / 编译 / performance / 实机截图验收。
 ```
 
 ---
 
-## 12. 下一步执行命令
+## 3. 质量状态标记
 
-下一步直接执行：
+后续在 `NODE_VISUAL_MATRIX.md` 和评审记录中使用以下状态：
+
+| 状态 | 含义 |
+|---|---|
+| `RUNTIME_WIRED` | 已接入 visual_path 或 performance track，游戏能显示 |
+| `STYLE_LOCKED` | 构图、色板、叙事焦点已定，不再大改方向 |
+| `FORMAL_SOURCE_READY` | 有可作为正式质量母版的参考图 / 精修稿 |
+| `RUNTIME_EXPORT_READY` | 正式母版已转成合规高质量 PNG 运行资源 |
+| `IN_GAME_ACCEPTED` | 已在 NarrativeDemo / MainVisual 截图验收通过 |
+| `SHOWCASE_READY` | 可用于商店页、宣传页或对外截图 |
+
+当前大多数资源处于：
 
 ```text
-执行 P0：生成 night_knife_camp SVG 和 4 个 prop SVG，并更新 node_status。
+RUNTIME_WIRED
 ```
 
-预期改动文件：
+下一阶段目标是把 P0 主流程推进到：
 
 ```text
-assets/pixel_battle/backgrounds/narrative_night_knife_camp.svg
-assets/narrative/props/prop_old_master_saber.svg
-assets/narrative/props/prop_firearm_seal_mark.svg
-assets/narrative/props/prop_half_roster_wet.svg
-assets/narrative/props/prop_empty_wooden_case.svg
-tables/narrative_mvp_node_status.tsv
-docs/NODE_VISUAL_MATRIX.md
+STYLE_LOCKED → FORMAL_SOURCE_READY → RUNTIME_EXPORT_READY → IN_GAME_ACCEPTED
 ```
 
-不应改动：
+---
+
+## 4. 阶段计划
+
+### F0：正式美术基准锁定
+
+目标：把文档口径从“运行样张 / SVG 优先”改为“正式质量 PNG 目标”。
+
+完成标准：
 
 ```text
-data/enemy_manifest.json
-data/battle_scene_manifest.json
-战斗 GDScript
+[x] ART_PIPELINE 明确 PNG 正式运行层
+[x] ART_DIRECTION_GUIDE 明确正式质量门槛和 PNG 资产规范
+[x] ART_PRODUCTION_ROADMAP 改为 PNG 正式质量路线
+[x] NODE_VISUAL_MATRIX 按 PNG visual_path / performance 状态滚动更新
+```
+
+### F1：序章 12 拍 PNG 化
+
+先把序章所有流程完全切到正式 PNG，避免一开局仍暴露旧 SVG 样张。
+
+| 顺序 | 拍点 | PNG 化目标 |
+|---:|---|---|
+| 1 | `black_tide` | 黑潮开场背景 PNG，读出夜、潮、火、逃 |
+| 2 | `father` | 父亲藏子 PNG 焦点，动作可读 |
+| 3 | `door` | 刀背敲门 PNG 道具焦点 |
+| 4 | `dead` | 抽象暗场 PNG，不直画屠杀 |
+| 5 | `wooden_blade` | 木刀打甲片 PNG 道具焦点 |
+| 6 | `fall` | 母亲鞋 / 火边 PNG 焦点 |
+| 7 | `master_arrives` | 师父挡眼 / 旧甲 PNG 人物焦点 |
+| 8 | `three_cards` | 刀、步、断气的三卡 / 刀谱 PNG 焦点 |
+| 9 | `military_word` | “军……”不能硬写成大字，改用黑箭前的压迫 PNG 焦点 |
+| 10 | `hidden_arrow` | 黑箭 PNG 焦点 |
+| 11 | `dont_look` | 师父看黑箭 PNG 焦点 |
+| 12 | `departure` | 旧刀归还 / 出山 PNG 焦点 |
+
+完成标准：
+
+```text
+序章 visual_path 和 performance track 不再依赖正式用途的 SVG。
+所有正式 PNG 来自 art_reference/final 或明确的 assets 导出。
+NarrativeDemo 走完整序章没有文本占位、低清图、debug 遮挡或 UI 遮挡。
+```
+
+当前执行状态：
+
+```text
+[x] 12 拍已改为逐拍 PNG performance stage。
+[x] `dead`、`three_cards`、`military_word` 已补正式 PNG 运行导出。
+[x] `tools/smoke_narrative_prologue_png.gd` 已验证 12 拍 stage / background / prop 资源可由 Godot 读取。
+[ ] 仍需人工截图确认构图质量与 UI 遮挡。
+```
+
+### F2：5 张展示级截图锁定
+
+序章完成后，再锁 5 张能代表项目气质的截图：
+
+| 截图 | 场景 | 目标 |
+|---|---|---|
+| S01 | 黑潮救援 / 序章 | 师父、黑箭、旧案第一钩子 |
+| S02 | 海边伏击 | 官泥脚印、芦苇枪尖、军伍感敌人 |
+| S03 | 渔村残火 | 残村、黑烟、孩子线索、村后火 |
+| S04 | 夜半磨刀 | 旧刀、火器刻印、师父手停 |
+| S05 | 军门压案 | 缺页案卷、空木匣、朱批、门外师父 |
+
+完成标准：
+
+```text
+每张截图都能在 3 秒内读出节点主题。
+无 debug 遮挡。
+字幕、选择按钮、主焦点不互相打架。
+可直接作为内部展示材料。
+```
+
+### F3：P0 节点正式精修
+
+优先处理主流程，不扩散到 reserved 节点：
+
+| 优先级 | 节点 | 当前状态 | 正式精修目标 |
+|---:|---|---|---|
+| 1 | `night_knife_camp` | `RUNTIME_WIRED` | 深夜湿地、旧刀、火器刻印、师父停手必须成为强焦点 |
+| 2 | `military_coverup` | `RUNTIME_WIRED` | 案卷缺页、朱批、空木匣、门外师父形成压案画面 |
+| 3 | `beach_ambush` / aftermath | `RUNTIME_WIRED` | 官泥脚印和军伍感敌人，区别普通海盗伏击 |
+| 4 | `fishing_village_embers` / aftermath | `RUNTIME_WIRED` | 村心先烧、孩子咳嗽线索、战后选择后果 |
+| 5 | `ming_firearm` | `RUNTIME_WIRED` | 官造刻印和保养良好的火器必须清楚 |
+| 6 | `altered_military_report` | `RUNTIME_WIRED` | 墨比血新、涂改痕、倒神像形成证据焦点 |
+| 7 | `transport_officer` / aftermath | `RUNTIME_WIRED` | 空车、半页湿名册、押运官恐惧要可读 |
+| 8 | `wakou_boss` | `RUNTIME_WIRED` | 破船、火器箱、军门火漆、岸上暗箭成为 Boss 记忆点 |
+
+### F4：角色与 UI 正式精修
+
+角色目标：
+
+| 角色 | 当前状态 | 正式目标 |
+|---|---|---|
+| 主角枪版 `hero_officer_spear` | 已生成路线半身 / 演出 PNG，并按 `player_profile.role=spearman` 接入 NarrativeDemo | 与刀版同脸同甲，明确明代军用长枪，绑定 `mid_spear` / `chain_thrust` / `pinning_hold` / `dragon_break` |
+| 主角刀版 `hero_officer_saber` | 已生成路线半身 / 演出 PNG，并按 `player_profile.role=blademaster` 接入 NarrativeDemo | 与枪版同脸同甲，明确明代腰刀 / 单刀，绑定 `swift_cut` / `cross_slash` / `dragonslash` / `rush_step` |
+| 师父老兵 | 运行级半身 PNG | 旧甲、旧刀、迟到的愧疚和危险感 |
+| Boss 倭首 | 运行级半身 PNG | 海寇身份 + 明制火器疑点，不能怪物化 |
+| 押运官 | 剪影 / portrait 资源 | 恐惧、湿名册、失械案压力 |
+| 军门上官 | 规划中 | 制度压迫，不画成脸谱奸臣 |
+
+主角双版本硬规则：
+
+```text
+枪版和刀版必须像同一个人。
+同一张脸、同一年龄、同一发带、同一明制札甲轮廓、同一深绛红战袍体系。
+只改变武器、站姿、手势和战斗重心。
+枪版不能手持刀；刀版不能出现长枪。
+```
+
+武器和招式绑定必须进入角色设定页、半身图、战斗站姿和后续动作包设计，不能只在文字说明里存在。
+
+当前已落地的运行资源：
+
+```text
+assets/pixel_battle/portraits/hero_officer_spear_bust.png
+assets/pixel_battle/portraits/hero_officer_saber_bust.png
+assets/pixel_battle/portraits/performance_hero_spear.png
+assets/pixel_battle/portraits/performance_hero_saber.png
+```
+
+接线规则：
+
+```text
+NarrativeBattleContext.player_profile.role=spearman
+→ 枪版半身 / 枪版演出立绘
+
+NarrativeBattleContext.player_profile.role=blademaster
+→ 刀版半身 / 刀版演出立绘
+```
+
+UI 目标：
+
+```text
+案卷纸文本框
+军令牌 / 木签式选择
+海防图大地图
+兵书残页式卡牌
+官印 / 封泥式状态图标
+```
+
+原则：UI 精修不能牺牲信息密度和可读性。
+
+### F5：战斗背景正式精修
+
+战斗背景不追求宣发插画，但必须做到：
+
+```text
+战斗舞台有空间深度
+前中后景清楚
+角色不融进背景
+敌我职业和距离选择仍易读
+背景和剧情节点气质一致
+```
+
+优先顺序：
+
+```text
+first_act_beach_ambush
+first_act_fishing_village_embers
+first_act_transport_officer
+first_act_wakou_boss
+prologue_master_rescue
+test_spearman_duel / test_blademaster_duel
+```
+
+### F6：展示包
+
+交付物：
+
+```text
+1 张主视觉 key art
+1 张标题 / capsule 试版
+5 张游戏内截图
+3 张角色设定页
+1 张证据链物件页
+1 段 30 秒 Web demo 录屏
+```
+
+展示包达标后，才进入下一轮“扩充节点 / 追加人生线 / 更多角色动画”。
+
+---
+
+## 5. 本轮不做
+
+为了保持质量，不在本阶段同时做这些事：
+
+```text
+不新增第二套背景层。
+不把参考 PNG 直接塞进 visual_path。
+不扩写 reserved 节点剧情。
+不新增多地图。
+不重构战斗规则。
+不为了单图漂亮破坏 TSV / performance 管线。
+不把 UI 做成遮挡文本的装饰画框。
+```
+
+---
+
+## 6. 验收流程
+
+每轮正式美术精修后必须跑：
+
+```bash
+python3 scripts/compile_tables.py
+python3 tools/validate_performance_tracks.py
+godot --headless --quit
+```
+
+截图验收：
+
+```text
+1. 进入 NarrativeDemo。
+2. 关闭 debug。
+3. 跑序章和第一幕主流程。
+4. 截取 F1 五张目标截图。
+5. 检查字幕、操作区、主焦点、角色半身、props 是否互相遮挡。
+6. 若遮挡，优先调 performance_timeline.tsv，不改 GDScript。
+```
+
+Web 验收：
+
+```bash
+rm -rf build/web build/web.zip
+./tools/build_and_serve_web.sh
+```
+
+通过标准：
+
+```text
+Web 可启动
+中文不乱码
+运行资源无缺失
+主流程截图不遮挡
+包体仍在可接受范围
+```
+
+---
+
+## 7. 下一步执行清单
+
+按顺序推进：
+
+```text
+1. 先按 F1 收序章 12 拍，逐拍确认 assets PNG 和 performance 焦点。
+2. `dead`、`three_cards`、`military_word` 先补最小正式 PNG，不再留“无 / P2”缺口。
+3. 更新 node_status.tsv 和 performance_*.tsv，把正式用途路径切到 PNG。
+4. 运行 compile_tables.py / validate_performance_tracks.py / Godot headless。
+5. NarrativeDemo 关闭 debug，走完整序章截图验收。
+6. 序章通过后，再锁 S01-S05 五张展示截图。
+7. 把通过验收的节点在 NODE_VISUAL_MATRIX 标为 IN_GAME_ACCEPTED。
+```
+
+当前最优先的一刀：
+
+```text
+prologue 12 beats
+```
+
+原因：
+
+```text
+序章是一开局，必须先确保玩家看到的第一套完整流程已经全部是正式高质量 PNG。
 ```
