@@ -9,6 +9,20 @@ extends "res://scripts/narrative_demo_ui_focus_controller.gd"
 const TUNED_STORY_FONT_SIZE := 72
 const TUNED_OPTION_FONT_SIZE := 25
 const TUNED_CAPTION_OFFSET_Y := 30
+const HIDDEN_SCENE_ART_OVERLAY_NODE_NAMES := [
+	"CinematicMistLayer",
+	"CinematicFirePulse",
+	"CinematicMaster",
+	"CinematicHero",
+	"CinematicForegroundProp",
+	"CinematicForegroundProp2",
+	"CinematicForegroundProp3",
+	"CinematicDim",
+	"CinematicFocus",
+	"NarrativeFocusDebugLayer",
+	"NarrativeFocusArtLayer",
+	"FocusWorldMapLayer",
+]
 
 func _ready() -> void:
 	super._ready()
@@ -105,15 +119,47 @@ func _update_focus_debug_panel() -> void:
 	_disable_scene_art_overlays()
 
 func _disable_scene_art_overlays() -> void:
+	_lock_scene_background_static()
+	_hide_named_scene_art_overlay_nodes()
 	_disable_cinematic_effect_layers()
 	_disable_performance_ui_panels()
 
+func _lock_scene_background_static() -> void:
+	_lock_texture_rect_static(cinematic_bg)
+	var bg_node := find_child("CinematicPerformanceBackground", true, false)
+	if bg_node is TextureRect:
+		_lock_texture_rect_static(bg_node as TextureRect)
+
+func _lock_texture_rect_static(tex_bg: TextureRect) -> void:
+	if tex_bg == null:
+		return
+	tex_bg.visible = true
+	tex_bg.scale = Vector2.ONE
+	tex_bg.position = Vector2.ZERO
+	tex_bg.rotation = 0.0
+	tex_bg.pivot_offset = Vector2.ZERO
+	tex_bg.modulate = Color.WHITE
+	tex_bg.self_modulate = Color.WHITE
+	tex_bg.offset_left = 0.0
+	tex_bg.offset_top = 0.0
+	tex_bg.offset_right = 0.0
+	tex_bg.offset_bottom = 0.0
+
+func _hide_named_scene_art_overlay_nodes() -> void:
+	for node_name in HIDDEN_SCENE_ART_OVERLAY_NODE_NAMES:
+		var node := find_child(node_name, true, false)
+		if node is CanvasItem:
+			var item := node as CanvasItem
+			item.visible = false
+			item.modulate = Color(1.0, 1.0, 1.0, 0.0)
+			item.self_modulate = Color(1.0, 1.0, 1.0, 0.0)
+		if node is Control:
+			var control := node as Control
+			control.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			control.custom_minimum_size = Vector2.ZERO
+
 func _disable_cinematic_effect_layers() -> void:
-	if cinematic_bg != null:
-		cinematic_bg.visible = true
-		cinematic_bg.scale = Vector2.ONE
-		cinematic_bg.position = Vector2.ZERO
-		cinematic_bg.modulate = Color.WHITE
+	_lock_scene_background_static()
 	if cinematic_mist != null:
 		cinematic_mist.visible = false
 		cinematic_mist.color = Color(0.0, 0.0, 0.0, 0.0)
