@@ -10,6 +10,7 @@ const TUNED_STORY_FONT_SIZE := 72
 const TUNED_OPTION_FONT_SIZE := 25
 const TUNED_CAPTION_OFFSET_Y := 30
 const STATIC_BACKGROUND_NODE_NAME := "CinematicPerformanceBackground"
+const STATIC_SCENE_ART_BACKGROUND_NODE_NAME := "StaticSceneArtBackground"
 const HIDDEN_SCENE_ART_OVERLAY_NODE_NAMES := [
 	"CinematicMistLayer",
 	"CinematicFirePulse",
@@ -38,11 +39,13 @@ const HIDDEN_SCENE_ART_NAME_FRAGMENTS := [
 ]
 const STATIC_SCENE_ART_KEEP_NAMES := [
 	"NarrativeDemo",
-	"CinematicPerformanceBackground",
+	"StaticSceneArtBackground",
 	"NarrativePerformanceCaptionLayer",
 	"NarrativePerformanceCaptionPanel",
 	"NarrativePerformanceCaptionText",
 ]
+
+var static_scene_art_background: TextureRect
 
 func _ready() -> void:
 	super._ready()
@@ -152,34 +155,93 @@ func _update_focus_debug_panel() -> void:
 	call_deferred("_disable_scene_art_overlays")
 
 func _disable_scene_art_overlays() -> void:
-	_lock_scene_background_static()
+	_sync_static_scene_art_background()
+	_hide_original_cinematic_background()
 	_hide_named_scene_art_overlay_nodes()
 	_hard_sanitize_scene_art_tree(self)
 	_disable_cinematic_effect_layers()
 	_disable_performance_ui_panels()
-	_lock_scene_background_static()
+	_sync_static_scene_art_background()
+	_hide_original_cinematic_background()
 
-func _lock_scene_background_static() -> void:
-	_lock_texture_rect_static(cinematic_bg)
+func _ensure_static_scene_art_background() -> TextureRect:
+	if static_scene_art_background != null and is_instance_valid(static_scene_art_background):
+		return static_scene_art_background
+	static_scene_art_background = TextureRect.new()
+	static_scene_art_background.name = STATIC_SCENE_ART_BACKGROUND_NODE_NAME
+	static_scene_art_background.anchor_left = 0.0
+	static_scene_art_background.anchor_top = 0.0
+	static_scene_art_background.anchor_right = 1.0
+	static_scene_art_background.anchor_bottom = _scene_art_bottom_anchor()
+	static_scene_art_background.offset_left = 0.0
+	static_scene_art_background.offset_top = 0.0
+	static_scene_art_background.offset_right = 0.0
+	static_scene_art_background.offset_bottom = 0.0
+	static_scene_art_background.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	static_scene_art_background.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	static_scene_art_background.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	static_scene_art_background.z_index = -100
+	static_scene_art_background.z_as_relative = false
+	static_scene_art_background.material = null
+	add_child(static_scene_art_background)
+	move_child(static_scene_art_background, 0)
+	return static_scene_art_background
+
+func _scene_art_bottom_anchor() -> float:
+	var viewport_size := get_viewport_rect().size
+	var operation_height: float = max(MIN_OPERATION_HEIGHT, viewport_size.y * (1.0 - PERFORMANCE_RATIO))
+	return max(0.48, OPERATION_BOTTOM - operation_height / max(1.0, viewport_size.y))
+
+func _sync_static_scene_art_background() -> void:
+	var static_bg := _ensure_static_scene_art_background()
+	var source_texture: Texture2D = null
+	if cinematic_bg != null and cinematic_bg.texture != null:
+		source_texture = cinematic_bg.texture
 	var bg_node := find_child(STATIC_BACKGROUND_NODE_NAME, true, false)
 	if bg_node is TextureRect:
-		_lock_texture_rect_static(bg_node as TextureRect)
+		var source_bg := bg_node as TextureRect
+		if source_bg.texture != null:
+			source_texture = source_bg.texture
+	if source_texture != null:
+		static_bg.texture = source_texture
+	_pin_static_scene_art_background(static_bg)
 
-func _lock_texture_rect_static(tex_bg: TextureRect) -> void:
-	if tex_bg == null:
+func _pin_static_scene_art_background(static_bg: TextureRect) -> void:
+	if static_bg == null:
 		return
-	tex_bg.visible = true
-	tex_bg.scale = Vector2.ONE
-	tex_bg.position = Vector2.ZERO
-	tex_bg.rotation = 0.0
-	tex_bg.pivot_offset = Vector2.ZERO
-	tex_bg.modulate = Color.WHITE
-	tex_bg.self_modulate = Color.WHITE
-	tex_bg.material = null
-	tex_bg.offset_left = 0.0
-	tex_bg.offset_top = 0.0
-	tex_bg.offset_right = 0.0
-	tex_bg.offset_bottom = 0.0
+	static_bg.visible = true
+	static_bg.anchor_left = 0.0
+	static_bg.anchor_top = 0.0
+	static_bg.anchor_right = 1.0
+	static_bg.anchor_bottom = _scene_art_bottom_anchor()
+	static_bg.offset_left = 0.0
+	static_bg.offset_top = 0.0
+	static_bg.offset_right = 0.0
+	static_bg.offset_bottom = 0.0
+	static_bg.scale = Vector2.ONE
+	static_bg.position = Vector2.ZERO
+	static_bg.rotation = 0.0
+	static_bg.pivot_offset = Vector2.ZERO
+	static_bg.modulate = Color.WHITE
+	static_bg.self_modulate = Color.WHITE
+	static_bg.material = null
+
+func _hide_original_cinematic_background() -> void:
+	if cinematic_bg != null:
+		_hide_background_source_node(cinematic_bg)
+	var bg_node := find_child(STATIC_BACKGROUND_NODE_NAME, true, false)
+	if bg_node is CanvasItem:
+		_hide_background_source_node(bg_node as CanvasItem)
+
+func _hide_background_source_node(node: CanvasItem) -> void:
+	if node == null:
+		return
+	if node.name == STATIC_SCENE_ART_BACKGROUND_NODE_NAME:
+		return
+	node.visible = false
+	node.modulate = Color(1.0, 1.0, 1.0, 0.0)
+	node.self_modulate = Color(1.0, 1.0, 1.0, 0.0)
+	node.material = null
 
 func _hide_named_scene_art_overlay_nodes() -> void:
 	for node_name in HIDDEN_SCENE_ART_OVERLAY_NODE_NAMES:
@@ -191,8 +253,10 @@ func _hard_sanitize_scene_art_tree(root: Node) -> void:
 		return
 	for child in root.get_children():
 		var child_name := str(child.name)
-		if child_name == STATIC_BACKGROUND_NODE_NAME and child is TextureRect:
-			_lock_texture_rect_static(child as TextureRect)
+		if child_name == STATIC_SCENE_ART_BACKGROUND_NODE_NAME and child is TextureRect:
+			_pin_static_scene_art_background(child as TextureRect)
+		elif child_name == STATIC_BACKGROUND_NODE_NAME and child is CanvasItem:
+			_hide_background_source_node(child as CanvasItem)
 		elif _should_hide_scene_art_node(child_name):
 			_hide_overlay_node(child)
 		_hard_sanitize_scene_art_tree(child)
@@ -208,6 +272,8 @@ func _should_hide_scene_art_node(node_name: String) -> bool:
 func _hide_overlay_node(node: Node) -> void:
 	if node == null:
 		return
+	if node.name == STATIC_SCENE_ART_BACKGROUND_NODE_NAME:
+		return
 	if node is CanvasItem:
 		var item := node as CanvasItem
 		item.visible = false
@@ -222,7 +288,8 @@ func _hide_overlay_node(node: Node) -> void:
 		control.position = Vector2.ZERO
 
 func _disable_cinematic_effect_layers() -> void:
-	_lock_scene_background_static()
+	_sync_static_scene_art_background()
+	_hide_original_cinematic_background()
 	if cinematic_mist != null:
 		cinematic_mist.visible = false
 		cinematic_mist.color = Color(0.0, 0.0, 0.0, 0.0)
