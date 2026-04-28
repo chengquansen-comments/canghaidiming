@@ -1,0 +1,26 @@
+order	id	title	scene	text	dialogue_json	combat_json	choices_json
+401	boss_ext_burning_ship_sighting	破船余火	海面漂着半截船。火还在。没有风。	"船断在海上。
+
+火还在烧。
+
+没有风。"	[]	"{""enabled"":false}"	"[{""label"":""登船查看"",""preview"":""旧案线索增加。"",""effects"":{""case_clues"":1},""combat"":null,""result"":""你踏上船板。\n脚下很稳。""},{""label"":""围船待命"",""preview"":""军功推进。"",""effects"":{""military_merit"":1},""combat"":null,""result"":""你下令围船。\n火没有变。""},{""label"":""驱散百姓"",""preview"":""清望增加。"",""effects"":{""clean_reputation"":1},""combat"":null,""result"":""人被带走。\n海面更空了。""}]"
+402	boss_ext_hold_full_of_crates	船底木箱	船底整排木箱。火未及。封漆完整。	"船底很整齐。
+
+箱排成行。
+
+封漆没裂。"	[]	"{""enabled"":false}"	"[{""label"":""逐箱检查"",""preview"":""旧案线索增加。"",""effects"":{""case_clues"":2},""combat"":null,""result"":""封印一样。\n像同一手。""},{""label"":""登记封存"",""preview"":""军功推进。"",""effects"":{""military_merit"":1},""combat"":null,""result"":""你封好编号。\n人来得很快。""},{""label"":""就地看守"",""preview"":""清望增加。"",""effects"":{""clean_reputation"":1},""combat"":null,""result"":""你留下人。\n没人靠近。""}]"
+403	boss_ext_master_freeze_arrow	黑箭再现	黑箭钉在桅上。角度很正。像示意。	"黑箭在桅上。
+
+角度很正。
+
+像在等人看。"	[]	"{""enabled"":false}"	"[{""label"":""拔下查看"",""preview"":""旧案线索增加。"",""effects"":{""case_clues"":1},""combat"":null,""result"":""你握住箭尾。\n手有点冷。""},{""label"":""上报军门"",""preview"":""军功推进。"",""effects"":{""military_merit"":1},""combat"":null,""result"":""你记下位置。\n没有碰它。""},{""label"":""不作声"",""preview"":""压下波动。"",""effects"":{},""combat"":null,""result"":""你看了一眼。\n没有再看。""}]"
+404	boss_ext_wakou_leader_battle	倭寇首领	火光后走出一人。步子很稳。像练过。	"火后有人走出。
+
+步子很稳。
+
+不像海盗。"	[]	"{""enabled"":true,""encounter_id"":""enc_wakou_boss"",""battle_id"":""first_act_wakou_boss"",""button"":""迎战""}"	[]
+405	boss_ext_aftermath_choice	火后之选	火在烧。箱在船底。人已倒。	"火还在烧。
+
+箱还在船底。
+
+人已经倒下。"	[]	"{""enabled"":false}"	"[{""label"":""斩首报功"",""preview"":""军功入册。"",""effects"":{""military_merit"":2},""combat"":null,""result"":""首级落进麻袋。\n火器箱还在船底。\n你没有再看。""},{""label"":""留证追查"",""preview"":""旧案浮起。"",""effects"":{""case_clues"":2},""combat"":null,""result"":""箱底有火漆。\n军门的火漆。\n师父看见时，手停了一下。""},{""label"":""烧船灭迹"",""preview"":""沉默退下。"",""effects"":{""military_merit"":1,""case_clues"":-1},""combat"":null,""result"":""火很快。\n证据也是。\n海风把灰吹回岸上。""}]"
