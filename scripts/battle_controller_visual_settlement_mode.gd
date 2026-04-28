@@ -9,7 +9,6 @@ extends "res://scripts/battle_controller_visual_presentation_stepwise.gd"
 # F8 still toggles settlement mode during local testing.
 
 const StoryBattleLoader = preload("res://scripts/story_battle_loader.gd")
-const BattleEffectApplier = preload("res://scripts/battle_effect_applier.gd")
 
 @export var story_encounter_id: String = "prologue_beach_teach"
 @export_enum("symmetric", "reactive") var settlement_mode_id: String = "symmetric"
