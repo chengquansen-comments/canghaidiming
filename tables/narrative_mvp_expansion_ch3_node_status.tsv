@@ -1,0 +1,8 @@
+id	flow_enabled	flow_order	column	type	visual_path	implementation_status	note
+ch3_firearm_marking	false		疑点	旧物		reserved	第三章：火器之影扩展节点：明制火器刻印；当前不进入 MVP 主流程
+ch3_sealed_crate	false		疑点	旧物		reserved	第三章：火器之影扩展节点：封漆木箱；当前不进入 MVP 主流程
+ch3_escort_silence	false		压迫	事件		reserved	第三章：火器之影扩展节点：押运无声；当前不进入 MVP 主流程
+ch3_escort_clash_battle	false		压迫	精英战斗		reserved	第三章：火器之影扩展节点：押运冲突；当前不进入 MVP 主流程
+ch3_escort_aftermath	false		压迫	战后处理		reserved	第三章：火器之影扩展节点：押运之后；当前不进入 MVP 主流程
+ch3_burned_storehouse	false		压迫	事件		reserved	第三章：火器之影扩展节点：焦黑仓屋；当前不进入 MVP 主流程
+ch3_official_notice	false		军门	事件		reserved	第三章：火器之影扩展节点：军门告示；当前不进入 MVP 主流程
