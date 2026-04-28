@@ -104,7 +104,7 @@ func _add_cinematic_layers() -> void:
 	cinematic_bg.anchor_left = 0.0
 	cinematic_bg.anchor_top = 0.0
 	cinematic_bg.anchor_right = 1.0
-	cinematic_bg.anchor_bottom = PERFORMANCE_RATIO
+	cinematic_bg.anchor_bottom = OPERATION_BOTTOM
 	cinematic_bg.offset_left = 0
 	cinematic_bg.offset_top = 0
 	cinematic_bg.offset_right = 0
@@ -261,7 +261,7 @@ func _apply_cinematic_layout() -> void:
 	var viewport_size: Vector2 = get_viewport_rect().size
 	var operation_height: float = max(MIN_OPERATION_HEIGHT, viewport_size.y * (1.0 - PERFORMANCE_RATIO))
 	var operation_top: float = max(0.48, OPERATION_BOTTOM - operation_height / max(1.0, viewport_size.y))
-	var performance_bottom: float = operation_top
+	var performance_bottom: float = OPERATION_BOTTOM
 	if cinematic_bg != null:
 		cinematic_bg.anchor_bottom = performance_bottom
 		cinematic_bg.offset_left = 0
