@@ -1,4 +1,4 @@
-extends "res://scripts/battle_controller_visual_presentation_mode_aware.gd"
+extends "res://scripts/battle_controller_visual_preview_position_guard.gd"
 
 # Thin runtime wrapper for story-battle selection and settlement-mode switching.
 #
