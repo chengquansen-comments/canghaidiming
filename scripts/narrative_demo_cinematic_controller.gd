@@ -12,7 +12,20 @@ const PERFORMANCE_RATIO: float = 0.6667
 const OPERATION_BOTTOM: float = 0.99
 const MIN_OPERATION_HEIGHT: float = 340.0
 const PERFORMANCE_TRACKS_PATH := "res://data/performance_tracks.json"
-const FORMAL_PROLOGUE_BG_DIR := "res://assets/pixel_battle/backgrounds/formal/prologue"
+const FORMAL_PROLOGUE_BACKGROUNDS := [
+	"res://assets/pixel_battle/backgrounds/formal/prologue/01_black_tide.png",
+	"res://assets/pixel_battle/backgrounds/formal/prologue/02_father.png",
+	"res://assets/pixel_battle/backgrounds/formal/prologue/03_door.png",
+	"res://assets/pixel_battle/backgrounds/formal/prologue/04_dead.png",
+	"res://assets/pixel_battle/backgrounds/formal/prologue/05_wooden_blade.png",
+	"res://assets/pixel_battle/backgrounds/formal/prologue/06_fall.png",
+	"res://assets/pixel_battle/backgrounds/formal/prologue/07_master_arrives.png",
+	"res://assets/pixel_battle/backgrounds/formal/prologue/08_three_cards.png",
+	"res://assets/pixel_battle/backgrounds/formal/prologue/09_military_word.png",
+	"res://assets/pixel_battle/backgrounds/formal/prologue/10_hidden_arrow.png",
+	"res://assets/pixel_battle/backgrounds/formal/prologue/11_dont_look.png",
+	"res://assets/pixel_battle/backgrounds/formal/prologue/12_departure.png",
+]
 const PROLOGUE_BLACK_TIDE := "res://assets/pixel_battle/backgrounds/prologue_black_tide.svg"
 const PROLOGUE_RESCUE := "res://assets/pixel_battle/backgrounds/prologue_master_rescue.svg"
 const PROLOGUE_ARROW := "res://assets/pixel_battle/backgrounds/prologue_arrow_silence.svg"
@@ -40,12 +53,9 @@ var cinematic_stage: String = ""
 var cinematic_stage_time: float = 0.0
 var performance_tracks: Dictionary = {}
 var performance_tracks_loaded: bool = false
-var formal_prologue_background_by_number: Dictionary = {}
-var formal_prologue_backgrounds_loaded: bool = false
 
 func _ready() -> void:
 	_load_performance_tracks()
-	_load_formal_prologue_backgrounds()
 	_add_cinematic_layers()
 	super._ready()
 	_add_world_map_layer()
@@ -75,40 +85,6 @@ func _load_performance_tracks() -> void:
 	if parsed is Dictionary:
 		performance_tracks = parsed
 		performance_tracks_loaded = true
-
-func _load_formal_prologue_backgrounds() -> void:
-	formal_prologue_backgrounds_loaded = true
-	formal_prologue_background_by_number.clear()
-	var dir := DirAccess.open(FORMAL_PROLOGUE_BG_DIR)
-	if dir == null:
-		return
-	dir.list_dir_begin()
-	var file_name := dir.get_next()
-	while not file_name.is_empty():
-		if not dir.current_is_dir() and file_name.to_lower().ends_with(".png"):
-			var bg_number := _formal_prologue_background_number(file_name)
-			if bg_number >= 1 and bg_number <= 12:
-				formal_prologue_background_by_number[bg_number] = "%s/%s" % [FORMAL_PROLOGUE_BG_DIR, file_name]
-		file_name = dir.get_next()
-	dir.list_dir_end()
-
-func _formal_prologue_background_number(file_name: String) -> int:
-	# Expected naming convention: 01_black_tide.png, 02_xxx.png ... 12_xxx.png.
-	# Only the first two numeric characters are used for binding.
-	if file_name.length() < 2:
-		return -1
-	var prefix := file_name.substr(0, 2)
-	if not prefix.is_valid_int():
-		return -1
-	return int(prefix)
-
-func _formal_prologue_background_for_step(step: int, fallback_path: String) -> String:
-	if not formal_prologue_backgrounds_loaded:
-		_load_formal_prologue_backgrounds()
-	var bg_number := step + 1
-	if formal_prologue_background_by_number.has(bg_number):
-		return str(formal_prologue_background_by_number[bg_number])
-	return fallback_path
 
 func _render_visual(path: String, _fallback_text: String) -> void:
 	var resolved_path: String = _cinematic_background_path(path)
@@ -187,7 +163,7 @@ func _current_node_id() -> String:
 func _cinematic_stage_key() -> String:
 	if not in_prologue:
 		return _current_node_id()
-	if step_index >= 0 and step_index < 12:
+	if step_index >= 0 and step_index < FORMAL_PROLOGUE_BACKGROUNDS.size():
 		return "prologue_%02d" % [step_index + 1]
 	if step_index == PROLOGUE_CAREER_STEP:
 		return "departure"
@@ -196,20 +172,11 @@ func _cinematic_stage_key() -> String:
 func _cinematic_background_path(path: String) -> String:
 	if not in_prologue:
 		return path
-	if step_index >= 0 and step_index < 12:
-		return _formal_prologue_background_for_step(step_index, _legacy_prologue_background_path())
+	if step_index >= 0 and step_index < FORMAL_PROLOGUE_BACKGROUNDS.size():
+		return FORMAL_PROLOGUE_BACKGROUNDS[step_index]
 	if step_index == PROLOGUE_CAREER_STEP:
 		return PROLOGUE_DEPARTURE
 	return path
-
-func _legacy_prologue_background_path() -> String:
-	if step_index <= 3:
-		return PROLOGUE_BLACK_TIDE
-	if step_index <= 8:
-		return PROLOGUE_RESCUE
-	if step_index <= 11:
-		return PROLOGUE_ARROW
-	return PROLOGUE_DEPARTURE
 
 func _node_performance_data(_stage: String) -> Dictionary:
 	return NODE_PERFORMANCE["node"]
