@@ -1,0 +1,36 @@
+order	id	title	scene	text	dialogue_json	combat_json	choices_json
+201	ch3_firearm_marking	明制火器刻印	铁件擦净。刻印清晰。火门磨得很亮。	"铁件擦得很净。
+
+刻印很清。
+
+火门磨得很亮。"	[]	"{""enabled"":false}"	"[{""label"":""上交登记"",""preview"":""军功推进。"",""effects"":{""military_merit"":1},""combat"":null,""result"":""你封好编号。\n手很稳。""},{""label"":""私下比对"",""preview"":""旧案线索增加。"",""effects"":{""case_clues"":1},""combat"":null,""result"":""刻印对得上。\n你没有说。""},{""label"":""问师父"",""preview"":""旧案线索增加。"",""effects"":{""case_clues"":1},""combat"":null,""result"":""师父没有看你。\n他只看火门。""}]"
+202	ch3_sealed_crate	封漆木箱	木箱半开。火漆未裂。封印很新。	"箱子半开。
+
+火漆还新。
+
+封印没有裂。"	[]	"{""enabled"":false}"	"[{""label"":""原封上交"",""preview"":""军功入册。"",""effects"":{""military_merit"":1},""combat"":null,""result"":""箱子被收走。\n收得很快。""},{""label"":""暗中拓印"",""preview"":""旧案线索增加。"",""effects"":{""case_clues"":2},""combat"":null,""result"":""你拓下一角。\n纸很薄。""},{""label"":""当场拆封"",""preview"":""清望增加。"",""effects"":{""clean_reputation"":1},""combat"":null,""result"":""封漆断开。\n没人出声。""}]"
+203	ch3_escort_silence	押运无声	押运队整齐。脚步同拍。无人说话。	"队形很齐。
+
+步子同拍。
+
+没人说话。"	[]	"{""enabled"":false}"	"[{""label"":""跟队观察"",""preview"":""旧案线索增加。"",""effects"":{""case_clues"":1},""combat"":null,""result"":""脚步没有乱。\n像练过。""},{""label"":""截停查验"",""preview"":""军功推进。"",""effects"":{""military_merit"":1},""combat"":null,""result"":""他们停下。\n目光没有动。""},{""label"":""放行跟踪"",""preview"":""旧案线索增加。"",""effects"":{""case_clues"":1},""combat"":null,""result"":""你压低距离。\n队形没变。""}]"
+204	ch3_escort_clash_battle	押运冲突	火门先响。人后动。阵型未散。	"火门先响。
+
+人后动。
+
+阵型没有散。"	[]	"{""enabled"":true,""encounter_id"":""enc_transport_officer"",""battle_id"":""chapter3_escort_clash"",""button"":""迎战""}"	[]
+205	ch3_escort_aftermath	押运之后	倒下的人整齐。火器收好。像交接。	"人倒得很齐。
+
+火器收得很快。
+
+像在交接。"	[]	"{""enabled"":false}"	"[{""label"":""收缴报功"",""preview"":""军功入册。"",""effects"":{""military_merit"":1},""combat"":null,""result"":""你清点火器。\n数目对得上。""},{""label"":""逐件查验"",""preview"":""旧案线索增加。"",""effects"":{""case_clues"":2},""combat"":null,""result"":""编号连续。\n像同一批。""},{""label"":""就地封存"",""preview"":""清望增加。"",""effects"":{""clean_reputation"":1},""combat"":null,""result"":""你封好箱口。\n没人反对。""}]"
+206	ch3_burned_storehouse	焦黑仓屋	仓屋烧过。墙还温。铁件未毁。	"墙是黑的。
+
+还在温。
+
+铁没有化。"	[]	"{""enabled"":false}"	"[{""label"":""清点残物"",""preview"":""军功推进。"",""effects"":{""military_merit"":1},""combat"":null,""result"":""你记下残件。\n数目不乱。""},{""label"":""搜寻痕迹"",""preview"":""旧案线索增加。"",""effects"":{""case_clues"":1},""combat"":null,""result"":""火是从内起的。\n不是外烧。""},{""label"":""安抚百姓"",""preview"":""清望增加。"",""effects"":{""clean_reputation"":1},""combat"":null,""result"":""人慢慢出来。\n没人敢说。""}]"
+207	ch3_official_notice	军门告示	告示新贴。字很整。落款很快。	"告示很新。
+
+字很整。
+
+落款很快。"	[]	"{""enabled"":false}"	"[{""label"":""按令执行"",""preview"":""军功推进。"",""effects"":{""military_merit"":1},""combat"":null,""result"":""你收起告示。\n没有停。""},{""label"":""对照实情"",""preview"":""旧案线索增加。"",""effects"":{""case_clues"":1},""combat"":null,""result"":""字对不上事。\n你没有改。""},{""label"":""当众宣读"",""preview"":""清望增加。"",""effects"":{""clean_reputation"":1},""combat"":null,""result"":""人听完散开。\n没人提问。""}]"
