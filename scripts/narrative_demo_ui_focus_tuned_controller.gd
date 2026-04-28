@@ -18,6 +18,10 @@ func _process(delta: float) -> void:
 	super._process(delta)
 	_disable_cinematic_effect_layers()
 
+func _render() -> void:
+	super._render()
+	_disable_cinematic_effect_layers()
+
 func _ensure_focus_story_caption() -> void:
 	if focus_story_layer != null:
 		return
@@ -81,13 +85,13 @@ func _style_button_box(box: VBoxContainer) -> void:
 		elif child is Label:
 			_hide_control(child as Control)
 
-func _update_cinematic_motion(delta: float) -> void:
+func _update_cinematic_motion(_delta: float) -> void:
 	_disable_cinematic_effect_layers()
 
-func _update_layer_motion(zoom: float, pan_x: float, pan_y: float, dim_alpha: float, mist_alpha: float, fire_alpha: float) -> void:
+func _update_layer_motion(_zoom: float, _pan_x: float, _pan_y: float, _dim_alpha: float, _mist_alpha: float, _fire_alpha: float) -> void:
 	_disable_cinematic_effect_layers()
 
-func _update_character_motion(zoom: float) -> void:
+func _update_character_motion(_zoom: float) -> void:
 	_disable_cinematic_effect_layers()
 
 func _update_cinematic_characters() -> void:
