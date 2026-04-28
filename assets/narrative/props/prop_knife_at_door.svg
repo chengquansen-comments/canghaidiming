@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <defs>
+    <linearGradient id="wood" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4c4030"/>
+      <stop offset="1" stop-color="#16130f"/>
+    </linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="2"/></filter>
+  </defs>
+  <rect width="640" height="360" fill="none"/>
+  <ellipse cx="316" cy="304" rx="216" ry="28" fill="#050606" opacity="0.24" filter="url(#soft)"/>
+  <path d="M158 42 L498 58 L476 312 L136 292 Z" fill="url(#wood)" opacity="0.78"/>
+  <g stroke="#090a09" stroke-width="5" opacity="0.26">
+    <path d="M224 48 L202 296"/>
+    <path d="M312 54 L296 304"/>
+    <path d="M408 58 L386 306"/>
+  </g>
+  <path d="M82 172 L470 130" stroke="#090a09" stroke-width="22" stroke-linecap="round" opacity="0.52"/>
+  <path d="M160 164 L516 126" stroke="#c2b28a" stroke-width="8" stroke-linecap="round" opacity="0.42"/>
+  <path d="M480 122 L566 114 L520 144 Z" fill="#c2b28a" opacity="0.46"/>
+  <path d="M246 196 C302 174 366 180 430 208" stroke="#7c2e25" stroke-width="8" stroke-linecap="round" opacity="0.34" fill="none"/>
+  <circle cx="382" cy="198" r="10" fill="#0b0c0b" opacity="0.46"/>
+</svg>

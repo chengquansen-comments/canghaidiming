@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <defs>
+    <radialGradient id="wax" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#a53b2c" stop-opacity="0.72"/>
+      <stop offset="0.62" stop-color="#6f241e" stop-opacity="0.62"/>
+      <stop offset="1" stop-color="#260f0d" stop-opacity="0.12"/>
+    </radialGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="3"/></filter>
+  </defs>
+  <rect width="640" height="360" fill="none"/>
+  <ellipse cx="326" cy="292" rx="210" ry="28" fill="#050606" opacity="0.22" filter="url(#soft)"/>
+  <path d="M132 88 L514 64 L548 252 L174 288 Z" fill="#1a1712" opacity="0.76"/>
+  <path d="M156 104 L506 82" stroke="#9b8356" stroke-width="8" stroke-linecap="round" opacity="0.26"/>
+  <circle cx="356" cy="176" r="76" fill="url(#wax)" filter="url(#soft)"/>
+  <circle cx="356" cy="176" r="48" fill="none" stroke="#1a0b09" stroke-width="9" opacity="0.32"/>
+  <path d="M326 154 L390 154 M326 176 L390 176 M326 198 L390 198 M344 132 L334 220 M376 132 L366 220" stroke="#170a08" stroke-width="7" stroke-linecap="round" opacity="0.36"/>
+  <path d="M146 256 C246 222 360 278 530 220" stroke="#8b3126" stroke-width="8" stroke-linecap="round" opacity="0.26" fill="none"/>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <defs>
+    <linearGradient id="blade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#9a8056"/>
+      <stop offset="0.55" stop-color="#5f4b32"/>
+      <stop offset="1" stop-color="#211a14"/>
+    </linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="2"/></filter>
+  </defs>
+  <rect width="640" height="360" fill="none"/>
+  <ellipse cx="322" cy="282" rx="232" ry="28" fill="#060707" opacity="0.24" filter="url(#soft)"/>
+  <path d="M88 222 C198 180 326 126 506 74 C530 68 548 76 560 92 C382 158 248 212 122 260 C106 254 94 242 88 222 Z" fill="url(#blade)" opacity="0.88"/>
+  <path d="M132 230 C260 176 384 126 526 84" stroke="#d3bd82" stroke-width="8" stroke-linecap="round" opacity="0.34"/>
+  <path d="M92 236 L164 270" stroke="#15110d" stroke-width="20" stroke-linecap="round" opacity="0.72"/>
+  <path d="M64 256 L146 292" stroke="#0b0c0b" stroke-width="26" stroke-linecap="round" opacity="0.82"/>
+  <path d="M236 184 C270 198 310 198 346 178" stroke="#7b2c23" stroke-width="6" stroke-linecap="round" opacity="0.28" fill="none"/>
+</svg>

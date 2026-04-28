@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <defs>
+    <radialGradient id="metal" cx="48%" cy="42%" r="56%">
+      <stop offset="0" stop-color="#3a342b"/>
+      <stop offset="0.58" stop-color="#151819"/>
+      <stop offset="1" stop-color="#080909"/>
+    </radialGradient>
+    <filter id="shadow"><feGaussianBlur stdDeviation="3"/></filter>
+  </defs>
+  <rect width="640" height="360" fill="none"/>
+  <ellipse cx="322" cy="212" rx="156" ry="38" fill="#080909" opacity="0.28" filter="url(#shadow)"/>
+  <circle cx="320" cy="176" r="124" fill="url(#metal)"/>
+  <circle cx="320" cy="176" r="106" fill="none" stroke="#8a6a3a" stroke-width="10" opacity="0.42"/>
+  <circle cx="320" cy="176" r="84" fill="none" stroke="#7e2e28" stroke-width="6" opacity="0.52"/>
+  <circle cx="320" cy="176" r="116" fill="none" stroke="#d8c9a5" stroke-width="3" opacity="0.26"/>
+  <g stroke="#8a6a3a" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter" opacity="0.78" fill="none">
+    <path d="M252 112 L300 112 L300 154 L266 154 L266 134 L288 134"/>
+    <path d="M340 112 L390 112 L390 154 L354 154 L354 134 L380 134"/>
+    <path d="M252 194 L302 194 L302 238 L266 238 L266 216 L290 216"/>
+    <path d="M340 194 L390 194 L390 238 L354 238 L354 216 L380 216"/>
+    <path d="M226 176 L414 176"/>
+    <path d="M320 88 L320 264"/>
+    <path d="M236 134 L236 224"/>
+    <path d="M404 132 L404 224"/>
+  </g>
+  <g stroke="#7e2e28" stroke-width="4" stroke-linecap="round" opacity="0.66">
+    <path d="M250 126 L300 126"/>
+    <path d="M344 128 L390 128"/>
+    <path d="M258 208 L302 208"/>
+    <path d="M344 210 L386 210"/>
+    <path d="M242 178 L402 178"/>
+  </g>
+  <g stroke="#d8c9a5" stroke-width="3" stroke-linecap="round" opacity="0.36">
+    <path d="M228 92 L254 82"/>
+    <path d="M214 238 L238 250"/>
+    <path d="M424 104 L452 92"/>
+    <path d="M410 262 L442 248"/>
+    <path d="M294 62 L336 56"/>
+  </g>
+  <path d="M210 94 C260 42 382 42 430 96" stroke="#5f563e" stroke-width="18" opacity="0.3" fill="none"/>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="720" viewBox="0 0 640 720">
+  <defs>
+    <linearGradient id="robe" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b3930"/><stop offset="1" stop-color="#090a09"/></linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="4"/></filter>
+  </defs>
+  <rect width="640" height="720" fill="none"/>
+  <ellipse cx="318" cy="666" rx="226" ry="38" fill="#050606" opacity="0.30" filter="url(#soft)"/>
+  <path d="M160 350 C206 276 422 270 474 354 L538 674 L110 674 Z" fill="url(#robe)" opacity="0.94"/>
+  <path d="M230 360 L404 354 L386 624 L210 628 Z" fill="#1c2020" opacity="0.72"/>
+  <path d="M226 172 C238 82 406 82 422 178 C432 250 386 316 318 316 C250 316 216 246 226 172 Z" fill="#b79872" opacity="0.88"/>
+  <path d="M214 164 C258 88 380 80 430 164 C390 132 282 132 214 164 Z" fill="#d0c7b2" opacity="0.48"/>
+  <path d="M220 202 C260 160 382 158 430 204 C424 126 376 80 316 80 C252 82 218 130 220 202 Z" fill="#161818" opacity="0.62"/>
+  <path d="M250 232 C276 244 300 242 322 226 M344 226 C370 244 400 242 418 226" stroke="#211913" stroke-width="9" stroke-linecap="round" opacity="0.48" fill="none"/>
+  <path d="M292 282 C322 302 360 294 388 276" stroke="#30231c" stroke-width="8" stroke-linecap="round" opacity="0.56" fill="none"/>
+  <path d="M282 316 C320 350 366 338 396 310" stroke="#d8c69c" stroke-width="8" stroke-linecap="round" opacity="0.32" fill="none"/>
+  <path d="M132 478 C236 422 390 430 506 476" stroke="#7a2c24" stroke-width="16" stroke-linecap="round" opacity="0.28" fill="none"/>
+</svg>

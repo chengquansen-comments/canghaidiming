@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#303838"/>
+      <stop offset="0.52" stop-color="#64675e"/>
+      <stop offset="1" stop-color="#111312"/>
+    </linearGradient>
+    <linearGradient id="road" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4a4638"/>
+      <stop offset="1" stop-color="#151816"/>
+    </linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="7"/></filter>
+  </defs>
+  <rect width="1280" height="720" fill="url(#sky)"/>
+  <rect width="1280" height="720" fill="#060707" opacity="0.16"/>
+  <path d="M0 430 C220 392 360 438 566 404 C794 368 984 424 1280 360 L1280 720 L0 720 Z" fill="url(#road)" opacity="0.84"/>
+  <path d="M164 476 C346 430 548 456 774 418" stroke="#0a0c0b" stroke-width="24" stroke-linecap="round" opacity="0.40" fill="none"/>
+  <path d="M188 560 C404 500 628 540 984 462" stroke="#0a0c0b" stroke-width="28" stroke-linecap="round" opacity="0.38" fill="none"/>
+  <path d="M620 300 L826 260 L1010 348 L960 492 L566 508 Z" fill="#0b0d0c" opacity="0.66"/>
+  <path d="M654 310 L826 280 L962 348 L924 450 L614 466 Z" fill="#26231c" opacity="0.54"/>
+  <path d="M688 320 L846 292" stroke="#aa8c55" stroke-width="8" stroke-linecap="round" opacity="0.28"/>
+  <circle cx="648" cy="486" r="42" fill="#080909" opacity="0.76"/>
+  <circle cx="930" cy="462" r="44" fill="#080909" opacity="0.76"/>
+  <path d="M282 500 L470 468 L528 552 L342 588 Z" fill="#d8c69c" opacity="0.44"/>
+  <path d="M310 512 L492 482 M306 538 L474 514 M320 562 L448 540" stroke="#151716" stroke-width="6" stroke-linecap="round" opacity="0.32"/>
+  <path d="M272 496 C350 454 428 520 520 474" stroke="#7e3026" stroke-width="7" stroke-linecap="round" opacity="0.30" fill="none"/>
+  <ellipse cx="320" cy="310" rx="180" ry="70" fill="#2a3131" opacity="0.28" filter="url(#soft)"/>
+  <ellipse cx="820" cy="238" rx="250" ry="96" fill="#2b3232" opacity="0.24" filter="url(#soft)"/>
+  <path d="M0 604 C190 572 376 626 620 586 C870 548 1022 604 1280 548 L1280 720 L0 720 Z" fill="#070808" opacity="0.64"/>
+</svg>

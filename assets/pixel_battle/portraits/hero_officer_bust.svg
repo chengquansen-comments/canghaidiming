@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="720" viewBox="0 0 640 720">
+  <defs>
+    <linearGradient id="armor" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2c3333"/><stop offset="1" stop-color="#080909"/></linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="4"/></filter>
+  </defs>
+  <rect width="640" height="720" fill="none"/>
+  <ellipse cx="328" cy="666" rx="210" ry="36" fill="#050606" opacity="0.28" filter="url(#soft)"/>
+  <path d="M196 320 C230 254 410 252 450 324 L520 674 L130 674 Z" fill="url(#armor)" opacity="0.92"/>
+  <path d="M238 352 L404 350 L432 612 L208 616 Z" fill="#5f1f1d" opacity="0.72"/>
+  <path d="M268 346 L382 346 L398 540 L246 544 Z" fill="#c3ad7b" opacity="0.28"/>
+  <path d="M238 172 C246 96 398 86 414 176 C426 246 386 308 322 310 C260 312 230 242 238 172 Z" fill="#c6a982" opacity="0.90"/>
+  <path d="M224 174 C250 104 392 96 426 174 C396 144 292 138 224 174 Z" fill="#101212" opacity="0.84"/>
+  <path d="M210 212 C250 176 390 174 442 214 C428 116 372 78 304 86 C244 94 214 136 210 212 Z" fill="#141717" opacity="0.78"/>
+  <path d="M262 226 C284 240 312 242 334 228 M354 228 C376 240 398 238 414 224" stroke="#231b16" stroke-width="8" stroke-linecap="round" opacity="0.48" fill="none"/>
+  <path d="M300 268 C320 278 350 278 374 266" stroke="#5f1f1d" stroke-width="6" stroke-linecap="round" opacity="0.54" fill="none"/>
+  <path d="M162 384 C226 424 432 424 504 378" stroke="#bca05d" stroke-width="10" stroke-linecap="round" opacity="0.34" fill="none"/>
+  <path d="M120 624 C244 570 406 590 548 632" stroke="#080909" stroke-width="40" stroke-linecap="round" opacity="0.78" fill="none"/>
+</svg>

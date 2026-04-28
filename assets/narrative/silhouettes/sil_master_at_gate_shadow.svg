@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <defs>
+    <linearGradient id="gate" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#202323"/>
+      <stop offset="1" stop-color="#080909"/>
+    </linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="2"/></filter>
+  </defs>
+  <rect width="640" height="360" fill="none"/>
+  <ellipse cx="336" cy="304" rx="190" ry="26" fill="#080909" opacity="0.30" filter="url(#soft)"/>
+  <path d="M92 320 L118 70 L150 320 Z" fill="url(#gate)" opacity="0.84"/>
+  <path d="M498 320 L522 62 L558 320 Z" fill="url(#gate)" opacity="0.84"/>
+  <path d="M96 102 C214 82 390 86 552 102" stroke="#111312" stroke-width="18" opacity="0.76" fill="none"/>
+  <path d="M300 86 C328 54 378 62 398 104 C418 146 400 190 420 232 C436 264 462 290 486 322 C444 338 352 336 300 310 C260 290 244 244 260 200 C272 164 266 126 300 86 Z" fill="#080909" opacity="0.92"/>
+  <path d="M318 78 C332 44 376 48 394 78 C362 70 340 70 318 78 Z" fill="#111312"/>
+  <path d="M288 174 C326 202 376 202 430 172" stroke="#202323" stroke-width="16" stroke-linecap="round" fill="none"/>
+  <path d="M292 186 C338 212 380 212 438 184" stroke="#8a6a3a" stroke-width="5" opacity="0.30" fill="none"/>
+  <path d="M258 312 C328 280 410 326 506 286" stroke="#7e2e28" stroke-width="6" opacity="0.24" fill="none"/>
+</svg>

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#111518"/>
+  <linearGradient id="rain" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#263033"/>
+    <stop offset="1" stop-color="#0c0d0c"/>
+  </linearGradient>
+  <rect width="1280" height="720" fill="url(#rain)" opacity="0.82"/>
+  <path d="M0 550 C180 510 315 532 492 498 C715 455 960 478 1280 420 L1280 720 L0 720 Z" fill="#090909"/>
+  <path d="M0 320 C220 250 390 280 560 232 C748 180 920 218 1280 148 L1280 0 L0 0 Z" fill="#13191a" opacity="0.9"/>
+  <g stroke="#91a09a" stroke-width="3" opacity="0.23">
+    <path d="M150 -20 L85 192"/>
+    <path d="M255 -20 L190 212"/>
+    <path d="M370 -20 L292 238"/>
+    <path d="M520 -20 L440 232"/>
+    <path d="M690 -20 L604 246"/>
+    <path d="M860 -20 L772 245"/>
+    <path d="M1030 -20 L940 230"/>
+    <path d="M1190 -20 L1102 226"/>
+  </g>
+  <g opacity="0.72">
+    <path d="M442 440 C510 370 608 362 706 414 C775 450 858 448 936 430 C888 502 780 552 656 538 C560 528 498 492 442 440 Z" fill="#121211"/>
+    <path d="M516 386 C536 324 594 296 664 318 C710 333 742 366 756 412 C690 394 598 388 516 386 Z" fill="#1e1c18"/>
+    <path d="M590 314 C608 278 635 260 666 260 C704 260 728 286 736 328 C700 318 644 310 590 314 Z" fill="#171717"/>
+    <rect x="742" y="372" width="165" height="18" rx="9" transform="rotate(-10 742 372)" fill="#6d5632" opacity="0.72"/>
+  </g>
+  <g opacity="0.78">
+    <path d="M248 420 L442 386 L505 512 L305 554 Z" fill="#d1bd8c"/>
+    <path d="M274 436 L420 410 M290 472 L462 438 M310 510 L482 476" stroke="#49382c" stroke-width="5" opacity="0.45"/>
+    <circle cx="406" cy="482" r="34" fill="none" stroke="#7c1612" stroke-width="10" opacity="0.72"/>
+  </g>
+  <rect width="1280" height="720" fill="#030303" opacity="0.22"/>
+</svg>

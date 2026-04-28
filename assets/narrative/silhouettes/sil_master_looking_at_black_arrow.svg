@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <defs>
+    <filter id="soft"><feGaussianBlur stdDeviation="3"/></filter>
+  </defs>
+  <rect width="640" height="360" fill="none"/>
+  <ellipse cx="334" cy="304" rx="224" ry="30" fill="#040505" opacity="0.25" filter="url(#soft)"/>
+  <path d="M220 116 C260 82 322 92 350 144 C380 198 360 270 310 292 C258 314 206 280 200 222 C196 178 194 140 220 116 Z" fill="#060707" opacity="0.70"/>
+  <circle cx="286" cy="90" r="28" fill="#060707" opacity="0.78"/>
+  <path d="M320 98 C374 104 424 128 472 168" stroke="#060707" stroke-width="20" stroke-linecap="round" fill="none" opacity="0.48"/>
+  <path d="M390 150 L574 100" stroke="#050606" stroke-width="9" stroke-linecap="round" opacity="0.80"/>
+  <path d="M552 88 L610 78 L576 120 Z" fill="#050606" opacity="0.78"/>
+  <path d="M246 178 C286 164 330 170 370 196" stroke="#937747" stroke-width="6" stroke-linecap="round" opacity="0.26" fill="none"/>
+</svg>

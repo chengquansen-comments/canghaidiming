@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 520">
+
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#211f1b"/>
+      <stop offset="0.48" stop-color="#312b23"/>
+      <stop offset="1" stop-color="#151513"/>
+    </linearGradient>
+    <radialGradient id="fire" cx="64%" cy="42%" r="58%">
+      <stop offset="0" stop-color="#9c4424" stop-opacity="0.44"/>
+      <stop offset="0.45" stop-color="#5a1d16" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#0c0c0b" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="robe" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7b1e17"/>
+      <stop offset="0.58" stop-color="#411715"/>
+      <stop offset="1" stop-color="#171311"/>
+    </linearGradient>
+    <linearGradient id="armor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#44413a"/>
+      <stop offset="0.48" stop-color="#22231f"/>
+      <stop offset="1" stop-color="#0f1110"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#5c574a"/>
+      <stop offset="0.48" stop-color="#b8aa86"/>
+      <stop offset="1" stop-color="#302d28"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#000000" flood-opacity="0.55"/>
+    </filter>
+  </defs>
+
+
+  <rect width="360" height="520" fill="none"/>
+  <ellipse cx="180" cy="494" rx="122" ry="20" fill="#050505" opacity="0.46"/>
+
+  <g transform="translate(-15 0)" filter="url(#softShadow)">
+
+  <path d="M40 470 L305 88" stroke="#684727" stroke-width="9" stroke-linecap="round"/>
+  <path d="M51 483 L316 100" stroke="#19120d" stroke-width="2.8" stroke-linecap="round" opacity="0.55"/>
+  <path d="M310 83 L338 38 L333 91 Z" fill="url(#metal)"/>
+  <path d="M297 111 C322 121 327 141 342 162" fill="none" stroke="#7d2018" stroke-width="5" stroke-linecap="round" opacity="0.80"/>
+  <path d="M86 403 C122 389 151 374 184 353" stroke="#a98d5a" stroke-width="9" stroke-linecap="round"/>
+  <path d="M88 407 C125 398 153 383 186 362" stroke="#3b1c16" stroke-width="5" stroke-linecap="round"/>
+
+
+  <path d="M103 490 C110 400 125 322 153 258 L206 258 C235 319 251 400 257 490 Z" fill="url(#robe)" opacity="0.96"/>
+  <path d="M126 486 C132 394 146 322 168 268 L193 268 C217 323 231 395 236 486 Z" fill="url(#armor)" opacity="0.96"/>
+  <path d="M141 270 C133 240 139 207 156 188 C171 171 195 171 210 189 C229 212 228 246 218 273 C201 287 163 287 141 270 Z" fill="#ae8b64"/>
+  <path d="M142 218 C154 184 184 170 212 190 C221 198 225 211 226 231 C207 215 173 210 142 218 Z" fill="#0c0c0b"/>
+  <path d="M143 206 C165 190 202 190 226 209" fill="none" stroke="#6d1b16" stroke-width="8" stroke-linecap="round"/>
+  <path d="M154 235 C166 228 181 228 192 236 C204 229 215 230 225 239" fill="none" stroke="#211d19" stroke-width="3" stroke-linecap="round"/>
+  <path d="M164 256 C176 263 191 263 204 256" fill="none" stroke="#5e382d" stroke-width="3" stroke-linecap="round"/>
+  <g stroke="#947f55" stroke-width="2.5" opacity="0.62">
+    <path d="M134 310 H226"/>
+    <path d="M130 348 H230"/>
+    <path d="M127 386 H233"/>
+    <path d="M124 424 H236"/>
+  </g>
+  <path d="M103 490 L71 506 L110 340 Z" fill="#171513" opacity="0.88"/>
+  <path d="M257 490 L291 506 L250 340 Z" fill="#171513" opacity="0.88"/>
+
+  </g>
+</svg>

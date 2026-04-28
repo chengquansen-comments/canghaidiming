@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <defs>
+    <radialGradient id="ember" cx="54%" cy="58%" r="56%">
+      <stop offset="0" stop-color="#8f2f27" stop-opacity="0.50"/>
+      <stop offset="0.42" stop-color="#2a211a" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#080909" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="2.2"/></filter>
+  </defs>
+  <rect width="640" height="360" fill="none"/>
+  <rect width="640" height="360" fill="url(#ember)"/>
+  <ellipse cx="316" cy="264" rx="198" ry="32" fill="#080909" opacity="0.24" filter="url(#soft)"/>
+  <path d="M158 162 C212 130 410 130 468 162 C450 238 398 282 306 280 C224 278 174 234 158 162 Z" fill="#151819"/>
+  <path d="M174 162 C230 132 392 132 452 162 C418 192 214 194 174 162 Z" fill="#2a211a"/>
+  <path d="M194 160 C252 144 372 146 430 162 C390 178 240 178 194 160 Z" fill="#080909" opacity="0.72"/>
+  <path d="M170 198 C234 220 378 222 450 194" stroke="#687274" stroke-width="7" opacity="0.26" fill="none"/>
+  <path d="M214 240 C270 258 360 258 420 236" stroke="#8a6a3a" stroke-width="6" opacity="0.34" fill="none"/>
+  <g stroke="#7e2e28" stroke-width="5" stroke-linecap="round" opacity="0.66">
+    <path d="M230 158 C246 130 232 112 252 90"/>
+    <path d="M314 158 C330 128 310 112 342 82"/>
+    <path d="M398 158 C414 132 402 112 426 92"/>
+  </g>
+  <g stroke="#5f6665" stroke-width="8" stroke-linecap="round" opacity="0.34">
+    <path d="M120 280 C190 250 246 296 314 270 C398 238 468 286 548 248"/>
+    <path d="M96 306 C214 276 338 326 532 292"/>
+  </g>
+  <path d="M186 214 L142 248 M430 210 L504 236" stroke="#111312" stroke-width="10" opacity="0.62"/>
+</svg>
