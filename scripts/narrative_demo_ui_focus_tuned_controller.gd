@@ -1,7 +1,7 @@
 extends "res://scripts/narrative_demo_ui_focus_controller.gd"
 
 # Final UI tuning layer.
-# Keeps narrative presentation simple: static scene art + caption + bottom floating choices.
+# Keeps narrative presentation simple: static scene art + caption + bottom choices.
 # Motion/effects are disabled at the cinematic controller source; this layer only
 # applies layout polish and hides optional debug/map UI.
 
@@ -77,7 +77,6 @@ func _style_button_box(box: VBoxContainer) -> void:
 
 func _apply_tuned_scene_art_view() -> void:
 	_pin_cinematic_background()
-	_make_operation_panel_floating()
 	_hide_scene_art_overlay_ui()
 
 func _pin_cinematic_background() -> void:
@@ -95,20 +94,6 @@ func _pin_cinematic_background() -> void:
 	cinematic_bg.offset_top = 0.0
 	cinematic_bg.offset_right = 0.0
 	cinematic_bg.offset_bottom = 0.0
-
-func _make_operation_panel_floating() -> void:
-	var operation_panel := _find_operation_panel()
-	if operation_panel == null:
-		return
-	operation_panel.add_theme_stylebox_override("panel", _transparent_panel_style())
-	operation_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var margin := operation_panel.get_child(0) if operation_panel.get_child_count() > 0 else null
-	if margin is MarginContainer:
-		var margin_container := margin as MarginContainer
-		margin_container.add_theme_constant_override("margin_left", 0)
-		margin_container.add_theme_constant_override("margin_right", 0)
-		margin_container.add_theme_constant_override("margin_top", 0)
-		margin_container.add_theme_constant_override("margin_bottom", 0)
 
 func _hide_scene_art_overlay_ui() -> void:
 	_hide_canvas_item(cinematic_mist)
