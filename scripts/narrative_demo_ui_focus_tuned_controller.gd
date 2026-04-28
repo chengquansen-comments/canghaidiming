@@ -1,73 +1,25 @@
 extends "res://scripts/narrative_demo_ui_focus_controller.gd"
 
-# Final UI tuning layer:
-# - Performance caption remains centered, borderless, and integrated into the performance area.
-# - Caption moves down by 30 px.
-# - Option button font size is 25.
-# - Narrative performance art is rendered through an independent CanvasLayer static background to avoid inheriting any parent Control motion.
+# Final UI tuning layer.
+# Keeps narrative presentation simple: static scene art + caption + bottom choices.
+# Motion/effects are disabled at the cinematic controller source; this layer only
+# applies layout polish and hides optional debug/map UI.
 
 const TUNED_STORY_FONT_SIZE := 72
 const TUNED_OPTION_FONT_SIZE := 25
 const TUNED_CAPTION_OFFSET_Y := 30
-const TUNED_STATIC_BACKGROUND_NODE_NAME := "CinematicPerformanceBackground"
-const TUNED_STATIC_SCENE_ART_LAYER_NODE_NAME := "StaticSceneArtCanvasLayer"
-const TUNED_STATIC_SCENE_ART_BACKGROUND_NODE_NAME := "StaticSceneArtBackground"
-const TUNED_HIDDEN_SCENE_ART_OVERLAY_NODE_NAMES := [
-	"CinematicMistLayer",
-	"CinematicFirePulse",
-	"CinematicMaster",
-	"CinematicHero",
-	"CinematicForegroundProp",
-	"CinematicForegroundProp2",
-	"CinematicForegroundProp3",
-	"CinematicDim",
-	"CinematicFocus",
-	"NarrativeFocusDebugLayer",
-	"NarrativeFocusArtLayer",
-	"FocusWorldMapLayer",
-]
-const TUNED_HIDDEN_SCENE_ART_NAME_FRAGMENTS := [
-	"Mist",
-	"FirePulse",
-	"Dim",
-	"Focus",
-	"Master",
-	"Hero",
-	"ForegroundProp",
-	"NarrativeFocusArt",
-	"WorldMap",
-	"Debug",
-]
-const TUNED_STATIC_SCENE_ART_KEEP_NAMES := [
-	"NarrativeDemo",
-	"StaticSceneArtCanvasLayer",
-	"StaticSceneArtBackground",
-	"NarrativePerformanceCaptionLayer",
-	"NarrativePerformanceCaptionPanel",
-	"NarrativePerformanceCaptionText",
-]
-
-var tuned_static_scene_art_layer: CanvasLayer
-var tuned_static_scene_art_background: TextureRect
 
 func _ready() -> void:
 	super._ready()
-	_disable_scene_art_overlays()
-	call_deferred("_disable_scene_art_overlays")
+	_apply_tuned_scene_art_view()
 
 func _process(delta: float) -> void:
 	super._process(delta)
-	_disable_scene_art_overlays()
-	call_deferred("_disable_scene_art_overlays")
-
-func _physics_process(_delta: float) -> void:
-	_disable_scene_art_overlays()
-	call_deferred("_disable_scene_art_overlays")
+	_apply_tuned_scene_art_view()
 
 func _render() -> void:
 	super._render()
-	_disable_scene_art_overlays()
-	call_deferred("_disable_scene_art_overlays")
+	_apply_tuned_scene_art_view()
 
 func _ensure_focus_story_caption() -> void:
 	if focus_story_layer != null:
@@ -93,16 +45,7 @@ func _ensure_focus_story_caption() -> void:
 	focus_story_panel.offset_bottom = TUNED_CAPTION_OFFSET_Y
 	focus_story_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	focus_story_panel.z_index = 91
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.0, 0.0, 0.0, 0.0)
-	style.border_color = Color(0.0, 0.0, 0.0, 0.0)
-	style.set_border_width_all(0)
-	style.set_corner_radius_all(0)
-	style.content_margin_left = 0
-	style.content_margin_right = 0
-	style.content_margin_top = 0
-	style.content_margin_bottom = 0
-	focus_story_panel.add_theme_stylebox_override("panel", style)
+	focus_story_panel.add_theme_stylebox_override("panel", _transparent_panel_style())
 	focus_story_layer.add_child(focus_story_panel)
 
 	focus_story_label = RichTextLabel.new()
@@ -132,227 +75,63 @@ func _style_button_box(box: VBoxContainer) -> void:
 		elif child is Label:
 			_hide_control(child as Control)
 
-func _update_cinematic_motion(_delta: float) -> void:
-	_disable_scene_art_overlays()
-	call_deferred("_disable_scene_art_overlays")
+func _apply_tuned_scene_art_view() -> void:
+	_pin_cinematic_background()
+	_hide_scene_art_overlay_ui()
 
-func _update_layer_motion(_zoom: float, _pan_x: float, _pan_y: float, _dim_alpha: float, _mist_alpha: float, _fire_alpha: float) -> void:
-	_disable_scene_art_overlays()
-	call_deferred("_disable_scene_art_overlays")
-
-func _update_character_motion(_zoom: float) -> void:
-	_disable_scene_art_overlays()
-	call_deferred("_disable_scene_art_overlays")
-
-func _update_cinematic_characters() -> void:
-	_disable_scene_art_overlays()
-	call_deferred("_disable_scene_art_overlays")
-
-func _refresh_world_map() -> void:
-	super._refresh_world_map()
-	_disable_scene_art_overlays()
-	call_deferred("_disable_scene_art_overlays")
-
-func _update_focus_debug_panel() -> void:
-	_disable_scene_art_overlays()
-	call_deferred("_disable_scene_art_overlays")
-
-func _disable_scene_art_overlays() -> void:
-	_sync_static_scene_art_background()
-	_hide_original_cinematic_background()
-	_hide_named_scene_art_overlay_nodes()
-	_hard_sanitize_scene_art_tree(self)
-	_disable_cinematic_effect_layers()
-	_disable_performance_ui_panels()
-	_sync_static_scene_art_background()
-	_hide_original_cinematic_background()
-
-func _ensure_static_scene_art_layer() -> CanvasLayer:
-	if tuned_static_scene_art_layer != null and is_instance_valid(tuned_static_scene_art_layer):
-		return tuned_static_scene_art_layer
-	tuned_static_scene_art_layer = CanvasLayer.new()
-	tuned_static_scene_art_layer.name = TUNED_STATIC_SCENE_ART_LAYER_NODE_NAME
-	tuned_static_scene_art_layer.layer = -100
-	tuned_static_scene_art_layer.follow_viewport_enabled = false
-	tuned_static_scene_art_layer.offset = Vector2.ZERO
-	tuned_static_scene_art_layer.rotation = 0.0
-	tuned_static_scene_art_layer.scale = Vector2.ONE
-	get_tree().root.add_child(tuned_static_scene_art_layer)
-	return tuned_static_scene_art_layer
-
-func _ensure_static_scene_art_background() -> TextureRect:
-	if tuned_static_scene_art_background != null and is_instance_valid(tuned_static_scene_art_background):
-		return tuned_static_scene_art_background
-	var layer := _ensure_static_scene_art_layer()
-	tuned_static_scene_art_background = TextureRect.new()
-	tuned_static_scene_art_background.name = TUNED_STATIC_SCENE_ART_BACKGROUND_NODE_NAME
-	tuned_static_scene_art_background.anchor_left = 0.0
-	tuned_static_scene_art_background.anchor_top = 0.0
-	tuned_static_scene_art_background.anchor_right = 0.0
-	tuned_static_scene_art_background.anchor_bottom = 0.0
-	tuned_static_scene_art_background.offset_left = 0.0
-	tuned_static_scene_art_background.offset_top = 0.0
-	tuned_static_scene_art_background.offset_right = 0.0
-	tuned_static_scene_art_background.offset_bottom = 0.0
-	tuned_static_scene_art_background.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	tuned_static_scene_art_background.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	tuned_static_scene_art_background.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	tuned_static_scene_art_background.material = null
-	layer.add_child(tuned_static_scene_art_background)
-	return tuned_static_scene_art_background
-
-func _scene_art_rect() -> Rect2:
-	var viewport_size := get_viewport_rect().size
-	var operation_height: float = max(MIN_OPERATION_HEIGHT, viewport_size.y * (1.0 - PERFORMANCE_RATIO))
-	var bottom_anchor: float = max(0.48, OPERATION_BOTTOM - operation_height / max(1.0, viewport_size.y))
-	return Rect2(Vector2.ZERO, Vector2(viewport_size.x, viewport_size.y * bottom_anchor))
-
-func _sync_static_scene_art_background() -> void:
-	var static_bg := _ensure_static_scene_art_background()
-	var source_texture: Texture2D = null
-	if cinematic_bg != null and cinematic_bg.texture != null:
-		source_texture = cinematic_bg.texture
-	var bg_node := find_child(TUNED_STATIC_BACKGROUND_NODE_NAME, true, false)
-	if bg_node is TextureRect:
-		var source_bg := bg_node as TextureRect
-		if source_bg.texture != null:
-			source_texture = source_bg.texture
-	if source_texture != null:
-		static_bg.texture = source_texture
-	_pin_static_scene_art_background(static_bg)
-
-func _pin_static_scene_art_background(static_bg: TextureRect) -> void:
-	if static_bg == null:
+func _pin_cinematic_background() -> void:
+	if cinematic_bg == null:
 		return
-	var rect := _scene_art_rect()
-	static_bg.visible = true
-	static_bg.anchor_left = 0.0
-	static_bg.anchor_top = 0.0
-	static_bg.anchor_right = 0.0
-	static_bg.anchor_bottom = 0.0
-	static_bg.position = rect.position
-	static_bg.size = rect.size
-	static_bg.scale = Vector2.ONE
-	static_bg.rotation = 0.0
-	static_bg.pivot_offset = Vector2.ZERO
-	static_bg.offset_left = 0.0
-	static_bg.offset_top = 0.0
-	static_bg.offset_right = rect.size.x
-	static_bg.offset_bottom = rect.size.y
-	static_bg.modulate = Color.WHITE
-	static_bg.self_modulate = Color.WHITE
-	static_bg.material = null
-	if tuned_static_scene_art_layer != null:
-		tuned_static_scene_art_layer.offset = Vector2.ZERO
-		tuned_static_scene_art_layer.rotation = 0.0
-		tuned_static_scene_art_layer.scale = Vector2.ONE
+	cinematic_bg.visible = true
+	cinematic_bg.scale = Vector2.ONE
+	cinematic_bg.position = Vector2.ZERO
+	cinematic_bg.rotation = 0.0
+	cinematic_bg.pivot_offset = Vector2.ZERO
+	cinematic_bg.modulate = Color.WHITE
+	cinematic_bg.self_modulate = Color.WHITE
+	cinematic_bg.material = null
+	cinematic_bg.offset_left = 0.0
+	cinematic_bg.offset_top = 0.0
+	cinematic_bg.offset_right = 0.0
+	cinematic_bg.offset_bottom = 0.0
 
-func _hide_original_cinematic_background() -> void:
-	if cinematic_bg != null:
-		_hide_background_source_node(cinematic_bg)
-	var bg_node := find_child(TUNED_STATIC_BACKGROUND_NODE_NAME, true, false)
-	if bg_node is CanvasItem:
-		_hide_background_source_node(bg_node as CanvasItem)
+func _hide_scene_art_overlay_ui() -> void:
+	_hide_canvas_item(cinematic_mist)
+	_hide_canvas_item(cinematic_fire)
+	_hide_canvas_item(cinematic_dim)
+	_hide_canvas_item(cinematic_focus)
+	_hide_canvas_item(cinematic_master)
+	_hide_canvas_item(cinematic_hero)
+	_hide_canvas_item(world_map_layer)
+	_hide_canvas_item(world_map_panel)
+	_hide_canvas_item(focus_world_map_layer)
+	_hide_canvas_item(focus_world_map_panel)
+	_hide_canvas_item(focus_debug_layer)
+	_hide_canvas_item(focus_debug_panel)
+	if visual_debug_label != null:
+		visual_debug_label.visible = false
+		visual_debug_label.custom_minimum_size = Vector2.ZERO
 
-func _hide_background_source_node(node: CanvasItem) -> void:
+func _hide_canvas_item(node: CanvasItem) -> void:
 	if node == null:
-		return
-	if node.name == TUNED_STATIC_SCENE_ART_BACKGROUND_NODE_NAME:
 		return
 	node.visible = false
 	node.modulate = Color(1.0, 1.0, 1.0, 0.0)
 	node.self_modulate = Color(1.0, 1.0, 1.0, 0.0)
 	node.material = null
-
-func _hide_named_scene_art_overlay_nodes() -> void:
-	for node_name in TUNED_HIDDEN_SCENE_ART_OVERLAY_NODE_NAMES:
-		var node := find_child(node_name, true, false)
-		_hide_overlay_node(node)
-
-func _hard_sanitize_scene_art_tree(root: Node) -> void:
-	if root == null:
-		return
-	for child in root.get_children():
-		var child_name := str(child.name)
-		if child_name == TUNED_STATIC_SCENE_ART_BACKGROUND_NODE_NAME and child is TextureRect:
-			_pin_static_scene_art_background(child as TextureRect)
-		elif child_name == TUNED_STATIC_SCENE_ART_LAYER_NODE_NAME:
-			pass
-		elif child_name == TUNED_STATIC_BACKGROUND_NODE_NAME and child is CanvasItem:
-			_hide_background_source_node(child as CanvasItem)
-		elif _should_hide_scene_art_node(child_name):
-			_hide_overlay_node(child)
-		_hard_sanitize_scene_art_tree(child)
-
-func _should_hide_scene_art_node(node_name: String) -> bool:
-	if node_name in TUNED_STATIC_SCENE_ART_KEEP_NAMES:
-		return false
-	for fragment in TUNED_HIDDEN_SCENE_ART_NAME_FRAGMENTS:
-		if node_name.find(fragment) >= 0:
-			return true
-	return false
-
-func _hide_overlay_node(node: Node) -> void:
-	if node == null:
-		return
-	if node.name == TUNED_STATIC_SCENE_ART_BACKGROUND_NODE_NAME or node.name == TUNED_STATIC_SCENE_ART_LAYER_NODE_NAME:
-		return
-	if node is CanvasItem:
-		var item := node as CanvasItem
-		item.visible = false
-		item.modulate = Color(1.0, 1.0, 1.0, 0.0)
-		item.self_modulate = Color(1.0, 1.0, 1.0, 0.0)
-		item.material = null
 	if node is Control:
 		var control := node as Control
 		control.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		control.custom_minimum_size = Vector2.ZERO
-		control.scale = Vector2.ONE
-		control.position = Vector2.ZERO
 
-func _disable_cinematic_effect_layers() -> void:
-	_sync_static_scene_art_background()
-	_hide_original_cinematic_background()
-	if cinematic_mist != null:
-		cinematic_mist.visible = false
-		cinematic_mist.color = Color(0.0, 0.0, 0.0, 0.0)
-	if cinematic_fire != null:
-		cinematic_fire.visible = false
-		cinematic_fire.color = Color(0.0, 0.0, 0.0, 0.0)
-	if cinematic_dim != null:
-		cinematic_dim.visible = false
-		cinematic_dim.color = Color(0.0, 0.0, 0.0, 0.0)
-	if cinematic_focus != null:
-		cinematic_focus.visible = false
-		cinematic_focus.color = Color(0.0, 0.0, 0.0, 0.0)
-	if cinematic_master != null:
-		cinematic_master.visible = false
-		cinematic_master.scale = Vector2.ONE
-		cinematic_master.position = Vector2.ZERO
-	if cinematic_hero != null:
-		cinematic_hero.visible = false
-		cinematic_hero.scale = Vector2.ONE
-		cinematic_hero.position = Vector2.ZERO
-
-func _disable_performance_ui_panels() -> void:
-	if world_map_layer != null:
-		world_map_layer.visible = false
-		world_map_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	if world_map_panel != null:
-		world_map_panel.visible = false
-		world_map_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	if focus_world_map_layer != null:
-		focus_world_map_layer.visible = false
-		focus_world_map_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	if focus_world_map_panel != null:
-		focus_world_map_panel.visible = false
-		focus_world_map_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	if focus_debug_layer != null:
-		focus_debug_layer.visible = false
-		focus_debug_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	if focus_debug_panel != null:
-		focus_debug_panel.visible = false
-		focus_debug_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	if visual_debug_label != null:
-		visual_debug_label.visible = false
-		visual_debug_label.custom_minimum_size = Vector2.ZERO
+func _transparent_panel_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.0, 0.0, 0.0, 0.0)
+	style.border_color = Color(0.0, 0.0, 0.0, 0.0)
+	style.set_border_width_all(0)
+	style.set_corner_radius_all(0)
+	style.content_margin_left = 0
+	style.content_margin_right = 0
+	style.content_margin_top = 0
+	style.content_margin_bottom = 0
+	return style
