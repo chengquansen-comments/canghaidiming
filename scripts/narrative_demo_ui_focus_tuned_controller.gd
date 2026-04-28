@@ -4,12 +4,13 @@ extends "res://scripts/narrative_demo_ui_focus_controller.gd"
 # - Performance caption remains centered, borderless, and integrated into the performance area.
 # - Caption moves down by 30 px.
 # - Option button font size is 25.
-# - Narrative performance art is kept as clean static scene art: no overlay layers, character plates, breathing, pan, zoom, mist, fire, dim, focus pulse, map panel, or debug panel over the scene art.
+# - Narrative performance art is rendered through an independent CanvasLayer static background to avoid inheriting any parent Control motion.
 
 const TUNED_STORY_FONT_SIZE := 72
 const TUNED_OPTION_FONT_SIZE := 25
 const TUNED_CAPTION_OFFSET_Y := 30
 const STATIC_BACKGROUND_NODE_NAME := "CinematicPerformanceBackground"
+const STATIC_SCENE_ART_LAYER_NODE_NAME := "StaticSceneArtCanvasLayer"
 const STATIC_SCENE_ART_BACKGROUND_NODE_NAME := "StaticSceneArtBackground"
 const HIDDEN_SCENE_ART_OVERLAY_NODE_NAMES := [
 	"CinematicMistLayer",
@@ -39,12 +40,14 @@ const HIDDEN_SCENE_ART_NAME_FRAGMENTS := [
 ]
 const STATIC_SCENE_ART_KEEP_NAMES := [
 	"NarrativeDemo",
+	"StaticSceneArtCanvasLayer",
 	"StaticSceneArtBackground",
 	"NarrativePerformanceCaptionLayer",
 	"NarrativePerformanceCaptionPanel",
 	"NarrativePerformanceCaptionText",
 ]
 
+var static_scene_art_layer: CanvasLayer
 var static_scene_art_background: TextureRect
 
 func _ready() -> void:
@@ -164,15 +167,29 @@ func _disable_scene_art_overlays() -> void:
 	_sync_static_scene_art_background()
 	_hide_original_cinematic_background()
 
+func _ensure_static_scene_art_layer() -> CanvasLayer:
+	if static_scene_art_layer != null and is_instance_valid(static_scene_art_layer):
+		return static_scene_art_layer
+	static_scene_art_layer = CanvasLayer.new()
+	static_scene_art_layer.name = STATIC_SCENE_ART_LAYER_NODE_NAME
+	static_scene_art_layer.layer = -100
+	static_scene_art_layer.follow_viewport_enabled = false
+	static_scene_art_layer.offset = Vector2.ZERO
+	static_scene_art_layer.rotation = 0.0
+	static_scene_art_layer.scale = Vector2.ONE
+	get_tree().root.add_child(static_scene_art_layer)
+	return static_scene_art_layer
+
 func _ensure_static_scene_art_background() -> TextureRect:
 	if static_scene_art_background != null and is_instance_valid(static_scene_art_background):
 		return static_scene_art_background
+	var layer := _ensure_static_scene_art_layer()
 	static_scene_art_background = TextureRect.new()
 	static_scene_art_background.name = STATIC_SCENE_ART_BACKGROUND_NODE_NAME
 	static_scene_art_background.anchor_left = 0.0
 	static_scene_art_background.anchor_top = 0.0
-	static_scene_art_background.anchor_right = 1.0
-	static_scene_art_background.anchor_bottom = _scene_art_bottom_anchor()
+	static_scene_art_background.anchor_right = 0.0
+	static_scene_art_background.anchor_bottom = 0.0
 	static_scene_art_background.offset_left = 0.0
 	static_scene_art_background.offset_top = 0.0
 	static_scene_art_background.offset_right = 0.0
@@ -180,17 +197,15 @@ func _ensure_static_scene_art_background() -> TextureRect:
 	static_scene_art_background.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	static_scene_art_background.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	static_scene_art_background.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	static_scene_art_background.z_index = -100
-	static_scene_art_background.z_as_relative = false
 	static_scene_art_background.material = null
-	add_child(static_scene_art_background)
-	move_child(static_scene_art_background, 0)
+	layer.add_child(static_scene_art_background)
 	return static_scene_art_background
 
-func _scene_art_bottom_anchor() -> float:
+func _scene_art_rect() -> Rect2:
 	var viewport_size := get_viewport_rect().size
 	var operation_height: float = max(MIN_OPERATION_HEIGHT, viewport_size.y * (1.0 - PERFORMANCE_RATIO))
-	return max(0.48, OPERATION_BOTTOM - operation_height / max(1.0, viewport_size.y))
+	var bottom_anchor: float = max(0.48, OPERATION_BOTTOM - operation_height / max(1.0, viewport_size.y))
+	return Rect2(Vector2.ZERO, Vector2(viewport_size.x, viewport_size.y * bottom_anchor))
 
 func _sync_static_scene_art_background() -> void:
 	var static_bg := _ensure_static_scene_art_background()
@@ -209,22 +224,28 @@ func _sync_static_scene_art_background() -> void:
 func _pin_static_scene_art_background(static_bg: TextureRect) -> void:
 	if static_bg == null:
 		return
+	var rect := _scene_art_rect()
 	static_bg.visible = true
 	static_bg.anchor_left = 0.0
 	static_bg.anchor_top = 0.0
-	static_bg.anchor_right = 1.0
-	static_bg.anchor_bottom = _scene_art_bottom_anchor()
-	static_bg.offset_left = 0.0
-	static_bg.offset_top = 0.0
-	static_bg.offset_right = 0.0
-	static_bg.offset_bottom = 0.0
+	static_bg.anchor_right = 0.0
+	static_bg.anchor_bottom = 0.0
+	static_bg.position = rect.position
+	static_bg.size = rect.size
 	static_bg.scale = Vector2.ONE
-	static_bg.position = Vector2.ZERO
 	static_bg.rotation = 0.0
 	static_bg.pivot_offset = Vector2.ZERO
+	static_bg.offset_left = 0.0
+	static_bg.offset_top = 0.0
+	static_bg.offset_right = rect.size.x
+	static_bg.offset_bottom = rect.size.y
 	static_bg.modulate = Color.WHITE
 	static_bg.self_modulate = Color.WHITE
 	static_bg.material = null
+	if static_scene_art_layer != null:
+		static_scene_art_layer.offset = Vector2.ZERO
+		static_scene_art_layer.rotation = 0.0
+		static_scene_art_layer.scale = Vector2.ONE
 
 func _hide_original_cinematic_background() -> void:
 	if cinematic_bg != null:
@@ -255,6 +276,8 @@ func _hard_sanitize_scene_art_tree(root: Node) -> void:
 		var child_name := str(child.name)
 		if child_name == STATIC_SCENE_ART_BACKGROUND_NODE_NAME and child is TextureRect:
 			_pin_static_scene_art_background(child as TextureRect)
+		elif child_name == STATIC_SCENE_ART_LAYER_NODE_NAME:
+			pass
 		elif child_name == STATIC_BACKGROUND_NODE_NAME and child is CanvasItem:
 			_hide_background_source_node(child as CanvasItem)
 		elif _should_hide_scene_art_node(child_name):
@@ -272,7 +295,7 @@ func _should_hide_scene_art_node(node_name: String) -> bool:
 func _hide_overlay_node(node: Node) -> void:
 	if node == null:
 		return
-	if node.name == STATIC_SCENE_ART_BACKGROUND_NODE_NAME:
+	if node.name == STATIC_SCENE_ART_BACKGROUND_NODE_NAME or node.name == STATIC_SCENE_ART_LAYER_NODE_NAME:
 		return
 	if node is CanvasItem:
 		var item := node as CanvasItem
