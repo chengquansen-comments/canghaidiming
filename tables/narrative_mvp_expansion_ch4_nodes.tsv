@@ -1,0 +1,36 @@
+order	id	title	scene	text	dialogue_json	combat_json	choices_json
+301	ch4_tide_reveals_marks	潮下旧痕	退潮。礁石露出。刻痕被盐填过。	"潮退得很慢。
+
+礁石露出来。
+
+刻痕被盐填过。"	[]	"{""enabled"":false}"	"[{""label"":""清理刻痕"",""preview"":""旧案线索增加。"",""effects"":{""case_clues"":2},""combat"":null,""result"":""你刮开盐壳。\n刻痕是旧的。""},{""label"":""记录位置"",""preview"":""军功推进。"",""effects"":{""military_merit"":1},""combat"":null,""result"":""你记下坐标。\n水线在涨。""},{""label"":""填回掩盖"",""preview"":""清望增加。"",""effects"":{""clean_reputation"":1},""combat"":null,""result"":""你把盐填回去。\n刻痕又浅了。""}]"
+302	ch4_old_anchor_chain	旧锚铁链	海底拖出铁链。锈少。断口新。	"铁链从沙里出。
+
+锈不多。
+
+断口很新。"	[]	"{""enabled"":false}"	"[{""label"":""拖上岸查"",""preview"":""旧案线索增加。"",""effects"":{""case_clues"":1},""combat"":null,""result"":""你拖上岸。\n重量不对。""},{""label"":""标记交接"",""preview"":""军功推进。"",""effects"":{""military_merit"":1},""combat"":null,""result"":""你系上标记。\n人来得很快。""},{""label"":""就地回填"",""preview"":""清望增加。"",""effects"":{""clean_reputation"":1},""combat"":null,""result"":""沙盖住铁。\n水又露出一点。""}]"
+303	ch4_master_hesitation	师父停手	师父站在潮线。手停在刀柄。没有出鞘。	"他站在潮线。
+
+手停在刀柄。
+
+没有出鞘。"	"[{""speaker"":""师父"",""text"":""先看。""}]"	"{""enabled"":false}"	"[{""label"":""听令观察"",""preview"":""旧案线索增加。"",""effects"":{""case_clues"":1},""combat"":null,""result"":""你收住步子。\n他没有动。""},{""label"":""主动出手"",""preview"":""军功推进。"",""effects"":{""military_merit"":1},""combat"":null,""result"":""你先拔刀。\n他看了你一眼。""},{""label"":""护住百姓"",""preview"":""清望增加。"",""effects"":{""clean_reputation"":1},""combat"":null,""result"":""你挡在前面。\n他没有拦。""}]"
+304	ch4_tide_bandits_battle	潮线交锋	浪退一尺。人进一尺。阵不乱。	"浪退一尺。
+
+人进一尺。
+
+阵没有乱。"	[]	"{""enabled"":true,""encounter_id"":""enc_transport_officer"",""battle_id"":""chapter4_tide_clash"",""button"":""迎战""}"	[]
+305	ch4_tide_aftermath	潮线之后	尸体贴着潮线。摆放整齐。像等水带走。	"人贴着潮线。
+
+摆得很齐。
+
+像在等水。"	[]	"{""enabled"":false}"	"[{""label"":""清点报功"",""preview"":""军功入册。"",""effects"":{""military_merit"":1},""combat"":null,""result"":""你数得很快。\n数目很整。""},{""label"":""逐一查看"",""preview"":""旧案线索增加。"",""effects"":{""case_clues"":2},""combat"":null,""result"":""甲片有标记。\n都在同一处。""},{""label"":""掩埋安置"",""preview"":""清望增加。"",""effects"":{""clean_reputation"":1},""combat"":null,""result"":""沙慢慢盖上。\n潮又带走一点。""}]"
+306	ch4_hidden_document	旧纸残页	湿纸夹在甲内。字未散。落款缺一半。	"纸夹在甲里。
+
+字没有散。
+
+落款少一半。"	[]	"{""enabled"":false}"	"[{""label"":""上交文书"",""preview"":""军功推进。"",""effects"":{""military_merit"":1},""combat"":null,""result"":""你封好残页。\n交得很快。""},{""label"":""私藏残页"",""preview"":""旧案线索增加。"",""effects"":{""case_clues"":2},""combat"":null,""result"":""你折好纸角。\n水还在滴。""},{""label"":""当场询问"",""preview"":""清望增加。"",""effects"":{""clean_reputation"":1},""combat"":null,""result"":""没人回答。\n只有潮声。""}]"
+307	ch4_master_silence	师父沉默	营火边。师父擦刀。没有看你。	"火很低。
+
+他在擦刀。
+
+没有看你。"	"[{""speaker"":""你"",""text"":""这是旧的。""},{""speaker"":""师父"",""text"":""别再说。""}]"	"{""enabled"":false}"	"[{""label"":""不再追问"",""preview"":""军功推进。"",""effects"":{""military_merit"":1},""combat"":null,""result"":""你收住话。\n火更低了。""},{""label"":""继续追问"",""preview"":""旧案线索增加。"",""effects"":{""case_clues"":1},""combat"":null,""result"":""他停了一下。\n又继续擦刀。""},{""label"":""转身离开"",""preview"":""清望增加。"",""effects"":{""clean_reputation"":1},""combat"":null,""result"":""你离开火边。\n影子拉长。""}]"
