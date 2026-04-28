@@ -40,7 +40,7 @@ var cinematic_stage: String = ""
 var cinematic_stage_time: float = 0.0
 var performance_tracks: Dictionary = {}
 var performance_tracks_loaded: bool = false
-var formal_prologue_backgrounds: Array[String] = []
+var formal_prologue_background_by_number: Dictionary = {}
 var formal_prologue_backgrounds_loaded: bool = false
 
 func _ready() -> void:
@@ -78,7 +78,7 @@ func _load_performance_tracks() -> void:
 
 func _load_formal_prologue_backgrounds() -> void:
 	formal_prologue_backgrounds_loaded = true
-	formal_prologue_backgrounds.clear()
+	formal_prologue_background_by_number.clear()
 	var dir := DirAccess.open(FORMAL_PROLOGUE_BG_DIR)
 	if dir == null:
 		return
@@ -86,16 +86,28 @@ func _load_formal_prologue_backgrounds() -> void:
 	var file_name := dir.get_next()
 	while not file_name.is_empty():
 		if not dir.current_is_dir() and file_name.to_lower().ends_with(".png"):
-			formal_prologue_backgrounds.append("%s/%s" % [FORMAL_PROLOGUE_BG_DIR, file_name])
+			var bg_number := _formal_prologue_background_number(file_name)
+			if bg_number >= 1 and bg_number <= 12:
+				formal_prologue_background_by_number[bg_number] = "%s/%s" % [FORMAL_PROLOGUE_BG_DIR, file_name]
 		file_name = dir.get_next()
 	dir.list_dir_end()
-	formal_prologue_backgrounds.sort()
 
-func _formal_prologue_background(index: int, fallback_path: String) -> String:
+func _formal_prologue_background_number(file_name: String) -> int:
+	# Expected naming convention: 01_black_tide.png, 02_xxx.png ... 12_xxx.png.
+	# Only the first two numeric characters are used for binding.
+	if file_name.length() < 2:
+		return -1
+	var prefix := file_name.substr(0, 2)
+	if not prefix.is_valid_int():
+		return -1
+	return int(prefix)
+
+func _formal_prologue_background_for_step(step: int, fallback_path: String) -> String:
 	if not formal_prologue_backgrounds_loaded:
 		_load_formal_prologue_backgrounds()
-	if index >= 0 and index < formal_prologue_backgrounds.size():
-		return formal_prologue_backgrounds[index]
+	var bg_number := step + 1
+	if formal_prologue_background_by_number.has(bg_number):
+		return str(formal_prologue_background_by_number[bg_number])
 	return fallback_path
 
 func _render_visual(path: String, _fallback_text: String) -> void:
@@ -185,7 +197,7 @@ func _cinematic_background_path(path: String) -> String:
 	if not in_prologue:
 		return path
 	if step_index >= 0 and step_index < 12:
-		return _formal_prologue_background(step_index, _legacy_prologue_background_path())
+		return _formal_prologue_background_for_step(step_index, _legacy_prologue_background_path())
 	if step_index == PROLOGUE_CAREER_STEP:
 		return PROLOGUE_DEPARTURE
 	return path
