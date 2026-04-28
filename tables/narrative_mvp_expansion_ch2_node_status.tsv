@@ -1,0 +1,7 @@
+id	flow_enabled	flow_order	column	type	visual_path	implementation_status	note
+ch2_sea_route_unusual	false		初遇	事件		reserved	第二章：海路异动扩展节点：海路异动；当前不进入 MVP 主流程
+ch2_beach_tracks	false		初遇	旧物		reserved	第二章：海路异动扩展节点：滩涂脚印；当前不进入 MVP 主流程
+ch2_reed_ambush_battle	false		初遇	普通战斗		reserved	第二章：海路异动扩展节点：芦苇伏击；当前不进入 MVP 主流程
+ch2_reed_ambush_aftermath	false		初遇	战后处理		reserved	第二章：海路异动扩展节点：芦苇伏击：战后；当前不进入 MVP 主流程
+ch2_silent_village	false		疑点	事件		reserved	第二章：海路异动扩展节点：无声渔村；当前不进入 MVP 主流程
+ch2_night_signal_fire	false		疑点	事件		reserved	第二章：海路异动扩展节点：夜火信号；当前不进入 MVP 主流程
