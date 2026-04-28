@@ -4,10 +4,19 @@ extends "res://scripts/narrative_demo_ui_focus_controller.gd"
 # - Performance caption remains centered, borderless, and integrated into the performance area.
 # - Caption moves down by 30 px.
 # - Option button font size is 25.
+# - Narrative performance art is kept as clean static scene art: no overlay layers, character plates, breathing, pan, zoom, mist, fire, dim, or focus pulse.
 
 const TUNED_STORY_FONT_SIZE := 72
 const TUNED_OPTION_FONT_SIZE := 25
 const TUNED_CAPTION_OFFSET_Y := 30
+
+func _ready() -> void:
+	super._ready()
+	_disable_cinematic_effect_layers()
+
+func _process(delta: float) -> void:
+	super._process(delta)
+	_disable_cinematic_effect_layers()
 
 func _ensure_focus_story_caption() -> void:
 	if focus_story_layer != null:
@@ -71,3 +80,42 @@ func _style_button_box(box: VBoxContainer) -> void:
 			btn.add_theme_font_size_override("font_size", TUNED_OPTION_FONT_SIZE)
 		elif child is Label:
 			_hide_control(child as Control)
+
+func _update_cinematic_motion(delta: float) -> void:
+	_disable_cinematic_effect_layers()
+
+func _update_layer_motion(zoom: float, pan_x: float, pan_y: float, dim_alpha: float, mist_alpha: float, fire_alpha: float) -> void:
+	_disable_cinematic_effect_layers()
+
+func _update_character_motion(zoom: float) -> void:
+	_disable_cinematic_effect_layers()
+
+func _update_cinematic_characters() -> void:
+	_disable_cinematic_effect_layers()
+
+func _disable_cinematic_effect_layers() -> void:
+	if cinematic_bg != null:
+		cinematic_bg.visible = true
+		cinematic_bg.scale = Vector2.ONE
+		cinematic_bg.position = Vector2.ZERO
+		cinematic_bg.modulate = Color.WHITE
+	if cinematic_mist != null:
+		cinematic_mist.visible = false
+		cinematic_mist.color = Color(0.0, 0.0, 0.0, 0.0)
+	if cinematic_fire != null:
+		cinematic_fire.visible = false
+		cinematic_fire.color = Color(0.0, 0.0, 0.0, 0.0)
+	if cinematic_dim != null:
+		cinematic_dim.visible = false
+		cinematic_dim.color = Color(0.0, 0.0, 0.0, 0.0)
+	if cinematic_focus != null:
+		cinematic_focus.visible = false
+		cinematic_focus.color = Color(0.0, 0.0, 0.0, 0.0)
+	if cinematic_master != null:
+		cinematic_master.visible = false
+		cinematic_master.scale = Vector2.ONE
+		cinematic_master.position = Vector2.ZERO
+	if cinematic_hero != null:
+		cinematic_hero.visible = false
+		cinematic_hero.scale = Vector2.ONE
+		cinematic_hero.position = Vector2.ZERO
