@@ -1,0 +1,13 @@
+id	flow_enabled	flow_order	column	type	visual_path	implementation_status	note
+ch4_tide_reveals_marks	false		疑点	旧物		reserved	第四章：潮下旧痕扩展节点；当前不进入 MVP 主流程
+ch4_old_anchor_chain	false		疑点	旧物		reserved	第四章：潮下旧痕扩展节点；当前不进入 MVP 主流程
+ch4_master_hesitation	false		压迫	事件		reserved	第四章：潮下旧痕扩展节点；当前不进入 MVP 主流程
+ch4_tide_bandits_battle	false		压迫	精英战斗		reserved	第四章：潮下旧痕扩展节点；当前不进入 MVP 主流程
+ch4_tide_aftermath	false		压迫	战后处理		reserved	第四章：潮下旧痕扩展节点；当前不进入 MVP 主流程
+ch4_hidden_document	false		压迫	旧物		reserved	第四章：潮下旧痕扩展节点；当前不进入 MVP 主流程
+ch4_master_silence	false		军门	事件		reserved	第四章：潮下旧痕扩展节点；当前不进入 MVP 主流程
+boss_ext_burning_ship_sighting	false		破船	事件		reserved	Boss扩展章节点；当前不进入 MVP 主流程
+boss_ext_hold_full_of_crates	false		破船	旧物		reserved	Boss扩展章节点；当前不进入 MVP 主流程
+boss_ext_master_freeze_arrow	false		破船	事件		reserved	Boss扩展章节点；当前不进入 MVP 主流程
+boss_ext_wakou_leader_battle	false		破船	Boss		reserved	Boss扩展章节点；当前不进入 MVP 主流程
+boss_ext_aftermath_choice	false		破船	战后处理		reserved	Boss扩展章节点；当前不进入 MVP 主流程
