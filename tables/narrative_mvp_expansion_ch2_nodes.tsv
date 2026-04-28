@@ -1,0 +1,31 @@
+order	id	title	scene	text	dialogue_json	combat_json	choices_json
+101	ch2_sea_route_unusual	海路异动	海面很平。船却逆风。旗不动。	"海面很平。
+
+船却逆风走。
+
+旗没有动。"	[]	"{""enabled"":false}"	"[{""label"":""继续巡海"",""preview"":""军功推进。"",""effects"":{""military_merit"":1},""combat"":null,""result"":""你没有停。\n船影越来越近。""},{""label"":""绕行观察"",""preview"":""旧案线索增加。"",""effects"":{""case_clues"":1},""combat"":null,""result"":""你压低航线。\n船影没有调整。""},{""label"":""靠岸问民"",""preview"":""清望增加。"",""effects"":{""clean_reputation"":1},""combat"":null,""result"":""渔民不敢说话。\n他们只看海。""}]"
+102	ch2_beach_tracks	滩涂脚印	潮线外有脚印。整齐。回程消失。	"脚印在潮线外。
+
+排得很齐。
+
+没有回头。"	[]	"{""enabled"":false}"	"[{""label"":""跟踪脚印"",""preview"":""旧案线索增加。"",""effects"":{""case_clues"":1},""combat"":null,""result"":""脚印走向芦苇。\n没有拖痕。""},{""label"":""记录上报"",""preview"":""军功推进。"",""effects"":{""military_merit"":1},""combat"":null,""result"":""你记下位置。\n墨还没干。""},{""label"":""抹去痕迹"",""preview"":""清望增加。"",""effects"":{""clean_reputation"":1},""combat"":null,""result"":""你踢散脚印。\n潮水又补上。""}]"
+103	ch2_reed_ambush_battle	芦苇伏击	芦苇静。枪尖先亮。人随后出。	"芦苇没有风。
+
+枪尖先亮。
+
+人才出来。"	[]	"{""enabled"":true,""encounter_id"":""enc_beach_ambush"",""battle_id"":""chapter2_reed_ambush"",""button"":""迎战""}"	[]
+104	ch2_reed_ambush_aftermath	芦苇伏击：战后	尸体整齐。衣甲干净。靴底无盐。	"人倒得很整齐。
+
+衣甲很干净。
+
+靴底没有盐。"	[]	"{""enabled"":false}"	"[{""label"":""斩首报功"",""preview"":""军功入册。"",""effects"":{""military_merit"":1},""combat"":null,""result"":""首级装袋。\n你没有翻靴底。""},{""label"":""搜身细查"",""preview"":""旧案线索增加。"",""effects"":{""case_clues"":2},""combat"":null,""result"":""靴缝有泥。\n不是海泥。""},{""label"":""就地掩埋"",""preview"":""清望增加。"",""effects"":{""clean_reputation"":1},""combat"":null,""result"":""沙盖住脸。\n潮又露出一点。""}]"
+105	ch2_silent_village	无声渔村	村子有人。没有烟。门半开。	"村子有人。
+
+没有烟。
+
+门半开着。"	[]	"{""enabled"":false}"	"[{""label"":""逐户查看"",""preview"":""清望增加。"",""effects"":{""clean_reputation"":1},""combat"":null,""result"":""锅是热的。\n人不在。""},{""label"":""搜查物资"",""preview"":""军功推进。"",""effects"":{""military_merit"":1},""combat"":null,""result"":""粮被动过。\n刀不见了。""},{""label"":""记录异常"",""preview"":""旧案线索增加。"",""effects"":{""case_clues"":1},""combat"":null,""result"":""你写下异常。\n纸边有潮印。""}]"
+106	ch2_night_signal_fire	夜火信号	夜里海上有火。三灭一亮。	"夜里有火。
+
+三灭一亮。
+
+不在岸上。"	[]	"{""enabled"":false}"	"[{""label"":""靠近查看"",""preview"":""旧案线索增加。"",""effects"":{""case_clues"":2},""combat"":null,""result"":""火在船上。\n船不随潮。""},{""label"":""远距记录"",""preview"":""军功推进。"",""effects"":{""military_merit"":1},""combat"":null,""result"":""你记下节律。\n很规整。""},{""label"":""忽略继续"",""preview"":""风险降低。"",""effects"":{},""combat"":null,""result"":""你转开目光。\n火还在。""}]"
