@@ -201,6 +201,7 @@ func _add_prologue_combat_choice() -> void:
 func _on_prologue_combat_choice(choice: Dictionary) -> void:
 	_store_pending_choice("prologue_master_rescue", choice)
 	var combat: Dictionary = choice.get("combat", {})
+	_save_narrative_state_to_context()
 	NarrativeBattleContext.set_request(
 		str(combat.get("encounter_id", "enc_prologue_master_rescue")),
 		"prologue_master_rescue",
@@ -232,6 +233,7 @@ func _consume_battle_result_if_needed() -> void:
 			last_hint = "序章战斗返回：当前 Demo 按师父救场继续推进。"
 		NarrativeBattleContext.clear()
 		_clear_pending_choice()
+		_save_narrative_state_to_context()
 		return
 	super._consume_battle_result_if_needed()
 
@@ -246,6 +248,7 @@ func _on_continue_after_prologue_choice_result() -> void:
 	step_index = PROLOGUE_AFTER_MASTER_BATTLE_STEP
 	prologue_sentence_index = 0
 	last_hint = ""
+	_save_narrative_state_to_context()
 	_render()
 
 func _restart() -> void:

@@ -14,6 +14,7 @@ func _init() -> void:
 	player.set_stance(2, "right")
 	enemy.set_stance(4, "left")
 	var state_machine := BattleStateMachine.new()
+	state_machine.set_settlement_mode(BattleStateMachine.SettlementMode.SYMMETRIC)
 	state_machine.begin_battle(2)
 	state_machine.update_distance_from_positions(player, enemy)
 

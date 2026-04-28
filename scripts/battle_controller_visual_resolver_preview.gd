@@ -118,6 +118,8 @@ func _refresh_preview_ghosts() -> void:
 	player_preview_label.visible = false
 	enemy_preview_label.visible = false
 	_set_preview_ghosts_visible(true)
+	if _should_hide_player_preview_ghost():
+		player_preview_ghost.visible = false
 	_update_preview_arrow(player_preview_arrow, true, player_subjective, player_final)
 	_update_preview_arrow(enemy_preview_arrow, false, enemy_subjective, enemy_final)
 
@@ -178,6 +180,9 @@ func _preview_ghost_modulate(is_player: bool, overlaps_real_actor: bool) -> Colo
 	if overlaps_real_actor:
 		return Color(1.0, 1.0, 1.0, alpha)
 	return Color(0.55, 0.78, 1.0, alpha) if is_player else Color(1.0, 0.64, 0.48, alpha)
+
+func _should_hide_player_preview_ghost() -> bool:
+	return false
 
 func _compute_ordered_preview() -> Dictionary:
 	if player == null or enemy == null:

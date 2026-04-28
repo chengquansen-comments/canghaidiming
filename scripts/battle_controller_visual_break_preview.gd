@@ -12,6 +12,8 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 	var e_subjective: int = clampi(enemy.position + e_move_delta, 0, GRID_SLOT_COUNT - 1)
 	var p_final: int = player.position
 	var e_final: int = enemy.position
+	var p_facing: String = player.facing
+	var e_facing: String = enemy.facing
 	var p_hp_delta: int = 0
 	var e_hp_delta: int = 0
 	var p_momentum_delta: int = 0
@@ -32,12 +34,13 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 	for side: String in order:
 		if side == "player":
 			var before_move: int = p_final
-			p_final = clampi(p_final + p_move_delta, 0, GRID_SLOT_COUNT - 1)
+			p_final = _intent_target_position(true, p_intent)
+			p_facing = _intent_target_facing(true, p_intent)
 			p_subjective = p_final
 			player_move_applied = true
-			steps.append({"side": "player", "phase": "move", "from": before_move, "to": p_final})
+			steps.append({"side": "player", "phase": "move", "from": before_move, "to": p_final, "facing": p_facing})
 			if p_card != null:
-				var result_p: Dictionary = _resolve_one_preview_step(true, p_card, p_final, e_final)
+				var result_p: Dictionary = _resolve_one_preview_step(true, p_card, p_final, e_final, p_facing, e_facing)
 				p_range_result = str(result_p.get("range", CombatResolver.RANGE_NONE))
 				var target_m_delta: int = int(result_p.get("target_momentum_delta", 0))
 				var actor_m_delta: int = int(result_p.get("actor_momentum_delta", 0))
@@ -56,13 +59,17 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 				e_final = int(result_p.get("target_final", e_final))
 				steps.append({"side": "player", "phase": "effect_move", "actor_from": before_effect_move_p, "actor_to": p_final, "target_from": before_effect_move_e, "target_to": e_final, "range": p_range_result})
 		else:
+			if _preview_should_cancel_reactive_enemy_step(enemy_will_break):
+				steps.append({"side": "enemy", "phase": "interrupted", "reason": "reactive_break"})
+				continue
 			var before_enemy_move: int = e_final
-			e_final = clampi(e_final + e_move_delta, 0, GRID_SLOT_COUNT - 1)
+			e_final = _intent_target_position(false, e_intent)
+			e_facing = _intent_target_facing(false, e_intent)
 			e_subjective = e_final
 			enemy_move_applied = true
-			steps.append({"side": "enemy", "phase": "move", "from": before_enemy_move, "to": e_final})
+			steps.append({"side": "enemy", "phase": "move", "from": before_enemy_move, "to": e_final, "facing": e_facing})
 			if e_card != null:
-				var result_e: Dictionary = _resolve_one_preview_step(false, e_card, e_final, p_final)
+				var result_e: Dictionary = _resolve_one_preview_step(false, e_card, e_final, p_final, e_facing, p_facing)
 				e_range_result = str(result_e.get("range", CombatResolver.RANGE_NONE))
 				var target_m_delta_e: int = int(result_e.get("target_momentum_delta", 0))
 				var actor_m_delta_e: int = int(result_e.get("actor_momentum_delta", 0))
@@ -82,13 +89,17 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 				steps.append({"side": "enemy", "phase": "effect_move", "actor_from": before_effect_move_e2, "actor_to": e_final, "target_from": before_effect_move_p2, "target_to": p_final, "range": e_range_result})
 
 	if not player_move_applied and draft_player_has_position:
-		p_final = clampi(p_final + p_move_delta, 0, GRID_SLOT_COUNT - 1)
+		var before_player_fallback: int = p_final
+		p_final = _intent_target_position(true, p_intent)
+		p_facing = _intent_target_facing(true, p_intent)
 		p_subjective = p_final
-		steps.append({"side": "player", "phase": "move", "from": player.position, "to": p_subjective})
+		steps.append({"side": "player", "phase": "move", "from": before_player_fallback, "to": p_subjective, "facing": p_facing})
 	if not enemy_move_applied and e_intent != null and e_intent.target_position >= 0:
-		e_final = clampi(e_final + e_move_delta, 0, GRID_SLOT_COUNT - 1)
+		var before_enemy_fallback: int = e_final
+		e_final = _intent_target_position(false, e_intent)
+		e_facing = _intent_target_facing(false, e_intent)
 		e_subjective = e_final
-		steps.append({"side": "enemy", "phase": "move", "from": enemy.position, "to": e_subjective})
+		steps.append({"side": "enemy", "phase": "move", "from": before_enemy_fallback, "to": e_subjective, "facing": e_facing})
 	if p_card == null:
 		p_final = p_subjective
 	if e_card == null:
@@ -111,6 +122,13 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 		"order": order,
 		"steps": steps
 	}
+
+func _preview_should_cancel_reactive_enemy_step(enemy_interrupted: bool) -> bool:
+	if state_machine == null or not state_machine.is_reactive_mode():
+		return false
+	if enemy == null:
+		return false
+	return enemy_interrupted or enemy.pending_control_state == Fighter.CONTROL_BROKEN
 
 func _effect_preview_text() -> String:
 	if player == null or enemy == null or state_machine == null:

@@ -7,6 +7,7 @@ const META_RETURN_AFTER_BATTLE := "canghai_narrative_return_after_battle"
 const META_LAST_RESULT := "canghai_narrative_last_result"
 const META_RESULT_READY := "canghai_narrative_result_ready"
 const META_BATTLE_ID := "canghai_narrative_battle_id"
+const META_UI_DEBUG_VISIBLE := "canghai_ui_debug_visible"
 
 const META_PLAYER_READY := "canghai_player_ready"
 const META_PLAYER_ROLE := "canghai_player_role"
@@ -18,6 +19,8 @@ const META_PLAYER_MAX_POSTURE := "canghai_player_max_posture"
 const META_PLAYER_POSTURE := "canghai_player_posture"
 const META_PLAYER_MARTIAL_LEVEL := "canghai_player_martial_level"
 const META_PLAYER_BATTLES_WON := "canghai_player_battles_won"
+const META_NARRATIVE_STATE_READY := "canghai_narrative_state_ready"
+const META_NARRATIVE_STATE := "canghai_narrative_state"
 
 static var encounter_id := ""
 static var source_node_id := ""
@@ -26,6 +29,7 @@ static var return_after_battle := false
 static var last_result := ""
 static var result_ready := false
 static var battle_id := ""
+static var ui_debug_visible := true
 
 static var player_ready := false
 static var player_role := ""
@@ -37,6 +41,8 @@ static var player_max_posture := 0
 static var player_posture := 0
 static var player_martial_level := 0
 static var player_battles_won := 0
+static var narrative_state_ready := false
+static var narrative_state: Dictionary = {}
 
 static func set_request(p_encounter_id: String, p_source_node_id: String, p_battle_id: String = "") -> void:
 	_pull_meta()
@@ -66,6 +72,18 @@ static func get_battle_id() -> String:
 	_pull_meta()
 	if battle_id.is_empty(): battle_id = _battle_id_for_encounter(encounter_id, source_node_id)
 	return battle_id
+
+static func is_ui_debug_visible() -> bool:
+	_pull_ui_debug_meta()
+	return ui_debug_visible
+
+static func set_ui_debug_visible(visible: bool) -> void:
+	ui_debug_visible = visible
+	_write_ui_debug_meta()
+
+static func toggle_ui_debug_visible() -> bool:
+	set_ui_debug_visible(not is_ui_debug_visible())
+	return ui_debug_visible
 
 static func set_result(p_result: String) -> void:
 	_pull_meta()
@@ -102,6 +120,26 @@ static func clear_player_profile() -> void:
 	player_martial_level = 0
 	player_battles_won = 0
 	_clear_player_meta()
+
+static func set_narrative_state(state: Dictionary) -> void:
+	narrative_state_ready = true
+	narrative_state = state.duplicate(true)
+	_write_narrative_state_meta()
+
+static func has_narrative_state() -> bool:
+	_pull_meta()
+	return narrative_state_ready and not narrative_state.is_empty()
+
+static func get_narrative_state() -> Dictionary:
+	_pull_meta()
+	if not narrative_state_ready:
+		return {}
+	return narrative_state.duplicate(true)
+
+static func clear_narrative_state() -> void:
+	narrative_state_ready = false
+	narrative_state.clear()
+	_clear_narrative_state_meta()
 
 static func set_player_profile(profile: Dictionary) -> void:
 	player_ready = true
@@ -210,7 +248,12 @@ static func _write_meta() -> void:
 	Engine.set_meta(META_LAST_RESULT, last_result)
 	Engine.set_meta(META_RESULT_READY, result_ready)
 	Engine.set_meta(META_BATTLE_ID, battle_id)
+	_write_ui_debug_meta()
 	_write_player_meta()
+	_write_narrative_state_meta()
+
+static func _write_ui_debug_meta() -> void:
+	Engine.set_meta(META_UI_DEBUG_VISIBLE, ui_debug_visible)
 
 static func _write_player_meta() -> void:
 	Engine.set_meta(META_PLAYER_READY, player_ready)
@@ -224,7 +267,12 @@ static func _write_player_meta() -> void:
 	Engine.set_meta(META_PLAYER_MARTIAL_LEVEL, player_martial_level)
 	Engine.set_meta(META_PLAYER_BATTLES_WON, player_battles_won)
 
+static func _write_narrative_state_meta() -> void:
+	Engine.set_meta(META_NARRATIVE_STATE_READY, narrative_state_ready)
+	Engine.set_meta(META_NARRATIVE_STATE, narrative_state.duplicate(true))
+
 static func _pull_meta() -> void:
+	_pull_ui_debug_meta()
 	if Engine.has_meta(META_ENCOUNTER_ID): encounter_id = str(Engine.get_meta(META_ENCOUNTER_ID))
 	if Engine.has_meta(META_SOURCE_NODE_ID): source_node_id = str(Engine.get_meta(META_SOURCE_NODE_ID))
 	if Engine.has_meta(META_SOURCE_SCENE): source_scene = str(Engine.get_meta(META_SOURCE_SCENE))
@@ -242,6 +290,17 @@ static func _pull_meta() -> void:
 	if Engine.has_meta(META_PLAYER_POSTURE): player_posture = int(Engine.get_meta(META_PLAYER_POSTURE))
 	if Engine.has_meta(META_PLAYER_MARTIAL_LEVEL): player_martial_level = int(Engine.get_meta(META_PLAYER_MARTIAL_LEVEL))
 	if Engine.has_meta(META_PLAYER_BATTLES_WON): player_battles_won = int(Engine.get_meta(META_PLAYER_BATTLES_WON))
+	if Engine.has_meta(META_NARRATIVE_STATE_READY): narrative_state_ready = bool(Engine.get_meta(META_NARRATIVE_STATE_READY))
+	if Engine.has_meta(META_NARRATIVE_STATE):
+		var state_variant = Engine.get_meta(META_NARRATIVE_STATE)
+		if state_variant is Dictionary:
+			narrative_state = (state_variant as Dictionary).duplicate(true)
+
+static func _pull_ui_debug_meta() -> void:
+	if Engine.has_meta(META_UI_DEBUG_VISIBLE):
+		ui_debug_visible = bool(Engine.get_meta(META_UI_DEBUG_VISIBLE))
+	else:
+		_write_ui_debug_meta()
 
 static func _clear_battle_meta() -> void:
 	for key in [META_ENCOUNTER_ID, META_SOURCE_NODE_ID, META_SOURCE_SCENE, META_RETURN_AFTER_BATTLE, META_LAST_RESULT, META_RESULT_READY, META_BATTLE_ID]:
@@ -249,4 +308,8 @@ static func _clear_battle_meta() -> void:
 
 static func _clear_player_meta() -> void:
 	for key in [META_PLAYER_READY, META_PLAYER_ROLE, META_PLAYER_CAREER, META_PLAYER_WEAPON, META_PLAYER_MAX_HP, META_PLAYER_HP, META_PLAYER_MAX_POSTURE, META_PLAYER_POSTURE, META_PLAYER_MARTIAL_LEVEL, META_PLAYER_BATTLES_WON]:
+		if Engine.has_meta(key): Engine.remove_meta(key)
+
+static func _clear_narrative_state_meta() -> void:
+	for key in [META_NARRATIVE_STATE_READY, META_NARRATIVE_STATE]:
 		if Engine.has_meta(key): Engine.remove_meta(key)

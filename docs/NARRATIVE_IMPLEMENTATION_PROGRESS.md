@@ -2,7 +2,7 @@
 
 > 对应脚本：`docs/MVP_NARRATIVE_SCRIPT_COMPRESSED.md`  
 > 当前状态：压缩叙事已完成数据化、状态机、独立 Demo 场景。  
-> 当前目标：先本地跑通 `NarrativeDemo.tscn`，再补最小地图 UI 与美术占位；暂不接管现有战斗规则和 Web 外壳。
+> 历史进度记录：早期目标是跑通 `NarrativeDemo.tscn`、地图 UI 与美术占位。当前美术执行口径已迁移到 `docs/ART_PIPELINE.md`。
 
 ---
 
@@ -208,19 +208,17 @@ res://scenes/MainVisual.tscn
 未开放节点半透明。
 ```
 
-### Step 4：接美术背景占位
+### Step 4：接美术运行资源
 
-按 `docs/MVP_SINGLE_RUN_ART_COMPLETION_PLAN.md` 的 P0 资产接入：
+旧的“SVG 优先 / PNG 不进运行”口径已废弃；当前美术接入以 `docs/ART_PIPELINE.md`、`docs/NODE_VISUAL_MATRIX.md` 和 `docs/ART_PRODUCTION_ROADMAP.md` 为准。
+
+当前规则：
 
 ```text
-prologue_burning_village.png
-prologue_master_blocks_blade.png
-prologue_ten_years_later.png
-node_military_order.png
-node_beach_ambush.png
-node_ming_firearms.png
-boss_wakou_wrecked_ship.png
-ending_military_office_coverup.png
+1. visual_path 从 tables/narrative_mvp_node_status.tsv 进入运行。
+2. 剧情演出焦点从 tables/performance_*.tsv 编译到 data/performance_tracks.json。
+3. 正式运行资源优先使用 `assets/**/*.png`。
+4. `art_reference/generated` 参考图不直接挂运行；正式源画先进入 `art_reference/final`，再导出到 `assets`。
 ```
 
 图片不存在时显示文本占位，不阻塞运行。

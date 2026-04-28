@@ -3,7 +3,9 @@ from __future__ import annotations
 
 import csv
 import json
+import re
 import sys
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Any
 
@@ -101,6 +103,8 @@ def main() -> int:
         narrative_mvp_nodes = build_narrative_mvp_nodes()
         performance_tracks = build_performance_tracks()
         raw_documents = build_raw_json_documents()
+        validate_narrative_visual_assets(narrative_mvp_nodes)
+        validate_performance_track_assets(performance_tracks)
 
         DATA_DIR.mkdir(parents=True, exist_ok=True)
         write_json(DATA_DIR / "classes.json", classes)
@@ -316,6 +320,8 @@ def build_enemy_manifest() -> dict[str, Any]:
             "max_hp": int(required(row, "max_hp", f"enemy {enemy_id}")),
             "max_posture": int(required(row, "max_posture", f"enemy {enemy_id}")),
             "start_posture": int(required(row, "start_posture", f"enemy {enemy_id}")),
+            "realm": int(row.get("realm", "").strip() or 1),
+            "qinggong": max(1, int(row.get("qinggong", "").strip() or 1)),
             "intent_style": required(row, "intent_style", f"enemy {enemy_id}"),
             "behavior_tags": parse_str_list(row.get("behavior_tags", "")),
             "preferred_intents": parse_str_list(row.get("preferred_intents", "")),
@@ -502,6 +508,8 @@ def validate_narrative_mvp_config(nodes: list[dict[str, Any]], flow_node_ids: li
 
 def build_performance_tracks() -> dict[str, Any]:
     timeline: dict[str, Any] = {}
+    string_fields = {"prop_path", "prop2_path", "prop3_path"}
+    bool_fields = {"hero", "master"}
     for row in read_table("performance_timeline"):
         track_id = required(row, "track_id", "performance_timeline")
         config: dict[str, Any] = {}
@@ -511,7 +519,12 @@ def build_performance_tracks() -> dict[str, Any]:
             value = raw.strip()
             if value == "":
                 continue
-            config[key] = parse_bool(value) if key in {"hero", "master"} else float(value)
+            if key in string_fields:
+                config[key] = value
+            elif key in bool_fields:
+                config[key] = parse_bool(value)
+            else:
+                config[key] = float(value)
         timeline[track_id] = config
 
     beats: dict[str, list[dict[str, Any]]] = {track_id: [] for track_id in timeline.keys()}
@@ -526,6 +539,57 @@ def build_performance_tracks() -> dict[str, Any]:
             }
         )
     return {"timeline": timeline, "beats": beats}
+
+
+def validate_narrative_visual_assets(payload: dict[str, Any]) -> None:
+    for node in payload.get("nodes", []):
+        if not isinstance(node, dict):
+            continue
+        node_id = str(node.get("id", "unknown"))
+        validate_runtime_asset_path(str(node.get("visual_path", "")), f"narrative node {node_id}.visual_path")
+    node_status = payload.get("node_status", {})
+    if isinstance(node_status, dict):
+        for node_id, status in node_status.items():
+            if isinstance(status, dict):
+                validate_runtime_asset_path(str(status.get("visual_path", "")), f"node_status {node_id}.visual_path")
+
+
+def validate_performance_track_assets(payload: dict[str, Any]) -> None:
+    timeline = payload.get("timeline", {})
+    if not isinstance(timeline, dict):
+        raise ValueError("performance_tracks.timeline must be a dictionary")
+    for track_id, track in timeline.items():
+        if not isinstance(track, dict):
+            raise ValueError(f"performance track '{track_id}' must be a dictionary")
+        for prefix in ["prop", "prop2", "prop3"]:
+            validate_runtime_asset_path(str(track.get("%s_path" % prefix, "")), f"performance track {track_id}.{prefix}_path")
+
+
+def validate_runtime_asset_path(path: str, context: str) -> None:
+    if path.strip() == "":
+        return
+    if not path.startswith("res://"):
+        raise ValueError(f"{context} must use res:// path, got: {path}")
+    local_path = ROOT / path.replace("res://", "", 1)
+    if not local_path.exists():
+        raise ValueError(f"{context} points to missing asset: {path}")
+    if local_path.suffix.lower() == ".svg":
+        validate_runtime_svg(local_path, context)
+
+
+def validate_runtime_svg(path: Path, context: str) -> None:
+    text = path.read_text(encoding="utf-8")
+    try:
+        ET.fromstring(text)
+    except ET.ParseError as exc:
+        raise ValueError(f"{context} is not valid SVG XML: {path}: {exc}") from exc
+    lowered = text.lower()
+    if "<image" in lowered:
+        raise ValueError(f"{context} SVG must not embed image tags: {path}")
+    if "@font-face" in lowered:
+        raise ValueError(f"{context} SVG must not embed font declarations: {path}")
+    if re.search(r"(?:href|xlink:href)\s*=\s*['\"](?:https?:)?//", text, re.IGNORECASE):
+        raise ValueError(f"{context} SVG must not reference remote resources: {path}")
 
 
 def build_raw_json_documents() -> dict[Path, Any]:

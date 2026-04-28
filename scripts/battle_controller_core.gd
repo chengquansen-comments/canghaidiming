@@ -706,7 +706,7 @@ func _show_node_buttons() -> void:
 		{"label": "合成藏招", "callback": Callable(self, "_begin_hidden_fusion")},
 		{"label": "得招", "callback": Callable(self, "_open_gain_move")},
 		{"label": "点化", "callback": Callable(self, "_apply_enlighten")},
-		{"label": "演武", "callback": Callable(self, "_start_battle")}
+		{"label": "开始战斗", "callback": Callable(self, "_start_battle")}
 	]:
 		var button := Button.new()
 		button.text = spec["label"]
@@ -1193,8 +1193,10 @@ func _on_intent_resolved(_actor: Fighter, _target: Fighter, _intent: IntentData,
 
 func _resolve_round() -> void:
 	state_machine.phase = BattleStateMachine.BattlePhase.RESOLUTION
-	_apply_declared_stances()
+	if not state_machine.is_reactive_mode():
+		_apply_symmetric_declared_stances()
 	var order: Array[IntentData] = state_machine.get_resolution_order(player, enemy, player_intent, enemy_intent)
+	_log_declared_stances()
 	_log("[b]结算顺序：[/b] %s -> %s" % [order[0].get_actual_name(), order[1].get_actual_name()])
 	for intent in order:
 		var actor := player if intent.actor_id == player.data.id else enemy
@@ -1231,25 +1233,48 @@ func _resolve_round() -> void:
 	_begin_round()
 
 
-func _apply_declared_stances() -> void:
+func _log_declared_stances() -> void:
+	var player_position: int = _intent_target_position_or_current(player, player_intent)
+	var enemy_position: int = _intent_target_position_or_current(enemy, enemy_intent)
+	var player_facing: String = _intent_target_facing_or_current(player, player_intent)
+	var enemy_facing: String = _intent_target_facing_or_current(enemy, enemy_intent)
+	_log("[b]身位宣告：[/b] 玩家 %d 朝%s，敌方 %d 朝%s，宣告距离 %d。" % [
+		player_position,
+		"左" if player_facing == "left" else "右",
+		enemy_position,
+		"左" if enemy_facing == "left" else "右",
+		absi(enemy_position - player_position)
+	])
+
+
+func _apply_symmetric_declared_stances() -> void:
 	_apply_intent_stance(player, player_intent)
 	_apply_intent_stance(enemy, enemy_intent)
 	state_machine.update_distance_from_positions(player, enemy)
-	_log("[b]身位确认：[/b] 玩家 %d 朝%s，敌方 %d 朝%s，距离 %d。" % [
-		player.position,
-		"左" if player.facing == "left" else "右",
-		enemy.position,
-		"左" if enemy.facing == "left" else "右",
-		state_machine.current_distance
-	])
 
 
 func _apply_intent_stance(fighter: Fighter, intent: IntentData) -> void:
 	if fighter == null or intent == null:
 		return
-	var target_position := fighter.position if intent.target_position < 0 else intent.target_position
-	var target_facing := fighter.facing if intent.target_facing == "" else intent.target_facing
+	var target_position := _intent_target_position_or_current(fighter, intent)
+	var target_facing := _intent_target_facing_or_current(fighter, intent)
 	fighter.set_stance(target_position, target_facing)
+
+
+func _intent_target_position_or_current(fighter: Fighter, intent: IntentData) -> int:
+	if fighter == null:
+		return 0
+	if intent == null or intent.target_position < 0:
+		return fighter.position
+	return intent.target_position
+
+
+func _intent_target_facing_or_current(fighter: Fighter, intent: IntentData) -> String:
+	if fighter == null:
+		return "right"
+	if intent == null or intent.target_facing == "":
+		return fighter.facing
+	return intent.target_facing
 
 
 func _finish_battle() -> void:

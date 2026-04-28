@@ -8,6 +8,10 @@
 export_presets.cfg
 build/
 dist/
+reports/
+
+# Reference art is not runtime-loaded; Godot import cache here is local noise.
+art_reference/**/*.import
 
 # Local font copied from the developer machine for Web CJK rendering.
 # Do not commit font binaries.

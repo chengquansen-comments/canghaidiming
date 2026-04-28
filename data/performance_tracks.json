@@ -1,188 +1,1249 @@
 {
   "timeline": {
     "black_tide_0": {
-      "speed": 0.0,
-      "pulse": 0.0,
-      "fire": 0.0,
+      "speed": 0.55,
+      "pulse": 0.02,
+      "fire": 0.02,
       "hero": false,
       "hero_push": 0.0,
-      "zoom": 0.0,
-      "pan_x": 0.0,
-      "pan_y": 0.0,
-      "dim": 0.0,
-      "mist": 0.0,
+      "zoom": 0.012,
+      "pan_x": -8.0,
+      "pan_y": 2.0,
+      "dim": 0.42,
+      "mist": 0.32,
       "duration": 3.2
     },
     "black_tide_1": {
-      "speed": 0.0,
-      "pulse": 0.0,
-      "fire": 0.0,
+      "speed": 0.75,
+      "pulse": 0.026,
+      "fire": 0.05,
       "hero": false,
       "hero_push": 0.0,
-      "zoom": 0.0,
-      "pan_x": 0.0,
-      "pan_y": 0.0,
-      "dim": 0.0,
-      "mist": 0.0,
-      "duration": 3.0
+      "zoom": 0.018,
+      "pan_x": -4.0,
+      "pan_y": 1.0,
+      "dim": 0.34,
+      "mist": 0.42,
+      "duration": 3.0,
+      "prop3_path": "res://assets/narrative/silhouettes/sil_father_hiding_child.png",
+      "prop3_left": 0.13,
+      "prop3_top": 0.08,
+      "prop3_right": 0.55,
+      "prop3_bottom": 0.62,
+      "prop3_alpha": 0.48,
+      "prop3_push_x": 0.1,
+      "prop3_push_y": 0.0
     },
     "black_tide_2": {
-      "speed": 0.0,
-      "pulse": 0.0,
-      "fire": 0.0,
+      "speed": 1.0,
+      "pulse": 0.034,
+      "fire": 0.1,
       "hero": false,
       "hero_push": 0.0,
-      "zoom": 0.0,
-      "pan_x": 0.0,
+      "zoom": 0.026,
+      "pan_x": 4.0,
       "pan_y": 0.0,
-      "dim": 0.0,
-      "mist": 0.0,
-      "duration": 3.0
+      "dim": 0.29,
+      "mist": 0.5,
+      "duration": 3.0,
+      "prop_path": "res://assets/narrative/props/prop_knife_at_door.png",
+      "prop_left": 0.36,
+      "prop_top": 0.18,
+      "prop_right": 0.84,
+      "prop_bottom": 0.58,
+      "prop_alpha": 0.56,
+      "prop_push_x": -0.1,
+      "prop_push_y": 0.0
     },
     "black_tide_3": {
-      "speed": 0.0,
-      "pulse": 0.0,
+      "speed": 1.18,
+      "pulse": 0.046,
+      "fire": 0.14,
+      "hero": false,
+      "hero_push": 0.0,
+      "zoom": 0.034,
+      "pan_x": 10.0,
+      "pan_y": -2.0,
+      "dim": 0.24,
+      "mist": 0.58,
+      "duration": 3.4,
+      "prop_path": "res://assets/narrative/props/prop_mother_shoe_by_fire.png",
+      "prop_left": 0.12,
+      "prop_top": 0.28,
+      "prop_right": 0.52,
+      "prop_bottom": 0.62,
+      "prop_alpha": 0.66,
+      "prop_push_x": 0.0,
+      "prop_push_y": 0.0
+    },
+    "black_tide_dead": {
+      "speed": 0.72,
+      "pulse": 0.018,
+      "fire": 0.02,
+      "hero": false,
+      "hero_push": 0.0,
+      "zoom": 0.016,
+      "pan_x": 2.0,
+      "pan_y": 0.0,
+      "dim": 0.54,
+      "mist": 0.36,
+      "duration": 3.0
+    },
+    "black_tide_wooden_blade": {
+      "speed": 1.08,
+      "pulse": 0.04,
+      "fire": 0.12,
+      "hero": false,
+      "hero_push": 0.0,
+      "zoom": 0.032,
+      "pan_x": 8.0,
+      "pan_y": -1.0,
+      "dim": 0.28,
+      "mist": 0.5,
+      "duration": 3.0,
+      "prop_path": "res://assets/narrative/props/prop_wooden_training_blade.png",
+      "prop_left": 0.38,
+      "prop_top": 0.28,
+      "prop_right": 0.86,
+      "prop_bottom": 0.58,
+      "prop_alpha": 0.72,
+      "prop_push_x": -0.2,
+      "prop_push_y": 0.0
+    },
+    "black_tide_fall": {
+      "speed": 1.18,
+      "pulse": 0.046,
+      "fire": 0.14,
+      "hero": false,
+      "hero_push": 0.0,
+      "zoom": 0.034,
+      "pan_x": 10.0,
+      "pan_y": -2.0,
+      "dim": 0.24,
+      "mist": 0.58,
+      "duration": 3.4,
+      "prop_path": "res://assets/narrative/props/prop_mother_shoe_by_fire.png",
+      "prop_left": 0.12,
+      "prop_top": 0.28,
+      "prop_right": 0.52,
+      "prop_bottom": 0.62,
+      "prop_alpha": 0.66,
+      "prop_push_x": 0.0,
+      "prop_push_y": 0.0
+    },
+    "prologue_master_arrives": {
+      "master": true,
+      "master_push": 10.0,
+      "fire": 0.14,
+      "hero": false,
+      "hero_push": 0.0,
+      "zoom": 0.02,
+      "pan_x": 8.0,
+      "pan_y": -1.0,
+      "dim": 0.24,
+      "mist": 0.22,
+      "duration": 2.8,
+      "prop3_path": "res://assets/narrative/silhouettes/sil_master_blocks_arrow.png",
+      "prop3_left": 0.12,
+      "prop3_top": 0.08,
+      "prop3_right": 0.54,
+      "prop3_bottom": 0.64,
+      "prop3_alpha": 0.56,
+      "prop3_push_x": 0.1,
+      "prop3_push_y": 0.0
+    },
+    "prologue_three_cards": {
+      "master": true,
+      "master_push": 8.0,
+      "fire": 0.08,
+      "hero": false,
+      "hero_push": 0.0,
+      "zoom": 0.018,
+      "pan_x": 4.0,
+      "pan_y": -1.0,
+      "dim": 0.3,
+      "mist": 0.2,
+      "duration": 2.9
+    },
+    "prologue_military_word": {
+      "master": false,
+      "master_push": 0.0,
       "fire": 0.0,
       "hero": false,
       "hero_push": 0.0,
-      "zoom": 0.0,
-      "pan_x": 0.0,
+      "zoom": 0.024,
+      "pan_x": -5.0,
       "pan_y": 0.0,
-      "dim": 0.0,
-      "mist": 0.0,
-      "duration": 3.4
+      "dim": 0.42,
+      "mist": 0.26,
+      "duration": 2.8,
+      "prop2_path": "res://assets/narrative/props/prop_black_arrow.png",
+      "prop2_left": 0.52,
+      "prop2_top": 0.14,
+      "prop2_right": 0.94,
+      "prop2_bottom": 0.42,
+      "prop2_alpha": 0.42,
+      "prop2_push_x": -0.2,
+      "prop2_push_y": 0.0
+    },
+    "prologue_hidden_arrow": {
+      "master": false,
+      "master_push": 0.0,
+      "fire": 0.0,
+      "hero": false,
+      "hero_push": 0.0,
+      "zoom": 0.018,
+      "pan_x": -6.0,
+      "pan_y": 0.0,
+      "dim": 0.4,
+      "mist": 0.26,
+      "duration": 2.4,
+      "prop_path": "res://assets/narrative/props/prop_black_arrow.png",
+      "prop_left": 0.4,
+      "prop_top": 0.12,
+      "prop_right": 0.92,
+      "prop_bottom": 0.44,
+      "prop_alpha": 0.8,
+      "prop_push_x": -0.2,
+      "prop_push_y": 0.0
+    },
+    "prologue_dont_look": {
+      "master": true,
+      "master_push": -4.0,
+      "fire": 0.0,
+      "hero": false,
+      "hero_push": 0.0,
+      "zoom": 0.015,
+      "pan_x": -6.0,
+      "pan_y": 0.0,
+      "dim": 0.34,
+      "mist": 0.24,
+      "duration": 2.6,
+      "prop_path": "res://assets/narrative/props/prop_black_arrow.png",
+      "prop_left": 0.46,
+      "prop_top": 0.14,
+      "prop_right": 0.88,
+      "prop_bottom": 0.42,
+      "prop_alpha": 0.64,
+      "prop_push_x": -0.2,
+      "prop_push_y": 0.0,
+      "prop3_path": "res://assets/narrative/silhouettes/sil_master_looking_at_black_arrow.png",
+      "prop3_left": 0.12,
+      "prop3_top": 0.08,
+      "prop3_right": 0.56,
+      "prop3_bottom": 0.66,
+      "prop3_alpha": 0.52,
+      "prop3_push_x": 0.1,
+      "prop3_push_y": 0.0
     },
     "master_rescue": {
-      "master": false,
-      "master_push": 0.0,
-      "fire": 0.0,
+      "master": true,
+      "master_push": 10.0,
+      "fire": 0.14,
       "hero": false,
       "hero_push": 0.0,
-      "zoom": 0.0,
-      "pan_x": 0.0,
-      "pan_y": 0.0,
-      "dim": 0.0,
-      "mist": 0.0,
-      "duration": 2.8
+      "zoom": 0.02,
+      "pan_x": 8.0,
+      "pan_y": -1.0,
+      "dim": 0.24,
+      "mist": 0.22,
+      "duration": 2.8,
+      "prop_path": "res://assets/narrative/props/prop_wooden_training_blade.png",
+      "prop_left": 0.42,
+      "prop_top": 0.32,
+      "prop_right": 0.88,
+      "prop_bottom": 0.58,
+      "prop_alpha": 0.62,
+      "prop_push_x": -0.1,
+      "prop_push_y": 0.0,
+      "prop3_path": "res://assets/narrative/silhouettes/sil_master_blocks_arrow.png",
+      "prop3_left": 0.12,
+      "prop3_top": 0.08,
+      "prop3_right": 0.54,
+      "prop3_bottom": 0.64,
+      "prop3_alpha": 0.5,
+      "prop3_push_x": 0.1,
+      "prop3_push_y": 0.0
     },
     "arrow_silence": {
-      "master": false,
-      "master_push": 0.0,
+      "master": true,
+      "master_push": -4.0,
       "fire": 0.0,
       "hero": false,
       "hero_push": 0.0,
-      "zoom": 0.0,
-      "pan_x": 0.0,
+      "zoom": 0.015,
+      "pan_x": -6.0,
       "pan_y": 0.0,
-      "dim": 0.0,
-      "mist": 0.0,
-      "duration": 2.4
+      "dim": 0.34,
+      "mist": 0.24,
+      "duration": 2.4,
+      "prop_path": "res://assets/narrative/props/prop_black_arrow.png",
+      "prop_left": 0.4,
+      "prop_top": 0.12,
+      "prop_right": 0.92,
+      "prop_bottom": 0.44,
+      "prop_alpha": 0.72,
+      "prop_push_x": -0.2,
+      "prop_push_y": 0.0,
+      "prop3_path": "res://assets/narrative/silhouettes/sil_master_looking_at_black_arrow.png",
+      "prop3_left": 0.12,
+      "prop3_top": 0.08,
+      "prop3_right": 0.56,
+      "prop3_bottom": 0.66,
+      "prop3_alpha": 0.52,
+      "prop3_push_x": 0.1,
+      "prop3_push_y": 0.0
     },
     "departure": {
       "master": false,
       "master_push": 0.0,
       "fire": 0.0,
-      "hero": false,
-      "hero_push": 0.0,
-      "zoom": 0.0,
-      "pan_x": 0.0,
-      "pan_y": 0.0,
-      "dim": 0.0,
-      "mist": 0.0,
-      "duration": 3.0
+      "hero": true,
+      "hero_push": -8.0,
+      "zoom": 0.018,
+      "pan_x": 5.0,
+      "pan_y": -1.0,
+      "dim": 0.18,
+      "mist": 0.16,
+      "duration": 3.0,
+      "prop_path": "res://assets/narrative/props/prop_old_master_saber.png",
+      "prop_left": 0.46,
+      "prop_top": 0.25,
+      "prop_right": 0.94,
+      "prop_bottom": 0.47,
+      "prop_alpha": 0.78,
+      "prop_push_x": -0.4,
+      "prop_push_y": 0.0
     },
     "military_order": {
-      "fire": 0.0,
-      "hero": false,
-      "hero_push": 0.0,
-      "zoom": 0.0,
-      "pan_x": 0.0,
-      "pan_y": 0.0,
-      "dim": 0.0,
-      "mist": 0.0,
-      "duration": 3.0
+      "fire": 0.035,
+      "hero": true,
+      "hero_push": -4.0,
+      "zoom": 0.015,
+      "pan_x": 2.0,
+      "pan_y": -1.0,
+      "dim": 0.16,
+      "mist": 0.1,
+      "duration": 3.0,
+      "prop_path": "res://assets/narrative/props/prop_military_order_seal.png",
+      "prop_left": 0.58,
+      "prop_top": 0.16,
+      "prop_right": 0.86,
+      "prop_bottom": 0.52,
+      "prop_alpha": 0.78,
+      "prop_push_x": -0.1,
+      "prop_push_y": 0.0,
+      "prop2_path": "res://assets/narrative/props/prop_coastal_patrol_map.png",
+      "prop2_left": 0.16,
+      "prop2_top": 0.18,
+      "prop2_right": 0.52,
+      "prop2_bottom": 0.52,
+      "prop2_alpha": 0.46,
+      "prop2_push_x": 0.1,
+      "prop2_push_y": 0.0
     },
     "beach_ambush": {
-      "fire": 0.0,
+      "fire": 0.06,
+      "hero": true,
+      "hero_push": -11.0,
+      "zoom": 0.04,
+      "pan_x": 14.0,
+      "pan_y": -3.0,
+      "dim": 0.31,
+      "mist": 0.42,
+      "duration": 2.6,
+      "prop_path": "res://assets/narrative/props/prop_official_mud_bootprint.png",
+      "prop_left": 0.5,
+      "prop_top": 0.36,
+      "prop_right": 0.88,
+      "prop_bottom": 0.62,
+      "prop_alpha": 0.7,
+      "prop_push_x": -0.2,
+      "prop_push_y": 0.1,
+      "prop3_path": "res://assets/narrative/silhouettes/sil_wakou_ambusher.png",
+      "prop3_left": 0.56,
+      "prop3_top": 0.08,
+      "prop3_right": 0.96,
+      "prop3_bottom": 0.58,
+      "prop3_alpha": 0.42,
+      "prop3_push_x": -0.2,
+      "prop3_push_y": 0.0
+    },
+    "beach_ambush_aftermath": {
+      "fire": 0.025,
       "hero": false,
       "hero_push": 0.0,
-      "zoom": 0.0,
-      "pan_x": 0.0,
-      "pan_y": 0.0,
-      "dim": 0.0,
-      "mist": 0.0,
-      "duration": 2.6
+      "zoom": 0.032,
+      "pan_x": 4.0,
+      "pan_y": -1.0,
+      "dim": 0.34,
+      "mist": 0.3,
+      "duration": 3.0,
+      "prop_path": "res://assets/narrative/props/prop_official_mud_bootprint.png",
+      "prop_left": 0.18,
+      "prop_top": 0.28,
+      "prop_right": 0.58,
+      "prop_bottom": 0.58,
+      "prop_alpha": 0.78,
+      "prop_push_x": 0.0,
+      "prop_push_y": 0.1,
+      "prop2_path": "res://assets/narrative/props/prop_beach_body_search.png",
+      "prop2_left": 0.48,
+      "prop2_top": 0.22,
+      "prop2_right": 0.86,
+      "prop2_bottom": 0.58,
+      "prop2_alpha": 0.64,
+      "prop2_push_x": -0.1,
+      "prop2_push_y": 0.0
+    },
+    "fishing_village_embers_aftermath": {
+      "fire": 0.12,
+      "hero": false,
+      "hero_push": 0.0,
+      "zoom": 0.036,
+      "pan_x": 6.0,
+      "pan_y": -2.0,
+      "dim": 0.36,
+      "mist": 0.36,
+      "duration": 3.1,
+      "prop_path": "res://assets/narrative/props/prop_burnt_bowl.png",
+      "prop_left": 0.5,
+      "prop_top": 0.24,
+      "prop_right": 0.82,
+      "prop_bottom": 0.56,
+      "prop_alpha": 0.8,
+      "prop_push_x": -0.1,
+      "prop_push_y": 0.0,
+      "prop3_path": "res://assets/narrative/silhouettes/sil_coughing_child_shadow.png",
+      "prop3_left": 0.16,
+      "prop3_top": 0.12,
+      "prop3_right": 0.48,
+      "prop3_bottom": 0.58,
+      "prop3_alpha": 0.44,
+      "prop3_push_x": 0.2,
+      "prop3_push_y": 0.0
     },
     "ming_firearm": {
-      "fire": 0.0,
+      "fire": 0.34,
       "hero": false,
       "hero_push": 0.0,
-      "zoom": 0.0,
+      "zoom": 0.09,
       "pan_x": 0.0,
-      "pan_y": 0.0,
-      "dim": 0.0,
-      "mist": 0.0,
-      "duration": 3.4
+      "pan_y": -5.0,
+      "dim": 0.08,
+      "mist": 0.02,
+      "duration": 3.4,
+      "prop_path": "res://assets/narrative/props/prop_firearm_seal_mark.png",
+      "prop_left": 0.38,
+      "prop_top": 0.14,
+      "prop_right": 0.66,
+      "prop_bottom": 0.48,
+      "prop_alpha": 0.88,
+      "prop_push_x": 0.0,
+      "prop_push_y": -0.2,
+      "prop2_path": "res://assets/narrative/props/prop_firearm_crate.png",
+      "prop2_left": 0.12,
+      "prop2_top": 0.32,
+      "prop2_right": 0.5,
+      "prop2_bottom": 0.58,
+      "prop2_alpha": 0.52,
+      "prop2_push_x": 0.1,
+      "prop2_push_y": 0.1
+    },
+    "altered_military_report": {
+      "fire": 0.06,
+      "hero": false,
+      "hero_push": 0.0,
+      "zoom": 0.055,
+      "pan_x": -3.0,
+      "pan_y": -2.0,
+      "dim": 0.22,
+      "mist": 0.12,
+      "duration": 3.2,
+      "prop_path": "res://assets/narrative/props/prop_altered_military_report.png",
+      "prop_left": 0.22,
+      "prop_top": 0.12,
+      "prop_right": 0.72,
+      "prop_bottom": 0.58,
+      "prop_alpha": 0.86,
+      "prop_push_x": -0.1,
+      "prop_push_y": 0.0,
+      "prop3_path": "res://assets/narrative/silhouettes/sil_fallen_shrine_shadow.png",
+      "prop3_left": 0.46,
+      "prop3_top": 0.12,
+      "prop3_right": 0.88,
+      "prop3_bottom": 0.58,
+      "prop3_alpha": 0.42,
+      "prop3_push_x": -0.1,
+      "prop3_push_y": 0.0
     },
     "transport_officer": {
-      "fire": 0.0,
+      "fire": 0.035,
+      "hero": true,
+      "hero_push": -8.0,
+      "zoom": 0.03,
+      "pan_x": 8.0,
+      "pan_y": -1.0,
+      "dim": 0.34,
+      "mist": 0.32,
+      "duration": 2.9,
+      "prop_path": "res://assets/narrative/props/prop_half_roster_wet.png",
+      "prop_left": 0.54,
+      "prop_top": 0.18,
+      "prop_right": 0.84,
+      "prop_bottom": 0.52,
+      "prop_alpha": 0.7,
+      "prop_push_x": -0.2,
+      "prop_push_y": 0.1,
+      "prop3_path": "res://assets/narrative/silhouettes/sil_transport_officer_shadow.png",
+      "prop3_left": 0.14,
+      "prop3_top": 0.08,
+      "prop3_right": 0.5,
+      "prop3_bottom": 0.64,
+      "prop3_alpha": 0.46,
+      "prop3_push_x": 0.1,
+      "prop3_push_y": 0.0
+    },
+    "transport_officer_aftermath": {
+      "fire": 0.025,
       "hero": false,
       "hero_push": 0.0,
-      "zoom": 0.0,
-      "pan_x": 0.0,
-      "pan_y": 0.0,
-      "dim": 0.0,
-      "mist": 0.0,
-      "duration": 2.9
+      "zoom": 0.035,
+      "pan_x": 5.0,
+      "pan_y": -2.0,
+      "dim": 0.36,
+      "mist": 0.28,
+      "duration": 3.0,
+      "prop_path": "res://assets/narrative/props/prop_half_roster_wet.png",
+      "prop_left": 0.5,
+      "prop_top": 0.16,
+      "prop_right": 0.82,
+      "prop_bottom": 0.52,
+      "prop_alpha": 0.82,
+      "prop_push_x": -0.2,
+      "prop_push_y": 0.1,
+      "prop3_path": "res://assets/narrative/silhouettes/sil_transport_officer_shadow.png",
+      "prop3_left": 0.16,
+      "prop3_top": 0.08,
+      "prop3_right": 0.52,
+      "prop3_bottom": 0.64,
+      "prop3_alpha": 0.42,
+      "prop3_push_x": 0.1,
+      "prop3_push_y": 0.0
+    },
+    "night_knife_camp": {
+      "master": true,
+      "master_push": 6.0,
+      "fire": 0.22,
+      "hero": false,
+      "hero_push": 0.0,
+      "zoom": 0.045,
+      "pan_x": 10.0,
+      "pan_y": -3.0,
+      "dim": 0.42,
+      "mist": 0.34,
+      "duration": 3.6,
+      "prop_path": "res://assets/narrative/props/prop_firearm_seal_mark.png",
+      "prop_left": 0.61,
+      "prop_top": 0.34,
+      "prop_right": 0.86,
+      "prop_bottom": 0.6,
+      "prop_alpha": 0.74,
+      "prop_push_x": -0.2,
+      "prop_push_y": 0.0,
+      "prop2_path": "res://assets/narrative/props/prop_old_master_saber.png",
+      "prop2_left": 0.14,
+      "prop2_top": 0.3,
+      "prop2_right": 0.52,
+      "prop2_bottom": 0.52,
+      "prop2_alpha": 0.58,
+      "prop2_push_x": 0.1,
+      "prop2_push_y": 0.0,
+      "prop3_path": "res://assets/narrative/silhouettes/sil_grinding_saber_shadow.png",
+      "prop3_left": 0.44,
+      "prop3_top": 0.06,
+      "prop3_right": 0.96,
+      "prop3_bottom": 0.64,
+      "prop3_alpha": 0.54,
+      "prop3_push_x": -0.2,
+      "prop3_push_y": 0.0
     },
     "wakou_boss": {
-      "fire": 0.0,
-      "hero": false,
-      "hero_push": 0.0,
-      "zoom": 0.0,
-      "pan_x": 0.0,
-      "pan_y": 0.0,
-      "dim": 0.0,
-      "mist": 0.0,
-      "duration": 3.3
+      "fire": 0.22,
+      "hero": true,
+      "hero_push": -13.0,
+      "zoom": 0.05,
+      "pan_x": 16.0,
+      "pan_y": -3.0,
+      "dim": 0.38,
+      "mist": 0.42,
+      "duration": 3.3,
+      "prop_path": "res://assets/narrative/props/prop_firearm_crate.png",
+      "prop_left": 0.54,
+      "prop_top": 0.26,
+      "prop_right": 0.88,
+      "prop_bottom": 0.56,
+      "prop_alpha": 0.62,
+      "prop_push_x": -0.1,
+      "prop_push_y": 0.0,
+      "prop2_path": "res://assets/narrative/props/prop_military_lacquer_mark.png",
+      "prop2_left": 0.2,
+      "prop2_top": 0.18,
+      "prop2_right": 0.54,
+      "prop2_bottom": 0.52,
+      "prop2_alpha": 0.58,
+      "prop2_push_x": 0.1,
+      "prop2_push_y": 0.0,
+      "prop3_path": "res://assets/narrative/silhouettes/sil_wakou_boss_shadow.png",
+      "prop3_left": 0.54,
+      "prop3_top": 0.06,
+      "prop3_right": 0.94,
+      "prop3_bottom": 0.62,
+      "prop3_alpha": 0.46,
+      "prop3_push_x": -0.2,
+      "prop3_push_y": 0.0
     },
     "military_coverup": {
-      "fire": 0.0,
+      "fire": 0.01,
       "hero": false,
       "hero_push": 0.0,
-      "zoom": 0.0,
-      "pan_x": 0.0,
+      "zoom": 0.02,
+      "pan_x": -6.0,
       "pan_y": 0.0,
-      "dim": 0.0,
-      "mist": 0.0,
-      "duration": 3.4
+      "dim": 0.48,
+      "mist": 0.12,
+      "duration": 3.4,
+      "prop_path": "res://assets/narrative/props/prop_empty_wooden_case.png",
+      "prop_left": 0.18,
+      "prop_top": 0.22,
+      "prop_right": 0.58,
+      "prop_bottom": 0.54,
+      "prop_alpha": 0.76,
+      "prop_push_x": 0.0,
+      "prop_push_y": 0.0,
+      "prop2_path": "res://assets/narrative/props/prop_casefile_missing_page.png",
+      "prop2_left": 0.52,
+      "prop2_top": 0.14,
+      "prop2_right": 0.86,
+      "prop2_bottom": 0.5,
+      "prop2_alpha": 0.58,
+      "prop2_push_x": -0.1,
+      "prop2_push_y": 0.0,
+      "prop3_path": "res://assets/narrative/silhouettes/sil_master_at_gate_shadow.png",
+      "prop3_left": 0.36,
+      "prop3_top": 0.06,
+      "prop3_right": 0.82,
+      "prop3_bottom": 0.62,
+      "prop3_alpha": 0.42,
+      "prop3_push_x": 0.0,
+      "prop3_push_y": 0.0
     },
     "node": {
-      "fire": 0.0,
+      "fire": 0.02,
       "hero": false,
       "hero_push": 0.0,
-      "zoom": 0.0,
-      "pan_x": 0.0,
+      "zoom": 0.018,
+      "pan_x": 4.0,
       "pan_y": 0.0,
-      "dim": 0.0,
-      "mist": 0.0,
+      "dim": 0.22,
+      "mist": 0.18,
       "duration": 2.2
+    },
+    "merchant_banquet": {
+      "fire": 0.2,
+      "hero": false,
+      "hero_push": 0.0,
+      "zoom": 0.032,
+      "pan_x": 6.0,
+      "pan_y": -1.0,
+      "dim": 0.32,
+      "mist": 0.2,
+      "duration": 3.1,
+      "prop_path": "res://assets/narrative/props/prop_firearm_crate.png",
+      "prop_left": 0.58,
+      "prop_top": 0.28,
+      "prop_right": 0.9,
+      "prop_bottom": 0.58,
+      "prop_alpha": 0.58,
+      "prop_push_x": -0.1,
+      "prop_push_y": 0.0,
+      "prop2_path": "res://assets/narrative/props/prop_wine_cup_key.png",
+      "prop2_left": 0.16,
+      "prop2_top": 0.28,
+      "prop2_right": 0.5,
+      "prop2_bottom": 0.58,
+      "prop2_alpha": 0.74,
+      "prop2_push_x": 0.1,
+      "prop2_push_y": 0.0
+    },
+    "mutiny_camp": {
+      "fire": 0.1,
+      "hero": true,
+      "hero_push": -8.0,
+      "zoom": 0.028,
+      "pan_x": 8.0,
+      "pan_y": -2.0,
+      "dim": 0.36,
+      "mist": 0.3,
+      "duration": 3.0,
+      "prop_path": "res://assets/narrative/props/prop_wet_payroll_ledger.png",
+      "prop_left": 0.52,
+      "prop_top": 0.22,
+      "prop_right": 0.84,
+      "prop_bottom": 0.56,
+      "prop_alpha": 0.7,
+      "prop_push_x": -0.1,
+      "prop_push_y": 0.0,
+      "prop3_path": "res://assets/narrative/silhouettes/sil_starving_soldier_shadow.png",
+      "prop3_left": 0.14,
+      "prop3_top": 0.08,
+      "prop3_right": 0.52,
+      "prop3_bottom": 0.62,
+      "prop3_alpha": 0.46,
+      "prop3_push_x": 0.1,
+      "prop3_push_y": 0.0
+    },
+    "mutiny_camp_aftermath": {
+      "fire": 0.06,
+      "hero": false,
+      "hero_push": 0.0,
+      "zoom": 0.035,
+      "pan_x": 4.0,
+      "pan_y": -2.0,
+      "dim": 0.38,
+      "mist": 0.26,
+      "duration": 3.0,
+      "prop_path": "res://assets/narrative/props/prop_wet_payroll_ledger.png",
+      "prop_left": 0.18,
+      "prop_top": 0.28,
+      "prop_right": 0.54,
+      "prop_bottom": 0.6,
+      "prop_alpha": 0.78,
+      "prop_push_x": 0.0,
+      "prop_push_y": 0.0,
+      "prop3_path": "res://assets/narrative/silhouettes/sil_kneeling_mutiny_soldier.png",
+      "prop3_left": 0.5,
+      "prop3_top": 0.1,
+      "prop3_right": 0.94,
+      "prop3_bottom": 0.64,
+      "prop3_alpha": 0.48,
+      "prop3_push_x": -0.1,
+      "prop3_push_y": 0.0
+    },
+    "military_messenger": {
+      "fire": 0.04,
+      "hero": false,
+      "hero_push": 0.0,
+      "zoom": 0.03,
+      "pan_x": 6.0,
+      "pan_y": -2.0,
+      "dim": 0.34,
+      "mist": 0.38,
+      "duration": 3.0,
+      "prop_path": "res://assets/narrative/props/prop_unsealed_letter.png",
+      "prop_left": 0.18,
+      "prop_top": 0.22,
+      "prop_right": 0.54,
+      "prop_bottom": 0.58,
+      "prop_alpha": 0.76,
+      "prop_push_x": 0.1,
+      "prop_push_y": 0.0,
+      "prop3_path": "res://assets/narrative/silhouettes/sil_rain_messenger_shadow.png",
+      "prop3_left": 0.48,
+      "prop3_top": 0.08,
+      "prop3_right": 0.94,
+      "prop3_bottom": 0.64,
+      "prop3_alpha": 0.46,
+      "prop3_push_x": -0.1,
+      "prop3_push_y": 0.0
     }
   },
   "beats": {
-    "black_tide_0": [],
-    "black_tide_1": [],
-    "black_tide_2": [],
-    "black_tide_3": [],
-    "master_rescue": [],
-    "arrow_silence": [],
-    "departure": [],
-    "military_order": [],
-    "beach_ambush": [],
-    "ming_firearm": [],
-    "transport_officer": [],
-    "wakou_boss": [],
-    "military_coverup": [],
-    "node": []
+    "black_tide_0": [
+      {
+        "t": 0.25,
+        "type": "hold",
+        "power": 0.1
+      },
+      {
+        "t": 2.3,
+        "type": "mist",
+        "power": 0.08
+      }
+    ],
+    "black_tide_1": [
+      {
+        "t": 0.5,
+        "type": "mist",
+        "power": 0.09
+      },
+      {
+        "t": 2.2,
+        "type": "fire",
+        "power": 0.16
+      }
+    ],
+    "black_tide_2": [
+      {
+        "t": 0.7,
+        "type": "mist",
+        "power": 0.12
+      },
+      {
+        "t": 1.6,
+        "type": "fire",
+        "power": 0.24
+      },
+      {
+        "t": 2.2,
+        "type": "focus",
+        "power": 0.1
+      }
+    ],
+    "black_tide_3": [
+      {
+        "t": 0.35,
+        "type": "mist",
+        "power": 0.15
+      },
+      {
+        "t": 1.2,
+        "type": "fire",
+        "power": 0.28
+      },
+      {
+        "t": 2.1,
+        "type": "hold",
+        "power": 0.12
+      }
+    ],
+    "black_tide_dead": [
+      {
+        "t": 0.35,
+        "type": "hold",
+        "power": 0.18
+      },
+      {
+        "t": 1.25,
+        "type": "mist",
+        "power": 0.12
+      },
+      {
+        "t": 2.1,
+        "type": "focus",
+        "power": 0.1
+      }
+    ],
+    "black_tide_wooden_blade": [
+      {
+        "t": 0.3,
+        "type": "fire",
+        "power": 0.12
+      },
+      {
+        "t": 1.0,
+        "type": "focus",
+        "power": 0.14
+      },
+      {
+        "t": 2.1,
+        "type": "hold",
+        "power": 0.08
+      }
+    ],
+    "black_tide_fall": [
+      {
+        "t": 0.35,
+        "type": "mist",
+        "power": 0.15
+      },
+      {
+        "t": 1.2,
+        "type": "fire",
+        "power": 0.28
+      },
+      {
+        "t": 2.1,
+        "type": "hold",
+        "power": 0.12
+      }
+    ],
+    "prologue_master_arrives": [
+      {
+        "t": 0.25,
+        "type": "fire",
+        "power": 0.24
+      },
+      {
+        "t": 0.65,
+        "type": "character",
+        "power": 0.16
+      },
+      {
+        "t": 1.65,
+        "type": "focus",
+        "power": 0.1
+      }
+    ],
+    "prologue_three_cards": [
+      {
+        "t": 0.35,
+        "type": "character",
+        "power": 0.1
+      },
+      {
+        "t": 1.1,
+        "type": "focus",
+        "power": 0.16
+      },
+      {
+        "t": 2.2,
+        "type": "hold",
+        "power": 0.08
+      }
+    ],
+    "prologue_military_word": [
+      {
+        "t": 0.35,
+        "type": "hold",
+        "power": 0.12
+      },
+      {
+        "t": 1.15,
+        "type": "focus",
+        "power": 0.16
+      },
+      {
+        "t": 2.1,
+        "type": "mist",
+        "power": 0.1
+      }
+    ],
+    "prologue_hidden_arrow": [
+      {
+        "t": 0.4,
+        "type": "hold",
+        "power": 0.18
+      },
+      {
+        "t": 1.1,
+        "type": "focus",
+        "power": 0.12
+      }
+    ],
+    "prologue_dont_look": [
+      {
+        "t": 0.4,
+        "type": "character",
+        "power": 0.12
+      },
+      {
+        "t": 1.3,
+        "type": "focus",
+        "power": 0.12
+      },
+      {
+        "t": 2.1,
+        "type": "hold",
+        "power": 0.08
+      }
+    ],
+    "master_rescue": [
+      {
+        "t": 0.25,
+        "type": "fire",
+        "power": 0.24
+      },
+      {
+        "t": 0.65,
+        "type": "character",
+        "power": 0.16
+      },
+      {
+        "t": 1.65,
+        "type": "focus",
+        "power": 0.1
+      }
+    ],
+    "arrow_silence": [
+      {
+        "t": 0.4,
+        "type": "hold",
+        "power": 0.18
+      },
+      {
+        "t": 1.1,
+        "type": "focus",
+        "power": 0.12
+      }
+    ],
+    "departure": [
+      {
+        "t": 0.45,
+        "type": "character",
+        "power": 0.1
+      },
+      {
+        "t": 1.4,
+        "type": "mist",
+        "power": 0.06
+      }
+    ],
+    "military_order": [
+      {
+        "t": 0.35,
+        "type": "character",
+        "power": 0.08
+      },
+      {
+        "t": 1.5,
+        "type": "hold",
+        "power": 0.06
+      },
+      {
+        "t": 2.2,
+        "type": "focus",
+        "power": 0.1
+      }
+    ],
+    "beach_ambush": [
+      {
+        "t": 0.35,
+        "type": "mist",
+        "power": 0.14
+      },
+      {
+        "t": 1.1,
+        "type": "focus",
+        "power": 0.1
+      },
+      {
+        "t": 1.75,
+        "type": "character",
+        "power": 0.08
+      }
+    ],
+    "beach_ambush_aftermath": [
+      {
+        "t": 0.45,
+        "type": "mist",
+        "power": 0.1
+      },
+      {
+        "t": 1.35,
+        "type": "focus",
+        "power": 0.13
+      },
+      {
+        "t": 2.25,
+        "type": "hold",
+        "power": 0.08
+      }
+    ],
+    "fishing_village_embers_aftermath": [
+      {
+        "t": 0.35,
+        "type": "fire",
+        "power": 0.16
+      },
+      {
+        "t": 1.2,
+        "type": "mist",
+        "power": 0.12
+      },
+      {
+        "t": 2.2,
+        "type": "focus",
+        "power": 0.1
+      }
+    ],
+    "ming_firearm": [
+      {
+        "t": 0.25,
+        "type": "fire",
+        "power": 0.24
+      },
+      {
+        "t": 0.95,
+        "type": "focus",
+        "power": 0.14
+      },
+      {
+        "t": 2.1,
+        "type": "hold",
+        "power": 0.08
+      }
+    ],
+    "altered_military_report": [
+      {
+        "t": 0.4,
+        "type": "hold",
+        "power": 0.12
+      },
+      {
+        "t": 1.15,
+        "type": "focus",
+        "power": 0.14
+      },
+      {
+        "t": 2.3,
+        "type": "mist",
+        "power": 0.06
+      }
+    ],
+    "transport_officer": [
+      {
+        "t": 0.4,
+        "type": "character",
+        "power": 0.1
+      },
+      {
+        "t": 1.1,
+        "type": "mist",
+        "power": 0.1
+      },
+      {
+        "t": 2.05,
+        "type": "hold",
+        "power": 0.08
+      }
+    ],
+    "transport_officer_aftermath": [
+      {
+        "t": 0.35,
+        "type": "mist",
+        "power": 0.1
+      },
+      {
+        "t": 1.2,
+        "type": "focus",
+        "power": 0.12
+      },
+      {
+        "t": 2.1,
+        "type": "hold",
+        "power": 0.08
+      }
+    ],
+    "night_knife_camp": [
+      {
+        "t": 0.3,
+        "type": "fire",
+        "power": 0.2
+      },
+      {
+        "t": 1.15,
+        "type": "focus",
+        "power": 0.14
+      },
+      {
+        "t": 2.6,
+        "type": "hold",
+        "power": 0.1
+      }
+    ],
+    "wakou_boss": [
+      {
+        "t": 0.25,
+        "type": "mist",
+        "power": 0.16
+      },
+      {
+        "t": 0.95,
+        "type": "fire",
+        "power": 0.24
+      },
+      {
+        "t": 1.7,
+        "type": "character",
+        "power": 0.12
+      },
+      {
+        "t": 2.6,
+        "type": "focus",
+        "power": 0.12
+      }
+    ],
+    "military_coverup": [
+      {
+        "t": 0.35,
+        "type": "hold",
+        "power": 0.18
+      },
+      {
+        "t": 1.8,
+        "type": "focus",
+        "power": 0.1
+      }
+    ],
+    "node": [],
+    "merchant_banquet": [
+      {
+        "t": 0.35,
+        "type": "mist",
+        "power": 0.12
+      },
+      {
+        "t": 1.15,
+        "type": "focus",
+        "power": 0.12
+      },
+      {
+        "t": 2.2,
+        "type": "hold",
+        "power": 0.08
+      }
+    ],
+    "mutiny_camp": [
+      {
+        "t": 0.35,
+        "type": "mist",
+        "power": 0.12
+      },
+      {
+        "t": 1.15,
+        "type": "focus",
+        "power": 0.12
+      },
+      {
+        "t": 2.2,
+        "type": "hold",
+        "power": 0.08
+      }
+    ],
+    "mutiny_camp_aftermath": [
+      {
+        "t": 0.35,
+        "type": "mist",
+        "power": 0.12
+      },
+      {
+        "t": 1.15,
+        "type": "focus",
+        "power": 0.12
+      },
+      {
+        "t": 2.2,
+        "type": "hold",
+        "power": 0.08
+      }
+    ],
+    "military_messenger": [
+      {
+        "t": 0.35,
+        "type": "mist",
+        "power": 0.12
+      },
+      {
+        "t": 1.15,
+        "type": "focus",
+        "power": 0.12
+      },
+      {
+        "t": 2.2,
+        "type": "hold",
+        "power": 0.08
+      }
+    ]
   }
 }

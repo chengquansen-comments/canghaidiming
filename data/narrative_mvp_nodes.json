@@ -6,36 +6,217 @@
     "version": 2,
     "note": "补齐 MVP_NARRATIVE_SCRIPT 中后续战斗、事件、营地、旧物、Boss 与压案节点所需配置数据。"
   },
+  "flow_node_ids": [
+    "military_order",
+    "beach_ambush",
+    "beach_ambush_aftermath",
+    "fishing_village_embers",
+    "fishing_village_embers_aftermath",
+    "ming_firearm",
+    "altered_military_report",
+    "transport_officer",
+    "transport_officer_aftermath",
+    "night_knife_camp",
+    "wakou_boss",
+    "military_coverup"
+  ],
+  "node_status": {
+    "military_order": {
+      "flow_enabled": true,
+      "flow_order": 10,
+      "column": "军令",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_order.png",
+      "implementation_status": "playable",
+      "note": "当前 MVP 主流程节点：军令巡海"
+    },
+    "beach_ambush": {
+      "flow_enabled": true,
+      "flow_order": 20,
+      "column": "初遇",
+      "type": "普通战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_beach_ambush.png",
+      "implementation_status": "playable",
+      "note": "当前 MVP 主流程战斗节点：海边伏击"
+    },
+    "beach_ambush_aftermath": {
+      "flow_enabled": true,
+      "flow_order": 30,
+      "column": "初遇",
+      "type": "战后处理",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_beach_ambush.png",
+      "implementation_status": "playable",
+      "note": "当前 MVP 主流程战后处理节点：海边伏击后处理"
+    },
+    "fishing_village_embers": {
+      "flow_enabled": true,
+      "flow_order": 40,
+      "column": "初遇",
+      "type": "普通战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_fishing_village_embers.png",
+      "implementation_status": "playable",
+      "note": "当前 MVP 主流程战斗节点：渔村残火"
+    },
+    "fishing_village_embers_aftermath": {
+      "flow_enabled": true,
+      "flow_order": 50,
+      "column": "初遇",
+      "type": "战后处理",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_fishing_village_embers.png",
+      "implementation_status": "playable",
+      "note": "当前 MVP 主流程战后处理节点：渔村残火后处理"
+    },
+    "merchant_banquet": {
+      "flow_enabled": false,
+      "flow_order": null,
+      "column": "疑点",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_merchant_banquet.png",
+      "implementation_status": "reserved",
+      "note": "保留节点；当前不进入 MVP 主流程；运行资源已备"
+    },
+    "ming_firearm": {
+      "flow_enabled": true,
+      "flow_order": 60,
+      "column": "疑点",
+      "type": "旧物",
+      "visual_path": "res://assets/pixel_battle/relics/relic_ming_firearm.png",
+      "implementation_status": "playable",
+      "note": "当前 MVP 主流程旧物节点：明制火器"
+    },
+    "altered_military_report": {
+      "flow_enabled": true,
+      "flow_order": 70,
+      "column": "疑点",
+      "type": "旧物",
+      "visual_path": "res://assets/pixel_battle/relics/relic_altered_military_report.png",
+      "implementation_status": "playable",
+      "note": "当前 MVP 主流程旧物节点：涂改军报"
+    },
+    "transport_officer": {
+      "flow_enabled": true,
+      "flow_order": 80,
+      "column": "压迫",
+      "type": "精英战斗",
+      "visual_path": "res://assets/pixel_battle/portraits/transport_officer.png",
+      "implementation_status": "playable",
+      "note": "当前 MVP 主流程精英战斗节点：失械案押运官"
+    },
+    "transport_officer_aftermath": {
+      "flow_enabled": true,
+      "flow_order": 90,
+      "column": "压迫",
+      "type": "战后处理",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_transport_officer_aftermath.png",
+      "implementation_status": "playable",
+      "note": "当前 MVP 主流程战后处理节点：押运官后处理"
+    },
+    "mutiny_camp": {
+      "flow_enabled": false,
+      "flow_order": null,
+      "column": "压迫",
+      "type": "精英战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/battle_bg_mutiny_camp.png",
+      "implementation_status": "reserved",
+      "note": "保留节点；已按战斗/战后处理规范拆分，但当前不进入 MVP 主流程；运行资源已备"
+    },
+    "mutiny_camp_aftermath": {
+      "flow_enabled": false,
+      "flow_order": null,
+      "column": "压迫",
+      "type": "战后处理",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_mutiny_camp_aftermath.png",
+      "implementation_status": "reserved",
+      "note": "保留节点；欠饷营战后处理，当前不进入 MVP 主流程；运行资源已备"
+    },
+    "military_messenger": {
+      "flow_enabled": false,
+      "flow_order": null,
+      "column": "军门",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_messenger.png",
+      "implementation_status": "reserved",
+      "note": "保留节点；当前不进入 MVP 主流程；运行资源已备"
+    },
+    "night_knife_camp": {
+      "flow_enabled": true,
+      "flow_order": 100,
+      "column": "压迫",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_night_knife_camp.png",
+      "implementation_status": "playable",
+      "note": "当前 MVP 主流程事件节点：夜半磨刀"
+    },
+    "wakou_boss": {
+      "flow_enabled": true,
+      "flow_order": 110,
+      "column": "破船",
+      "type": "Boss",
+      "visual_path": "res://assets/pixel_battle/portraits/wakou_leader.png",
+      "implementation_status": "playable",
+      "note": "当前 MVP 主流程 Boss 节点：小股倭寇首领"
+    },
+    "military_coverup": {
+      "flow_enabled": true,
+      "flow_order": 120,
+      "column": "军门",
+      "type": "结尾",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_coverup.png",
+      "implementation_status": "playable",
+      "note": "当前 MVP 主流程结尾节点：军门压案"
+    }
+  },
   "prologue": {
     "title": "《大明之沧海嘀鸣》",
     "steps": [
       {
         "id": "black_tide",
-        "text": "黑。\n\n潮声很近。\n\n有人在跑。"
+        "text": "黑。\n\n潮声很近。\n\n有人在跑。",
+        "title": "序章：黑海潮生",
+        "column": "序章",
+        "type": "旧村"
       },
       {
         "id": "father",
-        "text": "父亲把你按进柴堆。\n\n他说：\n别出声。"
+        "text": "父亲把你按进柴堆。\n\n他说：\n别出声。",
+        "title": "序章：黑海潮生",
+        "column": "序章",
+        "type": "旧村"
       },
       {
         "id": "door",
-        "text": "刀背敲门。\n\n有人问：\n东西在哪？\n\n父亲说：\n孩子不知道。"
+        "text": "刀背敲门。\n\n有人问：\n东西在哪？\n\n父亲说：\n孩子不知道。",
+        "title": "序章：黑海潮生",
+        "column": "序章",
+        "type": "旧村"
       },
       {
         "id": "dead",
-        "text": "那人笑了。\n\n他说：\n死人也不知道。\n\n潮声停了一下。"
+        "text": "那人笑了。\n\n他说：\n死人也不知道。\n\n潮声停了一下。",
+        "title": "序章：黑海潮生",
+        "column": "序章",
+        "type": "旧村"
       },
       {
         "id": "wooden_blade",
-        "text": "你冲出去。\n\n木刀打在甲片上。\n\n零声。"
+        "text": "你冲出去。\n\n木刀打在甲片上。\n\n零声。",
+        "title": "序章：黑海潮生",
+        "column": "序章",
+        "type": "旧村"
       },
       {
         "id": "fall",
-        "text": "天翻过来。\n\n火光很高。\n\n你看见母亲的鞋。"
+        "text": "天翻过来。\n\n火光很高。\n\n父亲没有再说话。\n\n母亲的鞋停在火边。",
+        "title": "序章：黑海潮生",
+        "column": "序章",
+        "type": "旧村"
       },
       {
         "id": "master_arrives",
-        "text": "一只手挡住你的眼。\n\n那人说：\n还活着。\n\n换我。",
+        "text": "一只手挡住你的眼。\n\n那人身上有旧甲味。\n\n他说：\n还活着。\n\n换我。",
+        "title": "序章：黑海潮生",
+        "column": "序章",
+        "type": "救场",
         "combat": {
           "enabled": true,
           "button": "换我。",
@@ -49,24 +230,39 @@
       },
       {
         "id": "three_cards",
-        "text": "刀。\n\n步。\n\n断气。"
+        "text": "刀。\n\n步。\n\n断气。",
+        "title": "序章：黑海潮生",
+        "column": "序章",
+        "type": "救场"
       },
       {
         "id": "military_word",
-        "text": "敌人还没死透。\n\n他吐出一个字：\n军……\n\n箭到了。"
+        "text": "敌人还没死透。\n\n他吐出一个字：\n军……\n\n箭到了。",
+        "title": "序章：黑海潮生",
+        "column": "序章",
+        "type": "旧案"
       },
       {
         "id": "hidden_arrow",
-        "text": "箭从黑处来。\n\n不是海上。\n\n不是倭人。"
+        "text": "箭从黑处来。\n\n不是海上。\n\n不是倭人。",
+        "title": "序章：黑海潮生",
+        "column": "序章",
+        "type": "旧案"
       },
       {
         "id": "dont_look",
-        "text": "师父说：\n别看。\n\n可你已经看见了。"
+        "text": "那老兵说：\n别看。\n\n可他自己一直看着那支黑箭。\n\n后来，你叫他师父。",
+        "title": "序章：黑海潮生",
+        "column": "序章",
+        "type": "旧案"
       },
       {
         "id": "departure",
-        "text": "十年。\n\n潮声没有远过。\n\n师父把刀还给你。\n\n他说：\n该走了。",
-        "career_prompt": "选一条路。\n不是为了升官。\n是为了知道那支箭从哪来。"
+        "text": "十年。\n\n潮声没有远过。\n\n你跟着他学刀，学枪，学怎么活。\n\n师父把刀还给你。\n\n他说：\n该走了。",
+        "title": "序章：黑海潮生",
+        "column": "序章",
+        "type": "出山",
+        "career_prompt": "选一条路。\n高处\n才看得清楚。"
       }
     ],
     "career_choices": {
@@ -79,7 +275,13 @@
       "id": "military_order",
       "title": "军令巡海",
       "scene": "军门外。天未亮。旗湿着。",
-      "text": "军令压在案上。\n\n墨还没干。\n\n巡海三十里。\n见寇即剿。\n\n若见旧案，不得声张。",
+      "text": "军令压在案上。\n\n墨还没干。\n\n巡海三十里。\n见寇即剿。\n\n若见旧案，不得声张。\n\n师父没有抬头。",
+      "column": "军令",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_order.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 10,
       "dialogue": [
         "巡海三十里。",
         "若见旧案，不得声张。",
@@ -93,19 +295,19 @@
           "label": "领令",
           "result": "你低头。\n印落下。\n潮也落下。",
           "effects": {
-            "jun_gong": 1
+            "military_merit": 1
           }
         },
         {
           "label": "问旧案",
           "result": "上官看了你一眼。\n像看见故人。\n\n他说：你听错了。",
           "effects": {
-            "clues": 1
+            "case_clues": 1
           }
         },
         {
           "label": "沉默",
-          "result": "你没有答。\n师父看了你一眼。",
+          "result": "你没有答。\n师父看了你一眼。\n那一眼很短。",
           "effects": {}
         }
       ]
@@ -114,47 +316,73 @@
       "id": "beach_ambush",
       "title": "海边伏击",
       "scene": "沙滩。脚印。整齐得不像海盗。",
-      "text": "沙滩上有脚印。\n\n脚印很整齐。\n\n不像海盗。\n\n风从芦苇里出来。\n枪尖也出来。",
+      "text": "沙滩上有脚印。\n\n脚印很整齐。\n\n不像海盗。\n像营里走出来的。\n\n风从芦苇里出来。\n枪尖也出来。\n\n他挡住去路。\n你看见他靴上的官泥。",
+      "column": "初遇",
+      "type": "普通战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_beach_ambush.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 20,
       "dialogue": [
         "退。",
         "这是军路。",
         "没有喊杀，只有枪尖。"
       ],
       "combat": {
-        "enabled": true,
-        "button": "接敌",
-        "mock_button": "尸身已经倒下",
-        "encounter_id": "enc_beach_ambush",
-        "battle_id": "first_act_beach_ambush",
-        "enemy_id": "enemy_spearman_beach_ambush",
-        "enemy_display": "敌方枪手",
-        "enemy_role": "enemy_spearman",
-        "enemy_family": "spearman",
-        "difficulty": "normal",
-        "enemy_hint": "伏击海滩的前哨枪手。靴上有官泥。",
-        "pre": "他挡住去路。\n你看见他靴上的官泥。",
-        "post": "你从尸体手上掰下一枚旧茧。\n\n那是练枪的人才有的茧。"
+        "enabled": false
+      },
+      "choices": [
+        {
+          "label": "迎战",
+          "result": "枪尖折进沙里。\n潮声又回来了。",
+          "effects": {},
+          "combat": {
+            "enabled": true,
+            "encounter_id": "enc_beach_ambush",
+            "battle_id": "first_act_beach_ambush"
+          }
+        }
+      ]
+    },
+    {
+      "id": "beach_ambush_aftermath",
+      "title": "海边伏击：战后处理",
+      "scene": "沙滩。尸体。脚印还在。",
+      "text": "人倒下了。\n\n沙滩上只剩脚印。\n\n脚印还在。\n\n你要决定留下什么。",
+      "column": "初遇",
+      "type": "战后处理",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_beach_ambush.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 30,
+      "dialogue": [
+        "头颅可以报功。",
+        "尸体也可以说话。",
+        "沙子埋不住脚印。"
+      ],
+      "combat": {
+        "enabled": false
       },
       "choices": [
         {
           "label": "割首报功",
-          "result": "头颅装进麻袋时，海风停了一下。",
+          "result": "头颅装进麻袋时，海风停了一下。\n军功有了。\n脚印还在。",
           "effects": {
-            "jun_gong": 1
+            "military_merit": 1
           }
         },
         {
           "label": "搜身留证",
           "result": "尸体里没有海盐味。\n只有营里的烟味。",
           "effects": {
-            "clues": 1
+            "case_clues": 1
           }
         },
         {
           "label": "就地掩埋",
           "result": "你把沙子盖上。\n很快又被潮水掀开。",
           "effects": {
-            "qing_wang": 1
+            "clean_reputation": 1
           }
         }
       ]
@@ -163,46 +391,72 @@
       "id": "fishing_village_embers",
       "title": "渔村残火",
       "scene": "残村。黑烟。孩子咳嗽。",
-      "text": "村子只剩烟。\n\n烟里有小孩咳嗽。\n\n火不是从海边烧起的。",
+      "text": "村子只剩烟。\n\n烟里有小孩咳嗽。\n\n船还没靠岸。\n火先烧到了村心。\n\n火不是从海边烧起的。\n\n烟里有人影。\n刀光很低。",
+      "column": "初遇",
+      "type": "普通战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_fishing_village_embers.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 40,
       "dialogue": [
         "船还没到，先烧干净。",
         "哭声被烟压住。"
       ],
       "combat": {
-        "enabled": true,
-        "button": "接敌",
-        "mock_button": "残敌已散",
-        "encounter_id": "enc_fishing_village_embers",
-        "battle_id": "first_act_fishing_village_embers",
-        "enemy_id": "enemy_wakou_raider_fishing_village",
-        "enemy_display": "倭寇杂兵",
-        "enemy_role": "enemy_blademaster",
-        "enemy_family": "blademaster",
-        "difficulty": "normal",
-        "enemy_hint": "烧村的残敌。人数不多，火势更危险。",
-        "pre": "烟里有人影。\n刀光很低。",
-        "post": "火还在。\n哭声也还在。"
+        "enabled": false
+      },
+      "choices": [
+        {
+          "label": "迎战",
+          "result": "烟散了一些。\n哭声还在。",
+          "effects": {},
+          "combat": {
+            "enabled": true,
+            "encounter_id": "enc_fishing_village_embers",
+            "battle_id": "first_act_fishing_village_embers"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fishing_village_embers_aftermath",
+      "title": "渔村残火：战后处理",
+      "scene": "残村。黑烟渐低。村后还有火痕。",
+      "text": "刀光低下去了。\n\n哭声没有。\n\n火痕还在村后。\n\n你要决定先看哪里。",
+      "column": "初遇",
+      "type": "战后处理",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_fishing_village_embers.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 50,
+      "dialogue": [
+        "追人。",
+        "救人。",
+        "看火。"
+      ],
+      "combat": {
+        "enabled": false
       },
       "choices": [
         {
           "label": "追击残敌",
           "result": "你追得很快。\n身后的哭声也很快低下去。",
           "effects": {
-            "jun_gong": 1
+            "military_merit": 1
           }
         },
         {
           "label": "救出百姓",
-          "result": "孩子抓着你的甲片。\n不肯松手。",
+          "result": "孩子抓着你的甲片。\n不肯松手。\n他指向村后。",
           "effects": {
-            "qing_wang": 1
+            "clean_reputation": 1
           }
         },
         {
           "label": "查烧痕",
           "result": "火不是从海边烧起的。\n有人先点了屋后。",
           "effects": {
-            "clues": 1
+            "case_clues": 1
           }
         }
       ]
@@ -212,6 +466,11 @@
       "title": "海商宴",
       "scene": "雨夜。海商宅。鱼无腥味。屏风后有箱。",
       "text": "酒是热的。\n\n屋外的兵是冷的。\n\n屏风后有火器箱。\n箱钥匙在酒盏旁。",
+      "column": "疑点",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_merchant_banquet.png",
+      "implementation_status": "reserved",
+      "flow_enabled": false,
       "dialogue": [
         "海上无忠奸，只有风向。",
         "将军要证据，还是要船？"
@@ -224,14 +483,14 @@
           "label": "拒宴",
           "result": "我不吃来路不明的饭。\n\n海商笑了：那将军只好吃风。",
           "effects": {
-            "qing_wang": 1
+            "clean_reputation": 1
           }
         },
         {
           "label": "赴宴取船",
           "result": "你喝了一杯。\n杯底没有毒，只有价钱。",
           "effects": {
-            "jun_gong": 1,
+            "military_merit": 1,
             "next_normal_battle_easier": 1
           }
         },
@@ -239,7 +498,7 @@
           "label": "借宴查箱",
           "result": "火器箱上有官印。\n印泥很新。",
           "effects": {
-            "clues": 2,
+            "case_clues": 2,
             "elite_chance": 1
           }
         }
@@ -249,7 +508,13 @@
       "id": "ming_firearm",
       "title": "明制火器",
       "scene": "倭寇船舱。木箱半开。官造二字还在。",
-      "text": "箱子裂开。\n\n里面不是银。\n是火器。\n\n火器保养得很好。\n甚至比卫所库里的还好。\n\n官造二字还在。",
+      "text": "箱子裂开。\n\n里面不是银。\n是火器。\n\n火器保养得很好。\n甚至比卫所库里的还好。\n\n官造二字还在。\n\n封泥也是新的。",
+      "column": "疑点",
+      "type": "旧物",
+      "visual_path": "res://assets/pixel_battle/relics/relic_ming_firearm.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 60,
       "dialogue": [
         "不需要人。",
         "只需要那枚印。"
@@ -262,22 +527,22 @@
           "label": "上交军门",
           "result": "军门收得很快。\n快得像早在等它。",
           "effects": {
-            "jun_gong": 1
+            "military_merit": 1
           }
         },
         {
           "label": "私下留证",
           "result": "火铳很沉。\n沉得不像证据，像人命。",
           "effects": {
-            "clues": 2
+            "case_clues": 2
           }
         },
         {
           "label": "毁掉",
           "result": "火光吞掉官造二字。\n你却记得它。",
           "effects": {
-            "qing_wang": 1,
-            "clues": 1
+            "clean_reputation": 1,
+            "case_clues": 1
           }
         }
       ]
@@ -286,7 +551,13 @@
       "id": "altered_military_report",
       "title": "涂改军报",
       "scene": "破庙。倒神像。军报压在香炉下。",
-      "text": "神像倒着。\n\n军报压在香炉下。\n\n死者人数被涂过。\n涂得很急。\n\n墨比血新。",
+      "text": "神像倒着。\n\n军报压在香炉下。\n\n死者人数被涂过。\n涂得很急。\n\n墨比血新。\n\n少的不是字。\n是人。",
+      "column": "疑点",
+      "type": "旧物",
+      "visual_path": "res://assets/pixel_battle/relics/relic_altered_military_report.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 70,
       "dialogue": [
         "少的不是字。",
         "少的是人。"
@@ -299,22 +570,22 @@
           "label": "收起军报",
           "result": "纸角发脆。\n上面的名字没有全死。",
           "effects": {
-            "clues": 2
+            "case_clues": 2
           }
         },
         {
           "label": "抄下涂改处",
           "result": "你只抄黑处。\n黑处反而最清楚。",
           "effects": {
-            "clues": 1,
-            "qing_wang": 1
+            "case_clues": 1,
+            "clean_reputation": 1
           }
         },
         {
           "label": "烧掉军报",
           "result": "火把改过的字烧平。\n你的手却记住了笔路。",
           "effects": {
-            "jun_gong": 1
+            "military_merit": 1
           }
         }
       ]
@@ -323,48 +594,74 @@
       "id": "transport_officer",
       "title": "失械案押运官",
       "scene": "山道。空车。车辙很深。",
-      "text": "一辆空车停在山道。\n\n车辙很深。\n车上什么都没有。\n\n空车比满车更难解释。",
+      "text": "一辆空车停在山道。\n\n车辙很深。\n车上什么都没有。\n\n空车比满车更难解释。\n\n他没有拔刀。\n他说：你不该翻箱。\n\n他袖口露出半页名册。",
+      "column": "压迫",
+      "type": "精英战斗",
+      "visual_path": "res://assets/pixel_battle/portraits/transport_officer.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 80,
       "dialogue": [
         "我只押车。",
         "车里是什么，不归我问。",
         "死人。"
       ],
       "combat": {
-        "enabled": true,
-        "button": "接敌",
-        "mock_button": "尸身已经倒下",
-        "encounter_id": "enc_transport_officer",
-        "battle_id": "first_act_transport_officer",
-        "enemy_id": "enemy_blademaster_transport_officer",
-        "enemy_display": "失械案押运官",
-        "enemy_role": "enemy_blademaster",
-        "enemy_family": "blademaster",
-        "difficulty": "elite",
-        "enemy_hint": "负责押运明制火器的人。袖中藏着半页名册。",
-        "pre": "他没有拔刀。\n他说：你不该翻箱。",
-        "post": "押运官跪地，手伸向怀里。\n\n你以为是刀。\n其实是一份押运名册。"
+        "enabled": false
+      },
+      "choices": [
+        {
+          "label": "迎战",
+          "result": "押运官退了一步。\n半页名册落在泥里。",
+          "effects": {},
+          "combat": {
+            "enabled": true,
+            "encounter_id": "enc_transport_officer",
+            "battle_id": "first_act_transport_officer"
+          }
+        }
+      ]
+    },
+    {
+      "id": "transport_officer_aftermath",
+      "title": "失械案押运官：战后处理",
+      "scene": "山道。空车。半页名册。",
+      "text": "空车停着。\n\n名册湿了半边。\n\n押运官还活着。\n\n你要决定交给谁。",
+      "column": "压迫",
+      "type": "战后处理",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_transport_officer_aftermath.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 90,
+      "dialogue": [
+        "军门要人。",
+        "案子要纸。",
+        "活口也会说话。"
+      ],
+      "combat": {
+        "enabled": false
       },
       "choices": [
         {
           "label": "交军门",
           "result": "名册被封进木匣。\n木匣很快不见了。",
           "effects": {
-            "jun_gong": 2
+            "military_merit": 2
           }
         },
         {
           "label": "私藏名册",
           "result": "纸很薄。\n压在甲里，却像一块铁。",
           "effects": {
-            "clues": 2
+            "case_clues": 2
           }
         },
         {
           "label": "放押运官走",
           "result": "你会后悔。\n\n你说：你先活到那天。",
           "effects": {
-            "qing_wang": 1,
-            "clues": 1
+            "clean_reputation": 1,
+            "case_clues": 1
           }
         }
       ]
@@ -373,50 +670,74 @@
       "id": "mutiny_camp",
       "title": "欠饷营",
       "scene": "营门。军旗。旗下面没有军粮。",
-      "text": "营门挂着军旗。\n\n旗下面没有军粮。\n\n饷银没到。\n军令倒是到了。",
+      "text": "营门挂着军旗。\n\n旗下面没有军粮。\n\n饷银没到。\n军令倒是到了。\n\n他举枪。\n不是为了海寇。",
+      "column": "压迫",
+      "type": "精英战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/battle_bg_mutiny_camp.png",
+      "implementation_status": "reserved",
+      "flow_enabled": false,
       "dialogue": [
         "你这是反。",
         "我也守过城。",
         "我也埋过兄弟。"
       ],
       "combat": {
-        "enabled": true,
-        "button": "接敌",
-        "mock_button": "营门已静",
-        "encounter_id": "enc_mutiny_camp",
-        "battle_id": "first_act_mutiny_camp",
-        "enemy_id": "enemy_mutiny_camp_leader",
-        "enemy_display": "兵变营头",
-        "enemy_role": "enemy_spearman",
-        "enemy_family": "spearman",
-        "difficulty": "elite",
-        "enemy_hint": "欠饷营头。不是倭寇，却同样挡路。",
-        "pre": "他举枪。\n不是为了海寇。",
-        "post": "军旗重新挂正。\n下面少了几个人。"
+        "enabled": false
+      },
+      "choices": [
+        {
+          "label": "迎战",
+          "result": "枪声停了。\n旗还挂着。",
+          "effects": {},
+          "combat": {
+            "enabled": true,
+            "encounter_id": "enc_mutiny_camp",
+            "battle_id": "first_act_mutiny_camp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "mutiny_camp_aftermath",
+      "title": "欠饷营：战后处理",
+      "scene": "营门。军旗。饷银未到。",
+      "text": "营门还在。\n\n军粮还没有。\n\n跪下的人看着你。\n\n你要决定怎么写这场事。",
+      "column": "压迫",
+      "type": "战后处理",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_mutiny_camp_aftermath.png",
+      "implementation_status": "reserved",
+      "flow_enabled": false,
+      "dialogue": [
+        "这是反。",
+        "这是饥。",
+        "这是账。"
+      ],
+      "combat": {
+        "enabled": false
       },
       "choices": [
         {
           "label": "镇压",
           "result": "军旗重新挂正。\n下面少了几个人。",
           "effects": {
-            "jun_gong": 2,
-            "qing_wang": -1
+            "military_merit": 2,
+            "clean_reputation": -1
           }
         },
         {
           "label": "收编",
           "result": "他们跪得很慢。\n不是不服，是饿。",
           "effects": {
-            "qing_wang": 1,
-            "jun_gong": 1
+            "clean_reputation": 1,
+            "military_merit": 1
           }
         },
         {
           "label": "查饷银",
           "result": "账本泡烂了。\n名字还在。",
           "effects": {
-            "clues": 1,
-            "qing_wang": 1
+            "case_clues": 1,
+            "clean_reputation": 1
           }
         }
       ]
@@ -426,6 +747,11 @@
       "title": "军门信使",
       "scene": "雨中信使。马比人先喘。信封没有封泥。",
       "text": "信使在雨里等你。\n\n马比人先喘。\n\n信封没有封泥。\n说明它已经被看过。",
+      "column": "军门",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_messenger.png",
+      "implementation_status": "reserved",
+      "flow_enabled": false,
       "dialogue": [
         "海寇首级要紧。",
         "其余东西，不必带回来。",
@@ -439,22 +765,22 @@
           "label": "照令",
           "result": "知道了。\n你把信折回去。",
           "effects": {
-            "jun_gong": 1
+            "military_merit": 1
           }
         },
         {
           "label": "追问",
           "result": "其余东西，指什么？\n\n信使低头：小的不识字。",
           "effects": {
-            "clues": 1
+            "case_clues": 1
           }
         },
         {
           "label": "扣下信使",
           "result": "信使跪下时，怀里掉出第二封信。",
           "effects": {
-            "clues": 2,
-            "qing_wang": -1
+            "case_clues": 2,
+            "clean_reputation": -1
           }
         }
       ]
@@ -463,10 +789,17 @@
       "id": "night_knife_camp",
       "title": "夜半磨刀",
       "scene": "营地深夜。雨停了。刀声没停。",
-      "text": "师父在磨一把早该断掉的刀。\n\n刀钝了。\n人就会多想。",
+      "text": "师父在磨一把早该断掉的刀。\n\n刀钝了。\n人就会多想。\n\n你把火器刻印放在火边。\n\n师父的手停了一下。\n\n他看了很久。",
+      "column": "压迫",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_night_knife_camp.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 100,
       "dialogue": [
         "刀钝了，人就会多想。",
         "令迟了。",
+        "那枚刻印，我见过。",
         "走得越远，越像回去。"
       ],
       "combat": {
@@ -475,22 +808,22 @@
       "choices": [
         {
           "label": "陪他坐着",
-          "result": "你们坐到天亮。\n谁也没问。",
+          "result": "你们坐到天亮。\n刻印在火边冷下去。\n谁也没问。",
           "effects": {
             "heal": 1,
-            "qing_wang": 1
+            "clean_reputation": 1
           }
         },
         {
-          "label": "问旧案",
-          "result": "那年，你迟了吗？\n\n师父说：令迟了。",
+          "label": "问火器刻印",
+          "result": "那枚火器刻印，你见过？\n\n师父说：见过。\n\n再问，人就会死。",
           "effects": {
-            "clues": 1
+            "case_clues": 2
           }
         },
         {
           "label": "劝他休息",
-          "result": "明日还要走。\n\n他说：走得越远，越像回去。",
+          "result": "明日还要走。\n\n他用袖口盖住刻印。\n\n他说：走得越远，越像回去。",
           "effects": {
             "heal": 2
           }
@@ -501,48 +834,42 @@
       "id": "wakou_boss",
       "title": "小股倭寇首领",
       "scene": "破船。火器箱。倭首坐在箱上。",
-      "text": "船搁浅了。\n\n人没有。\n箱子还在。\n\n有个倭首坐在箱上。\n像在等你。\n\n他说：你找错海了。",
+      "text": "船搁浅了。\n\n人没有。\n箱子还在。\n\n有个倭首坐在箱上。\n像在等你。\n\n他说：你找错海了。\n\n火器箱在他脚下。\n\n他说话时看着岸上。",
+      "column": "破船",
+      "type": "Boss",
+      "visual_path": "res://assets/pixel_battle/portraits/wakou_leader.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 110,
       "dialogue": [
         "你找错海了。",
         "杀你爹娘的人，穿的可不是倭甲。",
         "你来晚了，也来早了。"
       ],
       "combat": {
-        "enabled": true,
-        "button": "接敌",
-        "mock_button": "尸身已经倒下",
-        "encounter_id": "enc_wakou_boss",
-        "battle_id": "first_act_wakou_boss",
-        "enemy_id": "enemy_blademaster_wakou_leader",
-        "enemy_display": "小股倭寇首领",
-        "enemy_role": "enemy_blademaster",
-        "enemy_family": "blademaster",
-        "difficulty": "boss",
-        "enemy_hint": "坐在火器箱上的倭首。看岸，不看海。",
-        "pre": "他说：你找错海了。\n\n火器箱在他脚下。",
-        "post": "他看向岸上。\n\n不是看海。\n\n箭声又响。"
+        "enabled": false
       },
       "choices": [
         {
-          "label": "查看火器箱",
-          "result": "箱底有火漆。\n军门的火漆。",
+          "label": "斩首报功",
+          "result": "首级落进麻袋。\n火器箱还在船底。\n你没有再看。",
           "effects": {
-            "clues": 2
+            "military_merit": 2
           }
         },
         {
-          "label": "逼问临死话",
-          "result": "他说不完。\n箭比话快。",
+          "label": "留证追查",
+          "result": "箱底有火漆。\n军门的火漆。\n师父看见时，手停了一下。",
           "effects": {
-            "clues": 1,
-            "qing_wang": 1
+            "case_clues": 2
           }
         },
         {
           "label": "烧船灭迹",
-          "result": "火很快。\n证据也是。",
+          "result": "火很快。\n证据也是。\n海风把灰吹回岸上。",
           "effects": {
-            "jun_gong": 1
+            "military_merit": 1,
+            "case_clues": -1
           }
         }
       ]
@@ -551,7 +878,13 @@
       "id": "military_coverup",
       "title": "军门压案",
       "scene": "灯火。缺页。朱批。木匣不见了。",
-      "text": "军门灯火通明。\n\n案卷摊开。\n正好少了一页。\n\n上官说：倭患已平。\n\n你想起十年前。\n那支箭。\n也是从岸上来的。",
+      "text": "军门灯火通明。\n\n案卷摊开。\n正好少了一页。\n\n上官说：倭患已平。\n\n你想起十年前。\n那支箭。\n也是从岸上来的。\n\n师父站在门外。\n没有进来。",
+      "column": "军门",
+      "type": "结尾",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_coverup.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 120,
       "dialogue": [
         "倭患已平。",
         "首级够了。",
@@ -565,7 +898,7 @@
           "label": "据实上报",
           "result": "你把话说完。\n屋里安静了很久。",
           "effects": {
-            "qing_wang": 1,
+            "clean_reputation": 1,
             "ending_flag": "truth_report"
           }
         },
@@ -573,7 +906,7 @@
           "label": "藏下一份证据",
           "result": "袖中有纸。\n心里有潮。",
           "effects": {
-            "clues": 2,
+            "case_clues": 2,
             "ending_flag": "private_investigation"
           }
         },
@@ -581,13 +914,13 @@
           "label": "借军功压案",
           "result": "你把首级摆出来。\n没人再问箱子。",
           "effects": {
-            "jun_gong": 2,
+            "military_merit": 2,
             "ending_flag": "merit_cover"
           }
         },
         {
           "label": "沉默退下",
-          "result": "门关上。\n灯还亮着。",
+          "result": "门关上。\n灯还亮着。\n师父还站在外面。",
           "effects": {
             "ending_flag": "silence"
           }

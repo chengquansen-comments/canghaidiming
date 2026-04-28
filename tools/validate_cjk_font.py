@@ -57,7 +57,7 @@ def require_glyph_coverage(path: Path, sample: str) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("font", nargs="?", default="assets/fonts/cjk_font.ttf")
+    parser.add_argument("font", nargs="?", default="assets/fonts/cjk_font_runtime.ttf")
     parser.add_argument("--sample", default=REQUIRED_SAMPLE)
     args = parser.parse_args()
 

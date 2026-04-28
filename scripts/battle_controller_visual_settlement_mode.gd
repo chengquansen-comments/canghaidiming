@@ -9,12 +9,18 @@ extends "res://scripts/battle_controller_visual_preview_position_guard.gd"
 # F8 still toggles settlement mode during local testing.
 
 const StoryBattleLoader = preload("res://scripts/story_battle_loader.gd")
+const ROUND_START_BANNER_DURATION := 0.75
+const REACTIVE_PRE_MOVE_STEP_DURATION := 0.26
+const REACTIVE_PRE_MOVE_STEP_PAUSE := 0.10
 
 @export var story_encounter_id: String = "prologue_beach_teach"
-@export_enum("symmetric", "reactive") var settlement_mode_id: String = "symmetric"
+@export_enum("symmetric", "reactive") var settlement_mode_id: String = "reactive"
 
 var _story_encounter_selected := false
 var _reactive_pre_move_round := -1
+var _reactive_pre_move_animation_round := -1
+var _reactive_pre_move_animating := false
+var _round_start_sequence_token := 0
 var _story_encounters: Array[Dictionary] = []
 var _pending_story_battle: Dictionary = {}
 var _story_validation_report: Dictionary = {}
@@ -31,6 +37,11 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_Z and not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed:
+			if has_method("_on_undo_move_pressed"):
+				call("_on_undo_move_pressed")
+				get_viewport().set_input_as_handled()
+				return
 		if event.keycode == KEY_F8:
 			toggle_visual_settlement_mode()
 			get_viewport().set_input_as_handled()
@@ -97,6 +108,8 @@ func _select_story_encounter_and_start(encounter_id: String) -> void:
 	story_encounter_id = encounter_id
 	_story_encounter_selected = true
 	_reactive_pre_move_round = -1
+	_reactive_pre_move_animation_round = -1
+	_reactive_pre_move_animating = false
 	var card_catalog: Dictionary = _build_story_card_catalog()
 	_pending_story_battle = StoryBattleLoader.build_story_battle(story_encounter_id, card_catalog)
 	if _pending_story_battle.is_empty():
@@ -104,7 +117,7 @@ func _select_story_encounter_and_start(encounter_id: String) -> void:
 		_story_encounter_selected = false
 		_show_story_encounter_selection()
 		return
-	settlement_mode_id = str(_pending_story_battle.get("settlement_mode", "symmetric"))
+	settlement_mode_id = str(_pending_story_battle.get("settlement_mode", BattleStateMachine.MODE_REACTIVE_ID))
 	_apply_visual_settlement_mode()
 	var encounter: Dictionary = _pending_story_battle.get("encounter", {})
 	_show_combat_banner("剧情遭遇：%s" % str(encounter.get("display_name", story_encounter_id)), Color("1c2a36"), Color("8fd3ff"))
@@ -171,6 +184,8 @@ func _core_role_id_for_template(template_id: String) -> String:
 func set_visual_settlement_mode(value: String) -> void:
 	settlement_mode_id = value
 	_reactive_pre_move_round = -1
+	_reactive_pre_move_animation_round = -1
+	_reactive_pre_move_animating = false
 	_apply_visual_settlement_mode()
 	_show_combat_banner("结算模式：%s" % ("反应式" if settlement_mode_id == BattleStateMachine.MODE_REACTIVE_ID else "对称式"), Color("1c2a36") if settlement_mode_id == BattleStateMachine.MODE_REACTIVE_ID else Color("2a2018"), Color("8fd3ff") if settlement_mode_id == BattleStateMachine.MODE_REACTIVE_ID else Color("ffd479"))
 	_refresh_ui()
@@ -190,6 +205,64 @@ func _apply_visual_settlement_mode() -> void:
 	print("[settlement-mode] ", state_machine.settlement_mode_id())
 
 
+func _begin_round() -> void:
+	if not _presentation_busy():
+		_clear_actor_action_glows()
+	player_intent = null
+	enemy_intent = null
+	draft_player_intent = null
+	_reset_player_stance_draft()
+	state_machine.update_distance_from_positions(player, enemy)
+	if state_machine.round_index > 1:
+		var player_gain := player.recover_momentum(ROUND_MOMENTUM_RECOVERY)
+		var enemy_gain := enemy.recover_momentum(ROUND_MOMENTUM_RECOVERY)
+		if player_gain > 0 or enemy_gain > 0:
+			_log("[b]回合调息。[/b] 玩家 +%d 势，敌方 +%d 势。" % [player_gain, enemy_gain])
+	if player.control_state != Fighter.CONTROL_NONE or enemy.control_state != Fighter.CONTROL_NONE or player.combo_window_active or enemy.combo_window_active:
+		_log("[b]当前势态：[/b] %s" % state_machine.pressure_state_text(player, enemy))
+	declaration_order = state_machine.get_declaration_order(player, enemy)
+	declaration_index = 0
+	awaiting_player_input = false
+	_update_phase_label()
+	_refresh_ui()
+	_round_start_sequence_token += 1
+	call_deferred("_begin_round_after_round_banner", _round_start_sequence_token, state_machine.round_index)
+
+
+func _begin_round_after_round_banner(token: int, round_value: int) -> void:
+	if token != _round_start_sequence_token or not battle_active:
+		return
+	while _presentation_busy():
+		await get_tree().create_timer(0.05).timeout
+		if token != _round_start_sequence_token or not battle_active:
+			return
+	_clear_actor_action_glows()
+	await _play_round_start_banner(round_value)
+	if token != _round_start_sequence_token or not battle_active:
+		return
+	_advance_declaration()
+	_refresh_ui()
+
+
+func _play_round_start_banner(round_value: int) -> void:
+	if combat_banner == null or combat_banner_label == null:
+		await get_tree().create_timer(ROUND_START_BANNER_DURATION).timeout
+		return
+	combat_banner.visible = true
+	combat_banner_label.text = "第 %d 回合" % round_value
+	combat_banner_label.modulate = Color.WHITE
+	combat_banner.add_theme_stylebox_override("panel", _make_panel_style(Color("1a2935"), Color("8fd3ff")))
+	combat_banner.scale = Vector2(0.90, 0.90)
+	combat_banner.modulate = Color(1, 1, 1, 0)
+	var tween := create_tween()
+	tween.tween_property(combat_banner, "modulate", Color(1, 1, 1, 1), 0.08)
+	tween.parallel().tween_property(combat_banner, "scale", Vector2.ONE, 0.08)
+	tween.tween_interval(maxf(ROUND_START_BANNER_DURATION - 0.18, 0.12))
+	tween.tween_property(combat_banner, "modulate", Color(1, 1, 1, 0), 0.10)
+	await tween.finished
+	combat_banner.visible = false
+
+
 func _try_apply_reactive_enemy_pre_move() -> void:
 	if not battle_active or not awaiting_player_input:
 		return
@@ -199,7 +272,76 @@ func _try_apply_reactive_enemy_pre_move() -> void:
 		return
 	if log_label != null and bool(result.get("changed", false)):
 		log_label.append_text("\n[color=#8fd3ff]反应式：敌方先移动 %s → %s，并亮出攻击意图。[/color]" % [_slot_label_safe(int(result.get("from_position", 0))), _slot_label_safe(int(result.get("to_position", 0)))])
-	_show_combat_banner("敌方先移动，亮出威胁", Color("1c2a36"), Color("8fd3ff"))
+		_show_combat_banner("敌方先移动，亮出威胁", Color("1c2a36"), Color("8fd3ff"))
+	if bool(result.get("changed", false)):
+		_reactive_pre_move_animating = true
+		var from_slot: int = int(result.get("from_position", -1))
+		var to_slot: int = int(result.get("to_position", -1))
+		if _is_valid_presentation_slot(from_slot) and _is_valid_presentation_slot(to_slot) and from_slot != to_slot:
+			_set_enemy_presentation_offset(_slot_offset_between(false, from_slot, to_slot))
+		call_deferred("_play_reactive_enemy_pre_move_animation", result)
+
+
+func _play_reactive_enemy_pre_move_animation(result: Dictionary) -> void:
+	var round_value: int = int(result.get("round", -1))
+	if round_value < 0 or _reactive_pre_move_animation_round == round_value:
+		_reactive_pre_move_animating = false
+		return
+	if not bool(result.get("changed", false)):
+		_reactive_pre_move_animating = false
+		return
+	var from_slot: int = int(result.get("from_position", -1))
+	var to_slot: int = int(result.get("to_position", -1))
+	if not _is_valid_presentation_slot(from_slot) or not _is_valid_presentation_slot(to_slot):
+		_reactive_pre_move_animating = false
+		return
+	if from_slot == to_slot:
+		_reactive_pre_move_animating = false
+		return
+	_reactive_pre_move_animation_round = round_value
+	_set_actor_action_glow(true, false)
+	_set_actor_action_glow(false, true)
+	await _play_phase_focus_cue("敌方预移", ACTOR_GLOW_ENEMY_COLOR)
+	_set_enemy_presentation_offset(_slot_offset_between(false, from_slot, to_slot))
+	await _animate_reactive_enemy_pre_move_slots(from_slot, to_slot)
+	_set_enemy_presentation_offset(Vector2.ZERO)
+	_set_actor_action_glow(false, false)
+	await get_tree().create_timer(0.24).timeout
+	_set_actor_action_glow(true, true)
+	await _play_phase_focus_cue("我方行动", ACTOR_GLOW_PLAYER_COLOR, 0.45)
+	_reactive_pre_move_animating = false
+	_refresh_ui()
+
+
+func _animate_reactive_enemy_pre_move_slots(from_slot: int, to_slot: int) -> void:
+	if from_slot == to_slot:
+		return
+	var step_dir := 1 if to_slot > from_slot else -1
+	var current_slot := from_slot
+	while current_slot != to_slot:
+		var next_slot := current_slot + step_dir
+		if not _is_valid_presentation_slot(next_slot):
+			break
+		var from_offset := _slot_offset_between(false, current_slot, to_slot)
+		var to_offset := _slot_offset_between(false, next_slot, to_slot)
+		await _tween_reactive_enemy_pre_move_step(from_offset, to_offset)
+		current_slot = next_slot
+		if current_slot != to_slot:
+			await get_tree().create_timer(REACTIVE_PRE_MOVE_STEP_PAUSE).timeout
+
+
+func _tween_reactive_enemy_pre_move_step(from_offset: Vector2, to_offset: Vector2) -> void:
+	var mid_offset := from_offset.lerp(to_offset, 0.55) + Vector2(0.0, PRESENTATION_STEP_MOVE_BOB_Y)
+	var tween := create_tween()
+	tween.tween_method(Callable(self, "_set_enemy_presentation_offset"), from_offset, mid_offset, REACTIVE_PRE_MOVE_STEP_DURATION * 0.45).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_method(Callable(self, "_set_enemy_presentation_offset"), mid_offset, to_offset, REACTIVE_PRE_MOVE_STEP_DURATION * 0.55).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	await tween.finished
+
+
+func _confirm_player_intent() -> void:
+	if _reactive_pre_move_animating:
+		return
+	super._confirm_player_intent()
 
 
 func _slot_label_safe(slot: int) -> String:
@@ -321,7 +463,27 @@ func _range_text_safe(range_result: String) -> String:
 func _refresh_ui() -> void:
 	_try_apply_reactive_enemy_pre_move()
 	super()
+	if confirm_button != null and _reactive_pre_move_animating:
+		confirm_button.disabled = true
 	if status_label != null and state_machine != null:
 		status_label.append_text(_mode_status_suffix())
 	if preview_label != null:
 		preview_label.append_text(_reactive_threat_preview_text())
+	_refresh_reactive_action_glows()
+
+
+func _refresh_reactive_action_glows() -> void:
+	if _presentation_busy():
+		return
+	if not battle_active:
+		_clear_actor_action_glows()
+		return
+	if _reactive_pre_move_animating:
+		_set_actor_action_glow(true, false)
+		_set_actor_action_glow(false, true)
+		return
+	if awaiting_player_input:
+		_set_actor_action_glow(false, false)
+		_set_actor_action_glow(true, true)
+		return
+	_clear_actor_action_glows()

@@ -2,6 +2,7 @@ extends "res://scripts/battle_controller_visual_narrative_formal.gd"
 
 const BATTLE_SCENE_MANIFEST_PATH := "res://data/battle_scene_manifest.json"
 const DEFAULT_SCENE_ID := "fallback"
+const DEBUG_TOGGLE_KEY := KEY_F10
 
 var battle_scene_manifest: Dictionary = {}
 var battle_scene_loaded: bool = false
@@ -33,6 +34,30 @@ func _process(delta: float) -> void:
 	_update_original_background_motion(delta)
 	super._process(delta)
 	_refresh_stable_debug_panel()
+
+func _input(event: InputEvent) -> void:
+	if _is_debug_toggle_event(event):
+		_toggle_stable_debug_panel()
+		get_viewport().set_input_as_handled()
+		return
+	super._input(event)
+
+func _is_debug_toggle_event(event: InputEvent) -> bool:
+	if not (event is InputEventKey):
+		return false
+	var key_event := event as InputEventKey
+	return key_event.pressed and not key_event.echo and key_event.keycode == DEBUG_TOGGLE_KEY
+
+func _toggle_stable_debug_panel() -> void:
+	NarrativeBattleContext.toggle_ui_debug_visible()
+	_apply_stable_debug_visibility()
+
+func _apply_stable_debug_visibility() -> void:
+	var debug_visible := NarrativeBattleContext.is_ui_debug_visible()
+	if stable_debug_layer != null:
+		stable_debug_layer.visible = debug_visible
+	if stable_debug_panel != null:
+		stable_debug_panel.visible = debug_visible
 
 func _load_battle_scene_manifest() -> void:
 	battle_scene_loaded = false
@@ -109,7 +134,7 @@ func _battle_scene_config(id: String) -> Dictionary:
 		var cfg = battle_scene_manifest.get(id, battle_scene_manifest.get(DEFAULT_SCENE_ID, {}))
 		if cfg is Dictionary:
 			return cfg
-	return {"background":"res://assets/pixel_battle/backgrounds/battle_bg_training_ground.svg", "label":id, "camera_zoom":0.010, "camera_pan_x":0.0, "camera_pan_y":0.0}
+	return {"background":"res://assets/pixel_battle/backgrounds/battle_bg_training_ground.png", "label":id, "camera_zoom":0.010, "camera_pan_x":0.0, "camera_pan_y":0.0}
 
 func _update_original_background_motion(delta: float) -> void:
 	if background_texture == null or background_texture.texture == null:
@@ -151,13 +176,13 @@ func _build_stable_debug_panel() -> void:
 	stable_debug_panel = PanelContainer.new()
 	stable_debug_panel.name = "StableBattleDebugPanel"
 	stable_debug_panel.mouse_filter = Control.MOUSE_FILTER_STOP
-	stable_debug_panel.anchor_left = 0.0
-	stable_debug_panel.anchor_right = 0.0
+	stable_debug_panel.anchor_left = 1.0
+	stable_debug_panel.anchor_right = 1.0
 	stable_debug_panel.anchor_top = 0.0
 	stable_debug_panel.anchor_bottom = 0.0
-	stable_debug_panel.offset_left = 12
+	stable_debug_panel.offset_left = -720
 	stable_debug_panel.offset_top = 8
-	stable_debug_panel.offset_right = 720
+	stable_debug_panel.offset_right = -12
 	stable_debug_panel.offset_bottom = 214
 	stable_debug_panel.add_theme_stylebox_override("panel", _stable_debug_panel_style())
 	stable_debug_layer.add_child(stable_debug_panel)
@@ -205,6 +230,7 @@ func _build_stable_debug_panel() -> void:
 	stable_debug_continue_button.focus_mode = Control.FOCUS_NONE
 	stable_debug_continue_button.pressed.connect(_on_continue_narrative_pressed)
 	stable_debug_actions_row.add_child(stable_debug_continue_button)
+	_apply_stable_debug_visibility()
 
 func _stable_debug_panel_style() -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
@@ -234,6 +260,8 @@ func _make_stable_debug_label(font_size: int) -> Label:
 func _refresh_stable_debug_panel() -> void:
 	if stable_debug_panel == null:
 		return
+	if not NarrativeBattleContext.is_ui_debug_visible():
+		return
 	var manifest_enemy: Dictionary = NarrativeBattleContext.get_enemy_config()
 	var mapping: Dictionary = NarrativeBattleContext.get_battle_mapping()
 	var scene_config: Dictionary = _battle_scene_config(battle_scene_id)
@@ -245,7 +273,7 @@ func _refresh_stable_debug_panel() -> void:
 	var ai_text := _runtime_enemy_ai_text(manifest_enemy)
 	var runtime_text := _runtime_battle_state_text()
 	var values := {
-		"title": "Battle Debug｜%s｜battle_id=%s｜enemy_source=%s" % [str(scene_config.get("label", battle_scene_id)), battle_scene_id, NarrativeBattleContext.enemy_source_text()],
+		"title": "Battle Debug [F10]｜%s｜battle_id=%s｜enemy_source=%s" % [str(scene_config.get("label", battle_scene_id)), battle_scene_id, NarrativeBattleContext.enemy_source_text()],
 		"context": "encounter=%s｜node=%s｜mapping=%s｜difficulty=%s" % [str(NarrativeBattleContext.encounter_id), str(NarrativeBattleContext.source_node_id), str(mapping.get("label", "")), str(mapping.get("difficulty", ""))],
 		"enemy": "enemy_id=%s｜name=%s｜HP=%s｜势=%s" % [enemy_id, enemy_name, enemy_hp_text, enemy_posture_text],
 		"deck": deck_text,

@@ -49,7 +49,7 @@ static func build_story_battle(encounter_id: String, card_catalog: Dictionary) -
 		"encounter": encounter,
 		"player_data": player_data,
 		"opponent_data": opponent_data,
-		"settlement_mode": str(encounter.get("settlement_mode", MODE_SYMMETRIC_ID))
+		"settlement_mode": str(encounter.get("settlement_mode", MODE_REACTIVE_ID))
 	}
 
 
@@ -117,7 +117,7 @@ static func validate_all(card_catalog: Dictionary) -> Dictionary:
 		_validate_ref(errors, "story_encounters.%s.opponent_deck_id" % encounter_id, deck_ids, str(encounter.get("opponent_deck_id", "")))
 		_validate_ref(errors, "story_encounters.%s.player_stat_set_id" % encounter_id, stat_ids, str(encounter.get("player_stat_set_id", "")))
 		_validate_ref(errors, "story_encounters.%s.opponent_stat_set_id" % encounter_id, stat_ids, str(encounter.get("opponent_stat_set_id", "")))
-		var mode: String = str(encounter.get("settlement_mode", MODE_SYMMETRIC_ID))
+		var mode: String = str(encounter.get("settlement_mode", MODE_REACTIVE_ID))
 		if mode != MODE_SYMMETRIC_ID and mode != MODE_REACTIVE_ID:
 			errors.append("story_encounters.%s has invalid settlement_mode: %s" % [encounter_id, mode])
 		var pressure_profile: String = str(encounter.get("pressure_profile", BattleEffectApplier.PRESSURE_NONE))

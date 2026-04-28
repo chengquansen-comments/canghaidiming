@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=2 format=3 uid="uid://canghai_default_ui_theme"]
 
-[ext_resource type="FontFile" path="res://assets/fonts/cjk_font.ttf" id="1_cjk_font"]
+[ext_resource type="FontFile" path="res://assets/fonts/cjk_font_runtime.ttf" id="1_cjk_font"]
 
 [resource]
 default_font = ExtResource("1_cjk_font")

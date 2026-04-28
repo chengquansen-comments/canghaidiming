@@ -684,8 +684,8 @@ phase 切到 RESULT 发生在 finish_round()
 [ ] Web 验收：序章师父救场战返回后继续到“敌人临死：军……”
 [ ] Web 验收：“按推荐接敌”按钮是否出现
 [ ] Web 验收：点击“按推荐接敌”是否能自动进入推荐职业，或至少提示回退到手动选择
-[ ] 根据 visual_debug_label 判断 SVG 是否可被当前 Godot Web 导入为 Texture2D
-[ ] 若 SVG 不能作为 Texture2D 正常显示，则改为真实 PNG 占位图
+[x] 美术管线口径已切换为正式 PNG 运行资源；`art_reference/generated` 参考图不直接挂运行
+[ ] 若旧 SVG 仍出现在正式场景 / 角色 / 道具路径中，优先替换为 `assets/**/*.png`
 [ ] V3：encounter_id → enemy/fighter 自动配置
 [ ] V4：失败/平局叙事分支
 ```

@@ -103,6 +103,7 @@ func _on_choice(index: int) -> void:
 	var combat := _choice_combat(choice, node)
 	if not combat.is_empty():
 		_store_pending_choice(node_id, choice)
+		_save_narrative_state_to_context()
 		NarrativeBattleContext.set_request(str(combat.get("encounter_id", "")), node_id, str(combat.get("battle_id", "")))
 		get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
 		return
@@ -116,6 +117,7 @@ func _apply_choice_and_show_result(choice: Dictionary) -> void:
 	choice_result_delta_text = ""
 	choice_result_sentence_index = 0
 	showing_choice_result = true
+	_save_narrative_state_to_context()
 	_render()
 
 func _store_pending_choice(node_id: String, choice: Dictionary) -> void:
@@ -177,6 +179,7 @@ func _consume_battle_result_if_needed() -> void:
 		else:
 			last_hint = "序章战斗返回：当前 Demo 按师父救场继续推进。"
 		NarrativeBattleContext.clear()
+		_save_narrative_state_to_context()
 		return
 	for i in range(MVP_NODE_IDS.size()):
 		if _node_id_at(i) == source_id:
@@ -216,6 +219,7 @@ func _consume_battle_result_if_needed() -> void:
 	_clear_pending_choice()
 	_clear_pending_boss_node()
 	node_sentence_index = _node_story_segments(_node_data_at(node_index)).size() - 1
+	_save_narrative_state_to_context()
 
 func _render_node() -> void:
 	var node: Dictionary = _node_data_at(node_index)
@@ -300,4 +304,5 @@ func _restart() -> void:
 	_clear_pending_boss_node()
 	NarrativeBattleContext.clear()
 	NarrativeBattleContext.clear_player_profile()
+	_clear_narrative_state_context()
 	_render()

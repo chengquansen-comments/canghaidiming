@@ -87,7 +87,7 @@ func _append_pressure_profile_to_status() -> void:
 func _try_auto_return_after_battle_result() -> void:
 	if _returning_to_story_selection:
 		return
-	if not battle_active:
+	if not battle_active and state_machine.phase != BattleStateMachine.BattlePhase.RESULT:
 		return
 	if player == null or enemy == null:
 		return
@@ -99,13 +99,31 @@ func _try_auto_return_after_battle_result() -> void:
 
 func _return_to_story_encounter_selection_after_battle() -> void:
 	var result_text := "战斗结束"
+	var result_key := "draw"
 	if player != null and enemy != null:
 		if enemy.hp <= 0 and player.hp > 0:
 			result_text = "战斗胜利"
+			result_key = "win"
 		elif player.hp <= 0 and enemy.hp > 0:
 			result_text = "战斗失败"
+			result_key = "lose"
 		else:
 			result_text = "两败俱伤"
+			result_key = "draw"
+	while _presentation_busy():
+		await get_tree().create_timer(0.05).timeout
+	await get_tree().create_timer(0.15).timeout
+	if NarrativeBattleContext.has_request():
+		if log_label != null:
+			log_label.append_text("\n[color=#8fd3ff]%s，返回剧情流程。[/color]" % result_text)
+		_show_combat_banner("%s，返回剧情" % result_text, Color("1c2a36"), Color("8fd3ff"))
+		await get_tree().create_timer(0.45).timeout
+		var source_scene: String = NarrativeBattleContext.source_scene
+		if source_scene.is_empty():
+			source_scene = "res://scenes/NarrativeDemo.tscn"
+		NarrativeBattleContext.set_result(result_key)
+		get_tree().change_scene_to_file(source_scene)
+		return
 	if log_label != null:
 		log_label.append_text("\n[color=#8fd3ff]%s，返回剧情遭遇选择。[/color]" % result_text)
 	_show_combat_banner("%s，返回地图" % result_text, Color("1c2a36"), Color("8fd3ff"))

@@ -9,11 +9,22 @@ extends "res://scripts/narrative_demo_unified_controller.gd"
 # - Top world map node panel remains visible; only operation-area map/debug controls are hidden.
 
 const STORY_FONT_SIZE := 72
-const OPTION_FONT_SIZE := 42
+const OPTION_FONT_SIZE := 30
 const DEBUG_FONT_SIZE := 13
-const PERFORMANCE_CAPTION_TOP := 0.48
-const PERFORMANCE_CAPTION_BOTTOM := 0.70
-const OPERATION_TOP := 0.74
+const PERFORMANCE_CAPTION_TOP := 0.52
+const PERFORMANCE_CAPTION_BOTTOM := 0.72
+const OPERATION_TOP := 0.68
+const UI_TITLE_MARK := "res://assets/pixel_battle/ui/title_canghai_diming.png"
+const UI_CASEFILE_PANEL := "res://assets/pixel_battle/ui/ui_casefile_panel.png"
+const UI_MILITARY_BADGE := "res://assets/pixel_battle/ui/ui_military_order_badge.png"
+const UI_STRATEGY_TABS := "res://assets/pixel_battle/ui/ui_strategy_book_tabs.png"
+const UI_MAP_BACKGROUND := "res://assets/pixel_battle/backgrounds/map_march_coast.png"
+const BUST_HERO := "res://assets/pixel_battle/portraits/hero_officer_bust.png"
+const BUST_HERO_SPEAR := "res://assets/pixel_battle/portraits/hero_officer_spear_bust.png"
+const BUST_HERO_SABER := "res://assets/pixel_battle/portraits/hero_officer_saber_bust.png"
+const BUST_MASTER := "res://assets/pixel_battle/portraits/master_veteran_bust.png"
+const BUST_BOSS := "res://assets/pixel_battle/portraits/wakou_boss_bust.png"
+const DEBUG_TOGGLE_KEY := KEY_F10
 
 var focus_debug_layer: Control
 var focus_debug_panel: PanelContainer
@@ -28,6 +39,14 @@ var focus_world_map_layer: Control
 var focus_world_map_panel: PanelContainer
 var focus_world_map_status_label: Label
 var focus_world_map_nodes_row: HBoxContainer
+var focus_art_layer: Control
+var focus_title_art: TextureRect
+var focus_badge_art: TextureRect
+var focus_tabs_art: TextureRect
+var focus_casefile_art: TextureRect
+var focus_map_art: TextureRect
+var focus_bust_art: TextureRect
+var focus_bust_path: String = ""
 
 func _ready() -> void:
 	super._ready()
@@ -35,14 +54,41 @@ func _ready() -> void:
 	_ensure_focus_story_caption()
 	_ensure_focus_debug_panel()
 	_apply_focus_ui()
+	_hide_scene_art_overlay_nodes()
 
 func _process(delta: float) -> void:
 	super._process(delta)
 	_apply_focus_ui()
+	_hide_scene_art_overlay_nodes()
 
 func _render() -> void:
 	super._render()
 	_apply_focus_ui()
+	_hide_scene_art_overlay_nodes()
+
+func _input(event: InputEvent) -> void:
+	if _is_debug_toggle_event(event):
+		_toggle_focus_debug_panel()
+		get_viewport().set_input_as_handled()
+
+func _is_debug_toggle_event(event: InputEvent) -> bool:
+	if not (event is InputEventKey):
+		return false
+	var key_event := event as InputEventKey
+	return key_event.pressed and not key_event.echo and key_event.keycode == DEBUG_TOGGLE_KEY
+
+func _toggle_focus_debug_panel() -> void:
+	NarrativeBattleContext.toggle_ui_debug_visible()
+	_apply_focus_debug_visibility()
+
+func _apply_focus_debug_visibility() -> void:
+	var debug_visible := NarrativeBattleContext.is_ui_debug_visible()
+	if focus_debug_layer != null:
+		focus_debug_layer.visible = debug_visible
+	if focus_debug_panel != null:
+		focus_debug_panel.visible = debug_visible
+	if focus_casefile_art != null:
+		focus_casefile_art.visible = debug_visible and focus_debug_panel != null and focus_debug_panel.visible
 
 func _flow_node_ids() -> Array:
 	if focus_flow_loaded:
@@ -77,6 +123,14 @@ func _node_id_at(index: int) -> String:
 	if index >= 0 and index < ids.size():
 		return str(ids[index])
 	return ""
+
+func _current_node_id() -> String:
+	if in_prologue:
+		return "prologue"
+	var node_id := _node_id_at(node_index)
+	if not node_id.is_empty():
+		return node_id
+	return "node"
 
 func _world_map_total_count() -> int:
 	return _flow_count() + 1
@@ -303,6 +357,7 @@ func _consume_battle_result_if_needed() -> void:
 			last_hint = "序章战斗返回：当前 Demo 按师父救场继续推进。"
 		NarrativeBattleContext.clear()
 		_clear_pending_choice()
+		_save_narrative_state_to_context()
 		return
 	for i in range(_flow_count()):
 		if _node_id_at(i) == source_id:
@@ -342,6 +397,7 @@ func _consume_battle_result_if_needed() -> void:
 	_clear_pending_choice()
 	_clear_pending_boss_node()
 	node_sentence_index = _node_story_segments(_node_data_at(node_index)).size() - 1
+	_save_narrative_state_to_context()
 
 func _on_continue_after_choice_result() -> void:
 	if not _is_choice_result_complete():
@@ -366,6 +422,7 @@ func _advance_to_node(target_index: int, hint: String = "") -> void:
 		_render_ending()
 		return
 	node_index = target_index
+	_save_narrative_state_to_context()
 	_render()
 
 func _ensure_focus_debug_panel() -> void:
@@ -412,16 +469,120 @@ func _ensure_focus_debug_panel() -> void:
 	focus_debug_label.add_theme_font_size_override("bold_font_size", DEBUG_FONT_SIZE)
 	focus_debug_label.add_theme_color_override("default_color", Color("f0dfb8"))
 	focus_debug_panel.add_child(focus_debug_label)
+	_apply_focus_debug_visibility()
+
+func _ensure_focus_art_layer() -> void:
+	if focus_art_layer != null:
+		return
+	focus_art_layer = Control.new()
+	focus_art_layer.name = "NarrativeFocusArtLayer"
+	focus_art_layer.anchor_left = 0.0
+	focus_art_layer.anchor_top = 0.0
+	focus_art_layer.anchor_right = 1.0
+	focus_art_layer.anchor_bottom = 1.0
+	focus_art_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	focus_art_layer.z_index = 58
+	focus_art_layer.z_as_relative = false
+	add_child(focus_art_layer)
+
+	focus_map_art = _make_focus_texture("FocusMapBackground", UI_MAP_BACKGROUND, 0.055, 0.035, 0.945, 0.205, 0.20)
+	focus_art_layer.add_child(focus_map_art)
+	focus_title_art = _make_focus_texture("FocusTitleMark", UI_TITLE_MARK, 0.055, 0.045, 0.345, 0.215, 0.92)
+	focus_art_layer.add_child(focus_title_art)
+	focus_badge_art = _make_focus_texture("FocusMilitaryBadge", UI_MILITARY_BADGE, 0.012, 0.038, 0.052, 0.145, 0.86)
+	focus_art_layer.add_child(focus_badge_art)
+	focus_tabs_art = _make_focus_texture("FocusStrategyTabs", UI_STRATEGY_TABS, 0.055, 0.617, 0.330, 0.672, 0.72)
+	focus_art_layer.add_child(focus_tabs_art)
+	focus_casefile_art = _make_focus_texture("FocusCasefilePanel", UI_CASEFILE_PANEL, 0.660, 0.205, 0.995, 0.575, 0.58)
+	focus_art_layer.add_child(focus_casefile_art)
+	focus_bust_art = _make_focus_texture("FocusRoleBust", BUST_HERO, 0.026, 0.225, 0.250, 0.590, 0.54)
+	focus_art_layer.add_child(focus_bust_art)
+
+func _make_focus_texture(layer_name: String, path: String, left: float, top: float, right: float, bottom: float, alpha: float) -> TextureRect:
+	var texture_rect := TextureRect.new()
+	texture_rect.name = layer_name
+	texture_rect.anchor_left = left
+	texture_rect.anchor_top = top
+	texture_rect.anchor_right = right
+	texture_rect.anchor_bottom = bottom
+	texture_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	texture_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	texture_rect.modulate = Color(1.0, 1.0, 1.0, alpha)
+	if ResourceLoader.exists(path):
+		var resource := load(path)
+		if resource is Texture2D:
+			texture_rect.texture = resource
+	return texture_rect
 
 func _apply_focus_ui() -> void:
 	_ensure_focus_story_caption()
 	_ensure_focus_debug_panel()
+	_ensure_focus_art_layer()
 	_update_focus_story_caption()
 	_hide_operation_metadata()
 	_apply_operation_only_choice_layout()
 	_style_action_buttons()
 	_refresh_world_map()
+	_update_focus_art_layer()
+	_apply_focus_debug_visibility()
 	_update_focus_debug_panel()
+
+func _update_focus_art_layer() -> void:
+	if focus_art_layer == null:
+		return
+	if focus_title_art != null:
+		focus_title_art.visible = in_prologue
+	if focus_badge_art != null:
+		focus_badge_art.visible = not in_prologue
+	if focus_tabs_art != null:
+		focus_tabs_art.visible = not in_prologue
+	if focus_map_art != null:
+		focus_map_art.visible = not in_prologue
+	if focus_casefile_art != null:
+		focus_casefile_art.visible = NarrativeBattleContext.is_ui_debug_visible() and focus_debug_panel != null and focus_debug_panel.visible
+	_update_focus_bust_art()
+
+func _update_focus_bust_art() -> void:
+	if focus_bust_art == null:
+		return
+	var target_path := _focus_bust_path()
+	focus_bust_art.visible = not target_path.is_empty()
+	if target_path.is_empty() or target_path == focus_bust_path:
+		return
+	focus_bust_path = target_path
+	if ResourceLoader.exists(target_path):
+		var resource := load(target_path)
+		if resource is Texture2D:
+			focus_bust_art.texture = resource
+
+func _focus_bust_path() -> String:
+	if in_prologue:
+		if step_index >= PROLOGUE_MASTER_RESCUE_STEP and step_index < PROLOGUE_CAREER_STEP:
+			return BUST_MASTER
+		if step_index == PROLOGUE_CAREER_STEP:
+			return _route_hero_bust_path()
+		return ""
+	var node_id := _current_node_id()
+	match node_id:
+		"night_knife_camp", "military_coverup":
+			return BUST_MASTER
+		"wakou_boss":
+			return BUST_BOSS
+		_:
+			return _route_hero_bust_path()
+
+func _route_hero_bust_path() -> String:
+	if not NarrativeBattleContext.has_player_profile():
+		return BUST_HERO
+	var profile := NarrativeBattleContext.get_player_profile()
+	var role_id := str(profile.get("role", "")).strip_edges()
+	var weapon := str(profile.get("weapon", "")).strip_edges()
+	if role_id == "blademaster" or weapon.find("刀") >= 0:
+		return BUST_HERO_SABER
+	if role_id == "spearman" or weapon.find("枪") >= 0:
+		return BUST_HERO_SPEAR
+	return BUST_HERO
 
 func _hide_operation_metadata() -> void:
 	_hide_control(title_label)
@@ -457,7 +618,7 @@ func _apply_operation_only_choice_layout() -> void:
 		operation_panel.anchor_left = 0.04
 		operation_panel.anchor_top = OPERATION_TOP
 		operation_panel.anchor_right = 0.96
-		operation_panel.anchor_bottom = 0.985
+		operation_panel.anchor_bottom = 0.92
 		operation_panel.offset_left = 0
 		operation_panel.offset_top = 0
 		operation_panel.offset_right = 0
@@ -482,7 +643,7 @@ func _style_button_box(box: VBoxContainer) -> void:
 		if child is Button:
 			var btn := child as Button
 			btn.visible = true
-			btn.custom_minimum_size = Vector2(0, 92)
+			btn.custom_minimum_size = Vector2(0, 80)
 			btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			btn.add_theme_font_size_override("font_size", OPTION_FONT_SIZE)
 		elif child is Label:
@@ -529,7 +690,7 @@ func _focus_debug_text() -> String:
 	if profile.is_empty():
 		profile = "未初始化"
 	var lines: Array[String] = []
-	lines.append("[b]DEBUG[/b]")
+	lines.append("[b]DEBUG[/b]  [color=#9cc7ff]F10隐藏/显示[/color]")
 	lines.append("标题：%s" % title_text)
 	lines.append("节点：%s" % node_id)
 	lines.append("分类：%s / %s" % [column_text, type_text])
@@ -565,3 +726,28 @@ func _find_operation_panel() -> PanelContainer:
 		if child is PanelContainer:
 			return child as PanelContainer
 	return null
+##屏蔽场景效果
+const HIDDEN_SCENE_ART_OVERLAY_NODE_NAMES := [
+	"CinematicMistLayer",
+	"CinematicFirePulse",
+	"CinematicMaster",
+	"CinematicHero",
+	"CinematicForegroundProp",
+	"CinematicForegroundProp2",
+	"CinematicForegroundProp3",
+	"CinematicDim",
+	"CinematicFocus",
+	"NarrativeFocusDebugLayer",
+	"NarrativeFocusArtLayer",
+	"FocusWorldMapLayer",
+]
+
+func _hide_scene_art_overlay_nodes() -> void:
+	for node_name in HIDDEN_SCENE_ART_OVERLAY_NODE_NAMES:
+		var node := find_child(node_name, true, false)
+		if node is CanvasItem:
+			var item := node as CanvasItem
+			item.visible = false
+		if node is Control:
+			var control := node as Control
+			control.mouse_filter = Control.MOUSE_FILTER_IGNORE

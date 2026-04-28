@@ -55,19 +55,51 @@ const PROLOGUE := [
 ]
 
 const NODES := [
-	{"id":"military_order", "title":"军令巡海", "column":"军令", "type":"事件", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_military_order.svg", "scene":"背景占位：军门令牌、潮湿案牍、出海军令。人物占位：主角 / 上官。", "text":"军令落下，潮声像旧案翻页。", "choices":[{"text":"问旧案", "dg":0, "dq":1, "dc":1}, {"text":"领命出发", "dg":1, "dq":0, "dc":0}]},
-	{"id":"beach_ambush", "title":"海边伏击", "column":"初遇", "type":"普通战斗", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_beach_ambush.svg", "scene":"背景占位：海滩芦苇、暗潮、伏兵剪影。敌人占位：敌方枪手。", "text":"芦苇摇晃，敌影先动。", "combat":"enc_beach_ambush", "choices":[{"text":"搜身留证", "dg":1, "dq":0, "dc":1}, {"text":"斩首报功", "dg":2, "dq":-1, "dc":0}]},
-	{"id":"ming_firearm", "title":"明制火器", "column":"疑点", "type":"旧物", "visual_path":"res://assets/pixel_battle/relics/relic_ming_firearm.svg", "scene":"旧物占位：官造火铳 relic_ming_firearm.svg；背景占位：潮湿木箱、军械铸印。", "text":"箱中火器不是倭物，铸印仍在。", "choices":[{"text":"私下留证", "dg":0, "dq":0, "dc":2}, {"text":"上交火器", "dg":1, "dq":1, "dc":0}]},
-	{"id":"transport_officer", "title":"失械案押运官", "column":"压迫", "type":"精英战斗", "visual_path":"res://assets/pixel_battle/portraits/transport_officer.svg", "scene":"人物占位：失械案押运官。背景占位：雨夜驿道、车辙、火器空箱。", "text":"押运官看见你手中名册，脸色变了。", "combat":"enc_transport_officer", "choices":[{"text":"私藏名册", "dg":0, "dq":-1, "dc":2}, {"text":"当众审问", "dg":1, "dq":1, "dc":1}]},
-	{"id":"wakou_boss", "title":"破船 Boss", "column":"破船", "type":"Boss", "visual_path":"res://assets/pixel_battle/portraits/wakou_leader.svg", "scene":"人物占位：小股倭寇首领。背景占位：搁浅破船、火器箱、暗箭方向。", "text":"敌首倒下前，看向火器箱。", "combat":"enc_wakou_boss", "choices":[{"text":"查看火器箱", "dg":2, "dq":0, "dc":2}, {"text":"烧船灭迹", "dg":1, "dq":-1, "dc":0}]},
-	{"id":"military_coverup", "title":"军门压案", "column":"军门", "type":"结尾", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_military_coverup.svg", "scene":"背景占位：军门灯火、缺页案卷、压案朱批。人物占位：军门上官 / 师父阴影。", "text":"军门灯火通明，案卷却少了一页。", "choices":[{"text":"据实上报", "dg":0, "dq":2, "dc":0}, {"text":"藏下一份证据", "dg":0, "dq":0, "dc":1}, {"text":"沉默退下", "dg":0, "dq":-1, "dc":0}]}
+	{"id":"military_order", "title":"军令巡海", "column":"军令", "type":"事件", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_military_order.png", "scene":"背景占位：军门令牌、潮湿案牍、出海军令。人物占位：主角 / 上官。", "text":"军令落下，潮声像旧案翻页。", "choices":[{"text":"问旧案", "dg":0, "dq":1, "dc":1}, {"text":"领命出发", "dg":1, "dq":0, "dc":0}]},
+	{"id":"beach_ambush", "title":"海边伏击", "column":"初遇", "type":"普通战斗", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_beach_ambush.png", "scene":"背景占位：海滩芦苇、暗潮、伏兵剪影。敌人占位：敌方枪手。", "text":"芦苇摇晃，敌影先动。", "combat":"enc_beach_ambush", "choices":[{"text":"搜身留证", "dg":1, "dq":0, "dc":1}, {"text":"斩首报功", "dg":2, "dq":-1, "dc":0}]},
+	{"id":"ming_firearm", "title":"明制火器", "column":"疑点", "type":"旧物", "visual_path":"res://assets/pixel_battle/relics/relic_ming_firearm.png", "scene":"旧物：官造火铳 relic_ming_firearm.png；背景：潮湿木箱、军械铸印。", "text":"箱中火器不是倭物，铸印仍在。", "choices":[{"text":"私下留证", "dg":0, "dq":0, "dc":2}, {"text":"上交火器", "dg":1, "dq":1, "dc":0}]},
+	{"id":"transport_officer", "title":"失械案押运官", "column":"压迫", "type":"精英战斗", "visual_path":"res://assets/pixel_battle/portraits/transport_officer.png", "scene":"人物占位：失械案押运官。背景占位：雨夜驿道、车辙、火器空箱。", "text":"押运官看见你手中名册，脸色变了。", "combat":"enc_transport_officer", "choices":[{"text":"私藏名册", "dg":0, "dq":-1, "dc":2}, {"text":"当众审问", "dg":1, "dq":1, "dc":1}]},
+	{"id":"wakou_boss", "title":"破船 Boss", "column":"破船", "type":"Boss", "visual_path":"res://assets/pixel_battle/portraits/wakou_leader.png", "scene":"人物占位：小股倭寇首领。背景占位：搁浅破船、火器箱、暗箭方向。", "text":"敌首倒下前，看向火器箱。", "combat":"enc_wakou_boss", "choices":[{"text":"查看火器箱", "dg":2, "dq":0, "dc":2}, {"text":"烧船灭迹", "dg":1, "dq":-1, "dc":0}]},
+	{"id":"military_coverup", "title":"军门压案", "column":"军门", "type":"结尾", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_military_coverup.png", "scene":"背景占位：军门灯火、缺页案卷、压案朱批。人物占位：军门上官 / 师父阴影。", "text":"军门灯火通明，案卷却少了一页。", "choices":[{"text":"据实上报", "dg":0, "dq":2, "dc":0}, {"text":"藏下一份证据", "dg":0, "dq":0, "dc":1}, {"text":"沉默退下", "dg":0, "dq":-1, "dc":0}]}
 ]
 
 func _ready() -> void:
+	_restore_narrative_state_from_context()
 	_consume_battle_result_if_needed()
 	_build_ui()
 	BattleFontHelper.enforce(self)
 	_render()
+
+func _narrative_state_snapshot() -> Dictionary:
+	return {
+		"step_index": step_index,
+		"node_index": node_index,
+		"jun_gong": jun_gong,
+		"qing_wang": qing_wang,
+		"clues": clues,
+		"in_prologue": in_prologue,
+		"career_selected": career_selected,
+		"last_hint": last_hint
+	}
+
+func _save_narrative_state_to_context() -> void:
+	NarrativeBattleContext.set_narrative_state(_narrative_state_snapshot())
+
+func _restore_narrative_state_from_context() -> void:
+	if not NarrativeBattleContext.has_narrative_state():
+		return
+	var state: Dictionary = NarrativeBattleContext.get_narrative_state()
+	step_index = int(state.get("step_index", step_index))
+	node_index = int(state.get("node_index", node_index))
+	jun_gong = int(state.get("jun_gong", jun_gong))
+	qing_wang = int(state.get("qing_wang", qing_wang))
+	clues = int(state.get("clues", clues))
+	in_prologue = bool(state.get("in_prologue", in_prologue))
+	career_selected = bool(state.get("career_selected", career_selected))
+	last_hint = str(state.get("last_hint", last_hint))
+
+func _clear_narrative_state_context() -> void:
+	NarrativeBattleContext.clear_narrative_state()
 
 func _consume_battle_result_if_needed() -> void:
 	if not NarrativeBattleContext.has_result():
@@ -83,6 +115,7 @@ func _consume_battle_result_if_needed() -> void:
 		else:
 			last_hint = "序章战斗返回：当前 Demo 按师父救场继续推进。"
 		NarrativeBattleContext.clear()
+		_save_narrative_state_to_context()
 		return
 	for i in range(NODES.size()):
 		var node: Dictionary = NODES[i]
@@ -103,6 +136,7 @@ func _consume_battle_result_if_needed() -> void:
 	else:
 		last_hint = "战斗结果未知：已返回剧情。"
 	NarrativeBattleContext.clear()
+	_save_narrative_state_to_context()
 
 func _apply_battle_result_reward(source_index: int) -> void:
 	if source_index < 0 or source_index >= NODES.size():
@@ -117,6 +151,7 @@ func _apply_battle_result_reward(source_index: int) -> void:
 			clues += 2
 		_:
 			jun_gong += 1
+	_save_narrative_state_to_context()
 
 func _build_ui() -> void:
 	var root := PanelContainer.new()
@@ -407,6 +442,7 @@ func _apply_choice_delta(choice: Dictionary) -> void:
 	qing_wang += int(choice.get("dq", 0))
 	clues += int(choice.get("dc", 0))
 	NarrativeBattleContext.apply_player_growth("choice", 0, 0, 0, false)
+	_save_narrative_state_to_context()
 
 func _apply_default_map_reward(target_index: int) -> void:
 	if target_index < 0 or target_index >= NODES.size():
@@ -424,6 +460,7 @@ func _apply_default_map_reward(target_index: int) -> void:
 			NarrativeBattleContext.apply_player_growth("relic", 0, 1, 0, false)
 		_:
 			qing_wang += 1
+	_save_narrative_state_to_context()
 
 func _advance_to_node(target_index: int, hint: String = "") -> void:
 	last_hint = hint
@@ -431,6 +468,7 @@ func _advance_to_node(target_index: int, hint: String = "") -> void:
 		_render_ending()
 		return
 	node_index = target_index
+	_save_narrative_state_to_context()
 	_render()
 
 func _on_continue_prologue() -> void:
@@ -439,6 +477,7 @@ func _on_continue_prologue() -> void:
 		in_prologue = false
 		node_index = 0
 		last_hint = ""
+	_save_narrative_state_to_context()
 	_render()
 
 func _on_select_career(index: int) -> void:
@@ -460,9 +499,11 @@ func _on_select_career(index: int) -> void:
 	in_prologue = false
 	node_index = 0
 	last_hint = "已选择出山职业：%s。玩家数据已初始化，后续战斗将沿用并成长。" % NarrativeBattleContext.player_profile_debug_text()
+	_save_narrative_state_to_context()
 	_render()
 
 func _on_request_prologue_master_battle() -> void:
+	_save_narrative_state_to_context()
 	NarrativeBattleContext.set_request(PROLOGUE_MASTER_ENCOUNTER_ID, PROLOGUE_MASTER_SOURCE_ID)
 	body_label.text = PROLOGUE[step_index] + "\n\n[b]序章战斗跳转[/b]\n师父救场战：玩家操控师父，用强力牌击败袭村刀手。\n%s\n即将进入 MainVisual。" % NarrativeBattleContext.debug_text()
 	BattleFontHelper.enforce(self)
@@ -472,12 +513,14 @@ func _on_skip_prologue_master_battle() -> void:
 	step_index = PROLOGUE_AFTER_MASTER_BATTLE_STEP
 	clues += 1
 	last_hint = "已跳过师父救场战，按胜利继续序章。"
+	_save_narrative_state_to_context()
 	_render()
 
 func _on_request_battle() -> void:
 	var node: Dictionary = NODES[node_index]
 	var encounter_id := str(node.get("combat", ""))
 	var source_node_id := str(node.get("id", ""))
+	_save_narrative_state_to_context()
 	NarrativeBattleContext.set_request(encounter_id, source_node_id)
 	body_label.text = _node_body(node) + "\n\n[b]战斗跳转[/b]\n%s\n即将进入 MainVisual。" % NarrativeBattleContext.debug_text()
 	BattleFontHelper.enforce(self)
@@ -527,6 +570,7 @@ func _restart() -> void:
 	last_hint = ""
 	NarrativeBattleContext.clear()
 	NarrativeBattleContext.clear_player_profile()
+	_clear_narrative_state_context()
 	_render()
 
 func _map_text() -> String:

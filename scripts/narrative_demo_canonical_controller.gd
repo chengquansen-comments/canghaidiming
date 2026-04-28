@@ -35,18 +35,18 @@ const MVP_NODE_IDS := [
 ]
 
 const MVP_NODE_META := {
-	"military_order": {"column":"军令", "type":"事件", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_military_order.svg"},
-	"beach_ambush": {"column":"初遇", "type":"普通战斗", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_beach_ambush.svg"},
-	"beach_ambush_aftermath": {"column":"初遇", "type":"战后处理", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_beach_ambush.svg"},
-	"fishing_village_embers": {"column":"初遇", "type":"普通战斗", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_fishing_village_embers.svg"},
-	"fishing_village_embers_aftermath": {"column":"初遇", "type":"战后处理", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_fishing_village_embers.svg"},
-	"ming_firearm": {"column":"疑点", "type":"旧物", "visual_path":"res://assets/pixel_battle/relics/relic_ming_firearm.svg"},
-	"altered_military_report": {"column":"疑点", "type":"旧物", "visual_path":"res://assets/pixel_battle/relics/relic_altered_military_report.svg"},
-	"transport_officer": {"column":"压迫", "type":"精英战斗", "visual_path":"res://assets/pixel_battle/portraits/transport_officer.svg"},
-	"transport_officer_aftermath": {"column":"压迫", "type":"战后处理", "visual_path":"res://assets/pixel_battle/portraits/transport_officer.svg"},
-	"night_knife_camp": {"column":"压迫", "type":"事件", "visual_path":"res://assets/pixel_battle/backgrounds/prologue_departure.svg"},
-	"wakou_boss": {"column":"破船", "type":"Boss", "visual_path":"res://assets/pixel_battle/portraits/wakou_leader.svg"},
-	"military_coverup": {"column":"军门", "type":"结尾", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_military_coverup.svg"}
+	"military_order": {"column":"军令", "type":"事件", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_military_order.png"},
+	"beach_ambush": {"column":"初遇", "type":"普通战斗", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_beach_ambush.png"},
+	"beach_ambush_aftermath": {"column":"初遇", "type":"战后处理", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_beach_ambush.png"},
+	"fishing_village_embers": {"column":"初遇", "type":"普通战斗", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_fishing_village_embers.png"},
+	"fishing_village_embers_aftermath": {"column":"初遇", "type":"战后处理", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_fishing_village_embers.png"},
+	"ming_firearm": {"column":"疑点", "type":"旧物", "visual_path":"res://assets/pixel_battle/relics/relic_ming_firearm.png"},
+	"altered_military_report": {"column":"疑点", "type":"旧物", "visual_path":"res://assets/pixel_battle/relics/relic_altered_military_report.png"},
+	"transport_officer": {"column":"压迫", "type":"精英战斗", "visual_path":"res://assets/pixel_battle/portraits/transport_officer.png"},
+	"transport_officer_aftermath": {"column":"压迫", "type":"战后处理", "visual_path":"res://assets/pixel_battle/portraits/transport_officer.png"},
+	"night_knife_camp": {"column":"压迫", "type":"事件", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_night_knife_camp.png"},
+	"wakou_boss": {"column":"破船", "type":"Boss", "visual_path":"res://assets/pixel_battle/portraits/wakou_leader.png"},
+	"military_coverup": {"column":"军门", "type":"结尾", "visual_path":"res://assets/pixel_battle/backgrounds/narrative_military_coverup.png"}
 }
 
 var node_sentence_index: int = 0
@@ -78,6 +78,7 @@ func _apply_canonical_effects(effects: Dictionary) -> void:
 	jun_gong += int(normalized[VAR_MILITARY_MERIT])
 	qing_wang += int(normalized[VAR_CLEAN_REPUTATION])
 	clues += int(normalized[VAR_CASE_CLUES])
+	_save_narrative_state_to_context()
 
 func _node_id_at(index: int) -> String:
 	if index >= 0 and index < MVP_NODE_IDS.size():
@@ -243,6 +244,7 @@ func _consume_battle_result_if_needed() -> void:
 		else:
 			last_hint = "序章战斗返回：当前 Demo 按师父救场继续推进。"
 		NarrativeBattleContext.clear()
+		_save_narrative_state_to_context()
 		return
 	for i in range(MVP_NODE_IDS.size()):
 		if _node_id_at(i) == source_id:
@@ -263,6 +265,7 @@ func _consume_battle_result_if_needed() -> void:
 	else:
 		last_hint = "战斗结果未知：已返回剧情。"
 	NarrativeBattleContext.clear()
+	_save_narrative_state_to_context()
 
 func _render_node() -> void:
 	var node: Dictionary = _node_data_at(node_index)
@@ -429,6 +432,7 @@ func _advance_to_node(target_index: int, hint: String = "") -> void:
 		_render_ending()
 		return
 	node_index = target_index
+	_save_narrative_state_to_context()
 	_render()
 
 func _ending_data() -> Dictionary:
@@ -493,4 +497,5 @@ func _restart() -> void:
 	last_hint = ""
 	NarrativeBattleContext.clear()
 	NarrativeBattleContext.clear_player_profile()
+	_clear_narrative_state_context()
 	_render()

@@ -81,6 +81,8 @@
       "max_hp": 24,
       "max_posture": 10,
       "start_posture": 3,
+      "realm": 1,
+      "qinggong": 2,
       "intent_style": "tutorial_victim",
       "behavior_tags": [
         "教学",
@@ -200,6 +202,8 @@
       "max_hp": 26,
       "max_posture": 10,
       "start_posture": 4,
+      "realm": 1,
+      "qinggong": 1,
       "intent_style": "poke_pressure",
       "behavior_tags": [
         "试探",
@@ -333,9 +337,11 @@
       "narrative_identity": "渔村残火中的烧村残敌，人数不多，火势更危险。其刀法杂乱，却懂得避开火器箱。",
       "weapon": "倭刀",
       "role_sheet": "enemy_blademaster",
-      "max_hp": 28,
+      "max_hp": 16,
       "max_posture": 10,
       "start_posture": 4,
+      "realm": 1,
+      "qinggong": 1,
       "intent_style": "raid_burn_pressure",
       "behavior_tags": [
         "烧村",
@@ -475,6 +481,8 @@
       "max_hp": 34,
       "max_posture": 10,
       "start_posture": 5,
+      "realm": 2,
+      "qinggong": 1,
       "intent_style": "counter_break",
       "behavior_tags": [
         "架刀",
@@ -552,8 +560,8 @@
           "role": "damage",
           "gain": 0,
           "break": 1,
-          "damage": 7,
-          "guard": 3,
+          "damage": 5,
+          "guard": 4,
           "tags": [
             "反击"
           ],
@@ -569,7 +577,7 @@
           "role": "damage",
           "gain": 0,
           "break": 0,
-          "damage": 5,
+          "damage": 3,
           "guard": 0,
           "tags": [
             "压制"
@@ -587,7 +595,7 @@
           "gain": 0,
           "break": 0,
           "damage": 0,
-          "guard": 6,
+          "guard": 7,
           "tags": [
             "守"
           ],
@@ -603,7 +611,7 @@
           "role": "damage",
           "gain": 0,
           "break": 1,
-          "damage": 9,
+          "damage": 7,
           "guard": 0,
           "tags": [
             "终结"
@@ -625,9 +633,11 @@
       "narrative_identity": "欠饷营头。不是倭寇，却同样挡路。他守过城，也埋过兄弟。",
       "weapon": "破损长枪",
       "role_sheet": "enemy_spearman",
-      "max_hp": 36,
+      "max_hp": 40,
       "max_posture": 12,
       "start_posture": 6,
+      "realm": 2,
+      "qinggong": 1,
       "intent_style": "mutiny_guard_pressure",
       "behavior_tags": [
         "欠饷",
@@ -763,9 +773,11 @@
       "narrative_identity": "破船火器箱旁的小股倭寇首领，知道军械流向但将被暗箭灭口。看岸，不看海。",
       "weapon": "倭刀",
       "role_sheet": "enemy_blademaster",
-      "max_hp": 42,
+      "max_hp": 30,
       "max_posture": 10,
       "start_posture": 6,
+      "realm": 3,
+      "qinggong": 1,
       "intent_style": "boss_feint_burst",
       "behavior_tags": [
         "虚招",
@@ -814,7 +826,7 @@
           "cost": 1,
           "role": "momentum",
           "gain": 2,
-          "break": 1,
+          "break": 0,
           "damage": 0,
           "guard": 0,
           "tags": [
@@ -831,7 +843,7 @@
           "cost": 1,
           "role": "momentum",
           "gain": 0,
-          "break": 3,
+          "break": 2,
           "damage": 0,
           "guard": 0,
           "tags": [
@@ -849,7 +861,7 @@
           "role": "damage",
           "gain": 0,
           "break": 0,
-          "damage": 6,
+          "damage": 5,
           "guard": 0,
           "tags": [
             "连段"
@@ -865,8 +877,8 @@
           "cost": 2,
           "role": "damage",
           "gain": 0,
-          "break": 1,
-          "damage": 10,
+          "break": 0,
+          "damage": 9,
           "guard": 0,
           "tags": [
             "终结"
@@ -884,7 +896,7 @@
           "gain": 0,
           "break": 0,
           "damage": 0,
-          "guard": 6,
+          "guard": 7,
           "tags": [
             "守"
           ],
@@ -900,8 +912,8 @@
           "role": "damage",
           "gain": 0,
           "break": 0,
-          "damage": 8,
-          "guard": 2,
+          "damage": 7,
+          "guard": 3,
           "tags": [
             "线索"
           ],
@@ -925,6 +937,8 @@
       "max_hp": 26,
       "max_posture": 10,
       "start_posture": 4,
+      "realm": 1,
+      "qinggong": 1,
       "intent_style": "fallback",
       "behavior_tags": [
         "试探",

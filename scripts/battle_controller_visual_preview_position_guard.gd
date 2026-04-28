@@ -79,6 +79,8 @@ func _compute_ordered_preview() -> Dictionary:
 
 	return {
 		"has_preview": true,
+		"player_subjective": clampi(p_target_pos, 0, GRID_SLOT_COUNT - 1),
+		"enemy_subjective": clampi(enemy.position if _preview_is_reactive_mode() else enemy.position + enemy_move_delta, 0, GRID_SLOT_COUNT - 1),
 		"player_final": clampi(p_pos, 0, GRID_SLOT_COUNT - 1),
 		"enemy_final": clampi(e_pos, 0, GRID_SLOT_COUNT - 1),
 		"player_text": p_text,

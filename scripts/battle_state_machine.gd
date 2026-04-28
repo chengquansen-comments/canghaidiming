@@ -19,7 +19,7 @@ enum SettlementMode {
 }
 
 var phase: BattlePhase = BattlePhase.NODE_SELECTION
-var settlement_mode: SettlementMode = SettlementMode.SYMMETRIC
+var settlement_mode: SettlementMode = SettlementMode.REACTIVE
 var current_distance: int = 2
 var round_index: int = 1
 var player_tie_advantage := true

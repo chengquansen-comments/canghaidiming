@@ -1,0 +1,13 @@
+order	step	master_png	runtime_png	status
+1	black_tide	art_reference/final/prologue/01_black_tide.png	assets/pixel_battle/backgrounds/formal/prologue/01_black_tide.png	generated_wired
+2	father	art_reference/final/prologue/02_father.png	assets/pixel_battle/backgrounds/formal/prologue/02_father.png	generated_wired
+3	door	art_reference/final/prologue/03_door.png	assets/pixel_battle/backgrounds/formal/prologue/03_door.png	generated_wired
+4	dead	art_reference/final/prologue/04_dead.png	assets/pixel_battle/backgrounds/formal/prologue/04_dead.png	generated_wired
+5	wooden_blade	art_reference/final/prologue/05_wooden_blade.png	assets/pixel_battle/backgrounds/formal/prologue/05_wooden_blade.png	generated_wired
+6	fall	art_reference/final/prologue/06_fall.png	assets/pixel_battle/backgrounds/formal/prologue/06_fall.png	generated_wired
+7	master_arrives	art_reference/final/prologue/07_master_arrives.png	assets/pixel_battle/backgrounds/formal/prologue/07_master_arrives.png	generated_wired
+8	three_cards	art_reference/final/prologue/08_three_cards.png	assets/pixel_battle/backgrounds/formal/prologue/08_three_cards.png	generated_wired_needs_symbol_check
+9	military_word	art_reference/final/prologue/09_military_word.png	assets/pixel_battle/backgrounds/formal/prologue/09_military_word.png	generated_wired
+10	hidden_arrow	art_reference/final/prologue/10_hidden_arrow.png	assets/pixel_battle/backgrounds/formal/prologue/10_hidden_arrow.png	generated_wired
+11	dont_look	art_reference/final/prologue/11_dont_look.png	assets/pixel_battle/backgrounds/formal/prologue/11_dont_look.png	generated_wired
+12	departure	art_reference/final/prologue/12_departure.png	assets/pixel_battle/backgrounds/formal/prologue/12_departure.png	generated_wired

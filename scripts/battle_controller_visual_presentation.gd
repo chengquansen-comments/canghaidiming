@@ -9,14 +9,16 @@ extends "res://scripts/battle_controller_visual_scene_manifest.gd"
 const PRESENTATION_BUSY_META := &"battle_presentation_busy"
 const PLAYER_OFFSET_META := &"player_presentation_offset"
 const ENEMY_OFFSET_META := &"enemy_presentation_offset"
+const PRESENTATION_OLD_PLAYER_SLOT_META := &"battle_presentation_old_player_slot"
+const PRESENTATION_OLD_ENEMY_SLOT_META := &"battle_presentation_old_enemy_slot"
 const PRESENTATION_LUNGE_SLASH := 70.0
 const PRESENTATION_LUNGE_THRUST := 92.0
 const PRESENTATION_LUNGE_FOCUS := 20.0
 const PRESENTATION_HIT_KNOCKBACK := 26.0
 const PRESENTATION_SLOT_SETTLE_DURATION := 0.20
-const PRESENTATION_HIT_PAUSE_LIGHT := 0.035
-const PRESENTATION_HIT_PAUSE_HEAVY := 0.070
-const PRESENTATION_HIT_PAUSE_BREAK := 0.105
+const PRESENTATION_HIT_PAUSE_LIGHT := 0.080
+const PRESENTATION_HIT_PAUSE_HEAVY := 0.130
+const PRESENTATION_HIT_PAUSE_BREAK := 0.180
 
 func _confirm_player_intent() -> void:
 	var old_player_slot: int = player.position if player != null else -1
@@ -45,6 +47,8 @@ func _start_presentation_exchange(player_card: CardData, enemy_card: CardData, o
 	if player_card == null and enemy_card == null:
 		return
 	_set_presentation_busy(true)
+	set_meta(PRESENTATION_OLD_PLAYER_SLOT_META, old_player_slot)
+	set_meta(PRESENTATION_OLD_ENEMY_SLOT_META, old_enemy_slot)
 	var safe_order: Array[String] = order.duplicate()
 	if safe_order.is_empty():
 		safe_order = ["player", "enemy"]
@@ -101,7 +105,7 @@ func _play_attack_presentation(is_player_actor: bool, card: CardData, style: Str
 		_play_presentation_miss_feedback(not is_player_actor, result)
 	_tween_actor_offset(is_player_actor, base_offset + lunge_offset, base_offset, 0.16, Tween.TRANS_QUAD, Tween.EASE_IN)
 	_show_presentation_result_text(target_is_enemy, card, result)
-	await get_tree().create_timer(0.24).timeout
+	await get_tree().create_timer(0.45).timeout
 
 func _play_guard_presentation(is_player_actor: bool, _card: CardData, result: Dictionary) -> void:
 	var base_offset: Vector2 = _presentation_offset(is_player_actor)
@@ -473,3 +477,6 @@ func _presentation_busy() -> bool:
 
 func _set_presentation_busy(value: bool) -> void:
 	set_meta(PRESENTATION_BUSY_META, value)
+	if not value:
+		remove_meta(PRESENTATION_OLD_PLAYER_SLOT_META)
+		remove_meta(PRESENTATION_OLD_ENEMY_SLOT_META)

@@ -7,10 +7,10 @@ const DRIFT_SPEED := 0.18
 const MIST_SPEED := 18.0
 
 const PROLOGUE_BG := {
-	"black_tide": "res://assets/pixel_battle/backgrounds/prologue_black_tide.svg",
-	"rescue": "res://assets/pixel_battle/backgrounds/prologue_master_rescue.svg",
-	"arrow": "res://assets/pixel_battle/backgrounds/prologue_arrow_silence.svg",
-	"departure": "res://assets/pixel_battle/backgrounds/prologue_departure.svg"
+	"black_tide": "res://assets/pixel_battle/backgrounds/prologue_black_tide.png",
+	"rescue": "res://assets/pixel_battle/backgrounds/prologue_master_rescue.png",
+	"arrow": "res://assets/pixel_battle/backgrounds/prologue_arrow_silence.png",
+	"departure": "res://assets/pixel_battle/backgrounds/prologue_departure.png"
 }
 
 const PROLOGUE_BG_PNG := {
@@ -21,8 +21,8 @@ const PROLOGUE_BG_PNG := {
 }
 
 const PROLOGUE_CHAR := {
-	"master": "res://assets/pixel_battle/portraits/performance_master_veteran.svg",
-	"hero": "res://assets/pixel_battle/portraits/performance_hero_young.svg"
+	"master": "res://assets/pixel_battle/portraits/performance_master_veteran.png",
+	"hero": "res://assets/pixel_battle/portraits/performance_hero_young.png"
 }
 
 const PROLOGUE_CHAR_PNG := {

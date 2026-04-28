@@ -149,7 +149,7 @@ func _render_ending() -> void:
 	status_label.text = "单局结算"
 	map_label.text = ""
 	scene_label.text = _format_scene_text(str(ending.get("scene", "案卷缺页。灯还亮着。")))
-	_render_visual("", str(ending.get("scene", "案卷缺页。灯还亮着。")))
+	_render_visual(_ending_visual_path(), str(ending.get("scene", "案卷缺页。灯还亮着。")))
 	body_label.text = str(ending.get("text", "军功写进册里。\n\n清望写在别人嘴里。\n\n线索藏在袖中。\n\n案卷少了一页。\n\n潮声没有少。"))
 	vars_label.text = _vars_text()
 	_clear_dynamic_boxes()
@@ -157,6 +157,15 @@ func _render_ending() -> void:
 	_add_placeholder(combat_buttons_box, "")
 	_add_button(choices_box, str(ending.get("restart_label", "重开")), _restart)
 	BattleFontHelper.enforce(self)
+
+func _ending_visual_path() -> String:
+	if clues >= 7:
+		return "res://assets/pixel_battle/endings/ending_secret_investigation.png"
+	if qing_wang >= 4:
+		return "res://assets/pixel_battle/endings/ending_report_truth.png"
+	if jun_gong >= 6:
+		return "res://assets/pixel_battle/endings/ending_trade_for_power.png"
+	return "res://assets/pixel_battle/endings/ending_cover_case.png"
 
 func _on_request_battle() -> void:
 	var node: Dictionary = NODES[node_index]

@@ -8,8 +8,10 @@ INDEX_NAME="index.html"
 EXPORT_PRESETS_FILE="$PROJECT_ROOT/export_presets.cfg"
 CUSTOM_SHELL_FILE="$PROJECT_ROOT/web_shell.html"
 THEME_FILE="$PROJECT_ROOT/themes/default_ui_theme.tres"
-CJK_FONT_FILE="$PROJECT_ROOT/assets/fonts/cjk_font.ttf"
+CJK_FONT_FILE="$PROJECT_ROOT/assets/fonts/cjk_font_runtime.ttf"
+FULL_CJK_FONT_FILE="$PROJECT_ROOT/assets/fonts/cjk_font.ttf"
 FONT_INSTALLER="$PROJECT_ROOT/tools/install_local_cjk_font.py"
+FONT_SUBSETTER="$PROJECT_ROOT/tools/subset_cjk_font.py"
 FONT_VALIDATOR="$PROJECT_ROOT/tools/validate_cjk_font.py"
 
 mkdir -p "$OUTPUT_DIR"
@@ -29,19 +31,25 @@ if grep -q 'html/custom_html_shell="res://web_shell.html"' "$EXPORT_PRESETS_FILE
   echo "[web-export] ERROR: custom web shell file missing: $CUSTOM_SHELL_FILE" >&2
   exit 1
 fi
-if [[ -f "$THEME_FILE" ]] && grep -q 'res://assets/fonts/cjk_font.ttf' "$THEME_FILE" && [[ ! -f "$CJK_FONT_FILE" ]]; then
-  echo "[web-export] CJK font missing; installing local font asset..."
-  if [[ ! -f "$FONT_INSTALLER" ]]; then
-    echo "[web-export] ERROR: missing font installer: $FONT_INSTALLER" >&2
-    exit 1
+if [[ -f "$THEME_FILE" ]] && grep -q 'res://assets/fonts/cjk_font_runtime.ttf' "$THEME_FILE" && [[ ! -f "$CJK_FONT_FILE" ]]; then
+  if [[ -f "$FULL_CJK_FONT_FILE" && -f "$FONT_SUBSETTER" ]]; then
+    echo "[web-export] runtime CJK font missing; generating subset..."
+    python3 "$FONT_SUBSETTER"
+  else
+    echo "[web-export] runtime CJK font missing; installing local source font asset..."
+    if [[ ! -f "$FONT_INSTALLER" ]]; then
+      echo "[web-export] ERROR: missing font installer: $FONT_INSTALLER" >&2
+      exit 1
+    fi
+    python3 "$FONT_INSTALLER"
+    python3 "$FONT_SUBSETTER"
   fi
-  python3 "$FONT_INSTALLER"
 fi
-if [[ -f "$THEME_FILE" ]] && grep -q 'res://assets/fonts/cjk_font.ttf' "$THEME_FILE"; then
+if [[ -f "$THEME_FILE" ]] && grep -q 'res://assets/fonts/cjk_font_runtime.ttf' "$THEME_FILE"; then
   if [[ ! -f "$CJK_FONT_FILE" ]]; then
     echo "[web-export] ERROR: missing required CJK font asset: $CJK_FONT_FILE" >&2
-    echo "[web-export] Run: python3 tools/install_local_cjk_font.py" >&2
-    echo "[web-export] Or manually copy a Chinese-capable real .ttf/.otf font to assets/fonts/cjk_font.ttf" >&2
+    echo "[web-export] Run: python3 tools/subset_cjk_font.py" >&2
+    echo "[web-export] Or manually copy a Chinese-capable runtime .ttf/.otf font to assets/fonts/cjk_font_runtime.ttf" >&2
     exit 1
   fi
   if [[ ! -f "$FONT_VALIDATOR" ]]; then

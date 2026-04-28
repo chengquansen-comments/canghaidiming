@@ -1,6 +1,6 @@
 {
   "prologue_master_rescue": {
-    "background": "res://assets/pixel_battle/backgrounds/battle_bg_black_tide.svg",
+    "background": "res://assets/pixel_battle/backgrounds/battle_bg_black_tide.png",
     "label": "黑潮救援",
     "mist": 0.34,
     "dim": 0.18,
@@ -10,7 +10,7 @@
     "camera_pan_y": -2.0
   },
   "first_act_beach_ambush": {
-    "background": "res://assets/pixel_battle/backgrounds/battle_bg_coast_ambush.svg",
+    "background": "res://assets/pixel_battle/backgrounds/battle_bg_coast_ambush.png",
     "label": "海边伏击",
     "mist": 0.28,
     "dim": 0.12,
@@ -20,7 +20,7 @@
     "camera_pan_y": -2.0
   },
   "first_act_fishing_village_embers": {
-    "background": "res://assets/pixel_battle/backgrounds/battle_bg_fishing_village_embers.svg",
+    "background": "res://assets/pixel_battle/backgrounds/battle_bg_fishing_village_embers.png",
     "label": "渔村残火",
     "mist": 0.18,
     "dim": 0.24,
@@ -30,7 +30,7 @@
     "camera_pan_y": -2.0
   },
   "first_act_transport_officer": {
-    "background": "res://assets/pixel_battle/backgrounds/battle_bg_transport_road.svg",
+    "background": "res://assets/pixel_battle/backgrounds/battle_bg_transport_road.png",
     "label": "押运官对峙",
     "mist": 0.2,
     "dim": 0.16,
@@ -40,7 +40,7 @@
     "camera_pan_y": -1.0
   },
   "first_act_mutiny_camp": {
-    "background": "res://assets/pixel_battle/backgrounds/battle_bg_mutiny_camp.svg",
+    "background": "res://assets/pixel_battle/backgrounds/battle_bg_mutiny_camp.png",
     "label": "欠饷营门",
     "mist": 0.16,
     "dim": 0.2,
@@ -50,7 +50,7 @@
     "camera_pan_y": -1.0
   },
   "first_act_wakou_boss": {
-    "background": "res://assets/pixel_battle/backgrounds/battle_bg_broken_ship.svg",
+    "background": "res://assets/pixel_battle/backgrounds/battle_bg_broken_ship.png",
     "label": "破船决战",
     "mist": 0.32,
     "dim": 0.2,
@@ -60,7 +60,7 @@
     "camera_pan_y": -3.0
   },
   "test_spearman_duel": {
-    "background": "res://assets/pixel_battle/backgrounds/battle_bg_training_ground.svg",
+    "background": "res://assets/pixel_battle/backgrounds/battle_bg_training_ground.png",
     "label": "枪术试战",
     "mist": 0.06,
     "dim": 0.06,
@@ -70,7 +70,7 @@
     "camera_pan_y": 0.0
   },
   "test_blademaster_duel": {
-    "background": "res://assets/pixel_battle/backgrounds/battle_bg_training_ground.svg",
+    "background": "res://assets/pixel_battle/backgrounds/battle_bg_training_ground.png",
     "label": "刀术试战",
     "mist": 0.06,
     "dim": 0.06,
@@ -80,7 +80,7 @@
     "camera_pan_y": 0.0
   },
   "fallback": {
-    "background": "res://assets/pixel_battle/backgrounds/battle_bg_training_ground.svg",
+    "background": "res://assets/pixel_battle/backgrounds/battle_bg_training_ground.png",
     "label": "默认接敌",
     "mist": 0.08,
     "dim": 0.08,
