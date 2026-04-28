@@ -11,6 +11,7 @@ extends "res://scripts/narrative_demo_formal_controller.gd"
 const PERFORMANCE_RATIO: float = 0.6667
 const OPERATION_BOTTOM: float = 0.99
 const MIN_OPERATION_HEIGHT: float = 340.0
+const BACKGROUND_OPERATION_OVERLAP: float = 0.18
 const PERFORMANCE_TRACKS_PATH := "res://data/performance_tracks.json"
 const PROLOGUE_BLACK_TIDE := "res://assets/pixel_battle/backgrounds/prologue_black_tide.svg"
 const PROLOGUE_RESCUE := "res://assets/pixel_battle/backgrounds/prologue_master_rescue.svg"
@@ -255,7 +256,7 @@ func _apply_cinematic_layout() -> void:
 	var viewport_size: Vector2 = get_viewport_rect().size
 	var operation_height: float = max(MIN_OPERATION_HEIGHT, viewport_size.y * (1.0 - PERFORMANCE_RATIO))
 	var operation_top: float = max(0.48, OPERATION_BOTTOM - operation_height / max(1.0, viewport_size.y))
-	var performance_bottom: float = operation_top
+	var performance_bottom: float = min(OPERATION_BOTTOM, operation_top + BACKGROUND_OPERATION_OVERLAP)
 	if cinematic_bg != null:
 		cinematic_bg.anchor_bottom = performance_bottom
 		cinematic_bg.offset_left = 0
