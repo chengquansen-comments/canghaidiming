@@ -5,8 +5,9 @@ extends "res://scripts/battle_controller_visual_settlement_mode.gd"
 # v0.4.4 routes pressure_profile writes through BattleEffectApplier so this
 # visual layer decides timing and displays feedback, but no longer directly
 # mutates combat values for pressure rules.
-
-const BattleEffectApplier = preload("res://scripts/battle_effect_applier.gd")
+#
+# BattleEffectApplier is declared in the parent controller; do not redeclare it
+# here, otherwise GDScript raises a member-name conflict in the inheritance chain.
 
 const PRESSURE_NONE := BattleEffectApplier.PRESSURE_NONE
 const PRESSURE_EDGE := BattleEffectApplier.PRESSURE_EDGE
