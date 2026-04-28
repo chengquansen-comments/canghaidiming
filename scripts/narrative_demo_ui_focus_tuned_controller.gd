@@ -9,6 +9,7 @@ extends "res://scripts/narrative_demo_ui_focus_controller.gd"
 const TUNED_STORY_FONT_SIZE := 72
 const TUNED_OPTION_FONT_SIZE := 25
 const TUNED_CAPTION_OFFSET_Y := 30
+const STATIC_BACKGROUND_NODE_NAME := "CinematicPerformanceBackground"
 const HIDDEN_SCENE_ART_OVERLAY_NODE_NAMES := [
 	"CinematicMistLayer",
 	"CinematicFirePulse",
@@ -23,18 +24,44 @@ const HIDDEN_SCENE_ART_OVERLAY_NODE_NAMES := [
 	"NarrativeFocusArtLayer",
 	"FocusWorldMapLayer",
 ]
+const HIDDEN_SCENE_ART_NAME_FRAGMENTS := [
+	"Mist",
+	"FirePulse",
+	"Dim",
+	"Focus",
+	"Master",
+	"Hero",
+	"ForegroundProp",
+	"NarrativeFocusArt",
+	"WorldMap",
+	"Debug",
+]
+const STATIC_SCENE_ART_KEEP_NAMES := [
+	"NarrativeDemo",
+	"CinematicPerformanceBackground",
+	"NarrativePerformanceCaptionLayer",
+	"NarrativePerformanceCaptionPanel",
+	"NarrativePerformanceCaptionText",
+]
 
 func _ready() -> void:
 	super._ready()
 	_disable_scene_art_overlays()
+	call_deferred("_disable_scene_art_overlays")
 
 func _process(delta: float) -> void:
 	super._process(delta)
 	_disable_scene_art_overlays()
+	call_deferred("_disable_scene_art_overlays")
+
+func _physics_process(_delta: float) -> void:
+	_disable_scene_art_overlays()
+	call_deferred("_disable_scene_art_overlays")
 
 func _render() -> void:
 	super._render()
 	_disable_scene_art_overlays()
+	call_deferred("_disable_scene_art_overlays")
 
 func _ensure_focus_story_caption() -> void:
 	if focus_story_layer != null:
@@ -101,32 +128,40 @@ func _style_button_box(box: VBoxContainer) -> void:
 
 func _update_cinematic_motion(_delta: float) -> void:
 	_disable_scene_art_overlays()
+	call_deferred("_disable_scene_art_overlays")
 
 func _update_layer_motion(_zoom: float, _pan_x: float, _pan_y: float, _dim_alpha: float, _mist_alpha: float, _fire_alpha: float) -> void:
 	_disable_scene_art_overlays()
+	call_deferred("_disable_scene_art_overlays")
 
 func _update_character_motion(_zoom: float) -> void:
 	_disable_scene_art_overlays()
+	call_deferred("_disable_scene_art_overlays")
 
 func _update_cinematic_characters() -> void:
 	_disable_scene_art_overlays()
+	call_deferred("_disable_scene_art_overlays")
 
 func _refresh_world_map() -> void:
 	super._refresh_world_map()
 	_disable_scene_art_overlays()
+	call_deferred("_disable_scene_art_overlays")
 
 func _update_focus_debug_panel() -> void:
 	_disable_scene_art_overlays()
+	call_deferred("_disable_scene_art_overlays")
 
 func _disable_scene_art_overlays() -> void:
 	_lock_scene_background_static()
 	_hide_named_scene_art_overlay_nodes()
+	_hard_sanitize_scene_art_tree(self)
 	_disable_cinematic_effect_layers()
 	_disable_performance_ui_panels()
+	_lock_scene_background_static()
 
 func _lock_scene_background_static() -> void:
 	_lock_texture_rect_static(cinematic_bg)
-	var bg_node := find_child("CinematicPerformanceBackground", true, false)
+	var bg_node := find_child(STATIC_BACKGROUND_NODE_NAME, true, false)
 	if bg_node is TextureRect:
 		_lock_texture_rect_static(bg_node as TextureRect)
 
@@ -140,6 +175,7 @@ func _lock_texture_rect_static(tex_bg: TextureRect) -> void:
 	tex_bg.pivot_offset = Vector2.ZERO
 	tex_bg.modulate = Color.WHITE
 	tex_bg.self_modulate = Color.WHITE
+	tex_bg.material = null
 	tex_bg.offset_left = 0.0
 	tex_bg.offset_top = 0.0
 	tex_bg.offset_right = 0.0
@@ -148,15 +184,42 @@ func _lock_texture_rect_static(tex_bg: TextureRect) -> void:
 func _hide_named_scene_art_overlay_nodes() -> void:
 	for node_name in HIDDEN_SCENE_ART_OVERLAY_NODE_NAMES:
 		var node := find_child(node_name, true, false)
-		if node is CanvasItem:
-			var item := node as CanvasItem
-			item.visible = false
-			item.modulate = Color(1.0, 1.0, 1.0, 0.0)
-			item.self_modulate = Color(1.0, 1.0, 1.0, 0.0)
-		if node is Control:
-			var control := node as Control
-			control.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			control.custom_minimum_size = Vector2.ZERO
+		_hide_overlay_node(node)
+
+func _hard_sanitize_scene_art_tree(root: Node) -> void:
+	if root == null:
+		return
+	for child in root.get_children():
+		var child_name := str(child.name)
+		if child_name == STATIC_BACKGROUND_NODE_NAME and child is TextureRect:
+			_lock_texture_rect_static(child as TextureRect)
+		elif _should_hide_scene_art_node(child_name):
+			_hide_overlay_node(child)
+		_hard_sanitize_scene_art_tree(child)
+
+func _should_hide_scene_art_node(node_name: String) -> bool:
+	if node_name in STATIC_SCENE_ART_KEEP_NAMES:
+		return false
+	for fragment in HIDDEN_SCENE_ART_NAME_FRAGMENTS:
+		if node_name.find(fragment) >= 0:
+			return true
+	return false
+
+func _hide_overlay_node(node: Node) -> void:
+	if node == null:
+		return
+	if node is CanvasItem:
+		var item := node as CanvasItem
+		item.visible = false
+		item.modulate = Color(1.0, 1.0, 1.0, 0.0)
+		item.self_modulate = Color(1.0, 1.0, 1.0, 0.0)
+		item.material = null
+	if node is Control:
+		var control := node as Control
+		control.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		control.custom_minimum_size = Vector2.ZERO
+		control.scale = Vector2.ONE
+		control.position = Vector2.ZERO
 
 func _disable_cinematic_effect_layers() -> void:
 	_lock_scene_background_static()
