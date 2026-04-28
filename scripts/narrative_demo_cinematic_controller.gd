@@ -13,10 +13,11 @@ const OPERATION_BOTTOM: float = 0.99
 const MIN_OPERATION_HEIGHT: float = 340.0
 const BACKGROUND_OPERATION_OVERLAP: float = 0.18
 const PERFORMANCE_TRACKS_PATH := "res://data/performance_tracks.json"
-const PROLOGUE_BLACK_TIDE := "res://assets/pixel_battle/backgrounds/battle_bg_black_tide.png"
-const PROLOGUE_RESCUE := "res://assets/pixel_battle/backgrounds/prologue_master_rescue.svg"
-const PROLOGUE_ARROW := "res://assets/pixel_battle/backgrounds/prologue_arrow_silence.svg"
-const PROLOGUE_DEPARTURE := "res://assets/pixel_battle/backgrounds/prologue_departure.svg"
+const FORMAL_PROLOGUE_BG_DIR := "res://assets/pixel_battle/backgrounds/formal/prologue"
+const PROLOGUE_BLACK_TIDE_FALLBACK := "res://assets/pixel_battle/backgrounds/formal/prologue/01_black_tide.png"
+const PROLOGUE_RESCUE_FALLBACK := "res://assets/pixel_battle/backgrounds/prologue_master_rescue.svg"
+const PROLOGUE_ARROW_FALLBACK := "res://assets/pixel_battle/backgrounds/prologue_arrow_silence.svg"
+const PROLOGUE_DEPARTURE_FALLBACK := "res://assets/pixel_battle/backgrounds/prologue_departure.svg"
 const CHAR_MASTER := "res://assets/pixel_battle/portraits/performance_master_veteran.svg"
 const CHAR_HERO := "res://assets/pixel_battle/portraits/performance_hero_young.svg"
 
@@ -40,9 +41,12 @@ var cinematic_stage: String = ""
 var cinematic_stage_time: float = 0.0
 var performance_tracks: Dictionary = {}
 var performance_tracks_loaded: bool = false
+var formal_prologue_backgrounds: Array[String] = []
+var formal_prologue_backgrounds_loaded: bool = false
 
 func _ready() -> void:
 	_load_performance_tracks()
+	_load_formal_prologue_backgrounds()
 	_add_cinematic_layers()
 	super._ready()
 	_add_world_map_layer()
@@ -72,6 +76,28 @@ func _load_performance_tracks() -> void:
 	if parsed is Dictionary:
 		performance_tracks = parsed
 		performance_tracks_loaded = true
+
+func _load_formal_prologue_backgrounds() -> void:
+	formal_prologue_backgrounds_loaded = true
+	formal_prologue_backgrounds.clear()
+	var dir := DirAccess.open(FORMAL_PROLOGUE_BG_DIR)
+	if dir == null:
+		return
+	dir.list_dir_begin()
+	var file_name := dir.get_next()
+	while not file_name.is_empty():
+		if not dir.current_is_dir() and file_name.to_lower().ends_with(".png"):
+			formal_prologue_backgrounds.append("%s/%s" % [FORMAL_PROLOGUE_BG_DIR, file_name])
+		file_name = dir.get_next()
+	dir.list_dir_end()
+	formal_prologue_backgrounds.sort()
+
+func _formal_prologue_background(index: int, fallback_path: String) -> String:
+	if not formal_prologue_backgrounds_loaded:
+		_load_formal_prologue_backgrounds()
+	if index >= 0 and index < formal_prologue_backgrounds.size():
+		return formal_prologue_backgrounds[index]
+	return fallback_path
 
 func _render_visual(path: String, _fallback_text: String) -> void:
 	var resolved_path: String = _cinematic_background_path(path)
@@ -164,13 +190,13 @@ func _cinematic_background_path(path: String) -> String:
 	if not in_prologue:
 		return path
 	if step_index <= 3:
-		return PROLOGUE_BLACK_TIDE
+		return _formal_prologue_background(0, PROLOGUE_BLACK_TIDE_FALLBACK)
 	if step_index <= 8:
-		return PROLOGUE_RESCUE
+		return _formal_prologue_background(1, PROLOGUE_RESCUE_FALLBACK)
 	if step_index <= 11:
-		return PROLOGUE_ARROW
+		return _formal_prologue_background(2, PROLOGUE_ARROW_FALLBACK)
 	if step_index == PROLOGUE_CAREER_STEP:
-		return PROLOGUE_DEPARTURE
+		return _formal_prologue_background(3, PROLOGUE_DEPARTURE_FALLBACK)
 	return path
 
 func _node_performance_data(_stage: String) -> Dictionary:
