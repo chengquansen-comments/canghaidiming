@@ -24,6 +24,11 @@ func _apply_selected_story_battle_to_current_battle() -> void:
 	_setup_pressure_profile_for_current_encounter()
 
 
+func _apply_battle_loadout_once(loadout: Dictionary) -> void:
+	super._apply_battle_loadout_once(loadout)
+	_setup_pressure_profile_for_current_encounter()
+
+
 func _refresh_ui() -> void:
 	_apply_pressure_profile_runtime_rules()
 	super()
@@ -31,13 +36,29 @@ func _refresh_ui() -> void:
 	_append_pressure_profile_to_status()
 
 
+func _on_continue_narrative_pressed() -> void:
+	if NarrativeBattleContext.has_request():
+		super._on_continue_narrative_pressed()
+		return
+	if log_label != null:
+		log_label.append_text("\n[color=#8fd3ff]返回战斗测试。[/color]")
+	_show_combat_banner("返回战斗测试", Color("1c2a36"), Color("8fd3ff"))
+	_reset_story_battle_runtime_state()
+	_show_story_encounter_selection()
+	_returning_to_story_selection = false
+
+
 func _setup_pressure_profile_for_current_encounter() -> void:
 	_pressure_profile = PRESSURE_NONE
 	_break_resist_available = false
 	_last_edge_positions = {}
-	if _pending_story_battle.is_empty():
+	var encounter: Dictionary = {}
+	if not _pending_story_battle.is_empty():
+		encounter = _pending_story_battle.get("encounter", {})
+	elif not battle_loadout.is_empty():
+		encounter = battle_loadout.get("encounter_config", {})
+	if encounter.is_empty():
 		return
-	var encounter: Dictionary = _pending_story_battle.get("encounter", {})
 	_pressure_profile = str(encounter.get("pressure_profile", PRESSURE_NONE))
 	if not BattleEffectApplier.is_valid_pressure_profile(_pressure_profile):
 		push_warning("Invalid pressure_profile, fallback to none: %s" % _pressure_profile)
@@ -85,16 +106,52 @@ func _append_pressure_profile_to_status() -> void:
 
 
 func _try_auto_return_after_battle_result() -> void:
-	if _returning_to_story_selection:
+	pass
+
+
+func _on_battle_result_confirm_pressed() -> void:
+	_hide_battle_result_overlay()
+	var result_text := "战斗胜利"
+	var result_key := "win"
+	if player != null and enemy != null and player.hp <= 0 and enemy.hp <= 0:
+		result_text = "两败俱伤"
+		result_key = "draw"
+	if _story_encounter_selected:
+		if log_label != null:
+			log_label.append_text("\n[color=#8fd3ff]%s，返回战斗测试。[/color]" % result_text)
+		_show_combat_banner("%s，返回战斗测试" % result_text, Color("1c2a36"), Color("8fd3ff"))
+		_reset_story_battle_runtime_state()
+		_show_story_encounter_selection()
+		_returning_to_story_selection = false
 		return
-	if not battle_active and state_machine.phase != BattleStateMachine.BattlePhase.RESULT:
+	if NarrativeBattleContext.has_request():
+		if log_label != null:
+			log_label.append_text("\n[color=#8fd3ff]%s，返回剧情流程。[/color]" % result_text)
+		_show_combat_banner("%s，返回剧情" % result_text, Color("1c2a36"), Color("8fd3ff"))
+		await get_tree().create_timer(0.35).timeout
+		var source_scene: String = NarrativeBattleContext.source_scene
+		if source_scene.is_empty():
+			source_scene = "res://scenes/NarrativeDemo.tscn"
+		NarrativeBattleContext.set_result(result_key)
+		get_tree().change_scene_to_file(source_scene)
 		return
-	if player == null or enemy == null:
-		return
-	if player.hp > 0 and enemy.hp > 0:
-		return
-	_returning_to_story_selection = true
-	call_deferred("_return_to_story_encounter_selection_after_battle")
+	if log_label != null:
+		log_label.append_text("\n[color=#8fd3ff]%s，返回战斗测试。[/color]" % result_text)
+	_show_combat_banner("%s，返回地图" % result_text, Color("1c2a36"), Color("8fd3ff"))
+	_reset_story_battle_runtime_state()
+	_show_story_encounter_selection()
+	_returning_to_story_selection = false
+
+
+func _on_battle_retry_confirm_pressed() -> void:
+	_hide_battle_result_overlay()
+	_returning_to_story_selection = false
+	_reactive_pre_move_round = -1
+	_reactive_pre_move_animation_round = -1
+	_reactive_pre_move_animating = false
+	_last_edge_positions = {}
+	_break_resist_available = _pressure_profile == PRESSURE_BREAK_RESIST
+	_start_battle()
 
 
 func _return_to_story_encounter_selection_after_battle() -> void:
@@ -113,6 +170,14 @@ func _return_to_story_encounter_selection_after_battle() -> void:
 	while _presentation_busy():
 		await get_tree().create_timer(0.05).timeout
 	await get_tree().create_timer(0.15).timeout
+	if _story_encounter_selected:
+		if log_label != null:
+			log_label.append_text("\n[color=#8fd3ff]%s，返回战斗测试。[/color]" % result_text)
+		_show_combat_banner("%s，返回战斗测试" % result_text, Color("1c2a36"), Color("8fd3ff"))
+		_reset_story_battle_runtime_state()
+		_show_story_encounter_selection()
+		_returning_to_story_selection = false
+		return
 	if NarrativeBattleContext.has_request():
 		if log_label != null:
 			log_label.append_text("\n[color=#8fd3ff]%s，返回剧情流程。[/color]" % result_text)

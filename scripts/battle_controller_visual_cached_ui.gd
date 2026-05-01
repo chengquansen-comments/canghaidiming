@@ -46,9 +46,7 @@ func _confirm_player_intent() -> void:
 	var selected_player_card: CardData = _intent_card(draft_player_intent)
 	if selected_player_card == null:
 		selected_player_card = _intent_card(player_intent)
-	var visible_enemy_card: CardData = _enemy_preview_card()
 	_play_actor_runtime_for_card(true, selected_player_card)
-	_play_actor_runtime_for_card(false, visible_enemy_card)
 	super()
 
 func _build_stage_layer() -> void:
@@ -57,14 +55,25 @@ func _build_stage_layer() -> void:
 	BattleActorRenderHelper.apply_render_bounds(enemy_sprite, enemy_fallback_actor)
 	_force_cjk_font()
 
+func _set_actor_sheet_frame(actor: Fighter, frame_index: int) -> void:
+	if actor == null:
+		return
+	if player != null and actor.data.id == player.data.id and _player_actor_runtime != null and _player_actor_runtime.is_ready:
+		return
+	if enemy != null and actor.data.id == enemy.data.id and _enemy_actor_runtime != null and _enemy_actor_runtime.is_ready:
+		return
+	super._set_actor_sheet_frame(actor, frame_index)
+
 func _sheet_frame_texture(source: Texture2D, frame: int) -> Texture2D:
 	return BattleActorRenderHelper.frame_texture(source, frame, FRAME_SIZE, SHEET_FRAME_COUNT)
 
 func _slot_top_left(slot: int, is_player: bool) -> Vector2:
-	return BattleActorRenderHelper.slot_top_left(size.x, slot, is_player, GRID_SLOT_COUNT, GRID_SLOT_WIDTH, GRID_SLOT_GAP)
+	var sprite: TextureRect = player_sprite if is_player else enemy_sprite
+	return BattleActorRenderHelper.slot_top_left_for_sprite(size.x, slot, is_player, GRID_SLOT_COUNT, GRID_SLOT_WIDTH, GRID_SLOT_GAP, sprite)
 
 func _animated_actor_top_left(is_player: bool, start_slot: int, target_slot: int, active: bool) -> Vector2:
-	return BattleActorRenderHelper.animated_actor_top_left(size.x, is_player, start_slot, target_slot, active, _preview_cycle_phase(), GRID_SLOT_COUNT, GRID_SLOT_WIDTH, GRID_SLOT_GAP)
+	var sprite: TextureRect = player_sprite if is_player else enemy_sprite
+	return BattleActorRenderHelper.animated_actor_top_left_for_sprite(size.x, is_player, start_slot, target_slot, active, _preview_cycle_phase(), GRID_SLOT_COUNT, GRID_SLOT_WIDTH, GRID_SLOT_GAP, sprite)
 
 func _make_flat_card_style(fill: Color, border: Color, border_width: int) -> StyleBoxFlat:
 	return BattleSkinHelper.make_flat_card_style(fill, border, border_width)
@@ -230,15 +239,19 @@ func _refresh_stage_grid(show_ranges: bool = true) -> void:
 		var label_text: String = slot_state.get("label", "") as String
 		var has_player: bool = slot_state.get("has_player", false) as bool
 		var has_enemy: bool = slot_state.get("has_enemy", false) as bool
-		var is_legal: bool = awaiting_player_input and legal_positions.has(i)
-		var is_selected: bool = i == player_target_slot
-		if is_legal and not has_player and not has_enemy:
+		var is_actor_slot := has_player or has_enemy
+		var is_legal: bool = awaiting_player_input and legal_positions.has(i) and not is_actor_slot
+		var is_selected := false
+		if is_actor_slot:
+			fill = GRID_BASE_COLOR
+		if is_legal:
 			fill = fill.lerp(Color("53745a"), 0.45)
 		var state_key: String = "%s|%s|%s|%s|%s|%s" % [fill.to_html(), label_text, str(has_player), str(has_enemy), str(is_legal), str(is_selected)]
 		next_state[i] = {"key": state_key}
 		if not _last_stage_grid_state.has(i) or (_last_stage_grid_state[i] as Dictionary).get("key", "") != state_key:
 			_apply_stage_grid_slot(i, fill, has_player, has_enemy, label_text, is_legal, is_selected)
 	_last_stage_grid_state = next_state
+	_refresh_actor_foot_highlights(player_target_slot, enemy_target_slot)
 	_force_cjk_font()
 
 func _invalidate_stage_preview() -> void:
@@ -248,13 +261,13 @@ func _invalidate_stage_preview() -> void:
 func _apply_stage_grid_slot(slot: int, fill: Color, has_player: bool, has_enemy: bool, label_text: String, is_legal: bool = false, is_selected: bool = false) -> void:
 	if slot < 0 or slot >= stage_grid_cells.size() or slot >= stage_grid_labels.size():
 		return
-	var style := _make_grid_cell_style(fill, slot, has_player, has_enemy, false, false)
+	var style := _make_grid_cell_style(fill, slot, false, false, false, false)
 	if is_legal or is_selected:
 		style.border_color = Color("9fe08f") if is_legal else Color("ffd479")
 		style.border_width_top = 4
 		style.border_width_right = 4
 		style.border_width_bottom = 4
-		style.border_width_left = 4 if slot == 0 else 0
+		style.border_width_left = 4
 	stage_grid_cells[slot].add_theme_stylebox_override("panel", style)
 	stage_grid_labels[slot].text = label_text
 	if is_legal and label_text == "":
@@ -285,11 +298,15 @@ func _ensure_single_actor_runtime(is_player_actor: bool) -> void:
 			return
 		_player_actor_runtime = _create_actor_runtime("player", meta_path, sprite)
 		_player_actor_runtime_meta_path = meta_path if _player_actor_runtime != null and _player_actor_runtime.is_ready else ""
+		_invalidate_stage_preview()
+		call_deferred("_refresh_stage_actor_positions", true)
 	else:
 		if _enemy_actor_runtime != null and _enemy_actor_runtime_meta_path == meta_path:
 			return
 		_enemy_actor_runtime = _create_actor_runtime("enemy", meta_path, sprite)
 		_enemy_actor_runtime_meta_path = meta_path if _enemy_actor_runtime != null and _enemy_actor_runtime.is_ready else ""
+		_invalidate_stage_preview()
+		call_deferred("_refresh_stage_actor_positions", true)
 
 func _create_actor_runtime(actor_key: String, meta_path: String, sprite: TextureRect) -> ActorAnimationRuntime:
 	var runtime: ActorAnimationRuntime = ActorAnimationRuntime.new()
@@ -413,7 +430,18 @@ func _actor_meta_path_for(fighter: Fighter, prefer_enemy_variant: bool) -> Strin
 		if FileAccess.file_exists(enemy_path):
 			return enemy_path
 	var default_path: String = "res://assets/pixel_battle/actors/%s/%s.meta.json" % [role_id, role_id]
-	return default_path if FileAccess.file_exists(default_path) else ""
+	if FileAccess.file_exists(default_path):
+		return default_path
+	var visual_role_id := _visual_actor_role_id_for(fighter)
+	if visual_role_id == "" or visual_role_id == role_id:
+		return ""
+	if prefer_enemy_variant:
+		var visual_enemy_role_id: String = "enemy_%s" % visual_role_id
+		var visual_enemy_path: String = "res://assets/pixel_battle/actors/%s/%s.meta.json" % [visual_enemy_role_id, visual_enemy_role_id]
+		if FileAccess.file_exists(visual_enemy_path):
+			return visual_enemy_path
+	var visual_path: String = "res://assets/pixel_battle/actors/%s/%s.meta.json" % [visual_role_id, visual_role_id]
+	return visual_path if FileAccess.file_exists(visual_path) else ""
 
 func _on_actor_runtime_ready(actor_key: String, role_id: String) -> void:
 	print("[actor-runtime] ready %s role=%s" % [actor_key, role_id])

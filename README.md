@@ -2,6 +2,89 @@
 
 这是一个 Godot 4 可运行原型，当前已经拆成三条入口：剧情 MVP、字符版战斗、视觉版战斗。主入口会按平台路由到桌面或 Web 版 launcher。
 
+## 文档与结构索引
+
+### 首读入口
+
+| 文档 | 用途 |
+|---|---|
+| [README.md](README.md) | 项目入口、运行方式、当前主链路、文档索引 |
+| [docs/ART_PIPELINE.md](docs/ART_PIPELINE.md) | 美术唯一总入口：风格、目录、源图映射、节点状态、路线图、验收命令 |
+| [docs/ART_REFERENCE_PROMPTS.md](docs/ART_REFERENCE_PROMPTS.md) | 美术提示词附录 |
+| [docs/NARRATIVE.md](docs/NARRATIVE.md) | 叙事唯一总入口：数据源、流程、战斗接入、结局、AI 生成边界 |
+| [docs/BATTLE.md](docs/BATTLE.md) | 战斗唯一总入口：配置主源、剧情接入、结算模式、表演节奏、调参与验证 |
+| [docs/UI_PIPELINE.md](docs/UI_PIPELINE.md) | UI 管线总入口：视觉战斗界面、层级、预览、演出、缓存、Web UI 验收 |
+
+### 专项文档
+
+| 分类 | 文档 |
+|---|---|
+| 策划与数据 | [NARRATIVE](docs/NARRATIVE.md) |
+| 美术与演出 | [ART_PIPELINE](docs/ART_PIPELINE.md), [ART_REFERENCE_PROMPTS](docs/ART_REFERENCE_PROMPTS.md), [BATTLE_PRESENTATION_LAYER](docs/BATTLE_PRESENTATION_LAYER.md), [text_preview_stage_design](docs/text_preview_stage_design.md) |
+| 战斗系统 | [BATTLE](docs/BATTLE.md), [single_battle_rules_current](docs/single_battle_rules_current.md), [BATTLE_PRESENTATION_LAYER](docs/BATTLE_PRESENTATION_LAYER.md), [reactive_settlement_v040](docs/reactive_settlement_v040.md), [balance_rules](docs/balance_rules.md), [carddata_movement_v032_change_list](docs/carddata_movement_v032_change_list.md), [symmetry_gameplay_v031_execution_list](docs/symmetry_gameplay_v031_execution_list.md), [SPEARMAN_MIN_ACTION_PACKAGE_PLAN](SPEARMAN_MIN_ACTION_PACKAGE_PLAN.md), [ENEMY_MANIFEST_RUNTIME](docs/ENEMY_MANIFEST_RUNTIME.md) |
+| UI / Web / 工程 | [UI_PIPELINE](docs/UI_PIPELINE.md), [web_refactor_progress](docs/web_refactor_progress.md), [web_build_known_issues](docs/web_build_known_issues.md), [ui_architecture_refactor](docs/ui_architecture_refactor.md), [wuxia_battle_ui_godot_design](docs/wuxia_battle_ui_godot_design.md) |
+| 历史归档 | 旧叙事脚本、进度与生成协议见 `archive/docs/narrative/` |
+
+### 文件结构
+
+| 路径 | 类型 | 说明 |
+|---|---|---|
+| `project.godot` | Godot 配置 | 项目入口配置，不随意改 |
+| `scenes/` | 运行场景 | Godot `.tscn` 场景 |
+| `scripts/` | 运行脚本 | GDScript 运行逻辑 |
+| `tables/` | 策划源表 | TSV 是策划入口，优先改这里 |
+| `data/` | 编译产物 / 运行数据 | 由 `scripts/compile_tables.py` 或专项流程生成 |
+| `assets/` | 游戏运行素材 | Godot / Web 实际加载的图片、字体、主题等 |
+| `art_reference/` | 图源仓 | AI 草案、玩家导入源图、正式母版；不直接运行 |
+| `docs/` | 项目文档 | 专项设计、规范、进度 |
+| `tools/` | 工具脚本 | 编译、校验、导出、smoke test |
+| `themes/` | UI 主题 | Godot theme 资源 |
+| `web/` | Web 静态辅助 | Web shell / 静态资源辅助目录 |
+| `reports/` | 报告输出 | 校验、截图、分析报告 |
+| `archive/` | 归档 | 旧表、旧方案、迁移前备份 |
+| `build/` / `export/` / `.godot/` | 本地产物 | 构建输出和 Godot 缓存，不作为源 |
+
+### 核心结构链路
+
+```text
+project.godot
+→ scenes/Main.tscn
+→ scripts/main_runtime_router.gd
+```
+
+```text
+tables/*.tsv
+→ scripts/compile_tables.py
+→ data/*.json
+```
+
+```text
+art_reference/generated/   参考草案，不直接运行
+art_reference/final/       正式源图 / 精修母版，不直接运行
+assets/                    游戏运行素材，可被 res://assets/... 引用
+```
+
+```text
+scenes/MainVisual.tscn
+→ scripts/battle_controller_visual_story_return.gd
+→ scripts/battle_controller_visual_settlement_mode.gd
+→ scripts/battle_controller_visual_presentation_mode_aware.gd
+→ scripts/battle_controller_visual_presentation_stepwise.gd
+→ scripts/battle_controller_visual_cached_ui.gd
+→ scripts/battle_controller_visual_ui.gd
+→ scripts/battle_controller_demo_visual.gd
+→ scripts/battle_controller_core.gd
+```
+
+### 常用命令
+
+```bash
+python3 scripts/compile_tables.py
+python3 tools/audit_art_asset_structure.py
+python3 tools/validate_art_assets.py
+godot --headless --import --quit
+```
+
 ## 当前入口
 
 - `scenes/Main.tscn`：总入口，挂载 `scripts/main_runtime_router.gd`
@@ -25,9 +108,10 @@
   - 战斗结果可返回剧情并继续推进
 - 视觉战斗
   - 支持 `battle_scene_manifest.json` 场景背景与镜头参数
-  - 支持 `enemy_manifest.json` 中的剧情战敌人、AI 权重与阶段行为
+  - 支持 `story_battles.json` 中的剧情战敌我数值、卡组、结算模式与压力规则
+  - `enemy_manifest.json` 保留为旧剧情战斗 / AI / debug 兼容层，不再是正式剧情战斗主源
 - 表格编译链路
-  - `tables/*.tsv` 是唯一策划入口
+  - `tables/*.tsv` 与 `data/story_battles/*.tsv` 是策划入口
   - `scripts/compile_tables.py` 生成运行所需 JSON
 
 ## 运行方式
@@ -48,7 +132,8 @@ godot --path .
 | 类型 | 文件 | 用途 |
 |---|---|---|
 | 运行源 | `data/narrative_mvp_nodes.json` | 剧情 MVP 实际读取的序章、节点、选项、战斗触发与结局提示 |
-| 运行源 | `data/enemy_manifest.json` | 剧情战斗 encounter、敌人数值、敌人牌组、AI 权重、阶段行为、奖励 |
+| 运行源 | `data/story_battles.json` | 正式剧情战斗 encounter、敌我模板、数值方案、卡组方案、结算模式 |
+| 运行源 | `data/enemy_manifest.json` | 旧剧情战斗 / AI / debug 兼容层 |
 | 运行源 | `data/battle_scene_manifest.json` | 视觉战斗 battle_id 对应的背景、标签、镜头参数 |
 | 运行源 | `data/performance_tracks.json` | 剧情演出镜头、角色、雾、暗角、火光等表现参数 |
 | 文档/布局源 | `data/narrative/mvp_compressed_narrative.json` | 初出山压缩叙事文档，不作为当前剧情推进逻辑源 |
@@ -96,13 +181,14 @@ godot --path .
 - `routes.json`：旧字符版/基础战斗路线节点、分支连接、地图长度、初始距离
 - `rewards.json`：战后可进入奖励池的卡牌 id
 - `narrative_mvp_nodes.json`：剧情 MVP 当前运行源
-- `enemy_manifest.json`：剧情战斗当前敌人运行源
+- `story_battles.json`：正式剧情战斗当前运行源
+- `enemy_manifest.json`：旧剧情战斗 / AI / debug 兼容层
 - `battle_scene_manifest.json`：视觉战斗场景运行源
 - `performance_tracks.json`：剧情演出运行源
 
 ## TSV 配表流程
 
-`tables/*.tsv` 是唯一策划入口。不要直接编辑 `data/*.json`；运行编译器后 JSON 会被 TSV 覆盖生成。
+`tables/*.tsv` 与 `data/story_battles/*.tsv` 是策划入口。不要直接编辑 `data/*.json`；运行编译器后 JSON 会被 TSV 覆盖生成。
 
 主要源表：
 
@@ -115,7 +201,8 @@ godot --path .
 - `tables/routes.tsv`：路线节点、下一跳、地图长度、初始距离
 - `tables/rewards.tsv`：奖励池
 - `tables/battle_scene_manifest.tsv`：战斗 battle_id、背景、镜头参数
-- `tables/enemy_manifest_*.tsv`：剧情战斗 encounter、敌人数值、牌组、AI 权重、阶段行为、奖励
+- `data/story_battles/*.tsv`：正式剧情战斗 encounter、敌我模板、数值方案、卡组方案、结算模式
+- `tables/enemy_manifest_*.tsv`：旧剧情战斗 / AI / debug 兼容数据
 - `tables/narrative_mvp_*.tsv`：MVP 剧情节点、序章、选项、战斗触发、结局提示
 - `tables/performance_*.tsv`：剧情演出 timeline 与 beats
 - `tables/raw_json_documents.tsv`：暂未拆表的大型叙事文档，由 TSV 原样生成到 `data/narrative/*.json`
@@ -135,17 +222,12 @@ python3 tools/validate_performance_tracks.py
 
 ## 美术管线文档
 
-当前美术文档入口：
+当前美术文档只保留两个入口：
 
-- `docs/ART_PIPELINE.md`：美术管线总入口、TSV/JSON/运行资源规则、正式美术分层
-- `docs/ART_DIRECTION_GUIDE.md`：风格基准、色板、构图和禁止事项
-- `docs/NODE_VISUAL_MATRIX.md`：节点、battle_id、visual_path、performance track、资源状态
-- `docs/ART_PRODUCTION_ROADMAP.md`：正式美术质量路线、截图验收和展示包计划
-- `docs/ART_REFERENCE_PROMPTS.md`：参考图 / 概念图提示词，不作为运行资源清单
+- `docs/ART_PIPELINE.md`：唯一权威入口，包含风格、目录、源图到运行素材映射、节点状态、正式路线和验收命令。
+- `docs/ART_REFERENCE_PROMPTS.md`：提示词附录，不作为运行资源清单。
 
-当前规则：运行资源优先使用纯 SVG；参考 PNG 只放在 `art_reference/generated/`，不直接写入 `visual_path`。
-
-正式运行 SVG 可用 `tools/generate_formal_art_assets.py` 生成；当前主角枪版 / 刀版半身与演出立绘已按 `NarrativeBattleContext.player_profile.role` 在剧情界面自动切换。
+当前规则：正式运行资源优先使用高质量 PNG；参考 PNG 只放在 `art_reference/generated/`，正式源图放在 `art_reference/final/`，运行素材导出到 `assets/` 后再挂接。
 
 编译完成后会自动覆盖生成：
 
@@ -156,6 +238,7 @@ python3 tools/validate_performance_tracks.py
 - `data/routes.json`
 - `data/rewards.json`
 - `data/battle_scene_manifest.json`
+- `data/story_battles.json`
 - `data/enemy_manifest.json`
 - `data/narrative_mvp_nodes.json`
 - `data/performance_tracks.json`

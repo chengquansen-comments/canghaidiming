@@ -9,7 +9,9 @@ extends "res://scripts/battle_controller_visual_preview_position_guard.gd"
 # F8 still toggles settlement mode during local testing.
 
 const StoryBattleLoader = preload("res://scripts/story_battle_loader.gd")
+const SettlementNarrativeBattleContext = preload("res://scripts/narrative_battle_context.gd")
 const ROUND_START_BANNER_DURATION := 0.75
+const ENEMY_INTENT_REVEAL_DELAY_AFTER_ROUND_BANNER := 0.10
 const REACTIVE_PRE_MOVE_STEP_DURATION := 0.26
 const REACTIVE_PRE_MOVE_STEP_PAUSE := 0.10
 
@@ -21,6 +23,7 @@ var _reactive_pre_move_round := -1
 var _reactive_pre_move_animation_round := -1
 var _reactive_pre_move_animating := false
 var _round_start_sequence_token := 0
+var _enemy_intent_reveal_allowed := true
 var _story_encounters: Array[Dictionary] = []
 var _pending_story_battle: Dictionary = {}
 var _story_validation_report: Dictionary = {}
@@ -67,15 +70,18 @@ func _show_story_encounter_selection() -> void:
 	if overlay_panel != null:
 		overlay_panel.visible = true
 	if overlay_title != null:
-		overlay_title.text = "选择剧情遭遇"
+		overlay_title.text = "战斗测试"
 	if overlay_body != null:
 		var validation_text := ""
 		if not _story_validation_report.is_empty():
-			validation_text = "\n\n配置校验：%s" % ("通过" if bool(_story_validation_report.get("ok", false)) else "存在错误，请看控制台")
-		overlay_body.text = "剧情遭遇会自动决定：\n- 玩家模板 / 玩家剧情卡组 / 玩家数值\n- 对手模板 / 对手剧情卡组 / 对手数值\n- 结算模式\n\n模板、卡组、数值本身不区分敌我，只有遭遇配置分配双方。" + validation_text
+			validation_text = " 配置校验：%s。" % ("通过" if bool(_story_validation_report.get("ok", false)) else "存在错误，请看控制台")
+		overlay_body.text = "选择一场 story_battles.json 中的战斗配置。每场会自动加载敌我模板、数值、卡组、结算模式和压力规则；剧情入口也复用同一套配置。" + validation_text
 	_clear_overlay_actions()
+	_add_story_selection_back_button()
 	for row: Dictionary in _story_encounters:
 		_add_story_encounter_button(row)
+	if has_method("_apply_button_styles"):
+		call("_apply_button_styles")
 
 
 func _clear_overlay_actions() -> void:
@@ -83,6 +89,21 @@ func _clear_overlay_actions() -> void:
 		return
 	for child in overlay_actions.get_children():
 		child.queue_free()
+
+
+func _add_story_selection_back_button() -> void:
+	if overlay_actions == null:
+		return
+	var button := Button.new()
+	button.text = "返回主菜单"
+	button.custom_minimum_size = Vector2(0, 42)
+	button.pressed.connect(_on_story_selection_back_pressed)
+	overlay_actions.add_child(button)
+
+
+func _on_story_selection_back_pressed() -> void:
+	SettlementNarrativeBattleContext.clear()
+	get_tree().change_scene_to_file("res://scenes/Main.tscn")
 
 
 func _add_story_encounter_button(row: Dictionary) -> void:
@@ -93,9 +114,12 @@ func _add_story_encounter_button(row: Dictionary) -> void:
 		return
 	var display_name: String = str(row.get("display_name", selected_id))
 	var mode: String = str(row.get("settlement_mode", "symmetric"))
+	var player_template: String = str(row.get("player_template_id", ""))
+	var opponent_template: String = str(row.get("opponent_template_id", ""))
 	var notes: String = str(row.get("notes", ""))
 	var button := Button.new()
-	button.text = "%s（%s）" % [display_name, mode]
+	button.text = "%s｜%s vs %s｜%s" % [display_name, player_template, opponent_template, mode]
+	button.custom_minimum_size = Vector2(0, 42)
 	if notes != "":
 		button.tooltip_text = notes
 	button.pressed.connect(func() -> void:
@@ -146,10 +170,6 @@ func _apply_selected_story_battle_to_current_battle() -> void:
 	if player_data == null or opponent_data == null:
 		push_warning("Story encounter has null fighter data: %s" % story_encounter_id)
 		return
-	if player_data.starting_deck.is_empty() and player != null and player.data != null:
-		player_data.starting_deck = player.data.clone_deck()
-	if opponent_data.starting_deck.is_empty() and enemy != null and enemy.data != null:
-		opponent_data.starting_deck = enemy.data.clone_deck()
 	player = Fighter.new(player_data)
 	player.set_session_realm(player_data.starting_realm)
 	player.reset_for_battle(HAND_SIZE)
@@ -165,18 +185,13 @@ func _apply_selected_story_battle_to_current_battle() -> void:
 
 
 func _build_story_card_catalog() -> Dictionary:
-	var catalog: Dictionary = {}
-	for fighter_id in fighter_catalog.keys():
-		var data: FighterData = fighter_catalog[fighter_id]
-		for card: CardData in data.starting_deck:
-			catalog[card.id] = card
-	for card: CardData in reward_pool:
-		catalog[card.id] = card
-	return catalog
+	return StoryBattleLoader.build_card_catalog(fighter_catalog, reward_pool)
 
 
 func _core_role_id_for_template(template_id: String) -> String:
-	if template_id.find("spear") >= 0 or template_id == "master_veteran":
+	if template_id == "master_veteran":
+		return "master_veteran"
+	if template_id.find("spear") >= 0:
 		return "spearman"
 	return "blademaster"
 
@@ -208,6 +223,7 @@ func _apply_visual_settlement_mode() -> void:
 func _begin_round() -> void:
 	if not _presentation_busy():
 		_clear_actor_action_glows()
+	_enemy_intent_reveal_allowed = false
 	player_intent = null
 	enemy_intent = null
 	draft_player_intent = null
@@ -240,6 +256,11 @@ func _begin_round_after_round_banner(token: int, round_value: int) -> void:
 	await _play_round_start_banner(round_value)
 	if token != _round_start_sequence_token or not battle_active:
 		return
+	if ENEMY_INTENT_REVEAL_DELAY_AFTER_ROUND_BANNER > 0.0:
+		await get_tree().create_timer(ENEMY_INTENT_REVEAL_DELAY_AFTER_ROUND_BANNER).timeout
+		if token != _round_start_sequence_token or not battle_active:
+			return
+	_enemy_intent_reveal_allowed = true
 	_advance_declaration()
 	_refresh_ui()
 
@@ -264,6 +285,8 @@ func _play_round_start_banner(round_value: int) -> void:
 
 
 func _try_apply_reactive_enemy_pre_move() -> void:
+	if not _enemy_intent_reveal_allowed:
+		return
 	if not battle_active or not awaiting_player_input:
 		return
 	var result: Dictionary = BattleEffectApplier.apply_reactive_enemy_pre_move(state_machine, player, enemy, enemy_intent, _reactive_pre_move_round)
@@ -275,6 +298,9 @@ func _try_apply_reactive_enemy_pre_move() -> void:
 		_show_combat_banner("敌方先移动，亮出威胁", Color("1c2a36"), Color("8fd3ff"))
 	if bool(result.get("changed", false)):
 		_reactive_pre_move_animating = true
+		awaiting_player_input = false
+		_hand_buttons_signature = ""
+		_invalidate_stage_preview()
 		var from_slot: int = int(result.get("from_position", -1))
 		var to_slot: int = int(result.get("to_position", -1))
 		if _is_valid_presentation_slot(from_slot) and _is_valid_presentation_slot(to_slot) and from_slot != to_slot:
@@ -310,6 +336,10 @@ func _play_reactive_enemy_pre_move_animation(result: Dictionary) -> void:
 	_set_actor_action_glow(true, true)
 	await _play_phase_focus_cue("我方行动", ACTOR_GLOW_PLAYER_COLOR, 0.45)
 	_reactive_pre_move_animating = false
+	awaiting_player_input = true
+	_hand_buttons_signature = ""
+	_invalidate_stage_preview()
+	_refresh_hand_buttons()
 	_refresh_ui()
 
 
@@ -342,6 +372,12 @@ func _confirm_player_intent() -> void:
 	if _reactive_pre_move_animating:
 		return
 	super._confirm_player_intent()
+
+
+func _on_stage_grid_slot_pressed(slot: int) -> void:
+	if _reactive_pre_move_animating:
+		return
+	super._on_stage_grid_slot_pressed(slot)
 
 
 func _slot_label_safe(slot: int) -> String:
@@ -470,6 +506,21 @@ func _refresh_ui() -> void:
 	if preview_label != null:
 		preview_label.append_text(_reactive_threat_preview_text())
 	_refresh_reactive_action_glows()
+
+
+func _refresh_single_intent_bubble(is_player: bool, force: bool = false) -> void:
+	if not is_player and not _enemy_intent_reveal_allowed:
+		if enemy_intent_bubble != null:
+			enemy_intent_bubble.visible = false
+		_set_intent_bubble_signature(false, "")
+		return
+	super._refresh_single_intent_bubble(is_player, force)
+
+
+func _enemy_preview_intent() -> IntentData:
+	if not _enemy_intent_reveal_allowed:
+		return null
+	return super._enemy_preview_intent()
 
 
 func _refresh_reactive_action_glows() -> void:

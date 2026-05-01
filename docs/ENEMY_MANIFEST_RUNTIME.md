@@ -1,5 +1,7 @@
 # 敌人配置运行时消费说明
 
+> 当前战斗总入口已整合到 [BATTLE.md](BATTLE.md)。`enemy_manifest` 现在是旧剧情战斗 / AI / debug 兼容层，不再是正式剧情战斗敌我数值和卡组的主源；若有冲突，以 `BATTLE.md` 和 StoryBattle 配置为准。
+>
 ## 当前目标
 
 让 `data/enemy_manifest.json` 不只保存敌人数值，还实际驱动：

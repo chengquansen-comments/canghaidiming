@@ -4,6 +4,7 @@ extends "res://scripts/battle_controller_visual_preview_checked.gd"
 # Non-invasive wrapper: no battle rules are changed here.
 
 var tuning_panel: PanelContainer
+var tuning_layer: CanvasLayer
 var tuning_content_root: VBoxContainer
 var tuning_label: RichTextLabel
 var tuning_visible := false
@@ -33,6 +34,8 @@ func _toggle_tuning_panel() -> void:
 	tuning_visible = not tuning_visible
 	if tuning_panel != null:
 		tuning_panel.visible = tuning_visible
+		if tuning_visible:
+			_bring_tuning_panel_to_front()
 
 
 func _run_preview_consistency_check() -> void:
@@ -84,9 +87,14 @@ func _record_tuning_check(snapshot: Dictionary, preview_signature: Dictionary, c
 func _build_tuning_panel() -> void:
 	if tuning_panel != null:
 		return
+	tuning_layer = CanvasLayer.new()
+	tuning_layer.name = "TuningDebugCanvasLayer"
+	tuning_layer.layer = 300
+	add_child(tuning_layer)
+
 	tuning_panel = PanelContainer.new()
 	tuning_panel.name = "TuningDebugPanel"
-	tuning_panel.z_index = 100
+	tuning_panel.z_index = 3000
 	tuning_panel.visible = tuning_visible
 	tuning_panel.anchor_left = 0.0
 	tuning_panel.anchor_top = 0.0
@@ -120,12 +128,15 @@ func _build_tuning_panel() -> void:
 	tuning_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	tuning_label.add_theme_font_size_override("normal_font_size", 13)
 	tuning_content_root.add_child(tuning_label)
-	add_child(tuning_panel)
+	tuning_layer.add_child(tuning_panel)
+	_bring_tuning_panel_to_front()
 
 
 func _refresh_tuning_panel() -> void:
 	if tuning_label == null:
 		return
+	if tuning_visible:
+		_bring_tuning_panel_to_front()
 	var distance := absi(enemy.position - player.position) if player != null and enemy != null else -1
 	var p_card := _card_name_from_snapshot(tuning_last_snapshot.get("player_card", {}))
 	var e_card := _card_name_from_snapshot(tuning_last_snapshot.get("enemy_card", {}))
@@ -147,6 +158,13 @@ func _refresh_tuning_panel() -> void:
 	text += "最近: %s\n" % tuning_last_summary
 	text += _format_error_counts()
 	tuning_label.text = text
+
+
+func _bring_tuning_panel_to_front() -> void:
+	if tuning_layer != null and tuning_layer.get_parent() != null:
+		tuning_layer.get_parent().move_child(tuning_layer, tuning_layer.get_parent().get_child_count() - 1)
+	if tuning_panel != null:
+		tuning_panel.move_to_front()
 
 
 func _format_error_counts() -> String:

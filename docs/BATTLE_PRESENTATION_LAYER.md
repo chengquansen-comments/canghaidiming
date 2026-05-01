@@ -1,5 +1,7 @@
 # 《大明之沧海嘀鸣》战斗演出层说明
 
+> 当前战斗总入口已整合到 [BATTLE.md](BATTLE.md)，UI 管线入口已整合到 [UI_PIPELINE.md](UI_PIPELINE.md)。本文保留为表演层历史 phase 和细节附录；若有冲突，以 `BATTLE.md`、`UI_PIPELINE.md` 和当前代码为准。
+>
 > 版本：v1.8  
 > 分支：`main`  
 > 状态：Phase 1 已验收通过；Phase 2 / 3 / 5 / 6 / 7 / 8 / 9 / 10 / 11 / 12 / 12.5 / 12.6 / 12.7 / 12.8 / 12.9 已接入，待统一本地验收  

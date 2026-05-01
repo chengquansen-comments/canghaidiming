@@ -31,7 +31,6 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	battle_scene_time += delta
-	_update_original_background_motion(delta)
 	super._process(delta)
 	_refresh_stable_debug_panel()
 
@@ -139,15 +138,8 @@ func _battle_scene_config(id: String) -> Dictionary:
 func _update_original_background_motion(delta: float) -> void:
 	if background_texture == null or background_texture.texture == null:
 		return
-	var config: Dictionary = _battle_scene_config(battle_scene_id)
-	var progress: float = clamp(battle_scene_time / 3.0, 0.0, 1.0)
-	var eased: float = progress * progress * (3.0 - 2.0 * progress)
-	var zoom: float = float(config.get("camera_zoom", 0.0)) * eased
-	var pan_x: float = float(config.get("camera_pan_x", 0.0)) * eased
-	var pan_y: float = float(config.get("camera_pan_y", 0.0)) * eased
-	var breath: float = 0.0025 * sin(battle_scene_time * 0.55)
-	background_texture.scale = Vector2(1.0 + zoom + breath, 1.0 + zoom + breath)
-	background_texture.position = Vector2(pan_x, pan_y)
+	background_texture.scale = Vector2.ONE
+	background_texture.position = Vector2.ZERO
 
 func _update_original_scene_label(config: Dictionary) -> void:
 	var label_text: String = "战斗场景｜%s｜battle_id=%s｜enemy_source=%s" % [str(config.get("label", battle_scene_id)), battle_scene_id, NarrativeBattleContext.enemy_source_text()]

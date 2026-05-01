@@ -63,7 +63,7 @@ func _select_role_and_start(role_id: String) -> void:
 func _enforce_selected_player_role() -> void:
 	if player_role_id == "" or not fighter_catalog.has(player_role_id):
 		return
-	var enemy_role_id: String = "blademaster" if player_role_id == "spearman" else "spearman"
+	var enemy_role_id: String = "blademaster" if player_role_id == "spearman" or player_role_id == "master_veteran" else "spearman"
 	var should_rebuild_player: bool = player == null or player.data == null or player.data.id != player_role_id or player.position != PLAYER_START_POSITION or player.facing != PLAYER_START_FACING
 	if should_rebuild_player:
 		print("[role-select] correcting player fighter to ", player_role_id, " on player side")
@@ -224,7 +224,10 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 	var steps: Array[Dictionary] = []
 	var player_move_applied := false
 	var enemy_move_applied := false
+	var preview_ended := false
 	for side: String in order:
+		if preview_ended:
+			break
 		if side == "player":
 			var before_move: int = p_final
 			p_final = _intent_target_position(true, p_intent)
@@ -244,6 +247,7 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 				p_final = int(result_p.get("actor_final", p_final))
 				e_final = int(result_p.get("target_final", e_final))
 				steps.append({"side": "player", "phase": "effect_move", "actor_from": before_effect_move_p, "actor_to": p_final, "target_from": before_effect_move_e, "target_to": e_final, "range": p_range_result})
+				preview_ended = bool(result_p.get("will_die", false))
 		else:
 			var before_enemy_move: int = e_final
 			e_final = _intent_target_position(false, e_intent)
@@ -251,6 +255,8 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 			e_subjective = e_final
 			enemy_move_applied = true
 			steps.append({"side": "enemy", "phase": "move", "from": before_enemy_move, "to": e_final, "facing": e_facing})
+			if state_machine != null and state_machine.is_reactive_mode() and enemy.momentum > 0 and enemy.momentum + e_momentum_delta <= 0:
+				continue
 			if e_card != null:
 				var result_e: Dictionary = _resolve_one_preview_step(false, e_card, e_final, p_final, e_facing, p_facing)
 				e_range_result = str(result_e.get("range", CombatResolver.RANGE_NONE))
@@ -263,6 +269,7 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 				e_final = int(result_e.get("actor_final", e_final))
 				p_final = int(result_e.get("target_final", p_final))
 				steps.append({"side": "enemy", "phase": "effect_move", "actor_from": before_effect_move_e2, "actor_to": e_final, "target_from": before_effect_move_p2, "target_to": p_final, "range": e_range_result})
+				preview_ended = bool(result_e.get("will_die", false))
 	if not player_move_applied and draft_player_has_position:
 		var before_player_fallback: int = p_final
 		p_final = _intent_target_position(true, p_intent)

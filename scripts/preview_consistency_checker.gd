@@ -160,6 +160,7 @@ static func simulate(snapshot: Dictionary) -> Dictionary:
 	var e_momentum: int = int(snapshot.get("enemy_momentum", 0))
 	var p_broken: bool = bool(snapshot.get("player_broken", false))
 	var e_broken: bool = bool(snapshot.get("enemy_broken", false))
+	var reactive_mode: bool = bool(snapshot.get("reactive_mode", false))
 
 	for side in order:
 		if side == "player" and not p_card.is_empty():
@@ -170,10 +171,12 @@ static func simulate(snapshot: Dictionary) -> Dictionary:
 			p_momentum_delta += int(outcome.get("gain", 0))
 			if e_momentum > 0 and e_momentum + e_momentum_delta <= 0:
 				e_will_break = true
-			var moved := apply_card_movement(p_card, true, p_pos, e_pos, p_facing, p_result)
+			var moved := apply_card_movement(p_card, true, p_pos, e_pos, p_facing, p_result, e_will_break)
 			p_pos = int(moved.get("player", p_pos))
 			e_pos = int(moved.get("enemy", e_pos))
 		elif side == "enemy" and not e_card.is_empty():
+			if reactive_mode and e_will_break:
+				continue
 			e_result = evaluate_range(e_card, e_pos, e_facing, p_pos)
 			var outcome2 := resolve_card_preview(e_card, e_result, e_broken, p_broken, int(snapshot.get("player_guard", 0)))
 			p_hp_delta -= int(outcome2.get("damage", 0))
@@ -181,7 +184,7 @@ static func simulate(snapshot: Dictionary) -> Dictionary:
 			e_momentum_delta += int(outcome2.get("gain", 0))
 			if p_momentum > 0 and p_momentum + p_momentum_delta <= 0:
 				p_will_break = true
-			var moved2 := apply_card_movement(e_card, false, p_pos, e_pos, e_facing, e_result)
+			var moved2 := apply_card_movement(e_card, false, p_pos, e_pos, e_facing, e_result, p_will_break)
 			p_pos = int(moved2.get("player", p_pos))
 			e_pos = int(moved2.get("enemy", e_pos))
 
@@ -243,7 +246,7 @@ static func faces_target(actor_pos: int, actor_facing: String, target_pos: int) 
 		return actor_facing == "right"
 	return actor_facing == "left"
 
-static func apply_card_movement(card: Dictionary, is_player_actor: bool, p_pos: int, e_pos: int, actor_facing: String, range_result: String) -> Dictionary:
+static func apply_card_movement(card: Dictionary, is_player_actor: bool, p_pos: int, e_pos: int, actor_facing: String, range_result: String, target_will_break: bool = false) -> Dictionary:
 	var can_move := false
 	var condition := str(card.get("move_condition", "none"))
 	if condition == "always":
@@ -252,6 +255,8 @@ static func apply_card_movement(card: Dictionary, is_player_actor: bool, p_pos: 
 		can_move = range_result == RANGE_HIT
 	elif condition == "on_graze":
 		can_move = range_result == RANGE_GRAZE
+	elif condition == "on_break":
+		can_move = target_will_break
 	if not can_move:
 		return {"player": p_pos, "enemy": e_pos}
 	var actor_pos := p_pos if is_player_actor else e_pos

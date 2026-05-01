@@ -61,7 +61,8 @@ func _build_preview_check_snapshot(p_intent: IntentData, e_intent: IntentData) -
 		"player_guard": player.guard_points,
 		"enemy_guard": enemy.guard_points,
 		"player_broken": player.is_broken(),
-		"enemy_broken": enemy.is_broken()
+		"enemy_broken": enemy.is_broken(),
+		"reactive_mode": state_machine != null and state_machine.is_reactive_mode()
 	}
 
 
@@ -75,6 +76,21 @@ func _build_visible_preview_signature(snapshot: Dictionary) -> Dictionary:
 	# Use the current controller's ghost-preview algorithm as the "actual preview".
 	# The checker independently re-simulates from snapshot as the expected result.
 	var preview := _compute_ordered_preview()
+	var sim: Dictionary = preview.get("sim", {})
+	if not sim.is_empty():
+		return {
+			"order": sim.get("order", snapshot.get("order", [])),
+			"player_final": int(sim.get("player_final", snapshot.get("player_position", 0))),
+			"enemy_final": int(sim.get("enemy_final", snapshot.get("enemy_position", 0))),
+			"player_hp_delta": int(sim.get("player_hp_delta", 0)),
+			"enemy_hp_delta": int(sim.get("enemy_hp_delta", 0)),
+			"player_momentum_delta": int(sim.get("player_momentum_delta", 0)),
+			"enemy_momentum_delta": int(sim.get("enemy_momentum_delta", 0)),
+			"player_range_result": str(sim.get("player_range_result", "none")),
+			"enemy_range_result": str(sim.get("enemy_range_result", "none")),
+			"player_will_break": bool(sim.get("player_will_break", false)),
+			"enemy_will_break": bool(sim.get("enemy_will_break", false))
+		}
 	var expected_for_shape := PreviewConsistencyChecker.build_preview_signature(snapshot)
 	return {
 		"order": snapshot.get("order", []),

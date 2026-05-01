@@ -1,5 +1,7 @@
 # 战斗原型平衡性规则
 
+> 当前战斗总入口已整合到 [BATTLE.md](BATTLE.md)。本文保留为旧卡牌预算参考；若有冲突，以 `BATTLE.md`、当前卡牌定义和当前调参系统为准。
+>
 ## 目的
 
 这份文档用于记录当前原型的数值平衡口径，尤其是“耗势”与招式收益之间的约束关系。
@@ -12,8 +14,8 @@
 
 对应实现位置：
 
-- [card_data.gd](/Users/happy/Documents/Codex/2026-04-19-files-mentioned-by-the-user-pdf/scripts/card_data.gd)
-- [battle_controller_text_ui.gd](/Users/happy/Documents/Codex/2026-04-19-files-mentioned-by-the-user-pdf/scripts/battle_controller_text_ui.gd)
+- [card_data.gd](/Users/happy/Documents/Codex/canghaidiming/scripts/card_data.gd)
+- [battle_controller_text_ui.gd](/Users/happy/Documents/Codex/canghaidiming/scripts/battle_controller_text_ui.gd)
 
 ## 核心原则
 

@@ -1,0 +1,1336 @@
+{
+  "schema_version": 1,
+  "tables": {
+    "fighter_templates": [
+      {
+        "fighter_template_id": "player_blademaster",
+        "display_name": "少年刀客",
+        "weapon_style": "blademaster",
+        "default_position": "2",
+        "default_facing": "right",
+        "story_role": "玩家单位",
+        "notes": "主角刀客模板"
+      },
+      {
+        "fighter_template_id": "player_spearman",
+        "display_name": "少年枪手",
+        "weapon_style": "spearman",
+        "default_position": "2",
+        "default_facing": "right",
+        "story_role": "玩家单位",
+        "notes": "主角枪手模板"
+      },
+      {
+        "fighter_template_id": "prologue_blade_recruit",
+        "display_name": "倭刀喽啰",
+        "weapon_style": "blademaster",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "海边初战教学单位",
+        "notes": "普通倭寇刀手"
+      },
+      {
+        "fighter_template_id": "prologue_spear_guard",
+        "display_name": "持枪哨兵",
+        "weapon_style": "spearman",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "海边控距单位",
+        "notes": "控距型枪兵"
+      },
+      {
+        "fighter_template_id": "master_veteran",
+        "display_name": "沉默老兵",
+        "weapon_style": "blademaster",
+        "default_position": "2",
+        "default_facing": "right",
+        "story_role": "师傅单位",
+        "notes": "救场与教学角色"
+      },
+      {
+        "fighter_template_id": "blade_duelist",
+        "display_name": "倭刀精锐",
+        "weapon_style": "blademaster",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "高手对决单位",
+        "notes": "对称式拆招测试敌人"
+      },
+      {
+        "fighter_template_id": "spear_duelist",
+        "display_name": "长枪教头",
+        "weapon_style": "spearman",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "高手对决单位",
+        "notes": "对称式控距测试敌人"
+      },
+      {
+        "fighter_template_id": "wakou_raider",
+        "display_name": "倭寇杂兵",
+        "weapon_style": "blademaster",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "剧情敌人",
+        "notes": "渔村残火与低压刀兵"
+      },
+      {
+        "fighter_template_id": "transport_officer",
+        "display_name": "押运官",
+        "weapon_style": "blademaster",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "剧情敌人",
+        "notes": "失械案精英刀客"
+      },
+      {
+        "fighter_template_id": "mutiny_camp_leader",
+        "display_name": "兵变营头",
+        "weapon_style": "spearman",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "剧情敌人",
+        "notes": "欠饷营精英枪兵"
+      },
+      {
+        "fighter_template_id": "reed_ambusher",
+        "display_name": "芦苇伏兵",
+        "weapon_style": "spearman",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "剧情敌人",
+        "notes": "第二章芦苇荡伏击"
+      },
+      {
+        "fighter_template_id": "escort_blademaster",
+        "display_name": "护送刀客",
+        "weapon_style": "blademaster",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "剧情敌人",
+        "notes": "第三章护送线冲突"
+      },
+      {
+        "fighter_template_id": "tide_bandit",
+        "display_name": "潮滩匪首",
+        "weapon_style": "blademaster",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "剧情敌人",
+        "notes": "第四章潮滩群匪"
+      },
+      {
+        "fighter_template_id": "wakou_leader",
+        "display_name": "破船首领",
+        "weapon_style": "blademaster",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "剧情首领",
+        "notes": "扩展 Boss 倭寇首领"
+      },
+      {
+        "fighter_template_id": "fallback_spearman",
+        "display_name": "默认枪手",
+        "weapon_style": "spearman",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "兜底敌人",
+        "notes": "缺省战斗配置"
+      }
+    ],
+    "story_deck_sets": [
+      {
+        "story_deck_id": "player_blade_start",
+        "display_name": "主角刀客起手",
+        "fighter_template_id": "player_blademaster",
+        "deck": "blade_front_cut:2,blade_chase_cut:2,blade_breathe:1",
+        "tags": "player_start",
+        "notes": "主角刀客初始牌组"
+      },
+      {
+        "story_deck_id": "player_spear_start",
+        "display_name": "主角枪手起手",
+        "fighter_template_id": "player_spearman",
+        "deck": "spear_mid_thrust:2,spear_line_press:1,spear_focus:1,spear_guard_horse:1",
+        "tags": "player_start",
+        "notes": "主角枪手初始牌组"
+      },
+      {
+        "story_deck_id": "player_blade_advanced",
+        "display_name": "主角刀客进阶",
+        "fighter_template_id": "player_blademaster",
+        "deck": "blade_front_cut:2,blade_press_break:2,blade_chase_cut:2,blade_hook_pull:1,blade_body_press:1,blade_breathe:1",
+        "tags": "player_growth",
+        "notes": "主角刀客成长后牌组"
+      },
+      {
+        "story_deck_id": "player_spear_advanced",
+        "display_name": "主角枪手进阶",
+        "fighter_template_id": "player_spearman",
+        "deck": "spear_mid_thrust:2,spear_line_press:2,spear_retreat_sting:1,spear_step_thrust:1,spear_focus:1,spear_guard_horse:1",
+        "tags": "player_growth",
+        "notes": "主角枪手成长后牌组"
+      },
+      {
+        "story_deck_id": "prologue_blade_teach",
+        "display_name": "海边刀客·教学",
+        "fighter_template_id": "prologue_blade_recruit",
+        "deck": "blade_front_cut:2,blade_breathe:1",
+        "tags": "teaching,easy",
+        "notes": "只教基础攻防"
+      },
+      {
+        "story_deck_id": "prologue_blade_pressure",
+        "display_name": "海边刀客·逼身",
+        "fighter_template_id": "prologue_blade_recruit",
+        "deck": "blade_front_cut:2,blade_press_break:2,blade_chase_cut:1",
+        "tags": "pressure",
+        "notes": "强调贴身压力"
+      },
+      {
+        "story_deck_id": "prologue_blade_break",
+        "display_name": "海边刀客·破势",
+        "fighter_template_id": "prologue_blade_recruit",
+        "deck": "blade_press_break:3,blade_body_press:1",
+        "tags": "break_focus",
+        "notes": "强调削势和崩势"
+      },
+      {
+        "story_deck_id": "prologue_spear_keep",
+        "display_name": "海边枪手·控距",
+        "fighter_template_id": "prologue_spear_guard",
+        "deck": "spear_mid_thrust:2,spear_line_press:2,spear_guard_horse:1",
+        "tags": "keep_distance",
+        "notes": "强调2-3格控距"
+      },
+      {
+        "story_deck_id": "master_veteran_rescue",
+        "display_name": "师傅救场刀法",
+        "fighter_template_id": "master_veteran",
+        "deck": "blade_front_cut:2,blade_press_break:2,blade_hook_pull:1,blade_body_press:1,blade_breathe:1",
+        "tags": "story,rescue",
+        "notes": "救场演示用"
+      },
+      {
+        "story_deck_id": "blade_duelist_pressure",
+        "display_name": "倭刀精锐·压迫",
+        "fighter_template_id": "blade_duelist",
+        "deck": "blade_front_cut:2,blade_press_break:2,blade_chase_cut:2,blade_hook_pull:1",
+        "tags": "duel,pressure",
+        "notes": "高手刀客测试"
+      },
+      {
+        "story_deck_id": "spear_duelist_keep",
+        "display_name": "长枪教头·控距",
+        "fighter_template_id": "spear_duelist",
+        "deck": "spear_mid_thrust:2,spear_line_press:2,spear_step_thrust:2,spear_guard_horse:1",
+        "tags": "duel,keep_distance",
+        "notes": "高手枪手测试"
+      },
+      {
+        "story_deck_id": "wakou_raider_smoke",
+        "display_name": "倭寇杂兵·烟火",
+        "fighter_template_id": "wakou_raider",
+        "deck": "blade_front_cut:2,blade_chase_cut:1,blade_breathe:1,blade_body_press:1",
+        "tags": "story,blade",
+        "notes": "渔村低血量刀兵"
+      },
+      {
+        "story_deck_id": "transport_officer_pressure",
+        "display_name": "押运官·压迫",
+        "fighter_template_id": "transport_officer",
+        "deck": "blade_front_cut:2,blade_press_break:2,blade_hook_pull:1,blade_body_press:1,blade_breathe:1",
+        "tags": "story,elite,blade",
+        "notes": "押运官精英刀客"
+      },
+      {
+        "story_deck_id": "mutiny_camp_spear",
+        "display_name": "兵变营头·长枪",
+        "fighter_template_id": "mutiny_camp_leader",
+        "deck": "spear_mid_thrust:2,spear_line_press:2,spear_step_thrust:1,spear_guard_horse:1",
+        "tags": "story,elite,spear",
+        "notes": "欠饷营精英枪兵"
+      },
+      {
+        "story_deck_id": "reed_ambusher_keep",
+        "display_name": "芦苇伏兵·控距",
+        "fighter_template_id": "reed_ambusher",
+        "deck": "spear_mid_thrust:2,spear_line_press:2,spear_retreat_sting:1,spear_guard_horse:1",
+        "tags": "story,spear",
+        "notes": "芦苇荡伏击控距"
+      },
+      {
+        "story_deck_id": "escort_blademaster_pressure",
+        "display_name": "护送刀客·缠斗",
+        "fighter_template_id": "escort_blademaster",
+        "deck": "blade_front_cut:2,blade_press_break:2,blade_chase_cut:1,blade_hook_pull:1,blade_breathe:1",
+        "tags": "story,blade",
+        "notes": "护送线刀客"
+      },
+      {
+        "story_deck_id": "tide_bandit_pressure",
+        "display_name": "潮滩匪首·逼身",
+        "fighter_template_id": "tide_bandit",
+        "deck": "blade_front_cut:2,blade_press_break:2,blade_chase_cut:2,blade_body_press:1,blade_breathe:1",
+        "tags": "story,blade",
+        "notes": "潮滩高压刀兵"
+      },
+      {
+        "story_deck_id": "wakou_leader_boss",
+        "display_name": "破船首领·Boss",
+        "fighter_template_id": "wakou_leader",
+        "deck": "blade_front_cut:2,blade_press_break:2,blade_chase_cut:2,blade_hook_pull:1,blade_body_press:1,blade_breathe:1",
+        "tags": "story,boss,blade",
+        "notes": "扩展 Boss 牌组"
+      },
+      {
+        "story_deck_id": "fallback_spear_keep",
+        "display_name": "默认枪手·控距",
+        "fighter_template_id": "fallback_spearman",
+        "deck": "spear_mid_thrust:2,spear_line_press:1,spear_guard_horse:1",
+        "tags": "story,fallback",
+        "notes": "缺省兜底牌组"
+      }
+    ],
+    "fighter_stat_sets": [
+      {
+        "stat_set_id": "easy",
+        "display_name": "简单",
+        "max_hp": "18",
+        "max_momentum": "6",
+        "starting_momentum": "4",
+        "starting_realm": "1",
+        "qinggong": "1",
+        "notes": "教学用"
+      },
+      {
+        "stat_set_id": "normal",
+        "display_name": "标准",
+        "max_hp": "22",
+        "max_momentum": "7",
+        "starting_momentum": "5",
+        "starting_realm": "1",
+        "qinggong": "1",
+        "notes": "标准敌人"
+      },
+      {
+        "stat_set_id": "pressure",
+        "display_name": "压迫",
+        "max_hp": "26",
+        "max_momentum": "8",
+        "starting_momentum": "6",
+        "starting_realm": "2",
+        "qinggong": "1",
+        "notes": "高压敌人"
+      },
+      {
+        "stat_set_id": "duel",
+        "display_name": "高手",
+        "max_hp": "30",
+        "max_momentum": "9",
+        "starting_momentum": "7",
+        "starting_realm": "2",
+        "qinggong": "1",
+        "notes": "对称式高手对决"
+      },
+      {
+        "stat_set_id": "master",
+        "display_name": "师傅",
+        "max_hp": "48",
+        "max_momentum": "12",
+        "starting_momentum": "9",
+        "starting_realm": "4",
+        "qinggong": "3",
+        "notes": "师傅救场演示"
+      },
+      {
+        "stat_set_id": "player_start",
+        "display_name": "主角起手",
+        "max_hp": "24",
+        "max_momentum": "6",
+        "starting_momentum": "5",
+        "starting_realm": "1",
+        "qinggong": "1",
+        "notes": "主角初始数值"
+      },
+      {
+        "stat_set_id": "weak_blade",
+        "display_name": "弱刀兵",
+        "max_hp": "24",
+        "max_momentum": "7",
+        "starting_momentum": "4",
+        "starting_realm": "1",
+        "qinggong": "1",
+        "notes": "低压剧情刀兵"
+      },
+      {
+        "stat_set_id": "normal_spear",
+        "display_name": "普通枪兵",
+        "max_hp": "40",
+        "max_momentum": "10",
+        "starting_momentum": "5",
+        "starting_realm": "1",
+        "qinggong": "1",
+        "notes": "正式剧情普通枪兵"
+      },
+      {
+        "stat_set_id": "normal_blade",
+        "display_name": "普通刀兵",
+        "max_hp": "28",
+        "max_momentum": "10",
+        "starting_momentum": "4",
+        "starting_realm": "1",
+        "qinggong": "1",
+        "notes": "正式剧情普通刀兵"
+      },
+      {
+        "stat_set_id": "elite_spear",
+        "display_name": "精英枪兵",
+        "max_hp": "44",
+        "max_momentum": "10",
+        "starting_momentum": "5",
+        "starting_realm": "2",
+        "qinggong": "1",
+        "notes": "正式剧情精英枪兵"
+      },
+      {
+        "stat_set_id": "elite_blade",
+        "display_name": "精英刀兵",
+        "max_hp": "38",
+        "max_momentum": "10",
+        "starting_momentum": "5",
+        "starting_realm": "2",
+        "qinggong": "2",
+        "notes": "正式剧情精英刀兵"
+      },
+      {
+        "stat_set_id": "chapter_pressure",
+        "display_name": "章节高压敌",
+        "max_hp": "36",
+        "max_momentum": "11",
+        "starting_momentum": "6",
+        "starting_realm": "2",
+        "qinggong": "2",
+        "notes": "中后段高压敌人"
+      },
+      {
+        "stat_set_id": "boss_blade",
+        "display_name": "首领刀客",
+        "max_hp": "42",
+        "max_momentum": "12",
+        "starting_momentum": "6",
+        "starting_realm": "3",
+        "qinggong": "2",
+        "notes": "Boss 与首领战"
+      }
+    ],
+    "story_encounters": [
+      {
+        "encounter_id": "prologue_beach_teach",
+        "display_name": "海边初战·教学",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "prologue_blade_recruit",
+        "opponent_deck_id": "prologue_blade_teach",
+        "opponent_stat_set_id": "easy",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "notes": "第一场教学战"
+      },
+      {
+        "encounter_id": "prologue_beach_pressure",
+        "display_name": "海边初战·逼身",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "prologue_blade_recruit",
+        "opponent_deck_id": "prologue_blade_pressure",
+        "opponent_stat_set_id": "normal",
+        "settlement_mode": "reactive",
+        "pressure_profile": "edge_pressure",
+        "notes": "测试逼身压力"
+      },
+      {
+        "encounter_id": "prologue_beach_break",
+        "display_name": "海边初战·破势",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "prologue_blade_recruit",
+        "opponent_deck_id": "prologue_blade_break",
+        "opponent_stat_set_id": "normal",
+        "settlement_mode": "reactive",
+        "pressure_profile": "break_resist",
+        "notes": "测试崩势教学，精英稳势"
+      },
+      {
+        "encounter_id": "prologue_spear_keep",
+        "display_name": "海边枪手·控距",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "prologue_spear_guard",
+        "opponent_deck_id": "prologue_spear_keep",
+        "opponent_stat_set_id": "normal",
+        "settlement_mode": "reactive",
+        "pressure_profile": "edge_pressure",
+        "notes": "测试枪控距与边界压迫"
+      },
+      {
+        "encounter_id": "master_rescue_001",
+        "display_name": "师傅救场",
+        "player_template_id": "master_veteran",
+        "player_deck_id": "master_veteran_rescue",
+        "player_stat_set_id": "master",
+        "opponent_template_id": "prologue_blade_recruit",
+        "opponent_deck_id": "prologue_blade_pressure",
+        "opponent_stat_set_id": "pressure",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "notes": "师傅救场演示"
+      },
+      {
+        "encounter_id": "symmetric_blade_duel",
+        "display_name": "刀客高手对决",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "blade_duelist",
+        "opponent_deck_id": "blade_duelist_pressure",
+        "opponent_stat_set_id": "duel",
+        "settlement_mode": "reactive",
+        "pressure_profile": "break_resist",
+        "notes": "对称式刀客拆招测试"
+      },
+      {
+        "encounter_id": "symmetric_spear_duel",
+        "display_name": "枪手高手对决",
+        "player_template_id": "player_spearman",
+        "player_deck_id": "player_spear_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "spear_duelist",
+        "opponent_deck_id": "spear_duelist_keep",
+        "opponent_stat_set_id": "duel",
+        "settlement_mode": "reactive",
+        "pressure_profile": "edge_pressure",
+        "notes": "对称式枪手控距测试"
+      },
+      {
+        "encounter_id": "enc_prologue_master_rescue",
+        "display_name": "序章救场",
+        "player_template_id": "master_veteran",
+        "player_deck_id": "master_veteran_rescue",
+        "player_stat_set_id": "master",
+        "opponent_template_id": "prologue_blade_recruit",
+        "opponent_deck_id": "prologue_blade_pressure",
+        "opponent_stat_set_id": "pressure",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "notes": "正式剧情：师傅救场"
+      },
+      {
+        "encounter_id": "enc_beach_ambush",
+        "display_name": "海边伏击",
+        "player_template_id": "player_spearman",
+        "player_deck_id": "player_spear_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "prologue_spear_guard",
+        "opponent_deck_id": "prologue_spear_keep",
+        "opponent_stat_set_id": "normal_spear",
+        "settlement_mode": "reactive",
+        "pressure_profile": "edge_pressure",
+        "notes": "正式剧情：海边伏击"
+      },
+      {
+        "encounter_id": "enc_fishing_village_embers",
+        "display_name": "渔村残火",
+        "player_template_id": "player_spearman",
+        "player_deck_id": "player_spear_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "wakou_raider",
+        "opponent_deck_id": "wakou_raider_smoke",
+        "opponent_stat_set_id": "weak_blade",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "notes": "正式剧情：渔村残火"
+      },
+      {
+        "encounter_id": "enc_transport_officer",
+        "display_name": "失械案押运官",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "transport_officer",
+        "opponent_deck_id": "transport_officer_pressure",
+        "opponent_stat_set_id": "elite_blade",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "notes": "正式剧情：押运官精英战"
+      },
+      {
+        "encounter_id": "enc_mutiny_camp",
+        "display_name": "欠饷营兵变",
+        "player_template_id": "player_spearman",
+        "player_deck_id": "player_spear_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "mutiny_camp_leader",
+        "opponent_deck_id": "mutiny_camp_spear",
+        "opponent_stat_set_id": "elite_spear",
+        "settlement_mode": "reactive",
+        "pressure_profile": "edge_pressure",
+        "notes": "正式剧情：欠饷营"
+      },
+      {
+        "encounter_id": "enc_ch2_reed_ambush",
+        "display_name": "芦苇荡伏击",
+        "player_template_id": "player_spearman",
+        "player_deck_id": "player_spear_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "reed_ambusher",
+        "opponent_deck_id": "reed_ambusher_keep",
+        "opponent_stat_set_id": "normal_spear",
+        "settlement_mode": "reactive",
+        "pressure_profile": "edge_pressure",
+        "notes": "正式剧情：第二章伏击"
+      },
+      {
+        "encounter_id": "enc_ch3_escort_clash",
+        "display_name": "护送线冲突",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "escort_blademaster",
+        "opponent_deck_id": "escort_blademaster_pressure",
+        "opponent_stat_set_id": "elite_blade",
+        "settlement_mode": "reactive",
+        "pressure_profile": "break_resist",
+        "notes": "正式剧情：第三章护送战"
+      },
+      {
+        "encounter_id": "enc_ch4_tide_bandits",
+        "display_name": "潮滩匪首",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "tide_bandit",
+        "opponent_deck_id": "tide_bandit_pressure",
+        "opponent_stat_set_id": "chapter_pressure",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "notes": "正式剧情：第四章潮滩匪"
+      },
+      {
+        "encounter_id": "enc_boss_ext_wakou_leader",
+        "display_name": "破船首领",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "wakou_leader",
+        "opponent_deck_id": "wakou_leader_boss",
+        "opponent_stat_set_id": "boss_blade",
+        "settlement_mode": "reactive",
+        "pressure_profile": "break_resist",
+        "notes": "正式剧情：扩展 Boss"
+      },
+      {
+        "encounter_id": "enc_wakou_boss",
+        "display_name": "倭寇首领",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "wakou_leader",
+        "opponent_deck_id": "wakou_leader_boss",
+        "opponent_stat_set_id": "boss_blade",
+        "settlement_mode": "reactive",
+        "pressure_profile": "break_resist",
+        "notes": "正式剧情：旧 Boss id 兼容"
+      },
+      {
+        "encounter_id": "fallback",
+        "display_name": "默认战斗",
+        "player_template_id": "player_spearman",
+        "player_deck_id": "player_spear_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "fallback_spearman",
+        "opponent_deck_id": "fallback_spear_keep",
+        "opponent_stat_set_id": "normal_spear",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "notes": "正式剧情：兜底配置"
+      }
+    ]
+  },
+  "indexes": {
+    "fighter_templates_by_id": {
+      "player_blademaster": {
+        "fighter_template_id": "player_blademaster",
+        "display_name": "少年刀客",
+        "weapon_style": "blademaster",
+        "default_position": "2",
+        "default_facing": "right",
+        "story_role": "玩家单位",
+        "notes": "主角刀客模板"
+      },
+      "player_spearman": {
+        "fighter_template_id": "player_spearman",
+        "display_name": "少年枪手",
+        "weapon_style": "spearman",
+        "default_position": "2",
+        "default_facing": "right",
+        "story_role": "玩家单位",
+        "notes": "主角枪手模板"
+      },
+      "prologue_blade_recruit": {
+        "fighter_template_id": "prologue_blade_recruit",
+        "display_name": "倭刀喽啰",
+        "weapon_style": "blademaster",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "海边初战教学单位",
+        "notes": "普通倭寇刀手"
+      },
+      "prologue_spear_guard": {
+        "fighter_template_id": "prologue_spear_guard",
+        "display_name": "持枪哨兵",
+        "weapon_style": "spearman",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "海边控距单位",
+        "notes": "控距型枪兵"
+      },
+      "master_veteran": {
+        "fighter_template_id": "master_veteran",
+        "display_name": "沉默老兵",
+        "weapon_style": "blademaster",
+        "default_position": "2",
+        "default_facing": "right",
+        "story_role": "师傅单位",
+        "notes": "救场与教学角色"
+      },
+      "blade_duelist": {
+        "fighter_template_id": "blade_duelist",
+        "display_name": "倭刀精锐",
+        "weapon_style": "blademaster",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "高手对决单位",
+        "notes": "对称式拆招测试敌人"
+      },
+      "spear_duelist": {
+        "fighter_template_id": "spear_duelist",
+        "display_name": "长枪教头",
+        "weapon_style": "spearman",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "高手对决单位",
+        "notes": "对称式控距测试敌人"
+      },
+      "wakou_raider": {
+        "fighter_template_id": "wakou_raider",
+        "display_name": "倭寇杂兵",
+        "weapon_style": "blademaster",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "剧情敌人",
+        "notes": "渔村残火与低压刀兵"
+      },
+      "transport_officer": {
+        "fighter_template_id": "transport_officer",
+        "display_name": "押运官",
+        "weapon_style": "blademaster",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "剧情敌人",
+        "notes": "失械案精英刀客"
+      },
+      "mutiny_camp_leader": {
+        "fighter_template_id": "mutiny_camp_leader",
+        "display_name": "兵变营头",
+        "weapon_style": "spearman",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "剧情敌人",
+        "notes": "欠饷营精英枪兵"
+      },
+      "reed_ambusher": {
+        "fighter_template_id": "reed_ambusher",
+        "display_name": "芦苇伏兵",
+        "weapon_style": "spearman",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "剧情敌人",
+        "notes": "第二章芦苇荡伏击"
+      },
+      "escort_blademaster": {
+        "fighter_template_id": "escort_blademaster",
+        "display_name": "护送刀客",
+        "weapon_style": "blademaster",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "剧情敌人",
+        "notes": "第三章护送线冲突"
+      },
+      "tide_bandit": {
+        "fighter_template_id": "tide_bandit",
+        "display_name": "潮滩匪首",
+        "weapon_style": "blademaster",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "剧情敌人",
+        "notes": "第四章潮滩群匪"
+      },
+      "wakou_leader": {
+        "fighter_template_id": "wakou_leader",
+        "display_name": "破船首领",
+        "weapon_style": "blademaster",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "剧情首领",
+        "notes": "扩展 Boss 倭寇首领"
+      },
+      "fallback_spearman": {
+        "fighter_template_id": "fallback_spearman",
+        "display_name": "默认枪手",
+        "weapon_style": "spearman",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "兜底敌人",
+        "notes": "缺省战斗配置"
+      }
+    },
+    "story_deck_sets_by_id": {
+      "player_blade_start": {
+        "story_deck_id": "player_blade_start",
+        "display_name": "主角刀客起手",
+        "fighter_template_id": "player_blademaster",
+        "deck": "blade_front_cut:2,blade_chase_cut:2,blade_breathe:1",
+        "tags": "player_start",
+        "notes": "主角刀客初始牌组"
+      },
+      "player_spear_start": {
+        "story_deck_id": "player_spear_start",
+        "display_name": "主角枪手起手",
+        "fighter_template_id": "player_spearman",
+        "deck": "spear_mid_thrust:2,spear_line_press:1,spear_focus:1,spear_guard_horse:1",
+        "tags": "player_start",
+        "notes": "主角枪手初始牌组"
+      },
+      "player_blade_advanced": {
+        "story_deck_id": "player_blade_advanced",
+        "display_name": "主角刀客进阶",
+        "fighter_template_id": "player_blademaster",
+        "deck": "blade_front_cut:2,blade_press_break:2,blade_chase_cut:2,blade_hook_pull:1,blade_body_press:1,blade_breathe:1",
+        "tags": "player_growth",
+        "notes": "主角刀客成长后牌组"
+      },
+      "player_spear_advanced": {
+        "story_deck_id": "player_spear_advanced",
+        "display_name": "主角枪手进阶",
+        "fighter_template_id": "player_spearman",
+        "deck": "spear_mid_thrust:2,spear_line_press:2,spear_retreat_sting:1,spear_step_thrust:1,spear_focus:1,spear_guard_horse:1",
+        "tags": "player_growth",
+        "notes": "主角枪手成长后牌组"
+      },
+      "prologue_blade_teach": {
+        "story_deck_id": "prologue_blade_teach",
+        "display_name": "海边刀客·教学",
+        "fighter_template_id": "prologue_blade_recruit",
+        "deck": "blade_front_cut:2,blade_breathe:1",
+        "tags": "teaching,easy",
+        "notes": "只教基础攻防"
+      },
+      "prologue_blade_pressure": {
+        "story_deck_id": "prologue_blade_pressure",
+        "display_name": "海边刀客·逼身",
+        "fighter_template_id": "prologue_blade_recruit",
+        "deck": "blade_front_cut:2,blade_press_break:2,blade_chase_cut:1",
+        "tags": "pressure",
+        "notes": "强调贴身压力"
+      },
+      "prologue_blade_break": {
+        "story_deck_id": "prologue_blade_break",
+        "display_name": "海边刀客·破势",
+        "fighter_template_id": "prologue_blade_recruit",
+        "deck": "blade_press_break:3,blade_body_press:1",
+        "tags": "break_focus",
+        "notes": "强调削势和崩势"
+      },
+      "prologue_spear_keep": {
+        "story_deck_id": "prologue_spear_keep",
+        "display_name": "海边枪手·控距",
+        "fighter_template_id": "prologue_spear_guard",
+        "deck": "spear_mid_thrust:2,spear_line_press:2,spear_guard_horse:1",
+        "tags": "keep_distance",
+        "notes": "强调2-3格控距"
+      },
+      "master_veteran_rescue": {
+        "story_deck_id": "master_veteran_rescue",
+        "display_name": "师傅救场刀法",
+        "fighter_template_id": "master_veteran",
+        "deck": "blade_front_cut:2,blade_press_break:2,blade_hook_pull:1,blade_body_press:1,blade_breathe:1",
+        "tags": "story,rescue",
+        "notes": "救场演示用"
+      },
+      "blade_duelist_pressure": {
+        "story_deck_id": "blade_duelist_pressure",
+        "display_name": "倭刀精锐·压迫",
+        "fighter_template_id": "blade_duelist",
+        "deck": "blade_front_cut:2,blade_press_break:2,blade_chase_cut:2,blade_hook_pull:1",
+        "tags": "duel,pressure",
+        "notes": "高手刀客测试"
+      },
+      "spear_duelist_keep": {
+        "story_deck_id": "spear_duelist_keep",
+        "display_name": "长枪教头·控距",
+        "fighter_template_id": "spear_duelist",
+        "deck": "spear_mid_thrust:2,spear_line_press:2,spear_step_thrust:2,spear_guard_horse:1",
+        "tags": "duel,keep_distance",
+        "notes": "高手枪手测试"
+      },
+      "wakou_raider_smoke": {
+        "story_deck_id": "wakou_raider_smoke",
+        "display_name": "倭寇杂兵·烟火",
+        "fighter_template_id": "wakou_raider",
+        "deck": "blade_front_cut:2,blade_chase_cut:1,blade_breathe:1,blade_body_press:1",
+        "tags": "story,blade",
+        "notes": "渔村低血量刀兵"
+      },
+      "transport_officer_pressure": {
+        "story_deck_id": "transport_officer_pressure",
+        "display_name": "押运官·压迫",
+        "fighter_template_id": "transport_officer",
+        "deck": "blade_front_cut:2,blade_press_break:2,blade_hook_pull:1,blade_body_press:1,blade_breathe:1",
+        "tags": "story,elite,blade",
+        "notes": "押运官精英刀客"
+      },
+      "mutiny_camp_spear": {
+        "story_deck_id": "mutiny_camp_spear",
+        "display_name": "兵变营头·长枪",
+        "fighter_template_id": "mutiny_camp_leader",
+        "deck": "spear_mid_thrust:2,spear_line_press:2,spear_step_thrust:1,spear_guard_horse:1",
+        "tags": "story,elite,spear",
+        "notes": "欠饷营精英枪兵"
+      },
+      "reed_ambusher_keep": {
+        "story_deck_id": "reed_ambusher_keep",
+        "display_name": "芦苇伏兵·控距",
+        "fighter_template_id": "reed_ambusher",
+        "deck": "spear_mid_thrust:2,spear_line_press:2,spear_retreat_sting:1,spear_guard_horse:1",
+        "tags": "story,spear",
+        "notes": "芦苇荡伏击控距"
+      },
+      "escort_blademaster_pressure": {
+        "story_deck_id": "escort_blademaster_pressure",
+        "display_name": "护送刀客·缠斗",
+        "fighter_template_id": "escort_blademaster",
+        "deck": "blade_front_cut:2,blade_press_break:2,blade_chase_cut:1,blade_hook_pull:1,blade_breathe:1",
+        "tags": "story,blade",
+        "notes": "护送线刀客"
+      },
+      "tide_bandit_pressure": {
+        "story_deck_id": "tide_bandit_pressure",
+        "display_name": "潮滩匪首·逼身",
+        "fighter_template_id": "tide_bandit",
+        "deck": "blade_front_cut:2,blade_press_break:2,blade_chase_cut:2,blade_body_press:1,blade_breathe:1",
+        "tags": "story,blade",
+        "notes": "潮滩高压刀兵"
+      },
+      "wakou_leader_boss": {
+        "story_deck_id": "wakou_leader_boss",
+        "display_name": "破船首领·Boss",
+        "fighter_template_id": "wakou_leader",
+        "deck": "blade_front_cut:2,blade_press_break:2,blade_chase_cut:2,blade_hook_pull:1,blade_body_press:1,blade_breathe:1",
+        "tags": "story,boss,blade",
+        "notes": "扩展 Boss 牌组"
+      },
+      "fallback_spear_keep": {
+        "story_deck_id": "fallback_spear_keep",
+        "display_name": "默认枪手·控距",
+        "fighter_template_id": "fallback_spearman",
+        "deck": "spear_mid_thrust:2,spear_line_press:1,spear_guard_horse:1",
+        "tags": "story,fallback",
+        "notes": "缺省兜底牌组"
+      }
+    },
+    "fighter_stat_sets_by_id": {
+      "easy": {
+        "stat_set_id": "easy",
+        "display_name": "简单",
+        "max_hp": "18",
+        "max_momentum": "6",
+        "starting_momentum": "4",
+        "starting_realm": "1",
+        "qinggong": "1",
+        "notes": "教学用"
+      },
+      "normal": {
+        "stat_set_id": "normal",
+        "display_name": "标准",
+        "max_hp": "22",
+        "max_momentum": "7",
+        "starting_momentum": "5",
+        "starting_realm": "1",
+        "qinggong": "1",
+        "notes": "标准敌人"
+      },
+      "pressure": {
+        "stat_set_id": "pressure",
+        "display_name": "压迫",
+        "max_hp": "26",
+        "max_momentum": "8",
+        "starting_momentum": "6",
+        "starting_realm": "2",
+        "qinggong": "1",
+        "notes": "高压敌人"
+      },
+      "duel": {
+        "stat_set_id": "duel",
+        "display_name": "高手",
+        "max_hp": "30",
+        "max_momentum": "9",
+        "starting_momentum": "7",
+        "starting_realm": "2",
+        "qinggong": "1",
+        "notes": "对称式高手对决"
+      },
+      "master": {
+        "stat_set_id": "master",
+        "display_name": "师傅",
+        "max_hp": "48",
+        "max_momentum": "12",
+        "starting_momentum": "9",
+        "starting_realm": "4",
+        "qinggong": "3",
+        "notes": "师傅救场演示"
+      },
+      "player_start": {
+        "stat_set_id": "player_start",
+        "display_name": "主角起手",
+        "max_hp": "24",
+        "max_momentum": "6",
+        "starting_momentum": "5",
+        "starting_realm": "1",
+        "qinggong": "1",
+        "notes": "主角初始数值"
+      },
+      "weak_blade": {
+        "stat_set_id": "weak_blade",
+        "display_name": "弱刀兵",
+        "max_hp": "24",
+        "max_momentum": "7",
+        "starting_momentum": "4",
+        "starting_realm": "1",
+        "qinggong": "1",
+        "notes": "低压剧情刀兵"
+      },
+      "normal_spear": {
+        "stat_set_id": "normal_spear",
+        "display_name": "普通枪兵",
+        "max_hp": "40",
+        "max_momentum": "10",
+        "starting_momentum": "5",
+        "starting_realm": "1",
+        "qinggong": "1",
+        "notes": "正式剧情普通枪兵"
+      },
+      "normal_blade": {
+        "stat_set_id": "normal_blade",
+        "display_name": "普通刀兵",
+        "max_hp": "28",
+        "max_momentum": "10",
+        "starting_momentum": "4",
+        "starting_realm": "1",
+        "qinggong": "1",
+        "notes": "正式剧情普通刀兵"
+      },
+      "elite_spear": {
+        "stat_set_id": "elite_spear",
+        "display_name": "精英枪兵",
+        "max_hp": "44",
+        "max_momentum": "10",
+        "starting_momentum": "5",
+        "starting_realm": "2",
+        "qinggong": "1",
+        "notes": "正式剧情精英枪兵"
+      },
+      "elite_blade": {
+        "stat_set_id": "elite_blade",
+        "display_name": "精英刀兵",
+        "max_hp": "38",
+        "max_momentum": "10",
+        "starting_momentum": "5",
+        "starting_realm": "2",
+        "qinggong": "2",
+        "notes": "正式剧情精英刀兵"
+      },
+      "chapter_pressure": {
+        "stat_set_id": "chapter_pressure",
+        "display_name": "章节高压敌",
+        "max_hp": "36",
+        "max_momentum": "11",
+        "starting_momentum": "6",
+        "starting_realm": "2",
+        "qinggong": "2",
+        "notes": "中后段高压敌人"
+      },
+      "boss_blade": {
+        "stat_set_id": "boss_blade",
+        "display_name": "首领刀客",
+        "max_hp": "42",
+        "max_momentum": "12",
+        "starting_momentum": "6",
+        "starting_realm": "3",
+        "qinggong": "2",
+        "notes": "Boss 与首领战"
+      }
+    },
+    "story_encounters_by_id": {
+      "prologue_beach_teach": {
+        "encounter_id": "prologue_beach_teach",
+        "display_name": "海边初战·教学",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "prologue_blade_recruit",
+        "opponent_deck_id": "prologue_blade_teach",
+        "opponent_stat_set_id": "easy",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "notes": "第一场教学战"
+      },
+      "prologue_beach_pressure": {
+        "encounter_id": "prologue_beach_pressure",
+        "display_name": "海边初战·逼身",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "prologue_blade_recruit",
+        "opponent_deck_id": "prologue_blade_pressure",
+        "opponent_stat_set_id": "normal",
+        "settlement_mode": "reactive",
+        "pressure_profile": "edge_pressure",
+        "notes": "测试逼身压力"
+      },
+      "prologue_beach_break": {
+        "encounter_id": "prologue_beach_break",
+        "display_name": "海边初战·破势",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "prologue_blade_recruit",
+        "opponent_deck_id": "prologue_blade_break",
+        "opponent_stat_set_id": "normal",
+        "settlement_mode": "reactive",
+        "pressure_profile": "break_resist",
+        "notes": "测试崩势教学，精英稳势"
+      },
+      "prologue_spear_keep": {
+        "encounter_id": "prologue_spear_keep",
+        "display_name": "海边枪手·控距",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "prologue_spear_guard",
+        "opponent_deck_id": "prologue_spear_keep",
+        "opponent_stat_set_id": "normal",
+        "settlement_mode": "reactive",
+        "pressure_profile": "edge_pressure",
+        "notes": "测试枪控距与边界压迫"
+      },
+      "master_rescue_001": {
+        "encounter_id": "master_rescue_001",
+        "display_name": "师傅救场",
+        "player_template_id": "master_veteran",
+        "player_deck_id": "master_veteran_rescue",
+        "player_stat_set_id": "master",
+        "opponent_template_id": "prologue_blade_recruit",
+        "opponent_deck_id": "prologue_blade_pressure",
+        "opponent_stat_set_id": "pressure",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "notes": "师傅救场演示"
+      },
+      "symmetric_blade_duel": {
+        "encounter_id": "symmetric_blade_duel",
+        "display_name": "刀客高手对决",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "blade_duelist",
+        "opponent_deck_id": "blade_duelist_pressure",
+        "opponent_stat_set_id": "duel",
+        "settlement_mode": "reactive",
+        "pressure_profile": "break_resist",
+        "notes": "对称式刀客拆招测试"
+      },
+      "symmetric_spear_duel": {
+        "encounter_id": "symmetric_spear_duel",
+        "display_name": "枪手高手对决",
+        "player_template_id": "player_spearman",
+        "player_deck_id": "player_spear_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "spear_duelist",
+        "opponent_deck_id": "spear_duelist_keep",
+        "opponent_stat_set_id": "duel",
+        "settlement_mode": "reactive",
+        "pressure_profile": "edge_pressure",
+        "notes": "对称式枪手控距测试"
+      },
+      "enc_prologue_master_rescue": {
+        "encounter_id": "enc_prologue_master_rescue",
+        "display_name": "序章救场",
+        "player_template_id": "master_veteran",
+        "player_deck_id": "master_veteran_rescue",
+        "player_stat_set_id": "master",
+        "opponent_template_id": "prologue_blade_recruit",
+        "opponent_deck_id": "prologue_blade_pressure",
+        "opponent_stat_set_id": "pressure",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "notes": "正式剧情：师傅救场"
+      },
+      "enc_beach_ambush": {
+        "encounter_id": "enc_beach_ambush",
+        "display_name": "海边伏击",
+        "player_template_id": "player_spearman",
+        "player_deck_id": "player_spear_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "prologue_spear_guard",
+        "opponent_deck_id": "prologue_spear_keep",
+        "opponent_stat_set_id": "normal_spear",
+        "settlement_mode": "reactive",
+        "pressure_profile": "edge_pressure",
+        "notes": "正式剧情：海边伏击"
+      },
+      "enc_fishing_village_embers": {
+        "encounter_id": "enc_fishing_village_embers",
+        "display_name": "渔村残火",
+        "player_template_id": "player_spearman",
+        "player_deck_id": "player_spear_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "wakou_raider",
+        "opponent_deck_id": "wakou_raider_smoke",
+        "opponent_stat_set_id": "weak_blade",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "notes": "正式剧情：渔村残火"
+      },
+      "enc_transport_officer": {
+        "encounter_id": "enc_transport_officer",
+        "display_name": "失械案押运官",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "transport_officer",
+        "opponent_deck_id": "transport_officer_pressure",
+        "opponent_stat_set_id": "elite_blade",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "notes": "正式剧情：押运官精英战"
+      },
+      "enc_mutiny_camp": {
+        "encounter_id": "enc_mutiny_camp",
+        "display_name": "欠饷营兵变",
+        "player_template_id": "player_spearman",
+        "player_deck_id": "player_spear_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "mutiny_camp_leader",
+        "opponent_deck_id": "mutiny_camp_spear",
+        "opponent_stat_set_id": "elite_spear",
+        "settlement_mode": "reactive",
+        "pressure_profile": "edge_pressure",
+        "notes": "正式剧情：欠饷营"
+      },
+      "enc_ch2_reed_ambush": {
+        "encounter_id": "enc_ch2_reed_ambush",
+        "display_name": "芦苇荡伏击",
+        "player_template_id": "player_spearman",
+        "player_deck_id": "player_spear_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "reed_ambusher",
+        "opponent_deck_id": "reed_ambusher_keep",
+        "opponent_stat_set_id": "normal_spear",
+        "settlement_mode": "reactive",
+        "pressure_profile": "edge_pressure",
+        "notes": "正式剧情：第二章伏击"
+      },
+      "enc_ch3_escort_clash": {
+        "encounter_id": "enc_ch3_escort_clash",
+        "display_name": "护送线冲突",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "escort_blademaster",
+        "opponent_deck_id": "escort_blademaster_pressure",
+        "opponent_stat_set_id": "elite_blade",
+        "settlement_mode": "reactive",
+        "pressure_profile": "break_resist",
+        "notes": "正式剧情：第三章护送战"
+      },
+      "enc_ch4_tide_bandits": {
+        "encounter_id": "enc_ch4_tide_bandits",
+        "display_name": "潮滩匪首",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "tide_bandit",
+        "opponent_deck_id": "tide_bandit_pressure",
+        "opponent_stat_set_id": "chapter_pressure",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "notes": "正式剧情：第四章潮滩匪"
+      },
+      "enc_boss_ext_wakou_leader": {
+        "encounter_id": "enc_boss_ext_wakou_leader",
+        "display_name": "破船首领",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "wakou_leader",
+        "opponent_deck_id": "wakou_leader_boss",
+        "opponent_stat_set_id": "boss_blade",
+        "settlement_mode": "reactive",
+        "pressure_profile": "break_resist",
+        "notes": "正式剧情：扩展 Boss"
+      },
+      "enc_wakou_boss": {
+        "encounter_id": "enc_wakou_boss",
+        "display_name": "倭寇首领",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "wakou_leader",
+        "opponent_deck_id": "wakou_leader_boss",
+        "opponent_stat_set_id": "boss_blade",
+        "settlement_mode": "reactive",
+        "pressure_profile": "break_resist",
+        "notes": "正式剧情：旧 Boss id 兼容"
+      },
+      "fallback": {
+        "encounter_id": "fallback",
+        "display_name": "默认战斗",
+        "player_template_id": "player_spearman",
+        "player_deck_id": "player_spear_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "fallback_spearman",
+        "opponent_deck_id": "fallback_spear_keep",
+        "opponent_stat_set_id": "normal_spear",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "notes": "正式剧情：兜底配置"
+      }
+    }
+  },
+  "validation": {
+    "ok": true,
+    "errors": [],
+    "warnings": [],
+    "counts": {
+      "templates": 15,
+      "decks": 19,
+      "stats": 13,
+      "encounters": 18
+    }
+  }
+}

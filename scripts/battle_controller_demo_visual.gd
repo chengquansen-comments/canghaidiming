@@ -5,7 +5,7 @@ extends "res://scripts/battle_controller_core.gd"
 # This file now focuses on shared scene construction and default visual helpers.
 # Runtime refresh behavior is expected to live in battle_controller_visual_ui.gd.
 
-const FRAME_SIZE := Vector2i(384, 384)
+const FRAME_SIZE := Vector2i(512, 512)
 const HUD_BAR_WIDTH := 208.0
 const SHEET_FRAME_COUNT := 3
 const PANEL_FRAME_PATH := "res://assets/pixel_battle/ui/panel_frame.png"
@@ -39,7 +39,7 @@ const GRID_ENEMY_BORDER_COLOR := Color(1.0, 0.79, 0.67, 0.95)
 const GRID_PLAYER_RANGE_BORDER_COLOR := Color(0.63, 0.88, 1.0, 0.86)
 const GRID_ENEMY_RANGE_BORDER_COLOR := Color(0.96, 0.62, 0.48, 0.86)
 const GRID_OVERLAP_BORDER_COLOR := Color(0.97, 0.88, 0.64, 0.94)
-const SLOT_LABELS := ["一位", "二位", "三位", "四位", "五位", "六位", "七位", "八位", "九位"]
+const SLOT_LABELS := ["一", "二", "三", "四", "五", "六", "七", "八", "九"]
 
 var stage_layer: Control
 var stage_scene_clip: Control
@@ -401,20 +401,22 @@ func _build_stage_grid() -> void:
 	stage_slot_label_box.anchor_bottom = 0.0
 	stage_slot_label_box.offset_left = -_grid_total_width() * 0.5
 	stage_slot_label_box.offset_right = _grid_total_width() * 0.5
-	stage_slot_label_box.offset_top = GRID_STAGE_Y + GRID_SLOT_HEIGHT + 8
-	stage_slot_label_box.offset_bottom = GRID_STAGE_Y + GRID_SLOT_HEIGHT + 40
+	stage_slot_label_box.offset_top = GRID_STAGE_Y
+	stage_slot_label_box.offset_bottom = GRID_STAGE_Y + GRID_SLOT_HEIGHT
 	stage_slot_label_box.add_theme_constant_override("separation", int(GRID_SLOT_GAP))
 	stage_slot_label_box.z_index = 5
 	stage_layer.add_child(stage_slot_label_box)
 	for i in range(GRID_SLOT_COUNT):
 		var slot_box := CenterContainer.new()
-		slot_box.custom_minimum_size = Vector2(GRID_SLOT_WIDTH, 24)
+		slot_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		slot_box.custom_minimum_size = Vector2(GRID_SLOT_WIDTH, GRID_SLOT_HEIGHT)
 		stage_slot_label_box.add_child(slot_box)
 		var slot_label := Label.new()
 		slot_label.text = SLOT_LABELS[i]
+		slot_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		slot_label.add_theme_font_size_override("font_size", 17)
-		slot_label.add_theme_color_override("font_color", Color("e3c889"))
-		slot_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.86))
+		slot_label.add_theme_color_override("font_color", Color(0.89, 0.78, 0.54, 0.34))
+		slot_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.32))
 		slot_label.add_theme_constant_override("shadow_offset_x", 1)
 		slot_label.add_theme_constant_override("shadow_offset_y", 2)
 		slot_box.add_child(slot_label)
@@ -639,7 +641,7 @@ func _build_center_info() -> void:
 	round_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.82))
 	round_label.add_theme_constant_override("shadow_offset_x", 2)
 	round_label.add_theme_constant_override("shadow_offset_y", 3)
-	round_label.text = "师门决斗"
+	round_label.text = ""
 	center_hud.add_child(round_label)
 
 	phase_label = Label.new()
@@ -861,11 +863,13 @@ func _build_overlay_layer() -> void:
 	overlay_panel.z_index = 1001
 	overlay_panel.clip_contents = true
 	overlay_panel.anchor_left = 0.5
-	overlay_panel.anchor_top = 0.12
+	overlay_panel.anchor_top = 0.08
 	overlay_panel.anchor_right = 0.5
-	overlay_panel.anchor_bottom = 0.12
+	overlay_panel.anchor_bottom = 0.92
 	overlay_panel.offset_left = -340
 	overlay_panel.offset_right = 340
+	overlay_panel.offset_top = 0
+	overlay_panel.offset_bottom = 0
 	overlay_panel.add_theme_stylebox_override("panel", _make_overlay_panel_style())
 	add_child(overlay_panel)
 
@@ -887,14 +891,22 @@ func _build_overlay_layer() -> void:
 	overlay_body.bbcode_enabled = true
 	overlay_body.fit_content = false
 	overlay_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	overlay_body.scroll_active = true
-	overlay_body.custom_minimum_size = Vector2(0, 320)
-	overlay_body.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	overlay_body.scroll_active = false
+	overlay_body.custom_minimum_size = Vector2(0, 92)
+	overlay_body.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	overlay_body.add_theme_color_override("default_color", Color("2d2419"))
 	overlay_box.add_child(overlay_body)
+	var overlay_action_scroll := ScrollContainer.new()
+	overlay_action_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	overlay_action_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	overlay_action_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	overlay_action_scroll.custom_minimum_size = Vector2(0, 280)
+	overlay_box.add_child(overlay_action_scroll)
 	overlay_actions = VBoxContainer.new()
 	overlay_actions.add_theme_constant_override("separation", 8)
-	overlay_box.add_child(overlay_actions)
+	overlay_actions.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	overlay_action_scroll.add_child(overlay_actions)
+	_build_battle_result_layer()
 
 func _refresh_ui() -> void:
 	super()

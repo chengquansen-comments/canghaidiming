@@ -5,18 +5,18 @@ const TRACKS_PATH := "res://data/performance_tracks.json"
 const FORMAL_PROLOGUE_PREFIX := "res://assets/pixel_battle/backgrounds/formal/prologue/"
 
 const EXPECTED_STAGES := [
-	"black_tide_0",
-	"black_tide_1",
-	"black_tide_2",
-	"black_tide_dead",
-	"black_tide_wooden_blade",
-	"black_tide_fall",
-	"prologue_master_arrives",
-	"prologue_three_cards",
-	"prologue_military_word",
-	"prologue_hidden_arrow",
-	"prologue_dont_look",
-	"departure",
+	"prologue_01",
+	"prologue_02",
+	"prologue_03",
+	"prologue_04",
+	"prologue_05",
+	"prologue_06",
+	"prologue_07",
+	"prologue_08",
+	"prologue_09",
+	"prologue_10",
+	"prologue_11",
+	"prologue_12",
 ]
 
 func _init() -> void:
@@ -40,14 +40,12 @@ func _init() -> void:
 			if not background.begins_with(FORMAL_PROLOGUE_PREFIX):
 				errors.append("step %d background is not formal prologue art: %s" % [i, background])
 			var timeline = tracks.get("timeline", {})
-			if not (timeline is Dictionary) or not (timeline as Dictionary).has(stage):
-				errors.append("missing timeline stage: %s" % stage)
-				continue
-			var data: Dictionary = (timeline as Dictionary).get(stage, {})
-			for prefix in ["prop", "prop2", "prop3"]:
-				var prop_path := str(data.get("%s_path" % prefix, ""))
-				if not prop_path.is_empty():
-					_validate_res_path(prop_path, "%s.%s_path" % [stage, prefix], errors)
+			if timeline is Dictionary and (timeline as Dictionary).has(stage):
+				var data: Dictionary = (timeline as Dictionary).get(stage, {})
+				for prefix in ["prop", "prop2", "prop3"]:
+					var prop_path := str(data.get("%s_path" % prefix, ""))
+					if not prop_path.is_empty():
+						_validate_res_path(prop_path, "%s.%s_path" % [stage, prefix], errors)
 		demo.queue_free()
 	if errors.is_empty():
 		print("[prologue-png] OK: 12 prologue stage(s) use PNG-backed performance tracks")

@@ -1,10 +1,12 @@
 # 月下师门决斗战斗 UI 设计文档
 
+> 当前 UI 管线总入口已迁移到 [UI_PIPELINE.md](UI_PIPELINE.md)，战斗规则入口为 [BATTLE.md](BATTLE.md)。本文保留为 UI 早期结构参考，标题、主题文案和部分入口链路可能已过时；若有冲突，以 `UI_PIPELINE.md`、`BATTLE.md` 和当前代码为准。
+>
 本文档记录当前视觉版 Godot 战斗 UI 的实际布局与交互规范，用于后续继续调整美术、动画、信息表达和代码结构。当前实现入口以 `MainVisual.tscn -> battle_controller_visual_ui.gd -> battle_controller_demo_visual.gd` 为准。
 
 ## 1. 当前目标
 
-视觉版目标是提供一个可试玩、可观察、可快速迭代的横版武侠战斗界面。主题为“月下师门决斗”，整体保留夜色山门、横向九格、敌我对峙、底部操作面板的结构。
+视觉版目标是提供一个可试玩、可观察、可快速迭代的横版武侠战斗界面。本文记录的“月下师门决斗”是旧版测试主题，当前剧情战斗不应在战斗场景顶部继续显示该字样。
 
 当前 UI 必须优先保证：
 
@@ -144,6 +146,15 @@ BattleControllerVisualUI (Control)
 - 角色视觉上站在格位区域附近。
 - 人物底部略高于格位方形下缘。
 - 不遮挡底部 UI。
+
+角色贴图不再默认以图片中心定位。视觉层读取 actor meta 中的 `frame_size`、`foot_anchor`、`body_center` 和 `head_anchor`：
+
+- 短武器角色继续使用 `512x512` 方帧。
+- 长枪角色使用 `1024x512` 宽帧，容纳横刺和长枪杆。
+- 玩家枪手当前使用多张单帧 PNG，actor meta 通过 `animations.*.files` 逐帧引用；旧横向 sheet 仍兼容。
+- TextureRect 会按帧宽高动态设置显示盒。
+- 格位对齐使用 `foot_anchor`，不是整张图片中心。
+- 朝向翻转时同步镜像 foot anchor，避免长枪帧人物漂移。
 
 ### 5.3 角色朝向
 

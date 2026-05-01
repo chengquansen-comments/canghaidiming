@@ -1,0 +1,6 @@
+key	value
+style	fragmented, compressed, implicit
+rule	动作先于解释；不说真相，只说痕迹。
+source_doc	res://docs/MVP_NARRATIVE_SCRIPT.md
+version	2
+note	补齐 MVP_NARRATIVE_SCRIPT 中后续战斗、事件、营地、旧物、Boss 与压案节点所需配置数据。

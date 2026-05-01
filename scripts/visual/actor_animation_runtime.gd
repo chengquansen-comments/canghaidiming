@@ -3,6 +3,7 @@ class_name ActorAnimationRuntime
 
 const ActorAnimationMeta = preload("res://scripts/visual/actor_animation_meta.gd")
 const ActorAnimationPlayer = preload("res://scripts/visual/actor_animation_player.gd")
+const BattleActorRenderHelper = preload("res://scripts/visual/battle_actor_view.gd")
 
 signal hit_frame_reached(actor_key: String, animation_name: String, frame_index: int, fx_id: String, impact_offset: Vector2)
 signal animation_finished(actor_key: String, animation_name: String)
@@ -27,6 +28,7 @@ func bind(p_actor_key: String, meta_path: String, p_target: TextureRect) -> bool
 			message = meta.error_message
 		emit_signal("runtime_failed", actor_key, message)
 		return false
+	BattleActorRenderHelper.apply_actor_meta_bounds(target, meta.frame_size, meta.foot_anchor, meta.actor_scale, meta.default_facing)
 	player.bind(meta, target)
 	_connect_player_signals()
 	is_ready = true

@@ -58,6 +58,11 @@ var overlay_panel: PanelContainer
 var overlay_title: Label
 var overlay_body: RichTextLabel
 var overlay_actions: VBoxContainer
+var battle_result_scrim: ColorRect
+var battle_result_panel: PanelContainer
+var battle_result_title: Label
+var battle_result_body: Label
+var battle_result_actions: VBoxContainer
 var combat_banner: PanelContainer
 var combat_banner_label: Label
 var screen_flash: ColorRect
@@ -227,6 +232,7 @@ func _build_ui() -> void:
 	overlay_actions = VBoxContainer.new()
 	overlay_actions.add_theme_constant_override("separation", 8)
 	overlay_box.add_child(overlay_actions)
+	_build_battle_result_layer()
 
 
 func _ready_card(
@@ -285,6 +291,7 @@ func _build_catalog() -> void:
 
 	fighter_catalog["spearman"] = FighterData.new("spearman", "枪手", "长枪", 24, 6, 5, 1, PackedInt32Array([3, 4, 5]), spear_deck, 1, 2, "right")
 	fighter_catalog["blademaster"] = FighterData.new("blademaster", "刀客", "单刀", 22, 6, 5, 2, PackedInt32Array([0, 1, 2]), blade_deck, 1, 6, "left")
+	fighter_catalog["master_veteran"] = FighterData.new("master_veteran", "沉默老兵", "旧腰刀", 48, 12, 9, 4, PackedInt32Array([0, 1, 2]), blade_deck, 3, 2, "right")
 
 	reward_pool = [
 		_ready_card("reward_momentum_up", "聚势", "专注提振自身势头。", 1, 3, 1, CardData.ROLE_MOMENTUM, 2, 0, 0, 0),
@@ -331,6 +338,63 @@ func _make_panel_style(fill: Color, border: Color) -> StyleBoxFlat:
 	style.content_margin_top = 12
 	style.content_margin_bottom = 12
 	return style
+
+
+func _build_battle_result_layer() -> void:
+	if battle_result_panel != null:
+		return
+	battle_result_scrim = ColorRect.new()
+	battle_result_scrim.visible = false
+	battle_result_scrim.z_as_relative = false
+	battle_result_scrim.z_index = 1100
+	battle_result_scrim.color = Color(0.01, 0.02, 0.03, 0.76)
+	battle_result_scrim.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+	add_child(battle_result_scrim)
+
+	battle_result_panel = PanelContainer.new()
+	battle_result_panel.visible = false
+	battle_result_panel.z_as_relative = false
+	battle_result_panel.z_index = 1101
+	battle_result_panel.anchor_left = 0.5
+	battle_result_panel.anchor_top = 0.5
+	battle_result_panel.anchor_right = 0.5
+	battle_result_panel.anchor_bottom = 0.5
+	battle_result_panel.offset_left = -240
+	battle_result_panel.offset_right = 240
+	battle_result_panel.offset_top = -120
+	battle_result_panel.offset_bottom = 120
+	battle_result_panel.add_theme_stylebox_override("panel", _make_panel_style(Color("2a2018"), Color("cfb889")))
+	add_child(battle_result_panel)
+
+	var result_margin := MarginContainer.new()
+	result_margin.add_theme_constant_override("margin_left", 28)
+	result_margin.add_theme_constant_override("margin_right", 28)
+	result_margin.add_theme_constant_override("margin_top", 24)
+	result_margin.add_theme_constant_override("margin_bottom", 24)
+	battle_result_panel.add_child(result_margin)
+
+	var result_box := VBoxContainer.new()
+	result_box.alignment = BoxContainer.ALIGNMENT_CENTER
+	result_box.add_theme_constant_override("separation", 16)
+	result_margin.add_child(result_box)
+
+	battle_result_title = Label.new()
+	battle_result_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	battle_result_title.add_theme_font_size_override("font_size", 30)
+	battle_result_title.add_theme_color_override("font_color", Color("f4e0b8"))
+	result_box.add_child(battle_result_title)
+
+	battle_result_body = Label.new()
+	battle_result_body.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	battle_result_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	battle_result_body.add_theme_font_size_override("font_size", 20)
+	battle_result_body.add_theme_color_override("font_color", Color("e2d2b3"))
+	result_box.add_child(battle_result_body)
+
+	battle_result_actions = VBoxContainer.new()
+	battle_result_actions.alignment = BoxContainer.ALIGNMENT_CENTER
+	battle_result_actions.add_theme_constant_override("separation", 8)
+	result_box.add_child(battle_result_actions)
 
 
 func _show_combat_banner(text: String, fill_color: Color, border_color: Color = Color("ffd479")) -> void:
@@ -658,7 +722,7 @@ func _show_role_selection() -> void:
 
 func _start_session(role_id: String) -> void:
 	player_role_id = role_id
-	var enemy_role_id := "blademaster" if role_id == "spearman" else "spearman"
+	var enemy_role_id := "blademaster" if role_id == "spearman" or role_id == "master_veteran" else "spearman"
 	player = Fighter.new(_copy_fighter_data(fighter_catalog[role_id]))
 	enemy = Fighter.new(_copy_fighter_data(fighter_catalog[enemy_role_id]))
 	enemy.set_session_realm(ENEMY_SESSION_REALM)
@@ -873,6 +937,7 @@ func _build_deck_view_text() -> String:
 func _start_battle() -> void:
 	if player == null or enemy == null:
 		return
+	_hide_battle_result_overlay()
 	battle_active = true
 	battle_count += 1
 	player.reset_for_battle(HAND_SIZE)
@@ -1201,10 +1266,13 @@ func _resolve_round() -> void:
 	for intent in order:
 		var actor := player if intent.actor_id == player.data.id else enemy
 		var target := enemy if intent.actor_id == player.data.id else player
+		if actor.hp <= 0:
+			break
 		var resolution_distance := state_machine.update_distance_from_positions(player, enemy)
 		var target_hp_before := target.hp
 		var target_guard_before := target.guard_points
 		var target_was_pending_broken := target.pending_control_state == Fighter.CONTROL_BROKEN
+		var actor_action_canceled := state_machine.is_reactive_mode() and actor.pending_control_state == Fighter.CONTROL_BROKEN
 		var lines := state_machine.resolve_intent(intent, actor, target)
 		var feedback := _build_intent_feedback(actor, target, intent, resolution_distance, target_hp_before, target_guard_before)
 		if not target_was_pending_broken and target.pending_control_state == Fighter.CONTROL_BROKEN:
@@ -1213,10 +1281,11 @@ func _resolve_round() -> void:
 			_flash_label(enemy_label if target.data.id == enemy.data.id else player_label, Color("ff8a8a"))
 		for line in lines:
 			_log(line)
-		_on_intent_resolved(actor, target, intent, feedback)
-		var combo_lines := _resolve_combo_chain_if_any(actor, target, intent)
-		for line in combo_lines:
-			_log(line)
+		if not actor_action_canceled:
+			_on_intent_resolved(actor, target, intent, feedback)
+			var combo_lines := _resolve_combo_chain_if_any(actor, target, intent)
+			for line in combo_lines:
+				_log(line)
 		_refresh_ui()
 		if target.hp <= 0:
 			break
@@ -1293,6 +1362,61 @@ func _finish_battle() -> void:
 	_log("[b]演武结束。[/b] %s" % result_text)
 	_show_node_buttons()
 	_refresh_ui()
+	_queue_battle_result_overlay(enemy.hp <= 0 and player.hp > 0)
+
+
+func _queue_battle_result_overlay(victory: bool) -> void:
+	call_deferred("_show_battle_result_overlay_after_presentation", victory)
+
+
+func _show_battle_result_overlay_after_presentation(victory: bool) -> void:
+	while has_method("_presentation_busy") and bool(call("_presentation_busy")):
+		await get_tree().create_timer(0.05).timeout
+	await get_tree().create_timer(0.30).timeout
+	_show_battle_result_overlay(victory)
+
+
+func _show_battle_result_overlay(victory: bool) -> void:
+	if battle_result_title == null or battle_result_body == null or battle_result_actions == null:
+		return
+	var title := "战斗胜利" if victory else "战斗失败"
+	var body := "" if victory else "重新再来"
+	var callback := Callable(self, "_on_battle_result_confirm_pressed") if victory else Callable(self, "_on_battle_retry_confirm_pressed")
+	battle_result_title.text = title
+	battle_result_body.text = body
+	for child in battle_result_actions.get_children():
+		child.queue_free()
+	var button := Button.new()
+	button.text = "确认"
+	button.custom_minimum_size = Vector2(160, 42)
+	button.pressed.connect(callback)
+	battle_result_actions.add_child(button)
+	if battle_result_scrim != null:
+		battle_result_scrim.visible = true
+		battle_result_scrim.move_to_front()
+	if battle_result_panel != null:
+		battle_result_panel.visible = true
+		battle_result_panel.move_to_front()
+	if has_method("_apply_button_styles"):
+		call("_apply_button_styles")
+
+
+func _on_battle_result_confirm_pressed() -> void:
+	_hide_battle_result_overlay()
+	_show_node_buttons()
+	_refresh_ui()
+
+
+func _on_battle_retry_confirm_pressed() -> void:
+	_hide_battle_result_overlay()
+	_start_battle()
+
+
+func _hide_battle_result_overlay() -> void:
+	if battle_result_scrim != null:
+		battle_result_scrim.visible = false
+	if battle_result_panel != null:
+		battle_result_panel.visible = false
 
 
 func _update_phase_label() -> void:

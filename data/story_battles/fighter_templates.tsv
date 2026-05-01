@@ -3,6 +3,14 @@ player_blademaster	少年刀客	blademaster	2	right	玩家单位	主角刀客模
 player_spearman	少年枪手	spearman	2	right	玩家单位	主角枪手模板
 prologue_blade_recruit	倭刀喽啰	blademaster	6	left	海边初战教学单位	普通倭寇刀手
 prologue_spear_guard	持枪哨兵	spearman	6	left	海边控距单位	控距型枪兵
-master_veteran	退伍老兵	spearman	2	right	师傅单位	救场与教学角色
+master_veteran	沉默老兵	blademaster	2	right	师傅单位	救场与教学角色
 blade_duelist	倭刀精锐	blademaster	6	left	高手对决单位	对称式拆招测试敌人
 spear_duelist	长枪教头	spearman	6	left	高手对决单位	对称式控距测试敌人
+wakou_raider	倭寇杂兵	blademaster	6	left	剧情敌人	渔村残火与低压刀兵
+transport_officer	押运官	blademaster	6	left	剧情敌人	失械案精英刀客
+mutiny_camp_leader	兵变营头	spearman	6	left	剧情敌人	欠饷营精英枪兵
+reed_ambusher	芦苇伏兵	spearman	6	left	剧情敌人	第二章芦苇荡伏击
+escort_blademaster	护送刀客	blademaster	6	left	剧情敌人	第三章护送线冲突
+tide_bandit	潮滩匪首	blademaster	6	left	剧情敌人	第四章潮滩群匪
+wakou_leader	破船首领	blademaster	6	left	剧情首领	扩展 Boss 倭寇首领
+fallback_spearman	默认枪手	spearman	6	left	兜底敌人	缺省战斗配置

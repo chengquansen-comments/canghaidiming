@@ -62,17 +62,8 @@ def alpha_coverage(image) -> tuple[int, int, float]:
     return non_zero, total, non_zero / float(total) if total else 0.0
 
 
-def validate_sheet(meta_path: Path, animation_name: str, anim: dict[str, Any], frame_size: list[int]) -> None:
+def validate_image_file(image_path: Path, animation_name: str, expected_width: int, expected_height: int) -> None:
     Image = require_pillow()
-
-    file_name = anim.get("file")
-    frames = anim.get("frames")
-    if not isinstance(file_name, str) or not file_name:
-        fail(f"{animation_name}.file must be a non-empty string")
-    if not isinstance(frames, int) or frames <= 0:
-        fail(f"{animation_name}.frames must be a positive integer")
-
-    image_path = meta_path.parent / file_name
     if not image_path.exists():
         fail(f"sheet not found for {animation_name}: {image_path}")
     if image_path.suffix.lower() != ".png":
@@ -81,13 +72,10 @@ def validate_sheet(meta_path: Path, animation_name: str, anim: dict[str, Any], f
 
     with Image.open(image_path) as image:
         width, height = image.size
-        expected_width = frame_size[0] * frames
-        expected_height = frame_size[1]
         if width != expected_width or height != expected_height:
             fail(
                 f"{animation_name} size mismatch: got {width}x{height}, "
-                f"expected {expected_width}x{expected_height} "
-                f"({frames} frames of {frame_size[0]}x{frame_size[1]})"
+                f"expected {expected_width}x{expected_height}"
             )
         if image.mode != "RGBA":
             fail(f"{animation_name} must be RGBA PNG, got mode={image.mode}: {image_path}")
@@ -99,7 +87,29 @@ def validate_sheet(meta_path: Path, animation_name: str, anim: dict[str, Any], f
         if ratio > 0.72:
             warn(f"{animation_name} alpha coverage is very high ({ratio:.2%}); check if background is not transparent")
 
-    ok(f"{animation_name}: {image_path.name} {expected_width}x{expected_height}, frames={frames}")
+
+def validate_sheet(meta_path: Path, animation_name: str, anim: dict[str, Any], frame_size: list[int]) -> None:
+    file_name = anim.get("file")
+    files = anim.get("files")
+    frames = anim.get("frames")
+    if not isinstance(frames, int) or frames <= 0:
+        fail(f"{animation_name}.frames must be a positive integer")
+    if isinstance(files, list):
+        if len(files) != frames:
+            fail(f"{animation_name}.files length must equal frames={frames}")
+        for index, item in enumerate(files):
+            if not isinstance(item, str) or not item:
+                fail(f"{animation_name}.files[{index}] must be a non-empty string")
+            validate_image_file(meta_path.parent / item, f"{animation_name}.files[{index}]", frame_size[0], frame_size[1])
+        ok(f"{animation_name}: {frames} single-frame PNG(s), frame={frame_size[0]}x{frame_size[1]}")
+        return
+    if not isinstance(file_name, str) or not file_name:
+        fail(f"{animation_name} must define file or files")
+
+    expected_width = frame_size[0] * frames
+    expected_height = frame_size[1]
+    validate_image_file(meta_path.parent / file_name, animation_name, expected_width, expected_height)
+    ok(f"{animation_name}: {file_name} {expected_width}x{expected_height}, frames={frames}")
 
 
 def validate_meta_sheets(meta_path: Path) -> None:

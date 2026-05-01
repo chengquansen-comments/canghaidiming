@@ -39,7 +39,7 @@ func _build_catalog() -> void:
 	combo_registry.clear()
 
 	var spear_mid_thrust := _ready_v032_card("spear_mid_thrust", "中平直刺", "枪手标准二三格刺击，稳定伤害与削势。", 2, 3, 2, CardData.ROLE_DAMAGE, 0, 2, 5, 0, PackedStringArray(["长兵", "正面", "基础"]), "枪")
-	var spear_line_press := _ready_v032_card("spear_line_press", "拦枪压线", "枪杆压住来路，命中后将敌人击退一格。", 2, 3, 2, CardData.ROLE_MOMENTUM, 0, 4, 2, 0, PackedStringArray(["长兵", "破势", "控线"]), "枪", true, 0, 1, 0, CardData.MOVE_ON_HIT)
+	var spear_line_press := _ready_v032_card("spear_line_press", "拦枪压线", "枪杆压住来路，命中后将敌人击退一格。", 2, 3, 2, CardData.ROLE_MOMENTUM, 0, 3, 2, 0, PackedStringArray(["长兵", "破势", "控线"]), "枪", true, 0, 1, 0, CardData.MOVE_ON_HIT)
 	var spear_retreat_sting := _ready_v032_card("spear_retreat_sting", "退枪留锋", "近身脱身刺，命中后自身后撤一格。", 1, 2, 2, CardData.ROLE_DAMAGE, 0, 1, 4, 0, PackedStringArray(["长兵", "后撤", "脱身"]), "枪", true, -1, 0, 0, CardData.MOVE_ON_HIT)
 	var spear_guard_horse := _ready_v032_card("spear_guard_horse", "架枪拒马", "架枪成拒马，稳守并推开敌人。", 0, 8, 2, CardData.ROLE_GUARD, 0, 0, 0, 7, PackedStringArray(["架势", "拒止"]), "枪", false, 0, 1, 0, CardData.MOVE_ALWAYS)
 	var spear_step_thrust := _ready_v032_card("spear_step_thrust", "顺步送枪", "三格追击刺，命中后自身进身一格。", 3, 3, 2, CardData.ROLE_DAMAGE, 0, 1, 6, 0, PackedStringArray(["长兵", "进身"]), "枪", true, 1, 0, 0, CardData.MOVE_ON_HIT)
@@ -57,6 +57,7 @@ func _build_catalog() -> void:
 
 	fighter_catalog["spearman"] = FighterData.new("spearman", "枪手", "长枪", 24, 6, 5, 1, PackedInt32Array([2, 3]), spear_deck, 1, 2, "right")
 	fighter_catalog["blademaster"] = FighterData.new("blademaster", "刀客", "单刀", 22, 6, 5, 2, PackedInt32Array([1, 2]), blade_deck, 1, 6, "left")
+	fighter_catalog["master_veteran"] = FighterData.new("master_veteran", "沉默老兵", "旧腰刀", 48, 12, 9, 4, PackedInt32Array([0, 1, 2]), blade_deck, 3, 2, "right")
 
 	reward_pool = [
 		_ready_v032_card("reward_push", "压线", "命中后击退敌人一格。", 2, 3, 2, CardData.ROLE_MOMENTUM, 0, 2, 2, 0, PackedStringArray(["控线"]), "通用", true, 0, 1, 0, CardData.MOVE_ON_HIT),
@@ -66,6 +67,7 @@ func _build_catalog() -> void:
 
 	combo_registry["spearman"] = []
 	combo_registry["blademaster"] = []
+	combo_registry["master_veteran"] = []
 
 
 func _ready_v032_card(
@@ -155,8 +157,8 @@ func _refresh_positions_immediately_after_movement() -> void:
 	_stage_actor_signature = ""
 	_player_intent_bubble_signature = ""
 	_enemy_intent_bubble_signature = ""
-	_refresh_stage_grid(true)
 	_refresh_stage_actor_positions(true)
+	_refresh_stage_grid(true)
 	_refresh_intent_bubbles(true)
 	_refresh_effect_preview_panel()
 
@@ -539,18 +541,19 @@ func _stabilize_actor_runtime_textures() -> void:
 
 
 func _bind_intent_bubbles_to_actor_sprites() -> void:
-	_bind_single_intent_bubble(player_intent_bubble, player_sprite)
-	_bind_single_intent_bubble(enemy_intent_bubble, enemy_sprite)
+	_bind_single_intent_bubble(player_intent_bubble, player_sprite, true)
+	_bind_single_intent_bubble(enemy_intent_bubble, enemy_sprite, false)
 
 
-func _bind_single_intent_bubble(bubble: PanelContainer, sprite: TextureRect) -> void:
+func _bind_single_intent_bubble(bubble: PanelContainer, sprite: TextureRect, is_player_actor: bool) -> void:
 	if bubble == null or sprite == null or not bubble.visible:
 		return
 	var bubble_size: Vector2 = bubble.size
 	if bubble_size.x <= 1.0 or bubble_size.y <= 1.0:
 		bubble_size = bubble.custom_minimum_size
 	var sprite_rect: Rect2 = _sprite_visible_rect(sprite)
-	var target_x: float = sprite_rect.position.x + sprite_rect.size.x * 0.5 - bubble_size.x * 0.5
+	var foot_point := _actor_foot_point(is_player_actor)
+	var target_x: float = foot_point.x - bubble_size.x * 0.5
 	var target_y: float = sprite_rect.position.y - bubble_size.y - BUBBLE_GAP_Y
 	bubble.position = Vector2(clampf(target_x, BUBBLE_SAFE_MARGIN_X, maxf(BUBBLE_SAFE_MARGIN_X, size.x - bubble_size.x - BUBBLE_SAFE_MARGIN_X)), maxf(STAGE_AREA_TOP + 8.0, target_y))
 

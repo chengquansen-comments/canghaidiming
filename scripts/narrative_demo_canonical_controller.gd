@@ -50,6 +50,7 @@ const MVP_NODE_META := {
 }
 
 var node_sentence_index: int = 0
+var selected_ending_flag: String = ""
 
 func _canonical_state() -> Dictionary:
 	return {
@@ -79,6 +80,14 @@ func _apply_canonical_effects(effects: Dictionary) -> void:
 	qing_wang += int(normalized[VAR_CLEAN_REPUTATION])
 	clues += int(normalized[VAR_CASE_CLUES])
 	_save_narrative_state_to_context()
+
+func _record_choice_ending_flag(choice: Dictionary) -> void:
+	var ending_flag := str(choice.get("ending_flag", "")).strip_edges()
+	var effects = choice.get("effects", {})
+	if ending_flag.is_empty() and effects is Dictionary:
+		ending_flag = str((effects as Dictionary).get("ending_flag", "")).strip_edges()
+	if not ending_flag.is_empty():
+		selected_ending_flag = ending_flag
 
 func _node_id_at(index: int) -> String:
 	if index >= 0 and index < MVP_NODE_IDS.size():
@@ -175,6 +184,8 @@ func _on_choice(index: int) -> void:
 	var choices := _configured_choices_for_node(node_id)
 	if index < 0 or index >= choices.size():
 		return
+	if choices[index] is Dictionary:
+		_record_choice_ending_flag(choices[index] as Dictionary)
 	_apply_canonical_effects(_choice_effects_for_index(index))
 	NarrativeBattleContext.apply_player_growth("choice", 0, 0, 0, false)
 	if node_index < MVP_NODE_IDS.size() - 1:
@@ -298,9 +309,7 @@ func _on_request_battle() -> void:
 	var node_id: String = str(node.get("id", ""))
 	var combat = node.get("combat", {})
 	if combat is Dictionary and bool((combat as Dictionary).get("enabled", false)):
-		var encounter_id: String = str((combat as Dictionary).get("encounter_id", ""))
-		var battle_id: String = str((combat as Dictionary).get("battle_id", ""))
-		NarrativeBattleContext.set_request(encounter_id, node_id, battle_id)
+		NarrativeBattleContext.set_request_from_combat(combat as Dictionary, node_id)
 		get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
 		return
 	super._on_request_battle()
@@ -436,8 +445,12 @@ func _advance_to_node(target_index: int, hint: String = "") -> void:
 	_render()
 
 func _ending_data() -> Dictionary:
+	var flagged_ending := _ending_data_for_flag(selected_ending_flag)
+	if not flagged_ending.is_empty():
+		return flagged_ending
 	if clues >= 4:
 		return {
+			"id": "private_investigation",
 			"title": "结局：旧案浮起",
 			"status": "旧案浮起",
 			"text": "你藏下一份证据。\n\n纸很薄。\n\n却压得甲很沉。\n\n师父说：不要再问。\n\n你第一次没有听。",
@@ -445,6 +458,7 @@ func _ending_data() -> Dictionary:
 		}
 	if jun_gong >= 4 and clues < 4:
 		return {
+			"id": "merit_cover",
 			"title": "结局：军功入册",
 			"status": "军功入册",
 			"text": "捷报写得很好。\n\n首级数得很准。\n\n案卷少了一页。\n\n你升了一级。",
@@ -452,17 +466,85 @@ func _ending_data() -> Dictionary:
 		}
 	if qing_wang >= 4 and clues < 4:
 		return {
+			"id": "truth_report",
 			"title": "结局：清名在外",
 			"status": "清名在外",
 			"text": "百姓记得你救过人。\n\n军门记得你误过令。\n\n师父说：好名声也会杀人。\n\n潮声没有回答。",
 			"feedback": "你保住了道义，却还没有把真相从潮声里拉出来。"
 		}
 	return {
+		"id": "silence",
 		"title": "结局：沉默退下",
 		"status": "沉默退下",
 		"text": "门关上。\n\n灯还亮着。\n\n案卷少了一页。\n\n你什么都没有说。\n\n潮声替你说了一夜。",
 		"feedback": "你没有站上任何一边，悬念被保留下来。"
 	}
+
+func _ending_data_for_flag(flag: String) -> Dictionary:
+	match flag:
+		"truth_report":
+			return {
+				"id": "truth_report",
+				"title": "结局：据实上报",
+				"status": "据实上报",
+				"text": "你把话说完。\n\n屋里安静了很久。\n\n案卷没有立刻合上。\n\n潮声从门外涌进来。",
+				"feedback": "你选择把真相放到军门案上，清望与旧案线索会成为你的支撑。"
+			}
+		"private_investigation":
+			return {
+				"id": "private_investigation",
+				"title": "结局：藏证私查",
+				"status": "藏证私查",
+				"text": "袖中有纸。\n\n心里有潮。\n\n你退下时没有回头。\n\n旧案从此不只在案卷里。",
+				"feedback": "你留下了继续追查的火种，但军门与师父都会更沉默。"
+			}
+		"merit_cover":
+			return {
+				"id": "merit_cover",
+				"title": "结局：借功压案",
+				"status": "借功压案",
+				"text": "你把首级摆出来。\n\n没人再问箱子。\n\n捷报写得顺。\n\n顺得不像真的。",
+				"feedback": "你用军功换来当下的通行，但旧案被压回潮声下面。"
+			}
+		"silence":
+			return {
+				"id": "silence",
+				"title": "结局：沉默退下",
+				"status": "沉默退下",
+				"text": "门关上。\n\n灯还亮着。\n\n师父还站在外面。\n\n你什么都没有说。",
+				"feedback": "你没有站上任何一边，悬念被保留下来。"
+			}
+	return {}
+
+func _ending_catalog() -> Array[Dictionary]:
+	var catalog: Array[Dictionary] = []
+	var final_node := _node_config("military_coverup")
+	var choices = final_node.get("choices", [])
+	if choices is Array:
+		for choice_variant in choices:
+			if not (choice_variant is Dictionary):
+				continue
+			var choice := choice_variant as Dictionary
+			var flag := str(choice.get("ending_flag", "")).strip_edges()
+			var effects = choice.get("effects", {})
+			if flag.is_empty() and effects is Dictionary:
+				flag = str((effects as Dictionary).get("ending_flag", "")).strip_edges()
+			if flag.is_empty():
+				continue
+			var ending := _ending_data_for_flag(flag)
+			if ending.is_empty():
+				ending = {
+					"id": flag,
+					"title": "结局：%s" % str(choice.get("label", flag)),
+					"status": str(choice.get("label", flag)),
+					"text": str(choice.get("result", "")),
+					"feedback": ""
+				}
+			catalog.append(ending)
+	if catalog.is_empty():
+		for flag in ["truth_report", "private_investigation", "merit_cover", "silence"]:
+			catalog.append(_ending_data_for_flag(flag))
+	return catalog
 
 func _render_ending() -> void:
 	var ending := _ending_data()
@@ -489,6 +571,7 @@ func _restart() -> void:
 	step_index = 0
 	node_index = 0
 	node_sentence_index = 0
+	selected_ending_flag = ""
 	jun_gong = 0
 	qing_wang = 0
 	clues = 0

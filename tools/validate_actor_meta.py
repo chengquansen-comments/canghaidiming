@@ -18,7 +18,7 @@ REQUIRED_TOP_LEVEL = [
     "animations",
 ]
 
-REQUIRED_ANIMATION_FIELDS = ["file", "frames", "fps", "loop"]
+REQUIRED_ANIMATION_FIELDS = ["frames", "fps", "loop"]
 REQUIRED_ATTACK_FIELDS = ["hit_frame", "phase_frames", "fx", "impact_offset", "recovery_to"]
 ATTACK_ANIMATION_PREFIXES = ("attack",)
 MIN_REQUIRED_ANIMATIONS = ["idle", "move_forward", "attack_light", "guard", "hit", "break"]
@@ -70,13 +70,6 @@ def validate_animation(meta_path: Path, animation_name: str, anim: Any, frame_si
         if field not in anim:
             fail(f"animations.{animation_name} missing required field: {field}")
 
-    file_name = anim["file"]
-    if not isinstance(file_name, str) or file_name.strip() == "":
-        fail(f"animations.{animation_name}.file must be a non-empty string")
-    asset_path = meta_path.parent / file_name
-    if not asset_path.exists():
-        fail(f"animations.{animation_name}.file not found: {asset_path}")
-
     frames = anim["frames"]
     fps = anim["fps"]
     loop = anim["loop"]
@@ -86,6 +79,24 @@ def validate_animation(meta_path: Path, animation_name: str, anim: Any, frame_si
         fail(f"animations.{animation_name}.fps must be a positive number")
     if not isinstance(loop, bool):
         fail(f"animations.{animation_name}.loop must be boolean")
+
+    file_name = anim.get("file")
+    files = anim.get("files")
+    if isinstance(files, list):
+        if len(files) != frames:
+            fail(f"animations.{animation_name}.files length must equal frames={frames}")
+        for index, item in enumerate(files):
+            if not isinstance(item, str) or item.strip() == "":
+                fail(f"animations.{animation_name}.files[{index}] must be a non-empty string")
+            asset_path = meta_path.parent / item
+            if not asset_path.exists():
+                fail(f"animations.{animation_name}.files[{index}] not found: {asset_path}")
+    elif isinstance(file_name, str) and file_name.strip() != "":
+        asset_path = meta_path.parent / file_name
+        if not asset_path.exists():
+            fail(f"animations.{animation_name}.file not found: {asset_path}")
+    else:
+        fail(f"animations.{animation_name} must define either file or files")
 
     if animation_name.startswith(ATTACK_ANIMATION_PREFIXES):
         for field in REQUIRED_ATTACK_FIELDS:

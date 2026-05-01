@@ -1,0 +1,12 @@
+type	handler	required_fields	description
+attack	_effect_attack	damage	执行一次攻击解析。
+buff_next_attack_damage	_effect_buff_next_attack_damage	amount	给下一次攻击附加伤害。
+distance	_effect_distance	amount	直接调整当前距离。
+draw	_effect_draw	amount	抽牌或补牌。
+enemy_momentum	_effect_enemy_momentum	amount	调整敌方势。
+flag	_effect_flag	flag	设置本回合标记。
+guard	_effect_guard	amount	为玩家增加格挡。
+momentum	_effect_momentum	amount	为玩家恢复或减少势。
+set_distance_step_toward_preferred	_effect_set_distance_step_toward_preferred		将距离朝玩家优势距离推进 1。
+set_distance_toward	_effect_set_distance_toward	target	将距离朝目标档位推进 1。
+toggle_distance	_effect_toggle_distance		按当前切换方向调整 1 档距离。

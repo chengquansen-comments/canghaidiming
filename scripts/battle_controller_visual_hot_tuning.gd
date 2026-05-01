@@ -1,6 +1,11 @@
 extends "res://scripts/battle_controller_visual_tuning_panel.gd"
 
 const AutoBattleSampler = preload("res://scripts/auto_battle_sampler.gd")
+const HotTuningCardDataScript = preload("res://scripts/card_data.gd")
+const HotTuningNarrativeBattleContext = preload("res://scripts/narrative_battle_context.gd")
+
+const NUMBER_PROFILE_SCHEMA := 2
+const NUMBER_PROFILE_STORE_PATH := "user://battle_number_profiles.json"
 
 var _hot_controls_root: VBoxContainer
 var _last_sample_report := "未采样"
@@ -10,17 +15,27 @@ var _number_config_select: OptionButton
 var _target_select: OptionButton
 var _number_config_status := "未生成数值方案"
 var _number_config_serial := 1
+var _number_pipeline_fields: Dictionary = {}
+var _number_pipeline_baseline: Dictionary = {}
+var _number_pipeline_sample_count: SpinBox
+var _number_pipeline_seed: SpinBox
 
 func _build_ui() -> void:
 	super()
 	_isolate_tuning_panel_input()
 	_build_hot_tuning_controls()
+	_load_number_configs()
 	_refresh_tuning_panel()
 
 func _unhandled_input(event: InputEvent) -> void:
 	# F9 is handled in parent _input so it works even when panel controls have focus.
 	# Keep this empty to avoid duplicate toggles.
 	pass
+
+func _start_session(role_id: String) -> void:
+	_number_pipeline_baseline.clear()
+	super._start_session(role_id)
+	_sync_number_pipeline_fields_from_fighters()
 
 func _isolate_tuning_panel_input() -> void:
 	if tuning_panel == null:
@@ -55,6 +70,7 @@ func _build_hot_tuning_controls() -> void:
 	_hot_controls_root.add_theme_constant_override("separation", 4)
 	parent_container.add_child(_hot_controls_root)
 	_add_sample_buttons()
+	_add_number_pipeline_controls()
 	_add_number_config_controls()
 
 func _add_sample_buttons() -> void:
@@ -67,6 +83,91 @@ func _add_sample_buttons() -> void:
 	btn100.pressed.connect(func(): _run_sampling(100))
 	row.add_child(btn100)
 	_hot_controls_root.add_child(row)
+
+func _add_number_pipeline_controls() -> void:
+	var title := Label.new()
+	title.text = "数值管线"
+	title.mouse_filter = Control.MOUSE_FILTER_STOP
+	_hot_controls_root.add_child(title)
+
+	var grid := GridContainer.new()
+	grid.columns = 3
+	grid.mouse_filter = Control.MOUSE_FILTER_STOP
+	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_hot_controls_root.add_child(grid)
+
+	_add_pipeline_header(grid, "项目")
+	_add_pipeline_header(grid, "玩家")
+	_add_pipeline_header(grid, "敌人")
+	for spec in [
+		{"key": "max_hp", "label": "HP", "min": 1.0, "max": 120.0, "step": 1.0},
+		{"key": "max_momentum", "label": "势上限", "min": 1.0, "max": 20.0, "step": 1.0},
+		{"key": "momentum", "label": "起势", "min": 0.0, "max": 20.0, "step": 1.0},
+		{"key": "realm", "label": "武境", "min": 1.0, "max": 6.0, "step": 1.0},
+		{"key": "qinggong", "label": "轻功", "min": 1.0, "max": 5.0, "step": 1.0}
+	]:
+		var label := Label.new()
+		label.text = str(spec.get("label", ""))
+		label.custom_minimum_size = Vector2(72, 24)
+		label.mouse_filter = Control.MOUSE_FILTER_STOP
+		grid.add_child(label)
+		var p_spin := _make_pipeline_spin(float(spec.get("min", 0.0)), float(spec.get("max", 99.0)), float(spec.get("step", 1.0)))
+		var e_spin := _make_pipeline_spin(float(spec.get("min", 0.0)), float(spec.get("max", 99.0)), float(spec.get("step", 1.0)))
+		_number_pipeline_fields["player_%s" % str(spec.get("key", ""))] = p_spin
+		_number_pipeline_fields["enemy_%s" % str(spec.get("key", ""))] = e_spin
+		grid.add_child(p_spin)
+		grid.add_child(e_spin)
+
+	var sample_row := HBoxContainer.new()
+	sample_row.mouse_filter = Control.MOUSE_FILTER_STOP
+	sample_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_hot_controls_root.add_child(sample_row)
+	var sample_label := Label.new()
+	sample_label.text = "采样"
+	sample_label.custom_minimum_size = Vector2(44, 24)
+	sample_label.mouse_filter = Control.MOUSE_FILTER_STOP
+	sample_row.add_child(sample_label)
+	_number_pipeline_sample_count = _make_pipeline_spin(10.0, 2000.0, 10.0)
+	_number_pipeline_sample_count.value = 120.0
+	_number_pipeline_seed = _make_pipeline_spin(0.0, 999999.0, 1.0)
+	_number_pipeline_seed.value = 260430.0
+	sample_row.add_child(_number_pipeline_sample_count)
+	sample_row.add_child(_number_pipeline_seed)
+
+	var action_row := HBoxContainer.new()
+	action_row.mouse_filter = Control.MOUSE_FILTER_STOP
+	action_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_hot_controls_root.add_child(action_row)
+	for spec in [
+		{"label": "读取当前", "callback": Callable(self, "_sync_number_pipeline_fields_from_fighters")},
+		{"label": "应用", "callback": Callable(self, "_apply_number_pipeline_fields")},
+		{"label": "重置", "callback": Callable(self, "_reset_number_pipeline_fields")},
+		{"label": "保存配置", "callback": Callable(self, "_save_number_pipeline_config")},
+		{"label": "重采样", "callback": Callable(self, "_sample_number_pipeline_fields")}
+	]:
+		var button := Button.new()
+		button.text = str(spec.get("label", ""))
+		button.mouse_filter = Control.MOUSE_FILTER_STOP
+		button.pressed.connect(spec.get("callback", Callable()))
+		action_row.add_child(button)
+	_sync_number_pipeline_fields_from_fighters()
+
+func _add_pipeline_header(parent: Container, text: String) -> void:
+	var label := Label.new()
+	label.text = text
+	label.mouse_filter = Control.MOUSE_FILTER_STOP
+	label.add_theme_color_override("font_color", Color("9cc7ff"))
+	parent.add_child(label)
+
+func _make_pipeline_spin(min_value: float, max_value: float, step: float) -> SpinBox:
+	var spin := SpinBox.new()
+	spin.min_value = min_value
+	spin.max_value = max_value
+	spin.step = step
+	spin.custom_minimum_size = Vector2(92, 24)
+	spin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	spin.mouse_filter = Control.MOUSE_FILTER_STOP
+	return spin
 
 func _add_number_config_controls() -> void:
 	var title := Label.new()
@@ -106,12 +207,17 @@ func _add_number_config_controls() -> void:
 	apply_button.text = "切换"
 	apply_button.mouse_filter = Control.MOUSE_FILTER_STOP
 	apply_button.pressed.connect(_apply_selected_number_config)
+	var duplicate_button := Button.new()
+	duplicate_button.text = "复制"
+	duplicate_button.mouse_filter = Control.MOUSE_FILTER_STOP
+	duplicate_button.pressed.connect(_duplicate_selected_number_config)
 	var delete_button := Button.new()
 	delete_button.text = "删除"
 	delete_button.mouse_filter = Control.MOUSE_FILTER_STOP
 	delete_button.pressed.connect(_delete_selected_number_config)
 	select_row.add_child(_number_config_select)
 	select_row.add_child(apply_button)
+	select_row.add_child(duplicate_button)
 	select_row.add_child(delete_button)
 	_hot_controls_root.add_child(select_row)
 
@@ -166,9 +272,7 @@ func _collect_fighter_cards(fighter: Fighter, cards: Array[CardData]) -> void:
 			cards.append(discard_card)
 
 func _run_sampling(count: int) -> void:
-	var player_cards: Array[CardData] = _export_cards(player)
-	var enemy_cards: Array[CardData] = _export_cards(enemy)
-	var result := AutoBattleSampler.run_batch(player_cards, enemy_cards, _sampler_options_for_current_state(count))
+	var result := _sample_active_or_current_number_config(count, int(Time.get_ticks_usec() % 1000000))
 	_last_sample_report = AutoBattleSampler.format_report(result)
 	_number_config_status = "当前战斗采样：%s胜 %.1f%% / %s胜 %.1f%% / 平 %.1f%% / %.1f回合" % [
 		_fighter_label(player, "玩家"),
@@ -179,6 +283,112 @@ func _run_sampling(count: int) -> void:
 		float(result.get("avg_turns", 0.0))
 	]
 	_refresh_tuning_panel()
+
+func _sync_number_pipeline_fields_from_fighters() -> void:
+	if _number_pipeline_fields.is_empty():
+		return
+	if player == null or enemy == null or player.data == null or enemy.data == null:
+		_number_config_status = "数值管线：尚未进入战斗"
+		return
+	var current := {
+		"player": _fighter_number_snapshot(player),
+		"enemy": _fighter_number_snapshot(enemy)
+	}
+	_set_pipeline_side_values("player", current.get("player", {}))
+	_set_pipeline_side_values("enemy", current.get("enemy", {}))
+	if _number_pipeline_baseline.is_empty():
+		_number_pipeline_baseline = current.duplicate(true)
+	_number_config_status = "数值管线：已读取当前敌我数值"
+	_refresh_tuning_panel()
+
+func _apply_number_pipeline_fields() -> void:
+	if player == null or enemy == null:
+		_number_config_status = "应用失败：尚未进入战斗"
+		_refresh_tuning_panel()
+		return
+	if _number_pipeline_baseline.is_empty():
+		_number_pipeline_baseline = {
+			"player": _fighter_number_snapshot(player),
+			"enemy": _fighter_number_snapshot(enemy)
+		}
+	_apply_fighter_numbers(player, _pipeline_side_values("player"))
+	_apply_fighter_numbers(enemy, _pipeline_side_values("enemy"))
+	if state_machine != null:
+		state_machine.update_distance_from_positions(player, enemy)
+	if has_method("_safe_refresh_runtime_ui"):
+		call("_safe_refresh_runtime_ui")
+	_number_config_status = "数值管线：已应用到当前战斗"
+	_refresh_tuning_panel()
+
+func _reset_number_pipeline_fields() -> void:
+	if _number_pipeline_baseline.is_empty():
+		if player != null and enemy != null:
+			_number_pipeline_baseline = {
+				"player": _fighter_number_snapshot(player),
+				"enemy": _fighter_number_snapshot(enemy)
+			}
+		else:
+			_number_config_status = "重置失败：尚未进入战斗"
+			_refresh_tuning_panel()
+			return
+	_set_pipeline_side_values("player", _number_pipeline_baseline.get("player", {}))
+	_set_pipeline_side_values("enemy", _number_pipeline_baseline.get("enemy", {}))
+	_apply_number_pipeline_fields()
+	_number_config_status = "数值管线：已重置到读取时基线"
+	_refresh_tuning_panel()
+
+func _save_number_pipeline_config() -> void:
+	if player == null or enemy == null:
+		_number_config_status = "保存失败：尚未进入战斗"
+		_refresh_tuning_panel()
+		return
+	var config := _snapshot_number_config("管线方案 %02d" % _number_config_serial)
+	config["player"] = _pipeline_side_values("player")
+	config["enemy"] = _pipeline_side_values("enemy")
+	config["diff"] = _number_config_diff(_snapshot_number_config("当前"), config)
+	_number_config_serial += 1
+	_number_configs.append(config)
+	_active_number_config_index = _number_configs.size() - 1
+	_number_config_status = "数值管线：已保存配置"
+	_save_number_configs()
+	_refresh_number_config_select()
+	_refresh_tuning_panel()
+
+func _sample_number_pipeline_fields() -> void:
+	if player == null or enemy == null:
+		_number_config_status = "采样失败：尚未进入战斗"
+		_refresh_tuning_panel()
+		return
+	var config := _snapshot_number_config("管线临时采样")
+	config["player"] = _pipeline_side_values("player")
+	config["enemy"] = _pipeline_side_values("enemy")
+	var count := int(_number_pipeline_sample_count.value) if _number_pipeline_sample_count != null else 120
+	var seed := int(_number_pipeline_seed.value) if _number_pipeline_seed != null else int(Time.get_ticks_usec() % 1000000)
+	var result := _sample_number_config(config, count, seed)
+	_last_sample_report = AutoBattleSampler.format_report(result)
+	_number_config_status = "数值管线：已按面板参数采样，%s" % AutoBattleSampler.format_balance_conclusion(result)
+	_refresh_tuning_panel()
+
+func _set_pipeline_side_values(side: String, values: Dictionary) -> void:
+	for field in ["max_hp", "max_momentum", "momentum", "realm", "qinggong"]:
+		var key := "%s_%s" % [side, field]
+		var spin: SpinBox = _number_pipeline_fields.get(key, null)
+		if spin != null:
+			spin.value = float(values.get(field, spin.value))
+
+func _pipeline_side_values(side: String) -> Dictionary:
+	var values := {}
+	for field in ["max_hp", "max_momentum", "momentum", "realm", "qinggong"]:
+		var key := "%s_%s" % [side, field]
+		var spin: SpinBox = _number_pipeline_fields.get(key, null)
+		if spin != null:
+			values[field] = int(spin.value)
+	values["momentum"] = clampi(int(values.get("momentum", 0)), 0, int(values.get("max_momentum", 1)))
+	var fighter := player if side == "player" else enemy
+	var fallback_style := "spear" if side == "player" else "blade"
+	values["style"] = _style_for_fighter(fighter, fallback_style)
+	values["preferred"] = _preferred_for_fighter(fighter, str(values.get("style", fallback_style)))
+	return values
 
 func _export_cards(fighter: Fighter) -> Array[CardData]:
 	var out: Array[CardData] = []
@@ -256,11 +466,20 @@ func _save_current_number_config() -> void:
 	_number_configs.append(config)
 	_active_number_config_index = _number_configs.size() - 1
 	_number_config_status = "已保存当前数值：%s" % str(config.get("name", "方案"))
+	_save_number_configs()
 	_refresh_number_config_select()
 	_refresh_tuning_panel()
 
 func _sample_current_number_config(count: int) -> void:
-	_run_sampling(count)
+	var result := _sample_active_or_current_number_config(count, int(Time.get_ticks_usec() % 1000000))
+	_last_sample_report = AutoBattleSampler.format_report(result)
+	if _active_number_config_index >= 0 and _active_number_config_index < _number_configs.size():
+		_number_configs[_active_number_config_index]["sample"] = result
+		_number_config_status = "已采样选中方案：%s" % str(_number_configs[_active_number_config_index].get("name", "方案"))
+		_save_number_configs()
+	else:
+		_number_config_status = "已采样当前战斗"
+	_refresh_tuning_panel()
 
 func _generate_number_configs() -> void:
 	if player == null or enemy == null:
@@ -305,6 +524,7 @@ func _generate_number_configs() -> void:
 			float(sample.get("enemy_win_rate", 0.0)) * 100.0,
 			float(sample.get("avg_turns", 0.0))
 		]
+	_save_number_configs()
 	_refresh_number_config_select()
 	_refresh_tuning_panel()
 
@@ -324,9 +544,14 @@ func _selected_generation_target() -> Dictionary:
 
 func _snapshot_number_config(label: String) -> Dictionary:
 	return {
+		"schema_version": NUMBER_PROFILE_SCHEMA,
+		"id": _new_number_config_id(),
 		"name": label,
+		"encounter_id": _current_tuning_encounter_id(),
 		"player": _fighter_number_snapshot(player),
 		"enemy": _fighter_number_snapshot(enemy),
+		"player_deck": _deck_snapshot(player),
+		"enemy_deck": _deck_snapshot(enemy),
 		"cards": _card_number_snapshot(),
 		"created_msec": Time.get_ticks_msec()
 	}
@@ -353,8 +578,28 @@ func _card_number_snapshot() -> Dictionary:
 		result[runtime_card.id] = _card_numbers(runtime_card)
 	return result
 
+func _deck_snapshot(fighter: Fighter) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	if fighter == null or fighter.data == null:
+		return result
+	var source_cards: Array[CardData] = fighter.data.starting_deck
+	if source_cards.is_empty():
+		source_cards = _export_cards(fighter)
+	for card: CardData in source_cards:
+		if card == null:
+			continue
+		result.append({
+			"card_id": card.id,
+			"name": card.display_name,
+			"numbers": _card_numbers(card)
+		})
+	return result
+
 func _card_numbers(card: CardData) -> Dictionary:
 	return {
+		"role": card.role,
+		"weapon_style": card.weapon_style,
+		"requires_facing": card.requires_facing,
 		"min_distance": card.min_distance,
 		"max_distance": card.max_distance,
 		"momentum_cost": card.momentum_cost,
@@ -391,18 +636,23 @@ func _mutate_number_config(base: Dictionary, rng: RandomNumberGenerator, label: 
 			card["guard"] = maxi(1, int(card.get("guard", 0)) + rng.randi_range(-2, 2))
 		if rng.randf() < 0.08:
 			card["momentum_cost"] = maxi(0, int(card.get("momentum_cost", 0)) + rng.randi_range(-1, 1))
+	_mutate_deck_entries(candidate, rng, "enemy_deck")
+	if rng.randf() < 0.22:
+		_mutate_deck_entries(candidate, rng, "player_deck")
 	candidate["diff"] = _number_config_diff(base, candidate)
 	return candidate
 
 func _sample_number_config(config: Dictionary, count: int, seed: int) -> Dictionary:
-	var player_cards := _cards_from_config(config, _export_cards(player))
-	var enemy_cards := _cards_from_config(config, _export_cards(enemy))
+	var player_cards := _cards_from_config(config, _export_cards(player), "player")
+	var enemy_cards := _cards_from_config(config, _export_cards(enemy), "enemy")
 	var p_numbers: Dictionary = config.get("player", {})
 	var e_numbers: Dictionary = config.get("enemy", {})
 	return AutoBattleSampler.run_batch(player_cards, enemy_cards, {
 		"sample_count": count,
 		"seed": seed,
 		"max_turns": 24,
+		"settlement_mode": _current_sampler_settlement_mode(),
+		"pressure_profile": _current_sampler_pressure_profile(),
 		"player_label": _fighter_label(player, "玩家"),
 		"enemy_label": _fighter_label(enemy, "敌人"),
 		"player_state": _sampler_state_from_numbers(p_numbers, {"position": player.position if player != null else 2, "facing": "right"}),
@@ -411,7 +661,29 @@ func _sample_number_config(config: Dictionary, count: int, seed: int) -> Diction
 		"enemy_preferred": e_numbers.get("preferred", [0, 1, 2])
 	})
 
-func _cards_from_config(config: Dictionary, source_cards: Array[CardData]) -> Array[CardData]:
+func _current_sampler_settlement_mode() -> String:
+	if state_machine != null and state_machine.has_method("settlement_mode_id"):
+		return state_machine.settlement_mode_id()
+	if get("settlement_mode_id") != null:
+		return str(get("settlement_mode_id"))
+	return "reactive"
+
+func _current_sampler_pressure_profile() -> String:
+	var value = get("_pressure_profile")
+	return str(value) if value != null and str(value) != "" else "none"
+
+func _sample_active_or_current_number_config(count: int, seed: int) -> Dictionary:
+	if _active_number_config_index >= 0 and _active_number_config_index < _number_configs.size():
+		return _sample_number_config(_number_configs[_active_number_config_index], count, seed)
+	var config := _snapshot_number_config("当前战斗临时采样")
+	return _sample_number_config(config, count, seed)
+
+func _cards_from_config(config: Dictionary, source_cards: Array[CardData], side: String = "") -> Array[CardData]:
+	var deck_key := "%s_deck" % side
+	if side != "" and config.has(deck_key):
+		var deck_entries: Array = config.get(deck_key, [])
+		if not deck_entries.is_empty():
+			return _cards_from_deck_entries(deck_entries, source_cards)
 	var cards: Array[CardData] = []
 	var card_numbers: Dictionary = config.get("cards", {})
 	for source: CardData in source_cards:
@@ -422,6 +694,55 @@ func _cards_from_config(config: Dictionary, source_cards: Array[CardData]) -> Ar
 			_apply_card_numbers(copy, card_numbers[copy.id])
 		cards.append(copy)
 	return cards
+
+func _cards_from_deck_entries(deck_entries: Array, source_cards: Array[CardData]) -> Array[CardData]:
+	var cards: Array[CardData] = []
+	var catalog := _card_catalog_by_id(source_cards)
+	for entry_variant in deck_entries:
+		if not (entry_variant is Dictionary):
+			continue
+		var entry: Dictionary = entry_variant
+		var card_id := str(entry.get("card_id", entry.get("id", "")))
+		var card: CardData = null
+		if catalog.has(card_id):
+			card = (catalog[card_id] as CardData).duplicate_card()
+		else:
+			card = _card_from_numbers(card_id, str(entry.get("name", card_id)), entry.get("numbers", {}))
+		_apply_card_numbers(card, entry.get("numbers", {}))
+		cards.append(card)
+	return cards
+
+func _card_catalog_by_id(extra_cards: Array[CardData] = []) -> Dictionary:
+	var catalog := {}
+	for card: CardData in extra_cards:
+		if card != null and not catalog.has(card.id):
+			catalog[card.id] = card
+	for card: CardData in _all_runtime_cards():
+		if card != null and not catalog.has(card.id):
+			catalog[card.id] = card
+	return catalog
+
+func _card_from_numbers(card_id: String, display_name: String, numbers: Dictionary) -> CardData:
+	return HotTuningCardDataScript.new(
+		card_id,
+		display_name,
+		display_name,
+		clampi(int(numbers.get("min_distance", 1)), 0, 8),
+		clampi(int(numbers.get("max_distance", 3)), 0, 8),
+		maxi(0, int(numbers.get("momentum_cost", 1))),
+		str(numbers.get("role", CardData.ROLE_DAMAGE)),
+		maxi(0, int(numbers.get("gain_momentum", 0))),
+		maxi(0, int(numbers.get("break_momentum", 0))),
+		maxi(0, int(numbers.get("damage", 0))),
+		maxi(0, int(numbers.get("guard", 0))),
+		PackedStringArray(),
+		str(numbers.get("weapon_style", "")),
+		bool(numbers.get("requires_facing", true)),
+		clampi(int(numbers.get("self_move_after", 0)), -1, 1),
+		clampi(int(numbers.get("target_push_after", 0)), 0, 1),
+		clampi(int(numbers.get("target_pull_after", 0)), 0, 1),
+		str(numbers.get("move_condition", CardData.MOVE_NONE))
+	)
 
 func _sampler_state_from_numbers(numbers: Dictionary, fallback: Dictionary) -> Dictionary:
 	return {
@@ -459,10 +780,29 @@ func _delete_selected_number_config() -> void:
 	_number_configs.remove_at(_active_number_config_index)
 	_active_number_config_index = mini(_active_number_config_index, _number_configs.size() - 1)
 	_number_config_status = "已删除：%s" % removed
+	_save_number_configs()
+	_refresh_number_config_select()
+	_refresh_tuning_panel()
+
+func _duplicate_selected_number_config() -> void:
+	if _active_number_config_index < 0 or _active_number_config_index >= _number_configs.size():
+		return
+	var source: Dictionary = _number_configs[_active_number_config_index]
+	var copy: Dictionary = source.duplicate(true)
+	copy["id"] = _new_number_config_id()
+	copy["name"] = "%s 副本%02d" % [str(source.get("name", "方案")), _number_config_serial]
+	copy["created_msec"] = Time.get_ticks_msec()
+	_number_config_serial += 1
+	_number_configs.append(copy)
+	_active_number_config_index = _number_configs.size() - 1
+	_number_config_status = "已复制方案：%s" % str(copy.get("name", "方案"))
+	_save_number_configs()
 	_refresh_number_config_select()
 	_refresh_tuning_panel()
 
 func _apply_number_config(config: Dictionary) -> void:
+	_apply_fighter_deck(player, config.get("player_deck", []))
+	_apply_fighter_deck(enemy, config.get("enemy_deck", []))
 	_apply_fighter_numbers(player, config.get("player", {}))
 	_apply_fighter_numbers(enemy, config.get("enemy", {}))
 	var cards: Dictionary = config.get("cards", {})
@@ -478,6 +818,25 @@ func _apply_number_config(config: Dictionary) -> void:
 	if has_method("_safe_refresh_runtime_ui"):
 		call("_safe_refresh_runtime_ui")
 
+func _apply_fighter_deck(fighter: Fighter, deck_entries: Array) -> void:
+	if fighter == null or fighter.data == null or deck_entries.is_empty():
+		return
+	var old_hp := fighter.hp
+	var old_momentum := fighter.momentum
+	var old_realm := fighter.realm
+	var old_qinggong := fighter.qinggong
+	var old_position := fighter.position
+	var old_facing := fighter.facing
+	fighter.data.starting_deck = _cards_from_deck_entries(deck_entries, _export_cards(fighter))
+	fighter.reset_for_battle(HAND_SIZE)
+	fighter.hp = clampi(old_hp, 1, fighter.data.max_hp)
+	fighter.momentum = clampi(old_momentum, 0, fighter.data.max_momentum)
+	fighter.session_realm = maxi(1, old_realm)
+	fighter.realm = fighter.session_realm
+	fighter.qinggong = maxi(1, old_qinggong)
+	fighter.position = old_position
+	fighter.facing = old_facing
+
 func _apply_fighter_numbers(fighter: Fighter, numbers: Dictionary) -> void:
 	if fighter == null or fighter.data == null or numbers.is_empty():
 		return
@@ -492,6 +851,8 @@ func _apply_fighter_numbers(fighter: Fighter, numbers: Dictionary) -> void:
 	fighter.qinggong = fighter.data.qinggong
 
 func _apply_card_numbers(card: CardData, numbers: Dictionary) -> void:
+	if numbers.is_empty():
+		return
 	card.min_distance = clampi(int(numbers.get("min_distance", card.min_distance)), 0, 8)
 	card.max_distance = clampi(int(numbers.get("max_distance", card.max_distance)), card.min_distance, 8)
 	card.momentum_cost = maxi(0, int(numbers.get("momentum_cost", card.momentum_cost)))
@@ -524,7 +885,36 @@ func _number_config_diff(base: Dictionary, candidate: Dictionary) -> Array[Strin
 				parts.append("%s %d→%d" % [field, int(b.get(field, 0)), int(n.get(field, 0))])
 		if not parts.is_empty():
 			lines.append("%s: %s" % [card_id, ", ".join(parts)])
+	_append_deck_diff(lines, base.get("player_deck", []), candidate.get("player_deck", []), "我方卡组")
+	_append_deck_diff(lines, base.get("enemy_deck", []), candidate.get("enemy_deck", []), "敌方卡组")
 	return lines
+
+func _append_deck_diff(lines: Array[String], base_deck: Array, next_deck: Array, label: String) -> void:
+	var base_counts := _deck_counts(base_deck)
+	var next_counts := _deck_counts(next_deck)
+	var all_ids := {}
+	for id in base_counts.keys():
+		all_ids[id] = true
+	for id in next_counts.keys():
+		all_ids[id] = true
+	var parts: Array[String] = []
+	for id in all_ids.keys():
+		var before := int(base_counts.get(id, 0))
+		var after := int(next_counts.get(id, 0))
+		if before != after:
+			parts.append("%s %d→%d" % [str(id), before, after])
+	if not parts.is_empty():
+		lines.append("%s：%s" % [label, ", ".join(parts)])
+
+func _deck_counts(deck_entries: Array) -> Dictionary:
+	var counts := {}
+	for entry_variant in deck_entries:
+		if entry_variant is Dictionary:
+			var entry: Dictionary = entry_variant
+			var card_id := str(entry.get("card_id", entry.get("id", "")))
+			if card_id != "":
+				counts[card_id] = int(counts.get(card_id, 0)) + 1
+	return counts
 
 func _refresh_number_config_select() -> void:
 	if _number_config_select == null:
@@ -532,7 +922,11 @@ func _refresh_number_config_select() -> void:
 	_number_config_select.clear()
 	for i in range(_number_configs.size()):
 		var config: Dictionary = _number_configs[i]
-		_number_config_select.add_item(str(config.get("name", "方案%d" % i)), i)
+		var sample: Dictionary = config.get("sample", {})
+		var suffix := ""
+		if not sample.is_empty():
+			suffix = "｜胜%.0f%% %.1f回合" % [float(sample.get("player_win_rate", 0.0)) * 100.0, float(sample.get("avg_turns", 0.0))]
+		_number_config_select.add_item("%s%s" % [str(config.get("name", "方案%d" % i)), suffix], i)
 	if _active_number_config_index >= 0 and _active_number_config_index < _number_configs.size():
 		_number_config_select.select(_active_number_config_index)
 
@@ -556,6 +950,7 @@ func _format_active_number_config() -> String:
 	var sample: Dictionary = config.get("sample", {})
 	var lines: Array[String] = []
 	lines.append("选中：%s" % str(config.get("name", "方案")))
+	lines.append("来源：%s｜%s" % [str(config.get("encounter_id", "current")), _profile_store_label()])
 	var target: Dictionary = config.get("target", {})
 	if not target.is_empty():
 		lines.append("目标：%s  胜率%.0f%%  回合%.1f" % [str(target.get("label", "目标")), float(target.get("player_win_rate", 0.0)) * 100.0, float(target.get("turn_target", 0.0))])
@@ -573,12 +968,16 @@ func _format_active_number_config() -> String:
 		lines.append("改动：无")
 	else:
 		lines.append("改动：%s" % "；".join(diff.slice(0, 5)))
+	lines.append("我方卡组：%s" % _format_deck_summary(config.get("player_deck", [])))
+	lines.append("敌方卡组：%s" % _format_deck_summary(config.get("enemy_deck", [])))
 	return "\n".join(lines) + "\n"
 
 func _format_sampler_binding() -> String:
 	if player == null or enemy == null or player.data == null or enemy.data == null:
 		return "采样绑定：未进入当前战斗\n"
-	return "采样绑定：%s HP%d 势%d/%d 武境%d 轻功%d 牌%d  vs  %s HP%d 势%d/%d 武境%d 轻功%d 牌%d\n" % [
+	var source := "选中方案" if _active_number_config_index >= 0 and _active_number_config_index < _number_configs.size() else "当前战斗"
+	return "采样绑定[%s]：%s HP%d 势%d/%d 武境%d 轻功%d 牌%d  vs  %s HP%d 势%d/%d 武境%d 轻功%d 牌%d\n" % [
+		source,
 		_fighter_label(player, "玩家"),
 		player.data.max_hp,
 		player.momentum,
@@ -594,3 +993,98 @@ func _format_sampler_binding() -> String:
 		maxi(1, enemy.qinggong),
 		_export_cards(enemy).size()
 	]
+
+func _format_deck_summary(deck_entries: Array) -> String:
+	if deck_entries.is_empty():
+		return "未记录"
+	var counts := _deck_counts(deck_entries)
+	var parts: Array[String] = []
+	for id in counts.keys():
+		parts.append("%s x%d" % [str(id), int(counts[id])])
+	parts.sort()
+	return ", ".join(parts)
+
+func _mutate_deck_entries(config: Dictionary, rng: RandomNumberGenerator, deck_key: String) -> void:
+	var deck_entries: Array = config.get(deck_key, [])
+	if deck_entries.is_empty():
+		return
+	var catalog := _card_catalog_by_id()
+	if rng.randf() < 0.35 and deck_entries.size() > 3:
+		deck_entries.remove_at(rng.randi_range(0, deck_entries.size() - 1))
+	if rng.randf() < 0.55 and deck_entries.size() < 8:
+		var pool: Array[CardData] = []
+		for card_id in catalog.keys():
+			var card: CardData = catalog[card_id]
+			if card != null:
+				pool.append(card)
+		if not pool.is_empty():
+			var picked: CardData = pool[rng.randi_range(0, pool.size() - 1)]
+			deck_entries.append({"card_id": picked.id, "name": picked.display_name, "numbers": _card_numbers(picked)})
+	for i in range(deck_entries.size()):
+		if rng.randf() > 0.24:
+			continue
+		var entry: Dictionary = deck_entries[i]
+		var numbers: Dictionary = entry.get("numbers", {})
+		if int(numbers.get("damage", 0)) > 0:
+			numbers["damage"] = maxi(1, int(numbers.get("damage", 0)) + rng.randi_range(-1, 2))
+		if int(numbers.get("break_momentum", 0)) > 0:
+			numbers["break_momentum"] = maxi(0, int(numbers.get("break_momentum", 0)) + rng.randi_range(-1, 1))
+		if int(numbers.get("guard", 0)) > 0:
+			numbers["guard"] = maxi(1, int(numbers.get("guard", 0)) + rng.randi_range(-1, 2))
+		if rng.randf() < 0.08:
+			numbers["momentum_cost"] = maxi(0, int(numbers.get("momentum_cost", 0)) + rng.randi_range(-1, 1))
+		entry["numbers"] = numbers
+		deck_entries[i] = entry
+	config[deck_key] = deck_entries
+
+func _new_number_config_id() -> String:
+	return "profile_%d_%d" % [Time.get_unix_time_from_system(), _number_config_serial]
+
+func _current_tuning_encounter_id() -> String:
+	if has_method("_context_debug_text") and HotTuningNarrativeBattleContext.has_request():
+		return str(HotTuningNarrativeBattleContext.encounter_id)
+	return "current_battle"
+
+func _profile_store_label() -> String:
+	return NUMBER_PROFILE_STORE_PATH
+
+func _load_number_configs() -> void:
+	if not FileAccess.file_exists(NUMBER_PROFILE_STORE_PATH):
+		return
+	var file := FileAccess.open(NUMBER_PROFILE_STORE_PATH, FileAccess.READ)
+	if file == null:
+		return
+	var parsed = JSON.parse_string(file.get_as_text())
+	if not (parsed is Dictionary):
+		return
+	var profiles: Array = (parsed as Dictionary).get("profiles", [])
+	_number_configs.clear()
+	for profile_variant in profiles:
+		if profile_variant is Dictionary:
+			var profile: Dictionary = profile_variant
+			_number_configs.append(_normalize_loaded_number_config(profile))
+	_number_config_serial = maxi(int((parsed as Dictionary).get("serial", _number_configs.size() + 1)), _number_configs.size() + 1)
+	_active_number_config_index = mini(_active_number_config_index, _number_configs.size() - 1)
+	_refresh_number_config_select()
+
+func _save_number_configs() -> void:
+	var file := FileAccess.open(NUMBER_PROFILE_STORE_PATH, FileAccess.WRITE)
+	if file == null:
+		_number_config_status = "保存失败：无法写入 %s" % NUMBER_PROFILE_STORE_PATH
+		return
+	file.store_string(JSON.stringify({
+		"schema_version": NUMBER_PROFILE_SCHEMA,
+		"serial": _number_config_serial,
+		"profiles": _number_configs
+	}, "\t"))
+
+func _normalize_loaded_number_config(config: Dictionary) -> Dictionary:
+	if not config.has("schema_version"):
+		config["schema_version"] = 1
+	if not config.has("id"):
+		config["id"] = _new_number_config_id()
+	if not config.has("player_deck"):
+		config["player_deck"] = []
+	if not config.has("enemy_deck"):
+		config["enemy_deck"] = []
+	return config

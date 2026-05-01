@@ -88,5 +88,45 @@
     "camera_zoom": 0.01,
     "camera_pan_x": 0.0,
     "camera_pan_y": 0.0
+  },
+  "chapter2_reed_ambush": {
+    "background": "res://assets/pixel_battle/backgrounds/battle_bg_coast_ambush.png",
+    "label": "芦苇伏击",
+    "mist": 0.3,
+    "dim": 0.14,
+    "accent": 0.07,
+    "camera_zoom": 0.026,
+    "camera_pan_x": 10.0,
+    "camera_pan_y": -2.0
+  },
+  "chapter3_escort_clash": {
+    "background": "res://assets/pixel_battle/backgrounds/battle_bg_transport_road.png",
+    "label": "押运冲突",
+    "mist": 0.2,
+    "dim": 0.17,
+    "accent": 0.05,
+    "camera_zoom": 0.02,
+    "camera_pan_x": 5.0,
+    "camera_pan_y": -1.0
+  },
+  "chapter4_tide_bandits": {
+    "background": "res://assets/pixel_battle/backgrounds/battle_bg_mutiny_camp.png",
+    "label": "潮滩截杀",
+    "mist": 0.18,
+    "dim": 0.22,
+    "accent": 0.09,
+    "camera_zoom": 0.022,
+    "camera_pan_x": 4.0,
+    "camera_pan_y": -1.0
+  },
+  "boss_ext_wakou_leader": {
+    "background": "res://assets/pixel_battle/backgrounds/battle_bg_broken_ship.png",
+    "label": "破船首领",
+    "mist": 0.34,
+    "dim": 0.22,
+    "accent": 0.17,
+    "camera_zoom": 0.04,
+    "camera_pan_x": 12.0,
+    "camera_pan_y": -3.0
   }
 }

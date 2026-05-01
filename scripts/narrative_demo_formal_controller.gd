@@ -20,15 +20,15 @@ func _apply_battle_result_reward(source_index: int) -> void:
 func _formal_reward_for_encounter(encounter_id: String, node_type: String) -> Dictionary:
 	match encounter_id:
 		"enc_beach_ambush":
-			return {"jun_gong":1, "qing_wang":0, "clues":1, "hp_gain":1, "posture_gain":0, "martial_gain":1, "heal_full":true, "reward_text":"海边伏击胜利：军功+1，旧案线索+1，最大HP+1，武境+1。"}
+			return {"jun_gong":1, "qing_wang":0, "clues":1, "hp_gain":0, "posture_gain":0, "martial_gain":0, "heal_full":true, "reward_text":"海边伏击胜利：军功+1，旧案线索+1。"}
 		"enc_transport_officer":
-			return {"jun_gong":1, "qing_wang":1, "clues":2, "hp_gain":2, "posture_gain":1, "martial_gain":1, "heal_full":true, "reward_text":"押运官战胜利：军功+1，清望+1，旧案线索+2，最大HP+2，势上限+1，武境+1。"}
+			return {"jun_gong":1, "qing_wang":1, "clues":2, "hp_gain":1, "posture_gain":1, "martial_gain":0, "heal_full":true, "reward_text":"押运官战胜利：军功+1，清望+1，旧案线索+2，最大HP+1，势上限+1。"}
 		"enc_wakou_boss":
-			return {"jun_gong":2, "qing_wang":0, "clues":2, "hp_gain":3, "posture_gain":1, "martial_gain":2, "heal_full":true, "reward_text":"破船首领战胜利：军功+2，旧案线索+2，最大HP+3，势上限+1，武境+2。"}
+			return {"jun_gong":2, "qing_wang":0, "clues":2, "hp_gain":1, "posture_gain":1, "martial_gain":0, "heal_full":true, "reward_text":"破船首领战胜利：军功+2，旧案线索+2，最大HP+1，势上限+1。"}
 		_:
 			if node_type == "Boss":
-				return {"jun_gong":2, "qing_wang":0, "clues":2, "hp_gain":2, "posture_gain":1, "martial_gain":1, "heal_full":true, "reward_text":"Boss战胜利：获得高额成长。"}
-			return {"jun_gong":1, "qing_wang":0, "clues":1, "hp_gain":1, "posture_gain":0, "martial_gain":1, "heal_full":true, "reward_text":"战斗胜利：获得基础成长。"}
+				return {"jun_gong":2, "qing_wang":0, "clues":2, "hp_gain":1, "posture_gain":1, "martial_gain":0, "heal_full":true, "reward_text":"Boss战胜利：获得关键成长。"}
+			return {"jun_gong":1, "qing_wang":0, "clues":1, "hp_gain":0, "posture_gain":0, "martial_gain":0, "heal_full":true, "reward_text":"战斗胜利：获得基础成长。"}
 
 func _consume_battle_result_if_needed() -> void:
 	if not NarrativeBattleContext.has_result():

@@ -3,44 +3,87 @@
   "role_id": "spearman",
   "display_name": "枪手",
   "profession": "spear",
-  "frame_size": [512, 512],
-  "foot_anchor": [256, 500],
-  "body_center": [256, 300],
-  "head_anchor": [256, 150],
+  "frame_size": [
+    1536,
+    512
+  ],
+  "foot_anchor": [
+    650,
+    492
+  ],
+  "body_center": [
+    560,
+    300
+  ],
+  "head_anchor": [
+    560,
+    145
+  ],
   "default_facing": "right",
   "scale": 1.0,
   "animations": {
     "idle": {
-      "file": "../../sheets/spearman_sheet.png",
+      "files": [
+        "../../sheets/spearman_frames/idle_guard.png",
+        "../../sheets/spearman_frames/thrust.png",
+        "../../sheets/spearman_frames/recover.png"
+      ],
       "frames": 3,
       "fps": 0.001,
       "loop": true
     },
     "move_forward": {
-      "file": "../../sheets/spearman_sheet.png",
+      "files": [
+        "../../sheets/spearman_frames/idle_guard.png",
+        "../../sheets/spearman_frames/thrust.png",
+        "../../sheets/spearman_frames/recover.png"
+      ],
       "frames": 3,
       "fps": 8,
       "loop": false,
       "recovery_to": "idle"
     },
     "attack_light": {
-      "file": "../../sheets/spearman_sheet.png",
+      "files": [
+        "../../sheets/spearman_frames/idle_guard.png",
+        "../../sheets/spearman_frames/thrust.png",
+        "../../sheets/spearman_frames/recover.png"
+      ],
       "frames": 3,
       "fps": 8,
       "loop": false,
       "hit_frame": 1,
       "phase_frames": {
-        "anticipation": [0, 0],
-        "strike": [1, 1],
-        "impact": [1, 1],
-        "recovery": [2, 2]
+        "anticipation": [
+          0,
+          0
+        ],
+        "strike": [
+          1,
+          1
+        ],
+        "impact": [
+          1,
+          1
+        ],
+        "recovery": [
+          2,
+          2
+        ]
       },
       "fx": "pierce_streak",
-      "impact_offset": [120, -60],
+      "impact_offset": [
+        120,
+        -60
+      ],
       "recovery_to": "idle"
     },
     "guard": {
-      "file": "../../sheets/spearman_sheet.png",
+      "files": [
+        "../../sheets/spearman_frames/idle_guard.png",
+        "../../sheets/spearman_frames/thrust.png",
+        "../../sheets/spearman_frames/recover.png"
+      ],
       "frames": 3,
       "fps": 6,
       "loop": false,
@@ -49,15 +92,19 @@
       "recovery_to": "idle"
     },
     "hit": {
-      "file": "../../sheets/spearman_sheet.png",
-      "frames": 3,
+      "files": [
+        "../../sheets/spearman_frames/recover.png"
+      ],
+      "frames": 1,
       "fps": 8,
       "loop": false,
       "recovery_to": "idle"
     },
     "break": {
-      "file": "../../sheets/spearman_sheet.png",
-      "frames": 3,
+      "files": [
+        "../../sheets/spearman_frames/recover.png"
+      ],
+      "frames": 1,
       "fps": 6,
       "loop": false,
       "recovery_to": "idle"

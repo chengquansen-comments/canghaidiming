@@ -78,6 +78,7 @@ const FX_OFFSET_SMOKE_PLAYER := Vector2(-82, -28)
 const FX_OFFSET_SMOKE_ENEMY := Vector2(-118, -28)
 
 const PRESENTATION_STEP_MOVE_DURATION := 0.12
+const PRESENTATION_DEATH_HOLD_DURATION := 0.20
 const PRESENTATION_STEP_MOVE_PAUSE := 0.045
 const PRESENTATION_STEP_MOVE_BOB_Y := -7.0
 const PRESENTATION_STEP_MOVE_MAX_STEPS := 8
@@ -88,6 +89,7 @@ const PRESENTATION_TURN_SETTLE_DURATION := 0.06
 const PRESENTATION_TURN_COMPRESS_X := 0.82
 const PRESENTATION_TURN_SETTLE_Y := 1.04
 const PRESENTATION_POST_PLAYER_ACTION_PAUSE := 0.38
+const PRESENTATION_ENEMY_ATTACK_START_DELAY_AFTER_PLAYER := 0.20
 const PRESENTATION_PRE_ENEMY_ACTION_GLOW_PAUSE := 0.36
 const PRESENTATION_POST_ENEMY_ACTION_PAUSE := 0.24
 const PRESENTATION_PHASE_CUE_HOLD := 0.58
@@ -99,7 +101,7 @@ const ACTOR_FOCUS_DIM_COLOR := Color(0.68, 0.70, 0.72, 0.74)
 const ACTOR_HALO_SIZE := Vector2(142.0, 24.0)
 const ACTOR_HALO_PLAYER_COLOR := Color(0.35, 0.76, 1.0, 0.36)
 const ACTOR_HALO_ENEMY_COLOR := Color(1.0, 0.23, 0.12, 0.40)
-const STAGE_FOCUS_OFFSET_X := 12.0
+const STAGE_FOCUS_OFFSET_X := 0.0
 const PHASE_CUE_SIZE := Vector2(300.0, 48.0)
 
 const FACING_CTX_OLD_PLAYER_FACING := &"facing_ctx_old_player_facing"
@@ -136,6 +138,7 @@ var _player_intent_bubble_focus_active := false
 var _enemy_intent_bubble_focus_active := false
 var _player_intent_bubble_tween: Tween
 var _enemy_intent_bubble_tween: Tween
+var _presentation_player_action_completed_this_exchange := false
 
 func _build_ui() -> void:
 	super._build_ui()
@@ -149,6 +152,8 @@ func _refresh_ui() -> void:
 	_apply_dead_actor_visibility_guard()
 
 func _apply_dead_actor_visibility_guard() -> void:
+	if _presentation_busy():
+		return
 	if player != null and player.hp <= 0:
 		if player_sprite != null:
 			player_sprite.visible = false
@@ -316,7 +321,11 @@ func _sync_actor_action_halo(is_player_actor: bool) -> void:
 		return
 	var active: bool = _player_actor_glow_active if is_player_actor else _enemy_actor_glow_active
 	halo.visible = active and sprite.visible
-	halo.position = sprite.position + Vector2(sprite.size.x * 0.5 - ACTOR_HALO_SIZE.x * 0.5, sprite.size.y * 0.82)
+	var foot_point := sprite.position + BattleActorFootHelper.frame_foot_offset(sprite)
+	halo.position = Vector2(
+		foot_point.x - ACTOR_HALO_SIZE.x * 0.5,
+		GRID_STAGE_Y + GRID_SLOT_HEIGHT * 0.5 - ACTOR_HALO_SIZE.y * 0.5
+	)
 	halo.size = ACTOR_HALO_SIZE
 
 func _sync_actor_focus_state() -> void:
@@ -435,6 +444,19 @@ func _current_grid_positions() -> Dictionary:
 func _apply_presentation_offsets() -> void:
 	super._apply_presentation_offsets()
 	_sync_actor_action_glows()
+
+func _mark_player_presentation_action_completed() -> void:
+	_presentation_player_action_completed_this_exchange = true
+
+func _reset_player_presentation_action_gate() -> void:
+	_presentation_player_action_completed_this_exchange = false
+
+func _wait_for_enemy_attack_start_after_player() -> void:
+	if not _presentation_player_action_completed_this_exchange:
+		return
+	if PRESENTATION_ENEMY_ATTACK_START_DELAY_AFTER_PLAYER <= 0.0:
+		return
+	await get_tree().create_timer(PRESENTATION_ENEMY_ATTACK_START_DELAY_AFTER_PLAYER).timeout
 
 func _play_guard_presentation(is_player_actor: bool, card: CardData, result: Dictionary) -> void:
 	_show_guard_ink_shield(is_player_actor)
@@ -876,6 +898,7 @@ func _confirm_player_intent() -> void:
 
 func _run_presentation_exchange(player_card: CardData, enemy_card: CardData, order: Array[String], old_player_slot: int, old_enemy_slot: int, preview_sim: Dictionary) -> void:
 	_reset_presentation_offsets()
+	_reset_player_presentation_action_gate()
 	var visual_player_slot: int = _consume_player_draft_visual_start_slot(old_player_slot)
 	_apply_pre_resolution_slot_offsets(visual_player_slot, old_enemy_slot)
 	var visual_enemy_slot: int = old_enemy_slot
@@ -884,12 +907,14 @@ func _run_presentation_exchange(player_card: CardData, enemy_card: CardData, ord
 			var player_move_step: Dictionary = _presentation_step_for_side(preview_sim, "player", "move")
 			visual_player_slot = await _apply_presentation_stance_step(true, visual_player_slot, player.position, player_card, player_move_step)
 			await _play_one_presentation_action(true, player_card, _presentation_result_for_side(preview_sim, "player"))
+			_mark_player_presentation_action_completed()
 			var player_effect_step: Dictionary = _presentation_step_for_side(preview_sim, "player", "effect_move")
 			visual_player_slot = await _apply_presentation_effect_actor_step(true, visual_player_slot, player.position, player_effect_step)
 			visual_enemy_slot = await _apply_presentation_effect_target_step(false, visual_enemy_slot, enemy.position, player_effect_step)
 		elif side == "enemy" and enemy_card != null:
 			var enemy_move_step: Dictionary = _presentation_step_for_side(preview_sim, "enemy", "move")
 			visual_enemy_slot = await _apply_presentation_stance_step(false, visual_enemy_slot, enemy.position, enemy_card, enemy_move_step)
+			await _wait_for_enemy_attack_start_after_player()
 			await _play_one_presentation_action(false, enemy_card, _presentation_result_for_side(preview_sim, "enemy"))
 			var enemy_effect_step: Dictionary = _presentation_step_for_side(preview_sim, "enemy", "effect_move")
 			visual_enemy_slot = await _apply_presentation_effect_actor_step(false, visual_enemy_slot, enemy.position, enemy_effect_step)
@@ -973,6 +998,7 @@ func _play_presentation_death(is_player_actor: bool) -> void:
 	var node: CanvasItem = _presentation_visual_node(is_player_actor)
 	if node == null:
 		return
+	await get_tree().create_timer(PRESENTATION_DEATH_HOLD_DURATION).timeout
 	var start_offset: Vector2 = _presentation_offset(is_player_actor)
 	var end_offset := start_offset + Vector2(0, 30)
 	_tween_actor_offset(is_player_actor, start_offset, end_offset, 0.26, Tween.TRANS_QUAD, Tween.EASE_IN)

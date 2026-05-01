@@ -1,0 +1,70 @@
+{
+  "schema_version": "0.1",
+  "role_id": "master_veteran",
+  "display_name": "沉默老兵",
+  "profession": "blade",
+  "frame_size": [512, 512],
+  "foot_anchor": [256, 500],
+  "body_center": [256, 300],
+  "head_anchor": [256, 150],
+  "default_facing": "right",
+  "scale": 1.0,
+  "animations": {
+    "idle": {
+      "file": "../../sheets/master_veteran_sheet.png",
+      "frames": 3,
+      "fps": 0.001,
+      "loop": true
+    },
+    "move_forward": {
+      "file": "../../sheets/master_veteran_sheet.png",
+      "frames": 3,
+      "fps": 8,
+      "loop": false,
+      "recovery_to": "idle"
+    },
+    "attack_light": {
+      "file": "../../sheets/master_veteran_sheet.png",
+      "frames": 3,
+      "fps": 8,
+      "loop": false,
+      "hit_frame": 1,
+      "phase_frames": {
+        "anticipation": [0, 0],
+        "strike": [1, 1],
+        "impact": [1, 1],
+        "recovery": [2, 2]
+      },
+      "fx": "slash_arc",
+      "impact_offset": [-120, -60],
+      "recovery_to": "idle"
+    },
+    "guard": {
+      "file": "../../sheets/master_veteran_sheet.png",
+      "frames": 3,
+      "fps": 6,
+      "loop": false,
+      "active_frame": 1,
+      "fx": "guard_flash",
+      "recovery_to": "idle"
+    },
+    "hit": {
+      "files": [
+        "../../sheets/master_veteran_frames/hit.png"
+      ],
+      "frames": 1,
+      "fps": 8,
+      "loop": false,
+      "recovery_to": "idle"
+    },
+    "break": {
+      "files": [
+        "../../sheets/master_veteran_frames/break.png"
+      ],
+      "frames": 1,
+      "fps": 6,
+      "loop": false,
+      "recovery_to": "idle"
+    }
+  }
+}

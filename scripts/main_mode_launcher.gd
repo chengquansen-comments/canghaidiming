@@ -1,6 +1,7 @@
 extends Control
 
 const BattleFontHelper = preload("res://scripts/visual/battle_font_view.gd")
+const NarrativeBattleContext = preload("res://scripts/narrative_battle_context.gd")
 
 func _ready() -> void:
 	_build_ui()
@@ -49,7 +50,7 @@ func _build_ui() -> void:
 	box.add_child(title)
 
 	var subtitle := Label.new()
-	subtitle.text = "剧情 MVP、字符版战斗、视觉版战斗已分开。剧情入口用于验证压缩叙事，战斗入口用于继续调规则和角色。"
+	subtitle.text = "剧情 MVP、字符版战斗、战斗测试已分开。剧情入口用于验证压缩叙事，战斗测试用于调试剧情遭遇、数值和表现。"
 	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	subtitle.custom_minimum_size = Vector2(500, 0)
@@ -73,9 +74,10 @@ func _build_ui() -> void:
 	box.add_child(text_button)
 
 	var visual_button := Button.new()
-	visual_button.text = "进入视觉版战斗"
+	visual_button.text = "战斗测试"
 	visual_button.custom_minimum_size = Vector2(300, 54)
 	visual_button.pressed.connect(func() -> void:
+		NarrativeBattleContext.clear()
 		get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
 	)
 	box.add_child(visual_button)

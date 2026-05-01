@@ -3,5 +3,12 @@ easy	简单	18	6	4	1	1	教学用
 normal	标准	22	7	5	1	1	标准敌人
 pressure	压迫	26	8	6	2	1	高压敌人
 duel	高手	30	9	7	2	1	对称式高手对决
-master	师傅	32	10	8	3	1	师傅救场演示
+master	师傅	48	12	9	4	3	师傅救场演示
 player_start	主角起手	24	6	5	1	1	主角初始数值
+weak_blade	弱刀兵	24	7	4	1	1	低压剧情刀兵
+normal_spear	普通枪兵	40	10	5	1	1	正式剧情普通枪兵
+normal_blade	普通刀兵	28	10	4	1	1	正式剧情普通刀兵
+elite_spear	精英枪兵	44	10	5	2	1	正式剧情精英枪兵
+elite_blade	精英刀兵	38	10	5	2	2	正式剧情精英刀兵
+chapter_pressure	章节高压敌	36	11	6	2	2	中后段高压敌人
+boss_blade	首领刀客	42	12	6	3	2	Boss 与首领战

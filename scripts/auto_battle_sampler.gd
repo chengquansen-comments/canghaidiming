@@ -6,6 +6,12 @@ class_name AutoBattleSampler
 
 const CombatResolver = preload("res://scripts/combat_resolver.gd")
 
+const MODE_REACTIVE_ID := "reactive"
+const MODE_SYMMETRIC_ID := "symmetric"
+const PRESSURE_NONE := "none"
+const PRESSURE_EDGE := "edge_pressure"
+const PRESSURE_BREAK_RESIST := "break_resist"
+
 static func run_batch(player_cards: Array[CardData], enemy_cards: Array[CardData], options: Dictionary = {}) -> Dictionary:
 	var sample_count: int = int(options.get("sample_count", 100))
 	var max_turns: int = int(options.get("max_turns", 30))
@@ -14,6 +20,8 @@ static func run_batch(player_cards: Array[CardData], enemy_cards: Array[CardData
 	var aggregate: Dictionary = _empty_aggregate(sample_count, max_turns)
 	aggregate["player_label"] = str(options.get("player_label", "玩家"))
 	aggregate["enemy_label"] = str(options.get("enemy_label", "敌人"))
+	aggregate["settlement_mode"] = str(options.get("settlement_mode", MODE_REACTIVE_ID))
+	aggregate["pressure_profile"] = str(options.get("pressure_profile", PRESSURE_NONE))
 	for i: int in range(sample_count):
 		_record_result(aggregate, run_single(player_cards, enemy_cards, max_turns, rng, options))
 	_finalize_aggregate(aggregate)
@@ -118,14 +126,23 @@ static func run_single(player_cards: Array[CardData], enemy_cards: Array[CardDat
 	var enemy_preferred: Array = options.get("enemy_preferred", _preferred_for_style(str(e.get("style", "blade"))))
 	_bind_preferred_to_state(p, player_preferred)
 	_bind_preferred_to_state(e, enemy_preferred)
-	var momentum_regen: int = int(options.get("momentum_regen", 3))
+	var settlement_mode := str(options.get("settlement_mode", MODE_REACTIVE_ID))
+	var pressure_profile := str(options.get("pressure_profile", PRESSURE_NONE))
+	var momentum_regen: int = int(options.get("momentum_regen", 2))
+	var break_resist_available := pressure_profile == PRESSURE_BREAK_RESIST
 	var distance_hist: Dictionary = {}
 	var push_count: int = 0
 	var pull_count: int = 0
 	var self_move_count: int = 0
 	var break_count: int = 0
+	var player_break_count: int = 0
+	var enemy_break_count: int = 0
+	var player_first_break_turn: int = 0
+	var enemy_first_break_turn: int = 0
 	var player_hit_count: int = 0
 	var enemy_hit_count: int = 0
+	var pressure_edge_count: int = 0
+	var break_resist_count: int = 0
 	var turns: int = 0
 	for turn: int in range(max_turns):
 		turns += 1
@@ -133,16 +150,26 @@ static func run_single(player_cards: Array[CardData], enemy_cards: Array[CardDat
 		e["guard"] = 0
 		p["momentum"] = mini(int(p.get("max_momentum", 10)), int(p.get("momentum", 0)) + momentum_regen)
 		e["momentum"] = mini(int(e.get("max_momentum", 10)), int(e.get("momentum", 0)) + momentum_regen)
-		p["broken"] = false
-		e["broken"] = false
+		p["broken"] = bool(p.get("next_broken", false))
+		e["broken"] = bool(e.get("next_broken", false))
+		p["next_broken"] = false
+		e["next_broken"] = false
 		_move_toward_preferred_range(p, e, player_preferred)
 		_move_toward_preferred_range(e, p, enemy_preferred)
+		if pressure_profile == PRESSURE_EDGE:
+			pressure_edge_count += _apply_edge_pressure_to_sampler_state(p)
+			pressure_edge_count += _apply_edge_pressure_to_sampler_state(e)
 		var p_card: CardData = _choose_card(player_cards, p, e, rng)
 		var e_card: CardData = _choose_card(enemy_cards, e, p, rng)
-		var order: Array[String] = _resolution_order(p, e, p_card, e_card, rng)
-		var sim: Dictionary = CombatResolver.resolve_exchange(p, e, p_card, e_card, order)
-		p["hp"] = int(p.get("hp", 0)) + int(sim.get("player_hp_delta", 0))
-		e["hp"] = int(e.get("hp", 0)) + int(sim.get("enemy_hp_delta", 0))
+		var order: Array[String] = _resolution_order(p, e, p_card, e_card, rng, settlement_mode)
+		var sim: Dictionary = _resolve_sampler_exchange(p, e, p_card, e_card, order, settlement_mode)
+		if bool(sim.get("enemy_will_break", false)) and break_resist_available:
+			break_resist_available = false
+			break_resist_count += 1
+			sim["enemy_will_break"] = false
+			sim["enemy_momentum_delta"] = mini(0, int(sim.get("enemy_momentum_delta", 0)) + 1)
+		p["hp"] = maxi(int(p.get("hp", 0)) + int(sim.get("player_hp_delta", 0)), 0)
+		e["hp"] = maxi(int(e.get("hp", 0)) + int(sim.get("enemy_hp_delta", 0)), 0)
 		p["momentum"] = clampi(int(p.get("momentum", 0)) + int(sim.get("player_momentum_delta", 0)), 0, int(p.get("max_momentum", 10)))
 		e["momentum"] = clampi(int(e.get("momentum", 0)) + int(sim.get("enemy_momentum_delta", 0)), 0, int(e.get("max_momentum", 10)))
 		p["guard"] = max(0, int(p.get("guard", 0)) + int(sim.get("player_guard_delta", 0)))
@@ -156,8 +183,16 @@ static func run_single(player_cards: Array[CardData], enemy_cards: Array[CardDat
 			enemy_hit_count += 1
 		if bool(sim.get("player_will_break", false)):
 			break_count += 1
+			player_break_count += 1
+			p["next_broken"] = true
+			if player_first_break_turn <= 0:
+				player_first_break_turn = turns
 		if bool(sim.get("enemy_will_break", false)):
 			break_count += 1
+			enemy_break_count += 1
+			e["next_broken"] = true
+			if enemy_first_break_turn <= 0:
+				enemy_first_break_turn = turns
 		push_count += _movement_count(p_card, "target_push_after") + _movement_count(e_card, "target_push_after")
 		pull_count += _movement_count(p_card, "target_pull_after") + _movement_count(e_card, "target_pull_after")
 		if p_card != null:
@@ -177,7 +212,9 @@ static func run_single(player_cards: Array[CardData], enemy_cards: Array[CardDat
 		winner = "player_timeout"
 	elif int(e.get("hp", 0)) > int(p.get("hp", 0)):
 		winner = "enemy_timeout"
-	return {"winner": winner, "turns": turns, "player_hp": int(p.get("hp", 0)), "enemy_hp": int(e.get("hp", 0)), "distance_hist": distance_hist, "push_count": push_count, "pull_count": pull_count, "self_move_count": self_move_count, "break_count": break_count, "player_hit_count": player_hit_count, "enemy_hit_count": enemy_hit_count}
+	var player_death_turn: int = turns if int(p.get("hp", 0)) <= 0 else 0
+	var enemy_death_turn: int = turns if int(e.get("hp", 0)) <= 0 else 0
+	return {"winner": winner, "turns": turns, "player_hp": int(p.get("hp", 0)), "enemy_hp": int(e.get("hp", 0)), "distance_hist": distance_hist, "push_count": push_count, "pull_count": pull_count, "self_move_count": self_move_count, "break_count": break_count, "player_break_count": player_break_count, "enemy_break_count": enemy_break_count, "player_first_break_turn": player_first_break_turn, "enemy_first_break_turn": enemy_first_break_turn, "player_death_turn": player_death_turn, "enemy_death_turn": enemy_death_turn, "player_hit_count": player_hit_count, "enemy_hit_count": enemy_hit_count, "pressure_edge_count": pressure_edge_count, "break_resist_count": break_resist_count}
 
 static func _runtime_state(source: Dictionary, defaults: Dictionary) -> Dictionary:
 	var out: Dictionary = defaults.duplicate(true)
@@ -198,8 +235,11 @@ static func _bind_preferred_to_state(state: Dictionary, preferred: Array) -> voi
 	state["preferred_min"] = int(preferred[0])
 	state["preferred_max"] = int(preferred[preferred.size() - 1])
 
-static func _resolution_order(player_state: Dictionary, enemy_state: Dictionary, player_card: CardData, enemy_card: CardData, rng: RandomNumberGenerator) -> Array[String]:
+static func _resolution_order(player_state: Dictionary, enemy_state: Dictionary, player_card: CardData, enemy_card: CardData, rng: RandomNumberGenerator, settlement_mode: String = MODE_REACTIVE_ID) -> Array[String]:
 	var result: Array[String] = []
+	if settlement_mode == MODE_REACTIVE_ID:
+		result.assign(["enemy", "player"] if bool(player_state.get("broken", false)) and not bool(enemy_state.get("broken", false)) else ["player", "enemy"])
+		return result
 	var player_senki := player_card != null and player_card.has_tag("先机")
 	var enemy_senki := enemy_card != null and enemy_card.has_tag("先机")
 	if player_senki and not enemy_senki:
@@ -218,6 +258,65 @@ static func _resolution_order(player_state: Dictionary, enemy_state: Dictionary,
 		return result
 	result.assign(["player", "enemy"] if rng.randi_range(0, 1) == 0 else ["enemy", "player"])
 	return result
+
+static func _resolve_sampler_exchange(player_state: Dictionary, enemy_state: Dictionary, player_card: CardData, enemy_card: CardData, order: Array[String], settlement_mode: String) -> Dictionary:
+	if settlement_mode != MODE_REACTIVE_ID:
+		return CombatResolver.resolve_exchange(player_state, enemy_state, player_card, enemy_card, order)
+	var aggregate := _empty_exchange(order)
+	var p_state := player_state.duplicate(true)
+	var e_state := enemy_state.duplicate(true)
+	for side: String in order:
+		if side == "player":
+			var sim_p := CombatResolver.resolve_exchange(p_state, e_state, player_card, null, ["player"])
+			_merge_exchange(aggregate, sim_p)
+			_apply_exchange_to_states(p_state, e_state, sim_p)
+			if bool(sim_p.get("enemy_will_break", false)):
+				aggregate["enemy_will_break"] = true
+				break
+		elif side == "enemy":
+			var sim_e := CombatResolver.resolve_exchange(p_state, e_state, null, enemy_card, ["enemy"])
+			_merge_exchange(aggregate, sim_e)
+			_apply_exchange_to_states(p_state, e_state, sim_e)
+			if bool(sim_e.get("player_will_break", false)):
+				aggregate["player_will_break"] = true
+	aggregate["player_final"] = int(p_state.get("position", int(player_state.get("position", 0))))
+	aggregate["enemy_final"] = int(e_state.get("position", int(enemy_state.get("position", 0))))
+	return aggregate
+
+static func _empty_exchange(order: Array[String]) -> Dictionary:
+	return {"player_final": 0, "enemy_final": 0, "player_hp_delta": 0, "enemy_hp_delta": 0, "player_momentum_delta": 0, "enemy_momentum_delta": 0, "player_guard_delta": 0, "enemy_guard_delta": 0, "player_range_result": CombatResolver.RANGE_NONE, "enemy_range_result": CombatResolver.RANGE_NONE, "player_will_break": false, "enemy_will_break": false, "order": order}
+
+static func _merge_exchange(target: Dictionary, source: Dictionary) -> void:
+	for key in ["player_hp_delta", "enemy_hp_delta", "player_momentum_delta", "enemy_momentum_delta", "player_guard_delta", "enemy_guard_delta"]:
+		target[key] = int(target.get(key, 0)) + int(source.get(key, 0))
+	if str(source.get("player_range_result", CombatResolver.RANGE_NONE)) != CombatResolver.RANGE_NONE:
+		target["player_range_result"] = str(source.get("player_range_result", CombatResolver.RANGE_NONE))
+	if str(source.get("enemy_range_result", CombatResolver.RANGE_NONE)) != CombatResolver.RANGE_NONE:
+		target["enemy_range_result"] = str(source.get("enemy_range_result", CombatResolver.RANGE_NONE))
+	target["player_will_break"] = bool(target.get("player_will_break", false)) or bool(source.get("player_will_break", false))
+	target["enemy_will_break"] = bool(target.get("enemy_will_break", false)) or bool(source.get("enemy_will_break", false))
+
+static func _apply_exchange_to_states(p_state: Dictionary, e_state: Dictionary, sim: Dictionary) -> void:
+	p_state["hp"] = maxi(int(p_state.get("hp", 0)) + int(sim.get("player_hp_delta", 0)), 0)
+	e_state["hp"] = maxi(int(e_state.get("hp", 0)) + int(sim.get("enemy_hp_delta", 0)), 0)
+	p_state["momentum"] = clampi(int(p_state.get("momentum", 0)) + int(sim.get("player_momentum_delta", 0)), 0, int(p_state.get("max_momentum", 10)))
+	e_state["momentum"] = clampi(int(e_state.get("momentum", 0)) + int(sim.get("enemy_momentum_delta", 0)), 0, int(e_state.get("max_momentum", 10)))
+	p_state["guard"] = maxi(0, int(p_state.get("guard", 0)) + int(sim.get("player_guard_delta", 0)))
+	e_state["guard"] = maxi(0, int(e_state.get("guard", 0)) + int(sim.get("enemy_guard_delta", 0)))
+	p_state["position"] = int(sim.get("player_final", p_state.get("position", 0)))
+	e_state["position"] = int(sim.get("enemy_final", e_state.get("position", 0)))
+
+static func _apply_edge_pressure_to_sampler_state(state: Dictionary) -> int:
+	var pos := int(state.get("position", 0))
+	if pos != 0 and pos != 8:
+		return 0
+	var before := int(state.get("momentum", 0))
+	if before <= 0:
+		return 0
+	state["momentum"] = maxi(before - 1, 0)
+	if int(state.get("momentum", 0)) == 0:
+		state["next_broken"] = true
+	return 1
 
 static func _choose_card(cards: Array[CardData], actor: Dictionary, target: Dictionary, rng: RandomNumberGenerator) -> CardData:
 	if cards.is_empty():
@@ -306,7 +405,7 @@ static func _ratio_get(r: Dictionary, key: int) -> float:
 	return 0.0
 
 static func _empty_aggregate(sample_count: int, max_turns: int) -> Dictionary:
-	return {"sample_count": sample_count, "max_turns": max_turns, "player_wins": 0, "enemy_wins": 0, "draws": 0, "turns_total": 0, "distance_hist": {}, "push_total": 0, "pull_total": 0, "self_move_total": 0, "break_total": 0, "player_hits": 0, "enemy_hits": 0}
+	return {"sample_count": sample_count, "max_turns": max_turns, "player_wins": 0, "enemy_wins": 0, "draws": 0, "turns_total": 0, "player_hp_total": 0, "enemy_hp_total": 0, "distance_hist": {}, "push_total": 0, "pull_total": 0, "self_move_total": 0, "break_total": 0, "player_break_total": 0, "enemy_break_total": 0, "player_first_break_turn_total": 0, "player_first_break_count": 0, "enemy_first_break_turn_total": 0, "enemy_first_break_count": 0, "player_death_turn_total": 0, "player_death_count": 0, "enemy_death_turn_total": 0, "enemy_death_count": 0, "pressure_edge_total": 0, "break_resist_total": 0, "player_hits": 0, "enemy_hits": 0}
 
 static func _record_result(aggregate: Dictionary, result: Dictionary) -> void:
 	var winner: String = str(result.get("winner", "draw"))
@@ -317,12 +416,22 @@ static func _record_result(aggregate: Dictionary, result: Dictionary) -> void:
 	else:
 		aggregate["draws"] += 1
 	aggregate["turns_total"] += int(result.get("turns", 0))
+	aggregate["player_hp_total"] += int(result.get("player_hp", 0))
+	aggregate["enemy_hp_total"] += int(result.get("enemy_hp", 0))
 	aggregate["push_total"] += int(result.get("push_count", 0))
 	aggregate["pull_total"] += int(result.get("pull_count", 0))
 	aggregate["self_move_total"] += int(result.get("self_move_count", 0))
 	aggregate["break_total"] += int(result.get("break_count", 0))
+	aggregate["player_break_total"] += int(result.get("player_break_count", 0))
+	aggregate["enemy_break_total"] += int(result.get("enemy_break_count", 0))
+	aggregate["pressure_edge_total"] += int(result.get("pressure_edge_count", 0))
+	aggregate["break_resist_total"] += int(result.get("break_resist_count", 0))
 	aggregate["player_hits"] += int(result.get("player_hit_count", 0))
 	aggregate["enemy_hits"] += int(result.get("enemy_hit_count", 0))
+	_record_positive_turn(aggregate, "player_first_break", int(result.get("player_first_break_turn", 0)))
+	_record_positive_turn(aggregate, "enemy_first_break", int(result.get("enemy_first_break_turn", 0)))
+	_record_positive_turn(aggregate, "player_death", int(result.get("player_death_turn", 0)))
+	_record_positive_turn(aggregate, "enemy_death", int(result.get("enemy_death_turn", 0)))
 	var hist: Dictionary = result.get("distance_hist", {})
 	for key in hist.keys():
 		aggregate["distance_hist"][key] = int(aggregate["distance_hist"].get(key, 0)) + int(hist[key])
@@ -333,6 +442,14 @@ static func _finalize_aggregate(aggregate: Dictionary) -> void:
 	aggregate["enemy_win_rate"] = float(aggregate.get("enemy_wins", 0)) / float(n)
 	aggregate["draw_rate"] = float(aggregate.get("draws", 0)) / float(n)
 	aggregate["avg_turns"] = float(aggregate.get("turns_total", 0)) / float(n)
+	aggregate["avg_player_hp"] = float(aggregate.get("player_hp_total", 0)) / float(n)
+	aggregate["avg_enemy_hp"] = float(aggregate.get("enemy_hp_total", 0)) / float(n)
+	aggregate["player_break_rate"] = float(aggregate.get("player_first_break_count", 0)) / float(n)
+	aggregate["enemy_break_rate"] = float(aggregate.get("enemy_first_break_count", 0)) / float(n)
+	aggregate["avg_player_first_break_turn"] = _average_positive_turn(aggregate, "player_first_break")
+	aggregate["avg_enemy_first_break_turn"] = _average_positive_turn(aggregate, "enemy_first_break")
+	aggregate["avg_player_death_turn"] = _average_positive_turn(aggregate, "player_death")
+	aggregate["avg_enemy_death_turn"] = _average_positive_turn(aggregate, "enemy_death")
 	var total_distance_ticks: int = 0
 	for key in aggregate["distance_hist"].keys():
 		total_distance_ticks += int(aggregate["distance_hist"][key])
@@ -346,7 +463,46 @@ static func format_report(result: Dictionary) -> String:
 		return "未采样"
 	var player_label := str(result.get("player_label", "玩家"))
 	var enemy_label := str(result.get("enemy_label", "敌人"))
-	return "样本:%d  平均回合:%.1f\n%s胜:%.1f%%  %s胜:%.1f%%  平:%.1f%%\n击退:%d 拉近:%d 自移:%d 崩势:%d\n命中: %s%d / %s%d\n距离分布: %s" % [int(result.get("sample_count", 0)), float(result.get("avg_turns", 0.0)), player_label, float(result.get("player_win_rate", 0.0)) * 100.0, enemy_label, float(result.get("enemy_win_rate", 0.0)) * 100.0, float(result.get("draw_rate", 0.0)) * 100.0, int(result.get("push_total", 0)), int(result.get("pull_total", 0)), int(result.get("self_move_total", 0)), int(result.get("break_total", 0)), player_label, int(result.get("player_hits", 0)), enemy_label, int(result.get("enemy_hits", 0)), _format_distance_ratio(result.get("distance_ratio", {}))]
+	return "样本:%d  模式:%s  压力:%s  平均回合:%.1f\n%s胜:%.1f%%  %s胜:%.1f%%  平:%.1f%%\n平均余血: %s %.1f / %s %.1f\n%s死亡回合: %s  %s死亡回合: %s\n崩势: 总%d  %s %.0f%%@%s  %s %.0f%%@%s\n压力触发: 边界%d  稳势%d\n击退:%d 拉近:%d 自移:%d\n命中: %s%d / %s%d\n结论: %s\n距离分布: %s" % [int(result.get("sample_count", 0)), str(result.get("settlement_mode", MODE_REACTIVE_ID)), str(result.get("pressure_profile", PRESSURE_NONE)), float(result.get("avg_turns", 0.0)), player_label, float(result.get("player_win_rate", 0.0)) * 100.0, enemy_label, float(result.get("enemy_win_rate", 0.0)) * 100.0, float(result.get("draw_rate", 0.0)) * 100.0, player_label, float(result.get("avg_player_hp", 0.0)), enemy_label, float(result.get("avg_enemy_hp", 0.0)), player_label, _format_optional_turn(float(result.get("avg_player_death_turn", 0.0))), enemy_label, _format_optional_turn(float(result.get("avg_enemy_death_turn", 0.0))), int(result.get("break_total", 0)), player_label, float(result.get("player_break_rate", 0.0)) * 100.0, _format_optional_turn(float(result.get("avg_player_first_break_turn", 0.0))), enemy_label, float(result.get("enemy_break_rate", 0.0)) * 100.0, _format_optional_turn(float(result.get("avg_enemy_first_break_turn", 0.0))), int(result.get("pressure_edge_total", 0)), int(result.get("break_resist_total", 0)), int(result.get("push_total", 0)), int(result.get("pull_total", 0)), int(result.get("self_move_total", 0)), player_label, int(result.get("player_hits", 0)), enemy_label, int(result.get("enemy_hits", 0)), format_balance_conclusion(result), _format_distance_ratio(result.get("distance_ratio", {}))]
+
+static func format_balance_conclusion(result: Dictionary) -> String:
+	if result.is_empty():
+		return "未采样"
+	var win := float(result.get("player_win_rate", 0.0))
+	var turns := float(result.get("avg_turns", 0.0))
+	var parts: Array[String] = []
+	if win >= 0.72:
+		parts.append("玩家偏强")
+	elif win <= 0.42:
+		parts.append("玩家偏弱")
+	else:
+		parts.append("胜率可用")
+	if turns < 4.5:
+		parts.append("节奏偏短")
+	elif turns > 10.0:
+		parts.append("节奏偏长")
+	else:
+		parts.append("节奏可用")
+	if float(result.get("draw_rate", 0.0)) > 0.18:
+		parts.append("平局/拖时偏高")
+	if float(result.get("enemy_break_rate", 0.0)) < 0.18 and win < 0.55:
+		parts.append("破敌压力不足")
+	return "，".join(parts)
+
+static func _record_positive_turn(aggregate: Dictionary, key: String, value: int) -> void:
+	if value <= 0:
+		return
+	aggregate["%s_turn_total" % key] = int(aggregate.get("%s_turn_total" % key, 0)) + value
+	aggregate["%s_count" % key] = int(aggregate.get("%s_count" % key, 0)) + 1
+
+static func _average_positive_turn(aggregate: Dictionary, key: String) -> float:
+	var count: int = int(aggregate.get("%s_count" % key, 0))
+	if count <= 0:
+		return 0.0
+	return float(aggregate.get("%s_turn_total" % key, 0)) / float(count)
+
+static func _format_optional_turn(value: float) -> String:
+	return "%.1f" % value if value > 0.0 else "-"
 
 static func format_sweep_report(sweep: Dictionary, top_n: int = 5) -> String:
 	if sweep.is_empty():

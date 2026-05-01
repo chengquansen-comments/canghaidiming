@@ -7,6 +7,7 @@ const META_RETURN_AFTER_BATTLE := "canghai_narrative_return_after_battle"
 const META_LAST_RESULT := "canghai_narrative_last_result"
 const META_RESULT_READY := "canghai_narrative_result_ready"
 const META_BATTLE_ID := "canghai_narrative_battle_id"
+const META_OVERRIDE_PLAYER_PROFILE := "canghai_narrative_override_player_profile"
 const META_UI_DEBUG_VISIBLE := "canghai_ui_debug_visible"
 
 const META_PLAYER_READY := "canghai_player_ready"
@@ -29,7 +30,8 @@ static var return_after_battle := false
 static var last_result := ""
 static var result_ready := false
 static var battle_id := ""
-static var ui_debug_visible := true
+static var override_player_profile := true
+static var ui_debug_visible := false
 
 static var player_ready := false
 static var player_role := ""
@@ -44,16 +46,25 @@ static var player_battles_won := 0
 static var narrative_state_ready := false
 static var narrative_state: Dictionary = {}
 
-static func set_request(p_encounter_id: String, p_source_node_id: String, p_battle_id: String = "") -> void:
+static func set_request(p_encounter_id: String, p_source_node_id: String, p_battle_id: String = "", p_override_player_profile: bool = true) -> void:
 	_pull_meta()
 	encounter_id = p_encounter_id
 	source_node_id = p_source_node_id
 	source_scene = "res://scenes/NarrativeDemo.tscn"
 	battle_id = p_battle_id if not p_battle_id.is_empty() else _battle_id_for_encounter(p_encounter_id, p_source_node_id)
+	override_player_profile = p_override_player_profile
 	return_after_battle = false
 	last_result = ""
 	result_ready = false
 	_write_meta()
+
+static func set_request_from_combat(combat: Dictionary, p_source_node_id: String) -> void:
+	set_request(
+		str(combat.get("encounter_id", "")),
+		p_source_node_id,
+		str(combat.get("battle_id", "")),
+		bool(combat.get("override_player_profile", true))
+	)
 
 static func _battle_id_for_encounter(p_encounter_id: String, p_source_node_id: String = "") -> String:
 	var mapping: Dictionary = NarrativeEnemyManifest.get_mapping(p_encounter_id, "fallback")
@@ -72,6 +83,10 @@ static func get_battle_id() -> String:
 	_pull_meta()
 	if battle_id.is_empty(): battle_id = _battle_id_for_encounter(encounter_id, source_node_id)
 	return battle_id
+
+static func should_override_player_profile() -> bool:
+	_pull_meta()
+	return override_player_profile
 
 static func is_ui_debug_visible() -> bool:
 	_pull_ui_debug_meta()
@@ -102,6 +117,7 @@ static func clear() -> void:
 	source_node_id = ""
 	source_scene = "res://scenes/NarrativeDemo.tscn"
 	battle_id = ""
+	override_player_profile = true
 	return_after_battle = false
 	last_result = ""
 	result_ready = false
@@ -200,7 +216,7 @@ static func enemy_source_text() -> String:
 
 static func debug_text() -> String:
 	_pull_meta()
-	return "encounter_id=%s｜battle_id=%s｜enemy_source=%s｜source_node_id=%s｜return_after_battle=%s｜last_result=%s｜%s" % [encounter_id, get_battle_id(), enemy_source_text(), source_node_id, str(return_after_battle), last_result, player_profile_debug_text()]
+	return "encounter_id=%s｜battle_id=%s｜enemy_source=%s｜source_node_id=%s｜override_player_profile=%s｜return_after_battle=%s｜last_result=%s｜%s" % [encounter_id, get_battle_id(), enemy_source_text(), source_node_id, str(override_player_profile), str(return_after_battle), last_result, player_profile_debug_text()]
 
 static func get_battle_mapping() -> Dictionary:
 	_pull_meta()
@@ -248,6 +264,7 @@ static func _write_meta() -> void:
 	Engine.set_meta(META_LAST_RESULT, last_result)
 	Engine.set_meta(META_RESULT_READY, result_ready)
 	Engine.set_meta(META_BATTLE_ID, battle_id)
+	Engine.set_meta(META_OVERRIDE_PLAYER_PROFILE, override_player_profile)
 	_write_ui_debug_meta()
 	_write_player_meta()
 	_write_narrative_state_meta()
@@ -280,6 +297,7 @@ static func _pull_meta() -> void:
 	if Engine.has_meta(META_LAST_RESULT): last_result = str(Engine.get_meta(META_LAST_RESULT))
 	if Engine.has_meta(META_RESULT_READY): result_ready = bool(Engine.get_meta(META_RESULT_READY))
 	if Engine.has_meta(META_BATTLE_ID): battle_id = str(Engine.get_meta(META_BATTLE_ID))
+	if Engine.has_meta(META_OVERRIDE_PLAYER_PROFILE): override_player_profile = bool(Engine.get_meta(META_OVERRIDE_PLAYER_PROFILE))
 	if Engine.has_meta(META_PLAYER_READY): player_ready = bool(Engine.get_meta(META_PLAYER_READY))
 	if Engine.has_meta(META_PLAYER_ROLE): player_role = str(Engine.get_meta(META_PLAYER_ROLE))
 	if Engine.has_meta(META_PLAYER_CAREER): player_career = str(Engine.get_meta(META_PLAYER_CAREER))
@@ -303,7 +321,7 @@ static func _pull_ui_debug_meta() -> void:
 		_write_ui_debug_meta()
 
 static func _clear_battle_meta() -> void:
-	for key in [META_ENCOUNTER_ID, META_SOURCE_NODE_ID, META_SOURCE_SCENE, META_RETURN_AFTER_BATTLE, META_LAST_RESULT, META_RESULT_READY, META_BATTLE_ID]:
+	for key in [META_ENCOUNTER_ID, META_SOURCE_NODE_ID, META_SOURCE_SCENE, META_RETURN_AFTER_BATTLE, META_LAST_RESULT, META_RESULT_READY, META_BATTLE_ID, META_OVERRIDE_PLAYER_PROFILE]:
 		if Engine.has_meta(key): Engine.remove_meta(key)
 
 static func _clear_player_meta() -> void:

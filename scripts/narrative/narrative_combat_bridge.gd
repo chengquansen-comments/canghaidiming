@@ -23,6 +23,8 @@ static func build_payload(node_id: String, node: Dictionary) -> Dictionary:
 		"node_title": str(node.get("title", node_id)),
 		"node_type": str(node.get("type", "")),
 		"encounter_id": str(combat.get("encounter_id", "")),
+		"battle_id": str(combat.get("battle_id", "")),
+		"override_player_profile": bool(combat.get("override_player_profile", true)),
 		"enemies": enemies,
 		"status": "ready"
 	}

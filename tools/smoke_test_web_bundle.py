@@ -45,8 +45,9 @@ class IndexAssetParser(HTMLParser):
             self.button_ids.add(attr_map["id"])
 
 
-class ReusableTCPServer(socketserver.TCPServer):
+class ReusableTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     allow_reuse_address = True
+    daemon_threads = True
 
 
 def sha256_file(path: Path) -> str:
@@ -147,6 +148,7 @@ def maybe_run_browser_smoke(base_url: str) -> None:
     require(result.returncode == 0, "Browser smoke failed to launch Chrome/Chromium")
     dom = result.stdout
     require('data-web-smoke="boot-started"' in dom or 'data-web-smoke="boot-succeeded"' in dom, "Browser smoke did not trigger Web shell startup")
+    require('data-web-smoke-ready="shell-started"' in dom or 'data-web-smoke-ready="engine-started"' in dom, "Browser smoke did not expose a ready marker")
     require('data-web-smoke="boot-failed"' not in dom, "Browser smoke reported boot failure")
     if 'data-web-smoke-battle="battle-ready"' in dom:
         print("[web-bundle] browser smoke reached visual battle entry")
@@ -154,7 +156,7 @@ def maybe_run_browser_smoke(base_url: str) -> None:
     if 'data-web-smoke="boot-succeeded"' in dom:
         print("[web-bundle] browser smoke reached engine boot; battle marker not retained in DOM snapshot")
         return
-    print("[web-bundle] browser smoke triggered shell startup; headless DOM snapshot did not observe battle marker")
+    print("[web-bundle] browser smoke reached shell ready marker")
 
 
 def build_handler(root: Path):

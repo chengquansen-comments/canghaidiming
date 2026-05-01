@@ -17,6 +17,7 @@ extends "res://scripts/battle_controller_visual_presentation_stepwise.gd"
 
 func _run_presentation_exchange(player_card: CardData, enemy_card: CardData, order: Array[String], old_player_slot: int, old_enemy_slot: int, preview_sim: Dictionary) -> void:
 	_reset_presentation_offsets()
+	_reset_player_presentation_action_gate()
 	var visual_player_slot: int = _consume_player_draft_visual_start_slot(old_player_slot)
 	_apply_pre_resolution_slot_offsets(visual_player_slot, old_enemy_slot)
 	var visual_enemy_slot: int = old_enemy_slot
@@ -35,6 +36,7 @@ func _run_presentation_exchange(player_card: CardData, enemy_card: CardData, ord
 			var player_move_step: Dictionary = _presentation_step_for_side(preview_sim, "player", "move")
 			visual_player_slot = await _apply_presentation_stance_step(true, visual_player_slot, player.position, player_card, player_move_step)
 			await _play_one_presentation_action(true, player_card, _presentation_result_for_side(preview_sim, "player"))
+			_mark_player_presentation_action_completed()
 			var player_effect_step: Dictionary = _presentation_step_for_side(preview_sim, "player", "effect_move")
 			visual_player_slot = await _apply_presentation_effect_actor_step(true, visual_player_slot, player.position, player_effect_step)
 			visual_enemy_slot = await _apply_presentation_effect_target_step(false, visual_enemy_slot, enemy.position, player_effect_step)
@@ -50,6 +52,7 @@ func _run_presentation_exchange(player_card: CardData, enemy_card: CardData, ord
 			await get_tree().create_timer(PRESENTATION_PRE_ENEMY_ACTION_GLOW_PAUSE).timeout
 			var enemy_move_step: Dictionary = _presentation_step_for_side(preview_sim, "enemy", "move")
 			visual_enemy_slot = await _apply_presentation_stance_step(false, visual_enemy_slot, enemy.position, enemy_card, enemy_move_step)
+			await _wait_for_enemy_attack_start_after_player()
 			await _play_one_presentation_action(false, enemy_card, _presentation_result_for_side(preview_sim, "enemy"))
 			var enemy_effect_step: Dictionary = _presentation_step_for_side(preview_sim, "enemy", "effect_move")
 			visual_enemy_slot = await _apply_presentation_effect_actor_step(false, visual_enemy_slot, enemy.position, enemy_effect_step)

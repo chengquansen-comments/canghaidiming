@@ -8,8 +8,62 @@
 2. `art_reference/generated` 的参考 PNG 不写入 `visual_path`，不直接挂到剧情或战斗运行层。
 3. 正式运行资源优先导出为 `assets/**/*.png`，再通过 TSV / performance track 接入。
 4. 宣传图可以包含标题字；剧情背景、道具、剪影、运行 PNG 不写标题文字。
-5. 若提示词与 `ART_DIRECTION_GUIDE.md` 冲突，以 `ART_DIRECTION_GUIDE.md` 为准。
+5. 若提示词与 `ART_PIPELINE.md` 冲突，以 `ART_PIPELINE.md` 为准。
 6. 生成正式源画时，必须同时标注目标节点、运行用途、目标 `assets/**/*.png` 导出路径。
+
+## 1.5 肖像与 Sheet 生成硬规则
+
+肖像、半身像、角色 sheet 的正式源图提示词必须包含：
+
+```text
+solid bright green chroma key background, exact color #00FF00, single flat color background, no gradient, no shadow, no ground, no texture, no glow, no transparent checkerboard background, no scene background, do not use the same bright green color on the character, clean edges for one-click keying
+```
+
+中文口径：
+
+```text
+背景使用纯色亮绿色抠图底，颜色为 #00FF00。背景必须是单一纯色，不要渐变、不要阴影、不要地面、不要纹理、不要光晕、不要透明棋盘格。角色身上不要出现同样的绿色。边缘尽量干净，方便后期一键抠图。
+```
+
+运行层仍使用透明 PNG。亮绿色抠图底只用于源图阶段，后续由导出脚本抠图、透明化、归一尺寸后写入 `assets/`。
+
+角色 sheet 提示词必须包含：
+
+```text
+three clearly different action frames: idle_guard, attack / thrust, recover_guard
+```
+
+中文口径：
+
+```text
+sheet 固定 3 帧：戒备、出招、收势。三帧动作要有大区分度，不能只是手臂微调，不能复制同一姿势。
+```
+
+长枪 / 长兵器的守势固定写成：
+
+```text
+idle_guard is a defensive guard with the spear held horizontally across the chest, both hands gripping the shaft, protecting the centerline. Do not use a diagonal spear-point-forward standing pose for idle_guard.
+```
+
+中文口径：
+
+```text
+idle_guard 是横枪胸前的守势：枪杆横在胸前或胸腹前方，双手持枪护住中线。不要写成枪尖斜指前方的普通站姿。
+```
+
+长武器角色优先用 `4608x512` 三帧 sheet 或三张 `1536x512` 单帧源图；短武器角色可用 `1536x512` 三帧 sheet。
+
+长武器构图不要强制脚点居中：
+
+```text
+Do not force the foot anchor to the exact canvas center. Keep the natural body stance, leave enough space for the spear or polearm, and record the matching foot_anchor in actor meta during runtime export.
+```
+
+中文口径：
+
+```text
+不要强制脚点在画面正中心。按人体自然站位和长兵器展开留白构图，运行导出时在 actor meta 里记录匹配的 foot_anchor。
+```
 
 ## 2. 通用风格基准
 
@@ -132,6 +186,44 @@ Primary weapon: practical Ming military spear, wooden shaft, iron spearhead, mod
 
 ```text
 young Ming dynasty coastal military officer, spear route version, same face and armor as saber route, dark Ming-style lamellar armor, deep crimson robe, restrained determined gaze, practical Ming military spear with wooden shaft and iron spearhead, modest worn spear tassel, two-handed spear stance, strong centerline posture, disciplined Qi-family spear training feeling, medium-to-long range combat silhouette, parchment beige background, ink-wash coastline, sea mist, black ink, muted gray, deep cinnabar red, subtle dark gold, no saber in hand, no modern weapon, no fantasy glow.
+```
+
+#### 5.2.1 主角枪手独立帧提示词
+
+```text
+Create 3 separate 2D battle sprite frames for the player character spearman route in a Ming dynasty coastal military wuxia game.
+
+Output format:
+- Generate 3 separate PNG images, not one combined sprite sheet.
+- Each image is one independent frame.
+- Each frame canvas is 1024x512.
+- Solid bright green chroma key background for source generation, exact color #00FF00; runtime export will be transparent.
+- One character only per image.
+- No sprite sheet layout, no panels, no frame dividers, no checkerboard background, no floor plane, no cast shadow, no gradient, no texture, no glow.
+- Do not use #00FF00 or the same bright green on the character; keep clean edges for one-click keying.
+
+Anchor requirements:
+- Do not center the full silhouette including spear.
+- Center and lock the human body anchor instead.
+- In every 1024x512 frame, place the standing foot center near x=430, y=492.
+- Torso center near x=430, y=300.
+- Head near x=430, y=145, with only slight pose movement.
+- The spear may extend far to the right, especially in the thrust frame, but the human body must stay locked to the same anchor position.
+
+Frames:
+- Image 1: idle spear guard, spear held horizontally across the chest, both hands gripping the shaft, protecting the centerline, full spear visible, calm readiness.
+- Image 2: forward thrust / attack strike, full spear shaft and spear tip visible, strong horizontal silhouette.
+- Image 3: recovery / guard return, spear retracts diagonally, full spear visible.
+- The three frames must be strongly different in silhouette and body weight: guard, full attack extension, compact recovery.
+
+Character:
+Young Ming dynasty coastal military officer, same protagonist identity as saber route, practical dark cloth armor, muted military robe, tied hair or headwrap, restrained focused expression, Ming military long spear with wooden shaft, iron spearhead and short worn dark-red tassel.
+
+Style:
+Grounded Ming coastal military wuxia, painterly 2D game sprite, readable at gameplay size, clean silhouette, semi-realistic proportions, restrained ink-wash realism, muted dark navy cloth, weathered grey armor, wet sand beige accents, dark cinnabar tassel, aged iron spearhead.
+
+Avoid:
+No text, watermark, UI, background, checkerboard background, modern armor, fantasy glow, samurai armor, katana, gun, shield, cropped spear, cropped head or feet, inconsistent face between images. Do not create a combined sheet.
 ```
 
 ### 5.3 主角刀版：单刀快手

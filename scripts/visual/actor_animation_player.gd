@@ -77,13 +77,20 @@ func _advance_frame() -> void:
 			emit_signal("animation_finished", current_animation)
 
 func _apply_current_frame() -> void:
-	var texture: Texture2D = _texture_for_animation(current_animation)
-	if texture == null:
-		return
 	var frame_count: int = maxi(meta.animation_frames(current_animation), 1)
 	var frame_size: Vector2i = meta.frame_size
 	var frame: int = clampi(current_frame, 0, frame_count - 1)
-	target.texture = BattleSkinHelper.atlas_frame(texture, frame_size, frame)
+	var frame_files := meta.animation_files(current_animation)
+	if frame_files.size() > 1:
+		var frame_texture := _texture_for_animation_frame(current_animation, frame)
+		if frame_texture == null:
+			return
+		target.texture = frame_texture
+	else:
+		var texture: Texture2D = _texture_for_animation(current_animation)
+		if texture == null:
+			return
+		target.texture = texture if frame_count <= 1 else BattleSkinHelper.atlas_frame(texture, frame_size, frame)
 	emit_signal("frame_changed", current_animation, frame)
 	var hit_frame: int = meta.animation_hit_frame(current_animation)
 	if hit_frame >= 0 and frame == hit_frame and not _hit_emitted:
@@ -100,4 +107,15 @@ func _texture_for_animation(animation_name: String) -> Texture2D:
 		return null
 	var texture: Texture2D = load(path) as Texture2D
 	_source_texture_cache[animation_name] = texture
+	return texture
+
+func _texture_for_animation_frame(animation_name: String, frame_index: int) -> Texture2D:
+	var key := "%s|%d" % [animation_name, frame_index]
+	if _source_texture_cache.has(key):
+		return _source_texture_cache[key] as Texture2D
+	var path: String = meta.animation_texture_path_for_frame(animation_name, frame_index)
+	if path == "":
+		return null
+	var texture: Texture2D = load(path) as Texture2D
+	_source_texture_cache[key] = texture
 	return texture

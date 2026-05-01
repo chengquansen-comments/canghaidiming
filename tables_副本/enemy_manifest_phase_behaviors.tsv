@@ -1,0 +1,15 @@
+enemy_id	order	phase	hp_below	intent_bias	note
+enemy_blademaster_prologue_raider	1	default	1.01	tutorial	低压教学，不抢节奏。
+enemy_blademaster_prologue_raider	2	dying_clue	0.35	desperate_attack	濒死时倾向乱砍，给出临死线索节奏。
+enemy_spearman_beach_ambush	1	default	1.01	poke_pressure	以试探、压步、突刺为主，逼玩家交防守。
+enemy_spearman_beach_ambush	2	wounded	0.5	guard_then_poke	半血后略微增加防守和抢势，不做高爆发。
+enemy_wakou_raider_fishing_village	1	default	1.01	feint_pressure	用乱斩和逼步制造村火压迫。
+enemy_wakou_raider_fishing_village	2	wounded	0.45	desperate_attack	半血后更偏拼命伤害，逼玩家快速结束战斗。
+enemy_blademaster_transport_officer	1	default	1.01	counter_break	用反击和破防惩罚无脑进攻。
+enemy_blademaster_transport_officer	2	wounded	0.5	guard_counter	半血后更偏架刀和反斩，形成精英压迫感。
+enemy_mutiny_camp_leader	1	default	1.01	guard_then_poke	以守门、破势和逼步为主，体现老兵稳重。
+enemy_mutiny_camp_leader	2	wounded	0.5	guard_counter	半血后更偏防守反击，不轻易乱打。
+enemy_blademaster_wakou_leader	1	default	1.01	feint_pressure	用虚招和抢势制造 Boss 不确定性。
+enemy_blademaster_wakou_leader	2	wounded	0.5	burst_chain	半血后提高连斩和抢步连斩倾向。
+enemy_blademaster_wakou_leader	3	dying_clue	0.2	desperate_clue	濒死时偏向线索牌，配合暗箭灭口叙事。
+enemy_spearman_fallback	1	default	1.01	fallback	兜底普通枪手行为。

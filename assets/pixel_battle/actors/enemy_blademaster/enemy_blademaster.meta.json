@@ -49,15 +49,19 @@
       "recovery_to": "idle"
     },
     "hit": {
-      "file": "../../sheets/enemy_blademaster_sheet.png",
-      "frames": 3,
+      "files": [
+        "../../sheets/enemy_blademaster_frames/hit.png"
+      ],
+      "frames": 1,
       "fps": 8,
       "loop": false,
       "recovery_to": "idle"
     },
     "break": {
-      "file": "../../sheets/enemy_blademaster_sheet.png",
-      "frames": 3,
+      "files": [
+        "../../sheets/enemy_blademaster_frames/break.png"
+      ],
+      "frames": 1,
       "fps": 6,
       "loop": false,
       "recovery_to": "idle"

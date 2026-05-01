@@ -39,7 +39,7 @@ func _init(
 	starting_momentum = clampi(p_starting_momentum, 0, max_momentum)
 	starting_realm = p_starting_realm
 	preferred_distances = p_preferred_distances
-	qinggong = maxi(p_qinggong, 0)
+	qinggong = maxi(p_qinggong, 1)
 	starting_position = clampi(p_starting_position, 0, 8)
 	starting_facing = "left" if p_starting_facing == "left" else "right"
 	starting_deck = []

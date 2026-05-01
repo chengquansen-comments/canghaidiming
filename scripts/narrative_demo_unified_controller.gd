@@ -188,7 +188,8 @@ func _add_prologue_combat_choice() -> void:
 		"combat": {
 			"enabled": true,
 			"encounter_id": str(combat.get("encounter_id", "enc_prologue_master_rescue")),
-			"battle_id": str(combat.get("battle_id", "prologue_master_rescue"))
+			"battle_id": str(combat.get("battle_id", "prologue_master_rescue")),
+			"override_player_profile": bool(combat.get("override_player_profile", false))
 		}
 	}
 	var btn := Button.new()
@@ -202,11 +203,7 @@ func _on_prologue_combat_choice(choice: Dictionary) -> void:
 	_store_pending_choice("prologue_master_rescue", choice)
 	var combat: Dictionary = choice.get("combat", {})
 	_save_narrative_state_to_context()
-	NarrativeBattleContext.set_request(
-		str(combat.get("encounter_id", "enc_prologue_master_rescue")),
-		"prologue_master_rescue",
-		str(combat.get("battle_id", "prologue_master_rescue"))
-	)
+	NarrativeBattleContext.set_request_from_combat(combat, "prologue_master_rescue")
 	get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
 
 func _consume_battle_result_if_needed() -> void:

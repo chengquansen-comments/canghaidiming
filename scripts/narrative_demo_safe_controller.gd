@@ -11,8 +11,8 @@ const PROLOGUE_MASTER_ENCOUNTER_ID := "enc_prologue_master_rescue"
 const PROLOGUE_MASTER_SOURCE_ID := "prologue_master_rescue"
 
 const CAREERS := [
-	{"id":"spearman", "career":"长枪武官", "weapon":"长枪", "max_hp":38, "hp":38, "max_posture":10, "posture":6, "martial_level":1, "desc":"稳扎稳打，初始血量较高，适合用长枪压步、抢势、控距离。"},
-	{"id":"blademaster", "career":"腰刀武官", "weapon":"腰刀", "max_hp":34, "hp":34, "max_posture":10, "posture":7, "martial_level":1, "desc":"节奏更快，初始势更高，适合格挡反击、突进斩杀。"}
+	{"id":"spearman", "career":"长枪武官", "weapon":"长枪", "max_hp":26, "hp":26, "max_posture":8, "posture":5, "martial_level":1, "desc":"稳扎稳打，血量略高，适合用长枪压步、抢势、控距离。"},
+	{"id":"blademaster", "career":"腰刀武官", "weapon":"腰刀", "max_hp":31, "hp":31, "max_posture":9, "posture":7, "martial_level":1, "desc":"节奏更快，起势略高，适合格挡反击、突进斩杀。"}
 ]
 
 var title_label: Label
@@ -504,7 +504,7 @@ func _on_select_career(index: int) -> void:
 
 func _on_request_prologue_master_battle() -> void:
 	_save_narrative_state_to_context()
-	NarrativeBattleContext.set_request(PROLOGUE_MASTER_ENCOUNTER_ID, PROLOGUE_MASTER_SOURCE_ID)
+	NarrativeBattleContext.set_request(PROLOGUE_MASTER_ENCOUNTER_ID, PROLOGUE_MASTER_SOURCE_ID, "", false)
 	body_label.text = PROLOGUE[step_index] + "\n\n[b]序章战斗跳转[/b]\n师父救场战：玩家操控师父，用强力牌击败袭村刀手。\n%s\n即将进入 MainVisual。" % NarrativeBattleContext.debug_text()
 	BattleFontHelper.enforce(self)
 	call_deferred("_change_to_main_visual")
@@ -521,7 +521,7 @@ func _on_request_battle() -> void:
 	var encounter_id := str(node.get("combat", ""))
 	var source_node_id := str(node.get("id", ""))
 	_save_narrative_state_to_context()
-	NarrativeBattleContext.set_request(encounter_id, source_node_id)
+	NarrativeBattleContext.set_request(encounter_id, source_node_id, "", true)
 	body_label.text = _node_body(node) + "\n\n[b]战斗跳转[/b]\n%s\n即将进入 MainVisual。" % NarrativeBattleContext.debug_text()
 	BattleFontHelper.enforce(self)
 	call_deferred("_change_to_main_visual")

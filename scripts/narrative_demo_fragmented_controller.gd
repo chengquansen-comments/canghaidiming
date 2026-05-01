@@ -173,18 +173,14 @@ func _on_request_battle() -> void:
 	var node_data: Dictionary = _node_config(node_id)
 	var combat: Dictionary = node_data.get("combat", {}) if node_data.get("combat", {}) is Dictionary else {}
 	if bool(combat.get("enabled", false)):
-		var encounter_id: String = str(combat.get("encounter_id", node.get("encounter_id", "")))
-		var battle_id: String = str(combat.get("battle_id", ""))
-		NarrativeBattleContext.set_request(encounter_id, node_id, battle_id)
+		NarrativeBattleContext.set_request_from_combat(combat, node_id)
 		get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
 		return
 	super._on_request_battle()
 
 func _on_request_prologue_master_battle() -> void:
 	var combat: Dictionary = _prologue_combat_data(PROLOGUE_MASTER_RESCUE_STEP)
-	var encounter_id: String = str(combat.get("encounter_id", "enc_prologue_master_rescue"))
-	var battle_id: String = str(combat.get("battle_id", "prologue_master_rescue"))
-	NarrativeBattleContext.set_request(encounter_id, "prologue_master_rescue", battle_id)
+	NarrativeBattleContext.set_request_from_combat(combat, "prologue_master_rescue")
 	get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
 
 func _fragmented_hint(raw: String) -> String:

@@ -34,6 +34,8 @@ func _choice_effects(choice: Dictionary) -> Dictionary:
 	return _normalize_effects({})
 
 func _choice_combat(choice: Dictionary, node: Dictionary) -> Dictionary:
+	if str(node.get("id", "")) == BOSS_NODE_ID and boss_battle_completed:
+		return {}
 	var combat = choice.get("combat", {})
 	if combat is Dictionary and bool((combat as Dictionary).get("enabled", false)):
 		return combat
@@ -100,11 +102,13 @@ func _on_choice(index: int) -> void:
 	if index < 0 or index >= choices.size() or not (choices[index] is Dictionary):
 		return
 	var choice: Dictionary = choices[index]
+	if has_method("_record_choice_ending_flag"):
+		_record_choice_ending_flag(choice)
 	var combat := _choice_combat(choice, node)
 	if not combat.is_empty():
 		_store_pending_choice(node_id, choice)
 		_save_narrative_state_to_context()
-		NarrativeBattleContext.set_request(str(combat.get("encounter_id", "")), node_id, str(combat.get("battle_id", "")))
+		NarrativeBattleContext.set_request_from_combat(combat, node_id)
 		get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
 		return
 	_apply_choice_and_show_result(choice)
@@ -256,8 +260,12 @@ func _render_node() -> void:
 
 func _on_request_boss_battle() -> void:
 	var node_id := _node_id_at(node_index)
+	var node := _node_data_at(node_index)
+	var combat := _node_level_combat(node)
+	if combat.is_empty():
+		combat = {"encounter_id": BOSS_ENCOUNTER_ID, "battle_id": BOSS_BATTLE_ID, "override_player_profile": true}
 	_store_pending_boss_node(node_id)
-	NarrativeBattleContext.set_request(BOSS_ENCOUNTER_ID, node_id, BOSS_BATTLE_ID)
+	NarrativeBattleContext.set_request_from_combat(combat, node_id)
 	get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
 
 func _on_continue_after_choice_result() -> void:

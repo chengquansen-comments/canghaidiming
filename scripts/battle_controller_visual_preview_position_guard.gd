@@ -27,6 +27,19 @@ func _compute_ordered_preview() -> Dictionary:
 	var has_preview: bool = draft_player_has_position or p_card != null or e_card != null
 	if not has_preview:
 		return {"has_preview": false}
+	if _preview_is_reactive_mode():
+		var sim: Dictionary = _ordered_preview_simulation(p_intent, e_intent)
+		return {
+			"has_preview": true,
+			"player_subjective": int(sim.get("player_subjective", player.position)),
+			"enemy_subjective": int(sim.get("enemy_subjective", enemy.position)),
+			"player_final": clampi(int(sim.get("player_final", sim.get("player_subjective", player.position))), 0, GRID_SLOT_COUNT - 1),
+			"enemy_final": clampi(int(sim.get("enemy_final", sim.get("enemy_subjective", enemy.position))), 0, GRID_SLOT_COUNT - 1),
+			"player_text": "",
+			"enemy_text": "",
+			"sim": sim,
+			"source": "reactive_ordered_simulation"
+		}
 
 	var p_pos: int = player.position
 	var e_pos: int = enemy.position

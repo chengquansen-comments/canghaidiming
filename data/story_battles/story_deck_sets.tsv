@@ -1,10 +1,20 @@
 story_deck_id	display_name	fighter_template_id	deck	tags	notes
 player_blade_start	主角刀客起手	player_blademaster	blade_front_cut:2,blade_chase_cut:2,blade_breathe:1	player_start	主角刀客初始牌组
-player_spear_start	主角枪手起手	player_spearman	spear_mid_thrust:2,spear_focus:2,spear_guard_horse:1	player_start	主角枪手初始牌组
+player_spear_start	主角枪手起手	player_spearman	spear_mid_thrust:2,spear_line_press:1,spear_focus:1,spear_guard_horse:1	player_start	主角枪手初始牌组
+player_blade_advanced	主角刀客进阶	player_blademaster	blade_front_cut:2,blade_press_break:2,blade_chase_cut:2,blade_hook_pull:1,blade_body_press:1,blade_breathe:1	player_growth	主角刀客成长后牌组
+player_spear_advanced	主角枪手进阶	player_spearman	spear_mid_thrust:2,spear_line_press:2,spear_retreat_sting:1,spear_step_thrust:1,spear_focus:1,spear_guard_horse:1	player_growth	主角枪手成长后牌组
 prologue_blade_teach	海边刀客·教学	prologue_blade_recruit	blade_front_cut:2,blade_breathe:1	teaching,easy	只教基础攻防
 prologue_blade_pressure	海边刀客·逼身	prologue_blade_recruit	blade_front_cut:2,blade_press_break:2,blade_chase_cut:1	pressure	强调贴身压力
 prologue_blade_break	海边刀客·破势	prologue_blade_recruit	blade_press_break:3,blade_body_press:1	break_focus	强调削势和崩势
 prologue_spear_keep	海边枪手·控距	prologue_spear_guard	spear_mid_thrust:2,spear_line_press:2,spear_guard_horse:1	keep_distance	强调2-3格控距
-master_veteran_rescue	师傅救场枪法	master_veteran	spear_mid_thrust:2,spear_line_press:2,spear_step_thrust:1	story,rescue	救场演示用
+master_veteran_rescue	师傅救场刀法	master_veteran	blade_front_cut:2,blade_press_break:2,blade_hook_pull:1,blade_body_press:1,blade_breathe:1	story,rescue	救场演示用
 blade_duelist_pressure	倭刀精锐·压迫	blade_duelist	blade_front_cut:2,blade_press_break:2,blade_chase_cut:2,blade_hook_pull:1	duel,pressure	高手刀客测试
 spear_duelist_keep	长枪教头·控距	spear_duelist	spear_mid_thrust:2,spear_line_press:2,spear_step_thrust:2,spear_guard_horse:1	duel,keep_distance	高手枪手测试
+wakou_raider_smoke	倭寇杂兵·烟火	wakou_raider	blade_front_cut:2,blade_chase_cut:1,blade_breathe:1,blade_body_press:1	story,blade	渔村低血量刀兵
+transport_officer_pressure	押运官·压迫	transport_officer	blade_front_cut:2,blade_press_break:2,blade_hook_pull:1,blade_body_press:1,blade_breathe:1	story,elite,blade	押运官精英刀客
+mutiny_camp_spear	兵变营头·长枪	mutiny_camp_leader	spear_mid_thrust:2,spear_line_press:2,spear_step_thrust:1,spear_guard_horse:1	story,elite,spear	欠饷营精英枪兵
+reed_ambusher_keep	芦苇伏兵·控距	reed_ambusher	spear_mid_thrust:2,spear_line_press:2,spear_retreat_sting:1,spear_guard_horse:1	story,spear	芦苇荡伏击控距
+escort_blademaster_pressure	护送刀客·缠斗	escort_blademaster	blade_front_cut:2,blade_press_break:2,blade_chase_cut:1,blade_hook_pull:1,blade_breathe:1	story,blade	护送线刀客
+tide_bandit_pressure	潮滩匪首·逼身	tide_bandit	blade_front_cut:2,blade_press_break:2,blade_chase_cut:2,blade_body_press:1,blade_breathe:1	story,blade	潮滩高压刀兵
+wakou_leader_boss	破船首领·Boss	wakou_leader	blade_front_cut:2,blade_press_break:2,blade_chase_cut:2,blade_hook_pull:1,blade_body_press:1,blade_breathe:1	story,boss,blade	扩展 Boss 牌组
+fallback_spear_keep	默认枪手·控距	fallback_spearman	spear_mid_thrust:2,spear_line_press:1,spear_guard_horse:1	story,fallback	缺省兜底牌组

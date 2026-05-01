@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Canghai Diming Demo</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      color: #f1e6c8;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow: hidden;
+    }
+    #app {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #000;
+      overflow: hidden;
+    }
+    #game-frame {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+    #boot {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: min(92vw, 720px);
+      max-height: 92vh;
+      overflow: auto;
+      border: 2px solid #c8a768;
+      border-radius: 18px;
+      background: rgba(24, 34, 49, 0.94);
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.38);
+      padding: 28px 30px;
+      text-align: center;
+      z-index: 2;
+    }
+    #title {
+      font-size: clamp(22px, 3.2vw, 30px);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    #subtitle {
+      color: #c9d2df;
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+    #status {
+      color: #d7ccac;
+      margin: 8px 0 16px;
+      min-height: 24px;
+    }
+    #progress-wrap {
+      width: 100%;
+      height: 14px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 18px;
+      border: 1px solid rgba(216,178,110,0.28);
+    }
+    #progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #7ca6d4 0%, #d8b26e 100%);
+      transition: width 120ms linear;
+    }
+    #actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    button {
+      min-width: 180px;
+      height: 44px;
+      border-radius: 10px;
+      border: 1px solid #c8a768;
+      background: #243446;
+      color: #f1e6c8;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    button:hover { background: #2d4259; }
+    #canvas {
+      display: none;
+      position: absolute;
+      inset: 0;
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: none;
+      max-height: none;
+      margin: 0;
+      padding: 0;
+      background: #000;
+      outline: none;
+      touch-action: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div id="game-frame">
+      <div id="boot">
+        <div id="title">沧海嘀鸣 · Web 版</div>
+        <div id="subtitle">首次加载需要少量时间。建议使用 Chrome / Edge / Firefox 桌面浏览器，并通过本地服务器或静态站点打开。</div>
+        <div id="status">准备加载引擎…</div>
+        <div id="progress-wrap"><div id="progress-bar"></div></div>
+        <div id="actions">
+          <button id="start-btn">开始加载</button>
+          <button id="reload-btn" type="button">重新加载</button>
+        </div>
+      </div>
+      <canvas id="canvas"></canvas>
+    </div>
+  </div>
+  <script src="index.js"></script>
+  <script>
+    const boot = document.getElementById('boot');
+    const canvas = document.getElementById('canvas');
+    const statusEl = document.getElementById('status');
+    const progressBar = document.getElementById('progress-bar');
+    const startBtn = document.getElementById('start-btn');
+    const reloadBtn = document.getElementById('reload-btn');
+    let started = false;
+    const params = new URLSearchParams(window.location.search);
+
+    function setStatus(text) {
+      statusEl.textContent = text;
+    }
+
+    function setProgress(value) {
+      const safe = Math.max(0, Math.min(1, value || 0));
+      progressBar.style.width = (safe * 100).toFixed(1) + '%';
+    }
+
+    function fillBrowserCanvas() {
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+    }
+
+    function showCanvas() {
+      boot.style.display = 'none';
+      canvas.style.display = 'block';
+      fillBrowserCanvas();
+      canvas.focus();
+    }
+
+    async function startGame() {
+      if (started) return;
+      started = true;
+      startBtn.disabled = true;
+      document.body.dataset.webSmoke = 'boot-started';
+      setStatus('正在启动 Web 构建…');
+      fillBrowserCanvas();
+
+      const engine = new Engine({"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":86436004,"index.wasm":37695054},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4});
+      try {
+        await engine.startGame({
+          canvas,
+          onProgress(current, total) {
+            if (typeof current === 'number' && typeof total === 'number' && total > 0) {
+              setProgress(current / total);
+            }
+          }
+        });
+        document.body.dataset.webSmoke = 'boot-succeeded';
+        showCanvas();
+      } catch (error) {
+        console.error(error);
+        setStatus('启动失败：请打开浏览器控制台查看详细错误。');
+        document.body.dataset.webSmoke = 'boot-failed';
+        startBtn.disabled = false;
+        started = false;
+      }
+    }
+
+    window.addEventListener('resize', fillBrowserCanvas);
+    window.addEventListener('orientationchange', () => window.setTimeout(fillBrowserCanvas, 50));
+    startBtn.addEventListener('click', startGame);
+    reloadBtn.addEventListener('click', () => window.location.reload());
+    fillBrowserCanvas();
+
+    if (params.get('autostart') === '1') {
+      window.addEventListener('load', () => {
+        window.setTimeout(startGame, 0);
+      }, { once: true });
+    }
+  </script>
+</body>
+</html>
+

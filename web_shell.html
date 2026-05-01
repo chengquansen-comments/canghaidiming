@@ -140,6 +140,17 @@
     let started = false;
     const params = new URLSearchParams(window.location.search);
 
+    function markSmokeReady(value) {
+      document.body.dataset.webSmokeReady = value;
+      if (params.get('smoke_battle') === '1') {
+        document.body.dataset.webSmokeMode = 'battle';
+      } else if (params.get('narrative_mvp') === '1') {
+        document.body.dataset.webSmokeMode = 'narrative';
+      } else {
+        document.body.dataset.webSmokeMode = 'default';
+      }
+    }
+
     function setStatus(text) {
       statusEl.textContent = text;
     }
@@ -166,6 +177,7 @@
       started = true;
       startBtn.disabled = true;
       document.body.dataset.webSmoke = 'boot-started';
+      markSmokeReady('shell-started');
       setStatus('正在启动 Web 构建…');
       fillBrowserCanvas();
 
@@ -180,11 +192,13 @@
           }
         });
         document.body.dataset.webSmoke = 'boot-succeeded';
+        markSmokeReady('engine-started');
         showCanvas();
       } catch (error) {
         console.error(error);
         setStatus('启动失败：请打开浏览器控制台查看详细错误。');
         document.body.dataset.webSmoke = 'boot-failed';
+        markSmokeReady('boot-failed');
         startBtn.disabled = false;
         started = false;
       }
@@ -197,9 +211,14 @@
     fillBrowserCanvas();
 
     if (params.get('autostart') === '1') {
-      window.addEventListener('load', () => {
+      const runAutostart = () => {
         window.setTimeout(startGame, 0);
-      }, { once: true });
+      };
+      if (document.readyState === 'complete') {
+        runAutostart();
+      } else {
+        window.addEventListener('load', runAutostart, { once: true });
+      }
     }
   </script>
 </body>

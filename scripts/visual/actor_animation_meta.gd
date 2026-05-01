@@ -42,11 +42,35 @@ func animation_file(animation_name: String) -> String:
 		return ""
 	return str(config.get("file", ""))
 
+func animation_files(animation_name: String) -> Array[String]:
+	var config: Dictionary = animation(animation_name)
+	var result: Array[String] = []
+	if config.is_empty():
+		return result
+	var raw_files: Variant = config.get("files", [])
+	if raw_files is Array:
+		for item in raw_files as Array:
+			var file_name := str(item)
+			if file_name != "":
+				result.append(file_name)
+	if result.is_empty():
+		var single_file := animation_file(animation_name)
+		if single_file != "":
+			result.append(single_file)
+	return result
+
 func animation_texture_path(animation_name: String) -> String:
 	var file_name: String = animation_file(animation_name)
 	if file_name == "":
 		return ""
 	return actor_dir.path_join(file_name)
+
+func animation_texture_path_for_frame(animation_name: String, frame_index: int) -> String:
+	var files := animation_files(animation_name)
+	if files.is_empty():
+		return ""
+	var safe_index := clampi(frame_index, 0, files.size() - 1)
+	return actor_dir.path_join(files[safe_index])
 
 func animation_frames(animation_name: String) -> int:
 	var config: Dictionary = animation(animation_name)

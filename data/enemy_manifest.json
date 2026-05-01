@@ -69,6 +69,42 @@
       "enemy_family": "spearman",
       "difficulty": "fallback",
       "label": "默认战斗 / 枪手"
+    },
+    "enc_ch2_reed_ambush": {
+      "battle_id": "chapter2_reed_ambush",
+      "enemy_id": "enemy_spearman_ch2_reed_ambush",
+      "player_role": "spearman",
+      "enemy_role": "enemy_spearman",
+      "enemy_family": "spearman",
+      "difficulty": "normal",
+      "label": "第二章芦苇伏击 / 敌方枪手"
+    },
+    "enc_ch3_escort_clash": {
+      "battle_id": "chapter3_escort_clash",
+      "enemy_id": "enemy_blademaster_ch3_escort_clash",
+      "player_role": "blademaster",
+      "enemy_role": "enemy_blademaster",
+      "enemy_family": "blademaster",
+      "difficulty": "elite",
+      "label": "第三章押运冲突 / 军中刀客"
+    },
+    "enc_ch4_tide_bandits": {
+      "battle_id": "chapter4_tide_bandits",
+      "enemy_id": "enemy_spearman_ch4_tide_bandits",
+      "player_role": "spearman",
+      "enemy_role": "enemy_spearman",
+      "enemy_family": "spearman",
+      "difficulty": "elite",
+      "label": "第四章潮滩截杀 / 潮滩旧兵"
+    },
+    "enc_boss_ext_wakou_leader": {
+      "battle_id": "boss_ext_wakou_leader",
+      "enemy_id": "enemy_blademaster_boss_ext_wakou_leader",
+      "player_role": "blademaster",
+      "enemy_role": "enemy_blademaster",
+      "enemy_family": "blademaster",
+      "difficulty": "boss",
+      "label": "扩展破船决战 / 小股倭寇首领"
     }
   },
   "enemies": {
@@ -1055,6 +1091,565 @@
         "jun_gong": 1,
         "qing_wang": 0,
         "clues": 1
+      }
+    },
+    "enemy_spearman_ch2_reed_ambush": {
+      "enemy_id": "enemy_spearman_ch2_reed_ambush",
+      "display_name": "芦苇伏兵枪手",
+      "narrative_identity": "藏在芦苇中的前哨枪手，脚步整齐，靴底带着非海泥。",
+      "weapon": "长枪",
+      "role_sheet": "enemy_spearman",
+      "max_hp": 28,
+      "max_posture": 10,
+      "start_posture": 4,
+      "realm": 1,
+      "qinggong": 1,
+      "intent_style": "ch2_reed_poke",
+      "behavior_tags": [
+        "芦苇",
+        "伏击",
+        "抢势",
+        "突刺"
+      ],
+      "preferred_intents": [
+        "刺探",
+        "压步",
+        "突刺"
+      ],
+      "intent_weights": {
+        "gain_posture": 0.3,
+        "attack": 0.32,
+        "guard": 0.16,
+        "break_posture": 0.18,
+        "feint": 0.04
+      },
+      "phase_behaviors": [],
+      "deck": [
+        {
+          "id": "e_spearman_ch2_reed_ambush_1",
+          "name": "芦苇枪一",
+          "min": 3,
+          "max": 5,
+          "cost": 1,
+          "role": "momentum",
+          "gain": 2,
+          "break": 0,
+          "damage": 0,
+          "guard": 0,
+          "tags": [
+            "试探",
+            "芦苇"
+          ],
+          "style": "枪",
+          "facing": true
+        },
+        {
+          "id": "e_spearman_ch2_reed_ambush_2",
+          "name": "芦苇枪二",
+          "min": 3,
+          "max": 5,
+          "cost": 1,
+          "role": "momentum",
+          "gain": 0,
+          "break": 2,
+          "damage": 0,
+          "guard": 0,
+          "tags": [
+            "抢势",
+            "芦苇"
+          ],
+          "style": "枪",
+          "facing": true
+        },
+        {
+          "id": "e_spearman_ch2_reed_ambush_3",
+          "name": "芦苇枪三",
+          "min": 3,
+          "max": 5,
+          "cost": 1,
+          "role": "damage",
+          "gain": 0,
+          "break": 0,
+          "damage": 4,
+          "guard": 0,
+          "tags": [
+            "突刺",
+            "芦苇"
+          ],
+          "style": "枪",
+          "facing": true
+        },
+        {
+          "id": "e_spearman_ch2_reed_ambush_4",
+          "name": "芦苇枪守",
+          "min": 0,
+          "max": 5,
+          "cost": 1,
+          "role": "guard",
+          "gain": 0,
+          "break": 0,
+          "damage": 0,
+          "guard": 4,
+          "tags": [
+            "守",
+            "芦苇"
+          ],
+          "style": "枪",
+          "facing": false
+        },
+        {
+          "id": "e_spearman_ch2_reed_ambush_5",
+          "name": "芦苇枪终",
+          "min": 4,
+          "max": 5,
+          "cost": 2,
+          "role": "damage",
+          "gain": 0,
+          "break": 1,
+          "damage": 7,
+          "guard": 0,
+          "tags": [
+            "重击",
+            "芦苇"
+          ],
+          "style": "枪",
+          "facing": true
+        }
+      ],
+      "ai_note": "由敌方枪手卡组数值派生，普通战强度略高于旧海边伏击。",
+      "reward": {
+        "jun_gong": 1,
+        "qing_wang": 0,
+        "clues": 1
+      }
+    },
+    "enemy_blademaster_ch3_escort_clash": {
+      "enemy_id": "enemy_blademaster_ch3_escort_clash",
+      "display_name": "押运队刀客",
+      "narrative_identity": "押运队中沉默出刀的军中刀客，动作像训练，不像海寇。",
+      "weapon": "腰刀",
+      "role_sheet": "enemy_blademaster",
+      "max_hp": 36,
+      "max_posture": 11,
+      "start_posture": 5,
+      "realm": 2,
+      "qinggong": 1,
+      "intent_style": "ch3_escort_counter",
+      "behavior_tags": [
+        "押运",
+        "官式",
+        "反击",
+        "破防"
+      ],
+      "preferred_intents": [
+        "格挡反斩",
+        "逼步",
+        "横斩"
+      ],
+      "intent_weights": {
+        "gain_posture": 0.22,
+        "attack": 0.3,
+        "guard": 0.22,
+        "break_posture": 0.22,
+        "feint": 0.04
+      },
+      "phase_behaviors": [],
+      "deck": [
+        {
+          "id": "e_blademaster_ch3_escort_clash_1",
+          "name": "押运式一",
+          "min": 0,
+          "max": 2,
+          "cost": 1,
+          "role": "momentum",
+          "gain": 2,
+          "break": 0,
+          "damage": 0,
+          "guard": 0,
+          "tags": [
+            "压迫",
+            "押运"
+          ],
+          "style": "刀",
+          "facing": true
+        },
+        {
+          "id": "e_blademaster_ch3_escort_clash_2",
+          "name": "押运式二",
+          "min": 0,
+          "max": 2,
+          "cost": 1,
+          "role": "momentum",
+          "gain": 0,
+          "break": 3,
+          "damage": 0,
+          "guard": 0,
+          "tags": [
+            "破势",
+            "押运"
+          ],
+          "style": "刀",
+          "facing": true
+        },
+        {
+          "id": "e_blademaster_ch3_escort_clash_3",
+          "name": "押运式三",
+          "min": 0,
+          "max": 2,
+          "cost": 2,
+          "role": "damage",
+          "gain": 0,
+          "break": 1,
+          "damage": 5,
+          "guard": 4,
+          "tags": [
+            "反击",
+            "押运"
+          ],
+          "style": "刀",
+          "facing": true
+        },
+        {
+          "id": "e_blademaster_ch3_escort_clash_4",
+          "name": "押运式四",
+          "min": 0,
+          "max": 2,
+          "cost": 1,
+          "role": "damage",
+          "gain": 0,
+          "break": 0,
+          "damage": 3,
+          "guard": 0,
+          "tags": [
+            "压制",
+            "押运"
+          ],
+          "style": "刀",
+          "facing": true
+        },
+        {
+          "id": "e_blademaster_ch3_escort_clash_5",
+          "name": "押运守式",
+          "min": 0,
+          "max": 3,
+          "cost": 1,
+          "role": "guard",
+          "gain": 0,
+          "break": 0,
+          "damage": 0,
+          "guard": 7,
+          "tags": [
+            "守",
+            "押运"
+          ],
+          "style": "刀",
+          "facing": false
+        },
+        {
+          "id": "e_blademaster_ch3_escort_clash_6",
+          "name": "押运终式",
+          "min": 0,
+          "max": 1,
+          "cost": 2,
+          "role": "damage",
+          "gain": 0,
+          "break": 1,
+          "damage": 7,
+          "guard": 0,
+          "tags": [
+            "终结",
+            "押运"
+          ],
+          "style": "刀",
+          "facing": true
+        }
+      ],
+      "ai_note": "由押运官卡组数值派生，保留反击与破势压力。",
+      "reward": {
+        "jun_gong": 1,
+        "qing_wang": 1,
+        "clues": 2
+      }
+    },
+    "enemy_spearman_ch4_tide_bandits": {
+      "enemy_id": "enemy_spearman_ch4_tide_bandits",
+      "display_name": "潮滩旧兵",
+      "narrative_identity": "潮滩上截路的旧兵，枪势稳，像守过营门。",
+      "weapon": "破损长枪",
+      "role_sheet": "enemy_spearman",
+      "max_hp": 42,
+      "max_posture": 12,
+      "start_posture": 6,
+      "realm": 2,
+      "qinggong": 1,
+      "intent_style": "ch4_tide_guard",
+      "behavior_tags": [
+        "潮滩",
+        "旧兵",
+        "重守",
+        "破势"
+      ],
+      "preferred_intents": [
+        "横枪守门",
+        "破阵逼步",
+        "怒刺"
+      ],
+      "intent_weights": {
+        "gain_posture": 0.24,
+        "attack": 0.26,
+        "guard": 0.26,
+        "break_posture": 0.22,
+        "feint": 0.02
+      },
+      "phase_behaviors": [],
+      "deck": [
+        {
+          "id": "e_spearman_ch4_tide_bandits_1",
+          "name": "横枪守门",
+          "min": 0,
+          "max": 5,
+          "cost": 1,
+          "role": "guard",
+          "gain": 0,
+          "break": 0,
+          "damage": 0,
+          "guard": 7,
+          "tags": [
+            "守",
+            "营门",
+            "潮滩"
+          ],
+          "style": "枪",
+          "facing": false
+        },
+        {
+          "id": "e_spearman_ch4_tide_bandits_2",
+          "name": "潮滩压步",
+          "min": 3,
+          "max": 5,
+          "cost": 1,
+          "role": "momentum",
+          "gain": 2,
+          "break": 1,
+          "damage": 0,
+          "guard": 0,
+          "tags": [
+            "压步",
+            "潮滩"
+          ],
+          "style": "枪",
+          "facing": true
+        },
+        {
+          "id": "e_spearman_ch4_tide_bandits_3",
+          "name": "破阵一刺",
+          "min": 3,
+          "max": 5,
+          "cost": 1,
+          "role": "damage",
+          "gain": 0,
+          "break": 1,
+          "damage": 5,
+          "guard": 0,
+          "tags": [
+            "突刺",
+            "破势",
+            "潮滩"
+          ],
+          "style": "枪",
+          "facing": true
+        },
+        {
+          "id": "e_spearman_ch4_tide_bandits_4",
+          "name": "旧兵反顶",
+          "min": 2,
+          "max": 4,
+          "cost": 2,
+          "role": "damage",
+          "gain": 0,
+          "break": 2,
+          "damage": 7,
+          "guard": 3,
+          "tags": [
+            "反击",
+            "潮滩"
+          ],
+          "style": "枪",
+          "facing": true
+        },
+        {
+          "id": "e_spearman_ch4_tide_bandits_5",
+          "name": "潮尽怒刺",
+          "min": 3,
+          "max": 5,
+          "cost": 2,
+          "role": "damage",
+          "gain": 0,
+          "break": 1,
+          "damage": 9,
+          "guard": 0,
+          "tags": [
+            "重击",
+            "潮滩"
+          ],
+          "style": "枪",
+          "facing": true
+        }
+      ],
+      "ai_note": "由兵变营头卡组数值派生，精英战强调守势和破势。",
+      "reward": {
+        "jun_gong": 2,
+        "qing_wang": 1,
+        "clues": 1
+      }
+    },
+    "enemy_blademaster_boss_ext_wakou_leader": {
+      "enemy_id": "enemy_blademaster_boss_ext_wakou_leader",
+      "display_name": "破船倭寇首领",
+      "narrative_identity": "破船火器箱前的倭寇首领，知道军械流向，被暗箭灭口前仍看向岸上。",
+      "weapon": "倭刀",
+      "role_sheet": "enemy_blademaster",
+      "max_hp": 42,
+      "max_posture": 12,
+      "start_posture": 6,
+      "realm": 3,
+      "qinggong": 2,
+      "intent_style": "boss_ext_feint_burst",
+      "behavior_tags": [
+        "破船",
+        "虚招",
+        "抢势",
+        "连斩",
+        "临死线索"
+      ],
+      "preferred_intents": [
+        "虚晃",
+        "疾斩",
+        "抢步连斩"
+      ],
+      "intent_weights": {
+        "gain_posture": 0.24,
+        "attack": 0.34,
+        "guard": 0.12,
+        "break_posture": 0.2,
+        "feint": 0.1
+      },
+      "phase_behaviors": [],
+      "deck": [
+        {
+          "id": "e_blademaster_boss_ext_wakou_leader_1",
+          "name": "破船式一",
+          "min": 0,
+          "max": 2,
+          "cost": 1,
+          "role": "momentum",
+          "gain": 2,
+          "break": 0,
+          "damage": 0,
+          "guard": 0,
+          "tags": [
+            "虚招",
+            "破船"
+          ],
+          "style": "刀",
+          "facing": true
+        },
+        {
+          "id": "e_blademaster_boss_ext_wakou_leader_2",
+          "name": "破船式二",
+          "min": 0,
+          "max": 2,
+          "cost": 1,
+          "role": "momentum",
+          "gain": 0,
+          "break": 2,
+          "damage": 0,
+          "guard": 0,
+          "tags": [
+            "抢势",
+            "破船"
+          ],
+          "style": "刀",
+          "facing": true
+        },
+        {
+          "id": "e_blademaster_boss_ext_wakou_leader_3",
+          "name": "破船式三",
+          "min": 0,
+          "max": 2,
+          "cost": 1,
+          "role": "damage",
+          "gain": 0,
+          "break": 0,
+          "damage": 5,
+          "guard": 0,
+          "tags": [
+            "连段",
+            "破船"
+          ],
+          "style": "刀",
+          "facing": true
+        },
+        {
+          "id": "e_blademaster_boss_ext_wakou_leader_4",
+          "name": "破船式四",
+          "min": 0,
+          "max": 1,
+          "cost": 2,
+          "role": "damage",
+          "gain": 0,
+          "break": 0,
+          "damage": 9,
+          "guard": 0,
+          "tags": [
+            "终结",
+            "破船"
+          ],
+          "style": "刀",
+          "facing": true
+        },
+        {
+          "id": "e_blademaster_boss_ext_wakou_leader_5",
+          "name": "破船守式",
+          "min": 0,
+          "max": 3,
+          "cost": 1,
+          "role": "guard",
+          "gain": 0,
+          "break": 0,
+          "damage": 0,
+          "guard": 7,
+          "tags": [
+            "守",
+            "破船"
+          ],
+          "style": "刀",
+          "facing": false
+        },
+        {
+          "id": "e_blademaster_boss_ext_wakou_leader_6",
+          "name": "破船终式",
+          "min": 0,
+          "max": 1,
+          "cost": 2,
+          "role": "damage",
+          "gain": 0,
+          "break": 0,
+          "damage": 7,
+          "guard": 3,
+          "tags": [
+            "线索",
+            "破船"
+          ],
+          "style": "刀",
+          "facing": true
+        }
+      ],
+      "ai_note": "由首领卡组数值派生，Boss 战提高血量与势上限，保留虚招爆发。",
+      "reward": {
+        "jun_gong": 2,
+        "qing_wang": 0,
+        "clues": 2
       }
     }
   }

@@ -100,6 +100,7 @@ def main() -> int:
         rewards = build_rewards()
         battle_scene_manifest = build_battle_scene_manifest()
         enemy_manifest = build_enemy_manifest()
+        story_battles = build_story_battles()
         narrative_mvp_nodes = build_narrative_mvp_nodes()
         performance_tracks = build_performance_tracks()
         raw_documents = build_raw_json_documents()
@@ -115,6 +116,7 @@ def main() -> int:
         write_json(DATA_DIR / "rewards.json", rewards)
         write_json(DATA_DIR / "battle_scene_manifest.json", battle_scene_manifest)
         write_json(DATA_DIR / "enemy_manifest.json", enemy_manifest)
+        write_json(DATA_DIR / "story_battles.json", story_battles)
         write_json(DATA_DIR / "narrative_mvp_nodes.json", narrative_mvp_nodes)
         write_json(DATA_DIR / "performance_tracks.json", performance_tracks)
         for relative_path, payload in raw_documents.items():
@@ -338,6 +340,121 @@ def build_enemy_manifest() -> dict[str, Any]:
     return {"meta": meta, "encounters": encounters, "enemies": enemies}
 
 
+STORY_BATTLE_TABLES = {
+    "fighter_templates": ("fighter_template_id", DATA_DIR / "story_battles" / "fighter_templates.tsv"),
+    "story_deck_sets": ("story_deck_id", DATA_DIR / "story_battles" / "story_deck_sets.tsv"),
+    "fighter_stat_sets": ("stat_set_id", DATA_DIR / "story_battles" / "fighter_stat_sets.tsv"),
+    "story_encounters": ("encounter_id", DATA_DIR / "story_battles" / "story_encounters.tsv"),
+}
+
+STORY_BATTLE_INT_FIELDS = ["max_hp", "max_momentum", "starting_momentum", "starting_realm", "qinggong"]
+STORY_BATTLE_SETTLEMENT_MODES = {"symmetric", "reactive"}
+STORY_BATTLE_PRESSURE_PROFILES = {"none", "edge_pressure", "break_resist"}
+
+
+def build_story_battles() -> dict[str, Any]:
+    tables, indexes, validation = compile_story_battle_tables()
+    return {
+        "schema_version": 1,
+        "tables": tables,
+        "indexes": indexes,
+        "validation": validation,
+    }
+
+
+def compile_story_battle_tables() -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+    source_dir = DATA_DIR / "story_battles"
+    tables: dict[str, Any] = {}
+    indexes: dict[str, Any] = {}
+    errors: list[str] = []
+    warnings: list[str] = []
+
+    for name, (id_field, path) in STORY_BATTLE_TABLES.items():
+        if not str(path).startswith(str(source_dir)):
+            raise ValueError(f"story battle table path escaped source dir: {path}")
+        if not path.exists():
+            raise FileNotFoundError(f"Missing story battle source table: {path.relative_to(ROOT)}")
+        rows = read_delimited(path, "\t")
+        tables[name] = rows
+        indexes[f"{name}_by_id"] = index_story_battle_rows(rows, id_field, name, errors)
+
+    template_ids = indexes["fighter_templates_by_id"]
+    deck_ids = indexes["story_deck_sets_by_id"]
+    stat_ids = indexes["fighter_stat_sets_by_id"]
+    encounter_ids = indexes["story_encounters_by_id"]
+
+    for deck_id, deck_row in deck_ids.items():
+        template_id = str(deck_row.get("fighter_template_id", ""))
+        validate_story_ref(errors, f"story_deck_sets.{deck_id}.fighter_template_id", template_ids, template_id)
+
+    for stat_id, stat_row in stat_ids.items():
+        for field in STORY_BATTLE_INT_FIELDS:
+            value = str(stat_row.get(field, ""))
+            if not value.isdigit():
+                errors.append(f"fighter_stat_sets.{stat_id} has non-int field {field}={value}")
+
+    for encounter_id, encounter in encounter_ids.items():
+        validate_story_ref(errors, f"story_encounters.{encounter_id}.player_template_id", template_ids, str(encounter.get("player_template_id", "")))
+        validate_story_ref(errors, f"story_encounters.{encounter_id}.opponent_template_id", template_ids, str(encounter.get("opponent_template_id", "")))
+        validate_story_ref(errors, f"story_encounters.{encounter_id}.player_deck_id", deck_ids, str(encounter.get("player_deck_id", "")))
+        validate_story_ref(errors, f"story_encounters.{encounter_id}.opponent_deck_id", deck_ids, str(encounter.get("opponent_deck_id", "")))
+        validate_story_ref(errors, f"story_encounters.{encounter_id}.player_stat_set_id", stat_ids, str(encounter.get("player_stat_set_id", "")))
+        validate_story_ref(errors, f"story_encounters.{encounter_id}.opponent_stat_set_id", stat_ids, str(encounter.get("opponent_stat_set_id", "")))
+
+        settlement_mode = str(encounter.get("settlement_mode", "reactive"))
+        if settlement_mode not in STORY_BATTLE_SETTLEMENT_MODES:
+            errors.append(f"story_encounters.{encounter_id} has invalid settlement_mode: {settlement_mode}")
+        pressure_profile = str(encounter.get("pressure_profile", "none"))
+        if pressure_profile not in STORY_BATTLE_PRESSURE_PROFILES:
+            errors.append(f"story_encounters.{encounter_id} has invalid pressure_profile: {pressure_profile}")
+
+        player_deck = deck_ids.get(str(encounter.get("player_deck_id", "")), {})
+        opponent_deck = deck_ids.get(str(encounter.get("opponent_deck_id", "")), {})
+        if player_deck and str(player_deck.get("fighter_template_id", "")) != str(encounter.get("player_template_id", "")):
+            warnings.append(f"story_encounters.{encounter_id} player_deck_id template differs from player_template_id")
+        if opponent_deck and str(opponent_deck.get("fighter_template_id", "")) != str(encounter.get("opponent_template_id", "")):
+            warnings.append(f"story_encounters.{encounter_id} opponent_deck_id template differs from opponent_template_id")
+
+    if errors:
+        joined = "\n  - ".join(errors)
+        raise ValueError(f"Story battle validation failed:\n  - {joined}")
+
+    validation = {
+        "ok": True,
+        "errors": [],
+        "warnings": warnings,
+        "counts": {
+            "templates": len(template_ids),
+            "decks": len(deck_ids),
+            "stats": len(stat_ids),
+            "encounters": len(encounter_ids),
+        },
+    }
+    return tables, indexes, validation
+
+
+def index_story_battle_rows(rows: list[dict[str, str]], id_field: str, table_name: str, errors: list[str]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for row in rows:
+        row_id = row.get(id_field, "").strip()
+        if row_id == "":
+            errors.append(f"{table_name} row missing id field: {id_field}")
+            continue
+        if row_id in result:
+            errors.append(f"{table_name} duplicate {id_field}: {row_id}")
+            continue
+        result[row_id] = row
+    return result
+
+
+def validate_story_ref(errors: list[str], label: str, index: dict[str, Any], value: str) -> None:
+    if value == "":
+        errors.append(f"{label} is empty")
+        return
+    if value not in index:
+        errors.append(f"{label} references missing id: {value}")
+
+
 def build_narrative_mvp_node_status() -> tuple[list[str], dict[str, Any]]:
     rows = read_table("narrative_mvp_node_status")
     flow_rows: list[tuple[int, str]] = []
@@ -346,6 +463,8 @@ def build_narrative_mvp_node_status() -> tuple[list[str], dict[str, Any]]:
 
     for row in rows:
         node_id = required(row, "id", "narrative_mvp_node_status")
+        if node_id in node_status:
+            raise ValueError(f"narrative_mvp_node_status: duplicate node_status id '{node_id}'")
         flow_enabled = parse_bool(row.get("flow_enabled", "false"))
         raw_order = row.get("flow_order", "").strip()
         flow_order = int(raw_order) if raw_order != "" else None
@@ -366,9 +485,48 @@ def build_narrative_mvp_node_status() -> tuple[list[str], dict[str, Any]]:
                 raise ValueError(f"narrative_mvp_node_status: duplicate flow_order {flow_order} for '{seen_orders[flow_order]}' and '{node_id}'")
             seen_orders[flow_order] = node_id
             flow_rows.append((flow_order, node_id))
+        elif flow_order is not None:
+            raise ValueError(f"narrative_mvp_node_status: node '{node_id}' has flow_order but flow_enabled is false")
 
     flow_node_ids = [node_id for _, node_id in sorted(flow_rows, key=lambda pair: pair[0])]
     return flow_node_ids, node_status
+
+
+def build_narrative_node_from_row(row: dict[str, str], node_status: dict[str, Any]) -> dict[str, Any]:
+    node_id = required(row, "id", "narrative_mvp_nodes")
+    node: dict[str, Any] = {
+        "id": node_id,
+        "title": required(row, "title", "narrative_mvp_nodes"),
+        "scene": required(row, "scene", "narrative_mvp_nodes"),
+        "text": required(row, "text", "narrative_mvp_nodes"),
+    }
+    if node_id in node_status:
+        status = node_status[node_id]
+        for field in ["column", "type", "visual_path", "implementation_status", "flow_enabled", "flow_order"]:
+            value = status.get(field)
+            if value not in (None, ""):
+                node[field] = value
+    if row.get("dialogue_json", "").strip() != "":
+        node["dialogue"] = parse_json_field(row["dialogue_json"].strip())
+    if row.get("combat_json", "").strip() != "":
+        node["combat"] = parse_json_field(row["combat_json"].strip())
+    if row.get("choices_json", "").strip() != "":
+        node["choices"] = parse_json_field(row["choices_json"].strip())
+    return node
+
+
+def build_narrative_nodes(node_status: dict[str, Any]) -> list[dict[str, Any]]:
+    nodes: list[dict[str, Any]] = []
+    seen_node_ids: set[str] = set()
+
+    for row in sorted(read_table("narrative_mvp_nodes"), key=lambda r: int(required(r, "order", "narrative_mvp_nodes"))):
+        node_id = required(row, "id", "narrative_mvp_nodes")
+        if node_id in seen_node_ids:
+            raise ValueError(f"narrative_mvp_nodes: duplicate node id '{node_id}'")
+        seen_node_ids.add(node_id)
+        nodes.append(build_narrative_node_from_row(row, node_status))
+
+    return nodes
 
 
 def build_narrative_mvp_nodes() -> dict[str, Any]:
@@ -390,32 +548,12 @@ def build_narrative_mvp_nodes() -> dict[str, Any]:
             step["career_prompt"] = row["career_prompt"].strip()
         if row.get("combat_json", "").strip() != "":
             step["combat"] = parse_json_field(row["combat_json"].strip())
+            _validate_single_narrative_combat(step["combat"], f"narrative_mvp_prologue_steps.{step['id']}.combat_json")
         steps.append(step)
 
     career_choices = {required(row, "role", "narrative_mvp_career_choices"): required(row, "label", "narrative_mvp_career_choices") for row in read_table("narrative_mvp_career_choices")}
 
-    nodes: list[dict[str, Any]] = []
-    for row in sorted(read_table("narrative_mvp_nodes"), key=lambda r: int(required(r, "order", "narrative_mvp_nodes"))):
-        node_id = required(row, "id", "narrative_mvp_nodes")
-        node: dict[str, Any] = {
-            "id": node_id,
-            "title": required(row, "title", "narrative_mvp_nodes"),
-            "scene": required(row, "scene", "narrative_mvp_nodes"),
-            "text": required(row, "text", "narrative_mvp_nodes"),
-        }
-        if node_id in node_status:
-            status = node_status[node_id]
-            for field in ["column", "type", "visual_path", "implementation_status", "flow_enabled", "flow_order"]:
-                value = status.get(field)
-                if value not in (None, ""):
-                    node[field] = value
-        if row.get("dialogue_json", "").strip() != "":
-            node["dialogue"] = parse_json_field(row["dialogue_json"].strip())
-        if row.get("combat_json", "").strip() != "":
-            node["combat"] = parse_json_field(row["combat_json"].strip())
-        if row.get("choices_json", "").strip() != "":
-            node["choices"] = parse_json_field(row["choices_json"].strip())
-        nodes.append(node)
+    nodes = build_narrative_nodes(node_status)
 
     validate_narrative_mvp_config(nodes, flow_node_ids, node_status)
 
@@ -473,6 +611,7 @@ def validate_narrative_mvp_config(nodes: list[dict[str, Any]], flow_node_ids: li
             errors.append(f"node '{node_id}' ends with _aftermath but type is not 战后处理")
 
         node_combat = node.get("combat", {})
+        _validate_narrative_combat(errors, f"node '{node_id}' combat_json", node_combat)
         if node_type == "战后处理" and isinstance(node_combat, dict) and bool(node_combat.get("enabled", False)):
             errors.append(f"post-battle node '{node_id}' must not have enabled combat_json")
 
@@ -489,6 +628,7 @@ def validate_narrative_mvp_config(nodes: list[dict[str, Any]], flow_node_ids: li
                     if str(effect_key) not in NARRATIVE_ALLOWED_EFFECT_FIELDS:
                         errors.append(f"node '{node_id}' choice '{choice.get('label', idx)}' has unsupported effect '{effect_key}'")
             choice_combat = choice.get("combat", {})
+            _validate_narrative_combat(errors, f"node '{node_id}' choice '{choice.get('label', idx)}' combat", choice_combat)
             if isinstance(choice_combat, dict) and bool(choice_combat.get("enabled", False)):
                 if node_type == "战后处理":
                     errors.append(f"post-battle node '{node_id}' choice '{choice.get('label', idx)}' must not trigger combat")
@@ -504,6 +644,26 @@ def validate_narrative_mvp_config(nodes: list[dict[str, Any]], flow_node_ids: li
     if errors:
         joined = "\n  - ".join(errors)
         raise ValueError(f"Narrative MVP validation failed:\n  - {joined}")
+
+
+def _validate_single_narrative_combat(combat: Any, context: str) -> None:
+    errors: list[str] = []
+    _validate_narrative_combat(errors, context, combat)
+    if errors:
+        raise ValueError("; ".join(errors))
+
+
+def _validate_narrative_combat(errors: list[str], context: str, combat: Any) -> None:
+    if not isinstance(combat, dict) or not bool(combat.get("enabled", False)):
+        return
+    if str(combat.get("encounter_id", "")).strip() == "":
+        errors.append(f"{context} is enabled but missing encounter_id")
+    if str(combat.get("battle_id", "")).strip() == "":
+        errors.append(f"{context} is enabled but missing battle_id")
+    if "override_player_profile" not in combat:
+        errors.append(f"{context} is enabled but missing override_player_profile")
+    elif not isinstance(combat.get("override_player_profile"), bool):
+        errors.append(f"{context}.override_player_profile must be boolean")
 
 
 def build_performance_tracks() -> dict[str, Any]:

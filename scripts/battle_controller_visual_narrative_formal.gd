@@ -21,7 +21,7 @@ func _auto_start_narrative_battle_if_needed() -> void:
 
 func _formal_player_role_for_encounter(encounter: String) -> String:
 	if encounter == "enc_prologue_master_rescue":
-		return "blademaster"
+		return "master_veteran"
 	var profile: Dictionary = NarrativeBattleContext.get_player_profile()
 	if not profile.is_empty():
 		return str(profile.get("role", "spearman"))
@@ -29,6 +29,8 @@ func _formal_player_role_for_encounter(encounter: String) -> String:
 	return str(mapping.get("player_role", "spearman"))
 
 func _formal_role_keywords(role_id: String) -> Array[String]:
+	if role_id == "master_veteran":
+		return ["师父", "师傅", "老兵", "master_veteran"]
 	if role_id == "blademaster":
 		return ["刀客", "腰刀", "blademaster", "刀"]
 	return ["枪手", "长枪", "spearman", "枪"]

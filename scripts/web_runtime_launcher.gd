@@ -4,6 +4,7 @@ const WEB_VISUAL_SCENE := "res://scenes/MainVisual.tscn"
 const NARRATIVE_MVP_SCENE := "res://scenes/NarrativeDemo.tscn"
 const WebRuntimeFlags = preload("res://scripts/web_runtime_flags.gd")
 const BattleFontHelper = preload("res://scripts/visual/battle_font_view.gd")
+const NarrativeBattleContext = preload("res://scripts/narrative_battle_context.gd")
 const SMOKE_BATTLE_FLAG := "smoke_battle"
 const NARRATIVE_FLAG := "narrative_mvp"
 
@@ -100,7 +101,7 @@ func _build_ui() -> void:
 	box.add_child(narrative_button)
 
 	var start_button := Button.new()
-	start_button.text = "进入战斗测试"
+	start_button.text = "战斗测试"
 	start_button.custom_minimum_size = Vector2(300, 56)
 	start_button.pressed.connect(_enter_visual_scene)
 	box.add_child(start_button)
@@ -127,6 +128,7 @@ func _auto_enter_visual_scene_for_smoke() -> void:
 
 func _enter_visual_scene() -> void:
 	WebRuntimeFlags.set_body_dataset("webSmokeBattle", "battle-scene-change-requested")
+	NarrativeBattleContext.clear()
 	get_tree().change_scene_to_file(WEB_VISUAL_SCENE)
 
 func _enter_narrative_mvp_scene() -> void:

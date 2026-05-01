@@ -1,5 +1,7 @@
 # Battle UI architecture (phase refactor note)
 
+> 当前 UI 管线总入口已迁移到 [UI_PIPELINE.md](UI_PIPELINE.md)。本文只保留为早期拆层笔记；若有冲突，以 `UI_PIPELINE.md`、`BATTLE.md` 和当前代码为准。
+
 ## Current entry split
 
 - `scenes/Main.tscn`

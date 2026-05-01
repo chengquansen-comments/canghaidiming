@@ -1,0 +1,26 @@
+card_id	order	type	amount	target	flag	if_preferred	damage	momentum_damage	range_bonus	range_penalty	bonus_damage_if_momentum_missing	bonus_damage_if_collapsed	refund_if_collapsed	cost_zero_if_collapsed	force_crit_if_collapsed	override_damage_if_collapsed
+camp_breath	1	momentum	2													
+camp_breath	2	draw	1													
+chain_thrust	1	distance	-1													
+chain_thrust	2	attack					8	2										
+cross_slash	1	distance	-1													
+cross_slash	2	attack					7	0										
+cross_slash	3	enemy_momentum	-2			true										
+dragon_break	1	attack					11	3			6	6	2			
+dragonslash	1	attack					10	1						true	true	
+execution	1	attack					5	0								14
+guard_frame	1	guard	6													
+guard_frame	2	flag			guard_frame											
+mid_spear	1	attack					6	2	2|3	2									
+pinning_hold	1	guard	4													
+pinning_hold	2	enemy_momentum	-2													
+pinning_hold	3	enemy_momentum	-1			true										
+retreat_half	1	distance	1													
+retreat_half	2	draw	1													
+rush_step	1	distance	-1													
+rush_step	2	buff_next_attack_damage	2			true										
+sidestep	1	distance	1													
+sidestep	2	guard	2													
+steady_step	1	distance	1													
+steady_step	2	guard	1			true										
+swift_cut	1	attack					4	1			2							

@@ -1,0 +1,3 @@
+id	name	weapon	preferred_ranges	passive	deck
+saber	单刀快手	单刀	1|2	先声夺人：每回合第一次主动进攻若命中，额外造成 2 点伤害。	rush_step|rush_step|sidestep|guard_frame|guard_frame|swift_cut|swift_cut|swift_cut|cross_slash|cross_slash|camp_breath|dragonslash
+spear	戚家军枪手	长枪	2|3	列阵习武：回合开始若处于优势距离，额外 +1 势；本回合首次攻击额外削敌 1 势。	steady_step|steady_step|retreat_half|guard_frame|guard_frame|mid_spear|mid_spear|chain_thrust|chain_thrust|pinning_hold|camp_breath|dragon_break
