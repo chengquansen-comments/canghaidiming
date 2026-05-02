@@ -33,6 +33,8 @@ static func apply_reactive_enemy_pre_move(
 		return {"applied": false, "round": already_applied_round}
 	if player == null or enemy == null or enemy_intent == null:
 		return {"applied": false, "round": already_applied_round}
+	if enemy.is_broken() or enemy.pending_control_state == Fighter.CONTROL_BROKEN:
+		return {"applied": false, "round": already_applied_round}
 	if already_applied_round == state_machine.round_index:
 		return {"applied": false, "round": already_applied_round}
 	if enemy_intent.target_position < 0:

@@ -70,6 +70,7 @@ func _enforce_selected_player_role() -> void:
 		var player_data: FighterData = _side_fighter_data(fighter_catalog[player_role_id], true)
 		player = Fighter.new(player_data)
 		player.set_session_realm(fighter_catalog[player_role_id].starting_realm)
+		_prepare_player_battle_deck()
 		player.reset_for_battle(HAND_SIZE)
 	if fighter_catalog.has(enemy_role_id):
 		var should_rebuild_enemy: bool = enemy == null or enemy.data == null or enemy.data.id != enemy_role_id or enemy.position != ENEMY_START_POSITION or enemy.facing != ENEMY_START_FACING
@@ -249,14 +250,16 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 				steps.append({"side": "player", "phase": "effect_move", "actor_from": before_effect_move_p, "actor_to": p_final, "target_from": before_effect_move_e, "target_to": e_final, "range": p_range_result})
 				preview_ended = bool(result_p.get("will_die", false))
 		else:
+			if state_machine != null and state_machine.is_reactive_mode() and enemy.momentum > 0 and enemy.momentum + e_momentum_delta <= 0:
+				enemy_move_applied = true
+				steps.append({"side": "enemy", "phase": "interrupted", "reason": "reactive_break"})
+				continue
 			var before_enemy_move: int = e_final
 			e_final = _intent_target_position(false, e_intent)
 			e_facing = _intent_target_facing(false, e_intent)
 			e_subjective = e_final
 			enemy_move_applied = true
 			steps.append({"side": "enemy", "phase": "move", "from": before_enemy_move, "to": e_final, "facing": e_facing})
-			if state_machine != null and state_machine.is_reactive_mode() and enemy.momentum > 0 and enemy.momentum + e_momentum_delta <= 0:
-				continue
 			if e_card != null:
 				var result_e: Dictionary = _resolve_one_preview_step(false, e_card, e_final, p_final, e_facing, p_facing)
 				e_range_result = str(result_e.get("range", CombatResolver.RANGE_NONE))
@@ -276,7 +279,7 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 		p_facing = _intent_target_facing(true, p_intent)
 		p_subjective = p_final
 		steps.append({"side": "player", "phase": "move", "from": before_player_fallback, "to": p_subjective, "facing": p_facing})
-	if not enemy_move_applied and e_intent != null and e_intent.target_position >= 0:
+	if not enemy_move_applied and e_intent != null and e_intent.target_position >= 0 and not (state_machine != null and state_machine.is_reactive_mode() and enemy.momentum > 0 and enemy.momentum + e_momentum_delta <= 0):
 		var before_enemy_fallback: int = e_final
 		e_final = _intent_target_position(false, e_intent)
 		e_facing = _intent_target_facing(false, e_intent)

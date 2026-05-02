@@ -142,7 +142,13 @@ assets/narrative/silhouettes/sil_<subject_id>.png
 | `art_reference/final/pixel_battle/backgrounds/battle_bg_coast_ambush.png` | `assets/pixel_battle/backgrounds/battle_bg_coast_ambush.png` | `EXPORTED` |
 | `art_reference/final/pixel_battle/backgrounds/narrative_beach_ambush.png` | `assets/pixel_battle/backgrounds/narrative_beach_ambush.png` | `EXPORTED` |
 
-### 5.3 第一战角色动作
+### 5.3 第三章押运冲突背景
+
+| 正式源图 | 运行素材 | 状态 |
+|---|---|---|
+| `art_reference/final/pixel_battle/backgrounds/battle_bg_chapter3_escort_clash.png` | `assets/pixel_battle/backgrounds/battle_bg_chapter3_escort_clash.png` | `EXPORTED` |
+
+### 5.4 第一战角色动作
 
 | 正式源图 | 运行素材 | 运行挂接 | 状态 |
 |---|---|---|---|
@@ -155,7 +161,7 @@ assets/narrative/silhouettes/sil_<subject_id>.png
 | `art_reference/final/pixel_battle/sheets/enemy_spearman_sheet_source.png` | `assets/pixel_battle/sheets/enemy_spearman_sheet.png` | `assets/pixel_battle/actors/enemy_spearman/enemy_spearman.meta.json` | `EXPORTED` |
 | `art_reference/final/pixel_battle/sheets/enemyspearman_sheet_source.png` | `assets/pixel_battle/sheets/enemy_spearman_sheet.png` | legacy sheet fallback | `SOURCE_READY_LEGACY` |
 
-### 5.4 师父角色
+### 5.5 师父角色
 
 | 正式源图 | 运行素材 | 运行挂接 | 状态 |
 |---|---|---|---|
@@ -269,7 +275,87 @@ python3 tools/normalize_actor_sheet.py \
 
 当前 P0 主流程以 `tables/narrative_mvp_node_status.tsv` 中 `flow_enabled=true` 的节点为准。资源状态以实际 `visual_path`、`performance_*.tsv` 和本文映射表交叉确认。
 
-## 10. 生产路线
+## 10. 单资产任务单
+
+为了减少反复重读大文档、手改多张表和长说明，新增单资产任务表：
+
+```text
+tables/art_asset_manifest.tsv
+```
+
+全量资产台账：
+
+```text
+tables/art_backlog.tsv
+```
+
+台账刷新与筛选命令：
+
+```bash
+python3 tools/refresh_art_backlog.py
+python3 tools/list_art_backlog.py
+python3 tools/list_art_backlog.py --status NEEDS_SOURCE
+python3 tools/list_art_backlog.py --priority P0
+python3 tools/list_art_backlog.py --todo proxy --format short
+python3 tools/list_art_backlog.py --todo scene --priority P0 --format ids
+python3 tools/list_art_backlog.py --todo prop --priority P0 --limit 5
+python3 tools/list_art_backlog.py --todo next --priority P0 --pick-next
+python3 tools/list_art_backlog.py --todo proxy --pick-next
+```
+
+资产任务创建命令：
+
+```bash
+python3 tools/create_art_asset_task.py <asset_id>
+python3 tools/create_art_asset_task.py <asset_id> --update
+```
+
+省 token 的正式源图接收命令：
+
+```bash
+python3 tools/accept_generated_art.py <asset_id> --latest
+python3 tools/accept_generated_art.py <asset_id> --source /abs/path/to/generated.png
+```
+
+更省 token 的一键实装命令：
+
+```bash
+python3 tools/run_art_asset_flow.py <asset_id> --from-latest --import --refresh --quiet
+python3 tools/run_art_asset_flow.py <asset_id> --from-source /abs/path/to/generated.png --import --refresh --quiet
+python3 tools/run_art_asset_flow.py <asset_id> --from-latest --print-source --dry-run
+```
+
+字段口径：
+
+| 字段 | 含义 |
+|---|---|
+| `asset_id` | 单资产任务 id，命令入口统一用它 |
+| `type` | 导出 profile，当前支持 `battle_background` / `narrative_background` / `narrative_prop` / `battle_portrait` / `performance_portrait` |
+| `source_path` | `art_reference/final/**` 正式母版 |
+| `runtime_path` | `assets/**` 运行 PNG 目标 |
+| `hook_table` | 要回写的表，例如 `tables/battle_scene_manifest.tsv` |
+| `hook_key_field` | 表内主键列名，例如 `id` / `track_id` |
+| `hook_id` | 表内目标行 id |
+| `hook_field` | 要回写的字段，例如 `background` / `visual_path` / `prop_path` |
+| `current_asset_class` | 当前挂接资源类型，例如 `svg_placeholder` / `png_temp` / `png_formal` / `portrait_proxy` / `prop_proxy` / `relic_proxy` / `shared_runtime` |
+| `planned_asset_class` | 目标资源类型，当前主要区分 `png_formal` / `svg_placeholder` |
+| `runtime_role` | 当前资源在流程里的角色，例如 `placeholder` / `proxy` / `shared_existing` / `legacy_target` / `final_target` |
+| `status` | 资产任务状态 |
+| `note` | 简短备注 |
+
+资产任务状态机：
+
+| 状态 | 含义 |
+|---|---|
+| `PROMPT_READY` | 提示词已确认 |
+| `SOURCE_READY` | 正式母版已入 `art_reference/final` |
+| `EXPORTED` | 已导出 runtime PNG |
+| `WIRED` | 已回写 hook table |
+| `COMPILED` | `scripts/compile_tables.py` 后 JSON 指向正确 |
+| `GODOT_IMPORTED` | `.import` / `.ctex` 已生成 |
+| `IN_GAME_CHECKED` | 截图或实机验收通过 |
+
+## 11. 生产路线
 
 当前阶段判断：
 
@@ -287,12 +373,29 @@ python3 tools/normalize_actor_sheet.py \
 4. 通过验收后，在本文更新对应状态。
 5. 新增任何源图时先补映射表。
 
-## 11. 提示词
+## 12. 提示词
 
 长提示词和角色 / 场景 / 主视觉 prompt 统一放在：
 
 ```text
 docs/ART_REFERENCE_PROMPTS.md
+```
+
+结构化提示词任务单：
+
+```text
+tables/art_prompt_manifest.tsv
+```
+
+当前表是“短变量表”，只保留节点语义差异；共用风格、输出规格、质量框架由 `render_art_prompt.py` 模板补齐，不再把整段重复规格常驻在表里。
+
+提示词渲染命令：
+
+```bash
+python3 tools/render_art_prompt.py <asset_id>
+python3 tools/render_art_prompt.py <asset_id> --lang zh
+python3 tools/render_art_prompt.py <asset_id> --lang en
+python3 tools/render_art_prompt.py <asset_id> --style compact --lang en
 ```
 
 提示词规则：
@@ -304,8 +407,9 @@ docs/ART_REFERENCE_PROMPTS.md
 5. 肖像和角色 sheet 的源图提示词必须写“纯色亮绿色抠图底 `#00FF00`”，运行导出再转透明。
 6. 角色 sheet 提示词必须写清“3 帧动作”，且三帧动作差异要大。
 7. 生成正式源画时必须同时标注目标节点、运行用途、目标 `assets/**/*.png` 导出路径。
+8. 新增正式提示词时，优先先补 `tables/art_prompt_manifest.tsv`，再由脚本渲染中英双版，不再手写整段长 prompt。
 
-## 12. 验收命令
+## 13. 验收命令
 
 ```bash
 python3 scripts/compile_tables.py
@@ -315,6 +419,37 @@ python3 tools/validate_art_assets.py
 python3 tools/validate_actor_meta.py assets/pixel_battle/actors
 godot --headless --import --quit
 ```
+
+单资产标准流程：
+
+```bash
+python3 tools/refresh_art_backlog.py
+python3 tools/list_art_backlog.py --status NEEDS_SOURCE
+python3 tools/create_art_asset_task.py <asset_id>
+python3 tools/promote_art_asset.py <asset_id>
+python3 scripts/compile_tables.py
+python3 tools/validate_art_asset_task.py <asset_id>
+godot --headless --import --quit
+python3 tools/validate_art_asset_task.py <asset_id> --require-import
+```
+
+省 token 的合并入口：
+
+```bash
+python3 tools/run_art_asset_flow.py <asset_id> --from-latest --import --refresh --quiet
+python3 tools/run_art_asset_flow.py <asset_id> --from-source /abs/path/to/generated.png --import --refresh --quiet
+```
+
+说明：
+
+1. `refresh_art_backlog.py` 负责从现有表、prompt manifest、asset manifest 和本地资源状态刷新全量台账，标出已有、代用和待生产项。
+2. `create_art_asset_task.py` 负责从 `art_prompt_manifest.tsv` 推导 `art_asset_manifest.tsv` 行，并按源图是否存在自动写 `PROMPT_READY` / `SOURCE_READY`。
+3. `accept_generated_art.py` 负责把最新生图或显式 PNG 原子写入 `source_path`，校验非空可读后推进到 `SOURCE_READY`；必须显式传 `--latest` 或 `--source`。
+4. `promote_art_asset.py` 负责从 `source_path` 导出到 `runtime_path`，并回写 `hook_table`。
+5. `validate_art_asset_task.py` 只校验这一条资产任务，不重扫全仓。
+6. `run_art_asset_flow.py` 把 `accept source -> promote -> compile -> validate -> godot import -> refresh` 串成一条命令。
+7. `run_art_asset_flow.py --print-source` 可以先显示“将使用哪张生成图 -> 将写到哪个 `source_path`”；加 `--dry-run` 时只打印计划，不落盘。
+8. 当前编译校验已支持 `battle_scene_manifest.tsv`、`narrative_mvp_node_status.tsv`、`performance_timeline.tsv`。
 
 Web 验收：
 

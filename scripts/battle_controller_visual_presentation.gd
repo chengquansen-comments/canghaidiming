@@ -19,6 +19,16 @@ const PRESENTATION_SLOT_SETTLE_DURATION := 0.20
 const PRESENTATION_HIT_PAUSE_LIGHT := 0.080
 const PRESENTATION_HIT_PAUSE_HEAVY := 0.130
 const PRESENTATION_HIT_PAUSE_BREAK := 0.180
+const PRESENTATION_WATCHDOG_SECONDS := 8.0
+const PRESENTATION_WATCHDOG_TOKEN_META := &"battle_presentation_watchdog_token"
+const MOMENTUM_DOT_FLASH_DURATION := 0.28
+const MOMENTUM_DOT_GAIN_FLASH_DURATION := 0.44
+const MOMENTUM_DOT_SETTLE_DURATION := 0.16
+const MOMENTUM_DOT_GAIN_SETTLE_DURATION := 0.26
+const MOMENTUM_DOT_LOSS_COLOR := Color("777a80")
+const MOMENTUM_DOT_GAIN_COLOR := Color("f7fbff")
+
+var _presentation_watchdog_token := 0
 
 func _confirm_player_intent() -> void:
 	var old_player_slot: int = player.position if player != null else -1
@@ -55,6 +65,7 @@ func _start_presentation_exchange(player_card: CardData, enemy_card: CardData, o
 	call_deferred("_run_presentation_exchange", player_card, enemy_card, safe_order, old_player_slot, old_enemy_slot, preview_sim)
 
 func _run_presentation_exchange(player_card: CardData, enemy_card: CardData, order: Array[String], old_player_slot: int, old_enemy_slot: int, preview_sim: Dictionary) -> void:
+	_begin_presentation_watchdog("base-exchange")
 	_reset_presentation_offsets()
 	_apply_pre_resolution_slot_offsets(old_player_slot, old_enemy_slot)
 	for side: String in order:
@@ -67,8 +78,7 @@ func _run_presentation_exchange(player_card: CardData, enemy_card: CardData, ord
 		await _play_presentation_death(false)
 	if player != null and player.hp <= 0:
 		await _play_presentation_death(true)
-	_reset_presentation_offsets()
-	_set_presentation_busy(false)
+	_finish_presentation_exchange()
 
 func _play_one_presentation_action(is_player_actor: bool, card: CardData, result: Dictionary) -> void:
 	if card == null:
@@ -76,9 +86,11 @@ func _play_one_presentation_action(is_player_actor: bool, card: CardData, result
 	var style: String = _presentation_style_for_card(card)
 	if style == "guard":
 		await _play_guard_presentation(is_player_actor, card, result)
+		await _play_momentum_delta_presentation(is_player_actor, result)
 		return
 	if style == "focus":
 		await _play_focus_presentation(is_player_actor, card, result)
+		await _play_momentum_delta_presentation(is_player_actor, result)
 		return
 	await _play_attack_presentation(is_player_actor, card, style, result)
 
@@ -104,6 +116,7 @@ func _play_attack_presentation(is_player_actor: bool, card: CardData, style: Str
 	else:
 		_play_presentation_miss_feedback(not is_player_actor, result)
 	_tween_actor_offset(is_player_actor, base_offset + lunge_offset, base_offset, 0.16, Tween.TRANS_QUAD, Tween.EASE_IN)
+	await _play_momentum_delta_presentation(is_player_actor, result)
 	_show_presentation_result_text(target_is_enemy, card, result)
 	await get_tree().create_timer(0.45).timeout
 
@@ -243,6 +256,111 @@ func _show_presentation_float_text(text: String, target_is_player: bool, color: 
 	tween.finished.connect(func() -> void:
 		label.queue_free()
 	)
+
+func _play_momentum_delta_presentation(is_player_actor: bool, result: Dictionary) -> void:
+	var break_value: int = max(0, int(result.get("break", 0)))
+	var gain_value: int = max(0, int(result.get("gain", 0)))
+	if break_value > 0:
+		var target_before: int = int(result.get("target_momentum_before", -1))
+		var target_after: int = int(result.get("target_momentum_after", -1))
+		if target_before >= 0 and target_after >= 0:
+			await _animate_momentum_dots_between(not is_player_actor, target_before, target_after, false)
+		else:
+			await _animate_momentum_dots(not is_player_actor, -break_value)
+	if gain_value > 0:
+		var actor_before: int = int(result.get("actor_momentum_before", -1))
+		var actor_after: int = int(result.get("actor_momentum_after", -1))
+		if actor_before >= 0 and actor_after >= 0:
+			await _animate_momentum_dots_between(is_player_actor, actor_before, actor_after, true)
+		else:
+			await _animate_momentum_dots(is_player_actor, gain_value)
+
+func _animate_momentum_dots(is_player_side: bool, delta: int) -> void:
+	if delta == 0:
+		return
+	var fighter: Fighter = player if is_player_side else enemy
+	if fighter == null:
+		return
+	var maximum: int = clampi(fighter.data.max_momentum, 1, 12)
+	var final_value: int = clampi(fighter.momentum, 0, maximum)
+	var before_value: int = final_value
+	if delta > 0:
+		before_value = clampi(final_value - delta, 0, maximum)
+	else:
+		before_value = clampi(final_value + absi(delta), 0, maximum)
+	await _animate_momentum_dots_between(is_player_side, before_value, final_value, delta > 0)
+
+func _animate_momentum_dots_between(is_player_side: bool, before_value: int, final_value: int, is_gain: bool) -> void:
+	var fighter: Fighter = player if is_player_side else enemy
+	var container: HBoxContainer = player_momentum_dots if is_player_side else enemy_momentum_dots
+	if fighter == null or container == null:
+		return
+	var maximum: int = clampi(fighter.data.max_momentum, 1, 12)
+	if before_value < 0 or final_value < 0:
+		final_value = clampi(fighter.momentum, 0, maximum)
+		before_value = clampi(final_value - 1, 0, maximum) if is_gain else clampi(final_value + 1, 0, maximum)
+	else:
+		before_value = clampi(before_value, 0, maximum)
+		final_value = clampi(final_value, 0, maximum)
+	if before_value == final_value:
+		return
+	set_meta(MOMENTUM_DOT_ANIMATING_META, true)
+	_refresh_momentum_dots(container, before_value, maximum)
+	await get_tree().process_frame
+	if is_gain:
+		_apply_momentum_dot_flash(container, before_value, final_value, _make_transient_momentum_dot_style(MOMENTUM_DOT_GAIN_COLOR, Color("ffffff")))
+		_pulse_momentum_dot_range(container, before_value, final_value, 1.42, MOMENTUM_DOT_GAIN_FLASH_DURATION)
+	else:
+		_apply_momentum_dot_flash(container, final_value, before_value, _make_transient_momentum_dot_style(MOMENTUM_DOT_LOSS_COLOR, Color("3d4148")))
+		_pulse_momentum_dot_range(container, final_value, before_value, 1.26, MOMENTUM_DOT_FLASH_DURATION)
+	var flash_duration: float = MOMENTUM_DOT_GAIN_FLASH_DURATION if is_gain else MOMENTUM_DOT_FLASH_DURATION
+	await get_tree().create_timer(flash_duration).timeout
+	_refresh_momentum_dots(container, final_value, maximum)
+	if is_gain:
+		_pulse_momentum_dot_range(container, before_value, final_value, 1.18, MOMENTUM_DOT_GAIN_SETTLE_DURATION)
+	var settle_duration: float = MOMENTUM_DOT_GAIN_SETTLE_DURATION if is_gain else MOMENTUM_DOT_SETTLE_DURATION
+	await get_tree().create_timer(settle_duration).timeout
+	remove_meta(MOMENTUM_DOT_ANIMATING_META)
+	_refresh_hud_bars(true)
+
+func _apply_momentum_dot_flash(container: HBoxContainer, from_index: int, to_index: int, style: StyleBox) -> void:
+	if container == null:
+		return
+	var start_index: int = clampi(min(from_index, to_index), 0, container.get_child_count())
+	var end_index: int = clampi(max(from_index, to_index), 0, container.get_child_count())
+	for i in range(start_index, end_index):
+		var dot := container.get_child(i)
+		if dot is PanelContainer:
+			dot.add_theme_stylebox_override("panel", style)
+
+func _pulse_momentum_dot_range(container: HBoxContainer, from_index: int, to_index: int, pulse_scale: float, duration: float) -> void:
+	if container == null:
+		return
+	var start_index: int = clampi(min(from_index, to_index), 0, container.get_child_count())
+	var end_index: int = clampi(max(from_index, to_index), 0, container.get_child_count())
+	for i in range(start_index, end_index):
+		var dot := container.get_child(i)
+		if dot is Control:
+			var control := dot as Control
+			control.pivot_offset = control.size * 0.5
+			control.scale = Vector2.ONE
+			var tween := create_tween()
+			tween.tween_property(control, "scale", Vector2(pulse_scale, pulse_scale), duration * 0.42).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+			tween.tween_property(control, "scale", Vector2.ONE, duration * 0.58).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+
+func _make_transient_momentum_dot_style(fill: Color, border: Color) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = fill
+	style.border_color = border
+	style.border_width_left = 1
+	style.border_width_top = 1
+	style.border_width_right = 1
+	style.border_width_bottom = 1
+	style.corner_radius_top_left = 9
+	style.corner_radius_top_right = 9
+	style.corner_radius_bottom_left = 9
+	style.corner_radius_bottom_right = 9
+	return style
 
 func _play_presentation_death(is_player_actor: bool) -> void:
 	var node: CanvasItem = _presentation_visual_node(is_player_actor)
@@ -480,3 +598,29 @@ func _set_presentation_busy(value: bool) -> void:
 	if not value:
 		remove_meta(PRESENTATION_OLD_PLAYER_SLOT_META)
 		remove_meta(PRESENTATION_OLD_ENEMY_SLOT_META)
+		remove_meta(PRESENTATION_WATCHDOG_TOKEN_META)
+
+func _begin_presentation_watchdog(label: String) -> void:
+	_presentation_watchdog_token += 1
+	var token := _presentation_watchdog_token
+	set_meta(PRESENTATION_WATCHDOG_TOKEN_META, token)
+	call_deferred("_presentation_watchdog_after_delay", token, label)
+
+func _presentation_watchdog_after_delay(token: int, label: String) -> void:
+	await get_tree().create_timer(PRESENTATION_WATCHDOG_SECONDS).timeout
+	if not _presentation_busy():
+		return
+	if int(get_meta(PRESENTATION_WATCHDOG_TOKEN_META, -1)) != token:
+		return
+	_finish_presentation_exchange("watchdog:%s" % label)
+
+func _finish_presentation_exchange(reason: String = "done") -> void:
+	if reason != "done":
+		_log("[color=#ffb86b]表现流程兜底收尾：%s[/color]" % reason)
+	_reset_presentation_offsets()
+	if has_method("_clear_actor_action_glows"):
+		call("_clear_actor_action_glows")
+	if has_meta(MOMENTUM_DOT_ANIMATING_META):
+		remove_meta(MOMENTUM_DOT_ANIMATING_META)
+	_set_presentation_busy(false)
+	_refresh_hud_bars(true)

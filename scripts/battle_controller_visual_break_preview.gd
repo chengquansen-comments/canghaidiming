@@ -45,6 +45,7 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 				var target_m_delta: int = int(result_p.get("target_momentum_delta", 0))
 				var actor_m_delta: int = int(result_p.get("actor_momentum_delta", 0))
 				var before_enemy_momentum: int = e_running_momentum
+				var before_player_momentum_gain: int = p_running_momentum
 				e_running_momentum = clampi(e_running_momentum + target_m_delta, 0, e_max_momentum)
 				p_running_momentum = clampi(p_running_momentum + actor_m_delta, 0, p_max_momentum)
 				var breaks_enemy: bool = before_enemy_momentum > 0 and e_running_momentum <= 0
@@ -52,7 +53,7 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 				e_hp_delta += int(result_p.get("target_hp_delta", 0))
 				e_momentum_delta += target_m_delta
 				p_momentum_delta += actor_m_delta
-				steps.append({"side": "player", "phase": "effect", "card": p_card.display_name, "range": p_range_result, "damage": int(result_p.get("damage", 0)), "break": int(result_p.get("break", 0)), "gain": int(result_p.get("gain", 0)), "will_break": breaks_enemy})
+				steps.append({"side": "player", "phase": "effect", "card": p_card.display_name, "range": p_range_result, "damage": int(result_p.get("damage", 0)), "break": int(result_p.get("break", 0)), "gain": int(result_p.get("gain", 0)), "will_break": breaks_enemy, "actor_momentum_before": before_player_momentum_gain, "actor_momentum_after": p_running_momentum, "target_momentum_before": before_enemy_momentum, "target_momentum_after": e_running_momentum})
 				var before_effect_move_p: int = p_final
 				var before_effect_move_e: int = e_final
 				p_final = int(result_p.get("actor_final", p_final))
@@ -60,6 +61,7 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 				steps.append({"side": "player", "phase": "effect_move", "actor_from": before_effect_move_p, "actor_to": p_final, "target_from": before_effect_move_e, "target_to": e_final, "range": p_range_result})
 		else:
 			if _preview_should_cancel_reactive_enemy_step(enemy_will_break):
+				enemy_move_applied = true
 				steps.append({"side": "enemy", "phase": "interrupted", "reason": "reactive_break"})
 				continue
 			var before_enemy_move: int = e_final
@@ -74,6 +76,7 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 				var target_m_delta_e: int = int(result_e.get("target_momentum_delta", 0))
 				var actor_m_delta_e: int = int(result_e.get("actor_momentum_delta", 0))
 				var before_player_momentum: int = p_running_momentum
+				var before_enemy_momentum_gain: int = e_running_momentum
 				p_running_momentum = clampi(p_running_momentum + target_m_delta_e, 0, p_max_momentum)
 				e_running_momentum = clampi(e_running_momentum + actor_m_delta_e, 0, e_max_momentum)
 				var breaks_player: bool = before_player_momentum > 0 and p_running_momentum <= 0
@@ -81,7 +84,7 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 				p_hp_delta += int(result_e.get("target_hp_delta", 0))
 				p_momentum_delta += target_m_delta_e
 				e_momentum_delta += actor_m_delta_e
-				steps.append({"side": "enemy", "phase": "effect", "card": e_card.display_name, "range": e_range_result, "damage": int(result_e.get("damage", 0)), "break": int(result_e.get("break", 0)), "gain": int(result_e.get("gain", 0)), "will_break": breaks_player})
+				steps.append({"side": "enemy", "phase": "effect", "card": e_card.display_name, "range": e_range_result, "damage": int(result_e.get("damage", 0)), "break": int(result_e.get("break", 0)), "gain": int(result_e.get("gain", 0)), "will_break": breaks_player, "actor_momentum_before": before_enemy_momentum_gain, "actor_momentum_after": e_running_momentum, "target_momentum_before": before_player_momentum, "target_momentum_after": p_running_momentum})
 				var before_effect_move_e2: int = e_final
 				var before_effect_move_p2: int = p_final
 				e_final = int(result_e.get("actor_final", e_final))
@@ -94,7 +97,7 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 		p_facing = _intent_target_facing(true, p_intent)
 		p_subjective = p_final
 		steps.append({"side": "player", "phase": "move", "from": before_player_fallback, "to": p_subjective, "facing": p_facing})
-	if not enemy_move_applied and e_intent != null and e_intent.target_position >= 0:
+	if not enemy_move_applied and e_intent != null and e_intent.target_position >= 0 and not _preview_should_cancel_reactive_enemy_step(enemy_will_break):
 		var before_enemy_fallback: int = e_final
 		e_final = _intent_target_position(false, e_intent)
 		e_facing = _intent_target_facing(false, e_intent)

@@ -828,6 +828,11 @@ func _apply_fighter_deck(fighter: Fighter, deck_entries: Array) -> void:
 	var old_position := fighter.position
 	var old_facing := fighter.facing
 	fighter.data.starting_deck = _cards_from_deck_entries(deck_entries, _export_cards(fighter))
+	if fighter == player:
+		fighter.set_battle_deck_limit(PLAYER_BATTLE_DECK_SIZE)
+	else:
+		fighter.set_battle_deck_limit(0)
+	fighter.reset_battle_deck_to_default()
 	fighter.reset_for_battle(HAND_SIZE)
 	fighter.hp = clampi(old_hp, 1, fighter.data.max_hp)
 	fighter.momentum = clampi(old_momentum, 0, fighter.data.max_momentum)

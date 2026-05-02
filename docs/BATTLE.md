@@ -60,6 +60,8 @@ scripts/battle_controller_visual_story_return.gd
 
 各层原则：核心结算只写在 core / state machine / resolver；视觉 wrapper 负责入口、预览、调参、表演、叙事回流，不应直接制造和真实结算不一致的新战斗结果。
 
+数值原则：除非用户明确提出，否则不要引入新的数值线、成长线、资源线或隐藏倍率。调平衡时优先使用已有的表字段、已有卡牌、已有职业 profile、已有成长奖励和已有 `pressure_profile`；若确实需要新增字段或规则，必须先说明它解决的具体问题，并等用户确认。
+
 ## 配置主源
 
 ### 剧情触发
@@ -154,6 +156,8 @@ scripts/battle_controller_core.gd::_build_catalog()
 ```
 
 轻功是硬约束：基础数值最小值为 `1`。除非未来某张特殊招式牌明确写了临时效果，否则配置和热调都不应把轻功调到 `0`。
+
+调整数值时默认只在现有管线内工作：改 `fighter_stat_sets.tsv`、`story_deck_sets.tsv`、`story_encounters.tsv`、职业初始 profile、正式剧情奖励或 F9 调参配置。不要为了修一个战斗强弱问题新增新的职业成长轴、新资源、新难度倍率或额外结算分支，除非用户主动提出或明确批准。
 
 ## 结算模式
 

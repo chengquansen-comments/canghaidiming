@@ -10,10 +10,6 @@ func _init() -> void:
 		"role": "spearman",
 		"career": "长枪武官",
 		"weapon": "长枪",
-		"max_hp": 40,
-		"hp": 37,
-		"max_posture": 11,
-		"posture": 8,
 		"martial_level": 2,
 		"battles_won": 1
 	})
@@ -42,7 +38,7 @@ func _init() -> void:
 		push_error("Expected player and enemy after recommended entry")
 		quit(1)
 		return
-	if int(player.hp) != 37 or int(player.data.max_hp) != 40 or int(player.data.max_momentum) != 11:
+	if int(player.hp) != 22 or int(player.data.max_hp) != 22 or int(player.data.max_momentum) != 4 or int(player.qinggong) != 1:
 		push_error("Player profile override failed: hp=%s max_hp=%s max_momentum=%s" % [str(player.hp), str(player.data.max_hp), str(player.data.max_momentum)])
 		quit(1)
 		return

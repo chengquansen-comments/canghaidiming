@@ -1,0 +1,9 @@
+pool_entry_id	combat_pool_id	display_name	enemy_family	opponent_template_id	opponent_deck_id	martial_min	martial_max	weight	hp_bonus	max_momentum_bonus	starting_momentum_bonus	qinggong_bonus	notes
+spear_patrol_guard	spear_patrol	巡海持枪哨	spearman	prologue_spear_guard	prologue_spear_keep	1	3	10	0	0	0	0	低武境控距枪兵
+spear_patrol_reed	spear_patrol	芦苇伏兵	spearman	reed_ambusher	reed_ambusher_keep	2	4	8	2	0	0	0	中低武境伏击枪兵
+coastal_veteran_raider	coastal_veteran	海岸老寇	blademaster	wakou_raider	wakou_raider_smoke	2	6	8	2	0	0	0	普通刀兵压力
+coastal_veteran_tide	coastal_veteran	潮滩悍匪	blademaster	tide_bandit	tide_bandit_pressure	4	8	7	4	1	0	0	中后段贴身刀兵
+military_elite_escort	military_elite	押运刀客	blademaster	escort_blademaster	escort_blademaster_pressure	2	6	8	4	1	0	0	军伍刀客精英
+military_elite_mutiny	military_elite	兵变营头	spearman	mutiny_camp_leader	mutiny_camp_spear	3	7	7	6	1	1	0	军伍长枪精英
+old_case_elite_transport	old_case_elite	旧案押运官	blademaster	transport_officer	transport_officer_pressure	3	8	8	4	1	1	0	旧案相关强敌
+old_case_elite_duelist	old_case_elite	暗箭旧部	spearman	spear_duelist	spear_duelist_keep	5	10	6	8	1	1	0	高阶控距强敌

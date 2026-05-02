@@ -16,6 +16,7 @@ extends "res://scripts/battle_controller_visual_presentation_stepwise.gd"
 
 
 func _run_presentation_exchange(player_card: CardData, enemy_card: CardData, order: Array[String], old_player_slot: int, old_enemy_slot: int, preview_sim: Dictionary) -> void:
+	_begin_presentation_watchdog("mode-aware-exchange")
 	_reset_presentation_offsets()
 	_reset_player_presentation_action_gate()
 	var visual_player_slot: int = _consume_player_draft_visual_start_slot(old_player_slot)
@@ -64,9 +65,7 @@ func _run_presentation_exchange(player_card: CardData, enemy_card: CardData, ord
 		await _play_presentation_death(false)
 	if player != null and player.hp <= 0:
 		await _play_presentation_death(true)
-	_reset_presentation_offsets()
-	_clear_actor_action_glows()
-	_set_presentation_busy(false)
+	_finish_presentation_exchange()
 
 
 func _presentation_has_step_trace(preview_sim: Dictionary) -> bool:

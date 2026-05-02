@@ -22,10 +22,6 @@ func _assert_prologue_master_uses_data_override_flag() -> bool:
 		"role": "spearman",
 		"career": "长枪武官",
 		"weapon": "长枪",
-		"max_hp": 99,
-		"hp": 88,
-		"max_posture": 19,
-		"posture": 17,
 		"martial_level": 5,
 		"battles_won": 7
 	})
@@ -55,10 +51,6 @@ func _assert_player_battle_uses_data_override_flag() -> bool:
 		"role": "spearman",
 		"career": "长枪武官",
 		"weapon": "长枪",
-		"max_hp": 40,
-		"hp": 37,
-		"max_posture": 11,
-		"posture": 8,
 		"martial_level": 2,
 		"battles_won": 1
 	})
@@ -75,7 +67,7 @@ func _assert_player_battle_uses_data_override_flag() -> bool:
 	if player == null:
 		push_error("Expected player after beach battle data call")
 		return false
-	if int(player.hp) != 37 or int(player.data.max_hp) != 40 or int(player.data.max_momentum) != 11:
+	if int(player.hp) != 22 or int(player.data.max_hp) != 22 or int(player.data.max_momentum) != 4 or int(player.qinggong) != 1:
 		push_error("Player battle did not apply profile override: hp=%s max_hp=%s max_momentum=%s" % [str(player.hp), str(player.data.max_hp), str(player.data.max_momentum)])
 		return false
 	node.queue_free()

@@ -4,6 +4,8 @@ class_name CardData
 const ROLE_MOMENTUM := "momentum"
 const ROLE_DAMAGE := "damage"
 const ROLE_GUARD := "guard"
+const ROLE_ATTACK := "attack"
+const ROLE_DEFENSE := "defense"
 
 const MOVE_NONE := "none"
 const MOVE_ON_HIT := "on_hit"
@@ -121,6 +123,19 @@ func is_damage_card() -> bool:
 func is_guard_card() -> bool:
 	return role == ROLE_GUARD
 
+
+func is_attack_card() -> bool:
+	return damage > 0 or break_momentum > 0 or role == ROLE_ATTACK
+
+
+func is_defense_card() -> bool:
+	return not is_attack_card() and (guard > 0 or gain_momentum > 0 or role == ROLE_DEFENSE or role == ROLE_GUARD or role == ROLE_MOMENTUM)
+
+
+func category_role() -> String:
+	return ROLE_ATTACK if is_attack_card() else ROLE_DEFENSE
+
+
 func requires_hit_check() -> bool:
 	return not is_guard_card() and (damage > 0 or gain_momentum > 0 or break_momentum > 0)
 
@@ -130,13 +145,7 @@ func effect_budget() -> int:
 
 
 func type_label() -> String:
-	match role:
-		ROLE_MOMENTUM:
-			return "势牌"
-		ROLE_GUARD:
-			return "格挡牌"
-		_:
-			return "伤害牌"
+	return "攻" if category_role() == ROLE_ATTACK else "守"
 
 
 func movement_summary_parts() -> Array[String]:

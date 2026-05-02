@@ -79,10 +79,10 @@ func _make_flat_card_style(fill: Color, border: Color, border_width: int) -> Sty
 	return BattleSkinHelper.make_flat_card_style(fill, border, border_width)
 
 func _make_type_tag_style(card: CardData) -> StyleBoxFlat:
-	return BattleSkinHelper.make_type_tag_style(card.is_guard_card(), card.is_momentum_card())
+	return BattleSkinHelper.make_type_tag_style(card.is_defense_card(), false)
 
 func _make_card_art_style(card: CardData) -> StyleBoxFlat:
-	return BattleSkinHelper.make_card_art_style(card.is_guard_card(), card.is_momentum_card())
+	return BattleSkinHelper.make_card_art_style(card.is_defense_card(), false)
 
 func _make_momentum_dot_style(filled: bool) -> StyleBoxFlat:
 	return BattleSkinHelper.make_momentum_dot_style(filled)

@@ -897,6 +897,7 @@ func _confirm_player_intent() -> void:
 	super._confirm_player_intent()
 
 func _run_presentation_exchange(player_card: CardData, enemy_card: CardData, order: Array[String], old_player_slot: int, old_enemy_slot: int, preview_sim: Dictionary) -> void:
+	_begin_presentation_watchdog("stepwise-exchange")
 	_reset_presentation_offsets()
 	_reset_player_presentation_action_gate()
 	var visual_player_slot: int = _consume_player_draft_visual_start_slot(old_player_slot)
@@ -924,8 +925,7 @@ func _run_presentation_exchange(player_card: CardData, enemy_card: CardData, ord
 		await _play_presentation_death(false)
 	if player != null and player.hp <= 0:
 		await _play_presentation_death(true)
-	_reset_presentation_offsets()
-	_set_presentation_busy(false)
+	_finish_presentation_exchange()
 
 func _apply_presentation_stance_step(is_player_actor: bool, visual_slot: int, committed_slot: int, card: CardData, move_step: Dictionary) -> int:
 	var target_slot: int = int(move_step.get("to", visual_slot)) if not move_step.is_empty() else visual_slot
@@ -987,6 +987,10 @@ func _presentation_result_for_side(preview_sim: Dictionary, side: String) -> Dic
 	result["will_die"] = bool(effect_step.get("will_die", false))
 	result["was_back_hit"] = bool(effect_step.get("was_back_hit", false))
 	result["back_hit_turn_to"] = str(effect_step.get("back_hit_turn_to", ""))
+	result["actor_momentum_before"] = int(effect_step.get("actor_momentum_before", -1))
+	result["actor_momentum_after"] = int(effect_step.get("actor_momentum_after", -1))
+	result["target_momentum_before"] = int(effect_step.get("target_momentum_before", -1))
+	result["target_momentum_after"] = int(effect_step.get("target_momentum_after", -1))
 	return result
 
 func _presentation_target_will_break(_target_is_player: bool, result: Dictionary) -> bool:

@@ -87,6 +87,23 @@ NARRATIVE_ALLOWED_EFFECT_FIELDS = {
     "elite_chance",
 }
 
+STRATEGIC_MAP_NODE_TYPES = {
+    "combat_common",
+    "combat_elite",
+    "military",
+    "case",
+    "reputation",
+    "rest",
+    "risk",
+}
+
+STRATEGIC_MAP_EFFECT_FIELDS = {
+    "military_merit",
+    "clean_reputation",
+    "case_clues",
+    "card_rewards",
+}
+
 NARRATIVE_REQUIRED_STATUS_FIELDS = ["flow_order", "column", "type", "visual_path"]
 
 
@@ -101,6 +118,7 @@ def main() -> int:
         battle_scene_manifest = build_battle_scene_manifest()
         enemy_manifest = build_enemy_manifest()
         story_battles = build_story_battles()
+        strategic_map = build_strategic_map(story_battles, battle_scene_manifest)
         narrative_mvp_nodes = build_narrative_mvp_nodes()
         performance_tracks = build_performance_tracks()
         raw_documents = build_raw_json_documents()
@@ -117,6 +135,7 @@ def main() -> int:
         write_json(DATA_DIR / "battle_scene_manifest.json", battle_scene_manifest)
         write_json(DATA_DIR / "enemy_manifest.json", enemy_manifest)
         write_json(DATA_DIR / "story_battles.json", story_battles)
+        write_json(DATA_DIR / "strategic_map.json", strategic_map)
         write_json(DATA_DIR / "narrative_mvp_nodes.json", narrative_mvp_nodes)
         write_json(DATA_DIR / "performance_tracks.json", performance_tracks)
         for relative_path, payload in raw_documents.items():
@@ -453,6 +472,393 @@ def validate_story_ref(errors: list[str], label: str, index: dict[str, Any], val
         return
     if value not in index:
         errors.append(f"{label} references missing id: {value}")
+
+
+def build_strategic_map(story_battles: dict[str, Any], battle_scene_manifest: dict[str, Any]) -> dict[str, Any]:
+    encounter_index = story_battles.get("indexes", {}).get("story_encounters_by_id", {})
+    if not isinstance(encounter_index, dict):
+        encounter_index = {}
+    template_index = story_battles.get("indexes", {}).get("fighter_templates_by_id", {})
+    if not isinstance(template_index, dict):
+        template_index = {}
+    deck_index = story_battles.get("indexes", {}).get("story_deck_sets_by_id", {})
+    if not isinstance(deck_index, dict):
+        deck_index = {}
+    node_pool = build_strategic_map_node_pool(encounter_index, battle_scene_manifest)
+    generation_rules = build_strategic_map_generation_rules()
+    final_boss_rules = build_strategic_map_final_boss_rules(encounter_index, battle_scene_manifest)
+    enemy_martial_stats = build_enemy_martial_stats()
+    combat_enemy_pools = build_combat_enemy_pools(template_index, deck_index)
+    combat_balance_targets = build_combat_balance_targets(combat_enemy_pools)
+    validate_strategic_map_generation(node_pool, generation_rules)
+    validate_combat_enemy_pool_coverage(node_pool, enemy_martial_stats, combat_enemy_pools)
+    return {
+        "schema_version": 1,
+        "node_types": sorted(STRATEGIC_MAP_NODE_TYPES),
+        "node_pool": node_pool,
+        "generation_rules": generation_rules,
+        "final_boss_rules": final_boss_rules,
+        "enemy_martial_stats": enemy_martial_stats,
+        "combat_enemy_pools": combat_enemy_pools,
+        "combat_balance_targets": combat_balance_targets,
+    }
+
+
+def build_strategic_map_node_pool(encounter_index: dict[str, Any], battle_scene_manifest: dict[str, Any]) -> list[dict[str, Any]]:
+    rows = read_table("map_node_pool")
+    result: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    errors: list[str] = []
+    for row in rows:
+        node_id = required(row, "node_id", "map_node_pool")
+        if node_id in seen:
+            errors.append(f"map_node_pool duplicate node_id: {node_id}")
+            continue
+        seen.add(node_id)
+        node_type = required(row, "node_type", f"map node {node_id}")
+        if node_type not in STRATEGIC_MAP_NODE_TYPES:
+            errors.append(f"map node {node_id} has invalid node_type: {node_type}")
+        effects = parse_json_field(row.get("effects_json", "{}") or "{}")
+        if not isinstance(effects, dict):
+            errors.append(f"map node {node_id}.effects_json must be an object")
+            effects = {}
+        for key in effects.keys():
+            if str(key) not in STRATEGIC_MAP_EFFECT_FIELDS:
+                errors.append(f"map node {node_id}.effects_json has unsupported effect: {key}")
+        weight = int(required(row, "weight", f"map node {node_id}"))
+        max_per_run = int(required(row, "max_per_run", f"map node {node_id}"))
+        if weight <= 0:
+            errors.append(f"map node {node_id}.weight must be > 0")
+        if max_per_run < 1:
+            errors.append(f"map node {node_id}.max_per_run must be >= 1")
+        encounter_id = row.get("encounter_id", "").strip()
+        battle_id = row.get("battle_id", "").strip()
+        combat_pool_id = row.get("combat_pool_id", "").strip()
+        recommended_martial_min = int(row.get("recommended_martial_min", "0") or 0)
+        recommended_martial_max = int(row.get("recommended_martial_max", "0") or 0)
+        enemy_martial_level = int(row.get("enemy_martial_level", "0") or 0)
+        if node_type in {"combat_common", "combat_elite"}:
+            validate_story_ref(errors, f"map node {node_id}.encounter_id", encounter_index, encounter_id)
+            validate_story_ref(errors, f"map node {node_id}.battle_id", battle_scene_manifest, battle_id)
+            if combat_pool_id == "":
+                errors.append(f"map node {node_id}.combat_pool_id is required for combat nodes")
+            if recommended_martial_min < 1:
+                errors.append(f"map node {node_id}.recommended_martial_min must be >= 1")
+            if recommended_martial_max < recommended_martial_min:
+                errors.append(f"map node {node_id}.recommended_martial_max must be >= recommended_martial_min")
+            if enemy_martial_level < 1:
+                errors.append(f"map node {node_id}.enemy_martial_level must be >= 1")
+        elif encounter_id != "" or battle_id != "":
+            if encounter_id != "":
+                validate_story_ref(errors, f"map node {node_id}.encounter_id", encounter_index, encounter_id)
+            if battle_id != "":
+                validate_story_ref(errors, f"map node {node_id}.battle_id", battle_scene_manifest, battle_id)
+        visual_path = row.get("visual_path", "").strip()
+        validate_runtime_asset_path(visual_path, f"map node {node_id}.visual_path")
+        result.append({
+            "node_id": node_id,
+            "title": required(row, "title", f"map node {node_id}"),
+            "node_type": node_type,
+            "region_min": int(required(row, "region_min", f"map node {node_id}")),
+            "region_max": int(required(row, "region_max", f"map node {node_id}")),
+            "primary_line": row.get("primary_line", "").strip(),
+            "secondary_line": row.get("secondary_line", "").strip(),
+            "min_military_merit": int(row.get("min_military_merit", "0") or 0),
+            "max_military_merit": int(row["max_military_merit"]) if row.get("max_military_merit", "").strip() != "" else -1,
+            "min_case_clues": int(row.get("min_case_clues", "0") or 0),
+            "min_clean_reputation": int(row.get("min_clean_reputation", "0") or 0),
+            "max_clean_reputation": int(row["max_clean_reputation"]) if row.get("max_clean_reputation", "").strip() != "" else -1,
+            "min_martial_level": int(row.get("min_martial_level", "1") or 1),
+            "weight": weight,
+            "max_per_run": max_per_run,
+            "can_repeat": parse_bool(row.get("can_repeat", "false")),
+            "unique_group": row.get("unique_group", "").strip(),
+            "encounter_id": encounter_id,
+            "battle_id": battle_id,
+            "combat_pool_id": combat_pool_id,
+            "recommended_martial_min": recommended_martial_min,
+            "recommended_martial_max": recommended_martial_max,
+            "enemy_martial_level": enemy_martial_level,
+            "visual_path": visual_path,
+            "preview_text": row.get("preview_text", "").strip(),
+            "result_text": row.get("result_text", "").strip(),
+            "effects": effects,
+            "tags": parse_str_list(row.get("tags", "")),
+        })
+    if errors:
+        joined = "\n  - ".join(errors)
+        raise ValueError(f"Strategic map node validation failed:\n  - {joined}")
+    return result
+
+
+def build_strategic_map_generation_rules() -> list[dict[str, Any]]:
+    result: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    errors: list[str] = []
+    for row in read_table("map_generation_rules"):
+        region_id = required(row, "region_id", "map_generation_rules")
+        if region_id in seen:
+            errors.append(f"map_generation_rules duplicate region_id: {region_id}")
+            continue
+        seen.add(region_id)
+        layer_count = int(required(row, "layer_count", f"map generation {region_id}"))
+        choices_per_layer = int(required(row, "choices_per_layer", f"map generation {region_id}"))
+        if layer_count < 1:
+            errors.append(f"map generation {region_id}.layer_count must be >= 1")
+        if choices_per_layer < 2:
+            errors.append(f"map generation {region_id}.choices_per_layer must be >= 2")
+        result.append({
+            "region_id": region_id,
+            "region_title": required(row, "region_title", f"map generation {region_id}"),
+            "layer_count": layer_count,
+            "choices_per_layer": choices_per_layer,
+            "common_combat_min": int(row.get("common_combat_min", "0") or 0),
+            "elite_combat_min": int(row.get("elite_combat_min", "0") or 0),
+            "military_min": int(row.get("military_min", "0") or 0),
+            "case_min": int(row.get("case_min", "0") or 0),
+            "reputation_min": int(row.get("reputation_min", "0") or 0),
+            "rest_max": int(row.get("rest_max", "0") or 0),
+            "mandatory_tags": parse_str_list(row.get("mandatory_tags", "")),
+            "forbidden_repeat_tags": parse_str_list(row.get("forbidden_repeat_tags", "")),
+        })
+    if errors:
+        joined = "\n  - ".join(errors)
+        raise ValueError(f"Strategic map generation validation failed:\n  - {joined}")
+    return result
+
+
+def build_strategic_map_final_boss_rules(encounter_index: dict[str, Any], battle_scene_manifest: dict[str, Any]) -> list[dict[str, Any]]:
+    result: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    errors: list[str] = []
+    for row in read_table("final_boss_rules"):
+        boss_variant_id = required(row, "boss_variant_id", "final_boss_rules")
+        if boss_variant_id in seen:
+            errors.append(f"final_boss_rules duplicate boss_variant_id: {boss_variant_id}")
+            continue
+        seen.add(boss_variant_id)
+        encounter_id = required(row, "encounter_id", f"final boss {boss_variant_id}")
+        battle_id = required(row, "battle_id", f"final boss {boss_variant_id}")
+        validate_story_ref(errors, f"final boss {boss_variant_id}.encounter_id", encounter_index, encounter_id)
+        validate_story_ref(errors, f"final boss {boss_variant_id}.battle_id", battle_scene_manifest, battle_id)
+        modifiers = parse_json_field(row.get("battle_modifiers_json", "{}") or "{}")
+        if not isinstance(modifiers, dict):
+            errors.append(f"final boss {boss_variant_id}.battle_modifiers_json must be an object")
+            modifiers = {}
+        result.append({
+            "boss_variant_id": boss_variant_id,
+            "title": required(row, "title", f"final boss {boss_variant_id}"),
+            "priority": int(required(row, "priority", f"final boss {boss_variant_id}")),
+            "required_case_clues": int(row.get("required_case_clues", "0") or 0),
+            "required_military_merit": int(row.get("required_military_merit", "0") or 0),
+            "required_clean_reputation": int(row.get("required_clean_reputation", "0") or 0),
+            "required_martial_level": int(row.get("required_martial_level", "1") or 1),
+            "battle_id": battle_id,
+            "encounter_id": encounter_id,
+            "intro_text": row.get("intro_text", "").strip(),
+            "ending_flag": row.get("ending_flag", "").strip(),
+            "battle_modifiers": modifiers,
+        })
+    if errors:
+        joined = "\n  - ".join(errors)
+        raise ValueError(f"Strategic final boss validation failed:\n  - {joined}")
+    return sorted(result, key=lambda item: int(item.get("priority", 0)), reverse=True)
+
+
+def build_enemy_martial_stats() -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    seen_levels: set[int] = set()
+    errors: list[str] = []
+    for row in read_table("enemy_martial_stats"):
+        level = int(required(row, "martial_level", "enemy_martial_stats"))
+        if level in seen_levels:
+            errors.append(f"enemy_martial_stats duplicate martial_level: {level}")
+            continue
+        seen_levels.add(level)
+        max_hp = int(required(row, "max_hp", f"enemy martial {level}"))
+        max_momentum = int(required(row, "max_momentum", f"enemy martial {level}"))
+        starting_momentum = int(required(row, "starting_momentum", f"enemy martial {level}"))
+        qinggong = int(required(row, "qinggong", f"enemy martial {level}"))
+        if level < 1:
+            errors.append(f"enemy martial level must be >= 1: {level}")
+        if max_hp < 1:
+            errors.append(f"enemy martial {level}.max_hp must be >= 1")
+        if max_momentum < 1:
+            errors.append(f"enemy martial {level}.max_momentum must be >= 1")
+        if starting_momentum < 0 or starting_momentum > max_momentum:
+            errors.append(f"enemy martial {level}.starting_momentum must be between 0 and max_momentum")
+        if qinggong < 1:
+            errors.append(f"enemy martial {level}.qinggong must be >= 1")
+        result[str(level)] = {
+            "martial_level": level,
+            "display_name": required(row, "display_name", f"enemy martial {level}"),
+            "max_hp": max_hp,
+            "max_momentum": max_momentum,
+            "starting_momentum": starting_momentum,
+            "qinggong": qinggong,
+            "notes": row.get("notes", "").strip(),
+        }
+    if errors:
+        joined = "\n  - ".join(errors)
+        raise ValueError(f"Enemy martial stat validation failed:\n  - {joined}")
+    return result
+
+
+def build_combat_enemy_pools(template_index: dict[str, Any], deck_index: dict[str, Any]) -> dict[str, Any]:
+    pools: dict[str, list[dict[str, Any]]] = {}
+    seen: set[str] = set()
+    errors: list[str] = []
+    for row in read_table("combat_enemy_pools"):
+        entry_id = required(row, "pool_entry_id", "combat_enemy_pools")
+        if entry_id in seen:
+            errors.append(f"combat_enemy_pools duplicate pool_entry_id: {entry_id}")
+            continue
+        seen.add(entry_id)
+        pool_id = required(row, "combat_pool_id", f"combat enemy pool {entry_id}")
+        template_id = required(row, "opponent_template_id", f"combat enemy pool {entry_id}")
+        deck_id = required(row, "opponent_deck_id", f"combat enemy pool {entry_id}")
+        validate_story_ref(errors, f"combat enemy pool {entry_id}.opponent_template_id", template_index, template_id)
+        validate_story_ref(errors, f"combat enemy pool {entry_id}.opponent_deck_id", deck_index, deck_id)
+        deck = deck_index.get(deck_id, {})
+        if deck and str(deck.get("fighter_template_id", "")) != template_id:
+            errors.append(f"combat enemy pool {entry_id}.opponent_deck_id template differs from opponent_template_id")
+        martial_min = int(required(row, "martial_min", f"combat enemy pool {entry_id}"))
+        martial_max = int(required(row, "martial_max", f"combat enemy pool {entry_id}"))
+        weight = int(required(row, "weight", f"combat enemy pool {entry_id}"))
+        if martial_min < 1:
+            errors.append(f"combat enemy pool {entry_id}.martial_min must be >= 1")
+        if martial_max < martial_min:
+            errors.append(f"combat enemy pool {entry_id}.martial_max must be >= martial_min")
+        if weight <= 0:
+            errors.append(f"combat enemy pool {entry_id}.weight must be > 0")
+        pools.setdefault(pool_id, []).append({
+            "pool_entry_id": entry_id,
+            "combat_pool_id": pool_id,
+            "display_name": required(row, "display_name", f"combat enemy pool {entry_id}"),
+            "enemy_family": required(row, "enemy_family", f"combat enemy pool {entry_id}"),
+            "opponent_template_id": template_id,
+            "opponent_deck_id": deck_id,
+            "martial_min": martial_min,
+            "martial_max": martial_max,
+            "weight": weight,
+            "hp_bonus": int(row.get("hp_bonus", "0") or 0),
+            "max_momentum_bonus": int(row.get("max_momentum_bonus", "0") or 0),
+            "starting_momentum_bonus": int(row.get("starting_momentum_bonus", "0") or 0),
+            "qinggong_bonus": int(row.get("qinggong_bonus", "0") or 0),
+            "notes": row.get("notes", "").strip(),
+        })
+    if errors:
+        joined = "\n  - ".join(errors)
+        raise ValueError(f"Combat enemy pool validation failed:\n  - {joined}")
+    return pools
+
+
+def validate_combat_enemy_pool_coverage(node_pool: list[dict[str, Any]], enemy_martial_stats: dict[str, Any], combat_enemy_pools: dict[str, Any]) -> None:
+    errors: list[str] = []
+    for node in node_pool:
+        if not str(node.get("node_type", "")).startswith("combat_"):
+            continue
+        pool_id = str(node.get("combat_pool_id", ""))
+        enemy_martial = int(node.get("enemy_martial_level", 0))
+        if str(enemy_martial) not in enemy_martial_stats:
+            errors.append(f"map node {node.get('node_id')} enemy_martial_level has no enemy_martial_stats row: {enemy_martial}")
+            continue
+        entries = combat_enemy_pools.get(pool_id, [])
+        if not entries:
+            errors.append(f"map node {node.get('node_id')} combat_pool_id has no combat_enemy_pools rows: {pool_id}")
+            continue
+        if not any(int(entry.get("martial_min", 0)) <= enemy_martial <= int(entry.get("martial_max", 0)) for entry in entries):
+            errors.append(f"map node {node.get('node_id')} pool {pool_id} has no entry for enemy martial {enemy_martial}")
+    if errors:
+        joined = "\n  - ".join(errors)
+        raise ValueError(f"Combat enemy pool coverage failed:\n  - {joined}")
+
+
+def build_combat_balance_targets(combat_enemy_pools: dict[str, Any]) -> dict[str, Any]:
+    targets: dict[str, list[dict[str, Any]]] = {}
+    seen: set[tuple[str, str]] = set()
+    errors: list[str] = []
+    for row in read_table("combat_balance_targets"):
+        pool_id = required(row, "combat_pool_id", "combat_balance_targets")
+        role = required(row, "difficulty_role", f"combat balance target {pool_id}")
+        key = (pool_id, role)
+        if key in seen:
+            errors.append(f"combat_balance_targets duplicate pool/role: {pool_id}/{role}")
+            continue
+        seen.add(key)
+        if pool_id not in combat_enemy_pools:
+            errors.append(f"combat_balance_targets references missing combat_pool_id: {pool_id}")
+        delta_min = int(required(row, "player_martial_delta_min", f"combat balance target {pool_id}/{role}"))
+        delta_max = int(required(row, "player_martial_delta_max", f"combat balance target {pool_id}/{role}"))
+        win_min = float(required(row, "target_win_rate_min", f"combat balance target {pool_id}/{role}"))
+        win_max = float(required(row, "target_win_rate_max", f"combat balance target {pool_id}/{role}"))
+        hp_min = float(required(row, "target_avg_player_hp_remaining_min", f"combat balance target {pool_id}/{role}"))
+        hp_max = float(required(row, "target_avg_player_hp_remaining_max", f"combat balance target {pool_id}/{role}"))
+        turns_min = float(required(row, "target_turns_min", f"combat balance target {pool_id}/{role}"))
+        turns_max = float(required(row, "target_turns_max", f"combat balance target {pool_id}/{role}"))
+        if delta_max < delta_min:
+            errors.append(f"combat_balance_targets {pool_id}/{role} delta max must be >= min")
+        for label, low, high in [
+            ("target_win_rate", win_min, win_max),
+            ("target_avg_player_hp_remaining", hp_min, hp_max),
+            ("target_turns", turns_min, turns_max),
+        ]:
+            if high < low:
+                errors.append(f"combat_balance_targets {pool_id}/{role} {label} max must be >= min")
+        for label, value in [
+            ("target_win_rate_min", win_min),
+            ("target_win_rate_max", win_max),
+            ("target_avg_player_hp_remaining_min", hp_min),
+            ("target_avg_player_hp_remaining_max", hp_max),
+        ]:
+            if value < 0.0 or value > 1.0:
+                errors.append(f"combat_balance_targets {pool_id}/{role} {label} must be 0..1")
+        targets.setdefault(pool_id, []).append({
+            "combat_pool_id": pool_id,
+            "difficulty_role": role,
+            "player_martial_delta_min": delta_min,
+            "player_martial_delta_max": delta_max,
+            "target_win_rate_min": win_min,
+            "target_win_rate_max": win_max,
+            "target_avg_player_hp_remaining_min": hp_min,
+            "target_avg_player_hp_remaining_max": hp_max,
+            "target_turns_min": turns_min,
+            "target_turns_max": turns_max,
+            "notes": row.get("notes", "").strip(),
+        })
+    if errors:
+        joined = "\n  - ".join(errors)
+        raise ValueError(f"Combat balance target validation failed:\n  - {joined}")
+    return targets
+
+
+def validate_strategic_map_generation(node_pool: list[dict[str, Any]], generation_rules: list[dict[str, Any]]) -> None:
+    errors: list[str] = []
+    for rule in generation_rules:
+        region_label = str(rule.get("region_id", "unknown"))
+        region_index = int(region_label.split("_")[-1]) if region_label.split("_")[-1].isdigit() else 0
+        eligible = [node for node in node_pool if int(node.get("region_min", 0)) <= region_index <= int(node.get("region_max", 0))]
+        if len(eligible) < int(rule.get("choices_per_layer", 0)):
+            errors.append(f"map generation {region_label} does not have enough eligible nodes")
+        for tag in rule.get("mandatory_tags", []):
+            if not any(tag in node.get("tags", []) for node in eligible):
+                errors.append(f"map generation {region_label} mandatory tag has no eligible node: {tag}")
+        checks = [
+            ("common_combat_min", "combat_common"),
+            ("elite_combat_min", "combat_elite"),
+            ("military_min", "military"),
+            ("case_min", "case"),
+            ("reputation_min", "reputation"),
+        ]
+        for field, node_type in checks:
+            required_count = int(rule.get(field, 0))
+            if required_count > 0:
+                available = [node for node in eligible if node.get("node_type") == node_type]
+                if len(available) < required_count:
+                    errors.append(f"map generation {region_label} needs {required_count} {node_type} nodes, has {len(available)}")
+    if errors:
+        joined = "\n  - ".join(errors)
+        raise ValueError(f"Strategic map generation validation failed:\n  - {joined}")
 
 
 def build_narrative_mvp_node_status() -> tuple[list[str], dict[str, Any]]:

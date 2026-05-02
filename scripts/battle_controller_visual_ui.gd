@@ -14,6 +14,7 @@ const WebRuntimeFlags = preload("res://scripts/web_runtime_flags.gd")
 const WEB_SMOKE_BATTLE_FLAG := "smoke_battle"
 const VISUAL_POLL_REFRESH_INTERVAL := 0.12
 const BUTTON_STYLE_META := &"visual_button_style_applied"
+const MOMENTUM_DOT_ANIMATING_META := &"momentum_dot_animation_busy"
 
 var _visual_poll_refresh_elapsed := 0.0
 var _fx_pool := BattleFxPool.new()
@@ -25,7 +26,7 @@ var _enemy_intent_bubble_signature := ""
 var _range_trapezoid_pool: Array[Dictionary] = []
 var _hand_buttons_signature := ""
 var _node_buttons_signature := ""
-var _overlay_action_buttons: Array[Button] = []
+var _overlay_action_buttons: Array = []
 var _player_foot_grid_highlight: PanelContainer
 var _enemy_foot_grid_highlight: PanelContainer
 
@@ -75,8 +76,13 @@ func _show_node_buttons() -> void:
 func _show_overlay(title: String, body: String, actions: Array) -> void:
 	if overlay_title == null or overlay_body == null or overlay_actions == null:
 		return
+	_clear_invalid_overlay_action_buttons()
+	for child in overlay_actions.get_children():
+		if not (child is Button) or not (child in _overlay_action_buttons):
+			child.queue_free()
 	overlay_title.text = title
 	overlay_body.text = body
+	overlay_body.visible = true
 	for i in range(actions.size()):
 		var action: Dictionary = actions[i]
 		var button := _overlay_action_button(i)
@@ -88,9 +94,10 @@ func _show_overlay(title: String, body: String, actions: Array) -> void:
 		button.disabled = false
 		button.visible = true
 	for i in range(actions.size(), _overlay_action_buttons.size()):
-		var button := _overlay_action_buttons[i]
+		var button = _overlay_action_buttons[i]
 		_disconnect_button_pressed(button)
-		button.visible = false
+		if is_instance_valid(button) and button is Button:
+			button.visible = false
 	if overlay_scrim != null:
 		overlay_scrim.visible = true
 		overlay_scrim.move_to_front()
@@ -105,9 +112,25 @@ func _overlay_action_button(index: int) -> Button:
 		button.visible = false
 		overlay_actions.add_child(button)
 		_overlay_action_buttons.append(button)
-	return _overlay_action_buttons[index]
+	var existing = _overlay_action_buttons[index]
+	if not is_instance_valid(existing) or not (existing is Button):
+		var replacement := Button.new()
+		replacement.visible = false
+		overlay_actions.add_child(replacement)
+		_overlay_action_buttons[index] = replacement
+		return replacement
+	if existing.get_parent() == null:
+		overlay_actions.add_child(existing)
+	return existing
 
-func _disconnect_button_pressed(button: Button) -> void:
+func _clear_invalid_overlay_action_buttons() -> void:
+	for i in range(_overlay_action_buttons.size()):
+		if not is_instance_valid(_overlay_action_buttons[i]):
+			_overlay_action_buttons[i] = null
+
+func _disconnect_button_pressed(button) -> void:
+	if not is_instance_valid(button) or not (button is Button):
+		return
 	for connection in button.pressed.get_connections():
 		var connection_data: Dictionary = connection
 		if not connection_data.has("callable"):
@@ -125,7 +148,7 @@ func _apply_button_styles() -> void:
 	]
 	for group in groups:
 		for child in group:
-			if child is Button:
+			if is_instance_valid(child) and child is Button:
 				_style_plain_button_once(child)
 
 func _style_plain_button_once(button: Button) -> void:
@@ -158,6 +181,7 @@ func _reset_battle_result_visual_state() -> void:
 func _refresh_visual_ui() -> void:
 	var has_session := player != null and enemy != null
 	_set_battle_chrome_visible(has_session)
+	_set_action_buttons_visible(has_session and battle_active)
 	if not has_session:
 		BattleHudHelper.clear_text_cache()
 		_stage_grid_signature = ""
@@ -182,6 +206,12 @@ func _refresh_visual_ui() -> void:
 	_refresh_log_strip()
 	_refresh_hand_buttons()
 	_apply_button_styles()
+
+func _set_action_buttons_visible(visible: bool) -> void:
+	if reset_pick_button != null:
+		reset_pick_button.visible = visible
+	if confirm_button != null:
+		confirm_button.visible = visible
 
 func _set_battle_chrome_visible(visible: bool) -> void:
 	if top_hud != null:
@@ -283,13 +313,15 @@ func _refresh_hud_bars(force: bool = false) -> void:
 		player_hp_fill.size = Vector2(player_hp_width * clamp(float(player.hp) / max(1.0, float(player.data.max_hp)), 0.0, 1.0), player_hp_bg.size.y if player_hp_bg.size.y > 0.0 else 14.0)
 		if player_hp_value_label != null:
 			player_hp_value_label.text = "%d / %d" % [player.hp, player.data.max_hp]
-		_refresh_momentum_dots(player_momentum_dots, player.momentum, player.data.max_momentum)
+		if not bool(get_meta(MOMENTUM_DOT_ANIMATING_META, false)):
+			_refresh_momentum_dots(player_momentum_dots, player.momentum, player.data.max_momentum)
 	if enemy != null and enemy_hp_fill != null and enemy_hp_bg != null:
 		var enemy_hp_width := _hud_bar_width(enemy_hp_bg)
 		enemy_hp_fill.size = Vector2(enemy_hp_width * clamp(float(enemy.hp) / max(1.0, float(enemy.data.max_hp)), 0.0, 1.0), enemy_hp_bg.size.y if enemy_hp_bg.size.y > 0.0 else 14.0)
 		if enemy_hp_value_label != null:
 			enemy_hp_value_label.text = "%d / %d" % [enemy.hp, enemy.data.max_hp]
-		_refresh_momentum_dots(enemy_momentum_dots, enemy.momentum, enemy.data.max_momentum)
+		if not bool(get_meta(MOMENTUM_DOT_ANIMATING_META, false)):
+			_refresh_momentum_dots(enemy_momentum_dots, enemy.momentum, enemy.data.max_momentum)
 
 func _hud_bar_width(bar: Control) -> float:
 	if bar == null:

@@ -157,7 +157,7 @@ func _battle_growth_reward_for_source(source_index: int) -> Dictionary:
 		encounter_id = BOSS_ENCOUNTER_ID
 	if has_method("_formal_reward_for_encounter"):
 		return _formal_reward_for_encounter(encounter_id, str(node.get("type", "")))
-	return {"hp_gain": 2, "posture_gain": 0, "martial_gain": 1, "heal_full": true}
+	return {"hp_gain": 0, "posture_gain": 0, "martial_gain": 0, "heal_full": true}
 
 func _apply_battle_growth(source_index: int) -> void:
 	var growth := _battle_growth_reward_for_source(source_index)

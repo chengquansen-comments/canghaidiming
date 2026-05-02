@@ -12,6 +12,8 @@ const StoryBattleLoader = preload("res://scripts/story_battle_loader.gd")
 const SettlementNarrativeBattleContext = preload("res://scripts/narrative_battle_context.gd")
 const ROUND_START_BANNER_DURATION := 0.75
 const ENEMY_INTENT_REVEAL_DELAY_AFTER_ROUND_BANNER := 0.10
+const ROUND_START_MOMENTUM_RECOVERY_DELAY := 0.10
+const ROUND_START_PRESENTATION_WAIT_TIMEOUT := 8.0
 const REACTIVE_PRE_MOVE_STEP_DURATION := 0.26
 const REACTIVE_PRE_MOVE_STEP_PAUSE := 0.10
 
@@ -27,6 +29,9 @@ var _enemy_intent_reveal_allowed := true
 var _story_encounters: Array[Dictionary] = []
 var _pending_story_battle: Dictionary = {}
 var _story_validation_report: Dictionary = {}
+var _round_start_player_momentum_gain := 0
+var _round_start_enemy_momentum_gain := 0
+var _round_start_should_recover_momentum := false
 
 
 func _ready() -> void:
@@ -172,6 +177,7 @@ func _apply_selected_story_battle_to_current_battle() -> void:
 		return
 	player = Fighter.new(player_data)
 	player.set_session_realm(player_data.starting_realm)
+	_prepare_player_battle_deck()
 	player.reset_for_battle(HAND_SIZE)
 	enemy = Fighter.new(opponent_data)
 	enemy.set_session_realm(opponent_data.starting_realm)
@@ -229,11 +235,9 @@ func _begin_round() -> void:
 	draft_player_intent = null
 	_reset_player_stance_draft()
 	state_machine.update_distance_from_positions(player, enemy)
-	if state_machine.round_index > 1:
-		var player_gain := player.recover_momentum(ROUND_MOMENTUM_RECOVERY)
-		var enemy_gain := enemy.recover_momentum(ROUND_MOMENTUM_RECOVERY)
-		if player_gain > 0 or enemy_gain > 0:
-			_log("[b]回合调息。[/b] 玩家 +%d 势，敌方 +%d 势。" % [player_gain, enemy_gain])
+	_round_start_player_momentum_gain = 0
+	_round_start_enemy_momentum_gain = 0
+	_round_start_should_recover_momentum = state_machine.round_index > 1
 	if player.control_state != Fighter.CONTROL_NONE or enemy.control_state != Fighter.CONTROL_NONE or player.combo_window_active or enemy.combo_window_active:
 		_log("[b]当前势态：[/b] %s" % state_machine.pressure_state_text(player, enemy))
 	declaration_order = state_machine.get_declaration_order(player, enemy)
@@ -248,12 +252,20 @@ func _begin_round() -> void:
 func _begin_round_after_round_banner(token: int, round_value: int) -> void:
 	if token != _round_start_sequence_token or not battle_active:
 		return
+	var busy_wait_elapsed := 0.0
 	while _presentation_busy():
 		await get_tree().create_timer(0.05).timeout
+		busy_wait_elapsed += 0.05
 		if token != _round_start_sequence_token or not battle_active:
 			return
+		if busy_wait_elapsed >= ROUND_START_PRESENTATION_WAIT_TIMEOUT:
+			_finish_presentation_exchange("round-start-wait-timeout")
+			break
 	_clear_actor_action_glows()
 	await _play_round_start_banner(round_value)
+	if token != _round_start_sequence_token or not battle_active:
+		return
+	await _play_round_start_momentum_gain_presentation()
 	if token != _round_start_sequence_token or not battle_active:
 		return
 	if ENEMY_INTENT_REVEAL_DELAY_AFTER_ROUND_BANNER > 0.0:
@@ -282,6 +294,28 @@ func _play_round_start_banner(round_value: int) -> void:
 	tween.tween_property(combat_banner, "modulate", Color(1, 1, 1, 0), 0.10)
 	await tween.finished
 	combat_banner.visible = false
+
+
+func _play_round_start_momentum_gain_presentation() -> void:
+	if not _round_start_should_recover_momentum:
+		return
+	_round_start_should_recover_momentum = false
+	if ROUND_START_MOMENTUM_RECOVERY_DELAY > 0.0:
+		await get_tree().create_timer(ROUND_START_MOMENTUM_RECOVERY_DELAY).timeout
+	var player_before := player.momentum if player != null else 0
+	var enemy_before := enemy.momentum if enemy != null else 0
+	_round_start_player_momentum_gain = player.recover_momentum(ROUND_MOMENTUM_RECOVERY) if player != null else 0
+	_round_start_enemy_momentum_gain = enemy.recover_momentum(ROUND_MOMENTUM_RECOVERY) if enemy != null else 0
+	if _round_start_player_momentum_gain > 0 or _round_start_enemy_momentum_gain > 0:
+		_log("[b]回合调息。[/b] 玩家 +%d 势，敌方 +%d 势。" % [_round_start_player_momentum_gain, _round_start_enemy_momentum_gain])
+	if _round_start_player_momentum_gain <= 0 and _round_start_enemy_momentum_gain <= 0:
+		return
+	if _round_start_player_momentum_gain > 0 and player != null:
+		await _animate_momentum_dots_between(true, player_before, player.momentum, true)
+	if _round_start_enemy_momentum_gain > 0 and enemy != null:
+		await _animate_momentum_dots_between(false, enemy_before, enemy.momentum, true)
+	_round_start_player_momentum_gain = 0
+	_round_start_enemy_momentum_gain = 0
 
 
 func _try_apply_reactive_enemy_pre_move() -> void:

@@ -209,6 +209,35 @@ tables/battle_scene_manifest.tsv
 - `tables/enemy_manifest_*.tsv` / `data/enemy_manifest.json` 是旧剧情战斗、AI 和 debug 兼容层，不再是正式剧情战斗主源。
 - 剧情武器意象要和 StoryBattle 卡组一致。例如枪手写“枪锋”，刀客写“刀光”。
 
+## 海疆大势图随机战斗
+
+随机节点源表：
+
+```text
+tables/map_node_pool.tsv
+tables/map_generation_rules.tsv
+tables/final_boss_rules.tsv
+tables/combat_enemy_pools.tsv
+tables/enemy_martial_stats.tsv
+```
+
+随机战斗节点不直接绑定某一个固定敌人，而是绑定“一类战斗 / 一类敌人”。节点字段：
+
+| 字段 | 规则 |
+|---|---|
+| `combat_pool_id` | 敌类池，例如 `spear_patrol`、`coastal_veteran`、`military_elite`、`old_case_elite` |
+| `recommended_martial_min` | 推荐玩家武境下限 |
+| `recommended_martial_max` | 推荐玩家武境上限 |
+| `enemy_martial_level` | 该敌类在本节点使用的敌方武境，不要求等于玩家武境 |
+
+运行原则：
+
+- 大势图刷新当前层随机战斗候选时，根据玩家当前武境筛选 `recommended_martial_min` 到 `recommended_martial_max` 内的节点。
+- 进入随机战斗时，我方数值使用当前玩家武境推导出的 HP、轻功、势上限。
+- 敌方先根据 `combat_pool_id` 从 `tables/combat_enemy_pools.tsv` 抽取具体敌人模板和牌组，再使用节点携带的 `enemy_martial_level` 到 `tables/enemy_martial_stats.tsv` 套用敌方 HP、轻功、势上限和起始势。
+- 敌方武境可以低于、等于或高于玩家武境。
+- 剧情线战斗仍保留 `override_player_profile` 口径；需要剧情指定我方数值时，由剧情战斗请求覆写玩家配置。
+
 ## 结局
 
 结尾节点：
@@ -234,7 +263,16 @@ silence
 - 已解锁结局与未解锁结局列表
 - 确认按钮
 
-结局文案目前在 `scripts/narrative_demo_canonical_controller.gd` 中维护。若后续要彻底表驱动，可新增 `tables/narrative_mvp_endings.tsv`，再由 `compile_tables.py` 编译进入 `data/narrative_mvp_nodes.json`。
+结局文案设计原则：
+
+- 真结局不追加反问。真结局代表本局已经完成“军功让你进堂，旧案让你说话，清望让别人敢信”的完整闭环。
+- 非真结局必须留下未竟感，文案末尾追加反问。
+- 旧案类非真结局追加：`然而这就是事情的真相吗？`
+- 非旧案类非真结局追加：`然而这就是你想要的吗？`
+- 当前旧案类非真结局包括：`堂审翻案`、`清望昭雪`、`私查真相`、`孤证难鸣`。
+- 当前非旧案类非真结局包括：`封海得众`、`军功升迁`、`武境破围`、`表层平倭`。
+
+第一幕旧结局文案目前在 `scripts/narrative_demo_canonical_controller.gd` 中维护；海疆大势图 9 结局文案目前在 `scripts/narrative_demo_ui_focus_tuned_controller.gd` 中维护。若后续要彻底表驱动，可新增结局 TSV，再由 `compile_tables.py` 编译进入运行时数据。
 
 ## AI 节点生成协议
 

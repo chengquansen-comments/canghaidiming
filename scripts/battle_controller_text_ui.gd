@@ -326,7 +326,7 @@ func _fighter_status_text(fighter: Fighter) -> String:
 	if fighter == null:
 		return "未初始化。"
 	var session_deck_size := fighter.get_session_deck().size()
-	return "[b]%s[/b]｜%s\n生命：%d/%d\n势：%d/%d\n护值：%d\n状态：%s\n连招窗口：%s\n当前武境：%d\n会话武境：%d\n优势距离：%s\n会话牌库：%d\n抽牌堆：%d｜手牌：%d｜弃牌堆：%d" % [fighter.data.display_name, fighter.data.weapon_name, fighter.hp, fighter.data.max_hp, fighter.momentum, fighter.data.max_momentum, fighter.guard_points, fighter.control_label(), fighter.combo_window_label(), fighter.realm, fighter.session_realm, fighter.preferred_text(), session_deck_size, fighter.draw_pile.size(), fighter.hand.size(), fighter.discard_pile.size()]
+	return "[b]%s[/b]｜%s\n生命：%d/%d\n势：%d/%d\n护值：%d\n状态：%s\n连招窗口：%s\n当前武境：%d\n会话武境：%d\n优势距离：%s\n长期牌库：%d｜入战牌组：%d\n抽牌堆：%d｜手牌：%d｜弃牌堆：%d" % [fighter.data.display_name, fighter.data.weapon_name, fighter.hp, fighter.data.max_hp, fighter.momentum, fighter.data.max_momentum, fighter.guard_points, fighter.control_label(), fighter.combo_window_label(), fighter.realm, fighter.session_realm, fighter.preferred_text(), session_deck_size, fighter.get_battle_deck_size(), fighter.draw_pile.size(), fighter.hand.size(), fighter.discard_pile.size()]
 
 func _intent_panel_text(intent: IntentData, viewer: Fighter, is_player: bool) -> String:
 	var owner := "玩家" if is_player else "敌方"
@@ -367,7 +367,7 @@ func _status_text() -> String:
 
 func _preview_text() -> String:
 	if not battle_active:
-		return "战前可查看牌库、合成藏招，并检查职业连招是否解锁。"
+		return "战前通过【牌组】管理牌库与 4 个固定牌组；调试成长动作在 debug 框里。"
 	var player_preview_intent := draft_player_intent
 	if player_preview_intent == null:
 		player_preview_intent = IntentData.from_card(player, _preview_wait_card())

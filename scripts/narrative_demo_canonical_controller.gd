@@ -228,7 +228,7 @@ func _battle_growth_reward_for_source(source_index: int) -> Dictionary:
 	var encounter_id := str(node.get("combat", ""))
 	if has_method("_formal_reward_for_encounter"):
 		return _formal_reward_for_encounter(encounter_id, str(node.get("type", "")))
-	return {"hp_gain": 2, "posture_gain": 0, "martial_gain": 1, "heal_full": true}
+	return {"hp_gain": 0, "posture_gain": 0, "martial_gain": 0, "heal_full": true}
 
 func _apply_battle_result_reward(source_index: int) -> void:
 	_apply_canonical_effects(_battle_reward_for_source(source_index))
@@ -430,7 +430,6 @@ func _apply_default_map_reward(target_index: int) -> void:
 			clues += 1
 		"旧物":
 			clues += 2
-			NarrativeBattleContext.apply_player_growth("relic", 0, 1, 0, false)
 		_:
 			qing_wang += 1
 

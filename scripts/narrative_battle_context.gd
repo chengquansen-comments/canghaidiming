@@ -8,6 +8,7 @@ const META_LAST_RESULT := "canghai_narrative_last_result"
 const META_RESULT_READY := "canghai_narrative_result_ready"
 const META_BATTLE_ID := "canghai_narrative_battle_id"
 const META_OVERRIDE_PLAYER_PROFILE := "canghai_narrative_override_player_profile"
+const META_BATTLE_OVERRIDES := "canghai_narrative_battle_overrides"
 const META_UI_DEBUG_VISIBLE := "canghai_ui_debug_visible"
 
 const META_PLAYER_READY := "canghai_player_ready"
@@ -20,8 +21,23 @@ const META_PLAYER_MAX_POSTURE := "canghai_player_max_posture"
 const META_PLAYER_POSTURE := "canghai_player_posture"
 const META_PLAYER_MARTIAL_LEVEL := "canghai_player_martial_level"
 const META_PLAYER_BATTLES_WON := "canghai_player_battles_won"
+const META_PLAYER_QINGGONG := "canghai_player_qinggong"
+const META_PLAYER_OWNED_CARD_IDS := "canghai_player_owned_card_ids"
+const META_PLAYER_SELECTED_LOADOUT_IDS := "canghai_player_selected_loadout_ids"
+const META_PLAYER_DECK_SLOTS := "canghai_player_deck_slots"
+const META_PLAYER_ACTIVE_DECK_INDEX := "canghai_player_active_deck_index"
 const META_NARRATIVE_STATE_READY := "canghai_narrative_state_ready"
 const META_NARRATIVE_STATE := "canghai_narrative_state"
+
+const PLAYER_INITIAL_HP := 20
+const PLAYER_INITIAL_QINGGONG := 1
+const PLAYER_INITIAL_MAX_POSTURE := 3
+const PLAYER_INITIAL_MARTIAL_LEVEL := 1
+const PLAYER_LOADOUT_SIZE := 8
+const PLAYER_DECK_SLOT_COUNT := 4
+const PLAYER_DECK_CARD_COPY_LIMIT := 2
+const PLAYER_MAX_QINGGONG := 4
+const PLAYER_MAX_POSTURE := 10
 
 static var encounter_id := ""
 static var source_node_id := ""
@@ -31,6 +47,7 @@ static var last_result := ""
 static var result_ready := false
 static var battle_id := ""
 static var override_player_profile := true
+static var battle_overrides: Dictionary = {}
 static var ui_debug_visible := false
 
 static var player_ready := false
@@ -43,6 +60,11 @@ static var player_max_posture := 0
 static var player_posture := 0
 static var player_martial_level := 0
 static var player_battles_won := 0
+static var player_qinggong := 1
+static var player_owned_card_ids: Array[String] = []
+static var player_selected_loadout_ids: Array[String] = []
+static var player_deck_slots: Array = []
+static var player_active_deck_index := 0
 static var narrative_state_ready := false
 static var narrative_state: Dictionary = {}
 
@@ -53,6 +75,7 @@ static func set_request(p_encounter_id: String, p_source_node_id: String, p_batt
 	source_scene = "res://scenes/NarrativeDemo.tscn"
 	battle_id = p_battle_id if not p_battle_id.is_empty() else _battle_id_for_encounter(p_encounter_id, p_source_node_id)
 	override_player_profile = p_override_player_profile
+	battle_overrides.clear()
 	return_after_battle = false
 	last_result = ""
 	result_ready = false
@@ -65,6 +88,8 @@ static func set_request_from_combat(combat: Dictionary, p_source_node_id: String
 		str(combat.get("battle_id", "")),
 		bool(combat.get("override_player_profile", true))
 	)
+	battle_overrides = combat.duplicate(true)
+	_write_meta()
 
 static func _battle_id_for_encounter(p_encounter_id: String, p_source_node_id: String = "") -> String:
 	var mapping: Dictionary = NarrativeEnemyManifest.get_mapping(p_encounter_id, "fallback")
@@ -87,6 +112,10 @@ static func get_battle_id() -> String:
 static func should_override_player_profile() -> bool:
 	_pull_meta()
 	return override_player_profile
+
+static func get_battle_overrides() -> Dictionary:
+	_pull_meta()
+	return battle_overrides.duplicate(true)
 
 static func is_ui_debug_visible() -> bool:
 	_pull_ui_debug_meta()
@@ -118,6 +147,7 @@ static func clear() -> void:
 	source_scene = "res://scenes/NarrativeDemo.tscn"
 	battle_id = ""
 	override_player_profile = true
+	battle_overrides.clear()
 	return_after_battle = false
 	last_result = ""
 	result_ready = false
@@ -135,6 +165,11 @@ static func clear_player_profile() -> void:
 	player_posture = 0
 	player_martial_level = 0
 	player_battles_won = 0
+	player_qinggong = PLAYER_INITIAL_QINGGONG
+	player_owned_card_ids.clear()
+	player_selected_loadout_ids.clear()
+	player_deck_slots.clear()
+	player_active_deck_index = 0
 	_clear_player_meta()
 
 static func set_narrative_state(state: Dictionary) -> void:
@@ -162,12 +197,25 @@ static func set_player_profile(profile: Dictionary) -> void:
 	player_role = str(profile.get("role", "spearman"))
 	player_career = str(profile.get("career", "长枪武官"))
 	player_weapon = str(profile.get("weapon", "长枪"))
-	player_max_hp = int(profile.get("max_hp", 36))
-	player_hp = int(profile.get("hp", player_max_hp))
-	player_max_posture = int(profile.get("max_posture", 10))
-	player_posture = int(profile.get("posture", 5))
-	player_martial_level = int(profile.get("martial_level", 1))
+	player_martial_level = max(PLAYER_INITIAL_MARTIAL_LEVEL, int(profile.get("martial_level", PLAYER_INITIAL_MARTIAL_LEVEL)))
 	player_battles_won = int(profile.get("battles_won", 0))
+	_apply_player_numbers_from_martial(true)
+	if profile.has("owned_card_ids"):
+		player_owned_card_ids = _string_array(profile.get("owned_card_ids", []))
+	else:
+		player_owned_card_ids = _default_owned_cards_for_role(player_role)
+	if profile.has("selected_loadout_ids"):
+		player_selected_loadout_ids = _string_array(profile.get("selected_loadout_ids", []))
+	elif profile.has("loadout_card_ids"):
+		player_selected_loadout_ids = _string_array(profile.get("loadout_card_ids", []))
+	else:
+		player_selected_loadout_ids = _default_loadout_for_role(player_role)
+	if profile.has("deck_slots"):
+		player_deck_slots = _deck_slots_from_variant(profile.get("deck_slots", []))
+	else:
+		player_deck_slots = _default_deck_slots_from_loadout(player_selected_loadout_ids)
+	player_active_deck_index = clampi(int(profile.get("active_deck_index", 0)), 0, PLAYER_DECK_SLOT_COUNT - 1)
+	_sanitize_player_card_state()
 	_write_player_meta()
 
 static func has_player_profile() -> bool:
@@ -177,27 +225,197 @@ static func has_player_profile() -> bool:
 static func get_player_profile() -> Dictionary:
 	_pull_meta()
 	if not has_player_profile(): return {}
-	return {"role": player_role, "career": player_career, "weapon": player_weapon, "max_hp": player_max_hp, "hp": player_hp, "max_posture": player_max_posture, "posture": player_posture, "martial_level": player_martial_level, "battles_won": player_battles_won}
+	_sanitize_player_card_state()
+	return {"role": player_role, "career": player_career, "weapon": player_weapon, "max_hp": player_max_hp, "hp": player_hp, "max_posture": player_max_posture, "posture": player_posture, "martial_level": player_martial_level, "qinggong": player_qinggong, "battles_won": player_battles_won, "owned_card_ids": player_owned_card_ids.duplicate(), "selected_loadout_ids": player_selected_loadout_ids.duplicate(), "deck_slots": player_deck_slots.duplicate(true), "active_deck_index": player_active_deck_index, "loadout_size": PLAYER_LOADOUT_SIZE}
+
+static func get_player_card_state() -> Dictionary:
+	_pull_meta()
+	_sanitize_player_card_state()
+	return {"owned_card_ids": player_owned_card_ids.duplicate(), "selected_loadout_ids": player_selected_loadout_ids.duplicate(), "deck_slots": player_deck_slots.duplicate(true), "active_deck_index": player_active_deck_index, "loadout_size": PLAYER_LOADOUT_SIZE}
+
+static func set_player_card_state(owned_card_ids: Array, selected_loadout_ids: Array = [], deck_slots: Array = [], active_deck_index: int = -1) -> void:
+	_pull_meta()
+	if not has_player_profile():
+		return
+	player_owned_card_ids = _string_array(owned_card_ids)
+	player_selected_loadout_ids = _string_array(selected_loadout_ids)
+	if not deck_slots.is_empty():
+		player_deck_slots = _deck_slots_from_variant(deck_slots)
+	elif not player_selected_loadout_ids.is_empty():
+		player_deck_slots = _default_deck_slots_from_loadout(player_selected_loadout_ids)
+	if active_deck_index >= 0:
+		player_active_deck_index = clampi(active_deck_index, 0, PLAYER_DECK_SLOT_COUNT - 1)
+	_sanitize_player_card_state()
+	_write_player_meta()
+
+static func set_player_selected_loadout(card_ids: Array) -> void:
+	_pull_meta()
+	if not has_player_profile():
+		return
+	player_selected_loadout_ids = _string_array(card_ids)
+	if player_deck_slots.is_empty():
+		player_deck_slots = _default_deck_slots_from_loadout(player_selected_loadout_ids)
+	else:
+		player_deck_slots[player_active_deck_index] = player_selected_loadout_ids.duplicate()
+	_sanitize_player_card_state()
+	_write_player_meta()
+
+static func grant_player_cards(card_ids: Array) -> void:
+	_pull_meta()
+	if not has_player_profile():
+		return
+	for card_id: String in _string_array(card_ids):
+		if not card_id.is_empty():
+			player_owned_card_ids.append(card_id)
+	_sanitize_player_card_state()
+	_write_player_meta()
 
 static func apply_player_growth(source: String, hp_gain: int = 0, posture_gain: int = 0, martial_gain: int = 0, heal_full: bool = false) -> void:
 	_pull_meta()
 	if not has_player_profile(): return
-	player_max_hp += hp_gain
-	player_max_posture += posture_gain
-	player_martial_level += martial_gain
-	if source == "battle_win": player_battles_won += 1
+	var old_level := player_martial_level
+	if source == "battle_win":
+		player_battles_won += 1
+		player_martial_level += 1
+	else:
+		player_martial_level += max(0, martial_gain)
+	_apply_player_numbers_from_martial(heal_full or source == "battle_win")
+	_grant_martial_rewards_between(old_level, player_martial_level)
+	_write_player_meta()
+
+static func _apply_player_numbers_from_martial(heal_full: bool) -> void:
+	player_martial_level = max(PLAYER_INITIAL_MARTIAL_LEVEL, player_martial_level)
+	player_max_hp = PLAYER_INITIAL_HP + max(0, player_martial_level - PLAYER_INITIAL_MARTIAL_LEVEL) * 2
+	player_qinggong = clampi(PLAYER_INITIAL_QINGGONG + int(max(0, player_martial_level - PLAYER_INITIAL_MARTIAL_LEVEL) / 3), PLAYER_INITIAL_QINGGONG, PLAYER_MAX_QINGGONG)
+	player_max_posture = clampi(PLAYER_INITIAL_MAX_POSTURE + max(0, player_martial_level - PLAYER_INITIAL_MARTIAL_LEVEL), PLAYER_INITIAL_MAX_POSTURE, PLAYER_MAX_POSTURE)
 	if heal_full:
 		player_hp = player_max_hp
 		player_posture = player_max_posture
 	else:
-		player_hp = min(player_max_hp, player_hp + max(0, hp_gain))
-		player_posture = min(player_max_posture, player_posture + max(0, posture_gain))
-	_write_player_meta()
+		player_hp = clampi(player_hp, 0, player_max_hp)
+		player_posture = clampi(player_posture, 0, player_max_posture)
+
+static func _grant_martial_rewards_between(old_level: int, new_level: int) -> void:
+	for level in range(max(PLAYER_INITIAL_MARTIAL_LEVEL, old_level) + 1, max(old_level, new_level) + 1):
+		for card_id: String in _martial_reward_cards_for_level(level):
+			if not card_id.is_empty():
+				player_owned_card_ids.append(card_id)
+	_sanitize_player_card_state()
+
+static func _martial_reward_cards_for_level(level: int) -> Array[String]:
+	var rewards: Array[String] = []
+	match player_role:
+		"blademaster":
+			match level:
+				2: rewards.append("blade_press_break")
+				3: rewards.append("blade_hook_pull")
+				4: rewards.append("blade_body_press")
+				5: rewards.append("reward_pull")
+				6: rewards.append("reward_guard")
+		_:
+			match level:
+				2: rewards.append("spear_retreat_sting")
+				3: rewards.append("spear_step_thrust")
+				4: rewards.append("reward_push")
+				5: rewards.append("reward_guard")
+				6: rewards.append("reward_pull")
+	return rewards
+
+static func _sanitize_player_card_state() -> void:
+	player_owned_card_ids = _unique_string_array(player_owned_card_ids)
+	if player_owned_card_ids.is_empty() and not player_role.is_empty():
+		player_owned_card_ids = _default_owned_cards_for_role(player_role)
+	if player_deck_slots.is_empty():
+		player_deck_slots = _default_deck_slots_from_loadout(player_selected_loadout_ids)
+	var sanitized_slots: Array = []
+	for i in range(PLAYER_DECK_SLOT_COUNT):
+		var source: Array[String] = _string_array(player_deck_slots[i]) if i < player_deck_slots.size() else []
+		sanitized_slots.append(_sanitize_deck_slot(source))
+	player_deck_slots = sanitized_slots
+	player_active_deck_index = clampi(player_active_deck_index, 0, PLAYER_DECK_SLOT_COUNT - 1)
+	player_selected_loadout_ids = (player_deck_slots[player_active_deck_index] as Array).duplicate()
+
+static func _default_owned_cards_for_role(role_id: String) -> Array[String]:
+	var cards: Array[String] = []
+	if role_id == "blademaster":
+		cards.append_array(["blade_front_cut", "blade_chase_cut", "blade_breathe", "blade_press_break"])
+	else:
+		cards.append_array(["spear_mid_thrust", "spear_line_press", "spear_focus", "spear_guard_horse"])
+	return cards
+
+static func _default_loadout_for_role(role_id: String) -> Array[String]:
+	var result: Array[String] = []
+	for card_id: String in _default_owned_cards_for_role(role_id):
+		result.append(card_id)
+		result.append(card_id)
+	return _first_card_ids(result, PLAYER_LOADOUT_SIZE)
+
+static func _default_deck_slots_from_loadout(loadout: Array[String]) -> Array:
+	var slots: Array = []
+	slots.append(_sanitize_deck_slot(loadout))
+	for _i in range(PLAYER_DECK_SLOT_COUNT - 1):
+		slots.append([])
+	return slots
+
+static func _deck_slots_from_variant(value) -> Array:
+	var slots: Array = []
+	if value is Array:
+		for slot_variant in value:
+			slots.append(_string_array(slot_variant))
+	return slots
+
+static func _sanitize_deck_slot(card_ids: Array[String]) -> Array[String]:
+	var result: Array[String] = []
+	for card_id: String in card_ids:
+		if result.size() >= PLAYER_LOADOUT_SIZE:
+			break
+		if not (card_id in player_owned_card_ids):
+			continue
+		if _card_id_count(result, card_id) >= PLAYER_DECK_CARD_COPY_LIMIT:
+			continue
+		result.append(card_id)
+	return result
+
+static func _first_card_ids(card_ids: Array[String], count: int) -> Array[String]:
+	var result: Array[String] = []
+	for card_id: String in card_ids:
+		if result.size() >= count:
+			break
+		result.append(card_id)
+	return result
+
+static func _unique_string_array(value) -> Array[String]:
+	var result: Array[String] = []
+	for item: String in _string_array(value):
+		if not (item in result):
+			result.append(item)
+	return result
+
+static func _string_array(value) -> Array[String]:
+	var result: Array[String] = []
+	if value is Array or value is PackedStringArray:
+		for item in value:
+			var text := str(item)
+			if not text.is_empty():
+				result.append(text)
+	elif value is String:
+		var text := str(value)
+		if not text.is_empty():
+			result.append(text)
+	return result
+
+static func _card_id_count(cards: Array[String], card_id: String) -> int:
+	var count := 0
+	for item: String in cards:
+		if item == card_id:
+			count += 1
+	return count
 
 static func player_profile_debug_text() -> String:
 	_pull_meta()
 	if not has_player_profile(): return "玩家数据=未初始化"
-	return "玩家数据=%s｜职业=%s｜武器=%s｜HP=%d/%d｜势=%d/%d｜武境=%d｜胜场=%d" % [player_role, player_career, player_weapon, player_hp, player_max_hp, player_posture, player_max_posture, player_martial_level, player_battles_won]
+	_sanitize_player_card_state()
+	return "玩家数据=%s｜职业=%s｜武器=%s｜HP=%d/%d｜势=%d/%d｜轻功=%d｜武境=%d｜胜场=%d｜牌库=%d｜启用牌组=%d｜入战=%d/%d" % [player_role, player_career, player_weapon, player_hp, player_max_hp, player_posture, player_max_posture, player_qinggong, player_martial_level, player_battles_won, player_owned_card_ids.size(), player_active_deck_index + 1, player_selected_loadout_ids.size(), PLAYER_LOADOUT_SIZE]
 
 static func has_request() -> bool:
 	_pull_meta()
@@ -265,6 +483,7 @@ static func _write_meta() -> void:
 	Engine.set_meta(META_RESULT_READY, result_ready)
 	Engine.set_meta(META_BATTLE_ID, battle_id)
 	Engine.set_meta(META_OVERRIDE_PLAYER_PROFILE, override_player_profile)
+	Engine.set_meta(META_BATTLE_OVERRIDES, battle_overrides.duplicate(true))
 	_write_ui_debug_meta()
 	_write_player_meta()
 	_write_narrative_state_meta()
@@ -283,6 +502,11 @@ static func _write_player_meta() -> void:
 	Engine.set_meta(META_PLAYER_POSTURE, player_posture)
 	Engine.set_meta(META_PLAYER_MARTIAL_LEVEL, player_martial_level)
 	Engine.set_meta(META_PLAYER_BATTLES_WON, player_battles_won)
+	Engine.set_meta(META_PLAYER_QINGGONG, player_qinggong)
+	Engine.set_meta(META_PLAYER_OWNED_CARD_IDS, player_owned_card_ids.duplicate())
+	Engine.set_meta(META_PLAYER_SELECTED_LOADOUT_IDS, player_selected_loadout_ids.duplicate())
+	Engine.set_meta(META_PLAYER_DECK_SLOTS, player_deck_slots.duplicate(true))
+	Engine.set_meta(META_PLAYER_ACTIVE_DECK_INDEX, player_active_deck_index)
 
 static func _write_narrative_state_meta() -> void:
 	Engine.set_meta(META_NARRATIVE_STATE_READY, narrative_state_ready)
@@ -298,6 +522,10 @@ static func _pull_meta() -> void:
 	if Engine.has_meta(META_RESULT_READY): result_ready = bool(Engine.get_meta(META_RESULT_READY))
 	if Engine.has_meta(META_BATTLE_ID): battle_id = str(Engine.get_meta(META_BATTLE_ID))
 	if Engine.has_meta(META_OVERRIDE_PLAYER_PROFILE): override_player_profile = bool(Engine.get_meta(META_OVERRIDE_PLAYER_PROFILE))
+	if Engine.has_meta(META_BATTLE_OVERRIDES):
+		var overrides_variant = Engine.get_meta(META_BATTLE_OVERRIDES)
+		if overrides_variant is Dictionary:
+			battle_overrides = (overrides_variant as Dictionary).duplicate(true)
 	if Engine.has_meta(META_PLAYER_READY): player_ready = bool(Engine.get_meta(META_PLAYER_READY))
 	if Engine.has_meta(META_PLAYER_ROLE): player_role = str(Engine.get_meta(META_PLAYER_ROLE))
 	if Engine.has_meta(META_PLAYER_CAREER): player_career = str(Engine.get_meta(META_PLAYER_CAREER))
@@ -308,6 +536,13 @@ static func _pull_meta() -> void:
 	if Engine.has_meta(META_PLAYER_POSTURE): player_posture = int(Engine.get_meta(META_PLAYER_POSTURE))
 	if Engine.has_meta(META_PLAYER_MARTIAL_LEVEL): player_martial_level = int(Engine.get_meta(META_PLAYER_MARTIAL_LEVEL))
 	if Engine.has_meta(META_PLAYER_BATTLES_WON): player_battles_won = int(Engine.get_meta(META_PLAYER_BATTLES_WON))
+	if Engine.has_meta(META_PLAYER_QINGGONG): player_qinggong = int(Engine.get_meta(META_PLAYER_QINGGONG))
+	if Engine.has_meta(META_PLAYER_OWNED_CARD_IDS): player_owned_card_ids = _string_array(Engine.get_meta(META_PLAYER_OWNED_CARD_IDS))
+	if Engine.has_meta(META_PLAYER_SELECTED_LOADOUT_IDS): player_selected_loadout_ids = _string_array(Engine.get_meta(META_PLAYER_SELECTED_LOADOUT_IDS))
+	if Engine.has_meta(META_PLAYER_DECK_SLOTS): player_deck_slots = _deck_slots_from_variant(Engine.get_meta(META_PLAYER_DECK_SLOTS))
+	if Engine.has_meta(META_PLAYER_ACTIVE_DECK_INDEX): player_active_deck_index = int(Engine.get_meta(META_PLAYER_ACTIVE_DECK_INDEX))
+	if player_ready:
+		_sanitize_player_card_state()
 	if Engine.has_meta(META_NARRATIVE_STATE_READY): narrative_state_ready = bool(Engine.get_meta(META_NARRATIVE_STATE_READY))
 	if Engine.has_meta(META_NARRATIVE_STATE):
 		var state_variant = Engine.get_meta(META_NARRATIVE_STATE)
@@ -321,11 +556,11 @@ static func _pull_ui_debug_meta() -> void:
 		_write_ui_debug_meta()
 
 static func _clear_battle_meta() -> void:
-	for key in [META_ENCOUNTER_ID, META_SOURCE_NODE_ID, META_SOURCE_SCENE, META_RETURN_AFTER_BATTLE, META_LAST_RESULT, META_RESULT_READY, META_BATTLE_ID, META_OVERRIDE_PLAYER_PROFILE]:
+	for key in [META_ENCOUNTER_ID, META_SOURCE_NODE_ID, META_SOURCE_SCENE, META_RETURN_AFTER_BATTLE, META_LAST_RESULT, META_RESULT_READY, META_BATTLE_ID, META_OVERRIDE_PLAYER_PROFILE, META_BATTLE_OVERRIDES]:
 		if Engine.has_meta(key): Engine.remove_meta(key)
 
 static func _clear_player_meta() -> void:
-	for key in [META_PLAYER_READY, META_PLAYER_ROLE, META_PLAYER_CAREER, META_PLAYER_WEAPON, META_PLAYER_MAX_HP, META_PLAYER_HP, META_PLAYER_MAX_POSTURE, META_PLAYER_POSTURE, META_PLAYER_MARTIAL_LEVEL, META_PLAYER_BATTLES_WON]:
+	for key in [META_PLAYER_READY, META_PLAYER_ROLE, META_PLAYER_CAREER, META_PLAYER_WEAPON, META_PLAYER_MAX_HP, META_PLAYER_HP, META_PLAYER_MAX_POSTURE, META_PLAYER_POSTURE, META_PLAYER_MARTIAL_LEVEL, META_PLAYER_BATTLES_WON, META_PLAYER_QINGGONG, META_PLAYER_OWNED_CARD_IDS, META_PLAYER_SELECTED_LOADOUT_IDS, META_PLAYER_DECK_SLOTS, META_PLAYER_ACTIVE_DECK_INDEX]:
 		if Engine.has_meta(key): Engine.remove_meta(key)
 
 static func _clear_narrative_state_meta() -> void:

@@ -1,7 +1,7 @@
 {
   "camp_breath": {
     "name": "整息",
-    "category": "战术",
+    "category": "守",
     "cost": 0,
     "text": "获得 2 势并抽 1 张牌。",
     "effects": [
@@ -17,7 +17,7 @@
   },
   "chain_thrust": {
     "name": "进步连环刺",
-    "category": "攻击",
+    "category": "攻",
     "cost": 3,
     "text": "距离 -1，造成 8 伤害并削敌 2 势。",
     "effects": [
@@ -34,7 +34,7 @@
   },
   "cross_slash": {
     "name": "掠地反撩",
-    "category": "攻击",
+    "category": "攻",
     "cost": 2,
     "text": "距离 -1，造成 7 伤害。若在优势距离，再削敌 2 势。",
     "effects": [
@@ -56,7 +56,7 @@
   },
   "dragon_break": {
     "name": "崩枪",
-    "category": "杀招",
+    "category": "攻",
     "cost": 4,
     "text": "造成 11 伤害并削敌 3 势。若目标崩塌，则耗势 -2 且追加 6 伤害。",
     "effects": [
@@ -72,7 +72,7 @@
   },
   "dragonslash": {
     "name": "拖刀杀",
-    "category": "杀招",
+    "category": "攻",
     "cost": 4,
     "text": "造成 10 伤害。若目标崩塌，本牌耗势变为 0 且必定暴击。",
     "effects": [
@@ -87,7 +87,7 @@
   },
   "execution": {
     "name": "斩首",
-    "category": "杀招",
+    "category": "攻",
     "cost": 3,
     "text": "对崩塌目标造成 14 伤害，否则仅造成 5 伤害。",
     "effects": [
@@ -101,7 +101,7 @@
   },
   "guard_frame": {
     "name": "架势收锋",
-    "category": "架势",
+    "category": "守",
     "cost": 1,
     "text": "获得 6 格挡。若本回合未受伤，回合结束再获得 1 势。",
     "effects": [
@@ -117,7 +117,7 @@
   },
   "mid_spear": {
     "name": "中平枪",
-    "category": "攻击",
+    "category": "攻",
     "cost": 2,
     "text": "造成 6 伤害并削敌 2 势。若距离不在 2-3，伤害 -2。",
     "effects": [
@@ -135,7 +135,7 @@
   },
   "pinning_hold": {
     "name": "拦拿",
-    "category": "架势",
+    "category": "攻",
     "cost": 2,
     "text": "获得 4 格挡，并削敌 2 势。若处于优势距离，再削 1 势。",
     "effects": [
@@ -156,7 +156,7 @@
   },
   "retreat_half": {
     "name": "退步半身",
-    "category": "步法",
+    "category": "守",
     "cost": 1,
     "text": "距离 +1，抽 1 张牌。",
     "effects": [
@@ -172,7 +172,7 @@
   },
   "rush_step": {
     "name": "赶步进身",
-    "category": "步法",
+    "category": "攻",
     "cost": 1,
     "text": "距离 -1，若因此进入优势距离则本回合下一次攻击额外 +2 伤害。",
     "effects": [
@@ -189,7 +189,7 @@
   },
   "sidestep": {
     "name": "斜闪绕身",
-    "category": "步法",
+    "category": "守",
     "cost": 0,
     "text": "距离 +1，本回合获得 2 格挡。",
     "effects": [
@@ -205,7 +205,7 @@
   },
   "steady_step": {
     "name": "寸步稳枪",
-    "category": "步法",
+    "category": "守",
     "cost": 0,
     "text": "距离 +1，若进入你的优势距离则获得 1 格挡。",
     "effects": [
@@ -222,7 +222,7 @@
   },
   "swift_cut": {
     "name": "连珠斩",
-    "category": "攻击",
+    "category": "攻",
     "cost": 1,
     "text": "造成 4 伤害并削敌 1 势。若目标已失去 4 点以上势，再追加 2 伤害。",
     "effects": [

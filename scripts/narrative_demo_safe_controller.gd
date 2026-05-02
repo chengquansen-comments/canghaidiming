@@ -11,8 +11,8 @@ const PROLOGUE_MASTER_ENCOUNTER_ID := "enc_prologue_master_rescue"
 const PROLOGUE_MASTER_SOURCE_ID := "prologue_master_rescue"
 
 const CAREERS := [
-	{"id":"spearman", "career":"长枪武官", "weapon":"长枪", "max_hp":26, "hp":26, "max_posture":8, "posture":5, "martial_level":1, "desc":"稳扎稳打，血量略高，适合用长枪压步、抢势、控距离。"},
-	{"id":"blademaster", "career":"腰刀武官", "weapon":"腰刀", "max_hp":31, "hp":31, "max_posture":9, "posture":7, "martial_level":1, "desc":"节奏更快，起势略高，适合格挡反击、突进斩杀。"}
+	{"id":"spearman", "career":"长枪武官", "weapon":"长枪", "max_hp":20, "hp":20, "max_posture":3, "posture":3, "martial_level":1, "qinggong":1, "desc":"长枪路线。初始 HP 20，轻功 1，势上限 3。"},
+	{"id":"blademaster", "career":"腰刀武官", "weapon":"腰刀", "max_hp":20, "hp":20, "max_posture":3, "posture":3, "martial_level":1, "qinggong":1, "desc":"腰刀路线。初始 HP 20，轻功 1，势上限 3。"}
 ]
 
 var title_label: Label
@@ -125,10 +125,10 @@ func _consume_battle_result_if_needed() -> void:
 			break
 	if result == "win":
 		_apply_battle_result_reward(node_index)
-		NarrativeBattleContext.apply_player_growth("battle_win", 2, 0, 1, true)
+		NarrativeBattleContext.apply_player_growth("battle_win", 0, 0, 0, true)
 		if node_index < NODES.size() - 1:
 			node_index += 1
-		last_hint = "战斗胜利：已返回剧情，并自动推进到下一节点。玩家 HP 回满，武境 +1，最大 HP +2。"
+		last_hint = "战斗胜利：已返回剧情，并自动推进到下一节点。武境 +1，HP / 轻功 / 势上限按武境刷新。"
 	elif result == "lose":
 		last_hint = "战斗失败：已返回剧情，当前 Demo 暂不惩罚，可选择视为胜利继续或重试。"
 	elif result == "draw":
@@ -403,12 +403,13 @@ func _add_placeholder(parent: VBoxContainer, text: String) -> void:
 
 func _add_career_button(career: Dictionary, index: int) -> void:
 	var btn := Button.new()
-	btn.text = "%s｜%s｜HP %d｜势 %d/%d｜%s" % [
+	btn.text = "%s｜%s｜HP %d｜轻功 %d｜势上限 %d｜武境 %d｜%s" % [
 		str(career.get("career", "")),
 		str(career.get("weapon", "")),
 		int(career.get("max_hp", 0)),
-		int(career.get("posture", 0)),
+		int(career.get("qinggong", 1)),
 		int(career.get("max_posture", 0)),
+		int(career.get("martial_level", 1)),
 		str(career.get("desc", ""))
 	]
 	btn.custom_minimum_size = Vector2(0, 54)
@@ -457,7 +458,6 @@ func _apply_default_map_reward(target_index: int) -> void:
 			clues += 1
 		"旧物":
 			clues += 2
-			NarrativeBattleContext.apply_player_growth("relic", 0, 1, 0, false)
 		_:
 			qing_wang += 1
 	_save_narrative_state_to_context()
@@ -493,6 +493,7 @@ func _on_select_career(index: int) -> void:
 		"max_posture": int(career.get("max_posture", 10)),
 		"posture": int(career.get("posture", 5)),
 		"martial_level": int(career.get("martial_level", 1)),
+		"qinggong": int(career.get("qinggong", 1)),
 		"battles_won": 0
 	})
 	career_selected = true

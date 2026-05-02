@@ -1,0 +1,13 @@
+combat_pool_id	difficulty_role	player_martial_delta_min	player_martial_delta_max	target_win_rate_min	target_win_rate_max	target_avg_player_hp_remaining_min	target_avg_player_hp_remaining_max	target_turns_min	target_turns_max	notes
+spear_patrol	recommended	0	2	0.65	0.90	0.20	0.70	5	11	普通枪兵池：推荐区间内应可稳定取胜但保留控距压力
+spear_patrol	underleveled	-9	-1	0.25	0.60	0.05	0.35	5	12	低于推荐武境时允许明显吃力
+spear_patrol	overleveled	3	9	0.85	1.00	0.45	0.95	4	9	高于推荐武境时应快速解决
+coastal_veteran	recommended	0	2	0.55	0.82	0.15	0.55	6	12	普通刀兵池：贴身压力高于枪兵巡哨
+coastal_veteran	underleveled	-9	-1	0.20	0.52	0.00	0.30	5	12	低武境打刀兵应有较高风险
+coastal_veteran	overleveled	3	9	0.80	1.00	0.40	0.90	4	10	高武境不应拖成消耗战
+military_elite	recommended	0	2	0.45	0.75	0.10	0.45	7	13	军伍精英池：推荐区间内应接近五五到小优
+military_elite	underleveled	-9	-1	0.12	0.45	0.00	0.25	5	13	低武境挑战精英应偏难
+military_elite	overleveled	3	9	0.72	0.95	0.30	0.80	5	11	高武境精英仍应保留少量威胁
+old_case_elite	recommended	0	2	0.40	0.70	0.08	0.40	7	14	旧案精英池：用于高压节点和终局前阻力
+old_case_elite	underleveled	-9	-1	0.08	0.38	0.00	0.22	5	14	低武境旧案精英应强烈提示风险
+old_case_elite	overleveled	3	9	0.65	0.90	0.25	0.75	5	12	高武境可赢但不应完全无伤

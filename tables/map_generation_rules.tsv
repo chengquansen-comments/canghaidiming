@@ -1,0 +1,5 @@
+region_id	region_title	layer_count	choices_per_layer	common_combat_min	elite_combat_min	military_min	case_min	reputation_min	rest_max	mandatory_tags	forbidden_repeat_tags
+region_01	军门定调	3	3	1	0	1	1	1	1	case|military	elite|rest
+region_02	海防任差	3	3	1	1	1	1	1	1	combat|case	elite|rest
+region_03	潮下疑踪	3	3	1	1	1	2	1	1	case|arrow	elite|rest
+region_04	旧案分潮	3	3	1	1	1	2	1	1	case|master	elite|rest

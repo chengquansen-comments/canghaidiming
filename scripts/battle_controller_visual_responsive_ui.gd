@@ -52,8 +52,8 @@ func _build_catalog() -> void:
 	var blade_body_press := _ready_v032_card("blade_body_press", "贴身撞刀", "极近顶撞破势，命中后自身进身贴住。", 0, 1, 2, CardData.ROLE_DAMAGE, 0, 3, 4, 0, PackedStringArray(["短兵", "贴身", "破势"]), "刀", true, 1, 0, 0, CardData.MOVE_ON_HIT)
 	var blade_breathe := _ready_v032_card("blade_breathe", "收刀换气", "收刀换气并进身，持续保持近身压力。", 0, 8, 0, CardData.ROLE_MOMENTUM, 3, 0, 0, 2, PackedStringArray(["聚势", "短兵"]), "刀", false, 1, 0, 0, CardData.MOVE_ALWAYS)
 
-	var spear_deck: Array[CardData] = [spear_mid_thrust, spear_line_press, spear_retreat_sting, spear_guard_horse, spear_step_thrust, spear_focus]
-	var blade_deck: Array[CardData] = [blade_front_cut, blade_press_break, blade_chase_cut, blade_hook_pull, blade_body_press, blade_breathe]
+	var spear_deck: Array[CardData] = [spear_mid_thrust, spear_mid_thrust.duplicate_card(), spear_line_press, spear_line_press.duplicate_card(), spear_retreat_sting, spear_guard_horse, spear_step_thrust, spear_focus]
+	var blade_deck: Array[CardData] = [blade_front_cut, blade_front_cut.duplicate_card(), blade_press_break, blade_chase_cut, blade_chase_cut.duplicate_card(), blade_hook_pull, blade_body_press, blade_breathe]
 
 	fighter_catalog["spearman"] = FighterData.new("spearman", "枪手", "长枪", 24, 6, 5, 1, PackedInt32Array([2, 3]), spear_deck, 1, 2, "right")
 	fighter_catalog["blademaster"] = FighterData.new("blademaster", "刀客", "单刀", 22, 6, 5, 2, PackedInt32Array([1, 2]), blade_deck, 1, 6, "left")
@@ -572,10 +572,10 @@ func _sprite_visible_rect(sprite: TextureRect) -> Rect2:
 
 
 func _control_bar_node() -> Control:
-	if confirm_button != null and confirm_button.get_parent() is Control:
-		return confirm_button.get_parent() as Control
-	if reset_pick_button != null and reset_pick_button.get_parent() is Control:
-		return reset_pick_button.get_parent() as Control
+	if bottom_root != null:
+		var named := bottom_root.get_node_or_null("ControlBar")
+		if named is Control:
+			return named as Control
 	if bottom_root != null and bottom_root.get_child_count() > 0 and bottom_root.get_child(0) is Control:
 		return bottom_root.get_child(0) as Control
 	return null

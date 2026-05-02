@@ -19,6 +19,9 @@ var stable_debug_ai_label: Label
 var stable_debug_runtime_label: Label
 var stable_debug_actions_row: HBoxContainer
 var stable_debug_continue_button: Button
+var stable_debug_gain_button: Button
+var stable_debug_enlighten_button: Button
+var stable_debug_fusion_button: Button
 var stable_debug_last_values: Dictionary = {}
 
 func _ready() -> void:
@@ -57,6 +60,8 @@ func _apply_stable_debug_visibility() -> void:
 		stable_debug_layer.visible = debug_visible
 	if stable_debug_panel != null:
 		stable_debug_panel.visible = debug_visible
+	if debug_visible:
+		_refresh_stable_debug_panel()
 
 func _load_battle_scene_manifest() -> void:
 	battle_scene_loaded = false
@@ -175,7 +180,7 @@ func _build_stable_debug_panel() -> void:
 	stable_debug_panel.offset_left = -720
 	stable_debug_panel.offset_top = 8
 	stable_debug_panel.offset_right = -12
-	stable_debug_panel.offset_bottom = 214
+	stable_debug_panel.offset_bottom = 252
 	stable_debug_panel.add_theme_stylebox_override("panel", _stable_debug_panel_style())
 	stable_debug_layer.add_child(stable_debug_panel)
 
@@ -222,6 +227,12 @@ func _build_stable_debug_panel() -> void:
 	stable_debug_continue_button.focus_mode = Control.FOCUS_NONE
 	stable_debug_continue_button.pressed.connect(_on_continue_narrative_pressed)
 	stable_debug_actions_row.add_child(stable_debug_continue_button)
+	stable_debug_gain_button = _make_stable_debug_action_button("调试得招", Callable(self, "_open_gain_move"))
+	stable_debug_actions_row.add_child(stable_debug_gain_button)
+	stable_debug_enlighten_button = _make_stable_debug_action_button("调试点化", Callable(self, "_apply_enlighten"))
+	stable_debug_actions_row.add_child(stable_debug_enlighten_button)
+	stable_debug_fusion_button = _make_stable_debug_action_button("调试藏招", Callable(self, "_begin_hidden_fusion"))
+	stable_debug_actions_row.add_child(stable_debug_fusion_button)
 	_apply_stable_debug_visibility()
 
 func _stable_debug_panel_style() -> StyleBoxFlat:
@@ -248,6 +259,14 @@ func _make_stable_debug_label(font_size: int) -> Label:
 	label.add_theme_constant_override("shadow_offset_x", 1)
 	label.add_theme_constant_override("shadow_offset_y", 1)
 	return label
+
+func _make_stable_debug_action_button(text: String, callback: Callable) -> Button:
+	var button := Button.new()
+	button.text = text
+	button.custom_minimum_size = Vector2(108, 32)
+	button.focus_mode = Control.FOCUS_NONE
+	button.pressed.connect(callback)
+	return button
 
 func _refresh_stable_debug_panel() -> void:
 	if stable_debug_panel == null:
@@ -278,6 +297,13 @@ func _refresh_stable_debug_panel() -> void:
 	_set_stable_label_text(stable_debug_deck_label, values["deck"], "deck")
 	_set_stable_label_text(stable_debug_ai_label, values["ai"], "ai")
 	_set_stable_label_text(stable_debug_runtime_label, values["runtime"], "runtime")
+	_refresh_stable_debug_action_buttons()
+
+func _refresh_stable_debug_action_buttons() -> void:
+	var enabled := player != null and not battle_active
+	for button in [stable_debug_gain_button, stable_debug_enlighten_button, stable_debug_fusion_button]:
+		if button is Button:
+			button.disabled = not enabled
 
 func _set_stable_label_text(label: Label, value: String, key: String) -> void:
 	if label == null:

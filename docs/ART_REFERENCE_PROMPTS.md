@@ -2,6 +2,8 @@
 
 > 本文件整合旧的角色、场景、主视觉提示词。它只用于生成参考图、概念图或精修方向，不是运行资源清单。
 
+> 正式接图时，优先以 `tables/art_prompt_manifest.tsv` + `python3 tools/render_art_prompt.py <asset_id>` 输出结构化提示词；本文保留风格基准、长例子和旧参考口径。
+
 ## 1. 使用规则
 
 1. 参考图输出到 `art_reference/generated/*.png`；正式源画 / 精修母版沉淀到 `art_reference/final/*.png`。

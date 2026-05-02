@@ -701,19 +701,10 @@ func _build_bottom_hand_area() -> void:
 	add_child(bottom_root)
 
 	var control_bar := HBoxContainer.new()
+	control_bar.name = "ControlBar"
 	control_bar.custom_minimum_size = Vector2(0, 44)
 	control_bar.add_theme_constant_override("separation", 10)
 	bottom_root.add_child(control_bar)
-
-	reset_pick_button = Button.new()
-	reset_pick_button.text = "重选招式"
-	reset_pick_button.pressed.connect(_reset_draft_intent)
-	control_bar.add_child(reset_pick_button)
-
-	confirm_button = Button.new()
-	confirm_button.text = "确认出招"
-	confirm_button.pressed.connect(_confirm_player_intent)
-	control_bar.add_child(confirm_button)
 
 	node_buttons_box = HBoxContainer.new()
 	node_buttons_box.add_theme_constant_override("separation", 10)
@@ -745,6 +736,11 @@ func _build_bottom_hand_area() -> void:
 	hand_box.add_theme_constant_override("separation", 10)
 	hand_margin.add_child(hand_box)
 
+	var hand_title_row := HBoxContainer.new()
+	hand_title_row.add_theme_constant_override("separation", 10)
+	hand_title_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hand_box.add_child(hand_title_row)
+
 	var hand_title := Label.new()
 	hand_title.text = "招式牌"
 	hand_title.add_theme_font_size_override("font_size", 20)
@@ -752,7 +748,24 @@ func _build_bottom_hand_area() -> void:
 	hand_title.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.85))
 	hand_title.add_theme_constant_override("shadow_offset_x", 1)
 	hand_title.add_theme_constant_override("shadow_offset_y", 2)
-	hand_box.add_child(hand_title)
+	hand_title.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	hand_title_row.add_child(hand_title)
+
+	reset_pick_button = Button.new()
+	reset_pick_button.text = "重选招式"
+	reset_pick_button.custom_minimum_size = Vector2(104, 32)
+	reset_pick_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	reset_pick_button.visible = false
+	reset_pick_button.pressed.connect(_reset_draft_intent)
+	hand_title_row.add_child(reset_pick_button)
+
+	confirm_button = Button.new()
+	confirm_button.text = "确认出招"
+	confirm_button.custom_minimum_size = Vector2(104, 32)
+	confirm_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	confirm_button.visible = false
+	confirm_button.pressed.connect(_confirm_player_intent)
+	hand_title_row.add_child(confirm_button)
 
 	var hand_scroll := ScrollContainer.new()
 	hand_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL

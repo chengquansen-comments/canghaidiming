@@ -143,25 +143,25 @@
         "story_deck_id": "player_blade_start",
         "display_name": "主角刀客起手",
         "fighter_template_id": "player_blademaster",
-        "deck": "blade_front_cut:2,blade_chase_cut:2,blade_breathe:1",
+        "deck": "blade_front_cut:4,blade_chase_cut:3,blade_breathe:1",
         "tags": "player_start",
-        "notes": "主角刀客初始牌组"
+        "notes": "主角刀客初始牌组，固定 8 张入战"
       },
       {
         "story_deck_id": "player_spear_start",
         "display_name": "主角枪手起手",
         "fighter_template_id": "player_spearman",
-        "deck": "spear_mid_thrust:2,spear_line_press:1,spear_focus:1,spear_guard_horse:1",
+        "deck": "spear_mid_thrust:3,spear_line_press:2,spear_focus:2,spear_guard_horse:1",
         "tags": "player_start",
-        "notes": "主角枪手初始牌组"
+        "notes": "主角枪手初始牌组，固定 8 张入战"
       },
       {
         "story_deck_id": "player_blade_advanced",
         "display_name": "主角刀客进阶",
         "fighter_template_id": "player_blademaster",
-        "deck": "blade_front_cut:2,blade_press_break:2,blade_chase_cut:2,blade_hook_pull:1,blade_body_press:1,blade_breathe:1",
+        "deck": "blade_front_cut:2,blade_press_break:2,blade_chase_cut:1,blade_hook_pull:1,blade_body_press:1,blade_breathe:1",
         "tags": "player_growth",
-        "notes": "主角刀客成长后牌组"
+        "notes": "主角刀客成长后牌组，固定 8 张入战"
       },
       {
         "story_deck_id": "player_spear_advanced",
@@ -169,7 +169,7 @@
         "fighter_template_id": "player_spearman",
         "deck": "spear_mid_thrust:2,spear_line_press:2,spear_retreat_sting:1,spear_step_thrust:1,spear_focus:1,spear_guard_horse:1",
         "tags": "player_growth",
-        "notes": "主角枪手成长后牌组"
+        "notes": "主角枪手成长后牌组，固定 8 张入战"
       },
       {
         "story_deck_id": "prologue_blade_teach",
@@ -196,6 +196,14 @@
         "notes": "强调削势和崩势"
       },
       {
+        "story_deck_id": "prologue_spear_probe",
+        "display_name": "海边枪手·试探",
+        "fighter_template_id": "prologue_spear_guard",
+        "deck": "spear_mid_thrust:2,spear_guard_horse:1",
+        "tags": "teaching,spear",
+        "notes": "武境一主角首战用，保留枪兵距离但不持续压线"
+      },
+      {
         "story_deck_id": "prologue_spear_keep",
         "display_name": "海边枪手·控距",
         "fighter_template_id": "prologue_spear_guard",
@@ -207,9 +215,9 @@
         "story_deck_id": "master_veteran_rescue",
         "display_name": "师傅救场刀法",
         "fighter_template_id": "master_veteran",
-        "deck": "blade_front_cut:2,blade_press_break:2,blade_hook_pull:1,blade_body_press:1,blade_breathe:1",
+        "deck": "blade_front_cut:2,blade_press_break:2,blade_chase_cut:1,blade_hook_pull:1,blade_body_press:1,blade_breathe:1",
         "tags": "story,rescue",
-        "notes": "救场演示用"
+        "notes": "救场演示用，固定 8 张入战"
       },
       {
         "story_deck_id": "blade_duelist_pressure",
@@ -376,12 +384,12 @@
       {
         "stat_set_id": "normal_blade",
         "display_name": "普通刀兵",
-        "max_hp": "28",
-        "max_momentum": "10",
+        "max_hp": "22",
+        "max_momentum": "8",
         "starting_momentum": "4",
         "starting_realm": "1",
         "qinggong": "1",
-        "notes": "正式剧情普通刀兵"
+        "notes": "正式剧情普通刀兵，线性期押运官用，控制武境四左右的战斗时长"
       },
       {
         "stat_set_id": "elite_spear",
@@ -416,12 +424,12 @@
       {
         "stat_set_id": "boss_blade",
         "display_name": "首领刀客",
-        "max_hp": "42",
-        "max_momentum": "12",
+        "max_hp": "32",
+        "max_momentum": "11",
         "starting_momentum": "6",
         "starting_realm": "3",
         "qinggong": "2",
-        "notes": "Boss 与首领战"
+        "notes": "Boss 与首领战，线性期收束用，避免进入海图前拖战过长"
       }
     ],
     "story_encounters": [
@@ -536,10 +544,10 @@
         "player_deck_id": "player_spear_start",
         "player_stat_set_id": "player_start",
         "opponent_template_id": "prologue_spear_guard",
-        "opponent_deck_id": "prologue_spear_keep",
-        "opponent_stat_set_id": "normal_spear",
+        "opponent_deck_id": "prologue_spear_probe",
+        "opponent_stat_set_id": "easy",
         "settlement_mode": "reactive",
-        "pressure_profile": "edge_pressure",
+        "pressure_profile": "none",
         "notes": "正式剧情：海边伏击"
       },
       {
@@ -550,7 +558,7 @@
         "player_stat_set_id": "player_start",
         "opponent_template_id": "wakou_raider",
         "opponent_deck_id": "wakou_raider_smoke",
-        "opponent_stat_set_id": "weak_blade",
+        "opponent_stat_set_id": "easy",
         "settlement_mode": "reactive",
         "pressure_profile": "none",
         "notes": "正式剧情：渔村残火"
@@ -563,9 +571,9 @@
         "player_stat_set_id": "player_start",
         "opponent_template_id": "transport_officer",
         "opponent_deck_id": "transport_officer_pressure",
-        "opponent_stat_set_id": "elite_blade",
+        "opponent_stat_set_id": "normal_blade",
         "settlement_mode": "reactive",
-        "pressure_profile": "none",
+        "pressure_profile": "break_resist",
         "notes": "正式剧情：押运官精英战"
       },
       {
@@ -804,25 +812,25 @@
         "story_deck_id": "player_blade_start",
         "display_name": "主角刀客起手",
         "fighter_template_id": "player_blademaster",
-        "deck": "blade_front_cut:2,blade_chase_cut:2,blade_breathe:1",
+        "deck": "blade_front_cut:4,blade_chase_cut:3,blade_breathe:1",
         "tags": "player_start",
-        "notes": "主角刀客初始牌组"
+        "notes": "主角刀客初始牌组，固定 8 张入战"
       },
       "player_spear_start": {
         "story_deck_id": "player_spear_start",
         "display_name": "主角枪手起手",
         "fighter_template_id": "player_spearman",
-        "deck": "spear_mid_thrust:2,spear_line_press:1,spear_focus:1,spear_guard_horse:1",
+        "deck": "spear_mid_thrust:3,spear_line_press:2,spear_focus:2,spear_guard_horse:1",
         "tags": "player_start",
-        "notes": "主角枪手初始牌组"
+        "notes": "主角枪手初始牌组，固定 8 张入战"
       },
       "player_blade_advanced": {
         "story_deck_id": "player_blade_advanced",
         "display_name": "主角刀客进阶",
         "fighter_template_id": "player_blademaster",
-        "deck": "blade_front_cut:2,blade_press_break:2,blade_chase_cut:2,blade_hook_pull:1,blade_body_press:1,blade_breathe:1",
+        "deck": "blade_front_cut:2,blade_press_break:2,blade_chase_cut:1,blade_hook_pull:1,blade_body_press:1,blade_breathe:1",
         "tags": "player_growth",
-        "notes": "主角刀客成长后牌组"
+        "notes": "主角刀客成长后牌组，固定 8 张入战"
       },
       "player_spear_advanced": {
         "story_deck_id": "player_spear_advanced",
@@ -830,7 +838,7 @@
         "fighter_template_id": "player_spearman",
         "deck": "spear_mid_thrust:2,spear_line_press:2,spear_retreat_sting:1,spear_step_thrust:1,spear_focus:1,spear_guard_horse:1",
         "tags": "player_growth",
-        "notes": "主角枪手成长后牌组"
+        "notes": "主角枪手成长后牌组，固定 8 张入战"
       },
       "prologue_blade_teach": {
         "story_deck_id": "prologue_blade_teach",
@@ -856,6 +864,14 @@
         "tags": "break_focus",
         "notes": "强调削势和崩势"
       },
+      "prologue_spear_probe": {
+        "story_deck_id": "prologue_spear_probe",
+        "display_name": "海边枪手·试探",
+        "fighter_template_id": "prologue_spear_guard",
+        "deck": "spear_mid_thrust:2,spear_guard_horse:1",
+        "tags": "teaching,spear",
+        "notes": "武境一主角首战用，保留枪兵距离但不持续压线"
+      },
       "prologue_spear_keep": {
         "story_deck_id": "prologue_spear_keep",
         "display_name": "海边枪手·控距",
@@ -868,9 +884,9 @@
         "story_deck_id": "master_veteran_rescue",
         "display_name": "师傅救场刀法",
         "fighter_template_id": "master_veteran",
-        "deck": "blade_front_cut:2,blade_press_break:2,blade_hook_pull:1,blade_body_press:1,blade_breathe:1",
+        "deck": "blade_front_cut:2,blade_press_break:2,blade_chase_cut:1,blade_hook_pull:1,blade_body_press:1,blade_breathe:1",
         "tags": "story,rescue",
-        "notes": "救场演示用"
+        "notes": "救场演示用，固定 8 张入战"
       },
       "blade_duelist_pressure": {
         "story_deck_id": "blade_duelist_pressure",
@@ -1037,12 +1053,12 @@
       "normal_blade": {
         "stat_set_id": "normal_blade",
         "display_name": "普通刀兵",
-        "max_hp": "28",
-        "max_momentum": "10",
+        "max_hp": "22",
+        "max_momentum": "8",
         "starting_momentum": "4",
         "starting_realm": "1",
         "qinggong": "1",
-        "notes": "正式剧情普通刀兵"
+        "notes": "正式剧情普通刀兵，线性期押运官用，控制武境四左右的战斗时长"
       },
       "elite_spear": {
         "stat_set_id": "elite_spear",
@@ -1077,12 +1093,12 @@
       "boss_blade": {
         "stat_set_id": "boss_blade",
         "display_name": "首领刀客",
-        "max_hp": "42",
-        "max_momentum": "12",
+        "max_hp": "32",
+        "max_momentum": "11",
         "starting_momentum": "6",
         "starting_realm": "3",
         "qinggong": "2",
-        "notes": "Boss 与首领战"
+        "notes": "Boss 与首领战，线性期收束用，避免进入海图前拖战过长"
       }
     },
     "story_encounters_by_id": {
@@ -1197,10 +1213,10 @@
         "player_deck_id": "player_spear_start",
         "player_stat_set_id": "player_start",
         "opponent_template_id": "prologue_spear_guard",
-        "opponent_deck_id": "prologue_spear_keep",
-        "opponent_stat_set_id": "normal_spear",
+        "opponent_deck_id": "prologue_spear_probe",
+        "opponent_stat_set_id": "easy",
         "settlement_mode": "reactive",
-        "pressure_profile": "edge_pressure",
+        "pressure_profile": "none",
         "notes": "正式剧情：海边伏击"
       },
       "enc_fishing_village_embers": {
@@ -1211,7 +1227,7 @@
         "player_stat_set_id": "player_start",
         "opponent_template_id": "wakou_raider",
         "opponent_deck_id": "wakou_raider_smoke",
-        "opponent_stat_set_id": "weak_blade",
+        "opponent_stat_set_id": "easy",
         "settlement_mode": "reactive",
         "pressure_profile": "none",
         "notes": "正式剧情：渔村残火"
@@ -1224,9 +1240,9 @@
         "player_stat_set_id": "player_start",
         "opponent_template_id": "transport_officer",
         "opponent_deck_id": "transport_officer_pressure",
-        "opponent_stat_set_id": "elite_blade",
+        "opponent_stat_set_id": "normal_blade",
         "settlement_mode": "reactive",
-        "pressure_profile": "none",
+        "pressure_profile": "break_resist",
         "notes": "正式剧情：押运官精英战"
       },
       "enc_mutiny_camp": {
@@ -1328,7 +1344,7 @@
     "warnings": [],
     "counts": {
       "templates": 15,
-      "decks": 19,
+      "decks": 20,
       "stats": 13,
       "encounters": 18
     }

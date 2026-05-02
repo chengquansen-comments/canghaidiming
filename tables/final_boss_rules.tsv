@@ -1,0 +1,10 @@
+boss_variant_id	title	priority	required_case_clues	required_military_merit	required_clean_reputation	required_martial_level	battle_id	encounter_id	intro_text	ending_flag	battle_modifiers_json
+true_resolution	海门真收束	120	12	14	10	6	boss_ext_wakou_leader	enc_boss_ext_wakou_leader	军功让你进堂，旧案让你开口，清望让堂外的人敢信。	true_resolution	{"phase_count":3,"allow_reputation_support":true,"allow_military_command":true,"reveal_weakness":true}
+court_exposure	堂审翻案	105	10	14	0	5	boss_ext_wakou_leader	enc_boss_ext_wakou_leader	堂上终于开卷，只是堂外仍旧安静。	court_exposure	{"allow_military_command":true,"reveal_weakness":true}
+reputation_redress	清望昭雪	100	6	3	6	3	boss_ext_wakou_leader	enc_boss_ext_wakou_leader	堂上无人开口。堂外，有人替你把旁证递进来。	reputation_redress	{"allow_reputation_support":true}
+military_reputation	封海得众	92	0	9	6	4	boss_ext_wakou_leader	enc_boss_ext_wakou_leader	军令封住海口，民声替你守住岸上。	military_reputation	{"allow_reputation_support":true,"allow_military_command":true}
+military_promotion	军功升迁	85	0	9	0	3	boss_ext_wakou_leader	enc_boss_ext_wakou_leader	军令给你开门，也在你身后落锁。	military_promotion	{"allow_military_command":true}
+private_truth	私查真相	80	7	0	2	3	boss_ext_wakou_leader	enc_boss_ext_wakou_leader	箭从岸上来。这一次，你知道该看哪里。	private_truth	{"reveal_weakness":true}
+isolated_evidence	孤证难鸣	72	7	0	0	3	boss_ext_wakou_leader	enc_boss_ext_wakou_leader	你查到了旧案，却没有足够的人替这句话站住。	isolated_evidence	{"reveal_weakness":true,"isolated_evidence":true}
+martial_survival	武境破围	50	0	0	0	7	boss_ext_wakou_leader	enc_boss_ext_wakou_leader	你没有堂口，没有人声，只有一路杀出来的武境。	martial_survival	{"martial_breakthrough":true}
+surface_pirate	表层平倭	0	0	0	0	1	boss_ext_wakou_leader	enc_boss_ext_wakou_leader	倭患仍在海上。案卷仍少一页。	surface_pirate	{"fallback":true}

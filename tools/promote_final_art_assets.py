@@ -355,6 +355,17 @@ def promote_first_battle() -> None:
     normalize_enemy_sheet(enemy_source, ASSETS / "sheets" / "enemy_spearman_sheet.png")
 
 
+def promote_chapter3_escort_clash() -> None:
+    source = SOURCE_BACKGROUNDS / "battle_bg_chapter3_escort_clash.png"
+    target = ASSETS / "backgrounds" / "battle_bg_chapter3_escort_clash.png"
+    if not source.exists():
+        print(f"[promote-final-art] chapter3 escort clash: missing optional source {rel(source)}")
+        return
+    image = Image.open(source).convert("RGBA")
+    image.load()
+    save_png(target, cover_resize(image, BACKGROUND_SIZE))
+
+
 def promote_master_veteran() -> None:
     sheet_source = SOURCE_SHEETS / "master_sheets_source.png"
     portrait_source = SOURCE_PORTRAITS / "master_portraits_source.png"
@@ -418,6 +429,7 @@ def check_second_battle() -> None:
 def main() -> int:
     promote_prologue()
     promote_first_battle()
+    promote_chapter3_escort_clash()
     promote_master_veteran()
     promote_enemy_spearman_frames()
     check_second_battle()

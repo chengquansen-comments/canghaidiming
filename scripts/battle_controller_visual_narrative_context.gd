@@ -6,6 +6,7 @@ const NarrativeStoryBattleLoader := preload("res://scripts/story_battle_loader.g
 const DEFAULT_NARRATIVE_SCENE := "res://scenes/NarrativeDemo.tscn"
 const ENEMY_MANIFEST_PATH := "res://data/enemy_manifest.json"
 const NARRATIVE_BATTLE_SCENE_MANIFEST_PATH := "res://data/battle_scene_manifest.json"
+const STRATEGIC_MAP_CONFIG_PATH := "res://data/strategic_map.json"
 const NARRATIVE_FALLBACK_BATTLE_ID := "fallback"
 
 var narrative_debug_layer: CanvasLayer
@@ -156,7 +157,7 @@ func _add_narrative_debug_layer() -> void:
 
 	battle_result_label = Label.new()
 	battle_result_label.name = "BattleResultDebugLabel"
-	battle_result_label.text = "战斗结果：可随时返回剧情；胜负会按当前 HP 推断"
+	battle_result_label.text = "战斗结果：可随时返回剧情；debug 返回按胜利处理"
 	battle_result_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	battle_result_label.add_theme_font_size_override("font_size", 13)
 	narrative_debug_box.add_child(battle_result_label)
@@ -275,14 +276,15 @@ func _resolve_battle_loadout() -> Dictionary:
 	var enemy_config: Dictionary = _fighter_data_to_config(opponent_data)
 	var manifest_context: Dictionary = _enemy_manifest_context_for_encounter(encounter_id)
 	enemy_config = _apply_enemy_manifest_to_story_config(enemy_config, manifest_context)
+	enemy_config = _apply_narrative_battle_overrides(enemy_config)
 	var profile: Dictionary = NarrativeBattleContext.get_player_profile()
 	player_config = _apply_story_player_overrides(player_config, profile)
 	var override_player_profile := NarrativeBattleContext.should_override_player_profile()
 	var settlement_mode: String = str(story_battle.get("settlement_mode", BattleStateMachineScript.MODE_REACTIVE_ID))
 	var manifest_encounter: Dictionary = _dict(manifest_context.get("encounter", {}))
 	var manifest_enemy: Dictionary = _dict(manifest_context.get("enemy", {}))
-	var enemy_id: String = str(manifest_context.get("enemy_id", enemy_config.get("id", encounter_config.get("opponent_template_id", ""))))
-	var enemy_source: String = "enemy_manifest" if not manifest_enemy.is_empty() else "story_battles"
+	var enemy_id: String = str(enemy_config.get("id", manifest_context.get("enemy_id", encounter_config.get("opponent_template_id", ""))))
+	var enemy_source: String = str(enemy_config.get("enemy_source", "enemy_manifest" if not manifest_enemy.is_empty() else "story_battles"))
 	return {
 		"battle_id": battle_id,
 		"encounter_id": encounter_id,
@@ -366,6 +368,108 @@ func _apply_enemy_manifest_to_story_config(story_config: Dictionary, manifest_co
 	story_config["qinggong"] = int(manifest_enemy.get("qinggong", story_config.get("qinggong", 1)))
 	return story_config
 
+func _apply_narrative_battle_overrides(enemy_config: Dictionary) -> Dictionary:
+	var overrides := NarrativeBattleContext.get_battle_overrides()
+	enemy_config = _apply_combat_enemy_pool_override(enemy_config, overrides)
+	var enemy_martial_level := int(overrides.get("enemy_martial_level", 0))
+	if enemy_martial_level > 0:
+		enemy_config = _apply_enemy_martial_stats(enemy_config, enemy_martial_level)
+		enemy_config["enemy_martial_level"] = enemy_martial_level
+	var combat_pool_id := str(overrides.get("combat_pool_id", ""))
+	if not combat_pool_id.is_empty():
+		enemy_config["combat_pool_id"] = combat_pool_id
+	return enemy_config
+
+func _apply_combat_enemy_pool_override(enemy_config: Dictionary, overrides: Dictionary) -> Dictionary:
+	var combat_pool_id := str(overrides.get("combat_pool_id", ""))
+	if combat_pool_id.is_empty():
+		return enemy_config
+	var enemy_martial_level := int(overrides.get("enemy_martial_level", 0))
+	var strategic_config := _read_json_dict(STRATEGIC_MAP_CONFIG_PATH)
+	var pools: Dictionary = _dict(strategic_config.get("combat_enemy_pools", {}))
+	var entries: Array = pools.get(combat_pool_id, [])
+	var eligible: Array[Dictionary] = []
+	for item in entries:
+		if not (item is Dictionary):
+			continue
+		var entry := item as Dictionary
+		if enemy_martial_level > 0:
+			if enemy_martial_level < int(entry.get("martial_min", 1)) or enemy_martial_level > int(entry.get("martial_max", 999)):
+				continue
+		eligible.append(entry)
+	if eligible.is_empty():
+		return enemy_config
+	var selected := _weighted_pool_entry(eligible, _combat_pool_seed(combat_pool_id, enemy_martial_level))
+	if selected.is_empty():
+		return enemy_config
+	var deck_id := str(selected.get("opponent_deck_id", ""))
+	var template_id := str(selected.get("opponent_template_id", ""))
+	var data = NarrativeStoryBattleLoader.build_fighter_data(template_id, deck_id, "normal", _story_loader_card_catalog(), false)
+	if data == null:
+		return enemy_config
+	enemy_config = _fighter_data_to_config(data)
+	enemy_config["id"] = str(selected.get("pool_entry_id", template_id))
+	enemy_config["enemy_id"] = str(selected.get("pool_entry_id", template_id))
+	enemy_config["display_name"] = str(selected.get("display_name", enemy_config.get("display_name", "")))
+	enemy_config["name"] = str(selected.get("display_name", enemy_config.get("name", "")))
+	enemy_config["enemy_family"] = str(selected.get("enemy_family", ""))
+	enemy_config["combat_pool_id"] = combat_pool_id
+	enemy_config["combat_pool_entry_id"] = str(selected.get("pool_entry_id", ""))
+	enemy_config["enemy_source"] = "combat_enemy_pool"
+	enemy_config["hp_bonus"] = int(selected.get("hp_bonus", 0))
+	enemy_config["max_momentum_bonus"] = int(selected.get("max_momentum_bonus", 0))
+	enemy_config["starting_momentum_bonus"] = int(selected.get("starting_momentum_bonus", 0))
+	enemy_config["qinggong_bonus"] = int(selected.get("qinggong_bonus", 0))
+	return enemy_config
+
+func _apply_enemy_martial_stats(enemy_config: Dictionary, martial_level: int) -> Dictionary:
+	var strategic_config := _read_json_dict(STRATEGIC_MAP_CONFIG_PATH)
+	var stats_by_level: Dictionary = _dict(strategic_config.get("enemy_martial_stats", {}))
+	var stats: Dictionary = _dict(stats_by_level.get(str(martial_level), {}))
+	if stats.is_empty():
+		enemy_config["realm"] = martial_level
+		return enemy_config
+	var hp_bonus := int(enemy_config.get("hp_bonus", 0))
+	var max_momentum_bonus := int(enemy_config.get("max_momentum_bonus", 0))
+	var starting_momentum_bonus := int(enemy_config.get("starting_momentum_bonus", 0))
+	var qinggong_bonus := int(enemy_config.get("qinggong_bonus", 0))
+	var max_momentum := maxi(1, int(stats.get("max_momentum", enemy_config.get("max_momentum", 6))) + max_momentum_bonus)
+	var momentum := clampi(int(stats.get("starting_momentum", enemy_config.get("momentum", 3))) + starting_momentum_bonus, 0, max_momentum)
+	enemy_config["max_hp"] = maxi(1, int(stats.get("max_hp", enemy_config.get("max_hp", 20))) + hp_bonus)
+	enemy_config["hp"] = int(enemy_config.get("max_hp", 20))
+	enemy_config["max_momentum"] = max_momentum
+	enemy_config["max_posture"] = max_momentum
+	enemy_config["momentum"] = momentum
+	enemy_config["start_posture"] = momentum
+	enemy_config["realm"] = martial_level
+	enemy_config["qinggong"] = maxi(1, int(stats.get("qinggong", enemy_config.get("qinggong", 1))) + qinggong_bonus)
+	return enemy_config
+
+func _weighted_pool_entry(entries: Array[Dictionary], seed_value: int) -> Dictionary:
+	if entries.is_empty():
+		return {}
+	var total := 0
+	for entry in entries:
+		total += maxi(1, int(entry.get("weight", 1)))
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_value
+	var roll := rng.randi_range(1, total)
+	var cursor := 0
+	for entry in entries:
+		cursor += maxi(1, int(entry.get("weight", 1)))
+		if roll <= cursor:
+			return entry.duplicate(true)
+	return entries[0].duplicate(true)
+
+func _combat_pool_seed(combat_pool_id: String, enemy_martial_level: int) -> int:
+	var key := "%s|%s|%s|%d" % [
+		combat_pool_id,
+		str(NarrativeBattleContext.source_node_id),
+		str(NarrativeBattleContext.battle_id),
+		enemy_martial_level,
+	]
+	return int(abs(key.hash()))
+
 func _apply_story_player_overrides(base_config: Dictionary, profile: Dictionary) -> Dictionary:
 	if base_config.is_empty():
 		return base_config
@@ -378,6 +482,16 @@ func _apply_story_player_overrides(base_config: Dictionary, profile: Dictionary)
 		var role_config: Dictionary = _player_role_config_from_story_sets(role_id, profile)
 		if not role_config.is_empty():
 			base_config = role_config
+	var owned_cards := _cards_from_card_ids(profile.get("owned_card_ids", []))
+	if not owned_cards.is_empty():
+		base_config["deck"] = owned_cards
+	var selected_loadout_ids := _card_id_array(profile.get("selected_loadout_ids", []))
+	if not selected_loadout_ids.is_empty():
+		base_config["selected_loadout_ids"] = selected_loadout_ids
+	var deck_slots := _deck_slots_from_card_ids(profile.get("deck_slots", []))
+	if not deck_slots.is_empty():
+		base_config["deck_slots"] = deck_slots
+		base_config["active_deck_index"] = int(profile.get("active_deck_index", 0))
 	base_config["name"] = str(profile.get("career", base_config.get("name", "")))
 	base_config["display_name"] = str(profile.get("career", base_config.get("display_name", base_config.get("name", ""))))
 	base_config["weapon"] = str(profile.get("weapon", base_config.get("weapon", "")))
@@ -386,6 +500,7 @@ func _apply_story_player_overrides(base_config: Dictionary, profile: Dictionary)
 	base_config["max_momentum"] = int(profile.get("max_posture", profile.get("max_momentum", base_config.get("max_momentum", 6))))
 	base_config["momentum"] = int(profile.get("posture", profile.get("momentum", base_config.get("momentum", 5))))
 	base_config["realm"] = int(profile.get("martial_level", base_config.get("realm", 1)))
+	base_config["qinggong"] = clampi(int(profile.get("qinggong", base_config.get("qinggong", 1))), 1, 4)
 	base_config["position"] = int(base_config.get("position", 2))
 	base_config["facing"] = str(base_config.get("facing", "right"))
 	return base_config
@@ -499,6 +614,25 @@ func _apply_fighter_config(fighter, config: Dictionary) -> void:
 	fighter.data.starting_facing = "left" if str(config.get("starting_facing", config.get("facing", fighter.data.starting_facing))) == "left" else "right"
 	fighter.data.preferred_distances = _packed_ints(config.get("preferred", []))
 	fighter.data.starting_deck = _cards_from_configs(config.get("deck", []))
+	if fighter == player:
+		fighter.set_battle_deck_limit(PLAYER_BATTLE_DECK_SIZE)
+		var deck_slots: Array = config.get("deck_slots", [])
+		if not deck_slots.is_empty():
+			fighter.set_battle_deck_slots(deck_slots, int(config.get("active_deck_index", 0)))
+			_sanitize_player_battle_deck_selection()
+		var selected_cards := _cards_from_card_ids(config.get("selected_loadout_ids", []))
+		if deck_slots.is_empty() and selected_cards.is_empty():
+			selected_cards = _cards_from_configs(config.get("selected_loadout", []))
+		if deck_slots.is_empty() and selected_cards.is_empty():
+			fighter.reset_battle_deck_to_default()
+		elif deck_slots.is_empty():
+			fighter.set_selected_battle_deck(selected_cards)
+			_sanitize_player_battle_deck_selection()
+			if fighter.get_battle_deck_size() < PLAYER_BATTLE_DECK_SIZE:
+				_auto_fill_player_battle_deck()
+	else:
+		fighter.set_battle_deck_limit(0)
+		fighter.reset_battle_deck_to_default()
 	fighter.hp = clampi(int(config.get("hp", fighter.data.max_hp)), 0, fighter.data.max_hp)
 	fighter.momentum = fighter.data.starting_momentum
 	fighter.session_realm = fighter.data.starting_realm
@@ -506,7 +640,7 @@ func _apply_fighter_config(fighter, config: Dictionary) -> void:
 	fighter.qinggong = maxi(1, fighter.data.qinggong)
 	fighter.position = fighter.data.starting_position
 	fighter.facing = fighter.data.starting_facing
-	fighter.draw_pile = fighter.data.clone_deck()
+	fighter.draw_pile = fighter.get_battle_deck()
 	fighter.discard_pile.clear()
 	fighter.hand.clear()
 	while fighter.hand.size() < HAND_SIZE and not fighter.draw_pile.is_empty():
@@ -529,6 +663,60 @@ func _cards_from_configs(configs: Array) -> Array[CardData]:
 		var config: Dictionary = config_variant
 		cards.append(CardData.new(str(config.get("id", "card")), str(config.get("name", "招式")), str(config.get("name", "")), int(config.get("min", 0)), int(config.get("max", 5)), int(config.get("cost", 1)), str(config.get("role", "damage")), int(config.get("gain", 0)), int(config.get("break", 0)), int(config.get("damage", 0)), int(config.get("guard", 0)), PackedStringArray(config.get("tags", [])), str(config.get("style", "")), bool(config.get("facing", true))))
 	return cards
+
+func _cards_from_card_ids(card_ids) -> Array[CardData]:
+	var cards: Array[CardData] = []
+	var catalog: Dictionary = _story_loader_card_catalog()
+	for card_id: String in _card_id_array(card_ids):
+		if not catalog.has(card_id):
+			push_warning("Narrative battle loadout: unknown player card id: %s" % card_id)
+			continue
+		var card_variant = catalog[card_id]
+		if card_variant is CardData:
+			cards.append((card_variant as CardData).duplicate_card())
+	return cards
+
+func _deck_slots_from_card_ids(value) -> Array:
+	var slots: Array = []
+	if value is Array:
+		for slot_variant in value:
+			slots.append(_cards_from_card_ids(slot_variant))
+	return slots
+
+func _card_ids_from_cards(cards: Array) -> Array[String]:
+	var ids: Array[String] = []
+	for card_variant in cards:
+		if card_variant is CardData:
+			var card: CardData = card_variant
+			if not card.id.is_empty():
+				ids.append(card.id)
+		elif card_variant is Dictionary:
+			var config: Dictionary = card_variant
+			var card_id := str(config.get("id", ""))
+			if not card_id.is_empty():
+				ids.append(card_id)
+	return ids
+
+func _card_id_slots_from_fighter(fighter) -> Array:
+	var slots: Array = []
+	if fighter == null:
+		return slots
+	for slot in fighter.get_battle_deck_slots():
+		slots.append(_card_ids_from_cards(slot as Array))
+	return slots
+
+func _card_id_array(value) -> Array[String]:
+	var ids: Array[String] = []
+	if value is Array or value is PackedStringArray:
+		for item in value:
+			var card_id := str(item)
+			if not card_id.is_empty():
+				ids.append(card_id)
+	elif value is String:
+		var card_id := str(value)
+		if not card_id.is_empty():
+			ids.append(card_id)
+	return ids
 
 func _packed_ints(values: Array) -> PackedInt32Array:
 	var result: PackedInt32Array = PackedInt32Array()
@@ -563,6 +751,8 @@ func _deck_summary(deck: Array) -> String:
 func _record_result_once(narrative_result: String) -> void:
 	if result_recorded:
 		return
+	if player != null and player.data != null:
+		NarrativeBattleContext.set_player_card_state(_card_ids_from_cards(player.data.starting_deck), _card_ids_from_cards(player.get_selected_battle_deck()), _card_id_slots_from_fighter(player), player.get_active_battle_deck_index())
 	NarrativeBattleContext.set_result(narrative_result)
 	result_recorded = true
 	if narrative_context_label != null:
@@ -625,9 +815,9 @@ func _method_accepts_arg_count(method_name: String, arg_count: int) -> bool:
 	return false
 
 func _on_continue_narrative_pressed() -> void:
-	if not NarrativeBattleContext.has_result():
-		NarrativeBattleContext.set_result(_get_narrative_result())
-	var target_scene: String = NarrativeBattleContext.source_scene
-	if target_scene.is_empty():
-		target_scene = DEFAULT_NARRATIVE_SCENE
-	get_tree().change_scene_to_file(target_scene)
+	battle_active = false
+	awaiting_player_input = false
+	if state_machine != null:
+		state_machine.phase = BattleStateMachineScript.BattlePhase.RESULT
+	_set_battle_result_debug_text("战斗结果：debug 强制胜利，进入结算确认")
+	_show_battle_result_overlay(true)
