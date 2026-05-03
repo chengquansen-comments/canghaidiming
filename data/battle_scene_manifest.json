@@ -158,5 +158,35 @@
     "camera_zoom": 0.015,
     "camera_pan_x": 0.0,
     "camera_pan_y": -1.0
+  },
+  "wuke_gu_chengyue": {
+    "background": "res://assets/pixel_battle/backgrounds/battle_bg_training_ground.png",
+    "label": "武举·顾承岳",
+    "mist": 0.1,
+    "dim": 0.08,
+    "accent": 0.04,
+    "camera_zoom": 0.015,
+    "camera_pan_x": 0.0,
+    "camera_pan_y": -1.0
+  },
+  "wuke_shen_zhaoye": {
+    "background": "res://assets/pixel_battle/backgrounds/battle_bg_training_ground.png",
+    "label": "武举·沈照夜",
+    "mist": 0.1,
+    "dim": 0.08,
+    "accent": 0.04,
+    "camera_zoom": 0.015,
+    "camera_pan_x": 0.0,
+    "camera_pan_y": -1.0
+  },
+  "wuke_qi_heng": {
+    "background": "res://assets/pixel_battle/backgrounds/battle_bg_training_ground.png",
+    "label": "武举·戚衡",
+    "mist": 0.1,
+    "dim": 0.08,
+    "accent": 0.04,
+    "camera_zoom": 0.015,
+    "camera_pan_x": 0.0,
+    "camera_pan_y": -1.0
   }
 }

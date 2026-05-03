@@ -478,6 +478,14 @@ func _apply_story_player_overrides(base_config: Dictionary, profile: Dictionary)
 	var overrides: Dictionary = NarrativeBattleContext.get_battle_overrides()
 	var temp_role_id: String = str(overrides.get("temporary_player_role", "")).strip_edges()
 	if temp_role_id == "spearman" or temp_role_id == "blademaster":
+		var temp_owned_card_ids: Array[String] = []
+		var temp_selected_loadout_ids: Array[String] = []
+		if temp_role_id == "blademaster":
+			temp_owned_card_ids = ["blade_front_cut", "blade_chase_cut", "blade_breathe", "blade_press_break"]
+			temp_selected_loadout_ids = ["blade_front_cut", "blade_front_cut", "blade_chase_cut", "blade_chase_cut", "blade_breathe", "blade_breathe", "blade_press_break", "blade_press_break"]
+		else:
+			temp_owned_card_ids = ["spear_mid_thrust", "spear_line_press", "spear_focus", "spear_guard_horse"]
+			temp_selected_loadout_ids = ["spear_mid_thrust", "spear_mid_thrust", "spear_line_press", "spear_line_press", "spear_focus", "spear_focus", "spear_guard_horse", "spear_guard_horse"]
 		var temp_profile := {
 			"role": temp_role_id,
 			"career": str(overrides.get("temporary_player_career", "武科出身")),
@@ -489,6 +497,8 @@ func _apply_story_player_overrides(base_config: Dictionary, profile: Dictionary)
 			"max_posture": int(base_config.get("max_momentum", 6)),
 			"posture": int(base_config.get("momentum", 5)),
 			"qinggong": int(base_config.get("qinggong", 1)),
+			"owned_card_ids": temp_owned_card_ids,
+			"selected_loadout_ids": temp_selected_loadout_ids,
 		}
 		profile = temp_profile
 	if profile.is_empty():
@@ -677,7 +687,7 @@ func _cards_from_configs(configs: Array) -> Array[CardData]:
 			cards.append(config_variant.duplicate_card())
 			continue
 		var config: Dictionary = config_variant
-		cards.append(CardData.new(str(config.get("id", "card")), str(config.get("name", "招式")), str(config.get("name", "")), int(config.get("min", 0)), int(config.get("max", 5)), int(config.get("cost", 1)), str(config.get("role", "damage")), int(config.get("gain", 0)), int(config.get("break", 0)), int(config.get("damage", 0)), int(config.get("guard", 0)), PackedStringArray(config.get("tags", [])), str(config.get("style", "")), bool(config.get("facing", true))))
+		cards.append(CardData.new(str(config.get("id", "card")), str(config.get("name", "招式")), str(config.get("name", "")), int(config.get("min", 0)), int(config.get("max", 5)), int(config.get("cost", 1)), str(config.get("role", CardData.ROLE_GUARD)), int(config.get("gain", 0)), int(config.get("break", 0)), int(config.get("damage", 0)), int(config.get("guard", 0)), PackedStringArray(config.get("tags", [])), str(config.get("style", "")), bool(config.get("facing", true))))
 	return cards
 
 func _cards_from_card_ids(card_ids) -> Array[CardData]:

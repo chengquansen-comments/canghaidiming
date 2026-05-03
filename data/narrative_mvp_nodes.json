@@ -7,11 +7,14 @@
     "note": "补齐 MVP_NARRATIVE_SCRIPT 中后续战斗、事件、营地、旧物、Boss 与压案节点所需配置数据。"
   },
   "flow_node_ids": [
-    "wuke_spear_trial",
-    "wuke_blade_trial",
-    "wuke_route_choice",
-    "wuke_final_duel",
+    "wuke_group_spear_trial",
+    "wuke_group_blade_trial",
+    "wuke_elim_route_choice",
+    "wuke_elim_gu_chengyue_battle",
+    "wuke_elim_shen_zhaoye_battle",
+    "wuke_elim_qi_heng_battle",
     "wuke_after_choice",
+    "world_map_entry",
     "military_order",
     "ch2_sea_route_unusual",
     "ch2_beach_tracks",
@@ -70,7 +73,7 @@
     },
     "boss_ext_aftermath_choice": {
       "flow_enabled": true,
-      "flow_order": 310,
+      "flow_order": 340,
       "column": "破船",
       "type": "战后处理",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_aftermath_choice.png",
@@ -79,7 +82,7 @@
     },
     "boss_ext_burning_ship_sighting": {
       "flow_enabled": true,
-      "flow_order": 270,
+      "flow_order": 300,
       "column": "破船",
       "type": "事件",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_burning_ship_sighting.png",
@@ -88,7 +91,7 @@
     },
     "boss_ext_hold_full_of_crates": {
       "flow_enabled": true,
-      "flow_order": 280,
+      "flow_order": 310,
       "column": "破船",
       "type": "旧物",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_hold_full_of_crates.png",
@@ -97,7 +100,7 @@
     },
     "boss_ext_master_freeze_arrow": {
       "flow_enabled": true,
-      "flow_order": 290,
+      "flow_order": 320,
       "column": "破船",
       "type": "事件",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_master_freeze_arrow.png",
@@ -106,7 +109,7 @@
     },
     "boss_ext_wakou_leader_battle": {
       "flow_enabled": true,
-      "flow_order": 300,
+      "flow_order": 330,
       "column": "破船",
       "type": "Boss",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_wakou_leader.png",
@@ -115,7 +118,7 @@
     },
     "ch2_beach_tracks": {
       "flow_enabled": true,
-      "flow_order": 80,
+      "flow_order": 110,
       "column": "初遇",
       "type": "旧物",
       "visual_path": "res://assets/narrative/props/prop_ch2_beach_tracks.png",
@@ -124,7 +127,7 @@
     },
     "ch2_night_signal_fire": {
       "flow_enabled": true,
-      "flow_order": 120,
+      "flow_order": 150,
       "column": "疑点",
       "type": "事件",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch2_night_signal_fire.png",
@@ -133,7 +136,7 @@
     },
     "ch2_reed_ambush_aftermath": {
       "flow_enabled": true,
-      "flow_order": 100,
+      "flow_order": 130,
       "column": "初遇",
       "type": "战后处理",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch2_reed_ambush_aftermath.png",
@@ -142,7 +145,7 @@
     },
     "ch2_reed_ambush_battle": {
       "flow_enabled": true,
-      "flow_order": 90,
+      "flow_order": 120,
       "column": "初遇",
       "type": "普通战斗",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_beach_ambush.png",
@@ -151,7 +154,7 @@
     },
     "ch2_sea_route_unusual": {
       "flow_enabled": true,
-      "flow_order": 70,
+      "flow_order": 100,
       "column": "初遇",
       "type": "事件",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch2_sea_route_unusual.png",
@@ -160,7 +163,7 @@
     },
     "ch2_silent_village": {
       "flow_enabled": true,
-      "flow_order": 110,
+      "flow_order": 140,
       "column": "疑点",
       "type": "事件",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_fishing_village_embers.png",
@@ -169,7 +172,7 @@
     },
     "ch3_burned_storehouse": {
       "flow_enabled": true,
-      "flow_order": 180,
+      "flow_order": 210,
       "column": "压迫",
       "type": "事件",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_burned_storehouse.png",
@@ -178,7 +181,7 @@
     },
     "ch3_escort_aftermath": {
       "flow_enabled": true,
-      "flow_order": 170,
+      "flow_order": 200,
       "column": "压迫",
       "type": "战后处理",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_transport_officer_aftermath.png",
@@ -187,7 +190,7 @@
     },
     "ch3_escort_clash_battle": {
       "flow_enabled": true,
-      "flow_order": 160,
+      "flow_order": 190,
       "column": "压迫",
       "type": "精英战斗",
       "visual_path": "res://assets/pixel_battle/portraits/transport_officer.png",
@@ -196,7 +199,7 @@
     },
     "ch3_escort_silence": {
       "flow_enabled": true,
-      "flow_order": 150,
+      "flow_order": 180,
       "column": "压迫",
       "type": "事件",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_escort_silence.png",
@@ -205,7 +208,7 @@
     },
     "ch3_firearm_marking": {
       "flow_enabled": true,
-      "flow_order": 130,
+      "flow_order": 160,
       "column": "疑点",
       "type": "旧物",
       "visual_path": "res://assets/narrative/props/prop_ch3_firearm_marking.png",
@@ -214,7 +217,7 @@
     },
     "ch3_official_notice": {
       "flow_enabled": true,
-      "flow_order": 190,
+      "flow_order": 220,
       "column": "军门",
       "type": "事件",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_official_notice.png",
@@ -223,7 +226,7 @@
     },
     "ch3_sealed_crate": {
       "flow_enabled": true,
-      "flow_order": 140,
+      "flow_order": 170,
       "column": "疑点",
       "type": "旧物",
       "visual_path": "res://assets/narrative/props/prop_ch3_sealed_crate.png",
@@ -232,7 +235,7 @@
     },
     "ch4_hidden_document": {
       "flow_enabled": true,
-      "flow_order": 250,
+      "flow_order": 280,
       "column": "压迫",
       "type": "旧物",
       "visual_path": "res://assets/narrative/props/prop_ch4_hidden_document.png",
@@ -241,7 +244,7 @@
     },
     "ch4_master_hesitation": {
       "flow_enabled": true,
-      "flow_order": 220,
+      "flow_order": 250,
       "column": "压迫",
       "type": "事件",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch4_master_hesitation.png",
@@ -250,7 +253,7 @@
     },
     "ch4_master_silence": {
       "flow_enabled": true,
-      "flow_order": 260,
+      "flow_order": 290,
       "column": "军门",
       "type": "事件",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch4_master_silence.png",
@@ -259,7 +262,7 @@
     },
     "ch4_old_anchor_chain": {
       "flow_enabled": true,
-      "flow_order": 210,
+      "flow_order": 240,
       "column": "疑点",
       "type": "旧物",
       "visual_path": "res://assets/narrative/props/prop_ch4_old_anchor_chain.png",
@@ -268,7 +271,7 @@
     },
     "ch4_tide_aftermath": {
       "flow_enabled": true,
-      "flow_order": 240,
+      "flow_order": 270,
       "column": "压迫",
       "type": "战后处理",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch4_tide_aftermath.png",
@@ -277,7 +280,7 @@
     },
     "ch4_tide_bandits_battle": {
       "flow_enabled": true,
-      "flow_order": 230,
+      "flow_order": 260,
       "column": "压迫",
       "type": "精英战斗",
       "visual_path": "res://assets/pixel_battle/backgrounds/battle_bg_mutiny_camp.png",
@@ -286,7 +289,7 @@
     },
     "ch4_tide_reveals_marks": {
       "flow_enabled": true,
-      "flow_order": 200,
+      "flow_order": 230,
       "column": "疑点",
       "type": "旧物",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch4_tide_reveals_marks.png",
@@ -322,7 +325,7 @@
     },
     "military_coverup": {
       "flow_enabled": true,
-      "flow_order": 320,
+      "flow_order": 350,
       "column": "军门",
       "type": "结尾",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_coverup.png",
@@ -340,12 +343,12 @@
     },
     "military_order": {
       "flow_enabled": true,
-      "flow_order": 60,
+      "flow_order": 90,
       "column": "军令",
       "type": "事件",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_order.png",
       "implementation_status": "playable",
-      "note": "当前 MVP 主流程节点：军令巡海"
+      "note": "当前 MVP 主流程节点：军令巡海（武举重排后兼容后移）"
     },
     "ming_firearm": {
       "flow_enabled": false,
@@ -412,48 +415,111 @@
     },
     "wuke_after_choice": {
       "flow_enabled": true,
-      "flow_order": 50,
+      "flow_order": 70,
       "column": "wuke",
       "type": "事件",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_official_notice.png",
       "implementation_status": "playable",
-      "note": "武举开局：放榜后三选一，随后进入军门任差"
+      "note": "武举放榜节点；本轮保留原三选一"
     },
     "wuke_blade_trial": {
-      "flow_enabled": true,
-      "flow_order": 20,
+      "flow_enabled": false,
+      "flow_order": null,
       "column": "wuke",
       "type": "普通战斗",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_escort_silence.png",
-      "implementation_status": "playable",
-      "note": "武举开局：第二试试刀（正式剧情战斗）"
+      "implementation_status": "reserved",
+      "note": "旧武举第二试节点；保留兼容，不进入默认 flow"
     },
     "wuke_final_duel": {
-      "flow_enabled": true,
-      "flow_order": 40,
+      "flow_enabled": false,
+      "flow_order": null,
       "column": "wuke",
       "type": "普通战斗",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_escort_silence.png",
-      "implementation_status": "playable",
-      "note": "武举开局：终试对决；使用已选枪/刀路线"
+      "implementation_status": "reserved",
+      "note": "旧武举终试节点；保留兼容，不进入默认 flow"
     },
     "wuke_route_choice": {
-      "flow_enabled": true,
-      "flow_order": 30,
+      "flow_enabled": false,
+      "flow_order": null,
       "column": "wuke",
       "type": "事件",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch4_master_hesitation.png",
-      "implementation_status": "playable",
-      "note": "武举开局：第三试定路（枪/刀），非普通战斗节点"
+      "implementation_status": "reserved",
+      "note": "旧武举定路节点；保留兼容，不进入默认 flow"
     },
     "wuke_spear_trial": {
+      "flow_enabled": false,
+      "flow_order": null,
+      "column": "wuke",
+      "type": "普通战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_order.png",
+      "implementation_status": "reserved",
+      "note": "旧武举第一试节点；保留兼容，不进入默认 flow"
+    },
+    "world_map_entry": {
+      "flow_enabled": true,
+      "flow_order": 80,
+      "column": "海疆",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch2_sea_route_unusual.png",
+      "implementation_status": "playable",
+      "note": "海疆大势图入口占位；本轮仅叙事过渡，不接随机大地图"
+    },
+    "wuke_group_spear_trial": {
       "flow_enabled": true,
       "flow_order": 10,
       "column": "wuke",
       "type": "普通战斗",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_order.png",
       "implementation_status": "playable",
-      "note": "武举开局：第一试试枪（正式剧情战斗）"
+      "note": "武举小组赛第一场：试枪（临时枪路线）"
+    },
+    "wuke_group_blade_trial": {
+      "flow_enabled": true,
+      "flow_order": 20,
+      "column": "wuke",
+      "type": "普通战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_escort_silence.png",
+      "implementation_status": "playable",
+      "note": "武举小组赛第二场：试刀（临时刀路线）"
+    },
+    "wuke_elim_route_choice": {
+      "flow_enabled": true,
+      "flow_order": 30,
+      "column": "wuke",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch4_master_hesitation.png",
+      "implementation_status": "playable",
+      "note": "淘汰赛前正式定器：写入 career_choice"
+    },
+    "wuke_elim_gu_chengyue_battle": {
+      "flow_enabled": true,
+      "flow_order": 40,
+      "column": "wuke",
+      "type": "普通战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_escort_silence.png",
+      "implementation_status": "playable",
+      "note": "淘汰赛第一场：顾承岳"
+    },
+    "wuke_elim_shen_zhaoye_battle": {
+      "flow_enabled": true,
+      "flow_order": 50,
+      "column": "wuke",
+      "type": "普通战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_escort_silence.png",
+      "implementation_status": "playable",
+      "note": "淘汰赛第二场：沈照夜"
+    },
+    "wuke_elim_qi_heng_battle": {
+      "flow_enabled": true,
+      "flow_order": 60,
+      "column": "wuke",
+      "type": "普通战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_escort_silence.png",
+      "implementation_status": "playable",
+      "note": "淘汰赛第三场：戚衡"
     }
   },
   "prologue": {
@@ -571,7 +637,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_order.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 60,
+      "flow_order": 90,
       "dialogue": [
         "巡海三十里。",
         "若见旧案，不得声张。",
@@ -1172,7 +1238,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_coverup.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 320,
+      "flow_order": 350,
       "dialogue": [
         "倭患已平。",
         "首级够了。",
@@ -1223,9 +1289,8 @@
       "column": "wuke",
       "type": "普通战斗",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_order.png",
-      "implementation_status": "playable",
-      "flow_enabled": true,
-      "flow_order": 10,
+      "implementation_status": "reserved",
+      "flow_enabled": false,
       "dialogue": [],
       "combat": {
         "enabled": true,
@@ -1265,16 +1330,18 @@
       "column": "wuke",
       "type": "普通战斗",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_escort_silence.png",
-      "implementation_status": "playable",
-      "flow_enabled": true,
-      "flow_order": 20,
+      "implementation_status": "reserved",
+      "flow_enabled": false,
       "dialogue": [],
       "combat": {
         "enabled": true,
         "encounter_id": "enc_wuke_blade_trial",
         "battle_id": "wuke_blade_trial",
         "button": "试刀",
-        "override_player_profile": false
+        "override_player_profile": true,
+        "temporary_player_role": "blademaster",
+        "temporary_player_career": "武科刀生",
+        "temporary_player_weapon": "腰刀"
       },
       "choices": [
         {
@@ -1288,7 +1355,10 @@
             "encounter_id": "enc_wuke_blade_trial",
             "battle_id": "wuke_blade_trial",
             "button": "试刀",
-            "override_player_profile": false
+            "override_player_profile": true,
+            "temporary_player_role": "blademaster",
+            "temporary_player_career": "武科刀生",
+            "temporary_player_weapon": "腰刀"
           }
         }
       ]
@@ -1297,6 +1367,199 @@
       "id": "wuke_route_choice",
       "title": "器械定路",
       "scene": "终试之前，试官让你自取一器。",
+      "text": "枪在左，刀在右。师父站在人群外，没有替你看任何一边。",
+      "column": "wuke",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch4_master_hesitation.png",
+      "implementation_status": "reserved",
+      "flow_enabled": false,
+      "dialogue": [],
+      "combat": {
+        "enabled": false
+      },
+      "choices": [
+        {
+          "label": "取枪",
+          "result": "你握住枪尾，白线外的风忽然安静。",
+          "effects": {
+            "career_choice": "spearman"
+          }
+        },
+        {
+          "label": "取刀",
+          "result": "你扣住刀鞘，堂上的目光压低了一寸。",
+          "effects": {
+            "career_choice": "blademaster"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wuke_final_duel",
+      "title": "红榜终试",
+      "scene": "终试那日，堂上坐着的人比校场上的人更安静。",
+      "text": "对面那名武生先行礼，手却没有离开兵器。",
+      "column": "wuke",
+      "type": "普通战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_escort_silence.png",
+      "implementation_status": "reserved",
+      "flow_enabled": false,
+      "dialogue": [],
+      "combat": {
+        "enabled": true,
+        "encounter_id": "enc_wuke_final_duel",
+        "battle_id": "wuke_final_duel",
+        "button": "应试",
+        "override_player_profile": true
+      },
+      "choices": [
+        {
+          "label": "应试",
+          "result": "红榜贴出时，你的名字在风里晃了一下。",
+          "effects": {
+            "military_merit": 1,
+            "clean_reputation": 1
+          },
+          "combat": {
+            "enabled": true,
+            "encounter_id": "enc_wuke_final_duel",
+            "battle_id": "wuke_final_duel",
+            "button": "应试",
+            "override_player_profile": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "wuke_after_choice",
+      "title": "武科放榜",
+      "scene": "榜纸被风吹得很响。",
+      "text": "红榜贴出时，你的名字在风里晃了一下。",
+      "column": "wuke",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_official_notice.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 70,
+      "dialogue": [],
+      "combat": {
+        "enabled": false
+      },
+      "choices": [
+        {
+          "label": "接军门荐书",
+          "result": "顾承岳在堂外等你。\n朱印压上纸面，你第一次离军门这么近。",
+          "effects": {
+            "military_merit": 2,
+            "rival_gu_bond": 1
+          }
+        },
+        {
+          "label": "去人群中找沈照夜",
+          "result": "他把榜纸折成一条船。\n“榜上有名，不算岸上有人。”",
+          "effects": {
+            "clean_reputation": 2,
+            "rival_shen_bond": 1
+          }
+        },
+        {
+          "label": "追问戚衡",
+          "result": "戚衡听见你的姓，停了一息。\n“这个姓，我听过。”",
+          "effects": {
+            "case_clues": 2,
+            "rival_qi_bond": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "wuke_group_spear_trial",
+      "title": "小组试枪",
+      "scene": "校场泥还未干，枪架已经立起来。",
+      "text": "小组第一场，试官点到你的名字。师父没有抬头。",
+      "column": "wuke",
+      "type": "普通战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_order.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 10,
+      "dialogue": [],
+      "combat": {
+        "enabled": true,
+        "encounter_id": "enc_wuke_spear_trial",
+        "battle_id": "wuke_spear_trial",
+        "button": "试枪",
+        "override_player_profile": true,
+        "temporary_player_role": "spearman",
+        "temporary_player_career": "武科枪生",
+        "temporary_player_weapon": "长枪"
+      },
+      "choices": [
+        {
+          "label": "试枪",
+          "result": "枪锋收在白线前，鼓声才落下。",
+          "effects": {
+            "military_merit": 1
+          },
+          "combat": {
+            "enabled": true,
+            "encounter_id": "enc_wuke_spear_trial",
+            "battle_id": "wuke_spear_trial",
+            "button": "试枪",
+            "override_player_profile": true,
+            "temporary_player_role": "spearman",
+            "temporary_player_career": "武科枪生",
+            "temporary_player_weapon": "长枪"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wuke_group_blade_trial",
+      "title": "小组试刀",
+      "scene": "刀架前的白线，比枪场更近。",
+      "text": "小组第二场，对面的武生先退了半步。",
+      "column": "wuke",
+      "type": "普通战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_escort_silence.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 20,
+      "dialogue": [],
+      "combat": {
+        "enabled": true,
+        "encounter_id": "enc_wuke_blade_trial",
+        "battle_id": "wuke_blade_trial",
+        "button": "试刀",
+        "override_player_profile": true,
+        "temporary_player_role": "blademaster",
+        "temporary_player_career": "武科刀生",
+        "temporary_player_weapon": "腰刀"
+      },
+      "choices": [
+        {
+          "label": "试刀",
+          "result": "刀光停在寸前，名册旁多了一道短线。",
+          "effects": {
+            "military_merit": 1
+          },
+          "combat": {
+            "enabled": true,
+            "encounter_id": "enc_wuke_blade_trial",
+            "battle_id": "wuke_blade_trial",
+            "button": "试刀",
+            "override_player_profile": true,
+            "temporary_player_role": "blademaster",
+            "temporary_player_career": "武科刀生",
+            "temporary_player_weapon": "腰刀"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wuke_elim_route_choice",
+      "title": "淘汰定器",
+      "scene": "淘汰赛前，试官让你自取一器。",
       "text": "枪在左，刀在右。师父站在人群外，没有替你看任何一边。",
       "column": "wuke",
       "type": "事件",
@@ -1326,49 +1589,10 @@
       ]
     },
     {
-      "id": "wuke_after_choice",
-      "title": "武科放榜",
-      "scene": "榜纸被风吹得很响。",
-      "text": "红榜贴出时，你的名字在风里晃了一下。",
-      "column": "wuke",
-      "type": "事件",
-      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_official_notice.png",
-      "implementation_status": "playable",
-      "flow_enabled": true,
-      "flow_order": 50,
-      "dialogue": [],
-      "combat": {
-        "enabled": false
-      },
-      "choices": [
-        {
-          "label": "接军门荐书",
-          "result": "朱印压上纸面，你第一次离军门这么近。",
-          "effects": {
-            "military_merit": 2
-          }
-        },
-        {
-          "label": "拜谢同场武生",
-          "result": "有人笑着拍了拍你的肩，说日后江湖再见。",
-          "effects": {
-            "clean_reputation": 2
-          }
-        },
-        {
-          "label": "追问沉默老卒",
-          "result": "老卒听见你的姓，脸色变了一下。",
-          "effects": {
-            "case_clues": 2
-          }
-        }
-      ]
-    },
-    {
-      "id": "wuke_final_duel",
-      "title": "红榜终试",
-      "scene": "终试那日，堂上坐着的人比校场上的人更安静。",
-      "text": "对面那名武生先行礼，手却没有离开兵器。",
+      "id": "wuke_elim_gu_chengyue_battle",
+      "title": "淘汰赛：顾承岳",
+      "scene": "第一场淘汰赛，试官先念了他的籍贯。",
+      "text": "顾承岳。他行礼很正。连刀鞘都没有晃。",
       "column": "wuke",
       "type": "普通战斗",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_escort_silence.png",
@@ -1378,26 +1602,123 @@
       "dialogue": [],
       "combat": {
         "enabled": true,
-        "encounter_id": "enc_wuke_final_duel",
-        "battle_id": "wuke_final_duel",
-        "button": "应试",
+        "encounter_id": "enc_wuke_gu_chengyue",
+        "battle_id": "wuke_gu_chengyue",
+        "button": "应战",
         "override_player_profile": true
       },
       "choices": [
         {
-          "label": "应试",
-          "result": "红榜贴出时，你的名字在风里晃了一下。",
+          "label": "应战",
+          "result": "他收兵时，先看了榜，再看你。\n“军门会记得这一场。”",
           "effects": {
             "military_merit": 1,
-            "clean_reputation": 1
+            "rival_gu_bond": 1
           },
           "combat": {
             "enabled": true,
-            "encounter_id": "enc_wuke_final_duel",
-            "battle_id": "wuke_final_duel",
-            "button": "应试",
+            "encounter_id": "enc_wuke_gu_chengyue",
+            "battle_id": "wuke_gu_chengyue",
+            "button": "应战",
             "override_player_profile": true
           }
+        }
+      ]
+    },
+    {
+      "id": "wuke_elim_shen_zhaoye_battle",
+      "title": "淘汰赛：沈照夜",
+      "scene": "第二场，对面的人没有先看试官。",
+      "text": "他先看人群。沈照夜。袖口旧，眼神亮。",
+      "column": "wuke",
+      "type": "普通战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_escort_silence.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 50,
+      "dialogue": [],
+      "combat": {
+        "enabled": true,
+        "encounter_id": "enc_wuke_shen_zhaoye",
+        "battle_id": "wuke_shen_zhaoye",
+        "button": "应战",
+        "override_player_profile": true
+      },
+      "choices": [
+        {
+          "label": "应战",
+          "result": "他输了也笑。\n“你若只认榜，我们还会再打。”",
+          "effects": {
+            "clean_reputation": 1,
+            "rival_shen_bond": 1
+          },
+          "combat": {
+            "enabled": true,
+            "encounter_id": "enc_wuke_shen_zhaoye",
+            "battle_id": "wuke_shen_zhaoye",
+            "button": "应战",
+            "override_player_profile": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "wuke_elim_qi_heng_battle",
+      "title": "淘汰赛：戚衡",
+      "scene": "终试那日，堂上坐着的人比校场上的人更安静。",
+      "text": "对面的人先报了名。戚衡。他行礼很慢，像在量你的兵器，也像在量你的命。",
+      "column": "wuke",
+      "type": "普通战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_escort_silence.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 60,
+      "dialogue": [],
+      "combat": {
+        "enabled": true,
+        "encounter_id": "enc_wuke_qi_heng",
+        "battle_id": "wuke_qi_heng",
+        "button": "应战",
+        "override_player_profile": true
+      },
+      "choices": [
+        {
+          "label": "应战",
+          "result": "他退后半步。\n不是认输。\n是记下了你。\n“下次，不在校场。”",
+          "effects": {
+            "case_clues": 1,
+            "rival_qi_bond": 1
+          },
+          "combat": {
+            "enabled": true,
+            "encounter_id": "enc_wuke_qi_heng",
+            "battle_id": "wuke_qi_heng",
+            "button": "应战",
+            "override_player_profile": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "world_map_entry",
+      "title": "海疆大势图",
+      "scene": "军门摊开一张海疆图。",
+      "text": "潮线、营门、村火、破船，都只是图上的点。你要自己选先看哪里。",
+      "column": "海疆",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch2_sea_route_unusual.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 80,
+      "dialogue": [],
+      "combat": {
+        "enabled": false
+      },
+      "choices": [
+        {
+          "label": "查看海疆",
+          "result": "海风从图边吹过。旧案没有名字，只有方向。",
+          "effects": {}
         }
       ]
     },
@@ -1411,7 +1732,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch2_sea_route_unusual.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 70,
+      "flow_order": 100,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1456,7 +1777,7 @@
       "visual_path": "res://assets/narrative/props/prop_ch2_beach_tracks.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 80,
+      "flow_order": 110,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1501,7 +1822,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_beach_ambush.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 90,
+      "flow_order": 120,
       "dialogue": [],
       "combat": {
         "enabled": true,
@@ -1535,7 +1856,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch2_reed_ambush_aftermath.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 100,
+      "flow_order": 130,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1580,7 +1901,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_fishing_village_embers.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 110,
+      "flow_order": 140,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1625,7 +1946,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch2_night_signal_fire.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 120,
+      "flow_order": 150,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1668,7 +1989,7 @@
       "visual_path": "res://assets/narrative/props/prop_ch3_firearm_marking.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 130,
+      "flow_order": 160,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1713,7 +2034,7 @@
       "visual_path": "res://assets/narrative/props/prop_ch3_sealed_crate.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 140,
+      "flow_order": 170,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1758,7 +2079,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_escort_silence.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 150,
+      "flow_order": 180,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1803,7 +2124,7 @@
       "visual_path": "res://assets/pixel_battle/portraits/transport_officer.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 160,
+      "flow_order": 190,
       "dialogue": [],
       "combat": {
         "enabled": true,
@@ -1837,7 +2158,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_transport_officer_aftermath.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 170,
+      "flow_order": 200,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1882,7 +2203,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_burned_storehouse.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 180,
+      "flow_order": 210,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1927,7 +2248,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_official_notice.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 190,
+      "flow_order": 220,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1972,7 +2293,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch4_tide_reveals_marks.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 200,
+      "flow_order": 230,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1999,7 +2320,7 @@
       "visual_path": "res://assets/narrative/props/prop_ch4_old_anchor_chain.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 210,
+      "flow_order": 240,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -2026,7 +2347,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch4_master_hesitation.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 220,
+      "flow_order": 250,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -2053,7 +2374,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/battle_bg_mutiny_camp.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 230,
+      "flow_order": 260,
       "dialogue": [],
       "combat": {
         "enabled": true,
@@ -2087,7 +2408,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch4_tide_aftermath.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 240,
+      "flow_order": 270,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -2114,7 +2435,7 @@
       "visual_path": "res://assets/narrative/props/prop_ch4_hidden_document.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 250,
+      "flow_order": 280,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -2141,7 +2462,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch4_master_silence.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 260,
+      "flow_order": 290,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -2168,7 +2489,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_burning_ship_sighting.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 270,
+      "flow_order": 300,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -2195,7 +2516,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_hold_full_of_crates.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 280,
+      "flow_order": 310,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -2222,7 +2543,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_master_freeze_arrow.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 290,
+      "flow_order": 320,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -2249,7 +2570,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_wakou_leader.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 300,
+      "flow_order": 330,
       "dialogue": [],
       "combat": {
         "enabled": true,
@@ -2283,7 +2604,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_aftermath_choice.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 310,
+      "flow_order": 340,
       "dialogue": [],
       "combat": {
         "enabled": false

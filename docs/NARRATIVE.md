@@ -96,51 +96,97 @@ note
 
 ## 当前默认流程
 
-默认 flow 共 32 个节点。
+默认 flow 共 36 个节点。
 
-开局已调整为：试枪 → 试刀 → 器械定路 → 红榜终试 → 武科放榜 → 军门任差。
+开局已调整为：小组试枪 → 小组试刀 → 淘汰定器 → 顾承岳 → 沈照夜 → 戚衡 → 武科放榜 → 海疆大势图入口 → 军门任差（兼容后移）。
 
-`wuke_route_choice` 是枪 / 刀路线确定节点，不是普通收益节点。
+武举开局规则：
+- `wuke_group_spear_trial`、`wuke_group_blade_trial` 是临时路线教学战，不写入正式 `career_choice`。
+- `wuke_elim_route_choice` 才正式写入 `career_choice`。
+- `wuke_elim_gu_chengyue_battle`、`wuke_elim_shen_zhaoye_battle`、`wuke_elim_qi_heng_battle` 读取正式路线。
+- `world_map_entry` 目前是叙事入口占位，不接入随机大地图运行时。
+- 三名淘汰赛对手已进入长期叙事状态，后续可在海疆大势图随机剧情中引用。
 
-武举三试当前已接入正式剧情战斗：
-- `wuke_spear_trial`、`wuke_blade_trial` 是临时路线教学战，不决定最终职业。
-- `wuke_route_choice` 才正式写入 `career_choice`。
-- `wuke_final_duel` 使用已选路线。
+武举开局现在分为小组赛与淘汰赛：
+
+1. 小组试枪：临时枪路线体验，不写入正式 `career_choice`。
+2. 小组试刀：临时刀路线体验，不写入正式 `career_choice`。
+3. 淘汰定器：正式选择 `spearman` / `blademaster`，并写入 `career_choice`。
+4. 淘汰赛一：顾承岳，军门 / 军功 / 官路型对手。
+5. 淘汰赛二：沈照夜，江湖 / 清望 / 民间型对手。
+6. 淘汰赛三：戚衡，主劲敌 / 旧案 / 后续至交候选。
+7. 武科放榜：三选一，分别强化军门、民间、旧案方向。
+8. 海疆大势图入口：当前为占位，后续接入随机大地图。
 
 ```text
-10  wuke_spear_trial
-20  wuke_blade_trial
-30  wuke_route_choice
-40  wuke_final_duel
-50  wuke_after_choice
-60  military_order
-70  ch2_sea_route_unusual
-80  ch2_beach_tracks
-90  ch2_reed_ambush_battle
-100 ch2_reed_ambush_aftermath
-110 ch2_silent_village
-120 ch2_night_signal_fire
-130 ch3_firearm_marking
-140 ch3_sealed_crate
-150 ch3_escort_silence
-160 ch3_escort_clash_battle
-170 ch3_escort_aftermath
-180 ch3_burned_storehouse
-190 ch3_official_notice
-200 ch4_tide_reveals_marks
-210 ch4_old_anchor_chain
-220 ch4_master_hesitation
-230 ch4_tide_bandits_battle
-240 ch4_tide_aftermath
-250 ch4_hidden_document
-260 ch4_master_silence
-270 boss_ext_burning_ship_sighting
-280 boss_ext_hold_full_of_crates
-290 boss_ext_master_freeze_arrow
-300 boss_ext_wakou_leader_battle
-310 boss_ext_aftermath_choice
-320 military_coverup
+10  wuke_group_spear_trial
+20  wuke_group_blade_trial
+30  wuke_elim_route_choice
+40  wuke_elim_gu_chengyue_battle
+50  wuke_elim_shen_zhaoye_battle
+60  wuke_elim_qi_heng_battle
+70  wuke_after_choice
+80  world_map_entry
+90  military_order
+100 ch2_sea_route_unusual
+110 ch2_beach_tracks
+120 ch2_reed_ambush_battle
+130 ch2_reed_ambush_aftermath
+140 ch2_silent_village
+150 ch2_night_signal_fire
+160 ch3_firearm_marking
+170 ch3_sealed_crate
+180 ch3_escort_silence
+190 ch3_escort_clash_battle
+200 ch3_escort_aftermath
+210 ch3_burned_storehouse
+220 ch3_official_notice
+230 ch4_tide_reveals_marks
+240 ch4_old_anchor_chain
+250 ch4_master_hesitation
+260 ch4_tide_bandits_battle
+270 ch4_tide_aftermath
+280 ch4_hidden_document
+290 ch4_master_silence
+300 boss_ext_burning_ship_sighting
+310 boss_ext_hold_full_of_crates
+320 boss_ext_master_freeze_arrow
+330 boss_ext_wakou_leader_battle
+340 boss_ext_aftermath_choice
+350 military_coverup
 ```
+
+## 武举人物关系变量
+
+武举淘汰赛的三名对手会进入长期叙事状态：
+
+- 顾承岳：`rival_gu_bond`
+  - 军门同僚 / 官路互信。
+  - 后续可解锁军令同行、争功让功、堂上作证类节点。
+  - 淘汰赛一战后默认 +1；放榜选择“接军门荐书”额外 +1。
+
+- 沈照夜：`rival_shen_bond`
+  - 江湖 / 民间信任。
+  - 后续可解锁护民、盐户证言、江湖传名类节点。
+  - 淘汰赛二战后默认 +1；放榜选择“去人群中找沈照夜”额外 +1。
+
+- 戚衡：`rival_qi_bond`
+  - 主劲敌 / 同袍可能 / 旧案信任。
+  - 后续可解锁巡海重逢、奉令再斗、旧案证言、至交节点。
+  - 淘汰赛三战后默认 +1；放榜选择“追问戚衡”额外 +1。
+
+放榜三选一不再只是抽象收益，而是第一次主动选择靠近哪一名武举对手：
+
+| 选择 | 主收益 | 人物关系 |
+|---|---|---|
+| 接军门荐书 | `military_merit +2` | `rival_gu_bond +1` |
+| 去人群中找沈照夜 | `clean_reputation +2` | `rival_shen_bond +1` |
+| 追问戚衡 | `case_clues +2` | `rival_qi_bond +1` |
+
+后续使用边界：
+
+- 本轮仅接入人物关系变量，不改变随机大地图生成规则。后续 Step 8/9 会在 `map_node_pool.tsv` 中使用 `rival_*_bond` 作为随机剧情节点条件或权重来源。
+- 这些变量暂不直接参与 9 结局判定。后续可以将高 `rival_qi_bond` 接入旧案隐藏证言或至交节点，将高 `rival_gu_bond` 接入军门堂证节点，将高 `rival_shen_bond` 接入清望证言节点。
 
 旧压缩节点保留为节点池，不进入默认 flow：
 
@@ -159,6 +205,10 @@ mutiny_camp_aftermath
 military_messenger
 night_knife_camp
 wakou_boss
+wuke_spear_trial
+wuke_blade_trial
+wuke_route_choice
+wuke_final_duel
 ```
 
 ## 战斗叙事接入
@@ -210,9 +260,11 @@ tables/battle_scene_manifest.tsv
 | `transport_officer` | `enc_transport_officer` | `first_act_transport_officer` | `true` |
 | `mutiny_camp` | `enc_mutiny_camp` | `first_act_mutiny_camp` | `true` |
 | `wakou_boss` | `enc_wakou_boss` | `first_act_wakou_boss` | `true` |
-| `wuke_spear_trial` | `enc_wuke_spear_trial` | `wuke_spear_trial` | `true` |
-| `wuke_blade_trial` | `enc_wuke_blade_trial` | `wuke_blade_trial` | `true` |
-| `wuke_final_duel` | `enc_wuke_final_duel` | `wuke_final_duel` | `true` |
+| `wuke_group_spear_trial` | `enc_wuke_spear_trial` | `wuke_spear_trial` | `true` |
+| `wuke_group_blade_trial` | `enc_wuke_blade_trial` | `wuke_blade_trial` | `true` |
+| `wuke_elim_gu_chengyue_battle` | `enc_wuke_gu_chengyue` | `wuke_gu_chengyue` | `true` |
+| `wuke_elim_shen_zhaoye_battle` | `enc_wuke_shen_zhaoye` | `wuke_shen_zhaoye` | `true` |
+| `wuke_elim_qi_heng_battle` | `enc_wuke_qi_heng` | `wuke_qi_heng` | `true` |
 | `ch2_reed_ambush_battle` | `enc_ch2_reed_ambush` | `chapter2_reed_ambush` | `true` |
 | `ch3_escort_clash_battle` | `enc_ch3_escort_clash` | `chapter3_escort_clash` | `true` |
 | `ch4_tide_bandits_battle` | `enc_ch4_tide_bandits` | `chapter4_tide_bandits` | `true` |
@@ -223,6 +275,7 @@ tables/battle_scene_manifest.tsv
 - 敌我模板、数值、卡组、结算模式来自 `data/story_battles/*.tsv`。
 - `battle_id` 只负责视觉场景，不负责战斗数值。
 - 不在 UI 控制器里硬写剧情战敌人和卡组。
+- 武举 `wuke_group_spear_trial` / `wuke_group_blade_trial` 使用 `temporary_player_role` 做临时路线覆写时，临时 profile 必须显式提供合法的 `owned_card_ids` 与 `selected_loadout_ids`；其中 `selected_loadout_ids` 必须正好 8 张且满足同名卡数量上限，否则 `_start_battle()` 会因入战牌组不合法拒绝开战。
 - `tables/enemy_manifest_*.tsv` / `data/enemy_manifest.json` 是旧剧情战斗、AI 和 debug 兼容层，不再是正式剧情战斗主源。
 - 剧情武器意象要和 StoryBattle 卡组一致。例如枪手写“枪锋”，刀客写“刀光”。
 

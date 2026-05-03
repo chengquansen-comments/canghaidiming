@@ -380,7 +380,7 @@ func _presentation_style_for_card(card: CardData) -> String:
 		return "idle"
 	if card.is_guard_card():
 		return "guard"
-	if card.is_momentum_card() and int(card.damage) <= 0:
+	if card.is_feint_card() and int(card.damage) <= 0 and int(card.break_momentum) <= 0:
 		return "focus"
 	var weapon_style: String = str(card.weapon_style)
 	var card_id: String = str(card.id)

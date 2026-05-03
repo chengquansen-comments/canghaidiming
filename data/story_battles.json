@@ -163,6 +163,33 @@
         "default_facing": "left",
         "story_role": "武举终试",
         "notes": "武举终试对手"
+      },
+      {
+        "fighter_template_id": "rival_gu_chengyue",
+        "display_name": "顾承岳",
+        "weapon_style": "spearman",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "武举淘汰赛对手",
+        "notes": "军门出身，重规矩与距离"
+      },
+      {
+        "fighter_template_id": "rival_shen_zhaoye",
+        "display_name": "沈照夜",
+        "weapon_style": "blademaster",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "武举淘汰赛对手",
+        "notes": "江湖来路，轻快游走"
+      },
+      {
+        "fighter_template_id": "rival_qi_heng",
+        "display_name": "戚衡",
+        "weapon_style": "blademaster",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "主劲敌",
+        "notes": "武举主劲敌，后续旧案线候选"
       }
     ],
     "story_deck_sets": [
@@ -349,6 +376,30 @@
         "deck": "blade_front_cut:2,blade_chase_cut:1,blade_press_break:1,blade_breathe:1",
         "tags": "wuke,final,duel",
         "notes": "武举终试略高压但低于正式精英"
+      },
+      {
+        "story_deck_id": "rival_gu_chengyue_order",
+        "display_name": "顾承岳·军门正势",
+        "fighter_template_id": "rival_gu_chengyue",
+        "deck": "spear_mid_thrust:2,spear_guard_horse:1,spear_line_press:1",
+        "tags": "wuke,elim,rival",
+        "notes": "武举淘汰赛第一场：军门规整控距"
+      },
+      {
+        "story_deck_id": "rival_shen_zhaoye_roam",
+        "display_name": "沈照夜·游走短刀",
+        "fighter_template_id": "rival_shen_zhaoye",
+        "deck": "blade_front_cut:2,blade_chase_cut:1,blade_breathe:1,blade_hook_pull:1",
+        "tags": "wuke,elim,rival",
+        "notes": "武举淘汰赛第二场：民间游走切入"
+      },
+      {
+        "story_deck_id": "rival_qi_heng_duel",
+        "display_name": "戚衡·终试对决",
+        "fighter_template_id": "rival_qi_heng",
+        "deck": "blade_front_cut:2,blade_press_break:1,blade_chase_cut:1,blade_breathe:1",
+        "tags": "wuke,elim,rival",
+        "notes": "武举淘汰赛第三场：主劲敌压迫但可打"
       }
     ],
     "fighter_stat_sets": [
@@ -481,6 +532,36 @@
         "starting_realm": "3",
         "qinggong": "2",
         "notes": "Boss 与首领战，线性期收束用，避免进入海图前拖战过长"
+      },
+      {
+        "stat_set_id": "wuke_elim_1",
+        "display_name": "武举淘汰一轮",
+        "max_hp": "20",
+        "max_momentum": "7",
+        "starting_momentum": "4",
+        "starting_realm": "1",
+        "qinggong": "1",
+        "notes": "比教学略高，保证节奏"
+      },
+      {
+        "stat_set_id": "wuke_elim_2",
+        "display_name": "武举淘汰二轮",
+        "max_hp": "22",
+        "max_momentum": "7",
+        "starting_momentum": "5",
+        "starting_realm": "1",
+        "qinggong": "1",
+        "notes": "比首轮略高，保持可读"
+      },
+      {
+        "stat_set_id": "wuke_rival",
+        "display_name": "武举终试劲敌",
+        "max_hp": "24",
+        "max_momentum": "8",
+        "starting_momentum": "5",
+        "starting_realm": "1",
+        "qinggong": "1",
+        "notes": "主劲敌强度，低于正式精英"
       }
     ],
     "story_encounters": [
@@ -777,6 +858,48 @@
         "pressure_profile": "none",
         "intent_visibility_policy": "realm_based",
         "notes": "正式剧情：武举终试，玩家侧按已选路线覆写"
+      },
+      {
+        "encounter_id": "enc_wuke_gu_chengyue",
+        "display_name": "武举淘汰赛·顾承岳",
+        "player_template_id": "player_spearman",
+        "player_deck_id": "player_spear_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "rival_gu_chengyue",
+        "opponent_deck_id": "rival_gu_chengyue_order",
+        "opponent_stat_set_id": "wuke_elim_1",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "intent_visibility_policy": "full",
+        "notes": "正式剧情：武举淘汰赛第一场，玩家侧按 career_choice 覆写"
+      },
+      {
+        "encounter_id": "enc_wuke_shen_zhaoye",
+        "display_name": "武举淘汰赛·沈照夜",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "rival_shen_zhaoye",
+        "opponent_deck_id": "rival_shen_zhaoye_roam",
+        "opponent_stat_set_id": "wuke_elim_2",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "intent_visibility_policy": "full",
+        "notes": "正式剧情：武举淘汰赛第二场，玩家侧按 career_choice 覆写"
+      },
+      {
+        "encounter_id": "enc_wuke_qi_heng",
+        "display_name": "武举淘汰赛·戚衡",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "rival_qi_heng",
+        "opponent_deck_id": "rival_qi_heng_duel",
+        "opponent_stat_set_id": "wuke_rival",
+        "settlement_mode": "reactive",
+        "pressure_profile": "break_resist",
+        "intent_visibility_policy": "realm_based",
+        "notes": "正式剧情：武举淘汰赛第三场，玩家侧按 career_choice 覆写"
       }
     ]
   },
@@ -943,6 +1066,33 @@
         "default_facing": "left",
         "story_role": "武举终试",
         "notes": "武举终试对手"
+      },
+      "rival_gu_chengyue": {
+        "fighter_template_id": "rival_gu_chengyue",
+        "display_name": "顾承岳",
+        "weapon_style": "spearman",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "武举淘汰赛对手",
+        "notes": "军门出身，重规矩与距离"
+      },
+      "rival_shen_zhaoye": {
+        "fighter_template_id": "rival_shen_zhaoye",
+        "display_name": "沈照夜",
+        "weapon_style": "blademaster",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "武举淘汰赛对手",
+        "notes": "江湖来路，轻快游走"
+      },
+      "rival_qi_heng": {
+        "fighter_template_id": "rival_qi_heng",
+        "display_name": "戚衡",
+        "weapon_style": "blademaster",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "主劲敌",
+        "notes": "武举主劲敌，后续旧案线候选"
       }
     },
     "story_deck_sets_by_id": {
@@ -1129,6 +1279,30 @@
         "deck": "blade_front_cut:2,blade_chase_cut:1,blade_press_break:1,blade_breathe:1",
         "tags": "wuke,final,duel",
         "notes": "武举终试略高压但低于正式精英"
+      },
+      "rival_gu_chengyue_order": {
+        "story_deck_id": "rival_gu_chengyue_order",
+        "display_name": "顾承岳·军门正势",
+        "fighter_template_id": "rival_gu_chengyue",
+        "deck": "spear_mid_thrust:2,spear_guard_horse:1,spear_line_press:1",
+        "tags": "wuke,elim,rival",
+        "notes": "武举淘汰赛第一场：军门规整控距"
+      },
+      "rival_shen_zhaoye_roam": {
+        "story_deck_id": "rival_shen_zhaoye_roam",
+        "display_name": "沈照夜·游走短刀",
+        "fighter_template_id": "rival_shen_zhaoye",
+        "deck": "blade_front_cut:2,blade_chase_cut:1,blade_breathe:1,blade_hook_pull:1",
+        "tags": "wuke,elim,rival",
+        "notes": "武举淘汰赛第二场：民间游走切入"
+      },
+      "rival_qi_heng_duel": {
+        "story_deck_id": "rival_qi_heng_duel",
+        "display_name": "戚衡·终试对决",
+        "fighter_template_id": "rival_qi_heng",
+        "deck": "blade_front_cut:2,blade_press_break:1,blade_chase_cut:1,blade_breathe:1",
+        "tags": "wuke,elim,rival",
+        "notes": "武举淘汰赛第三场：主劲敌压迫但可打"
       }
     },
     "fighter_stat_sets_by_id": {
@@ -1261,6 +1435,36 @@
         "starting_realm": "3",
         "qinggong": "2",
         "notes": "Boss 与首领战，线性期收束用，避免进入海图前拖战过长"
+      },
+      "wuke_elim_1": {
+        "stat_set_id": "wuke_elim_1",
+        "display_name": "武举淘汰一轮",
+        "max_hp": "20",
+        "max_momentum": "7",
+        "starting_momentum": "4",
+        "starting_realm": "1",
+        "qinggong": "1",
+        "notes": "比教学略高，保证节奏"
+      },
+      "wuke_elim_2": {
+        "stat_set_id": "wuke_elim_2",
+        "display_name": "武举淘汰二轮",
+        "max_hp": "22",
+        "max_momentum": "7",
+        "starting_momentum": "5",
+        "starting_realm": "1",
+        "qinggong": "1",
+        "notes": "比首轮略高，保持可读"
+      },
+      "wuke_rival": {
+        "stat_set_id": "wuke_rival",
+        "display_name": "武举终试劲敌",
+        "max_hp": "24",
+        "max_momentum": "8",
+        "starting_momentum": "5",
+        "starting_realm": "1",
+        "qinggong": "1",
+        "notes": "主劲敌强度，低于正式精英"
       }
     },
     "story_encounters_by_id": {
@@ -1557,6 +1761,48 @@
         "pressure_profile": "none",
         "intent_visibility_policy": "realm_based",
         "notes": "正式剧情：武举终试，玩家侧按已选路线覆写"
+      },
+      "enc_wuke_gu_chengyue": {
+        "encounter_id": "enc_wuke_gu_chengyue",
+        "display_name": "武举淘汰赛·顾承岳",
+        "player_template_id": "player_spearman",
+        "player_deck_id": "player_spear_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "rival_gu_chengyue",
+        "opponent_deck_id": "rival_gu_chengyue_order",
+        "opponent_stat_set_id": "wuke_elim_1",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "intent_visibility_policy": "full",
+        "notes": "正式剧情：武举淘汰赛第一场，玩家侧按 career_choice 覆写"
+      },
+      "enc_wuke_shen_zhaoye": {
+        "encounter_id": "enc_wuke_shen_zhaoye",
+        "display_name": "武举淘汰赛·沈照夜",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "rival_shen_zhaoye",
+        "opponent_deck_id": "rival_shen_zhaoye_roam",
+        "opponent_stat_set_id": "wuke_elim_2",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "intent_visibility_policy": "full",
+        "notes": "正式剧情：武举淘汰赛第二场，玩家侧按 career_choice 覆写"
+      },
+      "enc_wuke_qi_heng": {
+        "encounter_id": "enc_wuke_qi_heng",
+        "display_name": "武举淘汰赛·戚衡",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "rival_qi_heng",
+        "opponent_deck_id": "rival_qi_heng_duel",
+        "opponent_stat_set_id": "wuke_rival",
+        "settlement_mode": "reactive",
+        "pressure_profile": "break_resist",
+        "intent_visibility_policy": "realm_based",
+        "notes": "正式剧情：武举淘汰赛第三场，玩家侧按 career_choice 覆写"
       }
     }
   },
@@ -1565,10 +1811,10 @@
     "errors": [],
     "warnings": [],
     "counts": {
-      "templates": 18,
-      "decks": 23,
-      "stats": 13,
-      "encounters": 21
+      "templates": 21,
+      "decks": 26,
+      "stats": 16,
+      "encounters": 24
     }
   }
 }

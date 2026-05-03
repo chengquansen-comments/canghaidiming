@@ -17,3 +17,6 @@ fallback_spearman	默认枪手	spearman	6	left	兜底敌人	缺省战斗配置
 wuke_spear_student	校场枪生	spearman	6	left	武举陪试	武举第一试陪练枪生
 wuke_blade_student	校场刀生	blademaster	6	left	武举陪试	武举第二试陪练刀生
 wuke_final_student	终试武生	blademaster	6	left	武举终试	武举终试对手
+rival_gu_chengyue	顾承岳	spearman	6	left	武举淘汰赛对手	军门出身，重规矩与距离
+rival_shen_zhaoye	沈照夜	blademaster	6	left	武举淘汰赛对手	江湖来路，轻快游走
+rival_qi_heng	戚衡	blademaster	6	left	主劲敌	武举主劲敌，后续旧案线候选

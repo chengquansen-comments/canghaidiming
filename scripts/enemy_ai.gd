@@ -23,7 +23,7 @@ func clear_manifest_behavior() -> void:
 
 func choose_intent(enemy: Fighter, opponent: Fighter, current_distance: int, opponent_visible_intent: IntentData) -> IntentData:
 	if enemy.is_broken():
-		var stagger := IntentData.from_card(enemy, CardData.new("staggered", "崩势硬直", "崩势未稳，无法行动", 0, 8, 0, CardData.ROLE_MOMENTUM, 0, 0, 0, 0))
+		var stagger := IntentData.from_card(enemy, CardData.new("staggered", "崩势硬直", "崩势未稳，无法行动", 0, 8, 0, CardData.ROLE_GUARD, 0, 0, 0, 0))
 		_assign_best_stance(stagger, enemy, opponent, stagger.actual_card)
 		return stagger
 
@@ -70,7 +70,7 @@ func _pick_best_card(enemy: Fighter, cards: Array[CardData], current_momentum: i
 
 func _base_card_score(enemy: Fighter, card: CardData, current_distance: int, opponent_visible_intent: IntentData) -> int:
 	var score := 0
-	if card.is_momentum_card():
+	if card.is_feint_card():
 		score += card.gain_momentum * 2 + card.break_momentum * 2
 	if card.is_damage_card():
 		score += card.damage
@@ -92,7 +92,7 @@ func _manifest_intent_score(enemy: Fighter, card: CardData, opponent_visible_int
 	if manifest_intent_weights.is_empty():
 		return 0.0
 	var score := 0.0
-	if card.is_momentum_card():
+	if card.is_feint_card():
 		score += float(manifest_intent_weights.get("gain_posture", 0.0)) * float(card.gain_momentum) * 10.0
 		score += float(manifest_intent_weights.get("break_posture", 0.0)) * float(card.break_momentum) * 10.0
 	if card.is_damage_card():
@@ -119,7 +119,7 @@ func _manifest_phase_score(enemy: Fighter, card: CardData) -> float:
 			if card.is_damage_card(): score += 8.0 + float(card.damage)
 			if card.has_tag("线索"): score += 6.0
 		"poke_pressure":
-			if card.is_momentum_card(): score += 4.0
+			if card.is_feint_card(): score += 4.0
 			if card.is_damage_card(): score += 3.0
 		"guard_then_poke", "guard_counter":
 			if card.is_guard_card(): score += 6.0
@@ -131,7 +131,7 @@ func _manifest_phase_score(enemy: Fighter, card: CardData) -> float:
 			if _card_has_feint_signal(card): score += 6.0
 			if card.break_momentum > 0: score += 3.0
 		"fallback":
-			if card.is_momentum_card(): score += 1.0
+			if card.is_feint_card(): score += 1.0
 		_:
 			pass
 	return score

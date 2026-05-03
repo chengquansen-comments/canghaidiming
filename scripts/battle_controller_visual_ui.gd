@@ -811,7 +811,7 @@ func _apply_card_button_style(button: Button, card: CardData, selected: bool, di
 	var border := Color("8a7856")
 	if card.is_guard_card():
 		border = Color("637d91")
-	elif card.is_momentum_card():
+	elif card.is_feint_card():
 		border = Color("6f8d76")
 	if selected:
 		border = Color("e2c066")
@@ -920,9 +920,9 @@ func _build_card_button_face(button: Button, card: CardData, marker: String, rea
 
 func _short_card_type_tag(card: CardData) -> String:
 	if card.is_guard_card():
-		return "防"
-	if card.is_momentum_card():
-		return "身"
+		return "守"
+	if card.is_feint_card():
+		return "变"
 	return "攻"
 
 func _make_type_tag_style(card: CardData) -> StyleBoxFlat:
@@ -930,7 +930,7 @@ func _make_type_tag_style(card: CardData) -> StyleBoxFlat:
 	style.bg_color = Color("6f2824")
 	if card.is_guard_card():
 		style.bg_color = Color("29495f")
-	elif card.is_momentum_card():
+	elif card.is_feint_card():
 		style.bg_color = Color("355d46")
 	style.border_color = Color("c7b181")
 	style.set_border_width_all(1)
@@ -942,7 +942,7 @@ func _make_card_art_style(card: CardData) -> StyleBoxFlat:
 	style.bg_color = Color("202934")
 	if card.is_guard_card():
 		style.bg_color = Color("243443")
-	elif card.is_momentum_card():
+	elif card.is_feint_card():
 		style.bg_color = Color("24382e")
 	style.border_color = Color("403b31")
 	style.set_border_width_all(1)
@@ -952,7 +952,7 @@ func _make_card_art_style(card: CardData) -> StyleBoxFlat:
 func _card_art_glyph(card: CardData) -> String:
 	if card.is_guard_card():
 		return "守"
-	if card.is_momentum_card():
+	if card.is_feint_card():
 		return "行"
 	if card.max_distance >= 3:
 		return "气"

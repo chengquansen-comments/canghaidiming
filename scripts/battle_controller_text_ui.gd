@@ -418,7 +418,7 @@ func _simulate_preview(player_preview_intent: IntentData, enemy_preview_intent: 
 		if card.id == "staggered":
 			lines.append("%s 崩势硬直，无法行动。" % actor_name)
 			continue
-		if card.is_momentum_card():
+		if card.is_feint_card():
 			if card.is_usable_at(state_machine.current_distance):
 				lines.append("此势招命中后才会增减势。")
 				if card.gain_momentum > 0:

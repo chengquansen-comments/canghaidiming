@@ -277,19 +277,19 @@ func _ready_card(
 
 
 func _build_catalog() -> void:
-	var spear_read := _ready_card("spear_read", "拧枪探势", "长枪控距试探，稳住中远节奏。", 3, 5, 1, CardData.ROLE_MOMENTUM, 2, 0, 0, 0, PackedStringArray(), "枪")
-	var spear_break := _ready_card("spear_break", "压杆破势", "枪杆压住来路，专削远处敌势。", 3, 5, 1, CardData.ROLE_MOMENTUM, 0, 2, 0, 0, PackedStringArray(), "枪")
-	var spear_senki := _ready_card("spear_senki", "回身截枪", "错身后反手截势，背向也可命中。", 2, 4, 2, CardData.ROLE_MOMENTUM, 2, 2, 0, 0, PackedStringArray(["先机", "回身"]), "枪")
-	var spear_mid := _ready_card("spear_mid", "中平长刺", "标准中远枪刺。", 3, 5, 1, CardData.ROLE_DAMAGE, 0, 0, 4, 0, PackedStringArray(["连招起手", "起手"]), "枪")
-	var spear_heavy := _ready_card("spear_heavy", "龙脊贯刺", "大开大合的远距重刺。", 4, 5, 2, CardData.ROLE_DAMAGE, 0, 0, 8, 0, PackedStringArray(["终结"]), "枪")
+	var spear_read := _ready_card("spear_read", "拧枪探势", "长枪控距试探，稳住中远节奏。", 3, 5, 1, CardData.ROLE_FEINT, 2, 0, 0, 0, PackedStringArray(), "枪")
+	var spear_break := _ready_card("spear_break", "压杆破势", "枪杆压住来路，专削远处敌势。", 3, 5, 1, CardData.ROLE_ATTACK, 0, 2, 0, 0, PackedStringArray(), "枪")
+	var spear_senki := _ready_card("spear_senki", "回身截枪", "错身后反手截势，背向也可命中。", 2, 4, 2, CardData.ROLE_ATTACK, 2, 2, 0, 0, PackedStringArray(["先机", "回身"]), "枪")
+	var spear_mid := _ready_card("spear_mid", "中平长刺", "标准中远枪刺。", 3, 5, 1, CardData.ROLE_ATTACK, 0, 0, 4, 0, PackedStringArray(["连招起手", "起手"]), "枪")
+	var spear_heavy := _ready_card("spear_heavy", "龙脊贯刺", "大开大合的远距重刺。", 4, 5, 2, CardData.ROLE_ATTACK, 0, 0, 8, 0, PackedStringArray(["终结"]), "枪")
 	var spear_guard := _ready_card("spear_guard", "回圆架", "回枪成圆，以守化险。", 0, 5, 1, CardData.ROLE_GUARD, 0, 0, 0, 4, PackedStringArray(), "枪", false)
 	var spear_wall := _ready_card("spear_wall", "封门守", "稳固门户，重守待机。", 0, 5, 2, CardData.ROLE_GUARD, 0, 0, 0, 8, PackedStringArray(), "枪", false)
 
-	var blade_probe := _ready_card("blade_probe", "贴步探刀", "刀客贴身试探，抢近身势。", 0, 2, 1, CardData.ROLE_MOMENTUM, 2, 0, 0, 0, PackedStringArray(), "刀")
-	var blade_press := _ready_card("blade_press", "逼身断势", "短兵贴压，专破近处敌势。", 0, 2, 1, CardData.ROLE_MOMENTUM, 0, 2, 0, 0, PackedStringArray(), "刀")
-	var blade_senki := _ready_card("blade_senki", "回身燕返", "错身回刀争先，背向也可命中。", 0, 2, 2, CardData.ROLE_MOMENTUM, 2, 2, 0, 0, PackedStringArray(["先机", "回身"]), "刀")
-	var blade_cut := _ready_card("blade_cut", "贴身快斩", "迅捷近身斩击。", 0, 2, 1, CardData.ROLE_DAMAGE, 0, 0, 4, 0, PackedStringArray(["连招起手", "起手"]), "刀")
-	var blade_heavy := _ready_card("blade_heavy", "断流重斩", "势大力沉的贴身压胜一斩。", 0, 1, 2, CardData.ROLE_DAMAGE, 0, 0, 8, 0, PackedStringArray(["终结"]), "刀")
+	var blade_probe := _ready_card("blade_probe", "贴步探刀", "刀客贴身试探，抢近身势。", 0, 2, 1, CardData.ROLE_FEINT, 2, 0, 0, 0, PackedStringArray(), "刀")
+	var blade_press := _ready_card("blade_press", "逼身断势", "短兵贴压，专破近处敌势。", 0, 2, 1, CardData.ROLE_ATTACK, 0, 2, 0, 0, PackedStringArray(), "刀")
+	var blade_senki := _ready_card("blade_senki", "回身燕返", "错身回刀争先，背向也可命中。", 0, 2, 2, CardData.ROLE_ATTACK, 2, 2, 0, 0, PackedStringArray(["先机", "回身"]), "刀")
+	var blade_cut := _ready_card("blade_cut", "贴身快斩", "迅捷近身斩击。", 0, 2, 1, CardData.ROLE_ATTACK, 0, 0, 4, 0, PackedStringArray(["连招起手", "起手"]), "刀")
+	var blade_heavy := _ready_card("blade_heavy", "断流重斩", "势大力沉的贴身压胜一斩。", 0, 1, 2, CardData.ROLE_ATTACK, 0, 0, 8, 0, PackedStringArray(["终结"]), "刀")
 	var blade_guard := _ready_card("blade_guard", "藏锋格", "低身藏锋，以格挡化险。", 0, 3, 1, CardData.ROLE_GUARD, 0, 0, 0, 4, PackedStringArray(), "刀", false)
 	var blade_wall := _ready_card("blade_wall", "锁门架", "以刀封门，强守不退。", 0, 3, 2, CardData.ROLE_GUARD, 0, 0, 0, 8, PackedStringArray(), "刀", false)
 
@@ -301,10 +301,10 @@ func _build_catalog() -> void:
 	fighter_catalog["master_veteran"] = FighterData.new("master_veteran", "沉默老兵", "旧腰刀", 48, 12, 9, 4, PackedInt32Array([0, 1, 2]), blade_deck, 3, 2, "right")
 
 	reward_pool = [
-		_ready_card("reward_momentum_up", "聚势", "专注提振自身势头。", 1, 3, 1, CardData.ROLE_MOMENTUM, 2, 0, 0, 0),
-		_ready_card("reward_momentum_break", "断势", "专注削弱敌方势头。", 1, 3, 1, CardData.ROLE_MOMENTUM, 0, 2, 0, 0),
-		_ready_card("reward_senki", "争先", "以先机抢夺势头。", 1, 2, 2, CardData.ROLE_MOMENTUM, 2, 2, 0, 0, PackedStringArray(["先机"])),
-		_ready_card("reward_damage", "重手", "纯粹追求压倒性伤害。", 1, 3, 2, CardData.ROLE_DAMAGE, 0, 0, 8, 0, PackedStringArray(["追击"])),
+		_ready_card("reward_momentum_up", "聚势", "专注提振自身势头。", 1, 3, 1, CardData.ROLE_FEINT, 2, 0, 0, 0),
+		_ready_card("reward_momentum_break", "断势", "专注削弱敌方势头。", 1, 3, 1, CardData.ROLE_ATTACK, 0, 2, 0, 0),
+		_ready_card("reward_senki", "争先", "以先机抢夺势头。", 1, 2, 2, CardData.ROLE_ATTACK, 2, 2, 0, 0, PackedStringArray(["先机"])),
+		_ready_card("reward_damage", "重手", "纯粹追求压倒性伤害。", 1, 3, 2, CardData.ROLE_ATTACK, 0, 0, 8, 0, PackedStringArray(["追击"])),
 		_ready_card("reward_guard", "铁壁", "纯粹追求稳固格挡。", 1, 3, 2, CardData.ROLE_GUARD, 0, 0, 0, 8)
 	]
 
@@ -689,8 +689,10 @@ func _combo_marker_text(fighter: Fighter, card: CardData) -> String:
 
 
 func _card_role_prefix(card: CardData) -> String:
-	if card.is_defense_card():
+	if card.is_guard_card():
 		return "【守】"
+	if card.is_feint_card():
+		return "【变】"
 	var stage := _damage_stage_tag(card)
 	if stage != "":
 		return "【攻/%s】" % stage
@@ -1091,8 +1093,10 @@ func _empty_deck_library_card_slot() -> Control:
 func _apply_deck_library_card_style(button: Button, card: CardData, disabled: bool) -> void:
 	var base := Color("141a20")
 	var border := Color("8a7856")
-	if card.is_defense_card():
+	if card.is_guard_card():
 		border = Color("637d91")
+	elif card.is_feint_card():
+		border = Color("6f8d76")
 	var normal := _make_flat_card_style(base, border, 2)
 	var hover := _make_flat_card_style(base.lightened(0.08), border.lightened(0.15), 3)
 	var pressed := _make_flat_card_style(base.lightened(0.14), Color("e6c36a"), 3)
@@ -1197,8 +1201,10 @@ func _deck_card_badge_style() -> StyleBoxFlat:
 func _deck_card_type_style(card: CardData) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color("6f2824")
-	if card.is_defense_card():
+	if card.is_guard_card():
 		style.bg_color = Color("29495f")
+	elif card.is_feint_card():
+		style.bg_color = Color("355d46")
 	style.border_color = Color("c7b181")
 	style.set_border_width_all(1)
 	style.set_corner_radius_all(4)
@@ -1208,8 +1214,10 @@ func _deck_card_type_style(card: CardData) -> StyleBoxFlat:
 func _deck_card_art_style(card: CardData) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color("202934")
-	if card.is_defense_card():
+	if card.is_guard_card():
 		style.bg_color = Color("243443")
+	elif card.is_feint_card():
+		style.bg_color = Color("24382e")
 	style.border_color = Color("403b31")
 	style.set_border_width_all(1)
 	style.set_corner_radius_all(5)
@@ -1217,12 +1225,14 @@ func _deck_card_art_style(card: CardData) -> StyleBoxFlat:
 
 
 func _short_card_type_tag_for_builder(card: CardData) -> String:
-	return "守" if card.is_defense_card() else "攻"
+	return card.type_label()
 
 
 func _deck_card_art_glyph(card: CardData) -> String:
-	if card.is_defense_card():
+	if card.is_guard_card():
 		return "架"
+	if card.is_feint_card():
+		return "行"
 	return "击"
 
 
@@ -1304,7 +1314,7 @@ func _card_matches_library_filter(card: CardData, filter_label: String) -> bool:
 		"攻":
 			return card.is_attack_card()
 		"守":
-			return card.is_defense_card()
+			return card.is_guard_card()
 		"藏招":
 			return card.has_tag("藏招") or card.id.begins_with("hidden_")
 	return true
@@ -1525,12 +1535,12 @@ func _cancel_hidden_fusion() -> void:
 func _build_hidden_fusion_card(first_card: CardData, second_card: CardData) -> CardData:
 	var tags := PackedStringArray(["藏招"])
 	var fused_cost := first_card.momentum_cost + second_card.momentum_cost
-	if first_card.is_momentum_card() and second_card.is_momentum_card():
-		return _ready_card("hidden_%s_%s" % [first_card.id, second_card.id], "藏招·%s/%s" % [first_card.display_name, second_card.display_name], "双势并举的藏招。", 1, 3, fused_cost, CardData.ROLE_MOMENTUM, first_card.gain_momentum + second_card.gain_momentum, first_card.break_momentum + second_card.break_momentum, 0, 0, tags)
+	if first_card.is_feint_card() and second_card.is_feint_card():
+		return _ready_card("hidden_%s_%s" % [first_card.id, second_card.id], "藏招·%s/%s" % [first_card.display_name, second_card.display_name], "双变并行的藏招。", 1, 3, fused_cost, CardData.ROLE_FEINT, first_card.gain_momentum + second_card.gain_momentum, first_card.break_momentum + second_card.break_momentum, 0, 0, tags)
 	if first_card.is_guard_card() and second_card.is_guard_card():
 		return _ready_card("hidden_%s_%s" % [first_card.id, second_card.id], "藏招·%s/%s" % [first_card.display_name, second_card.display_name], "双守并立的藏招。", 1, 3, fused_cost, CardData.ROLE_GUARD, 0, 0, 0, first_card.guard + second_card.guard, tags)
 	tags.append("终结")
-	return _ready_card("hidden_%s_%s" % [first_card.id, second_card.id], "藏招·%s/%s" % [first_card.display_name, second_card.display_name], "双重杀伤的藏招。", 1, 3, fused_cost, CardData.ROLE_DAMAGE, 0, 0, first_card.damage + second_card.damage, 0, tags)
+	return _ready_card("hidden_%s_%s" % [first_card.id, second_card.id], "藏招·%s/%s" % [first_card.display_name, second_card.display_name], "双重杀伤的藏招。", 1, 3, fused_cost, CardData.ROLE_ATTACK, 0, 0, first_card.damage + second_card.damage, 0, tags)
 
 
 func _open_deck_view() -> void:
@@ -2161,7 +2171,7 @@ func _preview_wait_card() -> CardData:
 
 
 func _stagger_card() -> CardData:
-	return _ready_card("staggered", "崩势硬直", "势被打崩，下一回合无法行动。", 0, 8, 0, CardData.ROLE_MOMENTUM, 0, 0, 0, 0, PackedStringArray(), "", false)
+	return _ready_card("staggered", "崩势硬直", "势被打崩，下一回合无法行动。", 0, 8, 0, CardData.ROLE_GUARD, 0, 0, 0, 0, PackedStringArray(), "", false)
 
 
 func _refresh_log() -> void:

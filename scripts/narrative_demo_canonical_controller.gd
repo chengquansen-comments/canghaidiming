@@ -9,6 +9,9 @@ const VAR_MILITARY_MERIT := "military_merit"
 const VAR_CLEAN_REPUTATION := "clean_reputation"
 const VAR_CASE_CLUES := "case_clues"
 const VAR_SOLDIER_TRUST := "soldier_trust"
+const VAR_RIVAL_GU_BOND := "rival_gu_bond"
+const VAR_RIVAL_SHEN_BOND := "rival_shen_bond"
+const VAR_RIVAL_QI_BOND := "rival_qi_bond"
 
 const LEGACY_VAR_ALIASES := {
 	"jun_gong": VAR_MILITARY_MERIT,
@@ -16,7 +19,10 @@ const LEGACY_VAR_ALIASES := {
 	"clues": VAR_CASE_CLUES,
 	"public_repute": VAR_CLEAN_REPUTATION,
 	"case_clues": VAR_CASE_CLUES,
-	"soldier_trust": VAR_SOLDIER_TRUST
+	"soldier_trust": VAR_SOLDIER_TRUST,
+	"rival_gu_bond": VAR_RIVAL_GU_BOND,
+	"rival_shen_bond": VAR_RIVAL_SHEN_BOND,
+	"rival_qi_bond": VAR_RIVAL_QI_BOND
 }
 
 const MVP_NODE_IDS := [
@@ -51,13 +57,35 @@ const MVP_NODE_META := {
 
 var node_sentence_index: int = 0
 var selected_ending_flag: String = ""
+var rival_gu_bond: int = 0
+var rival_shen_bond: int = 0
+var rival_qi_bond: int = 0
+
+func _narrative_state_snapshot() -> Dictionary:
+	var base_state := super._narrative_state_snapshot()
+	base_state[VAR_RIVAL_GU_BOND] = rival_gu_bond
+	base_state[VAR_RIVAL_SHEN_BOND] = rival_shen_bond
+	base_state[VAR_RIVAL_QI_BOND] = rival_qi_bond
+	return base_state
+
+func _restore_narrative_state_from_context() -> void:
+	super._restore_narrative_state_from_context()
+	if not NarrativeBattleContext.has_narrative_state():
+		return
+	var state: Dictionary = NarrativeBattleContext.get_narrative_state()
+	rival_gu_bond = int(state.get(VAR_RIVAL_GU_BOND, rival_gu_bond))
+	rival_shen_bond = int(state.get(VAR_RIVAL_SHEN_BOND, rival_shen_bond))
+	rival_qi_bond = int(state.get(VAR_RIVAL_QI_BOND, rival_qi_bond))
 
 func _canonical_state() -> Dictionary:
 	return {
 		VAR_MILITARY_MERIT: jun_gong,
 		VAR_CLEAN_REPUTATION: qing_wang,
 		VAR_CASE_CLUES: clues,
-		VAR_SOLDIER_TRUST: 0
+		VAR_SOLDIER_TRUST: 0,
+		VAR_RIVAL_GU_BOND: rival_gu_bond,
+		VAR_RIVAL_SHEN_BOND: rival_shen_bond,
+		VAR_RIVAL_QI_BOND: rival_qi_bond
 	}
 
 func _normalize_effects(raw_effects: Dictionary) -> Dictionary:
@@ -65,7 +93,10 @@ func _normalize_effects(raw_effects: Dictionary) -> Dictionary:
 		VAR_MILITARY_MERIT: 0,
 		VAR_CLEAN_REPUTATION: 0,
 		VAR_CASE_CLUES: 0,
-		VAR_SOLDIER_TRUST: 0
+		VAR_SOLDIER_TRUST: 0,
+		VAR_RIVAL_GU_BOND: 0,
+		VAR_RIVAL_SHEN_BOND: 0,
+		VAR_RIVAL_QI_BOND: 0
 	}
 	for raw_key in raw_effects.keys():
 		var key := str(raw_key)
@@ -79,6 +110,9 @@ func _apply_canonical_effects(effects: Dictionary) -> void:
 	jun_gong += int(normalized[VAR_MILITARY_MERIT])
 	qing_wang += int(normalized[VAR_CLEAN_REPUTATION])
 	clues += int(normalized[VAR_CASE_CLUES])
+	rival_gu_bond += int(normalized[VAR_RIVAL_GU_BOND])
+	rival_shen_bond += int(normalized[VAR_RIVAL_SHEN_BOND])
+	rival_qi_bond += int(normalized[VAR_RIVAL_QI_BOND])
 	_save_narrative_state_to_context()
 
 func _record_choice_ending_flag(choice: Dictionary) -> void:
@@ -162,7 +196,15 @@ func _choice_effects_for_index(index: int) -> Dictionary:
 		var effects = configured.get("effects", {})
 		if effects is Dictionary:
 			return _normalize_effects(effects)
-	return {VAR_MILITARY_MERIT: 0, VAR_CLEAN_REPUTATION: 0, VAR_CASE_CLUES: 0, VAR_SOLDIER_TRUST: 0}
+	return {
+		VAR_MILITARY_MERIT: 0,
+		VAR_CLEAN_REPUTATION: 0,
+		VAR_CASE_CLUES: 0,
+		VAR_SOLDIER_TRUST: 0,
+		VAR_RIVAL_GU_BOND: 0,
+		VAR_RIVAL_SHEN_BOND: 0,
+		VAR_RIVAL_QI_BOND: 0
+	}
 
 func _add_choice_button(choice: Dictionary, index: int) -> void:
 	var node_id := _node_id_at(node_index)
@@ -198,7 +240,10 @@ func _apply_choice_delta(choice: Dictionary) -> void:
 		VAR_MILITARY_MERIT: int(choice.get(VAR_MILITARY_MERIT, choice.get("dg", choice.get("jun_gong", 0)))),
 		VAR_CLEAN_REPUTATION: int(choice.get(VAR_CLEAN_REPUTATION, choice.get("dq", choice.get("qing_wang", choice.get("public_repute", 0))))),
 		VAR_CASE_CLUES: int(choice.get(VAR_CASE_CLUES, choice.get("dc", choice.get("clues", 0)))),
-		VAR_SOLDIER_TRUST: int(choice.get(VAR_SOLDIER_TRUST, 0))
+		VAR_SOLDIER_TRUST: int(choice.get(VAR_SOLDIER_TRUST, 0)),
+		VAR_RIVAL_GU_BOND: int(choice.get(VAR_RIVAL_GU_BOND, 0)),
+		VAR_RIVAL_SHEN_BOND: int(choice.get(VAR_RIVAL_SHEN_BOND, 0)),
+		VAR_RIVAL_QI_BOND: int(choice.get(VAR_RIVAL_QI_BOND, 0))
 	})
 	NarrativeBattleContext.apply_player_growth("choice", 0, 0, 0, false)
 
@@ -207,7 +252,15 @@ func _battle_reward_for_source(source_index: int) -> Dictionary:
 	if context_reward is Dictionary and not (context_reward as Dictionary).is_empty():
 		return _normalize_effects(context_reward)
 	if source_index < 0 or source_index >= MVP_NODE_IDS.size():
-		return {VAR_MILITARY_MERIT: 0, VAR_CLEAN_REPUTATION: 0, VAR_CASE_CLUES: 0, VAR_SOLDIER_TRUST: 0}
+		return {
+			VAR_MILITARY_MERIT: 0,
+			VAR_CLEAN_REPUTATION: 0,
+			VAR_CASE_CLUES: 0,
+			VAR_SOLDIER_TRUST: 0,
+			VAR_RIVAL_GU_BOND: 0,
+			VAR_RIVAL_SHEN_BOND: 0,
+			VAR_RIVAL_QI_BOND: 0
+		}
 	var node: Dictionary = _node_data_at(source_index)
 	var encounter_id := str(node.get("combat", ""))
 	if has_method("_formal_reward_for_encounter"):
@@ -215,11 +268,11 @@ func _battle_reward_for_source(source_index: int) -> Dictionary:
 		return _normalize_effects(formal_reward)
 	match str(node.get("type", "")):
 		"普通战斗", "精英战斗":
-			return {VAR_MILITARY_MERIT: 1, VAR_CLEAN_REPUTATION: 0, VAR_CASE_CLUES: 1, VAR_SOLDIER_TRUST: 0}
+			return {VAR_MILITARY_MERIT: 1, VAR_CLEAN_REPUTATION: 0, VAR_CASE_CLUES: 1, VAR_SOLDIER_TRUST: 0, VAR_RIVAL_GU_BOND: 0, VAR_RIVAL_SHEN_BOND: 0, VAR_RIVAL_QI_BOND: 0}
 		"Boss":
-			return {VAR_MILITARY_MERIT: 2, VAR_CLEAN_REPUTATION: 0, VAR_CASE_CLUES: 2, VAR_SOLDIER_TRUST: 0}
+			return {VAR_MILITARY_MERIT: 2, VAR_CLEAN_REPUTATION: 0, VAR_CASE_CLUES: 2, VAR_SOLDIER_TRUST: 0, VAR_RIVAL_GU_BOND: 0, VAR_RIVAL_SHEN_BOND: 0, VAR_RIVAL_QI_BOND: 0}
 		_:
-			return {VAR_MILITARY_MERIT: 1, VAR_CLEAN_REPUTATION: 0, VAR_CASE_CLUES: 0, VAR_SOLDIER_TRUST: 0}
+			return {VAR_MILITARY_MERIT: 1, VAR_CLEAN_REPUTATION: 0, VAR_CASE_CLUES: 0, VAR_SOLDIER_TRUST: 0, VAR_RIVAL_GU_BOND: 0, VAR_RIVAL_SHEN_BOND: 0, VAR_RIVAL_QI_BOND: 0}
 
 func _battle_growth_reward_for_source(source_index: int) -> Dictionary:
 	if source_index < 0 or source_index >= MVP_NODE_IDS.size():
@@ -574,6 +627,9 @@ func _restart() -> void:
 	jun_gong = 0
 	qing_wang = 0
 	clues = 0
+	rival_gu_bond = 0
+	rival_shen_bond = 0
+	rival_qi_bond = 0
 	in_prologue = true
 	career_selected = false
 	last_hint = ""

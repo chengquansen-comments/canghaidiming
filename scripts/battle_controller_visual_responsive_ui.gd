@@ -38,19 +38,19 @@ func _build_catalog() -> void:
 	reward_pool.clear()
 	combo_registry.clear()
 
-	var spear_mid_thrust := _ready_v032_card("spear_mid_thrust", "中平直刺", "枪手标准二三格刺击，稳定伤害与削势。", 2, 3, 2, CardData.ROLE_DAMAGE, 0, 2, 5, 0, PackedStringArray(["长兵", "正面", "基础"]), "枪")
-	var spear_line_press := _ready_v032_card("spear_line_press", "拦枪压线", "枪杆压住来路，命中后将敌人击退一格。", 2, 3, 2, CardData.ROLE_MOMENTUM, 0, 3, 2, 0, PackedStringArray(["长兵", "破势", "控线"]), "枪", true, 0, 1, 0, CardData.MOVE_ON_HIT)
-	var spear_retreat_sting := _ready_v032_card("spear_retreat_sting", "退枪留锋", "近身脱身刺，命中后自身后撤一格。", 1, 2, 2, CardData.ROLE_DAMAGE, 0, 1, 4, 0, PackedStringArray(["长兵", "后撤", "脱身"]), "枪", true, -1, 0, 0, CardData.MOVE_ON_HIT)
+	var spear_mid_thrust := _ready_v032_card("spear_mid_thrust", "中平直刺", "枪手标准二三格刺击，稳定伤害与削势。", 2, 3, 2, CardData.ROLE_ATTACK, 0, 2, 5, 0, PackedStringArray(["长兵", "正面", "基础"]), "枪")
+	var spear_line_press := _ready_v032_card("spear_line_press", "拦枪压线", "枪杆压住来路，命中后将敌人击退一格。", 2, 3, 2, CardData.ROLE_ATTACK, 0, 3, 2, 0, PackedStringArray(["长兵", "破势", "控线"]), "枪", true, 0, 1, 0, CardData.MOVE_ON_HIT)
+	var spear_retreat_sting := _ready_v032_card("spear_retreat_sting", "退枪留锋", "近身脱身刺，命中后自身后撤一格。", 1, 2, 2, CardData.ROLE_ATTACK, 0, 1, 4, 0, PackedStringArray(["长兵", "后撤", "脱身"]), "枪", true, -1, 0, 0, CardData.MOVE_ON_HIT)
 	var spear_guard_horse := _ready_v032_card("spear_guard_horse", "架枪拒马", "架枪成拒马，稳守并推开敌人。", 0, 8, 2, CardData.ROLE_GUARD, 0, 0, 0, 7, PackedStringArray(["架势", "拒止"]), "枪", false, 0, 1, 0, CardData.MOVE_ALWAYS)
-	var spear_step_thrust := _ready_v032_card("spear_step_thrust", "顺步送枪", "三格追击刺，命中后自身进身一格。", 3, 3, 2, CardData.ROLE_DAMAGE, 0, 1, 6, 0, PackedStringArray(["长兵", "进身"]), "枪", true, 1, 0, 0, CardData.MOVE_ON_HIT)
-	var spear_focus := _ready_v032_card("spear_focus", "稳架蓄枪", "聚势整架并后撤，重建二三格控线。", 0, 8, 0, CardData.ROLE_MOMENTUM, 3, 0, 0, 2, PackedStringArray(["聚势", "架势"]), "枪", false, -1, 0, 0, CardData.MOVE_ALWAYS)
+	var spear_step_thrust := _ready_v032_card("spear_step_thrust", "顺步送枪", "三格追击刺，命中后自身进身一格。", 3, 3, 2, CardData.ROLE_ATTACK, 0, 1, 6, 0, PackedStringArray(["长兵", "进身"]), "枪", true, 1, 0, 0, CardData.MOVE_ON_HIT)
+	var spear_focus := _ready_v032_card("spear_focus", "稳架蓄枪", "聚势整架并后撤，重建二三格控线。", 0, 8, 0, CardData.ROLE_FEINT, 3, 0, 0, 2, PackedStringArray(["聚势", "架势"]), "枪", false, -1, 0, 0, CardData.MOVE_ALWAYS)
 
-	var blade_front_cut := _ready_v032_card("blade_front_cut", "迎门斩", "刀客一二格标准斩击。", 1, 2, 2, CardData.ROLE_DAMAGE, 0, 1, 6, 0, PackedStringArray(["短兵", "基础"]), "刀")
-	var blade_press_break := _ready_v032_card("blade_press_break", "压刀破架", "贴身压架，命中后拉近敌人一格。", 1, 1, 2, CardData.ROLE_MOMENTUM, 0, 4, 2, 0, PackedStringArray(["短兵", "破势", "贴身"]), "刀", true, 0, 0, 1, CardData.MOVE_ON_HIT)
-	var blade_chase_cut := _ready_v032_card("blade_chase_cut", "赶步追斩", "二三格追身斩，命中后自身进身一格。", 2, 3, 2, CardData.ROLE_DAMAGE, 0, 1, 5, 0, PackedStringArray(["短兵", "追身"]), "刀", true, 1, 0, 0, CardData.MOVE_ON_HIT)
-	var blade_hook_pull := _ready_v032_card("blade_hook_pull", "挂刀带步", "刀锋挂带，命中后将敌人拉近一格。", 1, 2, 2, CardData.ROLE_DAMAGE, 0, 2, 4, 0, PackedStringArray(["短兵", "拉扯"]), "刀", true, 0, 0, 1, CardData.MOVE_ON_HIT)
-	var blade_body_press := _ready_v032_card("blade_body_press", "贴身撞刀", "极近顶撞破势，命中后自身进身贴住。", 0, 1, 2, CardData.ROLE_DAMAGE, 0, 3, 4, 0, PackedStringArray(["短兵", "贴身", "破势"]), "刀", true, 1, 0, 0, CardData.MOVE_ON_HIT)
-	var blade_breathe := _ready_v032_card("blade_breathe", "收刀换气", "收刀换气并进身，持续保持近身压力。", 0, 8, 0, CardData.ROLE_MOMENTUM, 3, 0, 0, 2, PackedStringArray(["聚势", "短兵"]), "刀", false, 1, 0, 0, CardData.MOVE_ALWAYS)
+	var blade_front_cut := _ready_v032_card("blade_front_cut", "迎门斩", "刀客一二格标准斩击。", 1, 2, 2, CardData.ROLE_ATTACK, 0, 1, 6, 0, PackedStringArray(["短兵", "基础"]), "刀")
+	var blade_press_break := _ready_v032_card("blade_press_break", "压刀破架", "贴身压架，命中后拉近敌人一格。", 1, 1, 2, CardData.ROLE_ATTACK, 0, 4, 2, 0, PackedStringArray(["短兵", "破势", "贴身"]), "刀", true, 0, 0, 1, CardData.MOVE_ON_HIT)
+	var blade_chase_cut := _ready_v032_card("blade_chase_cut", "赶步追斩", "二三格追身斩，命中后自身进身一格。", 2, 3, 2, CardData.ROLE_ATTACK, 0, 1, 5, 0, PackedStringArray(["短兵", "追身"]), "刀", true, 1, 0, 0, CardData.MOVE_ON_HIT)
+	var blade_hook_pull := _ready_v032_card("blade_hook_pull", "挂刀带步", "刀锋挂带，命中后将敌人拉近一格。", 1, 2, 2, CardData.ROLE_ATTACK, 0, 2, 4, 0, PackedStringArray(["短兵", "拉扯"]), "刀", true, 0, 0, 1, CardData.MOVE_ON_HIT)
+	var blade_body_press := _ready_v032_card("blade_body_press", "贴身撞刀", "极近顶撞破势，命中后自身进身贴住。", 0, 1, 2, CardData.ROLE_ATTACK, 0, 3, 4, 0, PackedStringArray(["短兵", "贴身", "破势"]), "刀", true, 1, 0, 0, CardData.MOVE_ON_HIT)
+	var blade_breathe := _ready_v032_card("blade_breathe", "收刀换气", "收刀换气并进身，持续保持近身压力。", 0, 8, 0, CardData.ROLE_FEINT, 3, 0, 0, 2, PackedStringArray(["聚势", "短兵"]), "刀", false, 1, 0, 0, CardData.MOVE_ALWAYS)
 
 	var spear_deck: Array[CardData] = [spear_mid_thrust, spear_mid_thrust.duplicate_card(), spear_line_press, spear_line_press.duplicate_card(), spear_retreat_sting, spear_guard_horse, spear_step_thrust, spear_focus]
 	var blade_deck: Array[CardData] = [blade_front_cut, blade_front_cut.duplicate_card(), blade_press_break, blade_chase_cut, blade_chase_cut.duplicate_card(), blade_hook_pull, blade_body_press, blade_breathe]
@@ -60,8 +60,8 @@ func _build_catalog() -> void:
 	fighter_catalog["master_veteran"] = FighterData.new("master_veteran", "沉默老兵", "旧腰刀", 48, 12, 9, 4, PackedInt32Array([0, 1, 2]), blade_deck, 3, 2, "right")
 
 	reward_pool = [
-		_ready_v032_card("reward_push", "压线", "命中后击退敌人一格。", 2, 3, 2, CardData.ROLE_MOMENTUM, 0, 2, 2, 0, PackedStringArray(["控线"]), "通用", true, 0, 1, 0, CardData.MOVE_ON_HIT),
-		_ready_v032_card("reward_pull", "挂带", "命中后拉近敌人一格。", 1, 2, 2, CardData.ROLE_DAMAGE, 0, 1, 4, 0, PackedStringArray(["拉扯"]), "通用", true, 0, 0, 1, CardData.MOVE_ON_HIT),
+		_ready_v032_card("reward_push", "压线", "命中后击退敌人一格。", 2, 3, 2, CardData.ROLE_ATTACK, 0, 2, 2, 0, PackedStringArray(["控线"]), "通用", true, 0, 1, 0, CardData.MOVE_ON_HIT),
+		_ready_v032_card("reward_pull", "挂带", "命中后拉近敌人一格。", 1, 2, 2, CardData.ROLE_ATTACK, 0, 1, 4, 0, PackedStringArray(["拉扯"]), "通用", true, 0, 0, 1, CardData.MOVE_ON_HIT),
 		_ready_v032_card("reward_guard", "铁壁", "纯粹追求稳固格挡。", 0, 8, 2, CardData.ROLE_GUARD, 0, 0, 0, 8, PackedStringArray(["架势"]), "通用", false)
 	]
 

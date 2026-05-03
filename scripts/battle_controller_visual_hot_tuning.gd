@@ -730,7 +730,7 @@ func _card_from_numbers(card_id: String, display_name: String, numbers: Dictiona
 		clampi(int(numbers.get("min_distance", 1)), 0, 8),
 		clampi(int(numbers.get("max_distance", 3)), 0, 8),
 		maxi(0, int(numbers.get("momentum_cost", 1))),
-		str(numbers.get("role", CardData.ROLE_DAMAGE)),
+		str(numbers.get("role", CardData.ROLE_GUARD)),
 		maxi(0, int(numbers.get("gain_momentum", 0))),
 		maxi(0, int(numbers.get("break_momentum", 0))),
 		maxi(0, int(numbers.get("damage", 0))),

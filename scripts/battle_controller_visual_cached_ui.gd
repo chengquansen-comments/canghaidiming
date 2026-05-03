@@ -79,10 +79,10 @@ func _make_flat_card_style(fill: Color, border: Color, border_width: int) -> Sty
 	return BattleSkinHelper.make_flat_card_style(fill, border, border_width)
 
 func _make_type_tag_style(card: CardData) -> StyleBoxFlat:
-	return BattleSkinHelper.make_type_tag_style(card.is_defense_card(), false)
+	return BattleSkinHelper.make_type_tag_style(card.is_guard_card(), card.is_feint_card())
 
 func _make_card_art_style(card: CardData) -> StyleBoxFlat:
-	return BattleSkinHelper.make_card_art_style(card.is_defense_card(), false)
+	return BattleSkinHelper.make_card_art_style(card.is_guard_card(), card.is_feint_card())
 
 func _make_momentum_dot_style(filled: bool) -> StyleBoxFlat:
 	return BattleSkinHelper.make_momentum_dot_style(filled)
@@ -362,7 +362,7 @@ func _animation_event_for_card(card: CardData) -> String:
 		return "idle"
 	if card.is_guard_card():
 		return "guard"
-	if card.is_momentum_card():
+	if card.is_feint_card():
 		return "focus"
 	if card.damage > 0:
 		return "attack_heavy" if _card_has_tag(card, "终结") else "attack_light"

@@ -20,3 +20,6 @@ fallback	默认战斗	player_spearman	player_spear_start	player_start	fallback_s
 enc_wuke_spear_trial	武举第一试·试枪	player_spearman	player_spear_start	player_start	wuke_spear_student	wuke_spear_student_teach	easy	reactive	none	full	正式剧情：武举第一试试枪（临时枪路线）
 enc_wuke_blade_trial	武举第二试·试刀	player_blademaster	player_blade_start	player_start	wuke_blade_student	wuke_blade_student_teach	easy	reactive	none	full	正式剧情：武举第二试试刀（临时刀路线）
 enc_wuke_final_duel	武举终试·红榜对决	player_blademaster	player_blade_start	player_start	wuke_final_student	wuke_final_student_duel	normal	reactive	none	realm_based	正式剧情：武举终试，玩家侧按已选路线覆写
+enc_wuke_gu_chengyue	武举淘汰赛·顾承岳	player_spearman	player_spear_start	player_start	rival_gu_chengyue	rival_gu_chengyue_order	wuke_elim_1	reactive	none	full	正式剧情：武举淘汰赛第一场，玩家侧按 career_choice 覆写
+enc_wuke_shen_zhaoye	武举淘汰赛·沈照夜	player_blademaster	player_blade_start	player_start	rival_shen_zhaoye	rival_shen_zhaoye_roam	wuke_elim_2	reactive	none	full	正式剧情：武举淘汰赛第二场，玩家侧按 career_choice 覆写
+enc_wuke_qi_heng	武举淘汰赛·戚衡	player_blademaster	player_blade_start	player_start	rival_qi_heng	rival_qi_heng_duel	wuke_rival	reactive	break_resist	realm_based	正式剧情：武举淘汰赛第三场，玩家侧按 career_choice 覆写

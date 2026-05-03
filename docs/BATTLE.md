@@ -155,6 +155,8 @@ scripts/battle_controller_core.gd::_build_catalog()
 8. 从“战斗测试”或剧情节点进入验证。
 ```
 
+默认原则：新生产的战斗若无明确约束，优先使用占位牌组与数值方案（见 `docs/STANCE_PLACEHOLDER_DECKS.md`）；仅在需求明确指定其他方案时覆盖。
+
 轻功是硬约束：基础数值最小值为 `1`。除非未来某张特殊招式牌明确写了临时效果，否则配置和热调都不应把轻功调到 `0`。
 
 调整数值时默认只在现有管线内工作：改 `fighter_stat_sets.tsv`、`story_deck_sets.tsv`、`story_encounters.tsv`、职业初始 profile、正式剧情奖励或 F9 调参配置。不要为了修一个战斗强弱问题新增新的职业成长轴、新资源、新难度倍率或额外结算分支，除非用户主动提出或明确批准。
