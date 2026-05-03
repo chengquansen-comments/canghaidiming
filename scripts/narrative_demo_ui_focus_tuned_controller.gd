@@ -41,6 +41,11 @@ var pending_strategic_card_node: Dictionary = {}
 var pending_strategic_card_choices: Array[String] = []
 var selected_strategic_card_reward := ""
 var network_map_view: Control = null
+var network_overlay_layer: Control = null
+var network_overlay_panel: PanelContainer = null
+var network_map_container: VBoxContainer = null
+var network_preview_container: VBoxContainer = null
+var network_footer_container: HBoxContainer = null
 
 func _ready() -> void:
 	_load_strategic_map_config()
@@ -65,9 +70,13 @@ func _render() -> void:
 		BattleFontHelper.enforce(self)
 		_apply_focus_ui()
 		_hide_scene_art_overlay_nodes()
+		_sync_network_overlay_visibility()
 		return
+	if network_overlay_layer != null:
+		network_overlay_layer.visible = false
 	super._render()
 	_apply_tuned_scene_art_view()
+	_sync_network_overlay_visibility()
 
 func _narrative_state_snapshot() -> Dictionary:
 	var snapshot := super._narrative_state_snapshot()
@@ -272,23 +281,22 @@ func _render_legacy_strategic_map() -> void:
 			_add_strategic_choice_button(choices[i] as Dictionary, i)
 
 func _render_network_strategic_map(graph: Dictionary) -> void:
+	_ensure_network_overlay_layer()
+	network_overlay_layer.visible = true
+	_clear_network_overlay_dynamic()
 	_ensure_network_selected_node(graph)
 	strategic_state["network_map"] = graph
-	if bool(graph.get("map_complete", false)) or not _network_has_available_node(graph):
-		_render_network_map_complete_panel(graph)
-		return
 	title_label.text = "海疆大势图"
 	status_label.text = "完整网络图｜第 %d / %d 层" % [int(graph.get("current_layer", 0)) + 1, int(graph.get("layer_count", 10))]
 	map_label.text = _network_progress_text(graph)
-	scene_label.text = _format_scene_text("军情、海防与旧案线索被摊在同一张图上。")
-	_render_visual("res://assets/pixel_battle/backgrounds/map_march_coast.png", "海疆大势图")
-	body_label.text = "你第一次看见整条海路。\n\n亮起的是当前可达之路；灰下去的是未至或已错过的岔口。"
-	if not last_hint.is_empty():
-		body_label.text += "\n\n[i]%s[/i]" % last_hint
+	body_label.text = ""
 	vars_label.text = _network_state_summary_text()
-	_render_network_map_view(graph)
-	_render_network_preview_panel(graph)
-	_render_network_debug_buttons()
+	if bool(graph.get("map_complete", false)) or not _network_has_available_node(graph):
+		_render_network_overlay_complete(graph)
+		return
+	_render_network_overlay_map_view(graph)
+	_render_network_overlay_preview_panel(graph)
+	_render_network_overlay_footer(graph)
 
 func _render_network_map_view(graph: Dictionary) -> void:
 	network_map_view = StrategicNetworkMapView.new()
@@ -325,6 +333,115 @@ func _network_progress_text(graph: Dictionary) -> String:
 		completed,
 		available,
 	]
+
+func _ensure_network_overlay_layer() -> void:
+	if network_overlay_layer != null:
+		return
+	network_overlay_layer = Control.new()
+	network_overlay_layer.name = "NetworkMapOverlayLayer"
+	network_overlay_layer.anchor_left = 0.0
+	network_overlay_layer.anchor_top = 0.0
+	network_overlay_layer.anchor_right = 1.0
+	network_overlay_layer.anchor_bottom = 1.0
+	network_overlay_layer.mouse_filter = Control.MOUSE_FILTER_STOP
+	network_overlay_layer.z_index = 180
+	network_overlay_layer.z_as_relative = false
+	add_child(network_overlay_layer)
+
+	var dim := ColorRect.new()
+	dim.name = "NetworkMapOverlayDim"
+	dim.anchor_left = 0.0
+	dim.anchor_top = 0.0
+	dim.anchor_right = 1.0
+	dim.anchor_bottom = 1.0
+	dim.color = Color(0.015, 0.014, 0.012, 0.78)
+	dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	network_overlay_layer.add_child(dim)
+
+	network_overlay_panel = PanelContainer.new()
+	network_overlay_panel.name = "NetworkMapOverlayPanel"
+	network_overlay_panel.anchor_left = 0.04
+	network_overlay_panel.anchor_top = 0.06
+	network_overlay_panel.anchor_right = 0.96
+	network_overlay_panel.anchor_bottom = 0.92
+	network_overlay_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	network_overlay_layer.add_child(network_overlay_panel)
+
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.045, 0.039, 0.030, 0.96)
+	style.border_color = Color(0.78, 0.62, 0.36, 0.85)
+	style.set_border_width_all(2)
+	style.set_corner_radius_all(10)
+	style.content_margin_left = 18
+	style.content_margin_right = 18
+	style.content_margin_top = 16
+	style.content_margin_bottom = 16
+	network_overlay_panel.add_theme_stylebox_override("panel", style)
+
+	var root := VBoxContainer.new()
+	root.name = "NetworkMapOverlayRoot"
+	root.add_theme_constant_override("separation", 12)
+	root.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	root.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	network_overlay_panel.add_child(root)
+
+	var header := Label.new()
+	header.name = "NetworkMapOverlayHeader"
+	header.text = "海疆大势图"
+	header.add_theme_font_size_override("font_size", 30)
+	header.add_theme_color_override("font_color", Color("f3dfb8"))
+	root.add_child(header)
+
+	var main_row := HBoxContainer.new()
+	main_row.name = "NetworkMapOverlayMainRow"
+	main_row.add_theme_constant_override("separation", 16)
+	main_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	main_row.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	root.add_child(main_row)
+
+	network_map_container = VBoxContainer.new()
+	network_map_container.name = "NetworkMapContainer"
+	network_map_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	network_map_container.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	main_row.add_child(network_map_container)
+
+	network_preview_container = VBoxContainer.new()
+	network_preview_container.name = "NetworkPreviewContainer"
+	network_preview_container.custom_minimum_size = Vector2(360, 0)
+	network_preview_container.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	network_preview_container.add_theme_constant_override("separation", 10)
+	main_row.add_child(network_preview_container)
+
+	network_footer_container = HBoxContainer.new()
+	network_footer_container.name = "NetworkFooterContainer"
+	network_footer_container.add_theme_constant_override("separation", 10)
+	network_footer_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	root.add_child(network_footer_container)
+	network_overlay_layer.visible = false
+
+func _clear_network_overlay_dynamic() -> void:
+	if network_map_container != null:
+		for child in network_map_container.get_children():
+			child.queue_free()
+	if network_preview_container != null:
+		for child in network_preview_container.get_children():
+			child.queue_free()
+	if network_footer_container != null:
+		for child in network_footer_container.get_children():
+			child.queue_free()
+
+func _sync_network_overlay_visibility() -> void:
+	var graph_variant = strategic_state.get("network_map", {})
+	var should_show := bool(strategic_state.get("active", false)) \
+		and graph_variant is Dictionary \
+		and not (graph_variant as Dictionary).is_empty()
+	if network_overlay_layer != null:
+		network_overlay_layer.visible = should_show
+	if should_show:
+		if focus_story_layer != null:
+			focus_story_layer.visible = false
+		if focus_world_map_layer != null:
+			focus_world_map_layer.visible = false
 
 func _network_find_node(graph: Dictionary, map_graph_id: String) -> Dictionary:
 	var nodes: Array = graph.get("nodes", [])
@@ -733,6 +850,60 @@ func _network_combat_debug_text(node: Dictionary) -> String:
 		lines.append(str(request.get("blocked_reason", "该 combat_pool 暂未接入战斗。")))
 	return "\n".join(lines)
 
+func _render_network_overlay_map_view(graph: Dictionary) -> void:
+	var progress := Label.new()
+	progress.text = _network_progress_text(graph)
+	progress.add_theme_font_size_override("font_size", 16)
+	progress.add_theme_color_override("font_color", Color("d9c08c"))
+	network_map_container.add_child(progress)
+
+	network_map_view = StrategicNetworkMapView.new()
+	network_map_view.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	network_map_view.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	network_map_view.custom_minimum_size = Vector2(920, 520)
+	network_map_view.set_graph(graph, str(graph.get("selected_node_id", "")))
+	network_map_view.node_clicked.connect(_on_network_node_clicked)
+	network_map_container.add_child(network_map_view)
+
+func _render_network_overlay_preview_panel(graph: Dictionary) -> void:
+	var selected_id := str(graph.get("selected_node_id", ""))
+	var node := _network_find_node(graph, selected_id)
+	var confirm_meta := _network_confirm_meta(graph, node)
+
+	var preview := RichTextLabel.new()
+	preview.bbcode_enabled = true
+	preview.fit_content = false
+	preview.scroll_active = true
+	preview.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	preview.custom_minimum_size = Vector2(340, 420)
+	preview.add_theme_font_size_override("normal_font_size", 18)
+	preview.add_theme_font_size_override("bold_font_size", 20)
+	preview.add_theme_color_override("default_color", Color("f0dfb8"))
+	preview.text = _network_preview_text(graph)
+	network_preview_container.add_child(preview)
+
+	var confirm := Button.new()
+	confirm.text = "确认前往"
+	confirm.disabled = not bool(confirm_meta.get("enabled", false))
+	confirm.custom_minimum_size = Vector2(0, 58)
+	confirm.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	confirm.pressed.connect(_confirm_network_node)
+	network_preview_container.add_child(confirm)
+
+func _render_network_overlay_footer(graph: Dictionary) -> void:
+	var state_label := Label.new()
+	state_label.text = _network_state_summary_text()
+	state_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	state_label.add_theme_font_size_override("font_size", 16)
+	state_label.add_theme_color_override("font_color", Color("d9c08c"))
+	network_footer_container.add_child(state_label)
+
+	var fallback := Button.new()
+	fallback.text = "继续旧线性流程"
+	fallback.custom_minimum_size = Vector2(220, 52)
+	fallback.pressed.connect(_continue_legacy_linear_flow)
+	network_footer_container.add_child(fallback)
+
 func _consume_network_node_battle(source_id: String, result: String) -> void:
 	var graph: Dictionary = strategic_state.get("network_map", {})
 	if graph.is_empty():
@@ -780,30 +951,27 @@ func _clear_network_pending(graph: Dictionary) -> void:
 	graph["pending_effects"] = {}
 
 func _render_network_map_complete_panel(graph: Dictionary) -> void:
-	title_label.text = "海疆大势图"
-	status_label.text = "海图暂止"
-	map_label.text = _network_progress_text(graph)
-	scene_label.text = _format_scene_text("海图上的线暂时走到了尽头。")
-	_render_visual("res://assets/pixel_battle/backgrounds/map_march_coast.png", "海疆大势图")
-	body_label.text = "海疆大势图已走完，或当前路径没有后续可达节点。\n\n后续将接入区域 Boss / final gate。"
-	if not last_hint.is_empty():
-		body_label.text += "\n\n[i]%s[/i]" % last_hint
-	vars_label.text = _network_state_summary_text()
-	_render_network_map_view(graph)
+	_render_network_overlay_complete(graph)
+
+func _render_network_overlay_complete(graph: Dictionary) -> void:
+	_render_network_overlay_map_view(graph)
 	var label := RichTextLabel.new()
 	label.bbcode_enabled = true
-	label.fit_content = true
-	label.text = "[b]当前海图已无可前往节点。[/b]\n\n可以继续旧线性流程，或等待后续 final gate 接入。"
-	label.custom_minimum_size = Vector2(0, 220)
-	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	combat_buttons_box.add_child(label)
+	label.fit_content = false
+	label.scroll_active = true
+	label.custom_minimum_size = Vector2(340, 420)
+	label.add_theme_font_size_override("normal_font_size", 18)
+	label.add_theme_font_size_override("bold_font_size", 20)
+	label.add_theme_color_override("default_color", Color("f0dfb8"))
+	label.text = "[b]海图暂止[/b]\n\n当前海图已无可前往节点。\n\n后续将接入区域 Boss / final gate。"
+	network_preview_container.add_child(label)
+
 	var confirm := Button.new()
 	confirm.text = "确认前往"
 	confirm.disabled = true
 	confirm.custom_minimum_size = Vector2(0, 58)
-	confirm.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	combat_buttons_box.add_child(confirm)
-	_render_network_debug_buttons()
+	network_preview_container.add_child(confirm)
+	_render_network_overlay_footer(graph)
 
 func _network_state_summary_text() -> String:
 	return StrategicMapState.summary_text(strategic_state)

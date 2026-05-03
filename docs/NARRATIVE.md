@@ -377,11 +377,8 @@ world_map_entry
 - `state`
 
 当前边界：
-- 本轮不切换正式 UI。
-- 本轮不做点击预览。
-- 本轮不做节点推进。
-- 本轮不做战斗返回恢复。
-- 后续会把 UI 从当前层候选列表升级为完整网络图。
+- 网络图节点执行与战斗返回已接入基础闭环，但区域 Boss / final gate 仍未接入。
+- `combat_pool_id -> combat_enemy_pools.tsv -> enemy_martial_stats.tsv` 全链路随机敌仍待后续补齐。
 
 ### 海疆大势图网络 UI 临时绘制
 
@@ -402,6 +399,19 @@ world_map_entry
 
 当前边界：
 - `combat_pool_id -> combat_enemy_pools.tsv -> enemy_martial_stats.tsv` 的完整随机敌链路仍未完全接入（当前使用 encounter/battle 与 fallback 映射）。
+
+### network_map UI overlay
+
+network 地图 UI 不再渲染在 `map_buttons_box`。由于 Narrative Focus UI 会隐藏或压缩 operation metadata 区域，network_map 改为独立 `NetworkMapOverlayLayer`，直接挂在 `NarrativeDemo` 根节点。
+
+overlay 结构：
+- 左侧/中央：`StrategicNetworkMapView`（完整网络图、节点、连线）。
+- 右侧：preview 面板（节点信息与确认前往按钮）。
+- 底部：状态栏与“继续旧线性流程” fallback。
+
+兼容策略：
+- `network_map` 模式优先走 overlay 渲染。
+- 旧 `current_map` 三选一 UI 继续保留为 fallback。
 
 ### 海疆大势图 Debug 直入入口
 
