@@ -287,7 +287,71 @@ tables/*.tsv
 
 代码组织调整不应绕过表格编译链路，也不应把运行配置硬写进 UI controller。
 
-## 十一、验证要求
+## 十一、当前代码风险清单
+
+以下清单来自 `python3 tools/audit_file_sizes.py` 的代码风险分组。它只用于指导代码重构优先级；`data/*.json`、`tables/*.tsv`、文档和场景文件另按“数据 / 文档风险”处理。
+
+### P0：禁止继续追加功能
+
+这些文件已经超过 35KB，属于高维护风险文件。原则上只允许 bugfix，不继续追加新功能；新增能力必须进入 helper、runtime、view、formatter、bridge、debug_entry 或 shim 文件。
+
+| Size | File | 建议方向 |
+|---:|---|---|
+| 83.8KB | `scripts/battle_controller_core.gd` | 拆出回合执行、资源状态、距离服务、卡牌执行、敌方意图和结算计算。 |
+| 68.3KB | `scripts/narrative_demo_ui_focus_tuned_controller.gd` | 大地图逻辑继续迁往 `strategic_network_map_*` 小文件，只保留调度。 |
+| 61.4KB | `scripts/battle_controller_visual_ui.gd` | 拆出 HUD / 面板 / 操作区 / 状态区 view helper。 |
+| 60.6KB | `scripts/battle_controller_visual_presentation_stepwise.gd` | 拆出演出 step runner、队列、动画策略。 |
+| 58.2KB | `scripts/compile_tables.py` | 拆出表编译模块、校验模块、输出模块；保持 CLI 入口轻量。 |
+| 50.1KB | `scripts/Main.gd` | 拆出 launcher / mode router / debug entry。 |
+| 46.2KB | `scripts/battle_controller_visual_hot_tuning.gd` | 拆出调参模型、UI、应用逻辑。 |
+| 42.3KB | `scripts/battle_controller_demo_visual.gd` | 拆出演示入口、战斗装配、debug 逻辑。 |
+| 40.1KB | `scripts/battle_controller_visual_narrative_context.gd` | 拆出 narrative context 读写、战斗请求转换、返回处理。 |
+
+### P1：拆分候选
+
+这些文件超过 25KB，不应继续追加功能。后续遇到相关改动时，应优先抽小文件，而不是继续在原文件里堆逻辑。
+
+| Size | File | 建议方向 |
+|---:|---|---|
+| 33.9KB | `tools/render_art_prompt.py` | 拆出 prompt loader / renderer / CLI。 |
+| 32.5KB | `scripts/narrative_demo_ui_focus_controller.gd` | 保持 Focus UI 基类稳定，新增逻辑放子模块或 shim。 |
+| 30.8KB | `scripts/auto_battle_sampler.gd` | 拆出采样策略、结果统计、报告输出。 |
+| 29.5KB | `scripts/battle_controller_visual_presentation.gd` | 拆出演出格式化和播放策略。 |
+| 27.0KB | `scripts/narrative/narrative_demo_controller.gd` | 拆出叙事状态、节点路由、选择处理。 |
+| 27.0KB | `scripts/narrative_battle_context.gd` | 拆出 player profile、battle request、battle result、strategic map snapshot。 |
+| 25.4KB | `scripts/narrative_demo_safe_controller.gd` | 后续只做兼容修补，不再追加新流程。 |
+
+### P2：观察名单
+
+这些文件处于 20KB - 25KB 警戒区。可以维护，但新增大段逻辑前要先评估是否应拆出 helper。
+
+| Size | File |
+|---:|---|
+| 25.0KB | `scripts/battle_controller_visual_settlement_mode.gd` |
+| 25.0KB | `scripts/battle_controller_visual_responsive_ui.gd` |
+| 24.9KB | `scripts/narrative_demo_canonical_controller.gd` |
+| 23.8KB | `scripts/battle_controller_text_ui.gd` |
+| 22.6KB | `scripts/battle_controller_visual_resolver_preview.gd` |
+| 21.1KB | `scripts/battle_controller_visual_cached_ui.gd` |
+| 20.5KB | `tools/art_asset_pipeline.py` |
+
+### 数据 / 文档大文件例外
+
+以下文件体积较大，但不按代码风险处理：
+
+```text
+tables/art_prompt_manifest.tsv
+data/strategic_map.json
+data/narrative_mvp_nodes.json
+data/story_battles.json
+data/enemy_manifest.json
+tables/narrative_mvp_nodes.tsv
+data/performance_tracks.json
+```
+
+其中 `data/*.json` 多为编译产物，不直接编辑；如需治理，应优先拆源 TSV、编译输出或文档归档，而不是按 controller 拆分方式处理。
+
+## 十二、验证要求
 
 每次代码组织调整后，至少运行：
 
@@ -311,7 +375,7 @@ map_complete 后进入 final gate
 继续旧线性流程 fallback 可用
 ```
 
-## 十二、当前项目适用结论
+## 十三、当前项目适用结论
 
 当前 `scripts/narrative_demo_ui_focus_tuned_controller.gd` 已超过理想体积，后续不应继续追加大地图功能。
 
