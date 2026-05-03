@@ -413,6 +413,23 @@ overlay 结构：
 - `network_map` 模式优先走 overlay 渲染。
 - 旧 `current_map` 三选一 UI 继续保留为 fallback。
 
+### network_map 临时 final gate
+
+当 `network_map.map_complete=true` 或无有效 available 节点时，UI 会显示“海门收束”临时 final gate。
+
+当前 final gate 能力：
+- 展示本局军功、清望、旧案、武境、已完成节点数。
+- 可以进入临时终局战。
+- 临时终局战使用 `enc_boss_ext_wakou_leader / boss_ext_wakou_leader`。
+- 胜利后关闭大地图并进入现有结局渲染。
+- 失败后保留 final gate，可再次挑战。
+- “继续旧线性流程” fallback 仍保留。
+
+当前边界：
+- 尚未完整接入 `final_boss_rules.tsv`。
+- 尚未实现区域 Boss 池。
+- 尚未实现正式多结局收束。
+
 ### 海疆大势图 Debug 直入入口
 
 - 主界面开发入口新增“海疆大势图 Debug”按钮，可不经过武举流程直接进入 `NarrativeDemo` 的大势图运行态。

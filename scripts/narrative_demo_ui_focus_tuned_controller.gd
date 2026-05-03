@@ -6,6 +6,8 @@ const StrategicNetworkMapGenerator := preload("res://scripts/strategic_network_m
 const StrategicNetworkMapView := preload("res://scripts/strategic_network_map_view.gd")
 const STRATEGIC_ENTRY_NODE_ID := "world_map_entry"
 const STRATEGIC_FINAL_BOSS_SOURCE_ID := "strategic_final_boss"
+const NETWORK_FINAL_BOSS_ENCOUNTER_ID := "enc_boss_ext_wakou_leader"
+const NETWORK_FINAL_BOSS_BATTLE_ID := "boss_ext_wakou_leader"
 const NETWORK_COMBAT_POOL_FALLBACK := {
 	"spear_patrol": {
 		"encounter_id": "enc_ch2_reed_ambush",
@@ -109,6 +111,7 @@ func _consume_battle_result_if_needed() -> void:
 			selected_ending_flag = str(boss.get("ending_flag", "surface_pirate"))
 			strategic_state["active"] = false
 			strategic_state["completed"] = true
+			strategic_state["final_gate_active"] = false
 			last_hint = "终局战胜利：%s" % str(boss.get("title", "海门收束"))
 			NarrativeBattleContext.clear()
 			_save_narrative_state_to_context()
@@ -117,9 +120,12 @@ func _consume_battle_result_if_needed() -> void:
 			else:
 				pending_strategic_ending_render = true
 			return
-		last_hint = "终局战返回：当前暂不推进，可再次挑战。"
+		last_hint = "终局战未胜：海门仍未收束，可再次挑战。"
+		strategic_state["final_gate_active"] = true
 		NarrativeBattleContext.clear()
 		_save_narrative_state_to_context()
+		if _base_ui_ready():
+			_render()
 		return
 	if source_id.begins_with("map_"):
 		var graph: Dictionary = strategic_state.get("network_map", {})
@@ -955,23 +961,68 @@ func _render_network_map_complete_panel(graph: Dictionary) -> void:
 
 func _render_network_overlay_complete(graph: Dictionary) -> void:
 	_render_network_overlay_map_view(graph)
-	var label := RichTextLabel.new()
-	label.bbcode_enabled = true
-	label.fit_content = false
-	label.scroll_active = true
-	label.custom_minimum_size = Vector2(340, 420)
-	label.add_theme_font_size_override("normal_font_size", 18)
-	label.add_theme_font_size_override("bold_font_size", 20)
-	label.add_theme_color_override("default_color", Color("f0dfb8"))
-	label.text = "[b]海图暂止[/b]\n\n当前海图已无可前往节点。\n\n后续将接入区域 Boss / final gate。"
-	network_preview_container.add_child(label)
+	var summary := RichTextLabel.new()
+	summary.bbcode_enabled = true
+	summary.fit_content = false
+	summary.scroll_active = true
+	summary.custom_minimum_size = Vector2(340, 420)
+	summary.add_theme_font_size_override("normal_font_size", 18)
+	summary.add_theme_font_size_override("bold_font_size", 22)
+	summary.add_theme_color_override("default_color", Color("f0dfb8"))
+	summary.text = _network_final_gate_text(graph)
+	network_preview_container.add_child(summary)
 
-	var confirm := Button.new()
-	confirm.text = "确认前往"
-	confirm.disabled = true
-	confirm.custom_minimum_size = Vector2(0, 58)
-	network_preview_container.add_child(confirm)
+	var boss_btn := Button.new()
+	boss_btn.text = "进入临时终局战"
+	boss_btn.custom_minimum_size = Vector2(0, 58)
+	boss_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	boss_btn.pressed.connect(_on_network_final_boss_pressed)
+	network_preview_container.add_child(boss_btn)
 	_render_network_overlay_footer(graph)
+
+func _network_final_gate_text(graph: Dictionary) -> String:
+	var completed_count := (graph.get("completed_node_ids", []) as Array).size()
+	var profile := NarrativeBattleContext.get_player_profile()
+	var martial_level := int(profile.get("martial_level", strategic_state.get("martial_level", 1)))
+	var lines: Array[String] = []
+	lines.append("[b]海门收束[/b]")
+	lines.append("")
+	lines.append("海图上的线走到尽头。")
+	lines.append("潮声压低，旧案、军功与人声都被推到最后一战前。")
+	lines.append("")
+	lines.append("[b]本局状态[/b]")
+	lines.append("军功：%d" % int(strategic_state.get("military_merit", jun_gong)))
+	lines.append("清望：%d" % int(strategic_state.get("clean_reputation", qing_wang)))
+	lines.append("旧案：%d" % int(strategic_state.get("case_clues", clues)))
+	lines.append("武境：%d" % martial_level)
+	lines.append("已完成节点：%d" % completed_count)
+	lines.append("")
+	lines.append("[b]临时收束[/b]")
+	lines.append("本轮暂不接 final_boss_rules，先使用倭寇首领战作为 final gate fallback。")
+	return "\n".join(lines)
+
+func _on_network_final_boss_pressed() -> void:
+	var graph: Dictionary = strategic_state.get("network_map", {})
+	if graph.is_empty():
+		last_hint = "终局门未开启：未找到海疆大势图。"
+		_render()
+		return
+	strategic_state["final_gate_active"] = true
+	strategic_state["final_boss"] = {
+		"title": "海门收束",
+		"encounter_id": NETWORK_FINAL_BOSS_ENCOUNTER_ID,
+		"battle_id": NETWORK_FINAL_BOSS_BATTLE_ID,
+		"ending_flag": "surface_pirate",
+	}
+	_sync_strategic_cards_to_context()
+	_save_narrative_state_to_context()
+	NarrativeBattleContext.set_request_from_combat({
+		"enabled": true,
+		"encounter_id": NETWORK_FINAL_BOSS_ENCOUNTER_ID,
+		"battle_id": NETWORK_FINAL_BOSS_BATTLE_ID,
+		"override_player_profile": true,
+	}, STRATEGIC_FINAL_BOSS_SOURCE_ID)
+	get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
 
 func _network_state_summary_text() -> String:
 	return StrategicMapState.summary_text(strategic_state)
