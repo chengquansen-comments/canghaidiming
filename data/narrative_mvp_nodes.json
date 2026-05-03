@@ -1702,8 +1702,8 @@
     {
       "id": "world_map_entry",
       "title": "海疆大势图",
-      "scene": "军门摊开一张海疆图。",
-      "text": "潮线、营门、村火、破船，都只是图上的点。你要自己选先看哪里。",
+      "scene": "海疆图摊在案上。",
+      "text": "红榜的墨还没干。\\n\\n军令已经压住一角。\\n\\n师父看了一眼图，没有说话。",
       "column": "海疆",
       "type": "事件",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch2_sea_route_unusual.png",
@@ -1716,8 +1716,8 @@
       },
       "choices": [
         {
-          "label": "查看海疆",
-          "result": "海风从图边吹过。旧案没有名字，只有方向。",
+          "label": "查看海疆大势图",
+          "result": "海风从门外进来。\n图上的潮线很暗。",
           "effects": {}
         }
       ]

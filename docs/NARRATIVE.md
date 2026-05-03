@@ -104,7 +104,7 @@ note
 - `wuke_group_spear_trial`、`wuke_group_blade_trial` 是临时路线教学战，不写入正式 `career_choice`。
 - `wuke_elim_route_choice` 才正式写入 `career_choice`。
 - `wuke_elim_gu_chengyue_battle`、`wuke_elim_shen_zhaoye_battle`、`wuke_elim_qi_heng_battle` 读取正式路线。
-- `world_map_entry` 目前是叙事入口占位，不接入随机大地图运行时。
+- `world_map_entry` 是武举后进入海疆大势图的正式入口节点。
 - 三名淘汰赛对手已进入长期叙事状态，后续可在海疆大势图随机剧情中引用。
 
 武举开局现在分为小组赛与淘汰赛：
@@ -116,7 +116,7 @@ note
 5. 淘汰赛二：沈照夜，江湖 / 清望 / 民间型对手。
 6. 淘汰赛三：戚衡，主劲敌 / 旧案 / 后续至交候选。
 7. 武科放榜：三选一，分别强化军门、民间、旧案方向。
-8. 海疆大势图入口：当前为占位，后续接入随机大地图。
+8. 海疆大势图入口：`world_map_entry` 进入 region/layer/choices 大势图选择。
 
 ```text
 10  wuke_group_spear_trial
@@ -187,6 +187,32 @@ note
 
 - 本轮仅接入人物关系变量，不改变随机大地图生成规则。后续 Step 8/9 会在 `map_node_pool.tsv` 中使用 `rival_*_bond` 作为随机剧情节点条件或权重来源。
 - 这些变量暂不直接参与 9 结局判定。后续可以将高 `rival_qi_bond` 接入旧案隐藏证言或至交节点，将高 `rival_gu_bond` 接入军门堂证节点，将高 `rival_shen_bond` 接入清望证言节点。
+
+## 旧线性正篇拆入随机池
+
+武举结束后，海疆正篇不再以固定线性章节为最终形态。原先的巡海、海路异动、滩涂脚印、芦苇伏击、无声渔村、夜火信号、火器刻痕、押运冲突等节点，会逐步拆入 `tables/map_node_pool.tsv`，成为海疆大势图中的随机剧情 / 随机战斗节点。
+
+本轮先拆入第一批 8 个节点，原线性 flow 暂时保留兼容，后续再由 `world_map_entry` 正式接管。
+
+| 原线性节点 | 随机池节点 | 主线 | 副线 | 定位 |
+|---|---|---|---|---|
+| `military_order` | `map_military_patrol_order_01` | `military_merit` | `case_clues` | 军令巡海 |
+| `ch2_sea_route_unusual` | `map_case_sea_route_unusual_01` | `case_clues` | `military_merit` | 海路异常 |
+| `ch2_beach_tracks` | `map_case_beach_tracks_01` | `case_clues` | `clean_reputation` | 滩涂脚印 |
+| `ch2_reed_ambush_battle` | `map_combat_reed_ambush_01` | `military_merit` | `case_clues` | 芦苇伏击 |
+| `ch2_silent_village` | `map_reputation_silent_village_01` | `clean_reputation` | `case_clues` | 无声渔村 |
+| `ch2_night_signal_fire` | `map_case_night_signal_fire_01` | `case_clues` | `military_merit` | 夜火信号 |
+| `ch3_firearm_marking` | `map_case_firearm_marking_01` | `case_clues` | `military_merit` | 火器刻痕 |
+| `ch3_escort_clash_battle` | `map_combat_escort_clash_01` | `military_merit` | `case_clues` | 押运冲突 |
+
+这些随机节点后续会支持三名武举对手的人物变体：
+- 顾承岳：偏军令、军功、官路、堂证。
+- 沈照夜：偏民间、清望、护民、盐户证言。
+- 戚衡：偏旧案、同袍、奉令相斗、关键证言。
+
+本轮仅在 tags 中预留 hook，不实现人物变体文案系统。
+
+本轮不改变 `final_boss_rules.tsv`，不改变 9 结局判定，不关闭旧线性正篇 flow。随机大地图 UI 接入与旧线性 flow 关闭将在后续步骤执行。
 
 旧压缩节点保留为节点池，不进入默认 flow：
 
@@ -280,6 +306,39 @@ tables/battle_scene_manifest.tsv
 - 剧情武器意象要和 StoryBattle 卡组一致。例如枪手写“枪锋”，刀客写“刀光”。
 
 ## 海疆大势图随机战斗
+
+### 海疆大势图入口
+
+- `world_map_entry` 为武举放榜后的正式入口，不再只是文本占位。
+- 在 `world_map_entry` 点击“查看海疆大势图”后，进入海疆大势图运行态，而不是直接推进到下一条线性节点。
+- 当前保留线性 fallback：若大势图配置缺失，继续到下一个线性节点。
+
+### 当前大势图最小闭环
+
+```text
+world_map_entry
+→ region_01 layer_1
+→ 生成候选
+→ 玩家选择节点
+→ 应用事件或进入战斗
+→ 返回大势图下一层
+```
+
+### 当前实现边界
+
+本轮已做：
+- 大势图入口接入（`world_map_entry`）。
+- region/layer 候选节点生成与三选一执行。
+- 非战斗节点执行 `effects_json`。
+- 战斗节点触发 StoryBattle，胜利后回到大势图并推进层数。
+- 战斗返回大势图时保留叙事变量、职业与武举关系变量。
+
+本轮暂不做：
+- 不拆旧线性剧情进地图池（Step 9 再做）。
+- 不改 9 结局规则含义。
+- 不完整接入 `rival_*_bond` 到权重与条件。
+- 不完整改写 final boss 自动分支。
+- `combat_pool_id → enemy_pool → martial_stats` 全链路细化留在后续增强（当前复用既有战斗入口与覆盖逻辑）。
 
 随机节点源表：
 
