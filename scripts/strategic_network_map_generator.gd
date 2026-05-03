@@ -36,7 +36,7 @@ static func generate_network_map(config: Dictionary, state: Dictionary, seed: in
 	apply_initial_node_states(nodes)
 	var available_ids := _initial_available_node_ids(nodes)
 	var selected_node_id: String = str(available_ids[0]) if not available_ids.is_empty() else ""
-	return {
+	var graph := {
 		"run_id": "run_%d" % seed,
 		"seed": seed,
 		"layer_count": layer_count,
@@ -50,21 +50,97 @@ static func generate_network_map(config: Dictionary, state: Dictionary, seed: in
 		"pending_effects": {},
 		"nodes": nodes,
 	}
+	for warning_text in validate_network_map(graph):
+		push_warning(warning_text)
+	return graph
 
 static func summarize_network_map(graph: Dictionary) -> String:
 	var nodes: Array = graph.get("nodes", [])
 	var edge_count := 0
+	var non_final_nodes := 0
+	var outgoing_total := 0
+	var combat_count := 0
+	var fallback_count := 0
+	var layer_count := int(graph.get("layer_count", 0))
+	var layer_node_counts := _layer_node_counts(graph)
+	var layer_edge_counts := _layer_edge_counts(graph)
 	for variant in nodes:
-		if variant is Dictionary:
-			edge_count += ((variant as Dictionary).get("outgoing", []) as Array).size()
+		if not (variant is Dictionary):
+			continue
+		var node := variant as Dictionary
+		var outgoing_size := (node.get("outgoing", []) as Array).size()
+		edge_count += outgoing_size
+		if int(node.get("layer", 0)) < layer_count - 1:
+			non_final_nodes += 1
+			outgoing_total += outgoing_size
+		if _node_is_combat(node):
+			combat_count += 1
+		if bool(node.get("debug_fallback", false)):
+			fallback_count += 1
+	var avg_outgoing := 0.0
+	if non_final_nodes > 0:
+		avg_outgoing = float(outgoing_total) / float(non_final_nodes)
 	var available := ",".join(_string_array(graph.get("available_node_ids", [])))
-	return "network_map seed=%d layers=%d nodes=%d edges=%d available=%s" % [
+	return "network_map seed=%d layers=%d nodes=%d edges=%d avg_outgoing=%.2f combat=%d fallback=%d available=%s layer_nodes=%s layer_edges=%s" % [
 		int(graph.get("seed", 0)),
-		int(graph.get("layer_count", 0)),
+		layer_count,
 		nodes.size(),
 		edge_count,
+		avg_outgoing,
+		combat_count,
+		fallback_count,
 		available,
+		",".join(_string_array(layer_node_counts)),
+		",".join(_string_array(layer_edge_counts)),
 	]
+
+static func validate_network_map(graph: Dictionary) -> Array[String]:
+	var warnings: Array[String] = []
+	var nodes: Array = graph.get("nodes", [])
+	var layer_count := int(graph.get("layer_count", 0))
+	var by_id: Dictionary = {}
+	var seen: Dictionary = {}
+	for item in nodes:
+		if not (item is Dictionary):
+			warnings.append("network_map validate: non-dictionary node")
+			continue
+		var node := item as Dictionary
+		var node_id := str(node.get("map_graph_id", ""))
+		if node_id.is_empty():
+			warnings.append("network_map validate: node with empty map_graph_id")
+			continue
+		if seen.has(node_id):
+			warnings.append("network_map validate: duplicate map_graph_id %s" % node_id)
+		seen[node_id] = true
+		by_id[node_id] = node
+	for item in nodes:
+		if not (item is Dictionary):
+			continue
+		var node := item as Dictionary
+		var node_id := str(node.get("map_graph_id", ""))
+		var layer := int(node.get("layer", 0))
+		var outgoing: Array = node.get("outgoing", [])
+		var incoming: Array = node.get("incoming", [])
+		if layer < layer_count - 1 and outgoing.is_empty():
+			warnings.append("network_map validate: non-final node has no outgoing: %s" % node_id)
+		if layer > 0 and incoming.is_empty():
+			warnings.append("network_map validate: non-start node has no incoming: %s" % node_id)
+		for to_id_variant in outgoing:
+			var to_id := str(to_id_variant)
+			if not by_id.has(to_id):
+				warnings.append("network_map validate: %s outgoing missing target %s" % [node_id, to_id])
+		for from_id_variant in incoming:
+			var from_id := str(from_id_variant)
+			if not by_id.has(from_id):
+				warnings.append("network_map validate: %s incoming missing source %s" % [node_id, from_id])
+	for available_variant in graph.get("available_node_ids", []):
+		var available_id := str(available_variant)
+		if not by_id.has(available_id):
+			warnings.append("network_map validate: available id missing node %s" % available_id)
+	var selected_id := str(graph.get("selected_node_id", ""))
+	if not selected_id.is_empty() and not by_id.has(selected_id):
+		warnings.append("network_map validate: selected id missing node %s" % selected_id)
+	return warnings
 
 static func apply_initial_node_states(nodes: Array) -> void:
 	for variant in nodes:
@@ -217,6 +293,7 @@ static func _build_graph_node(graph_id: String, layer: int, lane: int, layer_nod
 		"enemy_martial_level": int(pool_node.get("enemy_martial_level", 0)),
 		"recommended_martial_min": int(pool_node.get("recommended_martial_min", 0)),
 		"recommended_martial_max": int(pool_node.get("recommended_martial_max", 0)),
+		"debug_fallback": bool(pool_node.get("debug_fallback", false)),
 		"outgoing": [],
 		"incoming": [],
 		"state": "locked",
@@ -353,7 +430,47 @@ static func _debug_fallback_pool_node(layer: int) -> Dictionary:
 		"enemy_martial_level": 0,
 		"recommended_martial_min": 0,
 		"recommended_martial_max": 0,
+		"debug_fallback": true,
 	}
+
+static func _node_is_combat(node: Dictionary) -> bool:
+	var node_type := str(node.get("node_type", ""))
+	return node_type.begins_with("combat_") \
+		or not str(node.get("combat_pool_id", "")).is_empty() \
+		or not str(node.get("encounter_id", "")).is_empty() \
+		or not str(node.get("battle_id", "")).is_empty()
+
+static func _layer_node_counts(graph: Dictionary) -> Array[String]:
+	var layer_count := int(graph.get("layer_count", 0))
+	var counts: Array[int] = []
+	for _i in range(layer_count):
+		counts.append(0)
+	for item in graph.get("nodes", []):
+		if item is Dictionary:
+			var node := item as Dictionary
+			var layer := int(node.get("layer", -1))
+			if layer >= 0 and layer < counts.size():
+				counts[layer] += 1
+	var result: Array[String] = []
+	for count in counts:
+		result.append(str(count))
+	return result
+
+static func _layer_edge_counts(graph: Dictionary) -> Array[String]:
+	var layer_count := int(graph.get("layer_count", 0))
+	var counts: Array[int] = []
+	for _i in range(max(0, layer_count - 1)):
+		counts.append(0)
+	for item in graph.get("nodes", []):
+		if item is Dictionary:
+			var node := item as Dictionary
+			var layer := int(node.get("layer", -1))
+			if layer >= 0 and layer < counts.size():
+				counts[layer] += (node.get("outgoing", []) as Array).size()
+	var result: Array[String] = []
+	for count in counts:
+		result.append(str(count))
+	return result
 
 static func _string_array(value) -> Array[String]:
 	var result: Array[String] = []
