@@ -115,7 +115,7 @@ func _legacy_effect_preview_context() -> Dictionary:
 	var enemy_facing: String = _enemy_preview_facing()
 	var player_range: Array[int] = _attack_range_slots(true, player_target, preview_card)
 	var player_result: String = _preview_range_result(preview_card, player_target, player_facing, enemy_target_for_preview)
-	var hits_enemy: bool = preview_card.requires_hit_check() and (player_result == BattleStateMachine.RANGE_HIT or player_result == BattleStateMachine.RANGE_GRAZE)
+	var hits_enemy: bool = preview_card.requires_hit_check() and (player_result == CombatResolver.RANGE_HIT or (CombatResolver.ENABLE_GRAZE and player_result == CombatResolver.RANGE_GRAZE))
 	var enemy_range: Array[int] = []
 	var enemy_hits_player: bool = false
 	var enemy_damage: int = 0
@@ -124,7 +124,7 @@ func _legacy_effect_preview_context() -> Dictionary:
 	if enemy_card != null:
 		enemy_range = _attack_range_slots(false, enemy_target, enemy_card)
 		enemy_result = _preview_range_result(enemy_card, enemy_target, enemy_facing, player_target)
-		enemy_hits_player = enemy_card.requires_hit_check() and (enemy_result == BattleStateMachine.RANGE_HIT or enemy_result == BattleStateMachine.RANGE_GRAZE)
+		enemy_hits_player = enemy_card.requires_hit_check() and (enemy_result == CombatResolver.RANGE_HIT or (CombatResolver.ENABLE_GRAZE and enemy_result == CombatResolver.RANGE_GRAZE))
 		enemy_damage = _preview_damage_for_result(enemy_card, player, enemy_result)
 	var input: Dictionary = {
 		"has_data": true,

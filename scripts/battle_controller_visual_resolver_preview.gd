@@ -370,7 +370,7 @@ func _resolve_one_preview_step(is_player_side: bool, card: CardData, actor_pos: 
 	var will_break := target.momentum > 0 and target.momentum + target_momentum_delta <= 0
 	var was_back_hit := false
 	var back_hit_turn_to := ""
-	if not is_player_side and (range_result == CombatResolver.RANGE_HIT or range_result == CombatResolver.RANGE_GRAZE) and (damage_value > 0 or break_value > 0):
+		if not is_player_side and (range_result == CombatResolver.RANGE_HIT or (CombatResolver.ENABLE_GRAZE and range_result == CombatResolver.RANGE_GRAZE)) and (damage_value > 0 or break_value > 0):
 		was_back_hit = _preview_back_hit(target_pos, target_facing, actor_pos)
 		back_hit_turn_to = _preview_facing_toward(target_pos, actor_pos) if was_back_hit else ""
 	return {
@@ -480,7 +480,7 @@ func _range_text(range_result: String) -> String:
 		CombatResolver.RANGE_HIT:
 			return "命中"
 		CombatResolver.RANGE_GRAZE:
-			return "擦中"
+			return "擦中" if CombatResolver.ENABLE_GRAZE else "距离未中"
 		CombatResolver.RANGE_MISS_FACING:
 			return "朝向未中"
 		CombatResolver.RANGE_MISS_RANGE:

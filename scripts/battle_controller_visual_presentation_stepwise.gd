@@ -1101,7 +1101,7 @@ func _is_back_hit_on_player(result: Dictionary) -> bool:
 	if player == null or enemy == null:
 		return false
 	var range_result: String = str(result.get("range", ""))
-	if range_result != "hit" and range_result != "graze":
+	if range_result != CombatResolver.RANGE_HIT and not (CombatResolver.ENABLE_GRAZE and range_result == CombatResolver.RANGE_GRAZE):
 		return false
 	var damage_value: int = int(result.get("damage", 0))
 	var break_value: int = int(result.get("break", 0))

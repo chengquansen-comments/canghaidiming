@@ -147,7 +147,7 @@ func _play_focus_presentation(is_player_actor: bool, _card: CardData, result: Di
 func _play_presentation_attack_fx(is_player_actor: bool, card: CardData, style: String, result: Dictionary) -> void:
 	var is_finisher: bool = _card_has_tag(card, "终结")
 	var color: Color = _presentation_attack_color(style, result)
-	var range_result: String = str(result.get("range", "hit"))
+	var range_result: String = _normalized_range_for_display(str(result.get("range", "hit")))
 	var should_hit: bool = _presentation_result_should_hit(card, result)
 	if style == "firearm":
 		_show_presentation_firearm_flash(is_player_actor, color, should_hit, is_finisher)
@@ -161,19 +161,19 @@ func _play_presentation_attack_fx(is_player_actor: bool, card: CardData, style: 
 		var shake_amount: float = 4.2
 		if is_finisher:
 			shake_amount = 7.0
-		elif range_result == "graze":
+		elif range_result == CombatResolver.RANGE_GRAZE:
 			shake_amount = 2.2
 		_impact_feedback(color, shake_amount, style == "thrust" or style == "firearm", is_finisher)
 
 func _play_presentation_hit_reaction(target_is_player: bool, _card: CardData, attack_dir: float, result: Dictionary) -> void:
 	var target_node: CanvasItem = _presentation_visual_node(target_is_player)
 	var target_start_modulate := Color.WHITE
-	var range_result: String = str(result.get("range", "hit"))
+	var range_result: String = _normalized_range_for_display(str(result.get("range", "hit")))
 	var target_will_break: bool = _presentation_target_will_break(target_is_player, result)
 	if target_node != null:
 		target_start_modulate = target_node.modulate
 		var hit_color := Color(1.0, 0.35, 0.28, target_start_modulate.a)
-		if range_result == "graze":
+		if range_result == CombatResolver.RANGE_GRAZE:
 			hit_color = Color(0.95, 0.76, 0.38, target_start_modulate.a)
 		if target_will_break:
 			hit_color = Color(0.95, 0.15, 0.12, target_start_modulate.a)
@@ -181,7 +181,7 @@ func _play_presentation_hit_reaction(target_is_player: bool, _card: CardData, at
 		flash_tween.tween_property(target_node, "modulate", hit_color, 0.04)
 		flash_tween.tween_property(target_node, "modulate", target_start_modulate, 0.12)
 	var base_offset: Vector2 = _presentation_offset(target_is_player)
-	var knock_scale: float = 0.58 if range_result == "graze" else 1.0
+	var knock_scale: float = 0.58 if range_result == CombatResolver.RANGE_GRAZE else 1.0
 	if target_will_break:
 		knock_scale = 1.35
 	var knock := base_offset + Vector2(attack_dir * PRESENTATION_HIT_KNOCKBACK * knock_scale, 0)
@@ -212,11 +212,11 @@ func _show_presentation_result_text(target_is_enemy: bool, card: CardData, resul
 	if card == null:
 		return
 	var parts: Array[String] = []
-	var range_result: String = str(result.get("range", "hit"))
+	var range_result: String = _normalized_range_for_display(str(result.get("range", "hit")))
 	var damage_value: int = int(result.get("damage", card.damage))
 	var break_value: int = int(result.get("break", card.break_momentum))
 	var gain_value: int = int(result.get("gain", card.gain_momentum))
-	if range_result == "graze":
+	if range_result == CombatResolver.RANGE_GRAZE:
 		parts.append("擦中")
 	elif range_result == "miss_range":
 		parts.append("距外")
@@ -231,7 +231,7 @@ func _show_presentation_result_text(target_is_enemy: bool, card: CardData, resul
 	if parts.is_empty():
 		return
 	var color: Color = Color("c44a3f")
-	if range_result == "graze":
+	if range_result == CombatResolver.RANGE_GRAZE:
 		color = Color("d9b66c")
 	elif range_result == "miss_range" or range_result == "miss_facing":
 		color = Color(0.72, 0.72, 0.68, 0.9)
@@ -421,13 +421,13 @@ func _presentation_result_should_hit(card: CardData, result: Dictionary) -> bool
 	if not card.requires_hit_check():
 		return true
 	var range_result: String = str(result.get("range", "hit"))
-	return range_result == "hit" or range_result == "graze"
+	return range_result == CombatResolver.RANGE_HIT or (CombatResolver.ENABLE_GRAZE and range_result == CombatResolver.RANGE_GRAZE)
 
 func _presentation_lunge_distance(style: String, result: Dictionary) -> float:
 	if style == "firearm":
 		return 26.0
 	var base_distance: float = PRESENTATION_LUNGE_THRUST if style == "thrust" else PRESENTATION_LUNGE_SLASH
-	if str(result.get("range", "hit")) == "graze":
+	if _normalized_range_for_display(str(result.get("range", "hit"))) == CombatResolver.RANGE_GRAZE:
 		return base_distance * 0.78
 	return base_distance
 
@@ -435,12 +435,17 @@ func _presentation_attack_color(style: String, result: Dictionary) -> Color:
 	var color: Color = Color("9fd8ff") if style == "thrust" else Color("ff9f73")
 	if style == "firearm":
 		color = Color("e4572e")
-	var range_result: String = str(result.get("range", "hit"))
-	if range_result == "graze":
+	var range_result: String = _normalized_range_for_display(str(result.get("range", "hit")))
+	if range_result == CombatResolver.RANGE_GRAZE:
 		return color.darkened(0.22)
-	if range_result == "miss_range" or range_result == "miss_facing":
+	if range_result == CombatResolver.RANGE_MISS_RANGE or range_result == CombatResolver.RANGE_MISS_FACING:
 		return Color(0.72, 0.72, 0.68, 0.62)
 	return color
+
+func _normalized_range_for_display(range_result: String) -> String:
+	if range_result == CombatResolver.RANGE_GRAZE and not CombatResolver.ENABLE_GRAZE:
+		return CombatResolver.RANGE_MISS_RANGE
+	return range_result
 
 func _presentation_hit_pause_duration(result: Dictionary, target_will_break: bool) -> float:
 	if target_will_break:

@@ -545,10 +545,11 @@ func _preview_damage(card: CardData, target: Fighter, hits_target: bool) -> int:
 func _preview_damage_for_result(card: CardData, target: Fighter, range_result: String) -> int:
 	if card == null or card.damage <= 0:
 		return 0
-	if range_result != BattleStateMachine.RANGE_HIT and range_result != BattleStateMachine.RANGE_GRAZE:
+	var is_effective_hit := range_result == CombatResolver.RANGE_HIT or (CombatResolver.ENABLE_GRAZE and range_result == CombatResolver.RANGE_GRAZE)
+	if not is_effective_hit:
 		return 0
 	var amount := card.damage
-	if range_result == BattleStateMachine.RANGE_GRAZE:
+	if CombatResolver.ENABLE_GRAZE and range_result == CombatResolver.RANGE_GRAZE:
 		amount = maxi(ceili(float(amount) * 0.5), 1)
 	if target != null and target.is_broken():
 		amount *= 2
@@ -559,24 +560,15 @@ func _preview_damage_for_result(card: CardData, target: Fighter, range_result: S
 func _preview_break_for_result(card: CardData, range_result: String) -> int:
 	if card == null:
 		return 0
-	if range_result != BattleStateMachine.RANGE_HIT and range_result != BattleStateMachine.RANGE_GRAZE:
+	var is_effective_hit := range_result == CombatResolver.RANGE_HIT or (CombatResolver.ENABLE_GRAZE and range_result == CombatResolver.RANGE_GRAZE)
+	if not is_effective_hit:
 		return 0
-	if range_result == BattleStateMachine.RANGE_GRAZE:
+	if CombatResolver.ENABLE_GRAZE and range_result == CombatResolver.RANGE_GRAZE:
 		return maxi(card.break_momentum - 1, 0)
 	return card.break_momentum
 
 func _preview_range_result(card: CardData, actor_position: int, actor_facing: String, target_position: int) -> String:
-	if card == null or not card.requires_hit_check():
-		return BattleStateMachine.RANGE_HIT
-	if card.requires_facing and not card.has_tag("回身") and not _preview_faces_target(actor_position, actor_facing, target_position):
-		return BattleStateMachine.RANGE_MISS_FACING
-	var distance := absi(target_position - actor_position)
-	if distance >= card.min_distance and distance <= card.max_distance:
-		return BattleStateMachine.RANGE_HIT
-	var distance_gap := card.min_distance - distance if distance < card.min_distance else distance - card.max_distance
-	if distance_gap == 1:
-		return BattleStateMachine.RANGE_GRAZE
-	return BattleStateMachine.RANGE_MISS_RANGE
+	return CombatResolver.evaluate_range(card, actor_position, actor_facing, target_position)
 
 func _preview_faces_target(actor_position: int, actor_facing: String, target_position: int) -> bool:
 	if actor_position == target_position:
@@ -590,7 +582,7 @@ func _range_result_text(result: String) -> String:
 		BattleStateMachine.RANGE_HIT:
 			return "命中"
 		BattleStateMachine.RANGE_GRAZE:
-			return "擦中"
+			return "擦中" if CombatResolver.ENABLE_GRAZE else "距离未中"
 		BattleStateMachine.RANGE_MISS_FACING:
 			return "朝向错误"
 		BattleStateMachine.RANGE_MISS_RANGE:

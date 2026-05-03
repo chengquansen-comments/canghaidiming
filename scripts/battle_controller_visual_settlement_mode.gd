@@ -521,7 +521,7 @@ func _range_text_safe(range_result: String) -> String:
 		CombatResolver.RANGE_HIT:
 			return "命中"
 		CombatResolver.RANGE_GRAZE:
-			return "擦中"
+			return "擦中" if CombatResolver.ENABLE_GRAZE else "距离未中"
 		CombatResolver.RANGE_MISS_FACING:
 			return "朝向未中"
 		CombatResolver.RANGE_MISS_RANGE:

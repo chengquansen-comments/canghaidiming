@@ -1,6 +1,7 @@
 extends RefCounted
 class_name CombatResolver
 
+const ENABLE_GRAZE := false
 const RANGE_HIT := "hit"
 const RANGE_GRAZE := "graze"
 const RANGE_MISS_RANGE := "miss_range"
@@ -69,16 +70,17 @@ static func resolve_card_effect(card: CardData, range_result: String, actor_brok
 	if card == null:
 		return {"damage": 0, "break": 0, "gain": 0, "guard": 0}
 	var guard_value: int = card.guard
-	if actor_broken or (range_result != RANGE_HIT and range_result != RANGE_GRAZE):
+	var is_effective_hit := range_result == RANGE_HIT or (ENABLE_GRAZE and range_result == RANGE_GRAZE)
+	if actor_broken or not is_effective_hit:
 		return {"damage": 0, "break": 0, "gain": 0, "guard": guard_value}
 	var damage_value: int = card.damage
-	if range_result == RANGE_GRAZE:
+	if ENABLE_GRAZE and range_result == RANGE_GRAZE:
 		damage_value = maxi(ceili(float(damage_value) * 0.5), 1) if damage_value > 0 else 0
 	if target_broken and damage_value > 0:
 		damage_value *= 2
 	damage_value = maxi(damage_value - target_guard, 0)
 	var break_value: int = card.break_momentum
-	if range_result == RANGE_GRAZE:
+	if ENABLE_GRAZE and range_result == RANGE_GRAZE:
 		break_value = maxi(break_value - 1, 0)
 	return {"damage": damage_value, "break": break_value, "gain": card.gain_momentum, "guard": guard_value}
 
@@ -91,7 +93,9 @@ static func evaluate_range(card: CardData, actor_pos: int, actor_facing: String,
 	if distance >= card.min_distance and distance <= card.max_distance:
 		return RANGE_HIT
 	var gap: int = card.min_distance - distance if distance < card.min_distance else distance - card.max_distance
-	return RANGE_GRAZE if gap == 1 else RANGE_MISS_RANGE
+	if ENABLE_GRAZE and gap == 1:
+		return RANGE_GRAZE
+	return RANGE_MISS_RANGE
 
 static func apply_card_movement(card: CardData, is_player_actor: bool, p_pos: int, e_pos: int, actor_facing: String, range_result: String, target_will_break: bool = false) -> Dictionary:
 	if card == null:
@@ -102,7 +106,7 @@ static func apply_card_movement(card: CardData, is_player_actor: bool, p_pos: in
 	elif card.move_condition == CardData.MOVE_ON_HIT:
 		can_move = range_result == RANGE_HIT
 	elif card.move_condition == CardData.MOVE_ON_GRAZE:
-		can_move = range_result == RANGE_GRAZE
+		can_move = ENABLE_GRAZE and range_result == RANGE_GRAZE
 	elif card.move_condition == CardData.MOVE_ON_BREAK:
 		can_move = target_will_break
 	if not can_move:

@@ -1903,7 +1903,7 @@ func _build_intent_feedback(actor: Fighter, target: Fighter, intent: IntentData,
 	var hp_damage := maxi(target_hp_before - target.hp, 0)
 	var guard_damage := maxi(target_guard_before - target.guard_points, 0)
 	var range_result := state_machine.evaluate_card_range(card, actor, target)
-	var was_in_range := range_result == BattleStateMachine.RANGE_HIT or range_result == BattleStateMachine.RANGE_GRAZE
+	var was_in_range := range_result == BattleStateMachine.RANGE_HIT or (CombatResolver.ENABLE_GRAZE and range_result == BattleStateMachine.RANGE_GRAZE)
 	feedback["is_attack"] = true
 	feedback["was_in_range"] = was_in_range
 	feedback["connected"] = was_in_range and (hp_damage > 0 or guard_damage > 0)

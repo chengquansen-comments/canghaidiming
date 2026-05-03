@@ -203,37 +203,16 @@ static func simulate(snapshot: Dictionary) -> Dictionary:
 	}
 
 static func resolve_card_preview(card: Dictionary, range_result: String, actor_broken: bool, target_broken: bool, target_guard: int) -> Dictionary:
-	if actor_broken:
-		return {"damage": 0, "break": 0, "gain": 0}
-	if range_result != RANGE_HIT and range_result != RANGE_GRAZE:
-		return {"damage": 0, "break": 0, "gain": 0}
-	var damage: int = int(card.get("damage", 0))
-	if range_result == RANGE_GRAZE:
-		damage = maxi(ceili(float(damage) * 0.5), 1) if damage > 0 else 0
-	if target_broken and damage > 0:
-		damage *= 2
-	damage = maxi(damage - target_guard, 0)
-	var break_value: int = int(card.get("break_momentum", 0))
-	if range_result == RANGE_GRAZE:
-		break_value = maxi(break_value - 1, 0)
+	var card_data: CardData = _dict_to_card_data(card)
+	var resolved := CombatResolver.resolve_card_effect(card_data, range_result, actor_broken, target_broken, target_guard)
 	return {
-		"damage": damage,
-		"break": break_value,
-		"gain": int(card.get("gain_momentum", 0))
+		"damage": int(resolved.get("damage", 0)),
+		"break": int(resolved.get("break", 0)),
+		"gain": int(resolved.get("gain", 0))
 	}
 
 static func evaluate_range(card: Dictionary, actor_pos: int, actor_facing: String, target_pos: int) -> String:
-	if not bool(card.get("requires_hit_check", true)):
-		return RANGE_HIT
-	if bool(card.get("requires_facing", true)) and not has_tag(card, "回身") and not faces_target(actor_pos, actor_facing, target_pos):
-		return RANGE_MISS_FACING
-	var distance := absi(target_pos - actor_pos)
-	var min_distance := int(card.get("min_distance", 0))
-	var max_distance := int(card.get("max_distance", 8))
-	if distance >= min_distance and distance <= max_distance:
-		return RANGE_HIT
-	var gap := min_distance - distance if distance < min_distance else distance - max_distance
-	return RANGE_GRAZE if gap == 1 else RANGE_MISS_RANGE
+	return CombatResolver.evaluate_range(_dict_to_card_data(card), actor_pos, actor_facing, target_pos)
 
 static func has_tag(card: Dictionary, tag: String) -> bool:
 	var tags: Array = card.get("tags", [])
@@ -247,30 +226,33 @@ static func faces_target(actor_pos: int, actor_facing: String, target_pos: int) 
 	return actor_facing == "left"
 
 static func apply_card_movement(card: Dictionary, is_player_actor: bool, p_pos: int, e_pos: int, actor_facing: String, range_result: String, target_will_break: bool = false) -> Dictionary:
-	var can_move := false
-	var condition := str(card.get("move_condition", "none"))
-	if condition == "always":
-		can_move = true
-	elif condition == "on_hit":
-		can_move = range_result == RANGE_HIT
-	elif condition == "on_graze":
-		can_move = range_result == RANGE_GRAZE
-	elif condition == "on_break":
-		can_move = target_will_break
-	if not can_move:
-		return {"player": p_pos, "enemy": e_pos}
-	var actor_pos := p_pos if is_player_actor else e_pos
-	var target_pos := e_pos if is_player_actor else p_pos
-	var push := int(card.get("target_push_after", 0))
-	var pull := int(card.get("target_pull_after", 0))
-	var self_move := int(card.get("self_move_after", 0))
-	if push > 0:
-		target_pos = preview_push(actor_pos, target_pos, actor_facing, push)
-	elif pull > 0:
-		target_pos = preview_pull(actor_pos, target_pos, actor_facing, pull)
-	elif self_move != 0:
-		actor_pos = preview_self(actor_pos, target_pos, actor_facing, self_move)
-	return {"player": actor_pos if is_player_actor else target_pos, "enemy": target_pos if is_player_actor else actor_pos}
+	return CombatResolver.apply_card_movement(_dict_to_card_data(card), is_player_actor, p_pos, e_pos, actor_facing, range_result, target_will_break)
+
+static func _dict_to_card_data(card: Dictionary) -> CardData:
+	var tags_array: Array = card.get("tags", [])
+	var tags := PackedStringArray()
+	for t in tags_array:
+		tags.append(str(t))
+	return CardData.new(
+		str(card.get("id", "checker_card")),
+		str(card.get("display_name", "checker_card")),
+		"",
+		int(card.get("min_distance", 0)),
+		int(card.get("max_distance", 8)),
+		int(card.get("momentum_cost", 0)),
+		str(card.get("role", CardData.ROLE_GUARD)),
+		int(card.get("gain_momentum", 0)),
+		int(card.get("break_momentum", 0)),
+		int(card.get("damage", 0)),
+		int(card.get("guard", 0)),
+		tags,
+		str(card.get("weapon_style", "")),
+		bool(card.get("requires_facing", true)),
+		int(card.get("self_move_after", 0)),
+		int(card.get("target_push_after", 0)),
+		int(card.get("target_pull_after", 0)),
+		str(card.get("move_condition", CardData.MOVE_NONE))
+	)
 
 static func preview_dir(actor_pos: int, target_pos: int, facing: String) -> int:
 	if target_pos > actor_pos:

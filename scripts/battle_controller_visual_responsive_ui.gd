@@ -323,15 +323,7 @@ func _preview_resolution_order(p_intent: IntentData, e_intent: IntentData) -> Ar
 
 
 func _preview_range_result_at(card: CardData, actor_pos: int, actor_facing: String, target_pos: int) -> String:
-	if card == null or not card.requires_hit_check():
-		return BattleStateMachine.RANGE_HIT
-	if card.requires_facing and not card.has_tag("回身") and not _preview_faces_target(actor_pos, actor_facing, target_pos):
-		return BattleStateMachine.RANGE_MISS_FACING
-	var distance := absi(target_pos - actor_pos)
-	if distance >= card.min_distance and distance <= card.max_distance:
-		return BattleStateMachine.RANGE_HIT
-	var gap := card.min_distance - distance if distance < card.min_distance else distance - card.max_distance
-	return BattleStateMachine.RANGE_GRAZE if gap == 1 else BattleStateMachine.RANGE_MISS_RANGE
+	return CombatResolver.evaluate_range(card, actor_pos, actor_facing, target_pos)
 
 
 func _preview_outcome_text(card: CardData, actor: Fighter, target: Fighter, range_result: String) -> Dictionary:
@@ -346,7 +338,8 @@ func _preview_outcome_text(card: CardData, actor: Fighter, target: Fighter, rang
 	actor_parts.append("伤%d" % damage)
 	if break_value > 0:
 		actor_parts.append("势-%d" % break_value)
-	if card.gain_momentum > 0 and range_result == BattleStateMachine.RANGE_HIT:
+	var is_effective_hit := range_result == CombatResolver.RANGE_HIT or (CombatResolver.ENABLE_GRAZE and range_result == CombatResolver.RANGE_GRAZE)
+	if card.gain_momentum > 0 and is_effective_hit:
 		actor_parts.append("势+%d" % card.gain_momentum)
 	var target_parts: Array[String] = []
 	if damage == 0 and break_value == 0:
@@ -367,9 +360,9 @@ func _apply_preview_movement(card: CardData, is_player_actor: bool, p_pos: int, 
 		CardData.MOVE_ALWAYS:
 			can_move = true
 		CardData.MOVE_ON_HIT:
-			can_move = range_result == BattleStateMachine.RANGE_HIT
+			can_move = range_result == CombatResolver.RANGE_HIT
 		CardData.MOVE_ON_GRAZE:
-			can_move = range_result == BattleStateMachine.RANGE_GRAZE
+			can_move = CombatResolver.ENABLE_GRAZE and range_result == CombatResolver.RANGE_GRAZE
 		_:
 			can_move = false
 	if not can_move:
@@ -423,9 +416,9 @@ func _preview_faces_target(actor_position: int, actor_facing: String, target_pos
 func _preview_break_for_result(card: CardData, range_result: String) -> int:
 	if card == null:
 		return 0
-	if range_result == BattleStateMachine.RANGE_HIT:
+	if range_result == CombatResolver.RANGE_HIT:
 		return card.break_momentum
-	if range_result == BattleStateMachine.RANGE_GRAZE:
+	if CombatResolver.ENABLE_GRAZE and range_result == CombatResolver.RANGE_GRAZE:
 		return maxi(card.break_momentum - 1, 0)
 	return 0
 

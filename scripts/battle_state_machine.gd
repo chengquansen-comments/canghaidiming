@@ -217,7 +217,7 @@ func resolve_intent(intent: IntentData, actor: Fighter, target: Fighter) -> Arra
 		if range_result == RANGE_MISS_RANGE:
 			lines.append("%s 因距离 %d 不合式，未能命中。" % [card.display_name, current_distance])
 			return lines
-		if range_result == RANGE_GRAZE:
+		if CombatResolver.ENABLE_GRAZE and range_result == RANGE_GRAZE:
 			lines.append("%s 距离 %d 略失准头，只擦中目标。" % [card.display_name, current_distance])
 
 	_apply_resolved_positions(actor, target, sim)
