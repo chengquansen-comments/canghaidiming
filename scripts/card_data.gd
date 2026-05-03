@@ -1,10 +1,15 @@
 extends RefCounted
 class_name CardData
 
-const ROLE_MOMENTUM := "momentum"
-const ROLE_DAMAGE := "damage"
+# Current tactical role ids. role is a UI / intent / AI / analytics label only.
+# It must not be used by CombatResolver as a hard counter table.
 const ROLE_GUARD := "guard"
 const ROLE_ATTACK := "attack"
+const ROLE_FEINT := "feint"
+
+# Legacy role ids. Kept only for one-time normalization of old card definitions.
+const ROLE_MOMENTUM := "momentum"
+const ROLE_DAMAGE := "damage"
 const ROLE_DEFENSE := "defense"
 
 const MOVE_NONE := "none"
@@ -40,7 +45,7 @@ func _init(
 	p_min_distance: int = 1,
 	p_max_distance: int = 3,
 	p_momentum_cost: int = 1,
-	p_role: String = ROLE_DAMAGE,
+	p_role: String = ROLE_ATTACK,
 	p_gain_momentum: int = 0,
 	p_break_momentum: int = 0,
 	p_damage: int = 0,
@@ -59,7 +64,6 @@ func _init(
 	min_distance = p_min_distance
 	max_distance = p_max_distance
 	momentum_cost = maxi(p_momentum_cost, 0)
-	role = p_role
 	gain_momentum = maxi(p_gain_momentum, 0)
 	break_momentum = maxi(p_break_momentum, 0)
 	damage = maxi(p_damage, 0)
@@ -71,6 +75,7 @@ func _init(
 	target_push_after = clampi(p_target_push_after, 0, 1)
 	target_pull_after = clampi(p_target_pull_after, 0, 1)
 	move_condition = _normalize_move_condition(p_move_condition)
+	role = _normalize_role_once(p_role)
 
 
 func duplicate_card() -> CardData:
@@ -96,6 +101,30 @@ func duplicate_card() -> CardData:
 	)
 
 
+func _normalize_role_once(value: String) -> String:
+	# New explicit tactical role ids.
+	match value:
+		ROLE_GUARD, ROLE_ATTACK, ROLE_FEINT:
+			return value
+
+	# Legacy values are converted once at construction time.
+	# Prefer card fields over old semantic names so old ROLE_MOMENTUM cards with
+	# break/damage become attack, while pure movement/tempo cards become feint.
+	if damage > 0 or break_momentum > 0:
+		return ROLE_ATTACK
+	if self_move_after != 0 or target_push_after > 0 or target_pull_after > 0:
+		return ROLE_FEINT
+	if gain_momentum > 0 and guard <= 0:
+		return ROLE_FEINT
+	match value:
+		ROLE_DAMAGE:
+			return ROLE_ATTACK
+		ROLE_DEFENSE, ROLE_MOMENTUM:
+			return ROLE_GUARD
+		_:
+			return ROLE_GUARD
+
+
 func _normalize_move_condition(value: String) -> String:
 	match value:
 		MOVE_ON_HIT, MOVE_ALWAYS, MOVE_ON_BREAK, MOVE_ON_GRAZE:
@@ -113,11 +142,11 @@ func is_usable_at(distance: int) -> bool:
 
 
 func is_momentum_card() -> bool:
-	return role == ROLE_MOMENTUM
+	return role == ROLE_FEINT
 
 
 func is_damage_card() -> bool:
-	return role == ROLE_DAMAGE
+	return role == ROLE_ATTACK
 
 
 func is_guard_card() -> bool:
@@ -125,19 +154,23 @@ func is_guard_card() -> bool:
 
 
 func is_attack_card() -> bool:
-	return damage > 0 or break_momentum > 0 or role == ROLE_ATTACK
+	return role == ROLE_ATTACK
 
 
 func is_defense_card() -> bool:
-	return not is_attack_card() and (guard > 0 or gain_momentum > 0 or role == ROLE_DEFENSE or role == ROLE_GUARD or role == ROLE_MOMENTUM)
+	return role == ROLE_GUARD
+
+
+func is_feint_card() -> bool:
+	return role == ROLE_FEINT
 
 
 func category_role() -> String:
-	return ROLE_ATTACK if is_attack_card() else ROLE_DEFENSE
+	return role
 
 
 func requires_hit_check() -> bool:
-	return not is_guard_card() and (damage > 0 or gain_momentum > 0 or break_momentum > 0)
+	return damage > 0 or break_momentum > 0
 
 
 func effect_budget() -> int:
@@ -145,7 +178,15 @@ func effect_budget() -> int:
 
 
 func type_label() -> String:
-	return "攻" if category_role() == ROLE_ATTACK else "守"
+	match role:
+		ROLE_GUARD:
+			return "守"
+		ROLE_ATTACK:
+			return "攻"
+		ROLE_FEINT:
+			return "变"
+		_:
+			return "守"
 
 
 func movement_summary_parts() -> Array[String]:
