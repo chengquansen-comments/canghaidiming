@@ -1,6 +1,7 @@
 extends RefCounted
 class_name BattleIntentVisibility
 
+# Global kill switch. Set to false to reveal all enemy intent everywhere.
 const USE_INTENT_VISIBILITY_POLICY := true
 
 const POLICY_FULL := "full"
@@ -52,39 +53,61 @@ static func should_show_enemy_final_preview(visibility: String) -> bool:
 	return visibility == VISIBILITY_FULL
 
 
-static func enemy_card_title(card: CardData, visibility: String) -> String:
-	if visibility == VISIBILITY_FULL:
-		return card.display_name if card != null else "待命"
-	if visibility == VISIBILITY_TYPE:
-		return "敌方意图：%s" % card_tactic_type_text(card)
-	return "敌方意图：不可辨"
-
-
-static func enemy_intent_bubble_text(card: CardData, visibility: String, full_text: String) -> String:
-	if visibility == VISIBILITY_FULL:
-		return full_text
-	if visibility == VISIBILITY_TYPE:
-		return "敌方意图：%s" % card_tactic_type_text(card)
-	return "敌方意图：不可辨"
-
-
-static func card_tactic_type_text(card: CardData) -> String:
-	if card == null:
-		return "变"
-	if card.damage > 0 or card.break_momentum > 0:
-		return "攻"
-	if card.guard > 0:
-		return "守"
-	return "变"
-
-
 static func visibility_label(visibility: String) -> String:
 	match visibility:
 		VISIBILITY_FULL:
 			return "全意图"
 		VISIBILITY_TYPE:
-			return "仅类型"
+			return "只辨类型"
 		VISIBILITY_NONE:
 			return "不可辨"
 		_:
-			return visibility
+			return "全意图"
+
+
+static func card_tactic_type_text(card: CardData) -> String:
+	if card == null:
+		return "观察"
+	if _card_has_tag(card, "守") or card.guard > 0:
+		return "守"
+	if _card_has_tag(card, "变") or card.self_move_after != 0 or card.target_push_after > 0 or card.target_pull_after > 0:
+		if card.damage <= 0 and card.break_momentum <= 0:
+			return "变"
+	if card.damage > 0 or card.break_momentum > 0:
+		return "攻"
+	if card.gain_momentum > 0:
+		return "变"
+	return "势"
+
+
+static func enemy_card_title(card: CardData, visibility: String) -> String:
+	match visibility:
+		VISIBILITY_FULL:
+			return card.display_name if card != null else "观察中"
+		VISIBILITY_TYPE:
+			return "敌方意图：%s" % card_tactic_type_text(card)
+		VISIBILITY_NONE:
+			return "敌方意图：不可辨"
+		_:
+			return card.display_name if card != null else "观察中"
+
+
+static func enemy_intent_bubble_text(card: CardData, visibility: String, full_text: String) -> String:
+	match visibility:
+		VISIBILITY_FULL:
+			return full_text
+		VISIBILITY_TYPE:
+			return "意图｜%s" % card_tactic_type_text(card)
+		VISIBILITY_NONE:
+			return "意图｜不可辨"
+		_:
+			return full_text
+
+
+static func _card_has_tag(card: CardData, tag: String) -> bool:
+	if card == null:
+		return false
+	for item in card.tags:
+		if str(item) == tag:
+			return true
+	return false
