@@ -68,16 +68,7 @@ static func visibility_label(visibility: String) -> String:
 static func card_tactic_type_text(card: CardData) -> String:
 	if card == null:
 		return "观察"
-	if _card_has_tag(card, "守") or card.guard > 0:
-		return "守"
-	if _card_has_tag(card, "变") or card.self_move_after != 0 or card.target_push_after > 0 or card.target_pull_after > 0:
-		if card.damage <= 0 and card.break_momentum <= 0:
-			return "变"
-	if card.damage > 0 or card.break_momentum > 0:
-		return "攻"
-	if card.gain_momentum > 0:
-		return "变"
-	return "势"
+	return card.type_label()
 
 
 static func enemy_card_title(card: CardData, visibility: String) -> String:
@@ -102,12 +93,3 @@ static func enemy_intent_bubble_text(card: CardData, visibility: String, full_te
 			return "意图｜不可辨"
 		_:
 			return full_text
-
-
-static func _card_has_tag(card: CardData, tag: String) -> bool:
-	if card == null:
-		return false
-	for item in card.tags:
-		if str(item) == tag:
-			return true
-	return false
