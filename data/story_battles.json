@@ -136,6 +136,33 @@
         "default_facing": "left",
         "story_role": "兜底敌人",
         "notes": "缺省战斗配置"
+      },
+      {
+        "fighter_template_id": "wuke_spear_student",
+        "display_name": "校场枪生",
+        "weapon_style": "spearman",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "武举陪试",
+        "notes": "武举第一试陪练枪生"
+      },
+      {
+        "fighter_template_id": "wuke_blade_student",
+        "display_name": "校场刀生",
+        "weapon_style": "blademaster",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "武举陪试",
+        "notes": "武举第二试陪练刀生"
+      },
+      {
+        "fighter_template_id": "wuke_final_student",
+        "display_name": "终试武生",
+        "weapon_style": "blademaster",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "武举终试",
+        "notes": "武举终试对手"
       }
     ],
     "story_deck_sets": [
@@ -298,6 +325,30 @@
         "deck": "spear_mid_thrust:2,spear_line_press:1,spear_guard_horse:1",
         "tags": "story,fallback",
         "notes": "缺省兜底牌组"
+      },
+      {
+        "story_deck_id": "wuke_spear_student_teach",
+        "display_name": "校场枪生·第一试",
+        "fighter_template_id": "wuke_spear_student",
+        "deck": "spear_mid_thrust:2,spear_guard_horse:1",
+        "tags": "wuke,teach,spear",
+        "notes": "武举第一试低压教学枪生"
+      },
+      {
+        "story_deck_id": "wuke_blade_student_teach",
+        "display_name": "校场刀生·第二试",
+        "fighter_template_id": "wuke_blade_student",
+        "deck": "blade_front_cut:2,blade_breathe:1",
+        "tags": "wuke,teach,blade",
+        "notes": "武举第二试低压教学刀生"
+      },
+      {
+        "story_deck_id": "wuke_final_student_duel",
+        "display_name": "终试武生·对决",
+        "fighter_template_id": "wuke_final_student",
+        "deck": "blade_front_cut:2,blade_chase_cut:1,blade_press_break:1,blade_breathe:1",
+        "tags": "wuke,final,duel",
+        "notes": "武举终试略高压但低于正式精英"
       }
     ],
     "fighter_stat_sets": [
@@ -444,6 +495,7 @@
         "opponent_stat_set_id": "easy",
         "settlement_mode": "reactive",
         "pressure_profile": "none",
+        "intent_visibility_policy": "full",
         "notes": "第一场教学战"
       },
       {
@@ -457,6 +509,7 @@
         "opponent_stat_set_id": "normal",
         "settlement_mode": "reactive",
         "pressure_profile": "edge_pressure",
+        "intent_visibility_policy": "realm_based",
         "notes": "测试逼身压力"
       },
       {
@@ -470,6 +523,7 @@
         "opponent_stat_set_id": "normal",
         "settlement_mode": "reactive",
         "pressure_profile": "break_resist",
+        "intent_visibility_policy": "realm_based",
         "notes": "测试崩势教学，精英稳势"
       },
       {
@@ -483,6 +537,7 @@
         "opponent_stat_set_id": "normal",
         "settlement_mode": "reactive",
         "pressure_profile": "edge_pressure",
+        "intent_visibility_policy": "realm_based",
         "notes": "测试枪控距与边界压迫"
       },
       {
@@ -496,6 +551,7 @@
         "opponent_stat_set_id": "pressure",
         "settlement_mode": "reactive",
         "pressure_profile": "none",
+        "intent_visibility_policy": "full",
         "notes": "师傅救场演示"
       },
       {
@@ -509,6 +565,7 @@
         "opponent_stat_set_id": "duel",
         "settlement_mode": "reactive",
         "pressure_profile": "break_resist",
+        "intent_visibility_policy": "full",
         "notes": "对称式刀客拆招测试"
       },
       {
@@ -522,6 +579,7 @@
         "opponent_stat_set_id": "duel",
         "settlement_mode": "reactive",
         "pressure_profile": "edge_pressure",
+        "intent_visibility_policy": "full",
         "notes": "对称式枪手控距测试"
       },
       {
@@ -535,6 +593,7 @@
         "opponent_stat_set_id": "pressure",
         "settlement_mode": "reactive",
         "pressure_profile": "none",
+        "intent_visibility_policy": "full",
         "notes": "正式剧情：师傅救场"
       },
       {
@@ -548,6 +607,7 @@
         "opponent_stat_set_id": "easy",
         "settlement_mode": "reactive",
         "pressure_profile": "none",
+        "intent_visibility_policy": "full",
         "notes": "正式剧情：海边伏击"
       },
       {
@@ -561,6 +621,7 @@
         "opponent_stat_set_id": "easy",
         "settlement_mode": "reactive",
         "pressure_profile": "none",
+        "intent_visibility_policy": "realm_based",
         "notes": "正式剧情：渔村残火"
       },
       {
@@ -574,6 +635,7 @@
         "opponent_stat_set_id": "normal_blade",
         "settlement_mode": "reactive",
         "pressure_profile": "break_resist",
+        "intent_visibility_policy": "realm_based",
         "notes": "正式剧情：押运官精英战"
       },
       {
@@ -587,6 +649,7 @@
         "opponent_stat_set_id": "elite_spear",
         "settlement_mode": "reactive",
         "pressure_profile": "edge_pressure",
+        "intent_visibility_policy": "realm_based",
         "notes": "正式剧情：欠饷营"
       },
       {
@@ -600,6 +663,7 @@
         "opponent_stat_set_id": "normal_spear",
         "settlement_mode": "reactive",
         "pressure_profile": "edge_pressure",
+        "intent_visibility_policy": "realm_based",
         "notes": "正式剧情：第二章伏击"
       },
       {
@@ -613,6 +677,7 @@
         "opponent_stat_set_id": "elite_blade",
         "settlement_mode": "reactive",
         "pressure_profile": "break_resist",
+        "intent_visibility_policy": "realm_based",
         "notes": "正式剧情：第三章护送战"
       },
       {
@@ -626,6 +691,7 @@
         "opponent_stat_set_id": "chapter_pressure",
         "settlement_mode": "reactive",
         "pressure_profile": "none",
+        "intent_visibility_policy": "realm_based",
         "notes": "正式剧情：第四章潮滩匪"
       },
       {
@@ -639,6 +705,7 @@
         "opponent_stat_set_id": "boss_blade",
         "settlement_mode": "reactive",
         "pressure_profile": "break_resist",
+        "intent_visibility_policy": "realm_based",
         "notes": "正式剧情：扩展 Boss"
       },
       {
@@ -652,6 +719,7 @@
         "opponent_stat_set_id": "boss_blade",
         "settlement_mode": "reactive",
         "pressure_profile": "break_resist",
+        "intent_visibility_policy": "realm_based",
         "notes": "正式剧情：旧 Boss id 兼容"
       },
       {
@@ -665,7 +733,50 @@
         "opponent_stat_set_id": "normal_spear",
         "settlement_mode": "reactive",
         "pressure_profile": "none",
+        "intent_visibility_policy": "full",
         "notes": "正式剧情：兜底配置"
+      },
+      {
+        "encounter_id": "enc_wuke_spear_trial",
+        "display_name": "武举第一试·试枪",
+        "player_template_id": "player_spearman",
+        "player_deck_id": "player_spear_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "wuke_spear_student",
+        "opponent_deck_id": "wuke_spear_student_teach",
+        "opponent_stat_set_id": "easy",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "intent_visibility_policy": "full",
+        "notes": "正式剧情：武举第一试试枪（临时枪路线）"
+      },
+      {
+        "encounter_id": "enc_wuke_blade_trial",
+        "display_name": "武举第二试·试刀",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "wuke_blade_student",
+        "opponent_deck_id": "wuke_blade_student_teach",
+        "opponent_stat_set_id": "easy",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "intent_visibility_policy": "full",
+        "notes": "正式剧情：武举第二试试刀（临时刀路线）"
+      },
+      {
+        "encounter_id": "enc_wuke_final_duel",
+        "display_name": "武举终试·红榜对决",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "wuke_final_student",
+        "opponent_deck_id": "wuke_final_student_duel",
+        "opponent_stat_set_id": "normal",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "intent_visibility_policy": "realm_based",
+        "notes": "正式剧情：武举终试，玩家侧按已选路线覆写"
       }
     ]
   },
@@ -805,6 +916,33 @@
         "default_facing": "left",
         "story_role": "兜底敌人",
         "notes": "缺省战斗配置"
+      },
+      "wuke_spear_student": {
+        "fighter_template_id": "wuke_spear_student",
+        "display_name": "校场枪生",
+        "weapon_style": "spearman",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "武举陪试",
+        "notes": "武举第一试陪练枪生"
+      },
+      "wuke_blade_student": {
+        "fighter_template_id": "wuke_blade_student",
+        "display_name": "校场刀生",
+        "weapon_style": "blademaster",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "武举陪试",
+        "notes": "武举第二试陪练刀生"
+      },
+      "wuke_final_student": {
+        "fighter_template_id": "wuke_final_student",
+        "display_name": "终试武生",
+        "weapon_style": "blademaster",
+        "default_position": "6",
+        "default_facing": "left",
+        "story_role": "武举终试",
+        "notes": "武举终试对手"
       }
     },
     "story_deck_sets_by_id": {
@@ -967,6 +1105,30 @@
         "deck": "spear_mid_thrust:2,spear_line_press:1,spear_guard_horse:1",
         "tags": "story,fallback",
         "notes": "缺省兜底牌组"
+      },
+      "wuke_spear_student_teach": {
+        "story_deck_id": "wuke_spear_student_teach",
+        "display_name": "校场枪生·第一试",
+        "fighter_template_id": "wuke_spear_student",
+        "deck": "spear_mid_thrust:2,spear_guard_horse:1",
+        "tags": "wuke,teach,spear",
+        "notes": "武举第一试低压教学枪生"
+      },
+      "wuke_blade_student_teach": {
+        "story_deck_id": "wuke_blade_student_teach",
+        "display_name": "校场刀生·第二试",
+        "fighter_template_id": "wuke_blade_student",
+        "deck": "blade_front_cut:2,blade_breathe:1",
+        "tags": "wuke,teach,blade",
+        "notes": "武举第二试低压教学刀生"
+      },
+      "wuke_final_student_duel": {
+        "story_deck_id": "wuke_final_student_duel",
+        "display_name": "终试武生·对决",
+        "fighter_template_id": "wuke_final_student",
+        "deck": "blade_front_cut:2,blade_chase_cut:1,blade_press_break:1,blade_breathe:1",
+        "tags": "wuke,final,duel",
+        "notes": "武举终试略高压但低于正式精英"
       }
     },
     "fighter_stat_sets_by_id": {
@@ -1113,6 +1275,7 @@
         "opponent_stat_set_id": "easy",
         "settlement_mode": "reactive",
         "pressure_profile": "none",
+        "intent_visibility_policy": "full",
         "notes": "第一场教学战"
       },
       "prologue_beach_pressure": {
@@ -1126,6 +1289,7 @@
         "opponent_stat_set_id": "normal",
         "settlement_mode": "reactive",
         "pressure_profile": "edge_pressure",
+        "intent_visibility_policy": "realm_based",
         "notes": "测试逼身压力"
       },
       "prologue_beach_break": {
@@ -1139,6 +1303,7 @@
         "opponent_stat_set_id": "normal",
         "settlement_mode": "reactive",
         "pressure_profile": "break_resist",
+        "intent_visibility_policy": "realm_based",
         "notes": "测试崩势教学，精英稳势"
       },
       "prologue_spear_keep": {
@@ -1152,6 +1317,7 @@
         "opponent_stat_set_id": "normal",
         "settlement_mode": "reactive",
         "pressure_profile": "edge_pressure",
+        "intent_visibility_policy": "realm_based",
         "notes": "测试枪控距与边界压迫"
       },
       "master_rescue_001": {
@@ -1165,6 +1331,7 @@
         "opponent_stat_set_id": "pressure",
         "settlement_mode": "reactive",
         "pressure_profile": "none",
+        "intent_visibility_policy": "full",
         "notes": "师傅救场演示"
       },
       "symmetric_blade_duel": {
@@ -1178,6 +1345,7 @@
         "opponent_stat_set_id": "duel",
         "settlement_mode": "reactive",
         "pressure_profile": "break_resist",
+        "intent_visibility_policy": "full",
         "notes": "对称式刀客拆招测试"
       },
       "symmetric_spear_duel": {
@@ -1191,6 +1359,7 @@
         "opponent_stat_set_id": "duel",
         "settlement_mode": "reactive",
         "pressure_profile": "edge_pressure",
+        "intent_visibility_policy": "full",
         "notes": "对称式枪手控距测试"
       },
       "enc_prologue_master_rescue": {
@@ -1204,6 +1373,7 @@
         "opponent_stat_set_id": "pressure",
         "settlement_mode": "reactive",
         "pressure_profile": "none",
+        "intent_visibility_policy": "full",
         "notes": "正式剧情：师傅救场"
       },
       "enc_beach_ambush": {
@@ -1217,6 +1387,7 @@
         "opponent_stat_set_id": "easy",
         "settlement_mode": "reactive",
         "pressure_profile": "none",
+        "intent_visibility_policy": "full",
         "notes": "正式剧情：海边伏击"
       },
       "enc_fishing_village_embers": {
@@ -1230,6 +1401,7 @@
         "opponent_stat_set_id": "easy",
         "settlement_mode": "reactive",
         "pressure_profile": "none",
+        "intent_visibility_policy": "realm_based",
         "notes": "正式剧情：渔村残火"
       },
       "enc_transport_officer": {
@@ -1243,6 +1415,7 @@
         "opponent_stat_set_id": "normal_blade",
         "settlement_mode": "reactive",
         "pressure_profile": "break_resist",
+        "intent_visibility_policy": "realm_based",
         "notes": "正式剧情：押运官精英战"
       },
       "enc_mutiny_camp": {
@@ -1256,6 +1429,7 @@
         "opponent_stat_set_id": "elite_spear",
         "settlement_mode": "reactive",
         "pressure_profile": "edge_pressure",
+        "intent_visibility_policy": "realm_based",
         "notes": "正式剧情：欠饷营"
       },
       "enc_ch2_reed_ambush": {
@@ -1269,6 +1443,7 @@
         "opponent_stat_set_id": "normal_spear",
         "settlement_mode": "reactive",
         "pressure_profile": "edge_pressure",
+        "intent_visibility_policy": "realm_based",
         "notes": "正式剧情：第二章伏击"
       },
       "enc_ch3_escort_clash": {
@@ -1282,6 +1457,7 @@
         "opponent_stat_set_id": "elite_blade",
         "settlement_mode": "reactive",
         "pressure_profile": "break_resist",
+        "intent_visibility_policy": "realm_based",
         "notes": "正式剧情：第三章护送战"
       },
       "enc_ch4_tide_bandits": {
@@ -1295,6 +1471,7 @@
         "opponent_stat_set_id": "chapter_pressure",
         "settlement_mode": "reactive",
         "pressure_profile": "none",
+        "intent_visibility_policy": "realm_based",
         "notes": "正式剧情：第四章潮滩匪"
       },
       "enc_boss_ext_wakou_leader": {
@@ -1308,6 +1485,7 @@
         "opponent_stat_set_id": "boss_blade",
         "settlement_mode": "reactive",
         "pressure_profile": "break_resist",
+        "intent_visibility_policy": "realm_based",
         "notes": "正式剧情：扩展 Boss"
       },
       "enc_wakou_boss": {
@@ -1321,6 +1499,7 @@
         "opponent_stat_set_id": "boss_blade",
         "settlement_mode": "reactive",
         "pressure_profile": "break_resist",
+        "intent_visibility_policy": "realm_based",
         "notes": "正式剧情：旧 Boss id 兼容"
       },
       "fallback": {
@@ -1334,7 +1513,50 @@
         "opponent_stat_set_id": "normal_spear",
         "settlement_mode": "reactive",
         "pressure_profile": "none",
+        "intent_visibility_policy": "full",
         "notes": "正式剧情：兜底配置"
+      },
+      "enc_wuke_spear_trial": {
+        "encounter_id": "enc_wuke_spear_trial",
+        "display_name": "武举第一试·试枪",
+        "player_template_id": "player_spearman",
+        "player_deck_id": "player_spear_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "wuke_spear_student",
+        "opponent_deck_id": "wuke_spear_student_teach",
+        "opponent_stat_set_id": "easy",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "intent_visibility_policy": "full",
+        "notes": "正式剧情：武举第一试试枪（临时枪路线）"
+      },
+      "enc_wuke_blade_trial": {
+        "encounter_id": "enc_wuke_blade_trial",
+        "display_name": "武举第二试·试刀",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "wuke_blade_student",
+        "opponent_deck_id": "wuke_blade_student_teach",
+        "opponent_stat_set_id": "easy",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "intent_visibility_policy": "full",
+        "notes": "正式剧情：武举第二试试刀（临时刀路线）"
+      },
+      "enc_wuke_final_duel": {
+        "encounter_id": "enc_wuke_final_duel",
+        "display_name": "武举终试·红榜对决",
+        "player_template_id": "player_blademaster",
+        "player_deck_id": "player_blade_start",
+        "player_stat_set_id": "player_start",
+        "opponent_template_id": "wuke_final_student",
+        "opponent_deck_id": "wuke_final_student_duel",
+        "opponent_stat_set_id": "normal",
+        "settlement_mode": "reactive",
+        "pressure_profile": "none",
+        "intent_visibility_policy": "realm_based",
+        "notes": "正式剧情：武举终试，玩家侧按已选路线覆写"
       }
     }
   },
@@ -1343,10 +1565,10 @@
     "errors": [],
     "warnings": [],
     "counts": {
-      "templates": 15,
-      "decks": 20,
+      "templates": 18,
+      "decks": 23,
       "stats": 13,
-      "encounters": 18
+      "encounters": 21
     }
   }
 }

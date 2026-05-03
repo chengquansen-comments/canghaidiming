@@ -27,17 +27,19 @@ static func load_texture_or_svg(path: String) -> Texture2D:
 	_texture_cache[path] = null
 	return null
 
-static func atlas_frame(source: Texture2D, frame_size: Vector2i, frame: int) -> Texture2D:
+static func atlas_frame(source: Texture2D, frame_size: Vector2i, frame: int, sheet_layout: String = "horizontal") -> Texture2D:
 	if source == null:
 		return null
 	var safe_frame: int = maxi(frame, 0)
+	var safe_layout := "vertical" if sheet_layout == "vertical" else "horizontal"
 	var source_key: String = source.resource_path if source.resource_path != "" else str(source.get_instance_id())
-	var key: String = "%s|%d|%d|%d" % [source_key, frame_size.x, frame_size.y, safe_frame]
+	var key: String = "%s|%d|%d|%d|%s" % [source_key, frame_size.x, frame_size.y, safe_frame, safe_layout]
 	if _atlas_cache.has(key):
 		return _atlas_cache[key] as Texture2D
 	var atlas := AtlasTexture.new()
 	atlas.atlas = source
-	atlas.region = Rect2(Vector2(frame_size.x * safe_frame, 0), Vector2(frame_size.x, frame_size.y))
+	var origin := Vector2(0, frame_size.y * safe_frame) if safe_layout == "vertical" else Vector2(frame_size.x * safe_frame, 0)
+	atlas.region = Rect2(origin, Vector2(frame_size.x, frame_size.y))
 	_atlas_cache[key] = atlas
 	return atlas
 

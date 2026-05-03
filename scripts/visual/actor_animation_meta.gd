@@ -88,6 +88,13 @@ func animation_hit_frame(animation_name: String) -> int:
 	var config: Dictionary = animation(animation_name)
 	return int(config.get("hit_frame", -1)) if not config.is_empty() else -1
 
+func animation_sheet_layout(animation_name: String) -> String:
+	var config: Dictionary = animation(animation_name)
+	if config.is_empty():
+		return "horizontal"
+	var layout := str(config.get("sheet_layout", config.get("layout", "horizontal")))
+	return "vertical" if layout == "vertical" else "horizontal"
+
 func animation_recovery_to(animation_name: String) -> String:
 	var config: Dictionary = animation(animation_name)
 	return str(config.get("recovery_to", "idle")) if not config.is_empty() else "idle"

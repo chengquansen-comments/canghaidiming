@@ -199,18 +199,20 @@ art_reference/final/pixel_battle/portraits/performance_master_veteran_source.png
 
 | 类型 | 单帧规格 | 运行组织 | 适用角色 |
 |---|---:|---|---|
-| 短武器 / 普通体型 | `512x512` | `1536x512`，3 帧横排 | `blademaster` / `enemy_blademaster` |
-| 长武器 / 横刺动作 | `1536x512` | 优先多张单帧 PNG；兼容 `4608x512` sheet | `spearman` / `enemy_spearman` |
+| 全部战斗动作 sheet | `1536x512` | `1536x1536`，3 帧纵向三叠 | `spearman` / `blademaster` / 敌方同类 / `master_veteran` |
 
 生成原则：
 
 1. 肖像和角色 sheet 的正式源图提示词统一要求使用纯色亮绿色抠图底，颜色固定为 `#00FF00`。
 2. 抠图底必须是单一纯色，不要渐变、阴影、地面、纹理、光晕或透明棋盘格；角色身上不要出现同样的亮绿色。
-3. 角色边缘尽量干净，方便后期一键抠图；运行资源仍以透明 PNG 为目标，由导出脚本完成抠图、透明化和尺寸归一。
-4. 角色 sheet 必须是 3 帧动作，不接受 2 帧、4 帧或动作数量不明的图。
+3. 角色边缘尽量干净，方便后期一键抠图；源图允许生成模型有轻微边缘不稳定，但运行资源必须是透明 PNG，由导出脚本完成抠图、透明化和尺寸归一。
+4. 角色 sheet 必须是 3 帧动作，整张 `1536x1536`，按上中下三叠排列；每帧严格 `1536x512`，不接受横排、2 帧、4 帧或动作数量不明的图。
 5. 三帧动作必须有大区分度：`idle_guard`、`attack / thrust`、`recover_guard` 要能一眼读出起手、出招、收势，不得只是手臂微调或同姿势复制。
 6. 每一帧以脚底锚点和人体躯干为准，不按“武器整体外接矩形”居中，也不强制把脚点放在画面正中心。
-7. 长枪 / 长兵器的 `idle_guard` 固定为“横枪胸前”的守势：枪杆横在胸前或胸腹前方，双手持枪护住中线，不使用枪尖斜指前方的普通站姿。
+7. 脚点调教必须个性化：`foot_anchor.x` 按角色体态、武器长度、动作重心和运行时站位手工记录，不做全角色统一横向脚点；只允许统一检查每张 sheet 内三帧的脚底 `Y` 基线，避免漂浮或沉底。
+8. 脚底必须完整可见，运行帧底部要保留少量透明余量；禁止把脚尖、鞋底或落脚阴影贴到 `1536x512` 单帧最底边。
+9. 长枪 / 长兵器的 `idle_guard` 固定为“横枪胸前”的守势：枪杆横在胸前或胸腹前方，双手持枪护住中线，不使用枪尖斜指前方的普通站姿。
+10. 角色 sheet 源素材默认朝右；对手朝左由运行时 `facing` / `flip_h` 处理，不在源图层做敌我两套反向素材。
 
 长枪帧原则：
 
@@ -221,19 +223,37 @@ idle_guard 是横枪胸前的守势，attack / thrust 才是长线突刺，recov
 默认长枪锚点：foot_anchor=[560,492]，body_center=[560,300]，head_anchor=[560,145]。
 ```
 
+脚点验收原则：
+
+```text
+1. 每张 sheet 内三帧脚底 Y 基线必须一致，不能一帧漂浮、一帧沉底。
+2. foot_anchor.x 是角色级配置，不是全项目统一值；长枪、短刀、老兵、敌兵可以不同。
+3. 调整脚点时优先移动单帧内容或更新 actor meta，不用武器外接矩形重新居中。
+4. 如果脚底被裁掉或贴边，先整体上移留出透明余量，再更新对应 foot_anchor.y。
+```
+
 运行接入链路：
 
 ```text
-art_reference/final/pixel_battle/sheets/spearman_frames/*.png
-→ tools/normalize_actor_sheet.py
-→ assets/pixel_battle/sheets/spearman_frames/*.png
+art_reference/final/pixel_battle/sheets/spearman_sheet.png
+→ tools/run_art_asset_flow.py battle_sheet_hero_spearman --from-source ... --import --refresh --quiet
+→ assets/pixel_battle/sheets/spearman_sheet.png
 → assets/pixel_battle/actors/spearman/spearman.meta.json
-→ ActorAnimationRuntime 按 frame_size / foot_anchor 渲染
+→ ActorAnimationRuntime 按 frame_size / foot_anchor / sheet_layout=vertical 渲染
 ```
 
 ## 8. 非透明底处理
 
 生成图如果带浅色底、棋盘底、纸色底，不直接进运行资源，也不要在 `assets/` 运行 PNG 上反复擦边。正式角色源图优先使用 `#00FF00` 纯色亮绿色抠图底；先回到 `art_reference/final/...` 的源图层处理，再导出运行图。
+
+绿幕处理原则：
+
+```text
+1. 源图提示词必须要求纯 #00FF00、单一平色、无阴影、无渐变、无地面、无纹理、无棋盘格。
+2. 源图接收阶段不做零容忍拦截，因为生成模型边缘可能不稳定。
+3. 后处理和运行验收必须零容忍：导出的 assets/**/*.png 不允许保留任何可见绿幕、绿边、脏绿半透明像素或非透明绿背景。
+4. 如果运行验收失败，优先改抠图/去绿脚本或重新导出；不要手工在 runtime PNG 上局部擦边。
+```
 
 只有确认是简单浅色底 / 棋盘底时，才使用 alpha matte 清理：
 

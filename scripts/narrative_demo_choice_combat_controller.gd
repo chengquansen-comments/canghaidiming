@@ -114,6 +114,7 @@ func _on_choice(index: int) -> void:
 	_apply_choice_and_show_result(choice)
 
 func _apply_choice_and_show_result(choice: Dictionary) -> void:
+	_apply_career_choice_if_present(choice)
 	var effects := _choice_effects(choice)
 	_apply_canonical_effects(effects)
 	NarrativeBattleContext.apply_player_growth("choice", 0, 0, 0, false)
@@ -123,6 +124,38 @@ func _apply_choice_and_show_result(choice: Dictionary) -> void:
 	showing_choice_result = true
 	_save_narrative_state_to_context()
 	_render()
+
+func _apply_career_choice_if_present(choice: Dictionary) -> void:
+	var effects_variant = choice.get("effects", {})
+	if not (effects_variant is Dictionary):
+		return
+	var effects: Dictionary = effects_variant
+	var role_id := str(effects.get("career_choice", "")).strip_edges()
+	if role_id.is_empty():
+		return
+	var selected: Dictionary = {}
+	for career_variant in CAREERS:
+		if not (career_variant is Dictionary):
+			continue
+		var career: Dictionary = career_variant
+		if str(career.get("id", "")) == role_id:
+			selected = career
+			break
+	if selected.is_empty():
+		return
+	NarrativeBattleContext.set_player_profile({
+		"role": str(selected.get("id", role_id)),
+		"career": str(selected.get("career", "武科出身")),
+		"weapon": str(selected.get("weapon", "长枪")),
+		"max_hp": int(selected.get("max_hp", 20)),
+		"hp": int(selected.get("hp", selected.get("max_hp", 20))),
+		"max_posture": int(selected.get("max_posture", 3)),
+		"posture": int(selected.get("posture", 3)),
+		"martial_level": int(selected.get("martial_level", 1)),
+		"qinggong": int(selected.get("qinggong", 1)),
+		"battles_won": 0
+	})
+	career_selected = true
 
 func _store_pending_choice(node_id: String, choice: Dictionary) -> void:
 	Engine.set_meta(META_PENDING_CHOICE_NODE, node_id)

@@ -17,12 +17,12 @@ SOURCE_PORTRAITS = FINAL_PIXEL_BATTLE / "portraits"
 
 BACKGROUND_SIZE = (1280, 720)
 SPEARMAN_FRAME_SIZE = (1536, 512)
-ENEMY_FRAME_SIZE = (1024, 512)
-ENEMY_FOOT_ANCHOR = (430.0, 492.0)
+ENEMY_FRAME_SIZE = (1536, 512)
+ENEMY_FOOT_ANCHOR = (768.0, 492.0)
 ENEMY_SPEARMAN_FRAME_SIZE = (1536, 512)
 ENEMY_SPEARMAN_FOOT_ANCHOR = (768.0, 492.0)
-MASTER_FRAME_SIZE = (512, 512)
-MASTER_FOOT_ANCHOR = (256.0, 500.0)
+MASTER_FRAME_SIZE = (1536, 512)
+MASTER_FOOT_ANCHOR = (768.0, 500.0)
 
 
 def require_pillow():
@@ -210,7 +210,7 @@ def normalize_actor_sheet_from_source(
         fail(f"source width must be divisible by 3: {rel(source_path)}")
     source_frame_w = image.width // 3
     source_frame_h = image.height
-    sheet = Image.new("RGBA", (frame_size[0] * 3, frame_size[1]), (0, 0, 0, 0))
+    sheet = Image.new("RGBA", (frame_size[0], frame_size[1] * 3), (0, 0, 0, 0))
     for index in range(3):
         frame = image.crop((index * source_frame_w, 0, (index + 1) * source_frame_w, source_frame_h))
         if alpha_bbox(frame) is None:
@@ -221,8 +221,8 @@ def normalize_actor_sheet_from_source(
             frame = frame.resize((round(frame.width * scale), round(frame.height * scale)), Image.Resampling.LANCZOS)
             foot_x *= scale
             foot_y *= scale
-        paste_x = round(index * frame_size[0] + target_foot_anchor[0] - foot_x)
-        paste_y = round(target_foot_anchor[1] - foot_y)
+        paste_x = round(target_foot_anchor[0] - foot_x)
+        paste_y = round(index * frame_size[1] + target_foot_anchor[1] - foot_y)
         _safe_alpha_composite(sheet, frame, (paste_x, paste_y))
     save_png(output_path, sheet)
 
@@ -291,7 +291,7 @@ def normalize_enemy_sheet(source_path: Path, output_path: Path) -> None:
         fail(f"enemy source width must be divisible by 3: {rel(source_path)}")
     source_frame_w = image.width // 3
     source_frame_h = image.height
-    sheet = Image.new("RGBA", (ENEMY_FRAME_SIZE[0] * 3, ENEMY_FRAME_SIZE[1]), (0, 0, 0, 0))
+    sheet = Image.new("RGBA", (ENEMY_FRAME_SIZE[0], ENEMY_FRAME_SIZE[1] * 3), (0, 0, 0, 0))
     for index in range(3):
         frame = image.crop((index * source_frame_w, 0, (index + 1) * source_frame_w, source_frame_h))
         bbox = alpha_bbox(frame)
@@ -303,8 +303,8 @@ def normalize_enemy_sheet(source_path: Path, output_path: Path) -> None:
             frame = frame.resize((round(frame.width * scale), round(frame.height * scale)), Image.Resampling.LANCZOS)
             foot_x *= scale
             foot_y *= scale
-        paste_x = round(index * ENEMY_FRAME_SIZE[0] + ENEMY_FOOT_ANCHOR[0] - foot_x)
-        paste_y = round(ENEMY_FOOT_ANCHOR[1] - foot_y)
+        paste_x = round(ENEMY_FOOT_ANCHOR[0] - foot_x)
+        paste_y = round(index * ENEMY_FRAME_SIZE[1] + ENEMY_FOOT_ANCHOR[1] - foot_y)
         sheet.alpha_composite(frame, (paste_x, paste_y))
     save_png(output_path, sheet)
 

@@ -90,7 +90,7 @@ func _apply_current_frame() -> void:
 		var texture: Texture2D = _texture_for_animation(current_animation)
 		if texture == null:
 			return
-		target.texture = texture if frame_count <= 1 else BattleSkinHelper.atlas_frame(texture, frame_size, frame)
+		target.texture = texture if frame_count <= 1 else BattleSkinHelper.atlas_frame(texture, frame_size, frame, meta.animation_sheet_layout(current_animation))
 	emit_signal("frame_changed", current_animation, frame)
 	var hit_frame: int = meta.animation_hit_frame(current_animation)
 	if hit_frame >= 0 and frame == hit_frame and not _hit_emitted:

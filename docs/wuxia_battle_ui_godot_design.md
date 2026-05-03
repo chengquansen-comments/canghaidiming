@@ -151,7 +151,7 @@ BattleControllerVisualUI (Control)
 
 - 短武器角色继续使用 `512x512` 方帧。
 - 长枪角色使用 `1024x512` 宽帧，容纳横刺和长枪杆。
-- 玩家枪手当前使用多张单帧 PNG，actor meta 通过 `animations.*.files` 逐帧引用；旧横向 sheet 仍兼容。
+- 战斗动作 sheet 统一使用 `1536x1536` 纵向三叠 PNG，actor meta 通过 `animations.*.file` 和 `sheet_layout=vertical` 裁切三帧。
 - TextureRect 会按帧宽高动态设置显示盒。
 - 格位对齐使用 `foot_anchor`，不是整张图片中心。
 - 朝向翻转时同步镜像 foot anchor，避免长枪帧人物漂移。

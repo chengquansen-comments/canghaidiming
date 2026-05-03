@@ -18,6 +18,8 @@ REQUIRED_FIELDS = [
     "runtime_role",
 ]
 
+HOOKLESS_ASSET_TYPES = {"battle_action_sheet", "battle_portrait"}
+
 
 def fail(message: str) -> None:
     raise SystemExit(f"[refresh-art-backlog] ERROR: {message}")
@@ -133,6 +135,7 @@ def classify_planned_asset(planned_runtime_rel: str, asset_type: str) -> str:
 def classify_current_asset(
     current_runtime_rel: str,
     planned_runtime_rel: str,
+    asset_type: str,
     source_ready: bool,
     runtime_ready: bool,
     hook_final: bool,
@@ -146,7 +149,7 @@ def classify_current_asset(
     if suffix != ".png":
         return "other"
     if current_runtime_rel == planned_runtime_rel:
-        if source_ready and runtime_ready and hook_final:
+        if source_ready and runtime_ready and (hook_final or asset_type in HOOKLESS_ASSET_TYPES):
             return "png_formal"
         return "png_temp"
     normalized = current_runtime_rel.replace("\\", "/")
@@ -217,6 +220,7 @@ def refresh() -> int:
         row["current_asset_class"] = classify_current_asset(
             current_runtime_rel,
             planned_runtime_rel,
+            row.get("asset_type", "").strip(),
             source_ready,
             runtime_ready,
             hook_final,

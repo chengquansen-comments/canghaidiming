@@ -3,25 +3,39 @@
   "role_id": "enemy_blademaster",
   "display_name": "敌方刀客",
   "profession": "blade",
-  "frame_size": [512, 512],
-  "foot_anchor": [256, 500],
-  "body_center": [256, 300],
-  "head_anchor": [256, 150],
-  "default_facing": "left",
+  "frame_size": [
+    1536,
+    512
+  ],
+  "foot_anchor": [
+    763,
+    514
+  ],
+  "body_center": [
+    768,
+    300
+  ],
+  "head_anchor": [
+    768,
+    150
+  ],
+  "default_facing": "right",
   "scale": 1.0,
   "animations": {
     "idle": {
       "file": "../../sheets/enemy_blademaster_sheet.png",
       "frames": 3,
       "fps": 0.001,
-      "loop": true
+      "loop": true,
+      "sheet_layout": "vertical"
     },
     "move_forward": {
       "file": "../../sheets/enemy_blademaster_sheet.png",
       "frames": 3,
       "fps": 8,
       "loop": false,
-      "recovery_to": "idle"
+      "recovery_to": "idle",
+      "sheet_layout": "vertical"
     },
     "attack_light": {
       "file": "../../sheets/enemy_blademaster_sheet.png",
@@ -30,14 +44,30 @@
       "loop": false,
       "hit_frame": 1,
       "phase_frames": {
-        "anticipation": [0, 0],
-        "strike": [1, 1],
-        "impact": [1, 1],
-        "recovery": [2, 2]
+        "anticipation": [
+          0,
+          0
+        ],
+        "strike": [
+          1,
+          1
+        ],
+        "impact": [
+          1,
+          1
+        ],
+        "recovery": [
+          2,
+          2
+        ]
       },
       "fx": "slash_arc",
-      "impact_offset": [-120, -60],
-      "recovery_to": "idle"
+      "impact_offset": [
+        -120,
+        -60
+      ],
+      "recovery_to": "idle",
+      "sheet_layout": "vertical"
     },
     "guard": {
       "file": "../../sheets/enemy_blademaster_sheet.png",
@@ -46,7 +76,8 @@
       "loop": false,
       "active_frame": 1,
       "fx": "guard_flash",
-      "recovery_to": "idle"
+      "recovery_to": "idle",
+      "sheet_layout": "vertical"
     },
     "hit": {
       "files": [

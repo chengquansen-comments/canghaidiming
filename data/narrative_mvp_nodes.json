@@ -7,6 +7,11 @@
     "note": "补齐 MVP_NARRATIVE_SCRIPT 中后续战斗、事件、营地、旧物、Boss 与压案节点所需配置数据。"
   },
   "flow_node_ids": [
+    "wuke_spear_trial",
+    "wuke_blade_trial",
+    "wuke_route_choice",
+    "wuke_final_duel",
+    "wuke_after_choice",
     "military_order",
     "ch2_sea_route_unusual",
     "ch2_beach_tracks",
@@ -36,14 +41,14 @@
     "military_coverup"
   ],
   "node_status": {
-    "military_order": {
-      "flow_enabled": true,
-      "flow_order": 10,
-      "column": "军令",
-      "type": "事件",
-      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_order.png",
-      "implementation_status": "playable",
-      "note": "当前 MVP 主流程节点：军令巡海"
+    "altered_military_report": {
+      "flow_enabled": false,
+      "flow_order": null,
+      "column": "疑点",
+      "type": "旧物",
+      "visual_path": "res://assets/pixel_battle/relics/relic_altered_military_report.png",
+      "implementation_status": "reserved",
+      "note": "旧压缩流程节点；保留为节点池；当前不进入默认 flow"
     },
     "beach_ambush": {
       "flow_enabled": false,
@@ -62,6 +67,231 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_beach_ambush.png",
       "implementation_status": "reserved",
       "note": "旧压缩流程节点；保留为节点池；当前不进入默认 flow"
+    },
+    "boss_ext_aftermath_choice": {
+      "flow_enabled": true,
+      "flow_order": 310,
+      "column": "破船",
+      "type": "战后处理",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_aftermath_choice.png",
+      "implementation_status": "playable",
+      "note": "Boss扩展章节点；正式线性流程"
+    },
+    "boss_ext_burning_ship_sighting": {
+      "flow_enabled": true,
+      "flow_order": 270,
+      "column": "破船",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_burning_ship_sighting.png",
+      "implementation_status": "playable",
+      "note": "Boss扩展章节点；正式线性流程"
+    },
+    "boss_ext_hold_full_of_crates": {
+      "flow_enabled": true,
+      "flow_order": 280,
+      "column": "破船",
+      "type": "旧物",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_hold_full_of_crates.png",
+      "implementation_status": "playable",
+      "note": "Boss扩展章节点；正式线性流程"
+    },
+    "boss_ext_master_freeze_arrow": {
+      "flow_enabled": true,
+      "flow_order": 290,
+      "column": "破船",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_master_freeze_arrow.png",
+      "implementation_status": "playable",
+      "note": "Boss扩展章节点；正式线性流程"
+    },
+    "boss_ext_wakou_leader_battle": {
+      "flow_enabled": true,
+      "flow_order": 300,
+      "column": "破船",
+      "type": "Boss",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_wakou_leader.png",
+      "implementation_status": "playable",
+      "note": "Boss扩展章节点；正式线性流程"
+    },
+    "ch2_beach_tracks": {
+      "flow_enabled": true,
+      "flow_order": 80,
+      "column": "初遇",
+      "type": "旧物",
+      "visual_path": "res://assets/narrative/props/prop_ch2_beach_tracks.png",
+      "implementation_status": "playable",
+      "note": "第二章：海路异动扩展节点：滩涂脚印；正式线性流程"
+    },
+    "ch2_night_signal_fire": {
+      "flow_enabled": true,
+      "flow_order": 120,
+      "column": "疑点",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch2_night_signal_fire.png",
+      "implementation_status": "playable",
+      "note": "第二章：海路异动扩展节点：夜火信号；正式线性流程"
+    },
+    "ch2_reed_ambush_aftermath": {
+      "flow_enabled": true,
+      "flow_order": 100,
+      "column": "初遇",
+      "type": "战后处理",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch2_reed_ambush_aftermath.png",
+      "implementation_status": "playable",
+      "note": "第二章：海路异动扩展节点：芦苇伏击：战后；正式线性流程"
+    },
+    "ch2_reed_ambush_battle": {
+      "flow_enabled": true,
+      "flow_order": 90,
+      "column": "初遇",
+      "type": "普通战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_beach_ambush.png",
+      "implementation_status": "playable",
+      "note": "第二章：海路异动扩展节点：芦苇伏击；正式线性流程"
+    },
+    "ch2_sea_route_unusual": {
+      "flow_enabled": true,
+      "flow_order": 70,
+      "column": "初遇",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch2_sea_route_unusual.png",
+      "implementation_status": "playable",
+      "note": "第二章：海路异动扩展节点：海路异动；正式线性流程"
+    },
+    "ch2_silent_village": {
+      "flow_enabled": true,
+      "flow_order": 110,
+      "column": "疑点",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_fishing_village_embers.png",
+      "implementation_status": "playable",
+      "note": "第二章：海路异动扩展节点：无声渔村；正式线性流程"
+    },
+    "ch3_burned_storehouse": {
+      "flow_enabled": true,
+      "flow_order": 180,
+      "column": "压迫",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_burned_storehouse.png",
+      "implementation_status": "playable",
+      "note": "第三章：火器之影扩展节点：焦黑仓屋；正式线性流程"
+    },
+    "ch3_escort_aftermath": {
+      "flow_enabled": true,
+      "flow_order": 170,
+      "column": "压迫",
+      "type": "战后处理",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_transport_officer_aftermath.png",
+      "implementation_status": "playable",
+      "note": "第三章：火器之影扩展节点：押运之后；正式线性流程"
+    },
+    "ch3_escort_clash_battle": {
+      "flow_enabled": true,
+      "flow_order": 160,
+      "column": "压迫",
+      "type": "精英战斗",
+      "visual_path": "res://assets/pixel_battle/portraits/transport_officer.png",
+      "implementation_status": "playable",
+      "note": "第三章：火器之影扩展节点：押运冲突；正式线性流程"
+    },
+    "ch3_escort_silence": {
+      "flow_enabled": true,
+      "flow_order": 150,
+      "column": "压迫",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_escort_silence.png",
+      "implementation_status": "playable",
+      "note": "第三章：火器之影扩展节点：押运无声；正式线性流程"
+    },
+    "ch3_firearm_marking": {
+      "flow_enabled": true,
+      "flow_order": 130,
+      "column": "疑点",
+      "type": "旧物",
+      "visual_path": "res://assets/narrative/props/prop_ch3_firearm_marking.png",
+      "implementation_status": "playable",
+      "note": "第三章：火器之影扩展节点：明制火器刻印；正式线性流程"
+    },
+    "ch3_official_notice": {
+      "flow_enabled": true,
+      "flow_order": 190,
+      "column": "军门",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_official_notice.png",
+      "implementation_status": "playable",
+      "note": "第三章：火器之影扩展节点：军门告示；正式线性流程"
+    },
+    "ch3_sealed_crate": {
+      "flow_enabled": true,
+      "flow_order": 140,
+      "column": "疑点",
+      "type": "旧物",
+      "visual_path": "res://assets/narrative/props/prop_ch3_sealed_crate.png",
+      "implementation_status": "playable",
+      "note": "第三章：火器之影扩展节点：封漆木箱；正式线性流程"
+    },
+    "ch4_hidden_document": {
+      "flow_enabled": true,
+      "flow_order": 250,
+      "column": "压迫",
+      "type": "旧物",
+      "visual_path": "res://assets/narrative/props/prop_ch4_hidden_document.png",
+      "implementation_status": "playable",
+      "note": "第四章：潮下旧痕扩展节点；正式线性流程"
+    },
+    "ch4_master_hesitation": {
+      "flow_enabled": true,
+      "flow_order": 220,
+      "column": "压迫",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch4_master_hesitation.png",
+      "implementation_status": "playable",
+      "note": "第四章：潮下旧痕扩展节点；正式线性流程"
+    },
+    "ch4_master_silence": {
+      "flow_enabled": true,
+      "flow_order": 260,
+      "column": "军门",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch4_master_silence.png",
+      "implementation_status": "playable",
+      "note": "第四章：潮下旧痕扩展节点；正式线性流程"
+    },
+    "ch4_old_anchor_chain": {
+      "flow_enabled": true,
+      "flow_order": 210,
+      "column": "疑点",
+      "type": "旧物",
+      "visual_path": "res://assets/narrative/props/prop_ch4_old_anchor_chain.png",
+      "implementation_status": "playable",
+      "note": "第四章：潮下旧痕扩展节点；正式线性流程"
+    },
+    "ch4_tide_aftermath": {
+      "flow_enabled": true,
+      "flow_order": 240,
+      "column": "压迫",
+      "type": "战后处理",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch4_tide_aftermath.png",
+      "implementation_status": "playable",
+      "note": "第四章：潮下旧痕扩展节点；正式线性流程"
+    },
+    "ch4_tide_bandits_battle": {
+      "flow_enabled": true,
+      "flow_order": 230,
+      "column": "压迫",
+      "type": "精英战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/battle_bg_mutiny_camp.png",
+      "implementation_status": "playable",
+      "note": "第四章：潮下旧痕扩展节点；正式线性流程"
+    },
+    "ch4_tide_reveals_marks": {
+      "flow_enabled": true,
+      "flow_order": 200,
+      "column": "疑点",
+      "type": "旧物",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch4_tide_reveals_marks.png",
+      "implementation_status": "playable",
+      "note": "第四章：潮下旧痕扩展节点；正式线性流程"
     },
     "fishing_village_embers": {
       "flow_enabled": false,
@@ -90,39 +320,39 @@
       "implementation_status": "reserved",
       "note": "旧压缩流程节点；保留为节点池；当前不进入默认 flow"
     },
+    "military_coverup": {
+      "flow_enabled": true,
+      "flow_order": 320,
+      "column": "军门",
+      "type": "结尾",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_coverup.png",
+      "implementation_status": "playable",
+      "note": "当前 MVP 主流程结尾节点：军门压案"
+    },
+    "military_messenger": {
+      "flow_enabled": false,
+      "flow_order": null,
+      "column": "军门",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_messenger.png",
+      "implementation_status": "reserved",
+      "note": "旧压缩流程节点；保留为节点池；当前不进入默认 flow"
+    },
+    "military_order": {
+      "flow_enabled": true,
+      "flow_order": 60,
+      "column": "军令",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_order.png",
+      "implementation_status": "playable",
+      "note": "当前 MVP 主流程节点：军令巡海"
+    },
     "ming_firearm": {
       "flow_enabled": false,
       "flow_order": null,
       "column": "疑点",
       "type": "旧物",
       "visual_path": "res://assets/pixel_battle/relics/relic_ming_firearm.png",
-      "implementation_status": "reserved",
-      "note": "旧压缩流程节点；保留为节点池；当前不进入默认 flow"
-    },
-    "altered_military_report": {
-      "flow_enabled": false,
-      "flow_order": null,
-      "column": "疑点",
-      "type": "旧物",
-      "visual_path": "res://assets/pixel_battle/relics/relic_altered_military_report.png",
-      "implementation_status": "reserved",
-      "note": "旧压缩流程节点；保留为节点池；当前不进入默认 flow"
-    },
-    "transport_officer": {
-      "flow_enabled": false,
-      "flow_order": null,
-      "column": "压迫",
-      "type": "精英战斗",
-      "visual_path": "res://assets/pixel_battle/portraits/transport_officer.png",
-      "implementation_status": "reserved",
-      "note": "旧压缩流程节点；保留为节点池；当前不进入默认 flow"
-    },
-    "transport_officer_aftermath": {
-      "flow_enabled": false,
-      "flow_order": null,
-      "column": "压迫",
-      "type": "战后处理",
-      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_transport_officer_aftermath.png",
       "implementation_status": "reserved",
       "note": "旧压缩流程节点；保留为节点池；当前不进入默认 flow"
     },
@@ -144,21 +374,30 @@
       "implementation_status": "reserved",
       "note": "旧压缩流程节点；保留为节点池；当前不进入默认 flow"
     },
-    "military_messenger": {
-      "flow_enabled": false,
-      "flow_order": null,
-      "column": "军门",
-      "type": "事件",
-      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_messenger.png",
-      "implementation_status": "reserved",
-      "note": "旧压缩流程节点；保留为节点池；当前不进入默认 flow"
-    },
     "night_knife_camp": {
       "flow_enabled": false,
       "flow_order": null,
       "column": "压迫",
       "type": "事件",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_night_knife_camp.png",
+      "implementation_status": "reserved",
+      "note": "旧压缩流程节点；保留为节点池；当前不进入默认 flow"
+    },
+    "transport_officer": {
+      "flow_enabled": false,
+      "flow_order": null,
+      "column": "压迫",
+      "type": "精英战斗",
+      "visual_path": "res://assets/pixel_battle/portraits/transport_officer.png",
+      "implementation_status": "reserved",
+      "note": "旧压缩流程节点；保留为节点池；当前不进入默认 flow"
+    },
+    "transport_officer_aftermath": {
+      "flow_enabled": false,
+      "flow_order": null,
+      "column": "压迫",
+      "type": "战后处理",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_transport_officer_aftermath.png",
       "implementation_status": "reserved",
       "note": "旧压缩流程节点；保留为节点池；当前不进入默认 flow"
     },
@@ -171,239 +410,50 @@
       "implementation_status": "reserved",
       "note": "旧压缩流程节点；保留为节点池；当前不进入默认 flow"
     },
-    "military_coverup": {
-      "flow_enabled": true,
-      "flow_order": 270,
-      "column": "军门",
-      "type": "结尾",
-      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_coverup.png",
-      "implementation_status": "playable",
-      "note": "当前 MVP 主流程结尾节点：军门压案"
-    },
-    "ch2_sea_route_unusual": {
-      "flow_enabled": true,
-      "flow_order": 20,
-      "column": "初遇",
-      "type": "事件",
-      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch2_sea_route_unusual.png",
-      "implementation_status": "playable",
-      "note": "第二章：海路异动扩展节点：海路异动；正式线性流程"
-    },
-    "ch2_beach_tracks": {
-      "flow_enabled": true,
-      "flow_order": 30,
-      "column": "初遇",
-      "type": "旧物",
-      "visual_path": "res://assets/narrative/props/prop_ch2_beach_tracks.png",
-      "implementation_status": "playable",
-      "note": "第二章：海路异动扩展节点：滩涂脚印；正式线性流程"
-    },
-    "ch2_reed_ambush_battle": {
-      "flow_enabled": true,
-      "flow_order": 40,
-      "column": "初遇",
-      "type": "普通战斗",
-      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_beach_ambush.png",
-      "implementation_status": "playable",
-      "note": "第二章：海路异动扩展节点：芦苇伏击；正式线性流程"
-    },
-    "ch2_reed_ambush_aftermath": {
+    "wuke_after_choice": {
       "flow_enabled": true,
       "flow_order": 50,
-      "column": "初遇",
-      "type": "战后处理",
-      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch2_reed_ambush_aftermath.png",
-      "implementation_status": "playable",
-      "note": "第二章：海路异动扩展节点：芦苇伏击：战后；正式线性流程"
-    },
-    "ch2_silent_village": {
-      "flow_enabled": true,
-      "flow_order": 60,
-      "column": "疑点",
+      "column": "wuke",
       "type": "事件",
-      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_fishing_village_embers.png",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_official_notice.png",
       "implementation_status": "playable",
-      "note": "第二章：海路异动扩展节点：无声渔村；正式线性流程"
+      "note": "武举开局：放榜后三选一，随后进入军门任差"
     },
-    "ch2_night_signal_fire": {
+    "wuke_blade_trial": {
       "flow_enabled": true,
-      "flow_order": 70,
-      "column": "疑点",
-      "type": "事件",
-      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch2_night_signal_fire.png",
+      "flow_order": 20,
+      "column": "wuke",
+      "type": "普通战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_escort_silence.png",
       "implementation_status": "playable",
-      "note": "第二章：海路异动扩展节点：夜火信号；正式线性流程"
+      "note": "武举开局：第二试试刀（正式剧情战斗）"
     },
-    "ch3_firearm_marking": {
+    "wuke_final_duel": {
       "flow_enabled": true,
-      "flow_order": 80,
-      "column": "疑点",
-      "type": "旧物",
-      "visual_path": "res://assets/pixel_battle/relics/relic_ming_firearm.png",
+      "flow_order": 40,
+      "column": "wuke",
+      "type": "普通战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_escort_silence.png",
       "implementation_status": "playable",
-      "note": "第三章：火器之影扩展节点：明制火器刻印；正式线性流程"
+      "note": "武举开局：终试对决；使用已选枪/刀路线"
     },
-    "ch3_sealed_crate": {
+    "wuke_route_choice": {
       "flow_enabled": true,
-      "flow_order": 90,
-      "column": "疑点",
-      "type": "旧物",
-      "visual_path": "res://assets/narrative/props/prop_unsealed_letter.png",
-      "implementation_status": "playable",
-      "note": "第三章：火器之影扩展节点：封漆木箱；正式线性流程"
-    },
-    "ch3_escort_silence": {
-      "flow_enabled": true,
-      "flow_order": 100,
-      "column": "压迫",
-      "type": "事件",
-      "visual_path": "res://assets/pixel_battle/backgrounds/battle_bg_transport_road.png",
-      "implementation_status": "playable",
-      "note": "第三章：火器之影扩展节点：押运无声；正式线性流程"
-    },
-    "ch3_escort_clash_battle": {
-      "flow_enabled": true,
-      "flow_order": 110,
-      "column": "压迫",
-      "type": "精英战斗",
-      "visual_path": "res://assets/pixel_battle/portraits/transport_officer.png",
-      "implementation_status": "playable",
-      "note": "第三章：火器之影扩展节点：押运冲突；正式线性流程"
-    },
-    "ch3_escort_aftermath": {
-      "flow_enabled": true,
-      "flow_order": 120,
-      "column": "压迫",
-      "type": "战后处理",
-      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_transport_officer_aftermath.png",
-      "implementation_status": "playable",
-      "note": "第三章：火器之影扩展节点：押运之后；正式线性流程"
-    },
-    "ch3_burned_storehouse": {
-      "flow_enabled": true,
-      "flow_order": 130,
-      "column": "压迫",
-      "type": "事件",
-      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_burned_storehouse.png",
-      "implementation_status": "playable",
-      "note": "第三章：火器之影扩展节点：焦黑仓屋；正式线性流程"
-    },
-    "ch3_official_notice": {
-      "flow_enabled": true,
-      "flow_order": 140,
-      "column": "军门",
-      "type": "事件",
-      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_messenger.png",
-      "implementation_status": "playable",
-      "note": "第三章：火器之影扩展节点：军门告示；正式线性流程"
-    },
-    "ch4_tide_reveals_marks": {
-      "flow_enabled": true,
-      "flow_order": 150,
-      "column": "疑点",
-      "type": "旧物",
-      "visual_path": "res://assets/pixel_battle/backgrounds/battle_bg_black_tide.png",
-      "implementation_status": "playable",
-      "note": "第四章：潮下旧痕扩展节点；正式线性流程"
-    },
-    "ch4_old_anchor_chain": {
-      "flow_enabled": true,
-      "flow_order": 160,
-      "column": "疑点",
-      "type": "旧物",
-      "visual_path": "res://assets/narrative/props/prop_beach_body_search.png",
-      "implementation_status": "playable",
-      "note": "第四章：潮下旧痕扩展节点；正式线性流程"
-    },
-    "ch4_master_hesitation": {
-      "flow_enabled": true,
-      "flow_order": 170,
-      "column": "压迫",
+      "flow_order": 30,
+      "column": "wuke",
       "type": "事件",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch4_master_hesitation.png",
       "implementation_status": "playable",
-      "note": "第四章：潮下旧痕扩展节点；正式线性流程"
+      "note": "武举开局：第三试定路（枪/刀），非普通战斗节点"
     },
-    "ch4_tide_bandits_battle": {
+    "wuke_spear_trial": {
       "flow_enabled": true,
-      "flow_order": 180,
-      "column": "压迫",
-      "type": "精英战斗",
-      "visual_path": "res://assets/pixel_battle/backgrounds/battle_bg_mutiny_camp.png",
+      "flow_order": 10,
+      "column": "wuke",
+      "type": "普通战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_order.png",
       "implementation_status": "playable",
-      "note": "第四章：潮下旧痕扩展节点；正式线性流程"
-    },
-    "ch4_tide_aftermath": {
-      "flow_enabled": true,
-      "flow_order": 190,
-      "column": "压迫",
-      "type": "战后处理",
-      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_mutiny_camp_aftermath.png",
-      "implementation_status": "playable",
-      "note": "第四章：潮下旧痕扩展节点；正式线性流程"
-    },
-    "ch4_hidden_document": {
-      "flow_enabled": true,
-      "flow_order": 200,
-      "column": "压迫",
-      "type": "旧物",
-      "visual_path": "res://assets/narrative/props/prop_unsealed_letter.png",
-      "implementation_status": "playable",
-      "note": "第四章：潮下旧痕扩展节点；正式线性流程"
-    },
-    "ch4_master_silence": {
-      "flow_enabled": true,
-      "flow_order": 210,
-      "column": "军门",
-      "type": "事件",
-      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch4_master_silence.png",
-      "implementation_status": "playable",
-      "note": "第四章：潮下旧痕扩展节点；正式线性流程"
-    },
-    "boss_ext_burning_ship_sighting": {
-      "flow_enabled": true,
-      "flow_order": 220,
-      "column": "破船",
-      "type": "事件",
-      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_burning_ship_sighting.png",
-      "implementation_status": "playable",
-      "note": "Boss扩展章节点；正式线性流程"
-    },
-    "boss_ext_hold_full_of_crates": {
-      "flow_enabled": true,
-      "flow_order": 230,
-      "column": "破船",
-      "type": "旧物",
-      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_hold_full_of_crates.png",
-      "implementation_status": "playable",
-      "note": "Boss扩展章节点；正式线性流程"
-    },
-    "boss_ext_master_freeze_arrow": {
-      "flow_enabled": true,
-      "flow_order": 240,
-      "column": "破船",
-      "type": "事件",
-      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_master_freeze_arrow.png",
-      "implementation_status": "playable",
-      "note": "Boss扩展章节点；正式线性流程"
-    },
-    "boss_ext_wakou_leader_battle": {
-      "flow_enabled": true,
-      "flow_order": 250,
-      "column": "破船",
-      "type": "Boss",
-      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_wakou_leader.png",
-      "implementation_status": "playable",
-      "note": "Boss扩展章节点；正式线性流程"
-    },
-    "boss_ext_aftermath_choice": {
-      "flow_enabled": true,
-      "flow_order": 260,
-      "column": "破船",
-      "type": "战后处理",
-      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_aftermath_choice.png",
-      "implementation_status": "playable",
-      "note": "Boss扩展章节点；正式线性流程"
+      "note": "武举开局：第一试试枪（正式剧情战斗）"
     }
   },
   "prologue": {
@@ -502,8 +552,7 @@
         "text": "十年。\n\n潮声没有远过。\n\n你跟着他学刀，学枪，学怎么活。\n\n师父把刀还给你。\n\n他说：\n该走了。",
         "title": "序章：黑海潮生",
         "column": "序章",
-        "type": "出山",
-        "career_prompt": "选一条路。\n高处\n才看得清楚。"
+        "type": "出山"
       }
     ],
     "career_choices": {
@@ -522,7 +571,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_order.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 10,
+      "flow_order": 60,
       "dialogue": [
         "巡海三十里。",
         "若见旧案，不得声张。",
@@ -1123,7 +1172,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_coverup.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 270,
+      "flow_order": 320,
       "dialogue": [
         "倭患已平。",
         "首级够了。",
@@ -1167,6 +1216,192 @@
       ]
     },
     {
+      "id": "wuke_spear_trial",
+      "title": "校场试枪",
+      "scene": "校场泥还未干，枪架已经立起来。",
+      "text": "试官点到你的名字时，师父没有抬头。",
+      "column": "wuke",
+      "type": "普通战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_order.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 10,
+      "dialogue": [],
+      "combat": {
+        "enabled": true,
+        "encounter_id": "enc_wuke_spear_trial",
+        "battle_id": "wuke_spear_trial",
+        "button": "应试",
+        "override_player_profile": true,
+        "temporary_player_role": "spearman",
+        "temporary_player_career": "武科枪生",
+        "temporary_player_weapon": "长枪"
+      },
+      "choices": [
+        {
+          "label": "试枪",
+          "result": "枪锋收在白线前，鼓声才落下。",
+          "effects": {
+            "military_merit": 1
+          },
+          "combat": {
+            "enabled": true,
+            "encounter_id": "enc_wuke_spear_trial",
+            "battle_id": "wuke_spear_trial",
+            "button": "应试",
+            "override_player_profile": true,
+            "temporary_player_role": "spearman",
+            "temporary_player_career": "武科枪生",
+            "temporary_player_weapon": "长枪"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wuke_blade_trial",
+      "title": "校场试刀",
+      "scene": "刀架前的白线，比枪场更近。",
+      "text": "你握住刀柄时，对面的武生先退了半步。",
+      "column": "wuke",
+      "type": "普通战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_escort_silence.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 20,
+      "dialogue": [],
+      "combat": {
+        "enabled": true,
+        "encounter_id": "enc_wuke_blade_trial",
+        "battle_id": "wuke_blade_trial",
+        "button": "试刀",
+        "override_player_profile": false
+      },
+      "choices": [
+        {
+          "label": "试刀",
+          "result": "刀光停在寸前，名册旁多了一道短线。",
+          "effects": {
+            "military_merit": 1
+          },
+          "combat": {
+            "enabled": true,
+            "encounter_id": "enc_wuke_blade_trial",
+            "battle_id": "wuke_blade_trial",
+            "button": "试刀",
+            "override_player_profile": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "wuke_route_choice",
+      "title": "器械定路",
+      "scene": "终试之前，试官让你自取一器。",
+      "text": "枪在左，刀在右。师父站在人群外，没有替你看任何一边。",
+      "column": "wuke",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch4_master_hesitation.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 30,
+      "dialogue": [],
+      "combat": {
+        "enabled": false
+      },
+      "choices": [
+        {
+          "label": "取枪",
+          "result": "你握住枪尾，白线外的风忽然安静。",
+          "effects": {
+            "career_choice": "spearman"
+          }
+        },
+        {
+          "label": "取刀",
+          "result": "你扣住刀鞘，堂上的目光压低了一寸。",
+          "effects": {
+            "career_choice": "blademaster"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wuke_after_choice",
+      "title": "武科放榜",
+      "scene": "榜纸被风吹得很响。",
+      "text": "红榜贴出时，你的名字在风里晃了一下。",
+      "column": "wuke",
+      "type": "事件",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_official_notice.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 50,
+      "dialogue": [],
+      "combat": {
+        "enabled": false
+      },
+      "choices": [
+        {
+          "label": "接军门荐书",
+          "result": "朱印压上纸面，你第一次离军门这么近。",
+          "effects": {
+            "military_merit": 2
+          }
+        },
+        {
+          "label": "拜谢同场武生",
+          "result": "有人笑着拍了拍你的肩，说日后江湖再见。",
+          "effects": {
+            "clean_reputation": 2
+          }
+        },
+        {
+          "label": "追问沉默老卒",
+          "result": "老卒听见你的姓，脸色变了一下。",
+          "effects": {
+            "case_clues": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "wuke_final_duel",
+      "title": "红榜终试",
+      "scene": "终试那日，堂上坐着的人比校场上的人更安静。",
+      "text": "对面那名武生先行礼，手却没有离开兵器。",
+      "column": "wuke",
+      "type": "普通战斗",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_escort_silence.png",
+      "implementation_status": "playable",
+      "flow_enabled": true,
+      "flow_order": 40,
+      "dialogue": [],
+      "combat": {
+        "enabled": true,
+        "encounter_id": "enc_wuke_final_duel",
+        "battle_id": "wuke_final_duel",
+        "button": "应试",
+        "override_player_profile": true
+      },
+      "choices": [
+        {
+          "label": "应试",
+          "result": "红榜贴出时，你的名字在风里晃了一下。",
+          "effects": {
+            "military_merit": 1,
+            "clean_reputation": 1
+          },
+          "combat": {
+            "enabled": true,
+            "encounter_id": "enc_wuke_final_duel",
+            "battle_id": "wuke_final_duel",
+            "button": "应试",
+            "override_player_profile": true
+          }
+        }
+      ]
+    },
+    {
       "id": "ch2_sea_route_unusual",
       "title": "海路异动",
       "scene": "海面很平。船却逆风。旗不动。",
@@ -1176,7 +1411,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch2_sea_route_unusual.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 20,
+      "flow_order": 70,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1221,7 +1456,7 @@
       "visual_path": "res://assets/narrative/props/prop_ch2_beach_tracks.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 30,
+      "flow_order": 80,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1266,7 +1501,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_beach_ambush.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 40,
+      "flow_order": 90,
       "dialogue": [],
       "combat": {
         "enabled": true,
@@ -1300,7 +1535,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch2_reed_ambush_aftermath.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 50,
+      "flow_order": 100,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1345,7 +1580,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_fishing_village_embers.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 60,
+      "flow_order": 110,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1390,7 +1625,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch2_night_signal_fire.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 70,
+      "flow_order": 120,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1430,10 +1665,10 @@
       "text": "铁件擦得很净。\n\n刻印很清。\n\n火门磨得很亮。",
       "column": "疑点",
       "type": "旧物",
-      "visual_path": "res://assets/pixel_battle/relics/relic_ming_firearm.png",
+      "visual_path": "res://assets/narrative/props/prop_ch3_firearm_marking.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 80,
+      "flow_order": 130,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1475,10 +1710,10 @@
       "text": "箱子半开。\n\n火漆还新。\n\n封印没有裂。",
       "column": "疑点",
       "type": "旧物",
-      "visual_path": "res://assets/narrative/props/prop_unsealed_letter.png",
+      "visual_path": "res://assets/narrative/props/prop_ch3_sealed_crate.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 90,
+      "flow_order": 140,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1520,10 +1755,10 @@
       "text": "队形很齐。\n\n步子同拍。\n\n没人说话。",
       "column": "压迫",
       "type": "事件",
-      "visual_path": "res://assets/pixel_battle/backgrounds/battle_bg_transport_road.png",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_escort_silence.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 100,
+      "flow_order": 150,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1568,7 +1803,7 @@
       "visual_path": "res://assets/pixel_battle/portraits/transport_officer.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 110,
+      "flow_order": 160,
       "dialogue": [],
       "combat": {
         "enabled": true,
@@ -1602,7 +1837,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_transport_officer_aftermath.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 120,
+      "flow_order": 170,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1647,7 +1882,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_burned_storehouse.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 130,
+      "flow_order": 180,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1689,10 +1924,10 @@
       "text": "告示很新。\n\n字很整。\n\n落款很快。",
       "column": "军门",
       "type": "事件",
-      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_military_messenger.png",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_official_notice.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 140,
+      "flow_order": 190,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1734,10 +1969,10 @@
       "text": "潮退下去。\n\n礁石露出来。\n\n旧痕没有被海水磨平。",
       "column": "疑点",
       "type": "旧物",
-      "visual_path": "res://assets/pixel_battle/backgrounds/battle_bg_black_tide.png",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch4_tide_reveals_marks.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 150,
+      "flow_order": 200,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1761,10 +1996,10 @@
       "text": "铁链在泥里。\n\n锈很深。\n\n断口却很新。",
       "column": "疑点",
       "type": "旧物",
-      "visual_path": "res://assets/narrative/props/prop_beach_body_search.png",
+      "visual_path": "res://assets/narrative/props/prop_ch4_old_anchor_chain.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 160,
+      "flow_order": 210,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1791,7 +2026,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch4_master_hesitation.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 170,
+      "flow_order": 220,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1818,7 +2053,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/battle_bg_mutiny_camp.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 180,
+      "flow_order": 230,
       "dialogue": [],
       "combat": {
         "enabled": true,
@@ -1849,10 +2084,10 @@
       "text": "浅水盖住尸身。\n\n泥色分成两层。\n\n有人来过这里。",
       "column": "压迫",
       "type": "战后处理",
-      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_mutiny_camp_aftermath.png",
+      "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch4_tide_aftermath.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 190,
+      "flow_order": 240,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1876,10 +2111,10 @@
       "text": "木板撬开。\n\n纸没有烂透。\n\n名字还在。",
       "column": "压迫",
       "type": "旧物",
-      "visual_path": "res://assets/narrative/props/prop_unsealed_letter.png",
+      "visual_path": "res://assets/narrative/props/prop_ch4_hidden_document.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 200,
+      "flow_order": 250,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1906,7 +2141,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch4_master_silence.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 210,
+      "flow_order": 260,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1933,7 +2168,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_burning_ship_sighting.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 220,
+      "flow_order": 270,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1960,7 +2195,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_hold_full_of_crates.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 230,
+      "flow_order": 280,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -1987,7 +2222,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_master_freeze_arrow.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 240,
+      "flow_order": 290,
       "dialogue": [],
       "combat": {
         "enabled": false
@@ -2014,7 +2249,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_wakou_leader.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 250,
+      "flow_order": 300,
       "dialogue": [],
       "combat": {
         "enabled": true,
@@ -2048,7 +2283,7 @@
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_boss_ext_aftermath_choice.png",
       "implementation_status": "playable",
       "flow_enabled": true,
-      "flow_order": 260,
+      "flow_order": 310,
       "dialogue": [],
       "combat": {
         "enabled": false

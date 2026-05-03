@@ -90,7 +90,7 @@
     "camera_pan_y": 0.0
   },
   "chapter2_reed_ambush": {
-    "background": "res://assets/pixel_battle/backgrounds/battle_bg_coast_ambush.png",
+    "background": "res://assets/pixel_battle/backgrounds/battle_bg_chapter2_reed_ambush.png",
     "label": "芦苇伏击",
     "mist": 0.3,
     "dim": 0.14,
@@ -128,5 +128,35 @@
     "camera_zoom": 0.04,
     "camera_pan_x": 12.0,
     "camera_pan_y": -3.0
+  },
+  "wuke_spear_trial": {
+    "background": "res://assets/pixel_battle/backgrounds/battle_bg_training_ground.png",
+    "label": "武举试枪",
+    "mist": 0.08,
+    "dim": 0.07,
+    "accent": 0.03,
+    "camera_zoom": 0.012,
+    "camera_pan_x": 1.0,
+    "camera_pan_y": 0.0
+  },
+  "wuke_blade_trial": {
+    "background": "res://assets/pixel_battle/backgrounds/battle_bg_training_ground.png",
+    "label": "武举试刀",
+    "mist": 0.08,
+    "dim": 0.07,
+    "accent": 0.03,
+    "camera_zoom": 0.012,
+    "camera_pan_x": -1.0,
+    "camera_pan_y": 0.0
+  },
+  "wuke_final_duel": {
+    "background": "res://assets/pixel_battle/backgrounds/battle_bg_training_ground.png",
+    "label": "红榜终试",
+    "mist": 0.1,
+    "dim": 0.08,
+    "accent": 0.04,
+    "camera_zoom": 0.015,
+    "camera_pan_x": 0.0,
+    "camera_pan_y": -1.0
   }
 }

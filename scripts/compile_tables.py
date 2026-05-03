@@ -78,6 +78,7 @@ NARRATIVE_ALLOWED_EFFECT_FIELDS = {
     "military_merit",
     "clean_reputation",
     "case_clues",
+    "career_choice",
     "jun_gong",
     "qing_wang",
     "clues",

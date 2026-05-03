@@ -40,11 +40,6 @@ func _render_prologue() -> void:
 		_add_button(choices_box, "继续", _on_continue_prologue_sentence)
 		return
 
-	if step_index == PROLOGUE_CAREER_STEP:
-		for i in range(CAREERS.size()):
-			_add_career_button(CAREERS[i], i)
-		return
-
 	if _prologue_step_has_combat(step_index):
 		_add_prologue_combat_choice()
 		return
@@ -66,8 +61,6 @@ func _prologue_display_status(step_data: Dictionary) -> String:
 func _prologue_story_segments() -> Array[String]:
 	var segments: Array[String] = []
 	_append_text_segments(segments, _prologue_step_text(step_index))
-	if step_index == PROLOGUE_CAREER_STEP:
-		_append_text_segments(segments, _career_prompt_text())
 	if segments.is_empty():
 		segments.append("")
 	return segments

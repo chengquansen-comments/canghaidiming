@@ -100,6 +100,9 @@ static func frame_texture(source: Texture2D, frame: int, frame_size: Vector2i, s
 	if safe_count <= 1:
 		return source
 	var safe_frame_size := frame_size if frame_size.x > 0 and frame_size.y > 0 else DEFAULT_FRAME_SIZE
+	var expected_height: int = safe_frame_size.y * safe_count
+	if source_width >= safe_frame_size.x and source_height >= expected_height:
+		return BattleSkinHelper.atlas_frame(source, safe_frame_size, clampi(frame, 0, safe_count - 1), "vertical")
 	var expected_width: int = safe_frame_size.x * safe_count
 	if source_width >= expected_width and source_height >= safe_frame_size.y:
 		return BattleSkinHelper.atlas_frame(source, safe_frame_size, clampi(frame, 0, safe_count - 1))

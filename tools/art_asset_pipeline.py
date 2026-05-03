@@ -5,6 +5,7 @@ import csv
 import json
 import re
 import sys
+from collections import deque
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -82,10 +83,19 @@ ASSET_TYPE_SPECS = {
         "battle_portrait",
         (1024, 1024),
         "cover",
-        "tables/narrative_mvp_node_status.tsv",
-        "id",
-        "visual_path",
-        None,
+        "",
+        "",
+        "",
+        "battle_portrait",
+    ),
+    "battle_action_sheet": AssetTypeSpec(
+        "battle_action_sheet",
+        (1536, 1536),
+        "fit",
+        "",
+        "",
+        "",
+        "battle_action_sheet",
     ),
     "performance_portrait": AssetTypeSpec(
         "performance_portrait",
@@ -134,6 +144,14 @@ def require_pillow():
 
 
 Image = require_pillow()
+try:
+    from alpha_matte_cleanup import clean_alpha_matte
+except ModuleNotFoundError:
+    from tools.alpha_matte_cleanup import clean_alpha_matte
+
+
+CHROMA_KEY_ASSET_TYPES = {"battle_action_sheet", "battle_portrait"}
+CHROMA_KEY_COLOR = (0, 255, 0)
 
 
 def fail(message: str) -> None:
@@ -263,10 +281,168 @@ def resize_fit(image: Image.Image, size: tuple[int, int]) -> Image.Image:
     return canvas
 
 
+def is_greenish_pixel(rgb: tuple[int, int, int], green_floor: int = 120, gap: int = 28) -> bool:
+    r, g, b = rgb
+    return g >= green_floor and (g - r) >= gap and (g - b) >= gap
+
+
+def normalize_battle_portrait_chroma_background(source: Image.Image) -> Image.Image:
+    """Stabilize model variance by snapping border-connected greenish background to pure #00FF00."""
+    image = source.convert("RGBA")
+    width, height = image.size
+    px = image.load()
+    visited = bytearray(width * height)
+    queue: deque[tuple[int, int]] = deque()
+
+    def enqueue_if_bg(x: int, y: int) -> None:
+        idx = y * width + x
+        if visited[idx]:
+            return
+        visited[idx] = 1
+        r, g, b, a = px[x, y]
+        if a > 0 and is_greenish_pixel((r, g, b)):
+            queue.append((x, y))
+
+    for x in range(width):
+        enqueue_if_bg(x, 0)
+        enqueue_if_bg(x, height - 1)
+    for y in range(height):
+        enqueue_if_bg(0, y)
+        enqueue_if_bg(width - 1, y)
+
+    while queue:
+        x, y = queue.popleft()
+        px[x, y] = (CHROMA_KEY_COLOR[0], CHROMA_KEY_COLOR[1], CHROMA_KEY_COLOR[2], 255)
+        for nx, ny in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)):
+            if nx < 0 or ny < 0 or nx >= width or ny >= height:
+                continue
+            idx = ny * width + nx
+            if visited[idx]:
+                continue
+            visited[idx] = 1
+            r, g, b, a = px[nx, ny]
+            if a > 0 and is_greenish_pixel((r, g, b), green_floor=105, gap=20):
+                queue.append((nx, ny))
+    return image
+
+
+def scrub_green_spill(result: Image.Image) -> Image.Image:
+    """Remove green residue anywhere in portrait output, including interior matte specks."""
+    image = result.convert("RGBA")
+    px = image.load()
+    width, height = image.size
+    for y in range(height):
+        for x in range(width):
+            r, g, b, a = px[x, y]
+            if a == 0:
+                continue
+            if not is_greenish_pixel((r, g, b), green_floor=25, gap=8):
+                continue
+            if a <= 96 or is_greenish_pixel((r, g, b), green_floor=80, gap=40):
+                px[x, y] = (0, 0, 0, 0)
+                continue
+            clamp = max(r, b)
+            if g > clamp:
+                px[x, y] = (r, clamp, b, a)
+    return image
+
+
+def scrub_green_spill_strict(result: Image.Image) -> Image.Image:
+    """Aggressively remove chroma-green residue for strict sheet/portrait runtime output."""
+    image = result.convert("RGBA")
+    px = image.load()
+    width, height = image.size
+    for y in range(height):
+        for x in range(width):
+            r, g, b, a = px[x, y]
+            if a == 0:
+                continue
+            if not is_greenish_pixel((r, g, b), green_floor=20, gap=6):
+                continue
+            # Any soft-edge green fringe becomes transparent; interior residue gets de-greened.
+            if a <= 220 or is_greenish_pixel((r, g, b), green_floor=80, gap=35):
+                px[x, y] = (0, 0, 0, 0)
+                continue
+            clamp = max(r, b)
+            if g > clamp:
+                px[x, y] = (r, clamp, b, a)
+    return image
+
+
+def apply_chroma_key_if_needed(source: Image.Image, profile: ExportProfile) -> Image.Image:
+    if profile.asset_type not in CHROMA_KEY_ASSET_TYPES:
+        return source
+    if profile.asset_type == "battle_portrait":
+        source = normalize_battle_portrait_chroma_background(source)
+    # Standard chroma-key cleanup for sheet/portrait sources using bright green #00FF00.
+    output = clean_alpha_matte(
+        source,
+        background=CHROMA_KEY_COLOR,
+        transparent_distance=40.0 if profile.asset_type == "battle_portrait" else 24.0,
+        opaque_distance=112.0 if profile.asset_type == "battle_portrait" else 78.0,
+        choke=2 if profile.asset_type == "battle_portrait" else 1,
+        feather=0.30 if profile.asset_type == "battle_portrait" else 0.35,
+        despill=1.0 if profile.asset_type == "battle_portrait" else 0.9,
+        edge_dehalo=True,
+        fill_alpha_holes=False,
+    )
+    if profile.asset_type in CHROMA_KEY_ASSET_TYPES:
+        output = scrub_green_spill_strict(output)
+    return output
+
+
+def validate_chroma_key_runtime_image(runtime_path: Path) -> None:
+    with Image.open(runtime_path) as image:
+        if image.mode not in {"RGBA", "LA"}:
+            fail(f"chroma-key asset must be RGBA or LA: {rel(runtime_path)} mode={image.mode}")
+        alpha = image.getchannel("A")
+        pixels = image.convert("RGBA").load()
+        non_zero = sum(1 for value in alpha.getdata() if value > 0)
+        total = image.width * image.height
+        if total <= 0:
+            fail(f"invalid runtime image size for chroma-key validation: {rel(runtime_path)}")
+        if non_zero <= 0:
+            fail(f"chroma-key asset appears fully transparent: {rel(runtime_path)}")
+        if non_zero >= total:
+            fail(f"chroma-key asset appears fully opaque; expected cleanup to produce transparency: {rel(runtime_path)}")
+        sample_step_x = max(1, image.width // 16)
+        sample_step_y = max(1, image.height // 16)
+        border_points: set[tuple[int, int]] = set()
+        for x in range(0, image.width, sample_step_x):
+            border_points.add((x, 0))
+            border_points.add((x, image.height - 1))
+        for y in range(0, image.height, sample_step_y):
+            border_points.add((0, y))
+            border_points.add((image.width - 1, y))
+        for x, y in border_points:
+            r, g, b, a = pixels[x, y]
+            if a > 8 and abs(r - CHROMA_KEY_COLOR[0]) <= 24 and abs(g - CHROMA_KEY_COLOR[1]) <= 24 and abs(b - CHROMA_KEY_COLOR[2]) <= 24:
+                fail(f"chroma-key border still contains green matte pixels: {rel(runtime_path)}")
+
+
+def validate_no_battle_portrait_green_residue(runtime_path: Path) -> None:
+    with Image.open(runtime_path) as image:
+        pixels = image.convert("RGBA").getdata()
+        for r, g, b, a in pixels:
+            if a > 0 and is_greenish_pixel((r, g, b), green_floor=25, gap=8):
+                fail(f"battle portrait still contains green residue pixels: {rel(runtime_path)}")
+
+
+def validate_no_chroma_green_residue(runtime_path: Path) -> None:
+    with Image.open(runtime_path) as image:
+        pixels = image.convert("RGBA").getdata()
+        for r, g, b, a in pixels:
+            if a > 0 and is_greenish_pixel((r, g, b), green_floor=20, gap=6):
+                fail(f"chroma-key asset still contains green residue pixels: {rel(runtime_path)}")
+
+
 def export_runtime_image(source_path: Path, runtime_path: Path, profile: ExportProfile) -> Image.Image:
     source = Image.open(source_path).convert("RGBA")
     source.load()
+    source = apply_chroma_key_if_needed(source, profile)
     output = resize_cover(source, profile.size) if profile.mode == "cover" else resize_fit(source, profile.size)
+    if profile.asset_type in CHROMA_KEY_ASSET_TYPES:
+        output = scrub_green_spill_strict(output)
     runtime_path.parent.mkdir(parents=True, exist_ok=True)
     output.save(runtime_path)
     return output
@@ -354,6 +530,9 @@ def validate_runtime_image(row: dict[str, str], runtime_path: Path) -> tuple[int
         mode = image.mode
     if (width, height) != profile.size:
         fail(f"runtime asset has wrong size: {rel(runtime_path)} expected {profile.size[0]}x{profile.size[1]}, got {width}x{height}")
+    if profile.asset_type in CHROMA_KEY_ASSET_TYPES:
+        validate_chroma_key_runtime_image(runtime_path)
+        validate_no_chroma_green_residue(runtime_path)
     return width, height, mode
 
 

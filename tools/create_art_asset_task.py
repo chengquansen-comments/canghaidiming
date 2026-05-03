@@ -122,8 +122,12 @@ def main() -> int:
     ok(
         f"{action} {asset_id}: "
         f"{asset_row['source_path']} -> {asset_row['runtime_path']} "
-        f"hook {asset_row['hook_table']}:{asset_row['hook_key_field']}={asset_row['hook_id']}.{asset_row['hook_field']} "
-        f"status={asset_row['status']}"
+        + (
+            f"hook {asset_row['hook_table']}:{asset_row['hook_key_field']}={asset_row['hook_id']}.{asset_row['hook_field']} "
+            if asset_row.get("hook_table", "").strip()
+            else "hook <none> "
+        )
+        + f"status={asset_row['status']}"
     )
     return 0
 

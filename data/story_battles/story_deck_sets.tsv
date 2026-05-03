@@ -19,3 +19,6 @@ escort_blademaster_pressure	护送刀客·缠斗	escort_blademaster	blade_front_
 tide_bandit_pressure	潮滩匪首·逼身	tide_bandit	blade_front_cut:2,blade_press_break:2,blade_chase_cut:2,blade_body_press:1,blade_breathe:1	story,blade	潮滩高压刀兵
 wakou_leader_boss	破船首领·Boss	wakou_leader	blade_front_cut:2,blade_press_break:2,blade_chase_cut:2,blade_hook_pull:1,blade_body_press:1,blade_breathe:1	story,boss,blade	扩展 Boss 牌组
 fallback_spear_keep	默认枪手·控距	fallback_spearman	spear_mid_thrust:2,spear_line_press:1,spear_guard_horse:1	story,fallback	缺省兜底牌组
+wuke_spear_student_teach	校场枪生·第一试	wuke_spear_student	spear_mid_thrust:2,spear_guard_horse:1	wuke,teach,spear	武举第一试低压教学枪生
+wuke_blade_student_teach	校场刀生·第二试	wuke_blade_student	blade_front_cut:2,blade_breathe:1	wuke,teach,blade	武举第二试低压教学刀生
+wuke_final_student_duel	终试武生·对决	wuke_final_student	blade_front_cut:2,blade_chase_cut:1,blade_press_break:1,blade_breathe:1	wuke,final,duel	武举终试略高压但低于正式精英

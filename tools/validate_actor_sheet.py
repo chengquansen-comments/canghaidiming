@@ -106,10 +106,13 @@ def validate_sheet(meta_path: Path, animation_name: str, anim: dict[str, Any], f
     if not isinstance(file_name, str) or not file_name:
         fail(f"{animation_name} must define file or files")
 
-    expected_width = frame_size[0] * frames
-    expected_height = frame_size[1]
+    layout = anim.get("sheet_layout", anim.get("layout", "horizontal"))
+    if layout not in ("horizontal", "vertical"):
+        fail(f"{animation_name}.sheet_layout must be 'horizontal' or 'vertical'")
+    expected_width = frame_size[0] if layout == "vertical" else frame_size[0] * frames
+    expected_height = frame_size[1] * frames if layout == "vertical" else frame_size[1]
     validate_image_file(meta_path.parent / file_name, animation_name, expected_width, expected_height)
-    ok(f"{animation_name}: {file_name} {expected_width}x{expected_height}, frames={frames}")
+    ok(f"{animation_name}: {file_name} {expected_width}x{expected_height}, frames={frames}, layout={layout}")
 
 
 def validate_meta_sheets(meta_path: Path) -> None:

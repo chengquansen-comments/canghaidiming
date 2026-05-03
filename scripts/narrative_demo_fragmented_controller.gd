@@ -72,8 +72,6 @@ func _render_prologue() -> void:
 	scene_label.text = _format_scene_text(_prologue_scene_hint())
 	_render_visual("", _prologue_visual_hint())
 	body_label.text = _prologue_step_text(step_index)
-	if step_index == PROLOGUE_CAREER_STEP:
-		body_label.text += "\n\n[b]%s[/b]" % _career_prompt_text()
 	if not last_hint.is_empty():
 		body_label.text += "\n\n[i]%s[/i]" % _fragmented_hint(last_hint)
 	vars_label.text = _vars_text()
@@ -81,15 +79,9 @@ func _render_prologue() -> void:
 	if _prologue_step_has_combat(step_index):
 		_add_button(combat_buttons_box, _prologue_combat_button(step_index), _on_request_prologue_master_battle)
 		_add_button(combat_buttons_box, _prologue_skip_button(step_index), _on_skip_prologue_master_battle)
-	elif step_index == PROLOGUE_CAREER_STEP:
-		_add_placeholder(combat_buttons_box, "先选路。")
 	else:
 		_add_placeholder(combat_buttons_box, "")
-	if step_index == PROLOGUE_CAREER_STEP:
-		for i in range(CAREERS.size()):
-			_add_career_button(CAREERS[i], i)
-	else:
-		_add_button(choices_box, "继续", _on_continue_prologue)
+	_add_button(choices_box, "继续", _on_continue_prologue)
 
 func _render_node() -> void:
 	var node: Dictionary = NODES[node_index]

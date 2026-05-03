@@ -14,3 +14,6 @@ escort_blademaster	护送刀客	blademaster	6	left	剧情敌人	第三章护送�
 tide_bandit	潮滩匪首	blademaster	6	left	剧情敌人	第四章潮滩群匪
 wakou_leader	破船首领	blademaster	6	left	剧情首领	扩展 Boss 倭寇首领
 fallback_spearman	默认枪手	spearman	6	left	兜底敌人	缺省战斗配置
+wuke_spear_student	校场枪生	spearman	6	left	武举陪试	武举第一试陪练枪生
+wuke_blade_student	校场刀生	blademaster	6	left	武举陪试	武举第二试陪练刀生
+wuke_final_student	终试武生	blademaster	6	left	武举终试	武举终试对手

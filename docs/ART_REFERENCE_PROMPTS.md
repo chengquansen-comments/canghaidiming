@@ -53,7 +53,7 @@ idle_guard is a defensive guard with the spear held horizontally across the ches
 idle_guard 是横枪胸前的守势：枪杆横在胸前或胸腹前方，双手持枪护住中线。不要写成枪尖斜指前方的普通站姿。
 ```
 
-长武器角色优先用 `4608x512` 三帧 sheet 或三张 `1536x512` 单帧源图；短武器角色可用 `1536x512` 三帧 sheet。
+战斗动作 sheet 统一用 `1536x1536` 竖向三叠源图，上中下三帧一列；每帧严格 `1536x512`，不再使用横排 sheet 或多张单帧源图作为正式生产标准。
 
 长武器构图不要强制脚点居中：
 

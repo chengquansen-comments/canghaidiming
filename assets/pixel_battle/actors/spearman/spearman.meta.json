@@ -9,7 +9,7 @@
   ],
   "foot_anchor": [
     650,
-    492
+    500
   ],
   "body_center": [
     560,
@@ -23,32 +23,21 @@
   "scale": 1.0,
   "animations": {
     "idle": {
-      "files": [
-        "../../sheets/spearman_frames/idle_guard.png",
-        "../../sheets/spearman_frames/thrust.png",
-        "../../sheets/spearman_frames/recover.png"
-      ],
       "frames": 3,
       "fps": 0.001,
-      "loop": true
+      "loop": true,
+      "file": "../../sheets/spearman_sheet.png",
+      "sheet_layout": "vertical"
     },
     "move_forward": {
-      "files": [
-        "../../sheets/spearman_frames/idle_guard.png",
-        "../../sheets/spearman_frames/thrust.png",
-        "../../sheets/spearman_frames/recover.png"
-      ],
       "frames": 3,
       "fps": 8,
       "loop": false,
-      "recovery_to": "idle"
+      "recovery_to": "idle",
+      "file": "../../sheets/spearman_sheet.png",
+      "sheet_layout": "vertical"
     },
     "attack_light": {
-      "files": [
-        "../../sheets/spearman_frames/idle_guard.png",
-        "../../sheets/spearman_frames/thrust.png",
-        "../../sheets/spearman_frames/recover.png"
-      ],
       "frames": 3,
       "fps": 8,
       "loop": false,
@@ -76,20 +65,19 @@
         120,
         -60
       ],
-      "recovery_to": "idle"
+      "recovery_to": "idle",
+      "file": "../../sheets/spearman_sheet.png",
+      "sheet_layout": "vertical"
     },
     "guard": {
-      "files": [
-        "../../sheets/spearman_frames/idle_guard.png",
-        "../../sheets/spearman_frames/thrust.png",
-        "../../sheets/spearman_frames/recover.png"
-      ],
       "frames": 3,
       "fps": 6,
       "loop": false,
       "active_frame": 1,
       "fx": "guard_flash",
-      "recovery_to": "idle"
+      "recovery_to": "idle",
+      "file": "../../sheets/spearman_sheet.png",
+      "sheet_layout": "vertical"
     },
     "hit": {
       "files": [

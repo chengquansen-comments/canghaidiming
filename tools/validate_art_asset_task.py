@@ -29,7 +29,9 @@ def main() -> int:
     _, runtime_path, _ = describe_runtime(row)
     width, height, mode = validate_runtime_image(row, runtime_path)
     validate_hook_table_value(row, runtime_path)
-    compiled_path = validate_compiled_value(row, runtime_path)
+    compiled_path = None
+    if row.get("hook_table", "").strip():
+        compiled_path = validate_compiled_value(row, runtime_path)
 
     imported, import_path, ctex_matches = detect_godot_import(runtime_path)
     if args.require_import and not imported:
@@ -41,7 +43,10 @@ def main() -> int:
     target_status = "GODOT_IMPORTED" if imported else "COMPILED"
     previous, current = update_manifest_status(args.asset_id, target_status)
     note(f"runtime OK: {runtime_path} {width}x{height} {mode}")
-    note(f"compiled OK: {compiled_path}")
+    if compiled_path is not None:
+        note(f"compiled OK: {compiled_path}")
+    else:
+        note("compiled skipped: no hook_table for this asset type")
     if imported:
         note(f"godot import OK: {import_path} ({len(ctex_matches)} ctex)")
         for dest in parse_import_destinations(import_path):

@@ -38,7 +38,7 @@ tables/narrative_mvp_career_choices.tsv
 
 - 序章十二拍
 - 师父救场战触发
-- 出山职业选择
+- 出山过场衔接（不再在序章内选刀枪）
 - 玩家初始职业与战斗 profile
 
 ### 正篇节点
@@ -96,36 +96,50 @@ note
 
 ## 当前默认流程
 
-默认 flow 共 27 个节点：
+默认 flow 共 32 个节点。
+
+开局已调整为：试枪 → 试刀 → 器械定路 → 红榜终试 → 武科放榜 → 军门任差。
+
+`wuke_route_choice` 是枪 / 刀路线确定节点，不是普通收益节点。
+
+武举三试当前已接入正式剧情战斗：
+- `wuke_spear_trial`、`wuke_blade_trial` 是临时路线教学战，不决定最终职业。
+- `wuke_route_choice` 才正式写入 `career_choice`。
+- `wuke_final_duel` 使用已选路线。
 
 ```text
-10  military_order
-20  ch2_sea_route_unusual
-30  ch2_beach_tracks
-40  ch2_reed_ambush_battle
-50  ch2_reed_ambush_aftermath
-60  ch2_silent_village
-70  ch2_night_signal_fire
-80  ch3_firearm_marking
-90  ch3_sealed_crate
-100 ch3_escort_silence
-110 ch3_escort_clash_battle
-120 ch3_escort_aftermath
-130 ch3_burned_storehouse
-140 ch3_official_notice
-150 ch4_tide_reveals_marks
-160 ch4_old_anchor_chain
-170 ch4_master_hesitation
-180 ch4_tide_bandits_battle
-190 ch4_tide_aftermath
-200 ch4_hidden_document
-210 ch4_master_silence
-220 boss_ext_burning_ship_sighting
-230 boss_ext_hold_full_of_crates
-240 boss_ext_master_freeze_arrow
-250 boss_ext_wakou_leader_battle
-260 boss_ext_aftermath_choice
-270 military_coverup
+10  wuke_spear_trial
+20  wuke_blade_trial
+30  wuke_route_choice
+40  wuke_final_duel
+50  wuke_after_choice
+60  military_order
+70  ch2_sea_route_unusual
+80  ch2_beach_tracks
+90  ch2_reed_ambush_battle
+100 ch2_reed_ambush_aftermath
+110 ch2_silent_village
+120 ch2_night_signal_fire
+130 ch3_firearm_marking
+140 ch3_sealed_crate
+150 ch3_escort_silence
+160 ch3_escort_clash_battle
+170 ch3_escort_aftermath
+180 ch3_burned_storehouse
+190 ch3_official_notice
+200 ch4_tide_reveals_marks
+210 ch4_old_anchor_chain
+220 ch4_master_hesitation
+230 ch4_tide_bandits_battle
+240 ch4_tide_aftermath
+250 ch4_hidden_document
+260 ch4_master_silence
+270 boss_ext_burning_ship_sighting
+280 boss_ext_hold_full_of_crates
+290 boss_ext_master_freeze_arrow
+300 boss_ext_wakou_leader_battle
+310 boss_ext_aftermath_choice
+320 military_coverup
 ```
 
 旧压缩节点保留为节点池，不进入默认 flow：
@@ -196,6 +210,9 @@ tables/battle_scene_manifest.tsv
 | `transport_officer` | `enc_transport_officer` | `first_act_transport_officer` | `true` |
 | `mutiny_camp` | `enc_mutiny_camp` | `first_act_mutiny_camp` | `true` |
 | `wakou_boss` | `enc_wakou_boss` | `first_act_wakou_boss` | `true` |
+| `wuke_spear_trial` | `enc_wuke_spear_trial` | `wuke_spear_trial` | `true` |
+| `wuke_blade_trial` | `enc_wuke_blade_trial` | `wuke_blade_trial` | `true` |
+| `wuke_final_duel` | `enc_wuke_final_duel` | `wuke_final_duel` | `true` |
 | `ch2_reed_ambush_battle` | `enc_ch2_reed_ambush` | `chapter2_reed_ambush` | `true` |
 | `ch3_escort_clash_battle` | `enc_ch3_escort_clash` | `chapter3_escort_clash` | `true` |
 | `ch4_tide_bandits_battle` | `enc_ch4_tide_bandits` | `chapter4_tide_bandits` | `true` |

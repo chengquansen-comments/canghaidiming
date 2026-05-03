@@ -475,6 +475,22 @@ func _apply_story_player_overrides(base_config: Dictionary, profile: Dictionary)
 		return base_config
 	if not NarrativeBattleContext.should_override_player_profile():
 		return base_config
+	var overrides: Dictionary = NarrativeBattleContext.get_battle_overrides()
+	var temp_role_id: String = str(overrides.get("temporary_player_role", "")).strip_edges()
+	if temp_role_id == "spearman" or temp_role_id == "blademaster":
+		var temp_profile := {
+			"role": temp_role_id,
+			"career": str(overrides.get("temporary_player_career", "武科出身")),
+			"weapon": str(overrides.get("temporary_player_weapon", "长枪" if temp_role_id == "spearman" else "腰刀")),
+			"martial_level": 1,
+			"battles_won": 0,
+			"max_hp": int(base_config.get("max_hp", 20)),
+			"hp": int(base_config.get("hp", base_config.get("max_hp", 20))),
+			"max_posture": int(base_config.get("max_momentum", 6)),
+			"posture": int(base_config.get("momentum", 5)),
+			"qinggong": int(base_config.get("qinggong", 1)),
+		}
+		profile = temp_profile
 	if profile.is_empty():
 		return base_config
 	var role_id: String = str(profile.get("role", ""))

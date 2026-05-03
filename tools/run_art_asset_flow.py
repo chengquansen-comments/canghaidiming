@@ -101,7 +101,10 @@ def validate_asset(asset_id: str, require_import: bool, verbose: bool) -> str:
     _, runtime_path, _ = describe_runtime(row)
     width, height, mode = validate_runtime_image(row, runtime_path)
     validate_hook_table_value(row, runtime_path)
-    compiled_path = validate_compiled_value(row, runtime_path)
+    hook_table = row.get("hook_table", "").strip()
+    compiled_path: Path | None = None
+    if hook_table:
+        compiled_path = validate_compiled_value(row, runtime_path)
 
     imported, import_path, ctex_matches = detect_godot_import(runtime_path)
     if require_import and not imported:
@@ -110,7 +113,10 @@ def validate_asset(asset_id: str, require_import: bool, verbose: bool) -> str:
     target_status = "GODOT_IMPORTED" if imported else "COMPILED"
     previous, current = update_manifest_status(asset_id, target_status)
     note(verbose, f"runtime OK: {runtime_path} {width}x{height} {mode}")
-    note(verbose, f"compiled OK: {compiled_path}")
+    if compiled_path is not None:
+        note(verbose, f"compiled OK: {compiled_path}")
+    else:
+        note(verbose, "compiled skipped: no hook_table for this asset type")
     if imported:
         note(verbose, f"godot import OK: {import_path} ({len(ctex_matches)} ctex)")
         for destination in parse_import_destinations(import_path):

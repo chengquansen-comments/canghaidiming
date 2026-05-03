@@ -15,6 +15,14 @@ const WEB_SMOKE_BATTLE_FLAG := "smoke_battle"
 const VISUAL_POLL_REFRESH_INTERVAL := 0.12
 const BUTTON_STYLE_META := &"visual_button_style_applied"
 const MOMENTUM_DOT_ANIMATING_META := &"momentum_dot_animation_busy"
+const ENEMY_PORTRAIT_OVERRIDES := {
+	"enemy_blademaster_prologue_raider": "portrait_enemy_prologue_raider",
+	"enemy_spearman_beach_ambush": "portrait_enemy_spearman_beach_ambush",
+	"enemy_wakou_raider_fishing_village": "portrait_enemy_wakou_raider_fishing_village",
+	"enemy_blademaster_transport_officer": "transport_officer",
+	"enemy_mutiny_camp_leader": "portrait_mutiny_camp_leader",
+	"enemy_blademaster_wakou_leader": "wakou_boss_bust",
+}
 
 var _visual_poll_refresh_elapsed := 0.0
 var _fx_pool := BattleFxPool.new()
@@ -1296,23 +1304,35 @@ func _sheet_source_for(fighter: Fighter, is_enemy: bool) -> Texture2D:
 func _sheet_frame_texture(source: Texture2D, frame_index: int) -> Texture2D:
 	if source == null:
 		return null
-	var frame_width := maxi(source.get_width() / SHEET_FRAME_COUNT, 1)
-	var atlas := AtlasTexture.new()
-	atlas.atlas = source
-	atlas.region = Rect2(frame_width * clampi(frame_index, 0, SHEET_FRAME_COUNT - 1), 0, frame_width, source.get_height())
-	return atlas
+	var frame_size := Vector2i(maxi(source.get_width(), 1), maxi(source.get_height() / SHEET_FRAME_COUNT, 1))
+	if source.get_height() < source.get_width():
+		frame_size = Vector2i(maxi(source.get_width() / SHEET_FRAME_COUNT, 1), maxi(source.get_height(), 1))
+	var layout := "vertical" if source.get_height() >= frame_size.y * SHEET_FRAME_COUNT else "horizontal"
+	return BattleSkinHelper.atlas_frame(source, frame_size, clampi(frame_index, 0, SHEET_FRAME_COUNT - 1), layout)
 
 func _portrait_texture_for(fighter: Fighter) -> Texture2D:
 	if fighter == null:
 		return null
-	var texture := _safe_load_texture("res://assets/pixel_battle/portraits/%s_portrait.png" % fighter.data.id)
+	var fighter_id := str(fighter.data.id)
+	if ENEMY_PORTRAIT_OVERRIDES.has(fighter_id):
+		var portrait_base := str(ENEMY_PORTRAIT_OVERRIDES[fighter_id])
+		var overridden := _safe_load_texture("res://assets/pixel_battle/portraits/%s.png" % portrait_base)
+		if overridden != null:
+			return overridden
+		overridden = _safe_load_texture("res://assets/pixel_battle/portraits/%s_portrait.png" % portrait_base)
+		if overridden != null:
+			return overridden
+		overridden = _safe_load_texture("res://assets/pixel_battle/portraits/%s_bust.png" % portrait_base)
+		if overridden != null:
+			return overridden
+	var texture := _safe_load_texture("res://assets/pixel_battle/portraits/%s_portrait.png" % fighter_id)
 	if texture != null:
 		return texture
-	texture = _safe_load_texture("res://assets/pixel_battle/portraits/%s_bust.png" % fighter.data.id)
+	texture = _safe_load_texture("res://assets/pixel_battle/portraits/%s_bust.png" % fighter_id)
 	if texture != null:
 		return texture
 	var visual_role: String = _visual_actor_role_id_for(fighter)
-	if visual_role != str(fighter.data.id):
+	if visual_role != fighter_id:
 		texture = _safe_load_texture("res://assets/pixel_battle/portraits/%s_portrait.png" % visual_role)
 		if texture != null:
 			return texture

@@ -8,7 +8,10 @@ first_act_wakou_boss	res://assets/pixel_battle/backgrounds/battle_bg_broken_ship
 test_spearman_duel	res://assets/pixel_battle/backgrounds/battle_bg_training_ground.png	枪术试战	0.06	0.06	0.02	0.01	0.0	0.0
 test_blademaster_duel	res://assets/pixel_battle/backgrounds/battle_bg_training_ground.png	刀术试战	0.06	0.06	0.02	0.01	0.0	0.0
 fallback	res://assets/pixel_battle/backgrounds/battle_bg_training_ground.png	默认接敌	0.08	0.08	0.02	0.01	0.0	0.0
-chapter2_reed_ambush	res://assets/pixel_battle/backgrounds/battle_bg_coast_ambush.png	芦苇伏击	0.30	0.14	0.07	0.026	10.0	-2.0
+chapter2_reed_ambush	res://assets/pixel_battle/backgrounds/battle_bg_chapter2_reed_ambush.png	芦苇伏击	0.30	0.14	0.07	0.026	10.0	-2.0
 chapter3_escort_clash	res://assets/pixel_battle/backgrounds/battle_bg_chapter3_escort_clash.png	押运冲突	0.20	0.17	0.05	0.020	5.0	-1.0
 chapter4_tide_bandits	res://assets/pixel_battle/backgrounds/battle_bg_chapter4_tide_bandits.png	潮滩截杀	0.18	0.22	0.09	0.022	4.0	-1.0
 boss_ext_wakou_leader	res://assets/pixel_battle/backgrounds/battle_bg_boss_ext_wakou_leader.png	破船首领	0.34	0.22	0.17	0.040	12.0	-3.0
+wuke_spear_trial	res://assets/pixel_battle/backgrounds/battle_bg_training_ground.png	武举试枪	0.08	0.07	0.03	0.012	1.0	0.0
+wuke_blade_trial	res://assets/pixel_battle/backgrounds/battle_bg_training_ground.png	武举试刀	0.08	0.07	0.03	0.012	-1.0	0.0
+wuke_final_duel	res://assets/pixel_battle/backgrounds/battle_bg_training_ground.png	红榜终试	0.10	0.08	0.04	0.015	0.0	-1.0

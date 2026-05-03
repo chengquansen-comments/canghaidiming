@@ -17,3 +17,6 @@ enc_ch4_tide_bandits	潮滩匪首	player_blademaster	player_blade_start	player_s
 enc_boss_ext_wakou_leader	破船首领	player_blademaster	player_blade_start	player_start	wakou_leader	wakou_leader_boss	boss_blade	reactive	break_resist	realm_based	正式剧情：扩展 Boss
 enc_wakou_boss	倭寇首领	player_blademaster	player_blade_start	player_start	wakou_leader	wakou_leader_boss	boss_blade	reactive	break_resist	realm_based	正式剧情：旧 Boss id 兼容
 fallback	默认战斗	player_spearman	player_spear_start	player_start	fallback_spearman	fallback_spear_keep	normal_spear	reactive	none	full	正式剧情：兜底配置
+enc_wuke_spear_trial	武举第一试·试枪	player_spearman	player_spear_start	player_start	wuke_spear_student	wuke_spear_student_teach	easy	reactive	none	full	正式剧情：武举第一试试枪（临时枪路线）
+enc_wuke_blade_trial	武举第二试·试刀	player_blademaster	player_blade_start	player_start	wuke_blade_student	wuke_blade_student_teach	easy	reactive	none	full	正式剧情：武举第二试试刀（临时刀路线）
+enc_wuke_final_duel	武举终试·红榜对决	player_blademaster	player_blade_start	player_start	wuke_final_student	wuke_final_student_duel	normal	reactive	none	realm_based	正式剧情：武举终试，玩家侧按已选路线覆写
