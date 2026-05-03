@@ -189,6 +189,7 @@ TSV 不定义新卡牌，不改卡牌数值。
 | `opponent_stat_set_id` | 对手数值套装 |
 | `settlement_mode` | 结算模式，`symmetric` / `reactive` |
 | `pressure_profile` | 压力规则，`none` / `edge_pressure` / `break_resist` |
+| `intent_visibility_policy` | 敌方意图可见性，`full` / `realm_based` / `hidden` |
 | `notes` | 备注 |
 
 当前开局流程：
@@ -203,6 +204,42 @@ TSV 不定义新卡牌，不改卡牌数值。
 
 ```text
 自动返回剧情遭遇选择
+```
+
+---
+
+## 3.5 敌方意图可见性
+
+配置字段：
+
+```text
+data/story_battles/story_encounters.tsv / intent_visibility_policy
+```
+
+可选值：
+
+```text
+full / realm_based / hidden
+```
+
+规则：
+
+```text
+full: 永远显示完整敌方意图
+hidden: 永远隐藏敌方具体意图
+realm_based:
+  非 reactive: 全意图
+  reactive:
+    我方武境 > 敌方武境: 全意图
+    我方武境 = 敌方武境: 只显示类型（攻/守/变）
+    我方武境 < 敌方武境: 不可辨
+```
+
+全局一键关闭（恢复全意图）：
+
+```text
+scripts/battle_intent_visibility.gd
+USE_INTENT_VISIBILITY_POLICY = false
 ```
 
 ---

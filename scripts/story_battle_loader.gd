@@ -135,6 +135,11 @@ static func validate_all(card_catalog: Dictionary) -> Dictionary:
 		var deck_id: String = str(deck_row.get("story_deck_id", ""))
 		for error: String in _deck_validation_errors(deck_id, str(deck_row.get("deck", "")), card_catalog):
 			errors.append(error)
+	for encounter_row: Dictionary in _table_rows(STORY_ENCOUNTERS_TABLE):
+		var encounter_id: String = str(encounter_row.get("encounter_id", ""))
+		var policy: String = str(encounter_row.get("intent_visibility_policy", BattleIntentVisibility.POLICY_FULL))
+		if not BattleIntentVisibility.is_valid_policy(policy):
+			errors.append("story_encounters.%s has invalid intent_visibility_policy: %s" % [encounter_id, policy])
 	validation["errors"] = errors
 	validation["ok"] = bool(validation.get("ok", false)) and errors.is_empty()
 	return validation
