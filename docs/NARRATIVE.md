@@ -340,6 +340,70 @@ world_map_entry
 - 不完整改写 final boss 自动分支。
 - `combat_pool_id → enemy_pool → martial_stats` 全链路细化留在后续增强（当前复用既有战斗入口与覆盖逻辑）。
 
+### 海疆大势图 network_map 运行时结构
+
+`world_map_entry` 进入大势图时，会在 `strategic_state.network_map` 中生成一张同局固定的完整网络地图。当前 UI 已优先显示 `network_map` 网络图；旧 `current_map` 候选渲染保留为 fallback。
+
+`network_map` 包含：
+- `seed`
+- `layer_count`
+- `current_layer`
+- `selected_node_id`
+- `completed_node_ids`
+- `available_node_ids`
+- `pending_map_node_id`
+- `nodes`
+
+节点包含：
+- `map_graph_id`
+- `pool_node_id`
+- `layer`
+- `lane`
+- `x`
+- `y`
+- `title`
+- `node_type`
+- `primary_line`
+- `secondary_line`
+- `preview_text`
+- `result_text`
+- `effects`
+- `tags`
+- `combat_pool_id`
+- `encounter_id`
+- `battle_id`
+- `incoming`
+- `outgoing`
+- `state`
+
+当前边界：
+- 本轮不切换正式 UI。
+- 本轮不做点击预览。
+- 本轮不做节点推进。
+- 本轮不做战斗返回恢复。
+- 后续会把 UI 从当前层候选列表升级为完整网络图。
+
+### 海疆大势图网络 UI 临时绘制
+
+当前 `world_map_entry` 进入大势图后，会优先读取 `strategic_state.network_map` 并绘制完整网络地图。
+
+本轮 UI 能力：
+- 显示完整多层网络图。
+- 显示节点连线。
+- 节点按 `node_type` 使用临时单字 / 颜色区分。
+- 节点按 `state` 显示 available / locked / completed / unreachable。
+- 点击节点只更新 `selected_node_id` 并刷新预览。
+- 预览面板显示 title、node_type、state、primary_line、secondary_line、preview_text、effects、tags、combat debug 信息。
+- 保留“继续旧线性流程” fallback。
+
+当前边界：
+- 本轮不执行节点。
+- 本轮不推进地图。
+- 本轮不应用 effects。
+- 本轮不进入战斗。
+- 本轮不处理战斗返回。
+- “确认前往”仍未接入。
+
 随机节点源表：
 
 ```text

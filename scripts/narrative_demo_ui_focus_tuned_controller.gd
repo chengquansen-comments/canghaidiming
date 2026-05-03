@@ -2,6 +2,8 @@ extends "res://scripts/narrative_demo_ui_focus_controller.gd"
 
 const StrategicMapGenerator := preload("res://scripts/strategic_map_generator.gd")
 const StrategicMapState := preload("res://scripts/strategic_map_state.gd")
+const StrategicNetworkMapGenerator := preload("res://scripts/strategic_network_map_generator.gd")
+const StrategicNetworkMapView := preload("res://scripts/strategic_network_map_view.gd")
 const STRATEGIC_ENTRY_NODE_ID := "world_map_entry"
 const STRATEGIC_FINAL_BOSS_SOURCE_ID := "strategic_final_boss"
 
@@ -20,6 +22,7 @@ var pending_strategic_ending_render := false
 var pending_strategic_card_node: Dictionary = {}
 var pending_strategic_card_choices: Array[String] = []
 var selected_strategic_card_reward := ""
+var network_map_view: Control = null
 
 func _ready() -> void:
 	_load_strategic_map_config()
@@ -58,6 +61,8 @@ func _restore_narrative_state_from_context() -> void:
 	var strategic_variant = state.get("strategic_state", {})
 	if strategic_variant is Dictionary:
 		strategic_state = (strategic_variant as Dictionary).duplicate(true)
+		if bool(strategic_state.get("active", false)):
+			_ensure_network_map_for_state(true)
 		_sync_world_map_runtime_state()
 		_sync_context_cards_to_strategic_state()
 
@@ -122,6 +127,16 @@ func _start_strategic_map(hint: String = "") -> void:
 	base["martial_level"] = int(profile.get("martial_level", 1))
 	base = StrategicMapState.sync_card_state_from_profile(base, profile)
 	base["current_map"] = StrategicMapGenerator.generate_map(strategic_config, base, int(base["seed"]))
+	base["network_map"] = StrategicNetworkMapGenerator.generate_network_map(strategic_config, base, int(base["seed"]))
+	var network_map: Dictionary = base.get("network_map", {})
+	base["selected_node_id"] = str(network_map.get("selected_node_id", ""))
+	base["available_node_ids"] = (network_map.get("available_node_ids", []) as Array).duplicate(true)
+	base["completed_node_ids"] = (network_map.get("completed_node_ids", []) as Array).duplicate(true)
+	base["current_node_id"] = str(network_map.get("current_node_id", ""))
+	base["pending_map_node_id"] = str(network_map.get("pending_map_node_id", ""))
+	base["pending_result_text"] = str(network_map.get("pending_result_text", ""))
+	base["pending_effects"] = (network_map.get("pending_effects", {}) as Dictionary).duplicate(true)
+	print(StrategicNetworkMapGenerator.summarize_network_map(network_map))
 	strategic_state = base
 	_sync_world_map_runtime_state()
 	last_hint = hint
@@ -141,6 +156,13 @@ func _base_ui_ready() -> bool:
 		and choices_box != null
 
 func _render_strategic_map() -> void:
+	var graph_variant = strategic_state.get("network_map", {})
+	if graph_variant is Dictionary and not (graph_variant as Dictionary).is_empty():
+		_render_network_strategic_map(graph_variant as Dictionary)
+		return
+	_render_legacy_strategic_map()
+
+func _render_legacy_strategic_map() -> void:
 	_refresh_current_strategic_layer()
 	var map_data: Dictionary = strategic_state.get("current_map", {})
 	var region_index := int(strategic_state.get("region_index", 0))
@@ -165,6 +187,247 @@ func _render_strategic_map() -> void:
 	for i in range(choices.size()):
 		if choices[i] is Dictionary:
 			_add_strategic_choice_button(choices[i] as Dictionary, i)
+
+func _render_network_strategic_map(graph: Dictionary) -> void:
+	title_label.text = "海疆大势图"
+	status_label.text = "完整网络图｜第 %d / %d 层" % [int(graph.get("current_layer", 0)) + 1, int(graph.get("layer_count", 10))]
+	map_label.text = _network_progress_text(graph)
+	scene_label.text = _format_scene_text("军情、海防与旧案线索被摊在同一张图上。")
+	_render_visual("res://assets/pixel_battle/backgrounds/map_march_coast.png", "海疆大势图")
+	body_label.text = "你第一次看见整条海路。\n\n亮起的是当前可达之路；灰下去的是未至或已错过的岔口。"
+	if not last_hint.is_empty():
+		body_label.text += "\n\n[i]%s[/i]" % last_hint
+	vars_label.text = _network_state_summary_text()
+	_render_network_map_view(graph)
+	_render_network_preview_panel(graph)
+	_render_network_debug_buttons()
+
+func _render_network_map_view(graph: Dictionary) -> void:
+	network_map_view = StrategicNetworkMapView.new()
+	network_map_view.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	network_map_view.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	(network_map_view as Control).custom_minimum_size = Vector2(940, 460)
+	network_map_view.set_graph(graph, str(graph.get("selected_node_id", "")))
+	network_map_view.node_clicked.connect(_on_network_node_clicked)
+	map_buttons_box.add_child(network_map_view)
+
+func _on_network_node_clicked(map_graph_id: String) -> void:
+	var graph_variant = strategic_state.get("network_map", {})
+	if not (graph_variant is Dictionary):
+		return
+	var graph := graph_variant as Dictionary
+	if graph.is_empty():
+		return
+	graph["selected_node_id"] = map_graph_id
+	strategic_state["network_map"] = graph
+	strategic_state["selected_node_id"] = map_graph_id
+	_save_narrative_state_to_context()
+	_render()
+
+func _network_progress_text(graph: Dictionary) -> String:
+	var nodes: Array = graph.get("nodes", [])
+	var layer_count := int(graph.get("layer_count", 0))
+	var completed := (graph.get("completed_node_ids", []) as Array).size()
+	var available := (graph.get("available_node_ids", []) as Array).size()
+	return "run=%s｜seed=%d｜层数=%d｜节点=%d｜已完成=%d｜可达=%d" % [
+		str(graph.get("run_id", "")),
+		int(graph.get("seed", 0)),
+		layer_count,
+		nodes.size(),
+		completed,
+		available,
+	]
+
+func _network_find_node(graph: Dictionary, map_graph_id: String) -> Dictionary:
+	var nodes: Array = graph.get("nodes", [])
+	for item in nodes:
+		if item is Dictionary:
+			var node := item as Dictionary
+			if str(node.get("map_graph_id", "")) == map_graph_id:
+				return node
+	return {}
+
+func _render_network_preview_panel(graph: Dictionary) -> void:
+	var label := RichTextLabel.new()
+	label.bbcode_enabled = true
+	label.fit_content = true
+	label.custom_minimum_size = Vector2(0, 300)
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.text = _network_preview_text(graph)
+	combat_buttons_box.add_child(label)
+	var confirm := Button.new()
+	confirm.text = "确认前往（Step 4 接入）"
+	confirm.disabled = true
+	confirm.custom_minimum_size = Vector2(0, 58)
+	confirm.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	combat_buttons_box.add_child(confirm)
+
+func _network_preview_text(graph: Dictionary) -> String:
+	var selected_id := str(graph.get("selected_node_id", ""))
+	var node := _network_find_node(graph, selected_id)
+	if node.is_empty():
+		return "尚未选中节点。"
+	var node_type := str(node.get("node_type", ""))
+	var mark := _network_node_type_mark(node_type)
+	var type_label := _network_node_type_label(node_type)
+	var state_label := _network_state_label(str(node.get("state", "locked")))
+	var text := ""
+	text += "[b]【%s】%s[/b]\n" % [str(node.get("title", "")), mark]
+	text += "类型：%s\n" % type_label
+	text += "状态：%s\n\n" % state_label
+	text += "主线：%s\n" % _network_line_label(str(node.get("primary_line", "")))
+	text += "副线：%s\n\n" % _network_line_label(str(node.get("secondary_line", "")))
+	text += "%s\n\n" % str(node.get("preview_text", ""))
+	text += "[b]预期影响：[/b]\n%s\n\n" % _network_effects_preview_text(node.get("effects", {}))
+	text += "[b]标签：[/b]\n%s\n\n" % _network_tags_text(node.get("tags", []))
+	text += "[b]战斗：[/b]\n%s" % _network_combat_debug_text(node)
+	return text
+
+func _network_node_type_mark(node_type: String) -> String:
+	match node_type:
+		"military": return "令"
+		"case", "investigation": return "案"
+		"combat_common": return "战"
+		"combat_elite": return "精"
+		"folk", "reputation": return "民"
+		"rest": return "息"
+		"master": return "师"
+		"old_item": return "物"
+		"boss": return "首"
+		"risk": return "险"
+	return "?"
+
+func _network_node_type_label(node_type: String) -> String:
+	match node_type:
+		"military": return "军令"
+		"case": return "旧案"
+		"investigation": return "调查"
+		"combat_common": return "普通战斗"
+		"combat_elite": return "精英战"
+		"folk": return "民间"
+		"reputation": return "清望"
+		"rest": return "休整"
+		"master": return "师父"
+		"old_item": return "旧物"
+		"boss": return "首领"
+		"risk": return "风险"
+	return node_type
+
+func _network_state_label(state: String) -> String:
+	match state:
+		"available": return "当前可达"
+		"locked": return "未解锁"
+		"completed": return "已完成"
+		"unreachable": return "当前路线不可达"
+		"selected": return "已选中"
+		"start": return "起点"
+	return state
+
+func _network_line_label(line_id: String) -> String:
+	match line_id:
+		"military_merit", "military": return "军功"
+		"clean_reputation", "reputation": return "清望"
+		"case_clues", "old_case", "case": return "旧案"
+		"rival_gu_bond": return "顾承岳"
+		"rival_shen_bond": return "沈照夜"
+		"rival_qi_bond": return "戚衡"
+		"soldier_trust": return "军心"
+		"": return "无"
+	return line_id
+
+func _network_effects_preview_text(effects_variant) -> String:
+	if not (effects_variant is Dictionary):
+		return "无"
+	var effects := effects_variant as Dictionary
+	var parts: Array[String] = []
+	var labels := {
+		"military_merit": "军功",
+		"clean_reputation": "清望",
+		"case_clues": "旧案",
+		"rival_gu_bond": "顾承岳",
+		"rival_shen_bond": "沈照夜",
+		"rival_qi_bond": "戚衡",
+		"soldier_trust": "军心"
+	}
+	for key in labels.keys():
+		var value := int(effects.get(key, 0))
+		if value != 0:
+			parts.append("%s %+d" % [str(labels[key]), value])
+	if effects.has("career_choice"):
+		parts.append("career_choice = %s（debug，不应出现在普通大地图节点）" % str(effects.get("career_choice", "")))
+	var card_rewards := _card_reward_ids_from_effects(effects.get("card_rewards", []))
+	if not card_rewards.is_empty():
+		parts.append("招式 +%d" % card_rewards.size())
+	if parts.is_empty():
+		return "无"
+	return "\n".join(parts)
+
+func _network_tags_text(tags_variant) -> String:
+	var tags: Array[String] = []
+	if tags_variant is Array or tags_variant is PackedStringArray:
+		for item in tags_variant:
+			var tag := str(item).strip_edges()
+			if not tag.is_empty():
+				tags.append(tag)
+	elif tags_variant is String:
+		var raw := str(tags_variant)
+		var split_char := "," if raw.find(",") >= 0 else ("|" if raw.find("|") >= 0 else ";")
+		for part in raw.split(split_char, false):
+			var tag := str(part).strip_edges()
+			if not tag.is_empty():
+				tags.append(tag)
+	return ", ".join(tags) if not tags.is_empty() else "无"
+
+func _network_combat_debug_text(node: Dictionary) -> String:
+	var node_type := str(node.get("node_type", ""))
+	var combat_pool_id := str(node.get("combat_pool_id", ""))
+	var encounter_id := str(node.get("encounter_id", ""))
+	var battle_id := str(node.get("battle_id", ""))
+	if not node_type.begins_with("combat_") and combat_pool_id.is_empty() and encounter_id.is_empty():
+		return "否"
+	var lines: Array[String] = []
+	lines.append("是")
+	if not combat_pool_id.is_empty():
+		lines.append("combat_pool_id = %s" % combat_pool_id)
+	if not encounter_id.is_empty():
+		lines.append("encounter_id = %s" % encounter_id)
+	if not battle_id.is_empty():
+		lines.append("battle_id = %s" % battle_id)
+	var enemy_level := int(node.get("enemy_martial_level", 0))
+	var rec_min := int(node.get("recommended_martial_min", 0))
+	var rec_max := int(node.get("recommended_martial_max", 0))
+	if enemy_level > 0:
+		lines.append("enemy_martial_level = %d" % enemy_level)
+	if rec_min > 0 or rec_max > 0:
+		lines.append("recommended = %d-%d" % [rec_min, rec_max])
+	return "\n".join(lines)
+
+func _network_state_summary_text() -> String:
+	return StrategicMapState.summary_text(strategic_state)
+
+func _render_network_debug_buttons() -> void:
+	var fallback := Button.new()
+	fallback.text = "继续旧线性流程"
+	fallback.custom_minimum_size = Vector2(0, 54)
+	fallback.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	fallback.pressed.connect(_continue_legacy_linear_flow)
+	choices_box.add_child(fallback)
+
+func _continue_legacy_linear_flow() -> void:
+	strategic_state["active"] = false
+	strategic_state["completed"] = true
+	_save_narrative_state_to_context()
+	var target_index := _find_flow_index_by_node_id("military_order")
+	if target_index >= 0:
+		super._advance_to_node(target_index, "继续旧线性流程。")
+	else:
+		super._advance_to_node(_flow_count() - 1, "继续旧线性流程。")
+
+func _find_flow_index_by_node_id(node_id: String) -> int:
+	for i in range(_flow_count()):
+		if _node_id_at(i) == node_id:
+			return i
+	return -1
 
 func _refresh_current_strategic_layer() -> void:
 	var map_data: Dictionary = strategic_state.get("current_map", {})
@@ -500,6 +763,24 @@ func _sync_world_map_runtime_state() -> void:
 	strategic_state["world_map_generated_nodes"] = generated_nodes
 	strategic_state["world_map_completed_nodes"] = (strategic_state.get("selected_nodes", []) as Array).duplicate(true)
 	strategic_state["is_world_map_active"] = bool(strategic_state.get("active", false))
+
+func _ensure_network_map_for_state(warn_if_regenerated: bool = false) -> void:
+	var map_variant = strategic_state.get("network_map", {})
+	if map_variant is Dictionary and not (map_variant as Dictionary).is_empty():
+		return
+	var seed_value := int(strategic_state.get("seed", 1701))
+	if warn_if_regenerated:
+		push_warning("strategic_state.network_map missing during restore, regenerating from seed=%d" % seed_value)
+	strategic_state["network_map"] = StrategicNetworkMapGenerator.generate_network_map(strategic_config, strategic_state, seed_value)
+	var network_map: Dictionary = strategic_state.get("network_map", {})
+	strategic_state["selected_node_id"] = str(network_map.get("selected_node_id", ""))
+	strategic_state["available_node_ids"] = (network_map.get("available_node_ids", []) as Array).duplicate(true)
+	strategic_state["completed_node_ids"] = (network_map.get("completed_node_ids", []) as Array).duplicate(true)
+	strategic_state["current_node_id"] = str(network_map.get("current_node_id", ""))
+	strategic_state["pending_map_node_id"] = str(network_map.get("pending_map_node_id", ""))
+	strategic_state["pending_result_text"] = str(network_map.get("pending_result_text", ""))
+	strategic_state["pending_effects"] = (network_map.get("pending_effects", {}) as Dictionary).duplicate(true)
+	print(StrategicNetworkMapGenerator.summarize_network_map(network_map))
 
 func _find_strategic_node(node_id: String) -> Dictionary:
 	var node_pool: Array = strategic_config.get("node_pool", [])
