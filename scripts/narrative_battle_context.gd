@@ -67,6 +67,22 @@ static var player_deck_slots: Array = []
 static var player_active_deck_index := 0
 static var narrative_state_ready := false
 static var narrative_state: Dictionary = {}
+static var pending_debug_entry: Dictionary = {}
+
+static func set_debug_entry_world_map() -> void:
+	pending_debug_entry = {
+		"mode": "world_map",
+		"player_role": "spearman",
+		"martial_level": 1,
+	}
+
+static func consume_debug_entry() -> Dictionary:
+	var entry := pending_debug_entry.duplicate(true)
+	pending_debug_entry.clear()
+	return entry
+
+static func has_debug_entry() -> bool:
+	return not pending_debug_entry.is_empty()
 
 static func set_request(p_encounter_id: String, p_source_node_id: String, p_battle_id: String = "", p_override_player_profile: bool = true) -> void:
 	_pull_meta()

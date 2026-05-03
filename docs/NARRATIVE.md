@@ -394,15 +394,32 @@ world_map_entry
 - 节点按 `state` 显示 available / locked / completed / unreachable。
 - 点击节点只更新 `selected_node_id` 并刷新预览。
 - 预览面板显示 title、node_type、state、primary_line、secondary_line、preview_text、effects、tags、combat debug 信息。
+- 非战斗节点可执行：应用 `effects`、显示 `result_text`、标记 completed 并推进到下一批 available 节点。
+- 已错过节点会更新为 `unreachable`，未到达节点保持 `locked`。
+- 战斗节点确认前会保存 `pending_map_node_id` / `pending_effects`，再进入 `MainVisual`。
+- 战斗胜利返回后会应用节点收益、标记 completed 并推进 outgoing；失败则不推进并保留可重试。
 - 保留“继续旧线性流程” fallback。
 
 当前边界：
-- 本轮不执行节点。
-- 本轮不推进地图。
-- 本轮不应用 effects。
-- 本轮不进入战斗。
-- 本轮不处理战斗返回。
-- “确认前往”仍未接入。
+- `combat_pool_id -> combat_enemy_pools.tsv -> enemy_martial_stats.tsv` 的完整随机敌链路仍未完全接入（当前使用 encounter/battle 与 fallback 映射）。
+
+### 海疆大势图 Debug 直入入口
+
+- 主界面开发入口新增“海疆大势图 Debug”按钮，可不经过武举流程直接进入 `NarrativeDemo` 的大势图运行态。
+- 该入口通过 `NarrativeBattleContext` 一次性 debug entry 触发，进入后自动注入临时占位 player profile（默认 `spearman`、武境 1、合法 8 张卡）。
+- 该入口不写入正式 `career_choice`，不替代正式 `world_map_entry`，不影响武举开局与正式流程校验。
+
+### network_map 推进安全规则
+
+- 路径推进只使用唯一的 `map_graph_id`。
+- `pool_node_id` 可以重复，但不参与 completed / available 判断。
+- 节点完成后，会过滤 `outgoing`：
+  - 不存在的节点不会进入 available。
+  - 已完成节点不会再次进入 available。
+  - 已 unreachable 节点不会再次进入 available。
+- 如果过滤后没有有效 available 节点，会设置 `map_complete=true`。
+- `map_complete=true` 时 UI 显示临时“海图暂止”面板，并禁用“确认前往”。
+- 当前仍未接入正式区域 Boss / final gate。
 
 随机节点源表：
 

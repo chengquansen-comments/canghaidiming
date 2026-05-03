@@ -6,6 +6,24 @@ const StrategicNetworkMapGenerator := preload("res://scripts/strategic_network_m
 const StrategicNetworkMapView := preload("res://scripts/strategic_network_map_view.gd")
 const STRATEGIC_ENTRY_NODE_ID := "world_map_entry"
 const STRATEGIC_FINAL_BOSS_SOURCE_ID := "strategic_final_boss"
+const NETWORK_COMBAT_POOL_FALLBACK := {
+	"spear_patrol": {
+		"encounter_id": "enc_ch2_reed_ambush",
+		"battle_id": "chapter2_reed_ambush",
+	},
+	"coastal_veteran": {
+		"encounter_id": "enc_ch4_tide_bandits",
+		"battle_id": "chapter4_tide_bandits",
+	},
+	"military_elite": {
+		"encounter_id": "enc_ch3_escort_clash",
+		"battle_id": "chapter3_escort_clash",
+	},
+	"old_case_elite": {
+		"encounter_id": "enc_ch3_escort_clash",
+		"battle_id": "chapter3_escort_clash",
+	},
+}
 
 # Final UI tuning layer.
 # Keeps narrative presentation simple: static scene art + caption + bottom floating choices.
@@ -28,6 +46,7 @@ func _ready() -> void:
 	_load_strategic_map_config()
 	super._ready()
 	_apply_tuned_scene_art_view()
+	call_deferred("_try_consume_debug_world_map_entry")
 
 func _process(delta: float) -> void:
 	super._process(delta)
@@ -94,6 +113,12 @@ func _consume_battle_result_if_needed() -> void:
 		_save_narrative_state_to_context()
 		return
 	if source_id.begins_with("map_"):
+		var graph: Dictionary = strategic_state.get("network_map", {})
+		if not graph.is_empty() and not str(graph.get("pending_map_node_id", "")).is_empty():
+			_consume_network_node_battle(source_id, result)
+			NarrativeBattleContext.clear()
+			_save_narrative_state_to_context()
+			return
 		_consume_strategic_node_battle(source_id, result)
 		NarrativeBattleContext.clear()
 		_save_narrative_state_to_context()
@@ -111,6 +136,64 @@ func _advance_to_node(target_index: int, hint: String = "") -> void:
 
 func _load_strategic_map_config() -> void:
 	strategic_config = StrategicMapGenerator.load_config()
+
+func _try_consume_debug_world_map_entry() -> void:
+	if not NarrativeBattleContext.has_debug_entry():
+		return
+	var entry := NarrativeBattleContext.consume_debug_entry()
+	if str(entry.get("mode", "")) != "world_map":
+		return
+	var role := str(entry.get("player_role", "spearman"))
+	var martial_level: int = max(1, int(entry.get("martial_level", 1)))
+	_ensure_debug_world_map_player_profile(role, martial_level)
+	jun_gong = 1
+	qing_wang = 1
+	clues = 1
+	_start_strategic_map("Debug：直接进入海疆大势图。")
+
+func _ensure_debug_world_map_player_profile(role: String = "spearman", martial_level: int = 1) -> void:
+	if NarrativeBattleContext.has_player_profile():
+		return
+	var owned_card_ids: Array[String] = []
+	if role == "blademaster":
+		owned_card_ids = [
+			"blade_press_break",
+			"blade_press_break",
+			"blade_hook_pull",
+			"blade_hook_pull",
+			"blade_body_press",
+			"blade_body_press",
+			"reward_guard",
+			"reward_guard",
+		]
+	else:
+		owned_card_ids = [
+			"spear_step_thrust",
+			"spear_step_thrust",
+			"spear_retreat_sting",
+			"spear_retreat_sting",
+			"reward_push",
+			"reward_push",
+			"reward_guard",
+			"reward_guard",
+		]
+	var selected_loadout_ids := owned_card_ids.duplicate()
+	NarrativeBattleContext.set_player_profile({
+		"role": role,
+		"career": "调试武生",
+		"weapon": "长枪" if role == "spearman" else "腰刀",
+		"martial_level": martial_level,
+		"max_hp": 32,
+		"hp": 32,
+		"max_posture": 10,
+		"posture": 5,
+		"qinggong": 1,
+		"owned_card_ids": owned_card_ids,
+		"selected_loadout_ids": selected_loadout_ids,
+		"deck_slots": [],
+		"active_deck_index": 0,
+		"debug_profile": true,
+	})
 
 func _start_strategic_map(hint: String = "") -> void:
 	if strategic_config.is_empty():
@@ -189,6 +272,11 @@ func _render_legacy_strategic_map() -> void:
 			_add_strategic_choice_button(choices[i] as Dictionary, i)
 
 func _render_network_strategic_map(graph: Dictionary) -> void:
+	_ensure_network_selected_node(graph)
+	strategic_state["network_map"] = graph
+	if bool(graph.get("map_complete", false)) or not _network_has_available_node(graph):
+		_render_network_map_complete_panel(graph)
+		return
 	title_label.text = "海疆大势图"
 	status_label.text = "完整网络图｜第 %d / %d 层" % [int(graph.get("current_layer", 0)) + 1, int(graph.get("layer_count", 10))]
 	map_label.text = _network_progress_text(graph)
@@ -248,6 +336,9 @@ func _network_find_node(graph: Dictionary, map_graph_id: String) -> Dictionary:
 	return {}
 
 func _render_network_preview_panel(graph: Dictionary) -> void:
+	var selected_id := str(graph.get("selected_node_id", ""))
+	var node := _network_find_node(graph, selected_id)
+	var confirm_meta := _network_confirm_meta(graph, node)
 	var label := RichTextLabel.new()
 	label.bbcode_enabled = true
 	label.fit_content = true
@@ -256,10 +347,11 @@ func _render_network_preview_panel(graph: Dictionary) -> void:
 	label.text = _network_preview_text(graph)
 	combat_buttons_box.add_child(label)
 	var confirm := Button.new()
-	confirm.text = "确认前往（Step 4 接入）"
-	confirm.disabled = true
+	confirm.text = "确认前往"
+	confirm.disabled = not bool(confirm_meta.get("enabled", false))
 	confirm.custom_minimum_size = Vector2(0, 58)
 	confirm.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	confirm.pressed.connect(_confirm_network_node)
 	combat_buttons_box.add_child(confirm)
 
 func _network_preview_text(graph: Dictionary) -> String:
@@ -280,8 +372,244 @@ func _network_preview_text(graph: Dictionary) -> String:
 	text += "%s\n\n" % str(node.get("preview_text", ""))
 	text += "[b]预期影响：[/b]\n%s\n\n" % _network_effects_preview_text(node.get("effects", {}))
 	text += "[b]标签：[/b]\n%s\n\n" % _network_tags_text(node.get("tags", []))
-	text += "[b]战斗：[/b]\n%s" % _network_combat_debug_text(node)
+	text += "[b]战斗：[/b]\n%s\n\n" % _network_combat_debug_text(node)
+	var confirm_meta := _network_confirm_meta(graph, node)
+	if bool(confirm_meta.get("enabled", false)):
+		text += "[b]前往状态：[/b]\n可确认前往"
+	else:
+		text += "[b]前往状态：[/b]\n不可前往：%s" % str(confirm_meta.get("reason", "未解锁"))
 	return text
+
+func _network_confirm_meta(graph: Dictionary, node: Dictionary) -> Dictionary:
+	return {
+		"enabled": _network_selected_can_confirm(graph),
+		"reason": _network_confirm_block_reason(node),
+	}
+
+func _confirm_network_node() -> void:
+	var graph: Dictionary = strategic_state.get("network_map", {})
+	if graph.is_empty():
+		return
+	var selected_id := str(graph.get("selected_node_id", ""))
+	var node := _network_find_node(graph, selected_id)
+	if node.is_empty():
+		last_hint = "未选中有效的大势图节点。"
+		_render()
+		return
+	if not _network_selected_can_confirm(graph):
+		last_hint = _network_confirm_block_reason(node)
+		_render()
+		return
+	if _network_node_is_combat(node):
+		_enter_network_combat_node(node)
+		return
+	_execute_network_non_combat_node(node)
+
+func _execute_network_non_combat_node(node: Dictionary) -> void:
+	var graph: Dictionary = strategic_state.get("network_map", {})
+	if graph.is_empty():
+		return
+	var runtime_node := node.duplicate(true)
+	if not runtime_node.has("node_id"):
+		runtime_node["node_id"] = str(node.get("pool_node_id", node.get("map_graph_id", "")))
+	_apply_strategic_node(runtime_node)
+	_complete_network_node(graph, node)
+	_refresh_network_node_states(graph)
+	strategic_state["network_map"] = graph
+	strategic_state["selected_node_id"] = str(graph.get("selected_node_id", ""))
+	strategic_state["available_node_ids"] = (graph.get("available_node_ids", []) as Array).duplicate(true)
+	strategic_state["completed_node_ids"] = (graph.get("completed_node_ids", []) as Array).duplicate(true)
+	strategic_state["current_node_id"] = str(graph.get("current_node_id", ""))
+	var result_text := str(node.get("result_text", ""))
+	if result_text.is_empty():
+		result_text = "你记下了这一处海疆线索。"
+	last_hint = result_text
+	_save_narrative_state_to_context()
+	_render()
+
+func _network_node_is_combat(node: Dictionary) -> bool:
+	var node_type := str(node.get("node_type", ""))
+	return node_type.begins_with("combat_") \
+		or not str(node.get("combat_pool_id", "")).is_empty() \
+		or not str(node.get("encounter_id", "")).is_empty() \
+		or not str(node.get("battle_id", "")).is_empty()
+
+func _network_combat_request(node: Dictionary) -> Dictionary:
+	var encounter_id := str(node.get("encounter_id", ""))
+	var battle_id := str(node.get("battle_id", ""))
+	var combat_pool_id := str(node.get("combat_pool_id", ""))
+	if encounter_id.is_empty() or battle_id.is_empty():
+		if NETWORK_COMBAT_POOL_FALLBACK.has(combat_pool_id):
+			var fallback: Dictionary = NETWORK_COMBAT_POOL_FALLBACK[combat_pool_id]
+			encounter_id = str(fallback.get("encounter_id", ""))
+			battle_id = str(fallback.get("battle_id", ""))
+	if encounter_id.is_empty() or battle_id.is_empty():
+		return {
+			"enabled": false,
+			"blocked_reason": "该 combat_pool 暂未接入战斗。"
+		}
+	return {
+		"enabled": true,
+		"encounter_id": encounter_id,
+		"battle_id": battle_id,
+		"override_player_profile": true,
+		"combat_pool_id": combat_pool_id,
+		"recommended_martial_min": int(node.get("recommended_martial_min", 0)),
+		"recommended_martial_max": int(node.get("recommended_martial_max", 0)),
+		"enemy_martial_level": int(node.get("enemy_martial_level", 0))
+	}
+
+func _enter_network_combat_node(node: Dictionary) -> void:
+	var graph: Dictionary = strategic_state.get("network_map", {})
+	if graph.is_empty():
+		return
+	var request := _network_combat_request(node)
+	if not bool(request.get("enabled", false)):
+		last_hint = str(request.get("blocked_reason", "该战斗节点暂未接入。"))
+		_save_narrative_state_to_context()
+		_render()
+		return
+	var node_id := str(node.get("map_graph_id", ""))
+	graph["pending_map_node_id"] = node_id
+	graph["pending_result_text"] = str(node.get("result_text", ""))
+	graph["pending_effects"] = (node.get("effects", {}) as Dictionary).duplicate(true)
+	strategic_state["network_map"] = graph
+	_sync_strategic_cards_to_context()
+	_save_narrative_state_to_context()
+	NarrativeBattleContext.set_request_from_combat(request, "map_" + node_id)
+	get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
+
+func _network_node_can_confirm(node: Dictionary) -> bool:
+	var state := str(node.get("state", "locked"))
+	if not (state == "available" or state == "start"):
+		return false
+	if _network_node_is_combat(node):
+		var request := _network_combat_request(node)
+		if not bool(request.get("enabled", false)):
+			return false
+	return true
+
+func _network_confirm_block_reason(node: Dictionary) -> String:
+	var state := str(node.get("state", "locked"))
+	match state:
+		"locked":
+			return "未解锁。"
+		"unreachable":
+			return "当前路线不可达。"
+		"completed":
+			return "已完成，不可重复执行。"
+		"available", "start":
+			if _network_node_is_combat(node):
+				var request := _network_combat_request(node)
+				if not bool(request.get("enabled", false)):
+					return str(request.get("blocked_reason", "该 combat_pool 暂未接入战斗。"))
+			return ""
+	return "当前节点不可前往。"
+
+func _network_valid_available_ids(graph: Dictionary, candidate_ids: Array) -> Array:
+	var result: Array = []
+	var completed: Array = graph.get("completed_node_ids", [])
+	var nodes: Array = graph.get("nodes", [])
+	var node_by_id: Dictionary = {}
+	for item in nodes:
+		if item is Dictionary:
+			var node := item as Dictionary
+			var id := str(node.get("map_graph_id", ""))
+			if not id.is_empty():
+				node_by_id[id] = node
+	for item in candidate_ids:
+		var node_id := str(item)
+		if node_id.is_empty():
+			continue
+		if result.has(node_id):
+			continue
+		if completed.has(node_id):
+			continue
+		if not node_by_id.has(node_id):
+			push_warning("network_map outgoing points to missing node: %s" % node_id)
+			continue
+		var node: Dictionary = node_by_id[node_id]
+		var state := str(node.get("state", "locked"))
+		if state == "completed" or state == "unreachable":
+			continue
+		result.append(node_id)
+	return result
+
+func _network_has_available_node(graph: Dictionary) -> bool:
+	var available: Array = graph.get("available_node_ids", [])
+	return not _network_valid_available_ids(graph, available).is_empty()
+
+func _ensure_network_selected_node(graph: Dictionary) -> void:
+	var available := _network_valid_available_ids(graph, graph.get("available_node_ids", []))
+	graph["available_node_ids"] = available
+	var selected_id := str(graph.get("selected_node_id", ""))
+	var selected := _network_find_node(graph, selected_id)
+	if not selected.is_empty() and available.has(selected_id):
+		return
+	if not available.is_empty():
+		graph["selected_node_id"] = str(available[0])
+	else:
+		graph["selected_node_id"] = str(graph.get("current_node_id", ""))
+
+func _network_selected_can_confirm(graph: Dictionary) -> bool:
+	if bool(graph.get("map_complete", false)):
+		return false
+	var selected_id := str(graph.get("selected_node_id", ""))
+	var node := _network_find_node(graph, selected_id)
+	if node.is_empty():
+		return false
+	var available := _network_valid_available_ids(graph, graph.get("available_node_ids", []))
+	if not available.has(selected_id):
+		return false
+	return _network_node_can_confirm(node)
+
+func _complete_network_node(graph: Dictionary, node: Dictionary) -> void:
+	var node_id := str(node.get("map_graph_id", ""))
+	if node_id.is_empty():
+		return
+	var completed: Array = graph.get("completed_node_ids", [])
+	if not completed.has(node_id):
+		completed.append(node_id)
+	var outgoing: Array = []
+	for item in node.get("outgoing", []):
+		var out_id := str(item)
+		if not out_id.is_empty():
+			outgoing.append(out_id)
+	graph["completed_node_ids"] = completed
+	graph["current_node_id"] = node_id
+	graph["current_layer"] = int(node.get("layer", 0)) + 1
+	var valid_outgoing := _network_valid_available_ids(graph, outgoing)
+	graph["available_node_ids"] = valid_outgoing
+	if not valid_outgoing.is_empty():
+		graph["selected_node_id"] = str(valid_outgoing[0])
+		graph["map_complete"] = false
+	else:
+		graph["selected_node_id"] = node_id
+		graph["map_complete"] = true
+
+func _refresh_network_node_states(graph: Dictionary) -> void:
+	var completed: Array = graph.get("completed_node_ids", [])
+	var available: Array = graph.get("available_node_ids", [])
+	var current_layer := int(graph.get("current_layer", 0))
+	var nodes: Array = graph.get("nodes", [])
+	for i in range(nodes.size()):
+		if not (nodes[i] is Dictionary):
+			continue
+		var node: Dictionary = nodes[i]
+		var node_id := str(node.get("map_graph_id", ""))
+		var layer := int(node.get("layer", 0))
+		if completed.has(node_id):
+			node["state"] = "completed"
+		elif available.has(node_id):
+			node["state"] = "available"
+		elif layer < current_layer:
+			node["state"] = "unreachable"
+		elif layer == current_layer:
+			node["state"] = "unreachable"
+		else:
+			node["state"] = "locked"
+		nodes[i] = node
+	graph["nodes"] = nodes
 
 func _network_node_type_mark(node_type: String) -> String:
 	match node_type:
@@ -400,7 +728,82 @@ func _network_combat_debug_text(node: Dictionary) -> String:
 		lines.append("enemy_martial_level = %d" % enemy_level)
 	if rec_min > 0 or rec_max > 0:
 		lines.append("recommended = %d-%d" % [rec_min, rec_max])
+	var request := _network_combat_request(node)
+	if not bool(request.get("enabled", false)):
+		lines.append(str(request.get("blocked_reason", "该 combat_pool 暂未接入战斗。")))
 	return "\n".join(lines)
+
+func _consume_network_node_battle(source_id: String, result: String) -> void:
+	var graph: Dictionary = strategic_state.get("network_map", {})
+	if graph.is_empty():
+		last_hint = "战斗返回：未找到大势图。"
+		return
+	var pending_id := str(graph.get("pending_map_node_id", ""))
+	if pending_id.is_empty():
+		last_hint = "战斗返回：未找到 pending 节点。"
+		return
+	var expected_source_id := "map_" + pending_id
+	if source_id != expected_source_id:
+		push_warning("Network map battle source mismatch: expected %s, got %s" % [expected_source_id, source_id])
+	var node := _network_find_node(graph, pending_id)
+	if node.is_empty():
+		last_hint = "战斗返回：未找到大势图节点。"
+		_clear_network_pending(graph)
+		strategic_state["network_map"] = graph
+		return
+	if result != "win":
+		last_hint = "战斗未胜：当前节点可重试。"
+		_clear_network_pending(graph)
+		strategic_state["network_map"] = graph
+		return
+	var runtime_node := node.duplicate(true)
+	if not runtime_node.has("node_id"):
+		runtime_node["node_id"] = str(node.get("pool_node_id", node.get("map_graph_id", "")))
+	_apply_strategic_node(runtime_node)
+	NarrativeBattleContext.apply_player_growth("battle_win", 0, 0, 0, true)
+	_complete_network_node(graph, node)
+	_refresh_network_node_states(graph)
+	_clear_network_pending(graph)
+	var result_text := str(node.get("result_text", ""))
+	if result_text.is_empty():
+		result_text = "战事暂歇，海风又压回岸边。"
+	last_hint = result_text
+	strategic_state["network_map"] = graph
+	strategic_state["selected_node_id"] = str(graph.get("selected_node_id", ""))
+	strategic_state["available_node_ids"] = (graph.get("available_node_ids", []) as Array).duplicate(true)
+	strategic_state["completed_node_ids"] = (graph.get("completed_node_ids", []) as Array).duplicate(true)
+	strategic_state["current_node_id"] = str(graph.get("current_node_id", ""))
+
+func _clear_network_pending(graph: Dictionary) -> void:
+	graph["pending_map_node_id"] = ""
+	graph["pending_result_text"] = ""
+	graph["pending_effects"] = {}
+
+func _render_network_map_complete_panel(graph: Dictionary) -> void:
+	title_label.text = "海疆大势图"
+	status_label.text = "海图暂止"
+	map_label.text = _network_progress_text(graph)
+	scene_label.text = _format_scene_text("海图上的线暂时走到了尽头。")
+	_render_visual("res://assets/pixel_battle/backgrounds/map_march_coast.png", "海疆大势图")
+	body_label.text = "海疆大势图已走完，或当前路径没有后续可达节点。\n\n后续将接入区域 Boss / final gate。"
+	if not last_hint.is_empty():
+		body_label.text += "\n\n[i]%s[/i]" % last_hint
+	vars_label.text = _network_state_summary_text()
+	_render_network_map_view(graph)
+	var label := RichTextLabel.new()
+	label.bbcode_enabled = true
+	label.fit_content = true
+	label.text = "[b]当前海图已无可前往节点。[/b]\n\n可以继续旧线性流程，或等待后续 final gate 接入。"
+	label.custom_minimum_size = Vector2(0, 220)
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	combat_buttons_box.add_child(label)
+	var confirm := Button.new()
+	confirm.text = "确认前往"
+	confirm.disabled = true
+	confirm.custom_minimum_size = Vector2(0, 58)
+	confirm.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	combat_buttons_box.add_child(confirm)
+	_render_network_debug_buttons()
 
 func _network_state_summary_text() -> String:
 	return StrategicMapState.summary_text(strategic_state)

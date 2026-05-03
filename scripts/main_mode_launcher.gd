@@ -65,6 +65,15 @@ func _build_ui() -> void:
 	)
 	box.add_child(narrative_button)
 
+	var world_map_debug_button := Button.new()
+	world_map_debug_button.text = "海疆大势图 Debug"
+	world_map_debug_button.custom_minimum_size = Vector2(300, 54)
+	world_map_debug_button.pressed.connect(func() -> void:
+		NarrativeBattleContext.set_debug_entry_world_map()
+		get_tree().change_scene_to_file("res://scenes/NarrativeDemo.tscn")
+	)
+	box.add_child(world_map_debug_button)
+
 	var text_button := Button.new()
 	text_button.text = "进入字符版战斗"
 	text_button.custom_minimum_size = Vector2(300, 54)
