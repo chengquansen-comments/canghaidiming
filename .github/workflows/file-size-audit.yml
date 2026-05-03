@@ -1,0 +1,77 @@
+name: File Size Audit
+
+on:
+  workflow_dispatch:
+    inputs:
+      include_all:
+        description: "Include all file suffixes"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+      top:
+        description: "Number of largest files to print"
+        required: false
+        default: "50"
+        type: string
+      fail_on_split_required:
+        description: "Fail if any file is >= 25KB"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+jobs:
+  audit:
+    name: Audit file sizes
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run file size audit
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          ARGS=("--top" "${{ inputs.top }}")
+
+          if [[ "${{ inputs.include_all }}" == "true" ]]; then
+            ARGS+=("--include-all")
+          fi
+
+          if [[ "${{ inputs.fail_on_split_required }}" == "true" ]]; then
+            ARGS+=("--fail-on-split-required")
+          fi
+
+          python3 tools/audit_file_sizes.py "${ARGS[@]}"
+
+      - name: Show markdown report
+        if: always()
+        shell: bash
+        run: |
+          if [[ -f reports/file_size_audit.md ]]; then
+            cat reports/file_size_audit.md
+          else
+            echo "reports/file_size_audit.md was not generated."
+          fi
+
+      - name: Upload audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: file-size-audit
+          path: |
+            reports/file_size_audit.md
+            reports/file_size_audit.csv
+          if-no-files-found: warn
