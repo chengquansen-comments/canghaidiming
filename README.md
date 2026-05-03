@@ -14,6 +14,7 @@
 | [docs/NARRATIVE.md](docs/NARRATIVE.md) | 叙事唯一总入口：数据源、流程、战斗接入、结局、AI 生成边界 |
 | [docs/BATTLE.md](docs/BATTLE.md) | 战斗唯一总入口：配置主源、剧情接入、结算模式、表演节奏、调参与验证 |
 | [docs/UI_PIPELINE.md](docs/UI_PIPELINE.md) | UI 管线总入口：视觉战斗界面、层级、预览、演出、缓存、Web UI 验收 |
+| [docs/CODE_ORGANIZATION.md](docs/CODE_ORGANIZATION.md) | 代码组织原则：单文件体积、职责拆分、AI 协作和重构提交规范 |
 
 ### 专项文档
 
@@ -22,7 +23,7 @@
 | 策划与数据 | [NARRATIVE](docs/NARRATIVE.md) |
 | 美术与演出 | [ART_PIPELINE](docs/ART_PIPELINE.md), [ART_REFERENCE_PROMPTS](docs/ART_REFERENCE_PROMPTS.md), [BATTLE_PRESENTATION_LAYER](docs/BATTLE_PRESENTATION_LAYER.md), [text_preview_stage_design](docs/text_preview_stage_design.md) |
 | 战斗系统 | [BATTLE](docs/BATTLE.md), [single_battle_rules_current](docs/single_battle_rules_current.md), [BATTLE_PRESENTATION_LAYER](docs/BATTLE_PRESENTATION_LAYER.md), [reactive_settlement_v040](docs/reactive_settlement_v040.md), [balance_rules](docs/balance_rules.md), [carddata_movement_v032_change_list](docs/carddata_movement_v032_change_list.md), [symmetry_gameplay_v031_execution_list](docs/symmetry_gameplay_v031_execution_list.md), [SPEARMAN_MIN_ACTION_PACKAGE_PLAN](SPEARMAN_MIN_ACTION_PACKAGE_PLAN.md), [ENEMY_MANIFEST_RUNTIME](docs/ENEMY_MANIFEST_RUNTIME.md) |
-| UI / Web / 工程 | [UI_PIPELINE](docs/UI_PIPELINE.md), [web_refactor_progress](docs/web_refactor_progress.md), [web_build_known_issues](docs/web_build_known_issues.md), [ui_architecture_refactor](docs/ui_architecture_refactor.md), [wuxia_battle_ui_godot_design](docs/wuxia_battle_ui_godot_design.md) |
+| UI / Web / 工程 | [UI_PIPELINE](docs/UI_PIPELINE.md), [CODE_ORGANIZATION](docs/CODE_ORGANIZATION.md), [web_refactor_progress](docs/web_refactor_progress.md), [web_build_known_issues](docs/web_build_known_issues.md), [ui_architecture_refactor](docs/ui_architecture_refactor.md), [wuxia_battle_ui_godot_design](docs/wuxia_battle_ui_godot_design.md) |
 | 历史归档 | 旧叙事脚本、进度与生成协议见 `archive/docs/narrative/` |
 
 ### 文件结构
@@ -43,6 +44,16 @@
 | `reports/` | 报告输出 | 校验、截图、分析报告 |
 | `archive/` | 归档 | 旧表、旧方案、迁移前备份 |
 | `build/` / `export/` / `.godot/` | 本地产物 | 构建输出和 Godot 缓存，不作为源 |
+
+### 代码组织原则
+
+- 单个 `.gd` 脚本建议控制在 **25KB 以下**；超过 **20KB** 开始评估拆分，超过 **25KB** 原则上不继续追加功能。
+- Controller 只做调度，不长期承载 UI 细节、状态推进、战斗桥接、数据生成和 debug 入口等多重职责。
+- 新功能优先进入小型专职文件：`runtime` / `view` / `generator` / `formatter` / `bridge` / `debug_entry`。
+- 大文件不做远端整文件替换；优先新增 helper、shim 或小 scene 引用，再逐个函数迁移。
+- 不要直接编辑 `data/*.json`；运行数据由 TSV 和编译脚本生成。
+
+详细规范见 [docs/CODE_ORGANIZATION.md](docs/CODE_ORGANIZATION.md)。
 
 ### 核心结构链路
 
