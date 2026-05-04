@@ -1,4 +1,4 @@
-extends "res://scripts/battle_controller_visual_story_return_reward_safe.gd"
+extends "res://scripts/battle_controller_visual_story_return_reward_untyped.gd"
 
 # Story battle result confirmation and return flow layer with local parser-time context alias.
 
