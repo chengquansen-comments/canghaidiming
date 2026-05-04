@@ -38,17 +38,32 @@ func _begin_round() -> void:
 			_log("[b]回合调息。[/b] 玩家 +%d 势，敌方 +%d 势。" % [player_gain, enemy_gain])
 	if player.control_state != Fighter.CONTROL_NONE or enemy.control_state != Fighter.CONTROL_NONE or player.combo_window_active or enemy.combo_window_active:
 		_log("[b]当前势态：[/b] %s" % state_machine.pressure_state_text(player, enemy))
-	declaration_order = state_machine.get_declaration_order(player, enemy)
+	declaration_order = _battle_declaration_side_order()
 	declaration_index = 0
 	awaiting_player_input = false
 	_update_phase_label()
 	_advance_declaration()
 	_refresh_ui()
 
+func _battle_declaration_side_order() -> PackedStringArray:
+	if state_machine.is_reactive_mode():
+		return PackedStringArray([IntentData.SIDE_ENEMY, IntentData.SIDE_PLAYER])
+	if player.is_broken() and not enemy.is_broken():
+		return PackedStringArray([IntentData.SIDE_PLAYER, IntentData.SIDE_ENEMY])
+	if enemy.is_broken() and not player.is_broken():
+		return PackedStringArray([IntentData.SIDE_ENEMY, IntentData.SIDE_PLAYER])
+	if player.realm < enemy.realm:
+		return PackedStringArray([IntentData.SIDE_PLAYER, IntentData.SIDE_ENEMY])
+	if player.realm > enemy.realm:
+		return PackedStringArray([IntentData.SIDE_ENEMY, IntentData.SIDE_PLAYER])
+	if state_machine.player_tie_advantage:
+		return PackedStringArray([IntentData.SIDE_ENEMY, IntentData.SIDE_PLAYER])
+	return PackedStringArray([IntentData.SIDE_PLAYER, IntentData.SIDE_ENEMY])
+
 func _declaration_side_for_token(value: String) -> String:
-	if value == IntentData.SIDE_PLAYER or (player != null and value == player.data.id):
+	if value == IntentData.SIDE_PLAYER or (player != null and value == player.data.id and (enemy == null or value != enemy.data.id)):
 		return IntentData.SIDE_PLAYER
-	if value == IntentData.SIDE_ENEMY or (enemy != null and value == enemy.data.id):
+	if value == IntentData.SIDE_ENEMY or (enemy != null and value == enemy.data.id and (player == null or value != player.data.id)):
 		return IntentData.SIDE_ENEMY
 	return IntentData.SIDE_NONE
 
