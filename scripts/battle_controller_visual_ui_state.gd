@@ -37,3 +37,6 @@ var _node_buttons_signature := ""
 var _overlay_action_buttons: Array = []
 var _player_foot_grid_highlight: PanelContainer
 var _enemy_foot_grid_highlight: PanelContainer
+var _player_momentum_dot_value := -1
+var _enemy_momentum_dot_value := -1
+var _momentum_dot_animation_serial := 0
