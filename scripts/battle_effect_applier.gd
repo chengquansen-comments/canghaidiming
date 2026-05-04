@@ -78,7 +78,10 @@ static func apply_pressure_profile(
 
 static func apply_edge_pressure(player: Fighter, enemy: Fighter, state_machine: BattleStateMachine, context: Dictionary) -> Dictionary:
 	var events: Array[Dictionary] = []
-	var last_edge_positions: Dictionary = context.get("last_edge_positions", {})
+	var last_edge_positions_value: Variant = context.get("last_edge_positions", {})
+	var last_edge_positions: Dictionary = {}
+	if last_edge_positions_value is Dictionary:
+		last_edge_positions = last_edge_positions_value as Dictionary
 	var player_event: Dictionary = _apply_edge_pressure_to_fighter(player, "我方", state_machine, last_edge_positions)
 	if bool(player_event.get("applied", false)):
 		events.append(player_event)
@@ -94,7 +97,7 @@ static func _apply_edge_pressure_to_fighter(fighter: Fighter, label: String, sta
 		return {"applied": false}
 	if fighter.position != 0 and fighter.position != BATTLE_SLOT_COUNT - 1:
 		return {"applied": false}
-	var key := "%s_%d_%d" % [fighter.data.id, state_machine.round_index, fighter.position]
+	var key: String = "%s_%d_%d" % [fighter.data.id, state_machine.round_index, fighter.position]
 	if last_edge_positions.has(key):
 		return {"applied": false}
 	last_edge_positions[key] = true
@@ -102,7 +105,7 @@ static func _apply_edge_pressure_to_fighter(fighter: Fighter, label: String, sta
 		return {"applied": false}
 	var before: int = fighter.momentum
 	fighter.momentum = maxi(fighter.momentum - 1, 0)
-	var broke := false
+	var broke: bool = false
 	if fighter.momentum == 0:
 		fighter.queue_broken_state()
 		broke = true
@@ -129,7 +132,7 @@ static func apply_break_resist(enemy: Fighter, context: Dictionary) -> Dictionar
 	context["break_resist_available"] = false
 	enemy.pending_control_state = Fighter.CONTROL_NONE
 	enemy.momentum = maxi(enemy.momentum, 1)
-	var event := {
+	var event: Dictionary = {
 		"applied": true,
 		"type": PRESSURE_BREAK_RESIST,
 		"fighter_id": enemy.data.id,
