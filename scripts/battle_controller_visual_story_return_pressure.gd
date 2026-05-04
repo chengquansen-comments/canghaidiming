@@ -13,7 +13,7 @@ var _returning_to_story_selection := false
 var _pressure_profile := PRESSURE_NONE
 var _break_resist_available := false
 var _last_edge_positions: Dictionary = {}
-var _battle_reward_choices: Array[CardData] = []
+var _battle_reward_choices: Array = []
 var _selected_battle_reward_card_id := ""
 var _battle_result_confirm_button: Button
 
