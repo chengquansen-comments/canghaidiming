@@ -10,6 +10,11 @@ extends "res://scripts/battle_controller_visual_preview_position_guard.gd"
 const StoryBattleLoader = preload("res://scripts/story_battle_loader.gd")
 const SettlementNarrativeBattleContext = preload("res://scripts/narrative_battle_context.gd")
 
+const STORY_ENCOUNTER_TAB_IMPLEMENTED := "implemented"
+const STORY_ENCOUNTER_TAB_UNIMPLEMENTED := "unimplemented"
+const STORY_ENCOUNTER_IMPLEMENTED_LABEL := "实装"
+const STORY_ENCOUNTER_UNIMPLEMENTED_LABEL := "未实装"
+
 @export var story_encounter_id: String = "prologue_beach_teach"
 @export_enum("symmetric", "reactive") var settlement_mode_id: String = "reactive"
 
@@ -17,6 +22,7 @@ var _story_encounter_selected := false
 var _story_encounters: Array[Dictionary] = []
 var _pending_story_battle: Dictionary = {}
 var _story_validation_report: Dictionary = {}
+var _story_encounter_tab_id := STORY_ENCOUNTER_TAB_IMPLEMENTED
 
 
 func _ready() -> void:
@@ -52,10 +58,14 @@ func _show_story_encounter_selection() -> void:
 		var validation_text: String = ""
 		if not _story_validation_report.is_empty():
 			validation_text = " 配置校验：%s。" % ("通过" if bool(_story_validation_report.get("ok", false)) else "存在错误，请看控制台")
-		overlay_body.text = "选择一场 story_battles.json 中的战斗配置。每场会自动加载敌我模板、数值、卡组、结算模式和压力规则；剧情入口也复用同一套配置。" + validation_text
+		var counts: Dictionary = _story_encounter_tab_counts()
+		overlay_body.text = "选择一场 story_battles.json 中的战斗配置。每场会自动加载敌我模板、数值、卡组、结算模式和压力规则；剧情入口也复用同一套配置。\n\n当前页签：%s（%d 场）。实装页用于正式剧情/可交付战斗；未实装页保留教学、压力、演示和兜底测试。%s" % [_story_encounter_tab_label(_story_encounter_tab_id), int(counts.get(_story_encounter_tab_id, 0)), validation_text]
 	_clear_overlay_actions()
 	_add_story_selection_back_button()
+	_add_story_encounter_tab_buttons()
 	for row: Dictionary in _story_encounters:
+		if _story_encounter_tab_for_row(row) != _story_encounter_tab_id:
+			continue
 		_add_story_encounter_button(row)
 	if has_method("_apply_button_styles"):
 		call("_apply_button_styles")
@@ -76,6 +86,98 @@ func _add_story_selection_back_button() -> void:
 	button.custom_minimum_size = Vector2(0, 42)
 	button.pressed.connect(_on_story_selection_back_pressed)
 	overlay_actions.add_child(button)
+
+
+func _add_story_encounter_tab_buttons() -> void:
+	if overlay_actions == null:
+		return
+	var counts: Dictionary = _story_encounter_tab_counts()
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 8)
+	overlay_actions.add_child(row)
+	_add_story_encounter_tab_button(row, STORY_ENCOUNTER_TAB_IMPLEMENTED, int(counts.get(STORY_ENCOUNTER_TAB_IMPLEMENTED, 0)))
+	_add_story_encounter_tab_button(row, STORY_ENCOUNTER_TAB_UNIMPLEMENTED, int(counts.get(STORY_ENCOUNTER_TAB_UNIMPLEMENTED, 0)))
+
+
+func _add_story_encounter_tab_button(parent: Control, tab_id: String, count: int) -> void:
+	var button: Button = Button.new()
+	var selected_prefix := "● " if _story_encounter_tab_id == tab_id else "○ "
+	button.text = "%s%s（%d）" % [selected_prefix, _story_encounter_tab_label(tab_id), count]
+	button.custom_minimum_size = Vector2(0, 40)
+	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	button.disabled = _story_encounter_tab_id == tab_id
+	button.pressed.connect(func() -> void:
+		_set_story_encounter_tab(tab_id)
+	)
+	parent.add_child(button)
+
+
+func _set_story_encounter_tab(tab_id: String) -> void:
+	_story_encounter_tab_id = tab_id
+	_show_story_encounter_selection()
+
+
+func _story_encounter_tab_counts() -> Dictionary:
+	var counts := {
+		STORY_ENCOUNTER_TAB_IMPLEMENTED: 0,
+		STORY_ENCOUNTER_TAB_UNIMPLEMENTED: 0,
+	}
+	for row: Dictionary in _story_encounters:
+		var tab_id: String = _story_encounter_tab_for_row(row)
+		counts[tab_id] = int(counts.get(tab_id, 0)) + 1
+	return counts
+
+
+func _story_encounter_tab_label(tab_id: String) -> String:
+	return STORY_ENCOUNTER_IMPLEMENTED_LABEL if tab_id == STORY_ENCOUNTER_TAB_IMPLEMENTED else STORY_ENCOUNTER_UNIMPLEMENTED_LABEL
+
+
+func _story_encounter_tab_for_row(row: Dictionary) -> String:
+	if _story_encounter_row_has_explicit_implemented_flag(row):
+		return STORY_ENCOUNTER_TAB_IMPLEMENTED if _story_encounter_row_is_explicitly_implemented(row) else STORY_ENCOUNTER_TAB_UNIMPLEMENTED
+	return STORY_ENCOUNTER_TAB_UNIMPLEMENTED if _story_encounter_row_looks_unimplemented(row) else STORY_ENCOUNTER_TAB_IMPLEMENTED
+
+
+func _story_encounter_row_has_explicit_implemented_flag(row: Dictionary) -> bool:
+	return row.has("implemented") or row.has("is_implemented") or row.has("implementation_status") or row.has("test_status")
+
+
+func _story_encounter_row_is_explicitly_implemented(row: Dictionary) -> bool:
+	if row.has("implemented"):
+		return _to_bool_like(row.get("implemented", false))
+	if row.has("is_implemented"):
+		return _to_bool_like(row.get("is_implemented", false))
+	var status := str(row.get("implementation_status", row.get("test_status", ""))).strip_edges().to_lower()
+	return status in ["implemented", "live", "formal", "production", "ready", "done", "实装", "正式", "已实装", "可用"]
+
+
+func _to_bool_like(value) -> bool:
+	if value is bool:
+		return bool(value)
+	var text := str(value).strip_edges().to_lower()
+	return text in ["1", "true", "yes", "y", "on", "implemented", "实装", "已实装"]
+
+
+func _story_encounter_row_looks_unimplemented(row: Dictionary) -> bool:
+	var encounter_id := str(row.get("encounter_id", "")).to_lower()
+	var display_name := str(row.get("display_name", ""))
+	var notes := str(row.get("notes", ""))
+	var combined := "%s %s %s" % [encounter_id, display_name, notes]
+	var lower_combined := combined.to_lower()
+	if encounter_id.begins_with("symmetric_"):
+		return true
+	if encounter_id.begins_with("fallback_"):
+		return true
+	if encounter_id.find("debug") >= 0 or encounter_id.find("test") >= 0:
+		return true
+	var unimplemented_markers := [
+		"测试", "教学", "演示", "兜底", "缺省", "默认", "对称式", "压力", "控距", "破势",
+		"test", "debug", "demo", "fallback", "teach", "teaching", "probe", "duel", "pressure"
+	]
+	for marker in unimplemented_markers:
+		if lower_combined.find(str(marker).to_lower()) >= 0:
+			return true
+	return false
 
 
 func _on_story_selection_back_pressed() -> void:
@@ -112,7 +214,7 @@ func _select_story_encounter_and_start(encounter_id: String) -> void:
 	var card_catalog: Dictionary = _build_story_card_catalog()
 	_pending_story_battle = StoryBattleLoader.build_story_battle(story_encounter_id, card_catalog)
 	if _pending_story_battle.is_empty():
-		push_warning("Story encounter failed to load: %s" % story_encounter_id)
+		push_warning("Story encounter failed to load: %s" % encounter_id)
 		_story_encounter_selected = false
 		_show_story_encounter_selection()
 		return
