@@ -57,9 +57,9 @@ func _setup_pressure_profile_for_current_encounter() -> void:
 	_last_edge_positions = {}
 	var encounter: Dictionary = {}
 	if not _pending_story_battle.is_empty():
-		encounter = _pending_story_battle.get("encounter", {})
+		encounter = _pending_story_battle.get("encounter", {}) as Dictionary
 	elif not battle_loadout.is_empty():
-		encounter = battle_loadout.get("encounter_config", {})
+		encounter = battle_loadout.get("encounter_config", {}) as Dictionary
 	if encounter.is_empty():
 		return
 	_pressure_profile = str(encounter.get("pressure_profile", PRESSURE_NONE))
@@ -76,17 +76,25 @@ func _apply_pressure_profile_runtime_rules() -> void:
 		return
 	if player == null or enemy == null or state_machine == null:
 		return
-	var context := {
+	var context: Dictionary = {
 		"break_resist_available": _break_resist_available,
 		"last_edge_positions": _last_edge_positions
 	}
 	var result: Dictionary = BattleEffectApplier.apply_pressure_profile(_pressure_profile, player, enemy, state_machine, context)
 	_break_resist_available = bool(context.get("break_resist_available", _break_resist_available))
-	_last_edge_positions = context.get("last_edge_positions", _last_edge_positions)
+	var edge_positions_value: Variant = context.get("last_edge_positions", _last_edge_positions)
+	if edge_positions_value is Dictionary:
+		_last_edge_positions = edge_positions_value as Dictionary
 	if not bool(result.get("applied", false)):
 		return
-	for event in result.get("events", []):
-		_log_pressure_event(event)
+	var events_value: Variant = result.get("events", [])
+	if not (events_value is Array):
+		return
+	var events: Array = events_value as Array
+	for i in range(events.size()):
+		var event_value: Variant = events[i]
+		if event_value is Dictionary:
+			_log_pressure_event(event_value as Dictionary)
 
 
 func _log_pressure_event(event: Dictionary) -> void:
@@ -118,20 +126,20 @@ func _show_battle_result_overlay(victory: bool) -> void:
 	_battle_reward_choices.clear()
 	_selected_battle_reward_card_id = ""
 	_battle_result_confirm_button = null
-	var title := "战斗胜利" if victory else "战斗失败"
+	var title: String = "战斗胜利" if victory else "战斗失败"
 	battle_result_title.text = title
 	_set_battle_result_body_text(_battle_result_body_text(victory, ""))
-	for child in battle_result_actions.get_children():
+	for child: Node in battle_result_actions.get_children():
 		child.queue_free()
 	if victory and _battle_result_should_offer_player_reward():
 		_battle_reward_choices = _sample_battle_reward_choices(3)
 		for card: CardData in _battle_reward_choices:
-			var card_button := Button.new()
+			var card_button: Button = Button.new()
 			card_button.text = card.short_summary()
 			card_button.custom_minimum_size = Vector2(360, 46)
 			card_button.pressed.connect(_select_battle_reward_card.bind(card.id))
 			battle_result_actions.add_child(card_button)
-	var button := Button.new()
+	var button: Button = Button.new()
 	button.text = "确认"
 	button.custom_minimum_size = Vector2(160, 42)
 	button.pressed.connect(Callable(self, "_on_battle_result_confirm_pressed") if victory else Callable(self, "_on_battle_retry_confirm_pressed"))
@@ -190,42 +198,49 @@ func _projected_player_growth_text() -> String:
 	if not NarrativeBattleContext.has_player_profile():
 		if player == null or player.data == null:
 			return "胜利结算：玩家数值将在返回剧情后更新。"
-		var fallback_level := int(player.realm)
-		var fallback_next_level := fallback_level + 1
-		var fallback_new_hp: int = NarrativeBattleContext.PLAYER_INITIAL_HP + max(0, fallback_next_level - NarrativeBattleContext.PLAYER_INITIAL_MARTIAL_LEVEL) * 2
-		var fallback_new_posture: int = clampi(NarrativeBattleContext.PLAYER_INITIAL_MAX_POSTURE + max(0, fallback_next_level - NarrativeBattleContext.PLAYER_INITIAL_MARTIAL_LEVEL), NarrativeBattleContext.PLAYER_INITIAL_MAX_POSTURE, NarrativeBattleContext.PLAYER_MAX_POSTURE)
-		var fallback_new_qinggong: int = clampi(NarrativeBattleContext.PLAYER_INITIAL_QINGGONG + int(max(0, fallback_next_level - NarrativeBattleContext.PLAYER_INITIAL_MARTIAL_LEVEL) / 3), NarrativeBattleContext.PLAYER_INITIAL_QINGGONG, NarrativeBattleContext.PLAYER_MAX_QINGGONG)
+		var fallback_level: int = int(player.realm)
+		var fallback_next_level: int = fallback_level + 1
+		var fallback_new_hp: int = NarrativeBattleContext.PLAYER_INITIAL_HP + maxi(0, fallback_next_level - NarrativeBattleContext.PLAYER_INITIAL_MARTIAL_LEVEL) * 2
+		var fallback_new_posture: int = clampi(NarrativeBattleContext.PLAYER_INITIAL_MAX_POSTURE + maxi(0, fallback_next_level - NarrativeBattleContext.PLAYER_INITIAL_MARTIAL_LEVEL), NarrativeBattleContext.PLAYER_INITIAL_MAX_POSTURE, NarrativeBattleContext.PLAYER_MAX_POSTURE)
+		var fallback_new_qinggong: int = clampi(NarrativeBattleContext.PLAYER_INITIAL_QINGGONG + int(maxi(0, fallback_next_level - NarrativeBattleContext.PLAYER_INITIAL_MARTIAL_LEVEL) / 3), NarrativeBattleContext.PLAYER_INITIAL_QINGGONG, NarrativeBattleContext.PLAYER_MAX_QINGGONG)
 		return "数值变化：武境 %d -> %d｜HP上限 %d -> %d｜势上限 %d -> %d｜轻功 %d -> %d｜胜场 +1" % [fallback_level, fallback_next_level, player.data.max_hp, fallback_new_hp, player.data.max_momentum, fallback_new_posture, player.qinggong, fallback_new_qinggong]
-	var profile := NarrativeBattleContext.get_player_profile()
-	var old_level := int(profile.get("martial_level", 1))
-	var new_level := old_level + 1
-	var old_hp := int(profile.get("max_hp", NarrativeBattleContext.PLAYER_INITIAL_HP))
-	var old_current_hp := int(profile.get("hp", old_hp))
-	var old_posture := int(profile.get("max_posture", NarrativeBattleContext.PLAYER_INITIAL_MAX_POSTURE))
-	var old_current_posture := int(profile.get("posture", old_posture))
-	var old_qinggong := int(profile.get("qinggong", NarrativeBattleContext.PLAYER_INITIAL_QINGGONG))
-	var old_wins := int(profile.get("battles_won", 0))
-	var new_hp: int = NarrativeBattleContext.PLAYER_INITIAL_HP + max(0, new_level - NarrativeBattleContext.PLAYER_INITIAL_MARTIAL_LEVEL) * 2
-	var new_posture: int = clampi(NarrativeBattleContext.PLAYER_INITIAL_MAX_POSTURE + max(0, new_level - NarrativeBattleContext.PLAYER_INITIAL_MARTIAL_LEVEL), NarrativeBattleContext.PLAYER_INITIAL_MAX_POSTURE, NarrativeBattleContext.PLAYER_MAX_POSTURE)
-	var new_qinggong: int = clampi(NarrativeBattleContext.PLAYER_INITIAL_QINGGONG + int(max(0, new_level - NarrativeBattleContext.PLAYER_INITIAL_MARTIAL_LEVEL) / 3), NarrativeBattleContext.PLAYER_INITIAL_QINGGONG, NarrativeBattleContext.PLAYER_MAX_QINGGONG)
+	var profile: Dictionary = NarrativeBattleContext.get_player_profile() as Dictionary
+	var old_level: int = int(profile.get("martial_level", 1))
+	var new_level: int = old_level + 1
+	var old_hp: int = int(profile.get("max_hp", NarrativeBattleContext.PLAYER_INITIAL_HP))
+	var old_current_hp: int = int(profile.get("hp", old_hp))
+	var old_posture: int = int(profile.get("max_posture", NarrativeBattleContext.PLAYER_INITIAL_MAX_POSTURE))
+	var old_current_posture: int = int(profile.get("posture", old_posture))
+	var old_qinggong: int = int(profile.get("qinggong", NarrativeBattleContext.PLAYER_INITIAL_QINGGONG))
+	var old_wins: int = int(profile.get("battles_won", 0))
+	var new_hp: int = NarrativeBattleContext.PLAYER_INITIAL_HP + maxi(0, new_level - NarrativeBattleContext.PLAYER_INITIAL_MARTIAL_LEVEL) * 2
+	var new_posture: int = clampi(NarrativeBattleContext.PLAYER_INITIAL_MAX_POSTURE + maxi(0, new_level - NarrativeBattleContext.PLAYER_INITIAL_MARTIAL_LEVEL), NarrativeBattleContext.PLAYER_INITIAL_MAX_POSTURE, NarrativeBattleContext.PLAYER_MAX_POSTURE)
+	var new_qinggong: int = clampi(NarrativeBattleContext.PLAYER_INITIAL_QINGGONG + int(maxi(0, new_level - NarrativeBattleContext.PLAYER_INITIAL_MARTIAL_LEVEL) / 3), NarrativeBattleContext.PLAYER_INITIAL_QINGGONG, NarrativeBattleContext.PLAYER_MAX_QINGGONG)
 	return "数值变化：武境 %d -> %d｜HP %d/%d -> %d/%d｜势 %d/%d -> %d/%d｜轻功 %d -> %d｜胜场 %d -> %d" % [old_level, new_level, old_current_hp, old_hp, new_hp, new_hp, old_current_posture, old_posture, new_posture, new_posture, old_qinggong, new_qinggong, old_wins, old_wins + 1]
 
 
 func _sample_battle_reward_choices(count: int) -> Array[CardData]:
 	var owned: Array[String] = []
 	if NarrativeBattleContext.has_player_profile():
-		owned = NarrativeBattleContext.get_player_card_state().get("owned_card_ids", [])
+		var card_state: Dictionary = NarrativeBattleContext.get_player_card_state() as Dictionary
+		var owned_values: Array = card_state.get("owned_card_ids", []) as Array
+		for i in range(owned_values.size()):
+			owned.append(str(owned_values[i]))
 	var pool: Array[CardData] = []
 	var fallback_pool: Array[CardData] = []
 	for template: CardData in reward_pool:
-		var card := template.duplicate_card()
+		var card: CardData = template.duplicate_card()
 		fallback_pool.append(card)
 		if not (card.id in owned):
 			pool.append(card)
 	if pool.is_empty():
 		pool = fallback_pool
 	pool.shuffle()
-	return pool.slice(0, mini(count, pool.size()))
+	var selected: Array[CardData] = []
+	var selected_count: int = mini(count, pool.size())
+	for i in range(selected_count):
+		selected.append(pool[i])
+	return selected
 
 
 func _select_battle_reward_card(card_id: String) -> void:
@@ -233,9 +248,9 @@ func _select_battle_reward_card(card_id: String) -> void:
 	_set_battle_result_body_text(_battle_result_body_text(true, card_id))
 	if _battle_result_confirm_button != null:
 		_battle_result_confirm_button.disabled = false
-	for child in battle_result_actions.get_children():
+	for child: Node in battle_result_actions.get_children():
 		if child is Button and child != _battle_result_confirm_button:
-			var button := child as Button
+			var button: Button = child as Button
 			button.disabled = false
 			button.text = _battle_reward_button_text(button.text, card_id)
 	if has_method("_apply_button_styles"):
@@ -250,7 +265,7 @@ func _set_battle_result_body_text(text: String) -> void:
 
 
 func _battle_reward_button_text(current_text: String, selected_card_id: String) -> String:
-	var clean := current_text.trim_prefix("✓ ")
+	var clean: String = current_text.trim_prefix("✓ ")
 	for card: CardData in _battle_reward_choices:
 		if clean == card.short_summary():
 			return "✓ %s" % clean if card.id == selected_card_id else clean
@@ -266,8 +281,8 @@ func _card_display_name(card_id: String) -> String:
 
 func _on_battle_result_confirm_pressed() -> void:
 	_hide_battle_result_overlay()
-	var result_text := "战斗胜利"
-	var result_key := "win"
+	var result_text: String = "战斗胜利"
+	var result_key: String = "win"
 	if player != null and enemy != null and player.hp <= 0 and enemy.hp <= 0:
 		result_text = "两败俱伤"
 		result_key = "draw"
@@ -312,8 +327,8 @@ func _on_battle_retry_confirm_pressed() -> void:
 
 
 func _return_to_story_encounter_selection_after_battle() -> void:
-	var result_text := "战斗结束"
-	var result_key := "draw"
+	var result_text: String = "战斗结束"
+	var result_key: String = "draw"
 	if player != null and enemy != null:
 		if enemy.hp <= 0 and player.hp > 0:
 			result_text = "战斗胜利"
