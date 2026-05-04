@@ -7,6 +7,7 @@ extends "res://scripts/battle_controller_visual_presentation_stepwise_draft.gd"
 # presentation death, and result enrichment from ordered preview steps.
 
 const PRESENTATION_EFFECT_MOVE_DELAY_AFTER_ACTION_START := 0.10
+const PRESENTATION_PLAYER_EFFECT_MOVE_DELAY_AFTER_ACTION_START := 0.0
 
 var _presentation_player_action_completed_this_exchange := false
 var _pending_presentation_effect_move: Dictionary = {}
@@ -68,6 +69,7 @@ func _run_presentation_exchange(player_card: CardData, enemy_card: CardData, ord
 
 func _play_presentation_action_with_effect_move(is_player_actor: bool, card: CardData, result: Dictionary, effect_step: Dictionary, actor_visual_slot: int, actor_committed_slot: int, target_visual_slot: int, target_committed_slot: int) -> Dictionary:
 	_begin_pending_presentation_effect_move(is_player_actor, effect_step, actor_visual_slot, actor_committed_slot, target_visual_slot, target_committed_slot)
+	_schedule_pending_presentation_effect_move_after_delay(_presentation_effect_move_delay_for_actor(is_player_actor))
 	await _play_one_presentation_action(is_player_actor, card, result)
 	if _pending_presentation_effect_move_started:
 		await _wait_pending_presentation_effect_move_completed()
@@ -80,6 +82,9 @@ func _play_presentation_action_with_effect_move(is_player_actor: bool, card: Car
 		"actor_slot": actor_after,
 		"target_slot": target_after,
 	}
+
+func _presentation_effect_move_delay_for_actor(is_player_actor: bool) -> float:
+	return PRESENTATION_PLAYER_EFFECT_MOVE_DELAY_AFTER_ACTION_START if is_player_actor else PRESENTATION_EFFECT_MOVE_DELAY_AFTER_ACTION_START
 
 func _begin_pending_presentation_effect_move(is_player_actor: bool, effect_step: Dictionary, actor_visual_slot: int, actor_committed_slot: int, target_visual_slot: int, target_committed_slot: int) -> void:
 	_pending_presentation_effect_move_started = false
@@ -108,14 +113,19 @@ func _pending_presentation_effect_move_matches(is_player_actor: bool) -> bool:
 	return bool(_pending_presentation_effect_move.get("is_player_actor", false)) == is_player_actor
 
 func _schedule_pending_presentation_effect_move() -> void:
+	_schedule_pending_presentation_effect_move_after_delay(0.0)
+
+func _schedule_pending_presentation_effect_move_after_delay(delay_seconds: float) -> void:
 	if _pending_presentation_effect_move.is_empty():
 		return
 	if _pending_presentation_effect_move_started or _pending_presentation_effect_move_running or _pending_presentation_effect_move_completed:
 		return
 	_pending_presentation_effect_move_running = true
-	call_deferred("_run_pending_presentation_effect_move_async")
+	call_deferred("_run_pending_presentation_effect_move_async", delay_seconds)
 
-func _run_pending_presentation_effect_move_async() -> void:
+func _run_pending_presentation_effect_move_async(delay_seconds: float = 0.0) -> void:
+	if delay_seconds > 0.0:
+		await get_tree().create_timer(delay_seconds).timeout
 	await _apply_pending_presentation_effect_move()
 	_pending_presentation_effect_move_running = false
 
@@ -219,12 +229,7 @@ func _play_attack_presentation(is_player_actor: bool, card: CardData, style: Str
 	_tween_actor_offset(is_player_actor, base_offset, base_offset + lunge_offset, 0.10, Tween.TRANS_QUAD, Tween.EASE_OUT)
 	await get_tree().create_timer(0.08).timeout
 	_play_presentation_attack_fx(is_player_actor, card, style, result)
-	var remaining_delay: float = max(0.0, PRESENTATION_EFFECT_MOVE_DELAY_AFTER_ACTION_START - 0.08)
-	if remaining_delay > 0.0:
-		await get_tree().create_timer(remaining_delay).timeout
-	if _pending_presentation_effect_move_matches(is_player_actor):
-		_schedule_pending_presentation_effect_move()
-	await get_tree().create_timer(0.02).timeout
+	await get_tree().create_timer(0.04).timeout
 	if should_hit:
 		_play_presentation_hit_reaction(not is_player_actor, card, dir, result)
 		if target_will_break:
