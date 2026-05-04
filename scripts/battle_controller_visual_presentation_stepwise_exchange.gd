@@ -29,6 +29,8 @@ func _run_presentation_exchange(player_card: CardData, enemy_card: CardData, ord
 	_apply_pre_resolution_slot_offsets(visual_player_slot, old_enemy_slot)
 	var visual_enemy_slot: int = old_enemy_slot
 	for side: String in order:
+		if _presentation_actor_is_defeated(side == "player"):
+			break
 		if side == "player" and player_card != null:
 			var player_move_step: Dictionary = _presentation_step_for_side(preview_sim, "player", "move")
 			visual_player_slot = await _apply_presentation_stance_step(true, visual_player_slot, player.position, player_card, player_move_step)
@@ -37,20 +39,43 @@ func _run_presentation_exchange(player_card: CardData, enemy_card: CardData, ord
 			var player_effect_step: Dictionary = _presentation_step_for_side(preview_sim, "player", "effect_move")
 			visual_player_slot = await _apply_presentation_effect_actor_step(true, visual_player_slot, player.position, player_effect_step)
 			visual_enemy_slot = await _apply_presentation_effect_target_step(false, visual_enemy_slot, enemy.position, player_effect_step)
+			if _presentation_actor_is_defeated(false):
+				await _finish_presentation_after_lethal_action(visual_player_slot, visual_enemy_slot)
+				return
 		elif side == "enemy" and enemy_card != null:
 			var enemy_move_step: Dictionary = _presentation_step_for_side(preview_sim, "enemy", "move")
 			visual_enemy_slot = await _apply_presentation_stance_step(false, visual_enemy_slot, enemy.position, enemy_card, enemy_move_step)
 			await _wait_for_enemy_attack_start_after_player()
+			if _presentation_actor_is_defeated(false):
+				await _finish_presentation_after_lethal_action(visual_player_slot, visual_enemy_slot)
+				return
 			await _play_one_presentation_action(false, enemy_card, _presentation_result_for_side(preview_sim, "enemy"))
 			var enemy_effect_step: Dictionary = _presentation_step_for_side(preview_sim, "enemy", "effect_move")
 			visual_enemy_slot = await _apply_presentation_effect_actor_step(false, visual_enemy_slot, enemy.position, enemy_effect_step)
 			visual_player_slot = await _apply_presentation_effect_target_step(true, visual_player_slot, player.position, enemy_effect_step)
+			if _presentation_actor_is_defeated(true):
+				await _finish_presentation_after_lethal_action(visual_player_slot, visual_enemy_slot)
+				return
 	await _settle_visual_slots_to_committed_positions(visual_player_slot, visual_enemy_slot)
+	await _play_pending_presentation_deaths()
+	_finish_presentation_exchange()
+
+func _finish_presentation_after_lethal_action(visual_player_slot: int, visual_enemy_slot: int) -> void:
+	_clear_actor_action_glows()
+	await _settle_visual_slots_to_committed_positions(visual_player_slot, visual_enemy_slot)
+	await _play_pending_presentation_deaths()
+	_finish_presentation_exchange("lethal-action")
+
+func _presentation_actor_is_defeated(is_player_actor: bool) -> bool:
+	if is_player_actor:
+		return player != null and player.hp <= 0
+	return enemy != null and enemy.hp <= 0
+
+func _play_pending_presentation_deaths() -> void:
 	if enemy != null and enemy.hp <= 0:
 		await _play_presentation_death(false)
 	if player != null and player.hp <= 0:
 		await _play_presentation_death(true)
-	_finish_presentation_exchange()
 
 func _apply_presentation_stance_step(is_player_actor: bool, visual_slot: int, committed_slot: int, card: CardData, move_step: Dictionary) -> int:
 	var target_slot: int = int(move_step.get("to", visual_slot)) if not move_step.is_empty() else visual_slot
