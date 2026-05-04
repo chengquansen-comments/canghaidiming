@@ -61,12 +61,9 @@ func _run_presentation_exchange(player_card: CardData, enemy_card: CardData, ord
 	_finish_presentation_exchange()
 
 func _play_presentation_action_with_effect_move(is_player_actor: bool, card: CardData, result: Dictionary, effect_step: Dictionary, actor_visual_slot: int, actor_committed_slot: int, target_visual_slot: int, target_committed_slot: int) -> Dictionary:
-	var action_state: Variant = _play_one_presentation_action(is_player_actor, card, result)
-	var actor_state: Variant = _apply_presentation_effect_actor_step(is_player_actor, actor_visual_slot, actor_committed_slot, effect_step)
-	var target_state: Variant = _apply_presentation_effect_target_step(not is_player_actor, target_visual_slot, target_committed_slot, effect_step)
-	var actor_after: int = int(await actor_state)
-	var target_after: int = int(await target_state)
-	await action_state
+	await _play_one_presentation_action(is_player_actor, card, result)
+	var actor_after: int = await _apply_presentation_effect_actor_step(is_player_actor, actor_visual_slot, actor_committed_slot, effect_step)
+	var target_after: int = await _apply_presentation_effect_target_step(not is_player_actor, target_visual_slot, target_committed_slot, effect_step)
 	return {
 		"actor_slot": actor_after,
 		"target_slot": target_after,
