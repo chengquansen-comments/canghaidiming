@@ -42,13 +42,20 @@ func _legal_positions_for(fighter: Fighter) -> Array[int]:
 	return result
 
 func _is_player_legal_position(slot: int) -> bool:
-	return _legal_positions_for(player).has(slot)
+	if not _legal_positions_for(player).has(slot):
+		return false
+	if enemy != null and slot == enemy.position:
+		return false
+	return true
 
 func _on_stage_grid_slot_pressed(slot: int) -> void:
 	if not awaiting_player_input or player == null:
 		return
 	if not _is_player_legal_position(slot):
-		_log("轻功不足，不能移动到该格。")
+		if enemy != null and slot == enemy.position:
+			_log("该格已被敌方占住，不能直接叠位。")
+		else:
+			_log("轻功不足，不能移动到该格。")
 		return
 	var current_target := _player_target_position()
 	if draft_player_has_position and slot == current_target and slot == player.position:
