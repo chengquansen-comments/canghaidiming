@@ -148,7 +148,7 @@ static func outgoing_preview_text(graph: Dictionary, node: Dictionary) -> String
 		if not by_id.has(next_id):
 			parts.append("%s（缺失）" % next_id)
 			continue
-		var next_node: Dictionary = by_id[next_id]
+		var next_node: Dictionary = by_id[next_id] as Dictionary
 		parts.append("%s｜%s" % [
 			str(next_node.get("title", next_id)),
 			node_type_label(str(next_node.get("node_type", ""))),

@@ -35,11 +35,9 @@ static func combat_request_for_node(node: Dictionary) -> Dictionary:
 			"enabled": false,
 			"blocked_reason": "该节点不是战斗节点。",
 		}
-
 	var encounter_id := str(node.get("encounter_id", ""))
 	var battle_id := str(node.get("battle_id", ""))
 	var combat_pool_id := str(node.get("combat_pool_id", ""))
-
 	if (encounter_id.is_empty() or battle_id.is_empty()) and not combat_pool_id.is_empty():
 		var fallback: Dictionary = COMBAT_POOL_FALLBACK.get(combat_pool_id, {}) as Dictionary
 		if not fallback.is_empty():
@@ -47,22 +45,26 @@ static func combat_request_for_node(node: Dictionary) -> Dictionary:
 				encounter_id = str(fallback.get("encounter_id", ""))
 			if battle_id.is_empty():
 				battle_id = str(fallback.get("battle_id", ""))
-
 	if encounter_id.is_empty() or battle_id.is_empty():
 		return {
 			"enabled": false,
+			"blocked_reason": combat_block_reason(node),
 			"combat_pool_id": combat_pool_id,
 			"encounter_id": encounter_id,
 			"battle_id": battle_id,
-			"blocked_reason": combat_block_reason(node),
+			"recommended_martial_min": int(node.get("recommended_martial_min", 0)),
+			"recommended_martial_max": int(node.get("recommended_martial_max", 0)),
+			"enemy_martial_level": int(node.get("enemy_martial_level", 0)),
 		}
-
 	return {
 		"enabled": true,
-		"combat_pool_id": combat_pool_id,
 		"encounter_id": encounter_id,
 		"battle_id": battle_id,
 		"override_player_profile": true,
+		"combat_pool_id": combat_pool_id,
+		"recommended_martial_min": int(node.get("recommended_martial_min", 0)),
+		"recommended_martial_max": int(node.get("recommended_martial_max", 0)),
+		"enemy_martial_level": int(node.get("enemy_martial_level", 0)),
 	}
 
 static func combat_block_reason(node: Dictionary) -> String:

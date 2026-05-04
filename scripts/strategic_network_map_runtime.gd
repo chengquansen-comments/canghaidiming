@@ -2,7 +2,6 @@ extends RefCounted
 
 # Pure runtime helpers for strategic network-map state.
 # This file intentionally has no UI, scene switching, battle request, or narrative side effects.
-# Controller code can migrate to these helpers gradually.
 
 static func find_node(graph: Dictionary, map_graph_id: String) -> Dictionary:
 	var nodes: Array = graph.get("nodes", [])
@@ -39,7 +38,7 @@ static func valid_available_ids(graph: Dictionary, candidate_ids: Array) -> Arra
 		if not by_id.has(node_id):
 			push_warning("network_map outgoing points to missing node: %s" % node_id)
 			continue
-		var node: Dictionary = by_id[node_id]
+		var node: Dictionary = by_id[node_id] as Dictionary
 		var state := str(node.get("state", "locked"))
 		if state == "completed" or state == "unreachable":
 			continue
@@ -113,8 +112,6 @@ static func clear_pending(graph: Dictionary) -> void:
 	graph["pending_effects"] = {}
 
 static func sync_mirror_fields(strategic_state: Dictionary, graph: Dictionary) -> void:
-	# Temporary bridge for existing controller code that still reads top-level fields.
-	# Long-term, these top-level mirrors should be removed and all runtime fields read from network_map.
 	strategic_state["network_map"] = graph
 	strategic_state["selected_node_id"] = str(graph.get("selected_node_id", ""))
 	strategic_state["available_node_ids"] = (graph.get("available_node_ids", []) as Array).duplicate(true)
