@@ -1,7 +1,7 @@
 extends RefCounted
 class_name CombatResolver
 
-const ENABLE_GRAZE := false
+static var ENABLE_GRAZE := false
 const RANGE_HIT := "hit"
 const RANGE_GRAZE := "graze"
 const RANGE_MISS_RANGE := "miss_range"
