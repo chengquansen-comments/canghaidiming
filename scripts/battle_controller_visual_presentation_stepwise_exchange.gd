@@ -11,6 +11,7 @@ const PRESENTATION_EFFECT_MOVE_DELAY_AFTER_ACTION_START := 0.10
 var _presentation_player_action_completed_this_exchange := false
 var _pending_presentation_effect_move: Dictionary = {}
 var _pending_presentation_effect_move_started := false
+var _pending_presentation_effect_move_running := false
 var _pending_presentation_effect_move_completed := false
 
 func _mark_player_presentation_action_completed() -> void:
@@ -68,7 +69,9 @@ func _run_presentation_exchange(player_card: CardData, enemy_card: CardData, ord
 func _play_presentation_action_with_effect_move(is_player_actor: bool, card: CardData, result: Dictionary, effect_step: Dictionary, actor_visual_slot: int, actor_committed_slot: int, target_visual_slot: int, target_committed_slot: int) -> Dictionary:
 	_begin_pending_presentation_effect_move(is_player_actor, effect_step, actor_visual_slot, actor_committed_slot, target_visual_slot, target_committed_slot)
 	await _play_one_presentation_action(is_player_actor, card, result)
-	if not _pending_presentation_effect_move_completed:
+	if _pending_presentation_effect_move_started:
+		await _wait_pending_presentation_effect_move_completed()
+	elif not _pending_presentation_effect_move_completed:
 		await _apply_pending_presentation_effect_move()
 	var actor_after: int = int(_pending_presentation_effect_move.get("actor_after", actor_visual_slot))
 	var target_after: int = int(_pending_presentation_effect_move.get("target_after", target_visual_slot))
@@ -80,6 +83,7 @@ func _play_presentation_action_with_effect_move(is_player_actor: bool, card: Car
 
 func _begin_pending_presentation_effect_move(is_player_actor: bool, effect_step: Dictionary, actor_visual_slot: int, actor_committed_slot: int, target_visual_slot: int, target_committed_slot: int) -> void:
 	_pending_presentation_effect_move_started = false
+	_pending_presentation_effect_move_running = false
 	_pending_presentation_effect_move_completed = false
 	_pending_presentation_effect_move = {
 		"is_player_actor": is_player_actor,
@@ -95,12 +99,29 @@ func _begin_pending_presentation_effect_move(is_player_actor: bool, effect_step:
 func _clear_pending_presentation_effect_move() -> void:
 	_pending_presentation_effect_move.clear()
 	_pending_presentation_effect_move_started = false
+	_pending_presentation_effect_move_running = false
 	_pending_presentation_effect_move_completed = false
 
 func _pending_presentation_effect_move_matches(is_player_actor: bool) -> bool:
 	if _pending_presentation_effect_move.is_empty():
 		return false
 	return bool(_pending_presentation_effect_move.get("is_player_actor", false)) == is_player_actor
+
+func _schedule_pending_presentation_effect_move() -> void:
+	if _pending_presentation_effect_move.is_empty():
+		return
+	if _pending_presentation_effect_move_started or _pending_presentation_effect_move_running or _pending_presentation_effect_move_completed:
+		return
+	_pending_presentation_effect_move_running = true
+	call_deferred("_run_pending_presentation_effect_move_async")
+
+func _run_pending_presentation_effect_move_async() -> void:
+	await _apply_pending_presentation_effect_move()
+	_pending_presentation_effect_move_running = false
+
+func _wait_pending_presentation_effect_move_completed() -> void:
+	while not _pending_presentation_effect_move_completed and not _pending_presentation_effect_move.is_empty():
+		await get_tree().process_frame
 
 func _apply_pending_presentation_effect_move() -> void:
 	if _pending_presentation_effect_move.is_empty():
@@ -201,8 +222,8 @@ func _play_attack_presentation(is_player_actor: bool, card: CardData, style: Str
 	var remaining_delay: float = max(0.0, PRESENTATION_EFFECT_MOVE_DELAY_AFTER_ACTION_START - 0.08)
 	if remaining_delay > 0.0:
 		await get_tree().create_timer(remaining_delay).timeout
-	if _pending_presentation_effect_move_matches(is_player_actor) and not _pending_presentation_effect_move_started:
-		await _apply_pending_presentation_effect_move()
+	if _pending_presentation_effect_move_matches(is_player_actor):
+		_schedule_pending_presentation_effect_move()
 	await get_tree().create_timer(0.02).timeout
 	if should_hit:
 		_play_presentation_hit_reaction(not is_player_actor, card, dir, result)
