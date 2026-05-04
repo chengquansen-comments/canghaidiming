@@ -11,35 +11,6 @@ extends "res://scripts/battle_controller_visual_reactive_round_flow.gd"
 const ReactivePreviewFormatter = preload("res://scripts/battle_controller_visual_reactive_preview_formatter.gd")
 
 
-func _start_battle() -> void:
-	super._start_battle()
-	_force_battle_started_visual_state()
-
-
-func _force_battle_started_visual_state() -> void:
-	if battle_active:
-		if overlay_scrim != null:
-			overlay_scrim.visible = false
-		if overlay_panel != null:
-			overlay_panel.visible = false
-	if has_method("_refresh_character_visuals"):
-		call("_refresh_character_visuals")
-	_sync_actor_fallback_visibility()
-	if has_method("_refresh_stage_actor_positions"):
-		call("_refresh_stage_actor_positions", true)
-
-
-func _sync_actor_fallback_visibility() -> void:
-	if player_fallback_actor != null and player_sprite != null:
-		player_fallback_actor.visible = player_sprite.texture == null
-	if enemy_fallback_actor != null and enemy_sprite != null:
-		enemy_fallback_actor.visible = enemy_sprite.texture == null
-	if player_avatar_fallback != null and player_avatar != null:
-		player_avatar_fallback.visible = player_avatar.texture == null
-	if enemy_avatar_fallback != null and enemy_avatar != null:
-		enemy_avatar_fallback.visible = enemy_avatar.texture == null
-
-
 func _mode_status_suffix() -> String:
 	if state_machine == null:
 		return ""
@@ -91,7 +62,6 @@ func _refresh_ui() -> void:
 		status_label.append_text(_mode_status_suffix())
 	if preview_label != null:
 		preview_label.append_text(_reactive_threat_preview_text())
-	_sync_actor_fallback_visibility()
 	_refresh_reactive_action_glows()
 
 
