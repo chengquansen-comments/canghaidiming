@@ -73,35 +73,54 @@ func _tag_intent_side(intent: IntentData, side: String) -> IntentData:
 	return intent
 
 func _advance_declaration() -> void:
+	if state_machine.is_reactive_mode():
+		_advance_reactive_declaration()
+		return
+	_advance_symmetric_declaration()
+
+func _advance_reactive_declaration() -> void:
+	if enemy_intent == null:
+		_declare_enemy_intent()
+		if player.is_broken():
+			_declare_player_stagger()
+			awaiting_player_input = false
+			declaration_index = declaration_order.size()
+			if has_method("_resolve_round"):
+				call("_resolve_round")
+			return
+		_enter_player_declaration()
+		return
+	if player_intent == null:
+		if player.is_broken():
+			_declare_player_stagger()
+			awaiting_player_input = false
+			declaration_index = declaration_order.size()
+			if has_method("_resolve_round"):
+				call("_resolve_round")
+			return
+		_enter_player_declaration()
+		return
+	awaiting_player_input = false
+	declaration_index = declaration_order.size()
+	if has_method("_resolve_round"):
+		call("_resolve_round")
+
+func _advance_symmetric_declaration() -> void:
 	while declaration_index < declaration_order.size():
 		var actor_side := _declaration_side_for_token(declaration_order[declaration_index])
 		if actor_side == IntentData.SIDE_PLAYER:
 			if player.is_broken():
-				player_intent = _tag_intent_side(IntentData.from_card(player, _stagger_card(), IntentData.SIDE_PLAYER), IntentData.SIDE_PLAYER)
-				_show_combat_banner("玩家崩势", Color("4a1f24"), Color("ff6b6b"))
-				_impact_feedback(Color("ff6b6b"), 7.0)
-				_flash_label(player_label, Color("ff9f9f"))
-				_log("玩家崩势未稳，本回合无法行动。")
+				_declare_player_stagger()
 				declaration_index += 1
 				continue
-			awaiting_player_input = true
-			_refresh_hand_buttons()
-			_refresh_ui()
+			_enter_player_declaration()
 			return
 		if actor_side == IntentData.SIDE_ENEMY:
 			if enemy.is_broken():
-				enemy_intent = _tag_intent_side(IntentData.from_card(enemy, _stagger_card(), IntentData.SIDE_ENEMY), IntentData.SIDE_ENEMY)
-				_show_combat_banner("敌方崩势", Color("4a1f24"), Color("ff6b6b"))
-				_impact_feedback(Color("ff6b6b"), 7.0)
-				_flash_label(enemy_label, Color("ff9f9f"))
-				_log("敌方崩势未稳，本回合无法行动。")
+				_declare_enemy_stagger()
 				declaration_index += 1
 				continue
-			var seen_intent: IntentData = player_intent if player_intent != null else null
-			enemy_intent = _tag_intent_side(enemy_ai.choose_intent(enemy, player, state_machine.current_distance, seen_intent), IntentData.SIDE_ENEMY)
-			if enemy_intent.actual_card.id != "idle" and enemy_intent.actual_card.id != "staggered":
-				enemy.spend_momentum(enemy_intent.actual_card.momentum_cost)
-			_log("敌方定招：%s。" % state_machine.get_visible_intent_text(enemy_intent, player))
+			_declare_enemy_intent()
 			declaration_index += 1
 			continue
 		_log("[b]声明跳过：[/b] 无法识别行动方。")
@@ -109,6 +128,36 @@ func _advance_declaration() -> void:
 	awaiting_player_input = false
 	if has_method("_resolve_round"):
 		call("_resolve_round")
+
+func _declare_player_stagger() -> void:
+	player_intent = _tag_intent_side(IntentData.from_card(player, _stagger_card(), IntentData.SIDE_PLAYER), IntentData.SIDE_PLAYER)
+	_show_combat_banner("玩家崩势", Color("4a1f24"), Color("ff6b6b"))
+	_impact_feedback(Color("ff6b6b"), 7.0)
+	_flash_label(player_label, Color("ff9f9f"))
+	_log("玩家崩势未稳，本回合无法行动。")
+
+func _declare_enemy_stagger() -> void:
+	enemy_intent = _tag_intent_side(IntentData.from_card(enemy, _stagger_card(), IntentData.SIDE_ENEMY), IntentData.SIDE_ENEMY)
+	_show_combat_banner("敌方崩势", Color("4a1f24"), Color("ff6b6b"))
+	_impact_feedback(Color("ff6b6b"), 7.0)
+	_flash_label(enemy_label, Color("ff9f9f"))
+	_log("敌方崩势未稳，本回合无法行动。")
+
+func _declare_enemy_intent() -> void:
+	var seen_intent: IntentData = player_intent if player_intent != null else null
+	enemy_intent = _tag_intent_side(enemy_ai.choose_intent(enemy, player, state_machine.current_distance, seen_intent), IntentData.SIDE_ENEMY)
+	if enemy_intent.actual_card.id != "idle" and enemy_intent.actual_card.id != "staggered":
+		enemy.spend_momentum(enemy_intent.actual_card.momentum_cost)
+	_log("敌方定招：%s。" % state_machine.get_visible_intent_text(enemy_intent, player))
+	declaration_index = maxi(declaration_index, 1)
+
+func _enter_player_declaration() -> void:
+	awaiting_player_input = true
+	declaration_index = maxi(declaration_index, 1)
+	if has_method("_invalidate_stage_preview"):
+		call("_invalidate_stage_preview")
+	_refresh_hand_buttons()
+	_refresh_ui()
 
 func _reset_draft_intent() -> void:
 	draft_player_intent = null
