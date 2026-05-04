@@ -35,6 +35,26 @@ func _build_intent_feedback(actor: Fighter, target: Fighter, intent: IntentData,
 func _on_intent_resolved(_actor: Fighter, _target: Fighter, _intent: IntentData, _feedback: Dictionary) -> void:
 	pass
 
+func _actor_for_intent(intent: IntentData) -> Fighter:
+	if intent == null:
+		return null
+	if intent.source_fighter == player:
+		return player
+	if intent.source_fighter == enemy:
+		return enemy
+	if player != null and intent.actor_id == player.data.id:
+		return player
+	if enemy != null and intent.actor_id == enemy.data.id:
+		return enemy
+	return null
+
+func _target_for_actor(actor: Fighter) -> Fighter:
+	if actor == player:
+		return enemy
+	if actor == enemy:
+		return player
+	return null
+
 func _resolve_round() -> void:
 	state_machine.phase = BattleStateMachine.BattlePhase.RESOLUTION
 	if not state_machine.is_reactive_mode():
@@ -43,8 +63,11 @@ func _resolve_round() -> void:
 	_log_declared_stances()
 	_log("[b]结算顺序：[/b] %s -> %s" % [order[0].get_actual_name(), order[1].get_actual_name()])
 	for intent in order:
-		var actor := player if intent.actor_id == player.data.id else enemy
-		var target := enemy if intent.actor_id == player.data.id else player
+		var actor := _actor_for_intent(intent)
+		var target := _target_for_actor(actor)
+		if actor == null or target == null:
+			_log("[b]结算跳过：[/b] 无法识别行动方。")
+			continue
 		if actor.hp <= 0:
 			break
 		var resolution_distance := state_machine.update_distance_from_positions(player, enemy)
@@ -57,7 +80,7 @@ func _resolve_round() -> void:
 		if not target_was_pending_broken and target.pending_control_state == Fighter.CONTROL_BROKEN:
 			_show_combat_banner("崩势", Color("4a1f24"), Color("ff6b6b"))
 			_impact_feedback(Color("ff6b6b"), 8.0)
-			_flash_label(enemy_label if target.data.id == enemy.data.id else player_label, Color("ff8a8a"))
+			_flash_label(enemy_label if target == enemy else player_label, Color("ff8a8a"))
 		for line in lines:
 			_log(line)
 		if not actor_action_canceled:
