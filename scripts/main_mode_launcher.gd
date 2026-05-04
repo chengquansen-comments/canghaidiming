@@ -3,6 +3,8 @@ extends Control
 const BattleFontHelper = preload("res://scripts/visual/battle_font_view.gd")
 const NarrativeBattleContext = preload("res://scripts/narrative_battle_context.gd")
 
+var _content_box: VBoxContainer
+
 func _ready() -> void:
 	_build_ui()
 	_force_cjk_font()
@@ -23,9 +25,9 @@ func _build_ui() -> void:
 	panel.anchor_right = 0.5
 	panel.anchor_bottom = 0.5
 	panel.offset_left = -300
-	panel.offset_top = -220
+	panel.offset_top = -240
 	panel.offset_right = 300
-	panel.offset_bottom = 220
+	panel.offset_bottom = 240
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color("1a2230")
 	style.border_color = Color("bfa06a")
@@ -38,16 +40,23 @@ func _build_ui() -> void:
 	panel.add_theme_stylebox_override("panel", style)
 	add_child(panel)
 
-	var box := VBoxContainer.new()
-	box.alignment = BoxContainer.ALIGNMENT_CENTER
-	box.add_theme_constant_override("separation", 16)
-	panel.add_child(box)
+	_content_box = VBoxContainer.new()
+	_content_box.alignment = BoxContainer.ALIGNMENT_CENTER
+	_content_box.add_theme_constant_override("separation", 16)
+	panel.add_child(_content_box)
+	_show_main_menu()
 
+func _clear_content_box() -> void:
+	for child in _content_box.get_children():
+		child.queue_free()
+
+func _show_main_menu() -> void:
+	_clear_content_box()
 	var title := Label.new()
 	title.text = "沧海嘀鸣 · 开发入口"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 28)
-	box.add_child(title)
+	_content_box.add_child(title)
 
 	var subtitle := Label.new()
 	subtitle.text = "剧情 MVP、字符版战斗、战斗测试已分开。剧情入口用于验证压缩叙事，战斗测试用于调试剧情遭遇、数值和表现。"
@@ -55,7 +64,7 @@ func _build_ui() -> void:
 	subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	subtitle.custom_minimum_size = Vector2(500, 0)
 	subtitle.modulate = Color("c9d2df")
-	box.add_child(subtitle)
+	_content_box.add_child(subtitle)
 
 	var narrative_button := Button.new()
 	narrative_button.text = "进入剧情 MVP"
@@ -63,7 +72,7 @@ func _build_ui() -> void:
 	narrative_button.pressed.connect(func() -> void:
 		get_tree().change_scene_to_file("res://scenes/NarrativeDemo.tscn")
 	)
-	box.add_child(narrative_button)
+	_content_box.add_child(narrative_button)
 
 	var world_map_debug_button := Button.new()
 	world_map_debug_button.text = "海疆大势图 Debug"
@@ -72,7 +81,7 @@ func _build_ui() -> void:
 		NarrativeBattleContext.set_debug_entry_world_map()
 		get_tree().change_scene_to_file("res://scenes/NarrativeDemo.tscn")
 	)
-	box.add_child(world_map_debug_button)
+	_content_box.add_child(world_map_debug_button)
 
 	var text_button := Button.new()
 	text_button.text = "进入字符版战斗"
@@ -80,7 +89,7 @@ func _build_ui() -> void:
 	text_button.pressed.connect(func() -> void:
 		get_tree().change_scene_to_file("res://scenes/MainText.tscn")
 	)
-	box.add_child(text_button)
+	_content_box.add_child(text_button)
 
 	var visual_button := Button.new()
 	visual_button.text = "战斗测试"
@@ -89,4 +98,43 @@ func _build_ui() -> void:
 		NarrativeBattleContext.clear()
 		get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
 	)
-	box.add_child(visual_button)
+	_content_box.add_child(visual_button)
+
+	var settings_button := Button.new()
+	settings_button.text = "设置"
+	settings_button.custom_minimum_size = Vector2(300, 54)
+	settings_button.pressed.connect(_show_settings_page)
+	_content_box.add_child(settings_button)
+
+func _show_settings_page() -> void:
+	_clear_content_box()
+	var title := Label.new()
+	title.text = "设置"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 28)
+	_content_box.add_child(title)
+
+	var graze_state := "开" if CombatResolver.ENABLE_GRAZE else "关"
+	var body := Label.new()
+	body.text = "擦中规则：%s\n\n开启后，距离只差 1 格的攻击会判定为擦中，并按当前收束规则造成半伤、削势 -1。关闭后，擦中视为距离未命中。" % graze_state
+	body.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	body.custom_minimum_size = Vector2(500, 0)
+	body.modulate = Color("c9d2df")
+	_content_box.add_child(body)
+
+	var graze_button := Button.new()
+	graze_button.text = "擦中规则：%s" % graze_state
+	graze_button.custom_minimum_size = Vector2(300, 54)
+	graze_button.pressed.connect(_toggle_graze_setting)
+	_content_box.add_child(graze_button)
+
+	var back_button := Button.new()
+	back_button.text = "返回"
+	back_button.custom_minimum_size = Vector2(300, 54)
+	back_button.pressed.connect(_show_main_menu)
+	_content_box.add_child(back_button)
+
+func _toggle_graze_setting() -> void:
+	CombatResolver.ENABLE_GRAZE = not CombatResolver.ENABLE_GRAZE
+	_show_settings_page()
