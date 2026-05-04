@@ -15,7 +15,13 @@ func _pulse_actor_sheet_frame(actor: Fighter, frame_index: int, duration: float 
 	)
 
 func _animate_attacker_sprite(actor: Fighter, profession_id: String, is_finisher: bool = false) -> void:
-	var sprite := player_fallback_actor if actor != null and player != null and actor.data.id == player.data.id and player_fallback_actor != null and player_fallback_actor.visible else enemy_fallback_actor if actor != null and enemy != null and actor.data.id == enemy.data.id and enemy_fallback_actor != null and enemy_fallback_actor.visible else player_sprite if actor != null and player != null and actor.data.id == player.data.id else enemy_sprite
+	var sprite: Control = null
+	if actor == player:
+		sprite = player_fallback_actor if player_fallback_actor != null and player_fallback_actor.visible else player_sprite
+	elif actor == enemy:
+		sprite = enemy_fallback_actor if enemy_fallback_actor != null and enemy_fallback_actor.visible else enemy_sprite
+	else:
+		return
 	if sprite == null:
 		return
 	_pulse_actor_sheet_frame(actor, 1, 0.16 if is_finisher else 0.12)
