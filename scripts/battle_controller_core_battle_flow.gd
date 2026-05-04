@@ -45,12 +45,20 @@ func _begin_round() -> void:
 	_advance_declaration()
 	_refresh_ui()
 
+func _is_player_declaration_token(value: String) -> bool:
+	return value == IntentData.SIDE_PLAYER or (player != null and value == player.data.id)
+
+func _tag_intent_side(intent: IntentData, side: String) -> IntentData:
+	if intent != null:
+		intent.set_actor_side(side)
+	return intent
+
 func _advance_declaration() -> void:
 	while declaration_index < declaration_order.size():
-		var actor_id: String = declaration_order[declaration_index]
-		if actor_id == player.data.id:
+		var actor_token: String = declaration_order[declaration_index]
+		if _is_player_declaration_token(actor_token):
 			if player.is_broken():
-				player_intent = IntentData.from_card(player, _stagger_card())
+				player_intent = _tag_intent_side(IntentData.from_card(player, _stagger_card(), IntentData.SIDE_PLAYER), IntentData.SIDE_PLAYER)
 				_show_combat_banner("玩家崩势", Color("4a1f24"), Color("ff6b6b"))
 				_impact_feedback(Color("ff6b6b"), 7.0)
 				_flash_label(player_label, Color("ff9f9f"))
@@ -62,7 +70,7 @@ func _advance_declaration() -> void:
 			_refresh_ui()
 			return
 		if enemy.is_broken():
-			enemy_intent = IntentData.from_card(enemy, _stagger_card())
+			enemy_intent = _tag_intent_side(IntentData.from_card(enemy, _stagger_card(), IntentData.SIDE_ENEMY), IntentData.SIDE_ENEMY)
 			_show_combat_banner("敌方崩势", Color("4a1f24"), Color("ff6b6b"))
 			_impact_feedback(Color("ff6b6b"), 7.0)
 			_flash_label(enemy_label, Color("ff9f9f"))
@@ -70,7 +78,7 @@ func _advance_declaration() -> void:
 			declaration_index += 1
 			continue
 		var seen_intent: IntentData = player_intent if player_intent != null else null
-		enemy_intent = enemy_ai.choose_intent(enemy, player, state_machine.current_distance, seen_intent)
+		enemy_intent = _tag_intent_side(enemy_ai.choose_intent(enemy, player, state_machine.current_distance, seen_intent), IntentData.SIDE_ENEMY)
 		if enemy_intent.actual_card.id != "idle" and enemy_intent.actual_card.id != "staggered":
 			enemy.spend_momentum(enemy_intent.actual_card.momentum_cost)
 		_log("敌方定招：%s。" % state_machine.get_visible_intent_text(enemy_intent, player))
@@ -97,7 +105,7 @@ func _on_player_card_pressed(card: CardData) -> void:
 	if card.momentum_cost > player.momentum:
 		_log("势不足，无法选用 %s。" % card.display_name)
 		return
-	draft_player_intent = IntentData.from_card(player, card)
+	draft_player_intent = IntentData.from_card(player, card, IntentData.SIDE_PLAYER)
 	_apply_player_stance_draft_to_intent()
 	var combo_marker := _combo_marker_text(player, card)
 	if combo_marker != "":
@@ -114,7 +122,7 @@ func _confirm_player_intent() -> void:
 		_log("你的势不足，无法确认这招。")
 		_refresh_ui()
 		return
-	player_intent = draft_player_intent
+	player_intent = _tag_intent_side(draft_player_intent, IntentData.SIDE_PLAYER)
 	draft_player_intent = null
 	_finish_player_declaration()
 
