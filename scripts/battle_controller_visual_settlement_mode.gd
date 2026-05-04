@@ -36,6 +36,23 @@ func _reactive_threat_preview_text() -> String:
 	)
 
 
+func _reactive_resolution_preview() -> Dictionary:
+	return ReactivePreviewFormatter.resolution_preview(
+		player,
+		enemy,
+		enemy_intent,
+		draft_player_intent,
+		draft_player_has_position,
+		draft_player_position,
+		draft_player_facing,
+		BATTLE_SLOT_COUNT
+	)
+
+
+func _range_text_safe(range_result: String) -> String:
+	return ReactivePreviewFormatter.range_text_safe(range_result)
+
+
 func _refresh_ui() -> void:
 	_try_apply_reactive_enemy_pre_move()
 	super()
