@@ -1,9 +1,9 @@
 extends "res://scripts/battle_controller_visual_settlement_mode.gd"
 
 # Story battle pressure-profile layer.
-# Keeps parser-time dependencies local instead of relying on deep ancestor consts.
+# Avoid parser-time loading of narrative_battle_context.gd; that context has its
+# own manifest dependencies and should only be loaded when story return logic runs.
 
-const StoryReturnNarrativeBattleContext := preload("res://scripts/narrative_battle_context.gd")
 const BattleEffectApplierForStoryReturn := preload("res://scripts/battle_effect_applier.gd")
 const PRESSURE_NONE := BattleEffectApplierForStoryReturn.PRESSURE_NONE
 const PRESSURE_EDGE := BattleEffectApplierForStoryReturn.PRESSURE_EDGE
@@ -16,6 +16,9 @@ var _last_edge_positions: Dictionary = {}
 var _battle_reward_choices: Array = []
 var _selected_battle_reward_card_id := ""
 var _battle_result_confirm_button: Button
+
+func _story_return_context():
+	return load("res://scripts/narrative_battle_context.gd")
 
 func _apply_selected_story_battle_to_current_battle() -> void:
 	super._apply_selected_story_battle_to_current_battle()
@@ -32,7 +35,7 @@ func _refresh_ui() -> void:
 	_append_pressure_profile_to_status()
 
 func _on_continue_narrative_pressed() -> void:
-	if StoryReturnNarrativeBattleContext.has_request():
+	if _story_return_context().has_request():
 		super._on_continue_narrative_pressed()
 		return
 	if log_label != null:
