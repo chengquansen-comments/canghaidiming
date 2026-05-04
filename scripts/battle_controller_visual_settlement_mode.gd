@@ -10,6 +10,7 @@ extends "res://scripts/battle_controller_visual_preview_position_guard.gd"
 
 const StoryBattleLoader = preload("res://scripts/story_battle_loader.gd")
 const SettlementNarrativeBattleContext = preload("res://scripts/narrative_battle_context.gd")
+const BattleEffectApplierForSettlement = preload("res://scripts/battle_effect_applier.gd")
 const ROUND_START_BANNER_DURATION := 0.75
 const ENEMY_INTENT_REVEAL_DELAY_AFTER_ROUND_BANNER := 0.10
 const ROUND_START_MOMENTUM_RECOVERY_DELAY := 0.10
@@ -77,7 +78,7 @@ func _show_story_encounter_selection() -> void:
 	if overlay_title != null:
 		overlay_title.text = "战斗测试"
 	if overlay_body != null:
-		var validation_text := ""
+		var validation_text: String = ""
 		if not _story_validation_report.is_empty():
 			validation_text = " 配置校验：%s。" % ("通过" if bool(_story_validation_report.get("ok", false)) else "存在错误，请看控制台")
 		overlay_body.text = "选择一场 story_battles.json 中的战斗配置。每场会自动加载敌我模板、数值、卡组、结算模式和压力规则；剧情入口也复用同一套配置。" + validation_text
@@ -92,14 +93,14 @@ func _show_story_encounter_selection() -> void:
 func _clear_overlay_actions() -> void:
 	if overlay_actions == null:
 		return
-	for child in overlay_actions.get_children():
+	for child: Node in overlay_actions.get_children():
 		child.queue_free()
 
 
 func _add_story_selection_back_button() -> void:
 	if overlay_actions == null:
 		return
-	var button := Button.new()
+	var button: Button = Button.new()
 	button.text = "返回主菜单"
 	button.custom_minimum_size = Vector2(0, 42)
 	button.pressed.connect(_on_story_selection_back_pressed)
@@ -122,7 +123,7 @@ func _add_story_encounter_button(row: Dictionary) -> void:
 	var player_template: String = str(row.get("player_template_id", ""))
 	var opponent_template: String = str(row.get("opponent_template_id", ""))
 	var notes: String = str(row.get("notes", ""))
-	var button := Button.new()
+	var button: Button = Button.new()
 	button.text = "%s｜%s vs %s｜%s" % [display_name, player_template, opponent_template, mode]
 	button.custom_minimum_size = Vector2(0, 42)
 	if notes != "":
@@ -148,7 +149,7 @@ func _select_story_encounter_and_start(encounter_id: String) -> void:
 		return
 	settlement_mode_id = str(_pending_story_battle.get("settlement_mode", BattleStateMachine.MODE_REACTIVE_ID))
 	_apply_visual_settlement_mode()
-	var encounter: Dictionary = _pending_story_battle.get("encounter", {})
+	var encounter: Dictionary = _pending_story_battle.get("encounter", {}) as Dictionary
 	_show_combat_banner("剧情遭遇：%s" % str(encounter.get("display_name", story_encounter_id)), Color("1c2a36"), Color("8fd3ff"))
 	_start_selected_story_encounter()
 
@@ -160,7 +161,7 @@ func _start_selected_story_encounter() -> void:
 		if _pending_story_battle.is_empty():
 			_show_story_encounter_selection()
 			return
-	var encounter: Dictionary = _pending_story_battle.get("encounter", {})
+	var encounter: Dictionary = _pending_story_battle.get("encounter", {}) as Dictionary
 	var role_id: String = _core_role_id_for_template(str(encounter.get("player_template_id", "player_blademaster")))
 	super._select_role_and_start(role_id)
 	_apply_selected_story_battle_to_current_battle()
@@ -169,9 +170,9 @@ func _start_selected_story_encounter() -> void:
 func _apply_selected_story_battle_to_current_battle() -> void:
 	if _pending_story_battle.is_empty():
 		return
-	var player_data: FighterData = _pending_story_battle.get("player_data", null)
-	var opponent_data: FighterData = _pending_story_battle.get("opponent_data", null)
-	var encounter: Dictionary = _pending_story_battle.get("encounter", {})
+	var player_data: FighterData = _pending_story_battle.get("player_data", null) as FighterData
+	var opponent_data: FighterData = _pending_story_battle.get("opponent_data", null) as FighterData
+	var encounter: Dictionary = _pending_story_battle.get("encounter", {}) as Dictionary
 	if player_data == null or opponent_data == null:
 		push_warning("Story encounter has null fighter data: %s" % story_encounter_id)
 		return
@@ -252,7 +253,7 @@ func _begin_round() -> void:
 func _begin_round_after_round_banner(token: int, round_value: int) -> void:
 	if token != _round_start_sequence_token or not battle_active:
 		return
-	var busy_wait_elapsed := 0.0
+	var busy_wait_elapsed: float = 0.0
 	while _presentation_busy():
 		await get_tree().create_timer(0.05).timeout
 		busy_wait_elapsed += 0.05
@@ -287,7 +288,7 @@ func _play_round_start_banner(round_value: int) -> void:
 	combat_banner.add_theme_stylebox_override("panel", _make_panel_style(Color("1a2935"), Color("8fd3ff")))
 	combat_banner.scale = Vector2(0.90, 0.90)
 	combat_banner.modulate = Color(1, 1, 1, 0)
-	var tween := create_tween()
+	var tween: Tween = create_tween()
 	tween.tween_property(combat_banner, "modulate", Color(1, 1, 1, 1), 0.08)
 	tween.parallel().tween_property(combat_banner, "scale", Vector2.ONE, 0.08)
 	tween.tween_interval(maxf(ROUND_START_BANNER_DURATION - 0.18, 0.12))
@@ -302,8 +303,8 @@ func _play_round_start_momentum_gain_presentation() -> void:
 	_round_start_should_recover_momentum = false
 	if ROUND_START_MOMENTUM_RECOVERY_DELAY > 0.0:
 		await get_tree().create_timer(ROUND_START_MOMENTUM_RECOVERY_DELAY).timeout
-	var player_before := player.momentum if player != null else 0
-	var enemy_before := enemy.momentum if enemy != null else 0
+	var player_before: int = player.momentum if player != null else 0
+	var enemy_before: int = enemy.momentum if enemy != null else 0
 	_round_start_player_momentum_gain = player.recover_momentum(ROUND_MOMENTUM_RECOVERY) if player != null else 0
 	_round_start_enemy_momentum_gain = enemy.recover_momentum(ROUND_MOMENTUM_RECOVERY) if enemy != null else 0
 	if _round_start_player_momentum_gain > 0 or _round_start_enemy_momentum_gain > 0:
@@ -323,7 +324,7 @@ func _try_apply_reactive_enemy_pre_move() -> void:
 		return
 	if not battle_active or not awaiting_player_input:
 		return
-	var result: Dictionary = BattleEffectApplier.apply_reactive_enemy_pre_move(state_machine, player, enemy, enemy_intent, _reactive_pre_move_round)
+	var result: Dictionary = BattleEffectApplierForSettlement.apply_reactive_enemy_pre_move(state_machine, player, enemy, enemy_intent, _reactive_pre_move_round)
 	_reactive_pre_move_round = int(result.get("round", _reactive_pre_move_round))
 	if not bool(result.get("applied", false)):
 		return
@@ -380,14 +381,14 @@ func _play_reactive_enemy_pre_move_animation(result: Dictionary) -> void:
 func _animate_reactive_enemy_pre_move_slots(from_slot: int, to_slot: int) -> void:
 	if from_slot == to_slot:
 		return
-	var step_dir := 1 if to_slot > from_slot else -1
-	var current_slot := from_slot
+	var step_dir: int = 1 if to_slot > from_slot else -1
+	var current_slot: int = from_slot
 	while current_slot != to_slot:
-		var next_slot := current_slot + step_dir
+		var next_slot: int = current_slot + step_dir
 		if not _is_valid_presentation_slot(next_slot):
 			break
-		var from_offset := _slot_offset_between(false, current_slot, to_slot)
-		var to_offset := _slot_offset_between(false, next_slot, to_slot)
+		var from_offset: Vector2 = _slot_offset_between(false, current_slot, to_slot)
+		var to_offset: Vector2 = _slot_offset_between(false, next_slot, to_slot)
 		await _tween_reactive_enemy_pre_move_step(from_offset, to_offset)
 		current_slot = next_slot
 		if current_slot != to_slot:
@@ -395,8 +396,8 @@ func _animate_reactive_enemy_pre_move_slots(from_slot: int, to_slot: int) -> voi
 
 
 func _tween_reactive_enemy_pre_move_step(from_offset: Vector2, to_offset: Vector2) -> void:
-	var mid_offset := from_offset.lerp(to_offset, 0.55) + Vector2(0.0, PRESENTATION_STEP_MOVE_BOB_Y)
-	var tween := create_tween()
+	var mid_offset: Vector2 = from_offset.lerp(to_offset, 0.55) + Vector2(0.0, PRESENTATION_STEP_MOVE_BOB_Y)
+	var tween: Tween = create_tween()
 	tween.tween_method(Callable(self, "_set_enemy_presentation_offset"), from_offset, mid_offset, REACTIVE_PRE_MOVE_STEP_DURATION * 0.45).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween.tween_method(Callable(self, "_set_enemy_presentation_offset"), mid_offset, to_offset, REACTIVE_PRE_MOVE_STEP_DURATION * 0.55).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	await tween.finished
@@ -415,7 +416,7 @@ func _on_stage_grid_slot_pressed(slot: int) -> void:
 
 
 func _slot_label_safe(slot: int) -> String:
-	var labels := ["零位", "一位", "二位", "三位", "四位", "五位", "六位", "七位", "八位"]
+	var labels: Array[String] = ["零位", "一位", "二位", "三位", "四位", "五位", "六位", "七位", "八位"]
 	if slot >= 0 and slot < labels.size():
 		return labels[slot]
 	return "%d位" % slot
@@ -424,7 +425,7 @@ func _slot_label_safe(slot: int) -> String:
 func _mode_status_suffix() -> String:
 	if state_machine == null:
 		return ""
-	var text := "\n剧情遭遇：%s" % story_encounter_id
+	var text: String = "\n剧情遭遇：%s" % story_encounter_id
 	text += "\n结算模式：%s（%s）" % [state_machine.settlement_mode_label(), state_machine.settlement_mode_id()]
 	text += "\n快捷键：F8 切换结算模式"
 	if state_machine.is_reactive_mode():
@@ -463,14 +464,14 @@ func _reactive_resolution_preview() -> Dictionary:
 	var enemy_after: int = enemy.position
 	var player_range: String = CombatResolver.RANGE_NONE
 	var enemy_range_after_player: String = CombatResolver.RANGE_NONE
-	var will_interrupt := false
-	var player_damage := 0
-	var player_break := 0
-	var enemy_damage := 0
-	var enemy_break := 0
+	var will_interrupt: bool = false
+	var player_damage: int = 0
+	var player_break: int = 0
+	var enemy_damage: int = 0
+	var enemy_break: int = 0
 	if player_card != null:
-		var player_state := {"hp": player.hp, "momentum": player.momentum, "guard": player.guard_points, "position": player_pos, "facing": player_facing, "broken": player.is_broken()}
-		var enemy_state := {"hp": enemy.hp, "momentum": enemy.momentum, "guard": enemy.guard_points, "position": enemy.position, "facing": enemy.facing, "broken": enemy.is_broken()}
+		var player_state: Dictionary = {"hp": player.hp, "momentum": player.momentum, "guard": player.guard_points, "position": player_pos, "facing": player_facing, "broken": player.is_broken()}
+		var enemy_state: Dictionary = {"hp": enemy.hp, "momentum": enemy.momentum, "guard": enemy.guard_points, "position": enemy.position, "facing": enemy.facing, "broken": enemy.is_broken()}
 		var sim: Dictionary = CombatResolver.resolve_exchange(player_state, enemy_state, player_card, null, ["player"])
 		var enemy_hp_delta: int = int(sim.get("enemy_hp_delta", 0))
 		var enemy_momentum_delta: int = int(sim.get("enemy_momentum_delta", 0))
@@ -481,8 +482,8 @@ func _reactive_resolution_preview() -> Dictionary:
 		enemy_after = int(sim.get("enemy_final", enemy.position))
 		will_interrupt = enemy.momentum > 0 and enemy.momentum + enemy_momentum_delta <= 0
 	if enemy_card != null and not will_interrupt:
-		var enemy_state_after := {"hp": enemy.hp, "momentum": enemy.momentum, "guard": enemy.guard_points, "position": enemy_after, "facing": enemy.facing, "broken": enemy.is_broken()}
-		var player_state_after := {"hp": player.hp, "momentum": player.momentum, "guard": player.guard_points, "position": player_after, "facing": player_facing, "broken": player.is_broken()}
+		var enemy_state_after: Dictionary = {"hp": enemy.hp, "momentum": enemy.momentum, "guard": enemy.guard_points, "position": enemy_after, "facing": enemy.facing, "broken": enemy.is_broken()}
+		var player_state_after: Dictionary = {"hp": player.hp, "momentum": player.momentum, "guard": player.guard_points, "position": player_after, "facing": player_facing, "broken": player.is_broken()}
 		var enemy_sim: Dictionary = CombatResolver.resolve_exchange(enemy_state_after, player_state_after, enemy_card, null, ["player"])
 		var player_hp_delta: int = int(enemy_sim.get("enemy_hp_delta", 0))
 		var player_momentum_delta: int = int(enemy_sim.get("enemy_momentum_delta", 0))
