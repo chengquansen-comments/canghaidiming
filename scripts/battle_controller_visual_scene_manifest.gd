@@ -3,6 +3,7 @@ extends "res://scripts/battle_controller_visual_narrative_formal.gd"
 const BATTLE_SCENE_MANIFEST_PATH := "res://data/battle_scene_manifest.json"
 const DEFAULT_SCENE_ID := "fallback"
 const DEBUG_TOGGLE_KEY := KEY_F10
+const BATTLE_TEST_UNIFIED_BACKGROUND_PATH := "res://assets/pixel_battle/backgrounds/battle_bg_chapter2_reed_ambush.png"
 
 var battle_scene_manifest: Dictionary = {}
 var battle_scene_loaded: bool = false
@@ -120,7 +121,7 @@ func _apply_battle_scene_by_id(id: String) -> void:
 	battle_scene_id = id if not id.is_empty() else DEFAULT_SCENE_ID
 	battle_scene_time = 0.0
 	var config: Dictionary = _battle_scene_config(battle_scene_id)
-	var bg_path: String = str(config.get("background", ""))
+	var bg_path: String = _background_path_for_scene_config(config)
 	if background_texture != null:
 		background_texture.texture = null
 		background_texture.visible = true
@@ -132,6 +133,11 @@ func _apply_battle_scene_by_id(id: String) -> void:
 			if tex != null:
 				background_texture.texture = tex
 	_update_original_scene_label(config)
+
+func _background_path_for_scene_config(config: Dictionary) -> String:
+	if not NarrativeBattleContext.has_request():
+		return BATTLE_TEST_UNIFIED_BACKGROUND_PATH
+	return str(config.get("background", ""))
 
 func _battle_scene_config(id: String) -> Dictionary:
 	if battle_scene_loaded:
@@ -148,6 +154,8 @@ func _update_original_background_motion(delta: float) -> void:
 
 func _update_original_scene_label(config: Dictionary) -> void:
 	var label_text: String = "战斗场景｜%s｜battle_id=%s｜enemy_source=%s" % [str(config.get("label", battle_scene_id)), battle_scene_id, NarrativeBattleContext.enemy_source_text()]
+	if not NarrativeBattleContext.has_request():
+		label_text = "战斗场景｜战斗测试统一背景｜battle_id=%s｜bg=chapter2_reed_ambush" % battle_scene_id
 	if phase_label != null:
 		phase_label.text = label_text
 	if battle_log_strip != null and not battle_active:
