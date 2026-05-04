@@ -88,7 +88,7 @@ const CATEGORY_COLORS := {
 
 func _create_panel() -> PanelContainer:
 	var panel := PanelContainer.new()
-	panel.add_theme_stylebox_override("panel", _make_panel_style(Color("16202a"), Color("344657"), 1, 8))
+	panel.add_theme_stylebox_override("panel", _make_panel_style(Color("18212a"), Color("52606d"), 1, 18))
 	return panel
 
 func _make_panel_style(fill: Color, border: Color, border_width: int, radius: int) -> StyleBoxFlat:
@@ -96,22 +96,25 @@ func _make_panel_style(fill: Color, border: Color, border_width: int, radius: in
 	style.bg_color = fill
 	style.border_color = border
 	style.set_border_width_all(border_width)
-	style.corner_radius_top_left = radius
-	style.corner_radius_top_right = radius
-	style.corner_radius_bottom_left = radius
-	style.corner_radius_bottom_right = radius
-	style.content_margin_left = 12
-	style.content_margin_right = 12
-	style.content_margin_top = 10
-	style.content_margin_bottom = 10
+	style.set_corner_radius_all(radius)
+	style.content_margin_left = 14
+	style.content_margin_right = 14
+	style.content_margin_top = 12
+	style.content_margin_bottom = 12
+	style.shadow_color = Color(0, 0, 0, 0.25)
+	style.shadow_size = 6
 	return style
 
 func _style_button(button: Button, fill: Color) -> void:
-	button.add_theme_stylebox_override("normal", _make_panel_style(fill, fill.lightened(0.25), 1, 6))
-	button.add_theme_stylebox_override("hover", _make_panel_style(fill.lightened(0.12), fill.lightened(0.35), 1, 6))
-	button.add_theme_stylebox_override("pressed", _make_panel_style(fill.darkened(0.12), fill.lightened(0.15), 1, 6))
-	button.add_theme_color_override("font_color", Color("f4e6c8"))
-	button.add_theme_font_size_override("font_size", 16)
+	button.custom_minimum_size = Vector2(150, 48)
+	button.add_theme_font_size_override("font_size", 18)
+	var normal := _make_panel_style(fill, fill.lightened(0.15), 1, 14)
+	var hover := _make_panel_style(fill.lightened(0.1), fill.lightened(0.3), 1, 14)
+	var pressed := _make_panel_style(fill.darkened(0.15), fill.lightened(0.15), 1, 14)
+	button.add_theme_stylebox_override("normal", normal)
+	button.add_theme_stylebox_override("hover", hover)
+	button.add_theme_stylebox_override("pressed", pressed)
+	button.add_theme_stylebox_override("disabled", _make_panel_style(Color(fill.r, fill.g, fill.b, 0.4), Color("5d646b"), 1, 14))
 
 func _show_overlay(title: String, body: String, actions: Array) -> void:
 	overlay_title.text = title
@@ -120,79 +123,81 @@ func _show_overlay(title: String, body: String, actions: Array) -> void:
 		child.queue_free()
 	for action in actions:
 		var button := Button.new()
-		button.text = action.get("text", "继续")
-		button.custom_minimum_size = Vector2(0, 42)
-		_style_button(button, Color("4a3a25"))
-		var callback: Callable = action.get("callback", Callable())
-		if callback.is_valid():
-			button.pressed.connect(callback)
+		button.text = action["text"]
+		_style_button(button, Color("6a4b2a"))
+		button.pressed.connect(action["callback"])
 		overlay_actions.add_child(button)
 	overlay_scrim.visible = true
 	overlay_panel.visible = true
+	overlay_panel.scale = Vector2(0.96, 0.96)
+	overlay_panel.modulate = Color(1, 1, 1, 0)
+	var tween := create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(overlay_panel, "modulate", Color(1, 1, 1, 1), 0.18)
+	tween.tween_property(overlay_panel, "scale", Vector2.ONE, 0.2)
 
 func _hide_overlay() -> void:
-	overlay_scrim.visible = false
 	overlay_panel.visible = false
+	overlay_scrim.visible = false
 
 func _log(message: String) -> void:
 	battle_log.append(message)
-	if battle_log.size() > 8:
-		battle_log.pop_front()
 	_refresh_log()
 
 func _flash_avatar(target: PanelContainer, color: Color, scale_boost := 0.05) -> void:
-	if target == null:
-		return
-	var original_color := target.modulate
-	var original_scale := target.scale
 	var tween := create_tween()
+	tween.set_parallel(true)
 	tween.tween_property(target, "modulate", color, 0.08)
-	tween.parallel().tween_property(target, "scale", original_scale + Vector2(scale_boost, scale_boost), 0.08)
-	tween.tween_property(target, "modulate", original_color, 0.18)
-	tween.parallel().tween_property(target, "scale", original_scale, 0.18)
+	tween.tween_property(target, "scale", Vector2.ONE * (1.0 + scale_boost), 0.08)
+	tween.chain().set_parallel(true)
+	tween.tween_property(target, "modulate", Color.WHITE, 0.18)
+	tween.tween_property(target, "scale", Vector2.ONE, 0.18)
 
 func _show_fx(label: Label, text: String, color: Color) -> void:
 	label.text = text
-	label.modulate = color
-	label.position.y = -16
+	label.modulate = Color(color.r, color.g, color.b, 1.0)
+	label.scale = Vector2.ONE
 	var tween := create_tween()
-	tween.tween_property(label, "position:y", -42, 0.32)
-	tween.parallel().tween_property(label, "modulate:a", 0.0, 0.32)
-	tween.tween_callback(func():
-		label.text = ""
-		label.position.y = -16
-		label.modulate = Color(1, 1, 1, 1)
-	)
+	tween.set_parallel(true)
+	tween.tween_property(label, "scale", Vector2(1.06, 1.06), 0.15)
+	tween.chain()
+	tween.tween_property(label, "scale", Vector2.ONE, 0.22)
+	tween.tween_property(label, "modulate", Color(color.r, color.g, color.b, 0.0), 0.45)
 
 func _animate_distance_shift() -> void:
-	if current_tween:
-		current_tween.kill()
-	current_tween = create_tween()
-	center_callout.scale = Vector2(1.08, 1.08)
-	current_tween.tween_property(center_callout, "scale", Vector2.ONE, 0.22)
+	var tween := create_tween()
+	tween.set_parallel(true)
+	var player_bump := Vector2(1.04, 0.96) if distance >= 2 else Vector2(0.96, 1.04)
+	var enemy_bump := Vector2(0.96, 1.04) if distance >= 2 else Vector2(1.04, 0.96)
+	tween.tween_property(player_avatar, "scale", player_bump, 0.08)
+	tween.tween_property(enemy_avatar, "scale", enemy_bump, 0.08)
+	tween.tween_property(center_callout, "scale", Vector2(1.05, 1.05), 0.08)
+	tween.chain().set_parallel(true)
+	tween.tween_property(player_avatar, "scale", Vector2.ONE, 0.18)
+	tween.tween_property(enemy_avatar, "scale", Vector2.ONE, 0.18)
+	tween.tween_property(center_callout, "scale", Vector2.ONE, 0.18)
 
 func _is_preferred_distance(ranges: Array) -> bool:
 	return ranges.has(distance)
 
 func _is_enemy_preferred_distance() -> bool:
-	return enemy.get("preferred", []).has(distance)
+	return enemy["preferred_ranges"].has(distance)
 
 func _ranges_text(ranges: Array) -> String:
-	var values := []
+	var parts := []
 	for value in ranges:
-		values.append(str(value))
-	return ",".join(values)
+		parts.append(str(value))
+	return " / ".join(parts)
 
 func _enemy_glyph() -> String:
-	var category: String = enemy.get("intent_category", "")
-	match category:
-		"攻击":
-			return "⚔"
-		"杀招":
-			return "✦"
-		"步法":
-			return "⇄"
-		"架势":
-			return "◆"
+	if enemy.is_empty():
+		return "●"
+	match enemy.get("id", ""):
+		"militia_spear", "captain_boss":
+			return "枪"
+		"shield_blade":
+			return "盾"
+		"firearms_officer":
+			return "铳"
 		_:
-			return "?"
+			return "刀"
