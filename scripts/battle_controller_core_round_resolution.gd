@@ -38,6 +38,10 @@ func _on_intent_resolved(_actor: Fighter, _target: Fighter, _intent: IntentData,
 func _actor_for_intent(intent: IntentData) -> Fighter:
 	if intent == null:
 		return null
+	if intent.actor_side == IntentData.SIDE_PLAYER:
+		return player
+	if intent.actor_side == IntentData.SIDE_ENEMY:
+		return enemy
 	if intent.source_fighter == player:
 		return player
 	if intent.source_fighter == enemy:
