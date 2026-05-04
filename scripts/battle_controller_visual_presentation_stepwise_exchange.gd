@@ -184,7 +184,11 @@ func _settle_committed_slot_offsets_stepwise(old_player_slot: int, old_enemy_slo
 		await _settle_committed_slot_offsets()
 
 func _animate_actor_committed_slots_stepwise(is_player_actor: bool, from_slot: int, to_slot: int) -> void:
-	var committed_slot: int = player.position if is_player_actor and player != null else enemy.position if not is_player_actor and enemy != null else to_slot
+	var committed_slot: int = to_slot
+	if is_player_actor and player != null:
+		committed_slot = player.position
+	elif not is_player_actor and enemy != null:
+		committed_slot = enemy.position
 	await _animate_actor_visual_slots_stepwise(is_player_actor, from_slot, to_slot, committed_slot)
 
 func _animate_actor_visual_slots_stepwise(is_player_actor: bool, from_slot: int, to_slot: int, committed_slot: int) -> void:
