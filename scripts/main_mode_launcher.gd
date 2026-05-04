@@ -25,9 +25,9 @@ func _build_ui() -> void:
 	panel.anchor_right = 0.5
 	panel.anchor_bottom = 0.5
 	panel.offset_left = -300
-	panel.offset_top = -240
+	panel.offset_top = -220
 	panel.offset_right = 300
-	panel.offset_bottom = 240
+	panel.offset_bottom = 220
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color("1a2230")
 	style.border_color = Color("bfa06a")
@@ -59,7 +59,7 @@ func _show_main_menu() -> void:
 	_content_box.add_child(title)
 
 	var subtitle := Label.new()
-	subtitle.text = "剧情 MVP、字符版战斗、战斗测试已分开。剧情入口用于验证压缩叙事，战斗测试用于调试剧情遭遇、数值和表现。"
+	subtitle.text = "剧情 MVP 和战斗测试已分开。剧情入口用于验证压缩叙事，战斗测试用于调试剧情遭遇、数值和表现。"
 	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	subtitle.custom_minimum_size = Vector2(500, 0)
@@ -82,14 +82,6 @@ func _show_main_menu() -> void:
 		get_tree().change_scene_to_file("res://scenes/NarrativeDemo.tscn")
 	)
 	_content_box.add_child(world_map_debug_button)
-
-	var text_button := Button.new()
-	text_button.text = "进入字符版战斗"
-	text_button.custom_minimum_size = Vector2(300, 54)
-	text_button.pressed.connect(func() -> void:
-		get_tree().change_scene_to_file("res://scenes/MainText.tscn")
-	)
-	_content_box.add_child(text_button)
 
 	var visual_button := Button.new()
 	visual_button.text = "战斗测试"
