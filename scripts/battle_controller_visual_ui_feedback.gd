@@ -44,6 +44,7 @@ func _on_intent_resolved(actor: Fighter, target: Fighter, intent: IntentData, fe
 	var card: CardData = intent.actual_card
 	var is_finisher := card.has_tag("终结")
 	var effect_color := _strike_feedback_color(actor.data.id, bool(feedback.get("connected", false)))
+	_queue_momentum_dot_transition_to_current_state(0.1)
 	_animate_attacker_sprite(actor, actor.data.id, is_finisher)
 	_play_profession_shape_feedback(actor.data.id, effect_color, is_finisher, false)
 	if bool(feedback.get("connected", false)):
