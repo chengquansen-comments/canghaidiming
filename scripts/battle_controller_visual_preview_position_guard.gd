@@ -45,8 +45,8 @@ func _compute_ordered_preview() -> Dictionary:
 	var e_pos: int = enemy.position
 	var p_facing: String = player.facing
 	var e_facing: String = enemy.facing
-	var p_text := "预期：待命"
-	var e_text := "预期：待命"
+	var p_text: String = "预期：待命"
+	var e_text: String = "预期：待命"
 
 	var p_target_pos: int = _player_preview_position()
 	var p_target_facing: String = _player_preview_facing()
