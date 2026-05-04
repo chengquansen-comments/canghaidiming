@@ -7,7 +7,8 @@ extends "res://scripts/battle_controller_visual_presentation_stepwise_draft.gd"
 # presentation death, and result enrichment from ordered preview steps.
 
 const PRESENTATION_EFFECT_MOVE_DELAY_AFTER_ACTION_START := 0.10
-const PRESENTATION_PLAYER_EFFECT_MOVE_DELAY_AFTER_ACTION_START := 0.0
+const PRESENTATION_PLAYER_EFFECT_MOVE_DELAY_AFTER_ACTION_START := 0.10
+const PRESENTATION_ATTACK_BOUND_EFFECT_MOVE_MIN_DURATION := 0.28
 
 var _presentation_player_action_completed_this_exchange := false
 var _pending_presentation_effect_move: Dictionary = {}
@@ -68,7 +69,7 @@ func _run_presentation_exchange(player_card: CardData, enemy_card: CardData, ord
 	_finish_presentation_exchange()
 
 func _play_presentation_action_with_effect_move(is_player_actor: bool, card: CardData, result: Dictionary, effect_step: Dictionary, actor_visual_slot: int, actor_committed_slot: int, target_visual_slot: int, target_committed_slot: int) -> Dictionary:
-	_begin_pending_presentation_effect_move(is_player_actor, effect_step, actor_visual_slot, actor_committed_slot, target_visual_slot, target_committed_slot)
+	_begin_pending_presentation_effect_move(is_player_actor, card, result, effect_step, actor_visual_slot, actor_committed_slot, target_visual_slot, target_committed_slot)
 	_schedule_pending_presentation_effect_move_after_delay(_presentation_effect_move_delay_for_actor(is_player_actor))
 	await _play_one_presentation_action(is_player_actor, card, result)
 	if _pending_presentation_effect_move_started:
@@ -86,10 +87,11 @@ func _play_presentation_action_with_effect_move(is_player_actor: bool, card: Car
 func _presentation_effect_move_delay_for_actor(is_player_actor: bool) -> float:
 	return PRESENTATION_PLAYER_EFFECT_MOVE_DELAY_AFTER_ACTION_START if is_player_actor else PRESENTATION_EFFECT_MOVE_DELAY_AFTER_ACTION_START
 
-func _begin_pending_presentation_effect_move(is_player_actor: bool, effect_step: Dictionary, actor_visual_slot: int, actor_committed_slot: int, target_visual_slot: int, target_committed_slot: int) -> void:
+func _begin_pending_presentation_effect_move(is_player_actor: bool, card: CardData, result: Dictionary, effect_step: Dictionary, actor_visual_slot: int, actor_committed_slot: int, target_visual_slot: int, target_committed_slot: int) -> void:
 	_pending_presentation_effect_move_started = false
 	_pending_presentation_effect_move_running = false
 	_pending_presentation_effect_move_completed = false
+	var attack_bound := _card_uses_attack_bound_effect_move(card)
 	_pending_presentation_effect_move = {
 		"is_player_actor": is_player_actor,
 		"effect_step": effect_step,
@@ -99,7 +101,25 @@ func _begin_pending_presentation_effect_move(is_player_actor: bool, effect_step:
 		"target_committed_slot": target_committed_slot,
 		"actor_after": actor_visual_slot,
 		"target_after": target_visual_slot,
+		"attack_bound": attack_bound,
+		"duration": _attack_bound_effect_move_duration(card, result) if attack_bound else 0.0,
 	}
+
+func _card_uses_attack_bound_effect_move(card: CardData) -> bool:
+	if card == null:
+		return false
+	var style: String = _presentation_style_for_card(card)
+	return style != "guard" and style != "focus" and style != "idle"
+
+func _attack_bound_effect_move_duration(card: CardData, result: Dictionary) -> float:
+	if card == null:
+		return PRESENTATION_ATTACK_BOUND_EFFECT_MOVE_MIN_DURATION
+	var style: String = _presentation_style_for_card(card)
+	if style == "guard" or style == "focus" or style == "idle":
+		return PRESENTATION_ATTACK_BOUND_EFFECT_MOVE_MIN_DURATION
+	var target_will_break: bool = _presentation_target_will_break(false, result) or _presentation_target_will_break(true, result)
+	var pause_duration: float = _presentation_hit_pause_duration(result, target_will_break)
+	return max(PRESENTATION_ATTACK_BOUND_EFFECT_MOVE_MIN_DURATION, 0.28 + pause_duration)
 
 func _clear_pending_presentation_effect_move() -> void:
 	_pending_presentation_effect_move.clear()
@@ -111,6 +131,26 @@ func _pending_presentation_effect_move_matches(is_player_actor: bool) -> bool:
 	if _pending_presentation_effect_move.is_empty():
 		return false
 	return bool(_pending_presentation_effect_move.get("is_player_actor", false)) == is_player_actor
+
+func _pending_effect_actor_has_move() -> bool:
+	if _pending_presentation_effect_move.is_empty():
+		return false
+	var effect_step: Dictionary = _pending_presentation_effect_move.get("effect_step", {})
+	if effect_step.is_empty():
+		return false
+	var actor_visual_slot: int = int(_pending_presentation_effect_move.get("actor_visual_slot", 0))
+	var actor_to: int = int(effect_step.get("actor_to", actor_visual_slot))
+	return _is_valid_presentation_slot(actor_to) and actor_to != actor_visual_slot
+
+func _pending_effect_target_has_move() -> bool:
+	if _pending_presentation_effect_move.is_empty():
+		return false
+	var effect_step: Dictionary = _pending_presentation_effect_move.get("effect_step", {})
+	if effect_step.is_empty():
+		return false
+	var target_visual_slot: int = int(_pending_presentation_effect_move.get("target_visual_slot", 0))
+	var target_to: int = int(effect_step.get("target_to", target_visual_slot))
+	return _is_valid_presentation_slot(target_to) and target_to != target_visual_slot
 
 func _schedule_pending_presentation_effect_move() -> void:
 	_schedule_pending_presentation_effect_move_after_delay(0.0)
@@ -139,6 +179,13 @@ func _apply_pending_presentation_effect_move() -> void:
 	if _pending_presentation_effect_move_completed:
 		return
 	_pending_presentation_effect_move_started = true
+	if bool(_pending_presentation_effect_move.get("attack_bound", false)):
+		await _apply_attack_bound_presentation_effect_move()
+	else:
+		await _apply_stepwise_presentation_effect_move()
+	_pending_presentation_effect_move_completed = true
+
+func _apply_stepwise_presentation_effect_move() -> void:
 	var is_player_actor: bool = bool(_pending_presentation_effect_move.get("is_player_actor", false))
 	var effect_step: Dictionary = _pending_presentation_effect_move.get("effect_step", {})
 	var actor_visual_slot: int = int(_pending_presentation_effect_move.get("actor_visual_slot", 0))
@@ -149,7 +196,52 @@ func _apply_pending_presentation_effect_move() -> void:
 	var target_after: int = await _apply_presentation_effect_target_step(not is_player_actor, target_visual_slot, target_committed_slot, effect_step)
 	_pending_presentation_effect_move["actor_after"] = actor_after
 	_pending_presentation_effect_move["target_after"] = target_after
-	_pending_presentation_effect_move_completed = true
+
+func _apply_attack_bound_presentation_effect_move() -> void:
+	var is_player_actor: bool = bool(_pending_presentation_effect_move.get("is_player_actor", false))
+	var effect_step: Dictionary = _pending_presentation_effect_move.get("effect_step", {})
+	var duration: float = max(0.01, float(_pending_presentation_effect_move.get("duration", PRESENTATION_ATTACK_BOUND_EFFECT_MOVE_MIN_DURATION)))
+	var actor_visual_slot: int = int(_pending_presentation_effect_move.get("actor_visual_slot", 0))
+	var actor_committed_slot: int = int(_pending_presentation_effect_move.get("actor_committed_slot", actor_visual_slot))
+	var target_visual_slot: int = int(_pending_presentation_effect_move.get("target_visual_slot", 0))
+	var target_committed_slot: int = int(_pending_presentation_effect_move.get("target_committed_slot", target_visual_slot))
+	var actor_after: int = _attack_bound_target_slot(effect_step, "actor_to", actor_visual_slot)
+	var target_after: int = _attack_bound_target_slot(effect_step, "target_to", target_visual_slot)
+	var has_actor_move := actor_after != actor_visual_slot
+	var has_target_move := target_after != target_visual_slot
+	if not has_actor_move and not has_target_move:
+		_pending_presentation_effect_move["actor_after"] = actor_visual_slot
+		_pending_presentation_effect_move["target_after"] = target_visual_slot
+		return
+	if has_actor_move:
+		var actor_to_offset := _slot_offset_between(is_player_actor, actor_after, actor_committed_slot)
+		_tween_actor_offset(is_player_actor, _presentation_offset(is_player_actor), actor_to_offset, duration, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+	if has_target_move:
+		var target_is_player_actor := not is_player_actor
+		var target_to_offset := _slot_offset_between(target_is_player_actor, target_after, target_committed_slot)
+		_tween_actor_offset(target_is_player_actor, _presentation_offset(target_is_player_actor), target_to_offset, duration, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+	await get_tree().create_timer(duration + 0.02).timeout
+	if has_actor_move:
+		var actor_final_offset := _slot_offset_between(is_player_actor, actor_after, actor_committed_slot)
+		if is_player_actor:
+			_set_player_presentation_offset(actor_final_offset)
+		else:
+			_set_enemy_presentation_offset(actor_final_offset)
+	if has_target_move:
+		var target_actor_side := not is_player_actor
+		var target_final_offset := _slot_offset_between(target_actor_side, target_after, target_committed_slot)
+		if target_actor_side:
+			_set_player_presentation_offset(target_final_offset)
+		else:
+			_set_enemy_presentation_offset(target_final_offset)
+	_pending_presentation_effect_move["actor_after"] = actor_after
+	_pending_presentation_effect_move["target_after"] = target_after
+
+func _attack_bound_target_slot(effect_step: Dictionary, key: String, fallback_slot: int) -> int:
+	if effect_step.is_empty():
+		return fallback_slot
+	var slot: int = int(effect_step.get(key, fallback_slot))
+	return slot if _is_valid_presentation_slot(slot) else fallback_slot
 
 func _finish_presentation_after_lethal_action(_visual_player_slot: int, _visual_enemy_slot: int) -> void:
 	_clear_actor_action_glows()
@@ -225,13 +317,17 @@ func _play_attack_presentation(is_player_actor: bool, card: CardData, style: Str
 	var target_is_enemy: bool = is_player_actor
 	var should_hit: bool = _presentation_result_should_hit(card, result)
 	var target_will_break: bool = _presentation_target_will_break(not is_player_actor, result)
+	var actor_effect_move_bound := _pending_presentation_effect_move_matches(is_player_actor) and bool(_pending_presentation_effect_move.get("attack_bound", false)) and _pending_effect_actor_has_move()
+	var target_effect_move_bound := _pending_presentation_effect_move_matches(is_player_actor) and bool(_pending_presentation_effect_move.get("attack_bound", false)) and _pending_effect_target_has_move()
 	var base_offset: Vector2 = _presentation_offset(is_player_actor)
-	_tween_actor_offset(is_player_actor, base_offset, base_offset + lunge_offset, 0.10, Tween.TRANS_QUAD, Tween.EASE_OUT)
+	if not actor_effect_move_bound:
+		_tween_actor_offset(is_player_actor, base_offset, base_offset + lunge_offset, 0.10, Tween.TRANS_QUAD, Tween.EASE_OUT)
 	await get_tree().create_timer(0.08).timeout
 	_play_presentation_attack_fx(is_player_actor, card, style, result)
 	await get_tree().create_timer(0.04).timeout
 	if should_hit:
-		_play_presentation_hit_reaction(not is_player_actor, card, dir, result)
+		if not target_effect_move_bound:
+			_play_presentation_hit_reaction(not is_player_actor, card, dir, result)
 		if target_will_break:
 			_play_break_ink_fx(not is_player_actor)
 		var pause_duration: float = _presentation_hit_pause_duration(result, target_will_break)
@@ -239,8 +335,9 @@ func _play_attack_presentation(is_player_actor: bool, card: CardData, style: Str
 			await get_tree().create_timer(pause_duration).timeout
 	else:
 		_play_presentation_miss_feedback(not is_player_actor, result)
-	var return_offset: Vector2 = _presentation_offset(is_player_actor)
-	_tween_actor_offset(is_player_actor, return_offset + lunge_offset, return_offset, 0.16, Tween.TRANS_QUAD, Tween.EASE_IN)
+	if not actor_effect_move_bound:
+		var return_offset: Vector2 = _presentation_offset(is_player_actor)
+		_tween_actor_offset(is_player_actor, return_offset + lunge_offset, return_offset, 0.16, Tween.TRANS_QUAD, Tween.EASE_IN)
 	await _play_momentum_delta_presentation(is_player_actor, result)
 	_show_presentation_result_text(target_is_enemy, card, result)
 	await get_tree().create_timer(0.45).timeout
