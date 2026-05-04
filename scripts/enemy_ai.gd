@@ -170,7 +170,7 @@ func _assign_best_stance(intent: IntentData, enemy: Fighter, opponent: Fighter, 
 	var best_position := enemy.position
 	var best_facing := _facing_toward(enemy.position, opponent.position, enemy.facing)
 	var best_score := -9999
-	for target_position in _candidate_positions(enemy, opponent):
+	for target_position in _candidate_positions(enemy):
 		for target_facing in ["left", "right"]:
 			var score := _stance_score(enemy, opponent, card, target_position, target_facing)
 			if score > best_score:
@@ -180,16 +180,12 @@ func _assign_best_stance(intent: IntentData, enemy: Fighter, opponent: Fighter, 
 	intent.set_stance(best_position, best_facing)
 
 
-func _candidate_positions(fighter: Fighter, opponent: Fighter = null) -> Array[int]:
+func _candidate_positions(fighter: Fighter) -> Array[int]:
 	var result: Array[int] = []
 	var start := clampi(fighter.position - fighter.qinggong, 0, 8)
 	var finish := clampi(fighter.position + fighter.qinggong, 0, 8)
 	for slot in range(start, finish + 1):
-		if opponent != null and slot == opponent.position:
-			continue
 		result.append(slot)
-	if result.is_empty():
-		result.append(fighter.position)
 	return result
 
 
