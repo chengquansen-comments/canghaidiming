@@ -60,9 +60,8 @@ func _run_presentation_exchange(player_card: CardData, enemy_card: CardData, ord
 	await _play_pending_presentation_deaths()
 	_finish_presentation_exchange()
 
-func _finish_presentation_after_lethal_action(visual_player_slot: int, visual_enemy_slot: int) -> void:
+func _finish_presentation_after_lethal_action(_visual_player_slot: int, _visual_enemy_slot: int) -> void:
 	_clear_actor_action_glows()
-	await _settle_visual_slots_to_committed_positions(visual_player_slot, visual_enemy_slot)
 	await _play_pending_presentation_deaths()
 	_finish_presentation_exchange("lethal-action")
 
