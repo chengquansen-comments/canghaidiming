@@ -11,6 +11,20 @@ func _show_class_select() -> void:
 	available_next_nodes.clear()
 	visited_nodes.clear()
 	battle_log.clear()
+	_show_main_menu()
+	_refresh_ui()
+
+func _show_main_menu() -> void:
+	_show_overlay(
+		"单局原型入口",
+		"[b]选择要进入的页面：[/b]\n战斗测试用于进入 6 场连续战斗；设置用于调整当前测试规则开关。",
+		[
+			{"text": "战斗测试", "callback": Callable(self, "_show_battle_test_page")},
+			{"text": "设置", "callback": Callable(self, "_show_settings_page")}
+		]
+	)
+
+func _show_battle_test_page() -> void:
 	var class_actions := []
 	var class_ids := class_defs.keys()
 	class_ids.sort()
@@ -20,11 +34,27 @@ func _show_class_select() -> void:
 			"text": "%s｜%s" % [class_def["name"], class_def["weapon"]],
 			"callback": Callable(self, "_start_run").bind(class_id)
 		})
+	class_actions.append({"text": "返回", "callback": Callable(self, "_show_main_menu")})
 	_show_overlay(
-		"选择开局模板",
+		"战斗测试",
 		"[b]按单局设计方案的 MVP 开局：[/b]\n选择一条武器流派，进入 6 场连续战斗。\n\n配表位置：`res://data/classes.json`",
 		class_actions
 	)
+
+func _show_settings_page() -> void:
+	var graze_state := "开" if CombatResolver.ENABLE_GRAZE else "关"
+	_show_overlay(
+		"设置",
+		"[b]战斗测试设置[/b]\n\n擦中规则：%s\n开启后，距离只差 1 格的攻击会判定为擦中，并按当前收束规则造成半伤、削势 -1。关闭后，擦中视为距离未命中。" % graze_state,
+		[
+			{"text": "擦中规则：%s" % graze_state, "callback": Callable(self, "_toggle_graze_setting")},
+			{"text": "返回", "callback": Callable(self, "_show_main_menu")}
+		]
+	)
+
+func _toggle_graze_setting() -> void:
+	CombatResolver.ENABLE_GRAZE = not CombatResolver.ENABLE_GRAZE
+	_show_settings_page()
 	_refresh_ui()
 
 func _start_run(class_id: String) -> void:
