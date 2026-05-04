@@ -97,7 +97,7 @@ func _draw_legend() -> void:
 	if font == null:
 		return
 	var text := "令军令  案旧案  战战斗  精精英  民清望  息休整  师师父  物旧物  首首领"
-	draw_string(font, Vector2(VIEW_PADDING, max(20.0, size.y - 12.0)), text, HORIZONTAL_ALIGNMENT_LEFT, -1, LEGEND_FONT_SIZE, Color(0.78, 0.70, 0.56, 0.78))
+	draw_string(font, Vector2(VIEW_PADDING, maxf(20.0, size.y - 12.0)), text, HORIZONTAL_ALIGNMENT_LEFT, -1, LEGEND_FONT_SIZE, Color(0.78, 0.70, 0.56, 0.78))
 
 func _draw_centered_text(font: Font, text: String, center_pos: Vector2, font_size: int, color: Color) -> void:
 	var text_size := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
@@ -139,39 +139,39 @@ func _node_pos(node: Dictionary) -> Vector2:
 	return _graph_to_view(Vector2(float(node.get("x", 0.0)), float(node.get("y", 0.0))))
 
 func _graph_to_view(graph_pos: Vector2) -> Vector2:
-	var bounds := _graph_bounds()
+	var bounds: Dictionary = _graph_bounds()
 	var min_pos: Vector2 = bounds.get("min", Vector2.ZERO)
 	var max_pos: Vector2 = bounds.get("max", Vector2.ONE)
-	var graph_size := max_pos - min_pos
-	graph_size.x = max(1.0, graph_size.x)
-	graph_size.y = max(1.0, graph_size.y)
-	var view_size := size
+	var graph_size: Vector2 = max_pos - min_pos
+	graph_size.x = maxf(1.0, graph_size.x)
+	graph_size.y = maxf(1.0, graph_size.y)
+	var view_size: Vector2 = size
 	if view_size.x <= 1.0 or view_size.y <= 1.0:
 		view_size = custom_minimum_size
-	var usable_width := max(1.0, view_size.x - VIEW_PADDING * 2.0)
-	var usable_height := max(1.0, view_size.y - VIEW_PADDING * 2.0 - 34.0)
-	var scale_factor: float = min(usable_width / graph_size.x, usable_height / graph_size.y)
-	var used_size := graph_size * scale_factor
-	var origin := Vector2(
+	var usable_width: float = maxf(1.0, view_size.x - VIEW_PADDING * 2.0)
+	var usable_height: float = maxf(1.0, view_size.y - VIEW_PADDING * 2.0 - 34.0)
+	var scale_factor: float = minf(usable_width / graph_size.x, usable_height / graph_size.y)
+	var used_size: Vector2 = graph_size * scale_factor
+	var origin: Vector2 = Vector2(
 		(view_size.x - used_size.x) * 0.5,
 		VIEW_PADDING + (usable_height - used_size.y) * 0.5
 	)
 	return origin + (graph_pos - min_pos) * scale_factor
 
 func _graph_bounds() -> Dictionary:
-	var nodes := _node_array()
+	var nodes: Array = _node_array()
 	if nodes.is_empty():
 		return {"min": Vector2.ZERO, "max": Vector2.ONE}
-	var first := nodes[0] as Dictionary
-	var min_pos := Vector2(float(first.get("x", 0.0)), float(first.get("y", 0.0)))
-	var max_pos := min_pos
+	var first: Dictionary = nodes[0] as Dictionary
+	var min_pos: Vector2 = Vector2(float(first.get("x", 0.0)), float(first.get("y", 0.0)))
+	var max_pos: Vector2 = min_pos
 	for item in nodes:
 		var node := item as Dictionary
-		var pos := Vector2(float(node.get("x", 0.0)), float(node.get("y", 0.0)))
-		min_pos.x = min(min_pos.x, pos.x)
-		min_pos.y = min(min_pos.y, pos.y)
-		max_pos.x = max(max_pos.x, pos.x)
-		max_pos.y = max(max_pos.y, pos.y)
+		var pos: Vector2 = Vector2(float(node.get("x", 0.0)), float(node.get("y", 0.0)))
+		min_pos.x = minf(min_pos.x, pos.x)
+		min_pos.y = minf(min_pos.y, pos.y)
+		max_pos.x = maxf(max_pos.x, pos.x)
+		max_pos.y = maxf(max_pos.y, pos.y)
 	return {"min": min_pos, "max": max_pos}
 
 func _short_title(title: String) -> String:
