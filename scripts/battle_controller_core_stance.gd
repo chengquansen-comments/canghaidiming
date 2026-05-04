@@ -51,8 +51,10 @@ func _on_stage_grid_slot_pressed(slot: int) -> void:
 		_log("轻功不足，不能移动到该格。")
 		return
 	var current_target := _player_target_position()
-	if draft_player_has_position and slot == current_target and slot == player.position:
+	if slot == player.position and slot == current_target:
+		draft_player_position = slot
 		draft_player_facing = _opposite_facing(_player_target_facing())
+		draft_player_has_position = true
 	else:
 		draft_player_position = slot
 		draft_player_facing = _facing_toward(slot, enemy.position if enemy != null else slot, player.facing)
