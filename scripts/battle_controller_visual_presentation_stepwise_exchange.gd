@@ -239,7 +239,8 @@ func _play_attack_presentation(is_player_actor: bool, card: CardData, style: Str
 			await get_tree().create_timer(pause_duration).timeout
 	else:
 		_play_presentation_miss_feedback(not is_player_actor, result)
-	_tween_actor_offset(is_player_actor, base_offset + lunge_offset, base_offset, 0.16, Tween.TRANS_QUAD, Tween.EASE_IN)
+	var return_offset: Vector2 = _presentation_offset(is_player_actor)
+	_tween_actor_offset(is_player_actor, return_offset + lunge_offset, return_offset, 0.16, Tween.TRANS_QUAD, Tween.EASE_IN)
 	await _play_momentum_delta_presentation(is_player_actor, result)
 	_show_presentation_result_text(target_is_enemy, card, result)
 	await get_tree().create_timer(0.45).timeout
