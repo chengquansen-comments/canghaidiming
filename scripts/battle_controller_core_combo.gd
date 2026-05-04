@@ -104,7 +104,7 @@ func _resolve_combo_chain_if_any(actor: Fighter, target: Fighter, intent: Intent
 		bool(fx.get("start_extra_pulse", false))
 	)
 	_play_profession_shape_feedback(actor.data.id, fx.get("start_flash", Color("ffd479")), false, true)
-	_flash_label(player_label if actor.data.id == player.data.id else enemy_label, fx.get("label_color", Color("ffe39c")))
+	_flash_label(player_label if actor == player else enemy_label, fx.get("label_color", Color("ffe39c")))
 	lines.append("[color=#ffd479][b]>>> %s · %s <<<[/b][/color]" % [fx.get("log_flair", "连招启动"), combo.get("display_name", "")])
 	for idx in range(combo.get("followups", []).size()):
 		if target.hp <= 0:
@@ -151,6 +151,6 @@ func _resolve_combo_chain_if_any(actor: Fighter, target: Fighter, intent: Intent
 					fx.get("finisher_fill", Color("4a1626")),
 					fx.get("finisher_border", Color("ff4d6d"))
 				)
-				_flash_label(enemy_label if target.data.id == enemy.data.id else player_label, fx.get("label_color", Color("ff7a7a")))
+				_flash_label(enemy_label if target == enemy else player_label, fx.get("label_color", Color("ff7a7a")))
 				lines.append("[color=#ff4d6d][b]!!! %s 以 %s 完成终结 · %s !!![/b][/color]" % [actor.data.display_name, segment_name, fx.get("log_flair", "")])
 	return lines
