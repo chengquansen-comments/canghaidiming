@@ -126,7 +126,61 @@ load("res://scripts/battle_controller_visual_resolver_preview.gd")
 
 ---
 
-## 5. 区分 Parser Error、Warning-as-error、Runtime Error
+## 5. 项目内继承链诊断脚本
+
+本项目保留了一个专用诊断脚本：
+
+```text
+tools/debug_mainvisual_load_chain.gd
+```
+
+使用命令：
+
+```bash
+HOME=/private/tmp godot --headless --path . --script tools/debug_mainvisual_load_chain.gd
+```
+
+它会从 `res://scripts/battle_controller_visual_story_return_intent_visibility.gd` 开始，读取真实 `extends "..."` 链路，打印：
+
+```text
+=== Extends chain child -> parent ===
+CHAIN[00]: ...
+CHAIN[01]: ...
+```
+
+然后按“最深父类 -> 子类 -> MainVisual.tscn”的顺序逐层 `load()`：
+
+```text
+=== Load chain parent -> child ===
+LOAD_BEGIN: ...
+LOAD_OK: ...
+LOAD_FAILED: ...
+```
+
+排查原则：
+
+```text
+1. 第一条真实 SCRIPT ERROR / Parse Error 才是根因候选。
+2. 后续一连串 Could not resolve class 通常只是祖先失败后的冒泡结果。
+3. 不要因为最后报 story_return / settlement / MainVisual 就直接改这些外层文件。
+4. 只修第一处真实 parser error 所在文件。
+```
+
+典型案例：
+
+```text
+外层表现：
+Could not resolve class "res://scripts/battle_controller_visual_story_return.gd"
+
+真实根因：
+scripts/battle_controller_visual_presentation_stepwise_exchange.gd 中，把返回 void 的 coroutine 当成返回值保存。
+```
+
+修复前必须先跑这个脚本或同等逐层 load 工具，避免盲目改继承链。
+
+---
+
+## 6. 区分 Parser Error、Warning-as-error、Runtime Error
 
 不要把所有 Godot 报错都归因到 `Variant` 类型推断。
 
@@ -147,7 +201,7 @@ Runtime Error
 
 ---
 
-## 6. 不要轻易改链路、绕过、加文件
+## 7. 不要轻易改链路、绕过、加文件
 
 继承链报错时，禁止优先采用这些做法：
 
@@ -175,7 +229,7 @@ Runtime Error
 
 ---
 
-## 7. 每次改动前先声明补丁边界
+## 8. 每次改动前先声明补丁边界
 
 在动代码前，必须先明确：
 
@@ -199,7 +253,7 @@ Runtime Error
 
 ---
 
-## 8. Godot 继承错误标准排查流程
+## 9. Godot 继承错误标准排查流程
 
 按以下顺序执行：
 
@@ -209,7 +263,7 @@ Runtime Error
 3. 查场景挂载脚本。
 4. 完整展开 extends 链。
 5. 跑 headless 加载目标场景。
-6. 如仍不清晰，逐层 load 继承链。
+6. 如仍不清晰，逐层 load 继承链；MainVisual 优先用 tools/debug_mainvisual_load_chain.gd。
 7. 找到第一个真实 parser error。
 8. 只修这个点。
 9. 运行 git diff --check。
@@ -219,7 +273,7 @@ Runtime Error
 
 ---
 
-## 9. Godot warning-as-error 常见修法
+## 10. Godot warning-as-error 常见修法
 
 如果确认是 `Variant` 推断 warning，优先使用显式类型或显式转换。
 
@@ -302,7 +356,7 @@ return selected
 
 ---
 
-## 10. 缩进 / 语法错误优先级高于类型 warning
+## 11. 缩进 / 语法错误优先级高于类型 warning
 
 如果出现 Parser Error，必须优先检查：
 
@@ -325,7 +379,7 @@ lambda / connect 里的缩进是否闭合
 
 ---
 
-## 11. 提交前必须说明验证结果
+## 12. 提交前必须说明验证结果
 
 提交说明至少包含：
 
@@ -351,6 +405,6 @@ lambda / connect 里的缩进是否闭合
 
 ---
 
-## 12. 一句话原则
+## 13. 一句话原则
 
 > Godot 的继承错误是“链路加载失败”，不是“报错里那个父类一定错”。先跑验证，沿继承链找第一个真实 parse error，再做最小补丁。
