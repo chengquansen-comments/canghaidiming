@@ -75,9 +75,13 @@ func _refresh_hud_bars(force: bool = false) -> void:
 			_refresh_momentum_dots(enemy_momentum_dots, enemy.momentum, enemy.data.max_momentum)
 
 func _refresh_momentum_dots(container: HBoxContainer, current: int, maximum: int) -> void:
+	_set_momentum_dot_value(container, current, maximum)
+
+func _set_momentum_dot_value(container: HBoxContainer, current: int, maximum: int) -> void:
 	if container == null:
 		return
 	var safe_max := clampi(maximum, 1, 12)
+	var safe_current := clampi(current, 0, safe_max)
 	if container.get_child_count() != safe_max:
 		for child in container.get_children():
 			child.free()
@@ -89,4 +93,60 @@ func _refresh_momentum_dots(container: HBoxContainer, current: int, maximum: int
 	for i in range(container.get_child_count()):
 		var dot := container.get_child(i)
 		if dot is PanelContainer:
-			dot.add_theme_stylebox_override("panel", _make_momentum_dot_style(i < current))
+			dot.add_theme_stylebox_override("panel", _make_momentum_dot_style(i < safe_current))
+	_cache_momentum_dot_value(container, safe_current)
+
+func _cache_momentum_dot_value(container: HBoxContainer, value: int) -> void:
+	if container == player_momentum_dots:
+		_player_momentum_dot_value = value
+	elif container == enemy_momentum_dots:
+		_enemy_momentum_dot_value = value
+
+func _cached_momentum_dot_value(container: HBoxContainer, fallback: int) -> int:
+	if container == player_momentum_dots and _player_momentum_dot_value >= 0:
+		return _player_momentum_dot_value
+	if container == enemy_momentum_dots and _enemy_momentum_dot_value >= 0:
+		return _enemy_momentum_dot_value
+	return fallback
+
+func _step_momentum_dot_value(start_value: int, target_value: int, step_index: int) -> int:
+	if start_value == target_value:
+		return target_value
+	var direction := 1 if target_value > start_value else -1
+	return start_value + direction * mini(step_index, absi(target_value - start_value))
+
+func _queue_momentum_dot_transition_to_current_state(delay: float = 0.1) -> void:
+	if player == null or enemy == null:
+		return
+	var player_target := clampi(player.momentum, 0, player.data.max_momentum)
+	var enemy_target := clampi(enemy.momentum, 0, enemy.data.max_momentum)
+	var player_start := _cached_momentum_dot_value(player_momentum_dots, player_target)
+	var enemy_start := _cached_momentum_dot_value(enemy_momentum_dots, enemy_target)
+	var player_delta := absi(player_target - player_start)
+	var enemy_delta := absi(enemy_target - enemy_start)
+	var max_steps := maxi(player_delta, enemy_delta)
+	if max_steps <= 0:
+		return
+	_momentum_dot_animation_serial += 1
+	var serial := _momentum_dot_animation_serial
+	set_meta(MOMENTUM_DOT_ANIMATING_META, true)
+	_set_momentum_dot_value(player_momentum_dots, player_start, player.data.max_momentum)
+	_set_momentum_dot_value(enemy_momentum_dots, enemy_start, enemy.data.max_momentum)
+	var tween := create_tween()
+	tween.tween_interval(delay)
+	for step_index in range(1, max_steps + 1):
+		var p_value := _step_momentum_dot_value(player_start, player_target, step_index)
+		var e_value := _step_momentum_dot_value(enemy_start, enemy_target, step_index)
+		tween.tween_callback(func() -> void:
+			_set_momentum_dot_value(player_momentum_dots, p_value, player.data.max_momentum)
+			_set_momentum_dot_value(enemy_momentum_dots, e_value, enemy.data.max_momentum)
+		)
+		tween.tween_interval(0.045)
+	tween.finished.connect(func() -> void:
+		if serial != _momentum_dot_animation_serial:
+			return
+		_set_momentum_dot_value(player_momentum_dots, player_target, player.data.max_momentum)
+		_set_momentum_dot_value(enemy_momentum_dots, enemy_target, enemy.data.max_momentum)
+		set_meta(MOMENTUM_DOT_ANIMATING_META, false)
+		_hud_signature = ""
+	)
