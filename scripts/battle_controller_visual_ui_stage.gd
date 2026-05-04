@@ -281,8 +281,8 @@ func _set_fallback_actor_facing(actor: Control, faces_left: bool, top_left: Vect
 func _set_actor_sheet_frame(actor: Fighter, frame_index: int) -> void:
 	if actor == null:
 		return
-	if player != null and actor.data.id == player.data.id and player_sprite != null and player_sheet_source != null:
+	if actor == player and player_sprite != null and player_sheet_source != null:
 		player_sprite.texture = _sheet_frame_texture(player_sheet_source, frame_index)
 		return
-	if enemy != null and actor.data.id == enemy.data.id and enemy_sprite != null and enemy_sheet_source != null:
+	if actor == enemy and enemy_sprite != null and enemy_sheet_source != null:
 		enemy_sprite.texture = _sheet_frame_texture(enemy_sheet_source, frame_index)
