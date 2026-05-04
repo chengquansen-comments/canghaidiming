@@ -6,12 +6,13 @@ extends "res://scripts/battle_controller_visual_settlement_mode.gd"
 # visual layer decides timing and displays feedback, but no longer directly
 # mutates combat values for pressure rules.
 #
-# BattleEffectApplier is declared in the parent controller; do not redeclare it
-# here, otherwise GDScript raises a member-name conflict in the inheritance chain.
+# Use a local preload alias for parser-time constants to avoid relying on the
+# global class registry while this parent script is being resolved.
 
-const PRESSURE_NONE := BattleEffectApplier.PRESSURE_NONE
-const PRESSURE_EDGE := BattleEffectApplier.PRESSURE_EDGE
-const PRESSURE_BREAK_RESIST := BattleEffectApplier.PRESSURE_BREAK_RESIST
+const BattleEffectApplierForStoryReturn := preload("res://scripts/battle_effect_applier.gd")
+const PRESSURE_NONE := BattleEffectApplierForStoryReturn.PRESSURE_NONE
+const PRESSURE_EDGE := BattleEffectApplierForStoryReturn.PRESSURE_EDGE
+const PRESSURE_BREAK_RESIST := BattleEffectApplierForStoryReturn.PRESSURE_BREAK_RESIST
 
 var _returning_to_story_selection := false
 var _pressure_profile := PRESSURE_NONE
@@ -63,7 +64,7 @@ func _setup_pressure_profile_for_current_encounter() -> void:
 	if encounter.is_empty():
 		return
 	_pressure_profile = str(encounter.get("pressure_profile", PRESSURE_NONE))
-	if not BattleEffectApplier.is_valid_pressure_profile(_pressure_profile):
+	if not BattleEffectApplierForStoryReturn.is_valid_pressure_profile(_pressure_profile):
 		push_warning("Invalid pressure_profile, fallback to none: %s" % _pressure_profile)
 		_pressure_profile = PRESSURE_NONE
 	_break_resist_available = _pressure_profile == PRESSURE_BREAK_RESIST
@@ -80,7 +81,7 @@ func _apply_pressure_profile_runtime_rules() -> void:
 		"break_resist_available": _break_resist_available,
 		"last_edge_positions": _last_edge_positions
 	}
-	var result: Dictionary = BattleEffectApplier.apply_pressure_profile(_pressure_profile, player, enemy, state_machine, context)
+	var result: Dictionary = BattleEffectApplierForStoryReturn.apply_pressure_profile(_pressure_profile, player, enemy, state_machine, context)
 	_break_resist_available = bool(context.get("break_resist_available", _break_resist_available))
 	var edge_positions_value: Variant = context.get("last_edge_positions", _last_edge_positions)
 	if edge_positions_value is Dictionary:
