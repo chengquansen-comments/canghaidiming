@@ -24,6 +24,8 @@ func _render_strategic_map() -> void:
 		_render_network_strategic_map(graph_variant as Dictionary)
 		return
 	_render_legacy_strategic_map()
+
+
 func _render_network_strategic_map(graph: Dictionary) -> void:
 	_ensure_network_overlay_layer()
 	network_overlay_layer.visible = true
@@ -41,14 +43,8 @@ func _render_network_strategic_map(graph: Dictionary) -> void:
 	_render_network_overlay_map_view(graph)
 	_render_network_overlay_preview_panel(graph)
 	_render_network_overlay_footer(graph)
-func _render_network_map_view(graph: Dictionary) -> void:
-	network_map_view = StrategicNetworkMapView.new()
-	network_map_view.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	network_map_view.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	(network_map_view as Control).custom_minimum_size = Vector2(940, 460)
-	network_map_view.set_graph(graph, str(graph.get("selected_node_id", "")))
-	network_map_view.node_clicked.connect(_on_network_node_clicked)
-	map_buttons_box.add_child(network_map_view)
+
+
 func _on_network_node_clicked(map_graph_id: String) -> void:
 	var graph_variant = strategic_state.get("network_map", {})
 	if not (graph_variant is Dictionary):
@@ -61,6 +57,8 @@ func _on_network_node_clicked(map_graph_id: String) -> void:
 	strategic_state["selected_node_id"] = map_graph_id
 	_save_narrative_state_to_context()
 	_render()
+
+
 func _network_progress_text(graph: Dictionary) -> String:
 	var nodes: Array = graph.get("nodes", [])
 	var layer_count := int(graph.get("layer_count", 0))
@@ -74,6 +72,8 @@ func _network_progress_text(graph: Dictionary) -> String:
 		completed,
 		available,
 	]
+
+
 func _ensure_network_overlay_layer() -> void:
 	if network_overlay_layer != null:
 		return
@@ -158,6 +158,8 @@ func _ensure_network_overlay_layer() -> void:
 	network_footer_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	root.add_child(network_footer_container)
 	network_overlay_layer.visible = false
+
+
 func _clear_network_overlay_dynamic() -> void:
 	if network_map_container != null:
 		for child in network_map_container.get_children():
@@ -168,6 +170,8 @@ func _clear_network_overlay_dynamic() -> void:
 	if network_footer_container != null:
 		for child in network_footer_container.get_children():
 			child.queue_free()
+
+
 func _sync_network_overlay_visibility() -> void:
 	var graph_variant = strategic_state.get("network_map", {})
 	var should_show := bool(strategic_state.get("active", false)) \
@@ -180,24 +184,8 @@ func _sync_network_overlay_visibility() -> void:
 			focus_story_layer.visible = false
 		if focus_world_map_layer != null:
 			focus_world_map_layer.visible = false
-func _render_network_preview_panel(graph: Dictionary) -> void:
-	var selected_id := str(graph.get("selected_node_id", ""))
-	var node := StrategicNetworkMapRuntime.find_node(graph, selected_id)
-	var confirm_meta := _network_confirm_meta(graph, node)
-	var label := RichTextLabel.new()
-	label.bbcode_enabled = true
-	label.fit_content = true
-	label.custom_minimum_size = Vector2(0, 300)
-	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	label.text = _network_preview_text(graph)
-	combat_buttons_box.add_child(label)
-	var confirm := Button.new()
-	confirm.text = "确认前往"
-	confirm.disabled = not bool(confirm_meta.get("enabled", false))
-	confirm.custom_minimum_size = Vector2(0, 58)
-	confirm.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	confirm.pressed.connect(_confirm_network_node)
-	combat_buttons_box.add_child(confirm)
+
+
 func _network_preview_text(graph: Dictionary) -> String:
 	var selected_id := str(graph.get("selected_node_id", ""))
 	var node := StrategicNetworkMapRuntime.find_node(graph, selected_id)
@@ -223,11 +211,15 @@ func _network_preview_text(graph: Dictionary) -> String:
 	else:
 		text += "[b]前往状态：[/b]\n不可前往：%s" % str(confirm_meta.get("reason", "未解锁"))
 	return text
+
+
 func _network_confirm_meta(graph: Dictionary, node: Dictionary) -> Dictionary:
 	return {
 		"enabled": _network_selected_can_confirm(graph),
 		"reason": _network_confirm_block_reason(node),
 	}
+
+
 func _confirm_network_node() -> void:
 	var graph: Dictionary = strategic_state.get("network_map", {}) as Dictionary
 	if graph.is_empty():
@@ -246,6 +238,8 @@ func _confirm_network_node() -> void:
 		_enter_network_combat_node(node)
 		return
 	_execute_network_non_combat_node(node)
+
+
 func _execute_network_non_combat_node(node: Dictionary) -> void:
 	var graph: Dictionary = strategic_state.get("network_map", {}) as Dictionary
 	if graph.is_empty():
@@ -267,6 +261,8 @@ func _execute_network_non_combat_node(node: Dictionary) -> void:
 	last_hint = result_text
 	_save_narrative_state_to_context()
 	_render()
+
+
 func _enter_network_combat_node(node: Dictionary) -> void:
 	var graph: Dictionary = strategic_state.get("network_map", {}) as Dictionary
 	if graph.is_empty():
@@ -286,6 +282,8 @@ func _enter_network_combat_node(node: Dictionary) -> void:
 	_save_narrative_state_to_context()
 	NarrativeBattleContext.set_request_from_combat(request, "map_" + node_id)
 	get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
+
+
 func _network_node_can_confirm(node: Dictionary) -> bool:
 	var state := str(node.get("state", "locked"))
 	if not (state == "available" or state == "start"):
@@ -295,6 +293,8 @@ func _network_node_can_confirm(node: Dictionary) -> bool:
 		if not bool(request.get("enabled", false)):
 			return false
 	return true
+
+
 func _network_confirm_block_reason(node: Dictionary) -> String:
 	var state := str(node.get("state", "locked"))
 	match state:
@@ -311,6 +311,8 @@ func _network_confirm_block_reason(node: Dictionary) -> String:
 					return str(request.get("blocked_reason", "该 combat_pool 暂未接入战斗。"))
 			return ""
 	return "当前节点不可前往。"
+
+
 func _network_selected_can_confirm(graph: Dictionary) -> bool:
 	if bool(graph.get("map_complete", false)):
 		return false
@@ -322,6 +324,8 @@ func _network_selected_can_confirm(graph: Dictionary) -> bool:
 	if not available.has(selected_id):
 		return false
 	return _network_node_can_confirm(node)
+
+
 func _complete_network_node(graph: Dictionary, node: Dictionary) -> void:
 	var node_id := str(node.get("map_graph_id", ""))
 	if node_id.is_empty():
@@ -345,6 +349,8 @@ func _complete_network_node(graph: Dictionary, node: Dictionary) -> void:
 	else:
 		graph["selected_node_id"] = node_id
 		graph["map_complete"] = true
+
+
 func _refresh_network_node_states(graph: Dictionary) -> void:
 	var completed: Array = graph.get("completed_node_ids", [])
 	var available: Array = graph.get("available_node_ids", [])
@@ -368,6 +374,8 @@ func _refresh_network_node_states(graph: Dictionary) -> void:
 			node["state"] = "locked"
 		nodes[i] = node
 	graph["nodes"] = nodes
+
+
 func _render_network_overlay_map_view(graph: Dictionary) -> void:
 	var progress := Label.new()
 	progress.text = _network_progress_text(graph)
@@ -382,6 +390,8 @@ func _render_network_overlay_map_view(graph: Dictionary) -> void:
 	network_map_view.set_graph(graph, str(graph.get("selected_node_id", "")))
 	network_map_view.node_clicked.connect(_on_network_node_clicked)
 	network_map_container.add_child(network_map_view)
+
+
 func _render_network_overlay_preview_panel(graph: Dictionary) -> void:
 	var selected_id := str(graph.get("selected_node_id", ""))
 	var node := StrategicNetworkMapRuntime.find_node(graph, selected_id)
@@ -406,6 +416,8 @@ func _render_network_overlay_preview_panel(graph: Dictionary) -> void:
 	confirm.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	confirm.pressed.connect(_confirm_network_node)
 	network_preview_container.add_child(confirm)
+
+
 func _render_network_overlay_footer(graph: Dictionary) -> void:
 	var state_label := Label.new()
 	state_label.text = _network_state_summary_text()
@@ -419,6 +431,8 @@ func _render_network_overlay_footer(graph: Dictionary) -> void:
 	fallback.custom_minimum_size = Vector2(220, 52)
 	fallback.pressed.connect(_continue_legacy_linear_flow)
 	network_footer_container.add_child(fallback)
+
+
 func _consume_network_node_battle(source_id: String, result: String) -> void:
 	var graph: Dictionary = strategic_state.get("network_map", {}) as Dictionary
 	if graph.is_empty():
@@ -459,8 +473,8 @@ func _consume_network_node_battle(source_id: String, result: String) -> void:
 	strategic_state["available_node_ids"] = (graph.get("available_node_ids", []) as Array).duplicate(true)
 	strategic_state["completed_node_ids"] = (graph.get("completed_node_ids", []) as Array).duplicate(true)
 	strategic_state["current_node_id"] = str(graph.get("current_node_id", ""))
-func _render_network_map_complete_panel(graph: Dictionary) -> void:
-	_render_network_overlay_complete(graph)
+
+
 func _render_network_overlay_complete(graph: Dictionary) -> void:
 	_render_network_overlay_map_view(graph)
 	var summary := RichTextLabel.new()
@@ -481,6 +495,8 @@ func _render_network_overlay_complete(graph: Dictionary) -> void:
 	boss_btn.pressed.connect(_on_network_final_boss_pressed)
 	network_preview_container.add_child(boss_btn)
 	_render_network_overlay_footer(graph)
+
+
 func _on_network_final_boss_pressed() -> void:
 	var graph: Dictionary = strategic_state.get("network_map", {}) as Dictionary
 	if graph.is_empty():
@@ -503,15 +519,12 @@ func _on_network_final_boss_pressed() -> void:
 		"override_player_profile": true,
 	}, STRATEGIC_FINAL_BOSS_SOURCE_ID)
 	get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
+
+
 func _network_state_summary_text() -> String:
 	return StrategicMapState.summary_text(strategic_state)
-func _render_network_debug_buttons() -> void:
-	var fallback := Button.new()
-	fallback.text = "继续旧线性流程"
-	fallback.custom_minimum_size = Vector2(0, 54)
-	fallback.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	fallback.pressed.connect(_continue_legacy_linear_flow)
-	choices_box.add_child(fallback)
+
+
 func _continue_legacy_linear_flow() -> void:
 	strategic_state["active"] = false
 	strategic_state["completed"] = true
@@ -521,11 +534,15 @@ func _continue_legacy_linear_flow() -> void:
 		super._advance_to_node(target_index, "继续旧线性流程。")
 	else:
 		super._advance_to_node(_flow_count() - 1, "继续旧线性流程。")
+
+
 func _find_flow_index_by_node_id(node_id: String) -> int:
 	for i in range(_flow_count()):
 		if _node_id_at(i) == node_id:
 			return i
 	return -1
+
+
 func _ensure_network_map_for_state(warn_if_regenerated: bool = false) -> void:
 	var map_variant = strategic_state.get("network_map", {})
 	if map_variant is Dictionary and not (map_variant as Dictionary).is_empty():
