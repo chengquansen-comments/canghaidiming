@@ -160,21 +160,39 @@ func _try_apply_reactive_enemy_pre_move() -> void:
 		call_deferred("_play_reactive_enemy_pre_move_animation", result)
 
 
+func _finish_reactive_enemy_pre_move_handoff(play_focus_cue: bool = false) -> void:
+	_reactive_pre_move_animating = false
+	awaiting_player_input = true
+	_hand_buttons_signature = ""
+	_invalidate_stage_preview()
+	_set_enemy_presentation_offset(Vector2.ZERO)
+	_set_actor_action_glow(false, false)
+	_set_actor_action_glow(true, true)
+	if play_focus_cue:
+		await _play_phase_focus_cue("我方行动", ACTOR_GLOW_PLAYER_COLOR, 0.45)
+	_refresh_hand_buttons()
+	_refresh_ui()
+
+
 func _play_reactive_enemy_pre_move_animation(result: Dictionary) -> void:
 	var round_value: int = int(result.get("round", -1))
-	if round_value < 0 or _reactive_pre_move_animation_round == round_value:
-		_reactive_pre_move_animating = false
+	if round_value < 0:
+		await _finish_reactive_enemy_pre_move_handoff(false)
+		return
+	if _reactive_pre_move_animation_round == round_value:
+		await _finish_reactive_enemy_pre_move_handoff(false)
 		return
 	if not bool(result.get("changed", false)):
-		_reactive_pre_move_animating = false
+		await _finish_reactive_enemy_pre_move_handoff(false)
 		return
 	var from_slot: int = int(result.get("from_position", -1))
 	var to_slot: int = int(result.get("to_position", -1))
 	if not _is_valid_presentation_slot(from_slot) or not _is_valid_presentation_slot(to_slot):
-		_reactive_pre_move_animating = false
+		await _finish_reactive_enemy_pre_move_handoff(false)
 		return
 	if from_slot == to_slot:
-		_reactive_pre_move_animating = false
+		_reactive_pre_move_animation_round = round_value
+		await _finish_reactive_enemy_pre_move_handoff(true)
 		return
 	_reactive_pre_move_animation_round = round_value
 	_set_actor_action_glow(true, false)
@@ -185,14 +203,7 @@ func _play_reactive_enemy_pre_move_animation(result: Dictionary) -> void:
 	_set_enemy_presentation_offset(Vector2.ZERO)
 	_set_actor_action_glow(false, false)
 	await get_tree().create_timer(0.24).timeout
-	_set_actor_action_glow(true, true)
-	await _play_phase_focus_cue("我方行动", ACTOR_GLOW_PLAYER_COLOR, 0.45)
-	_reactive_pre_move_animating = false
-	awaiting_player_input = true
-	_hand_buttons_signature = ""
-	_invalidate_stage_preview()
-	_refresh_hand_buttons()
-	_refresh_ui()
+	await _finish_reactive_enemy_pre_move_handoff(true)
 
 
 func _animate_reactive_enemy_pre_move_slots(from_slot: int, to_slot: int) -> void:
