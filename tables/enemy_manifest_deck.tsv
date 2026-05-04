@@ -1,4 +1,4 @@
-enemy_id	order	id	name	min	max	cost	role	gain	break	attack	guard	tags	style	facing
+enemy_id	order	id	name	min	max	cost	role	gain	break	damage	guard	tags	style	facing
 enemy_blademaster_prologue_raider	1	e_i1	乱步	0	2	1	feint	1	0	0	0	教学	短	true
 enemy_blademaster_prologue_raider	2	e_i2	乱砍	0	2	1	attack	0	0	3	0	低威胁	短	true
 enemy_blademaster_prologue_raider	3	e_i3	退守	0	3	1	guard	0	0	0	3	守	短	false
