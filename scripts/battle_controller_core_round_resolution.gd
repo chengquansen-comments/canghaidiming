@@ -150,6 +150,8 @@ func _finish_battle() -> void:
 	battle_active = false
 	awaiting_player_input = false
 	state_machine.phase = BattleStateMachine.BattlePhase.RESULT
+	completed_battle_count += 1
+	_sync_player_realm_from_completed_battles()
 	var result_text := "玩家落败。"
 	if enemy.hp <= 0:
 		result_text = "玩家获胜。"

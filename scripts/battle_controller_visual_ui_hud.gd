@@ -66,10 +66,20 @@ func _apply_actor_anchor_meta(is_player_actor: bool, actor: Fighter, frame_index
 	var foot_anchor := _sprite_anchor_foot_anchor(asset_id, frame_index)
 	BattleActorFootHelper.apply_actor_meta_bounds(sprite, frame_size, foot_anchor, 1.0, "right")
 
+func _battle_sprite_anchor_service():
+	var tree := get_tree()
+	if tree == null:
+		return null
+	var root := tree.root
+	if root == null:
+		return null
+	return root.get_node_or_null("BattleSpriteAnchorService")
+
 func _sprite_anchor_asset_id_for(actor: Fighter, is_enemy_actor: bool) -> String:
 	var candidates := _sprite_anchor_candidate_ids(actor, is_enemy_actor)
+	var service = _battle_sprite_anchor_service()
 	for candidate in candidates:
-		if BattleSpriteAnchorService.has_asset(candidate):
+		if service != null and service.has_asset(candidate):
 			return candidate
 	return candidates[0] if not candidates.is_empty() else ""
 
@@ -93,8 +103,9 @@ func _add_unique_anchor_candidate(result: Array[String], value: String) -> void:
 		result.append(value)
 
 func _sprite_anchor_frame_size(asset_id: String, source: Texture2D) -> Vector2i:
-	if asset_id != "" and BattleSpriteAnchorService.has_asset(asset_id):
-		return BattleSpriteAnchorService.get_frame_size(asset_id)
+	var service = _battle_sprite_anchor_service()
+	if asset_id != "" and service != null and service.has_asset(asset_id):
+		return service.get_frame_size(asset_id)
 	if source == null:
 		return BattleActorFootHelper.DEFAULT_FRAME_SIZE
 	var source_width := maxi(source.get_width(), 1)
@@ -104,8 +115,9 @@ func _sprite_anchor_frame_size(asset_id: String, source: Texture2D) -> Vector2i:
 	return Vector2i(maxi(source_width / SHEET_FRAME_COUNT, 1), source_height)
 
 func _sprite_anchor_foot_anchor(asset_id: String, frame_index: int) -> Vector2:
-	if asset_id != "" and BattleSpriteAnchorService.has_asset(asset_id):
-		var anchor := BattleSpriteAnchorService.get_frame_anchor(asset_id, frame_index)
+	var service = _battle_sprite_anchor_service()
+	if asset_id != "" and service != null and service.has_asset(asset_id):
+		var anchor: Vector2i = service.get_frame_anchor(asset_id, frame_index)
 		return Vector2(anchor.x, anchor.y)
 	return BattleActorFootHelper.DEFAULT_FOOT_ANCHOR
 

@@ -219,10 +219,4 @@ func _make_card_art_style(card: CardData) -> StyleBoxFlat:
 	return style
 
 func _card_art_glyph(card: CardData) -> String:
-	if card.is_guard_card():
-		return "守"
-	if card.is_feint_card():
-		return "行"
-	if card.max_distance >= 3:
-		return "气"
-	return "斩"
+	return ShoushiComboRules.rank_text(card.shoushi_rank)

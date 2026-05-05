@@ -18,10 +18,20 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 	var e_hp_delta: int = 0
 	var p_momentum_delta: int = 0
 	var e_momentum_delta: int = 0
+	var p_running_hp: int = player.hp
+	var e_running_hp: int = enemy.hp
 	var p_running_momentum: int = player.momentum
 	var e_running_momentum: int = enemy.momentum
+	var p_running_guard: int = player.guard_points
+	var e_running_guard: int = enemy.guard_points
 	var p_max_momentum: int = player.data.max_momentum if player != null and player.data != null else 0
 	var e_max_momentum: int = enemy.data.max_momentum if enemy != null and enemy.data != null else 0
+	var p_combo_rank: int = player.last_effective_shoushi_rank
+	var e_combo_rank: int = enemy.last_effective_shoushi_rank
+	var p_combo_count: int = player.shoushi_combo_count
+	var e_combo_count: int = enemy.shoushi_combo_count
+	var p_combo_multiplier := maxi(player.shoushi_combo_multiplier, 1)
+	var e_combo_multiplier := maxi(enemy.shoushi_combo_multiplier, 1)
 	var player_will_break: bool = false
 	var enemy_will_break: bool = false
 	var p_range_result: String = CombatResolver.RANGE_NONE
@@ -40,20 +50,60 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 			player_move_applied = true
 			steps.append({"side": "player", "phase": "move", "from": before_move, "to": p_final, "facing": p_facing})
 			if p_card != null:
-				var result_p: Dictionary = _resolve_one_preview_step(true, p_card, p_final, e_final, p_facing, e_facing)
+				var result_p: Dictionary = _resolve_one_preview_step(
+					true,
+					p_card,
+					p_final,
+					e_final,
+					p_facing,
+					e_facing,
+					{"hp": p_running_hp, "momentum": p_running_momentum, "guard": p_running_guard, "broken": player.is_broken()},
+					{"hp": e_running_hp, "momentum": e_running_momentum, "guard": e_running_guard, "broken": enemy.is_broken()},
+					{"previous_rank": p_combo_rank, "combo_count": p_combo_count}
+				)
 				p_range_result = str(result_p.get("range", CombatResolver.RANGE_NONE))
 				var target_m_delta: int = int(result_p.get("target_momentum_delta", 0))
 				var actor_m_delta: int = int(result_p.get("actor_momentum_delta", 0))
+				var actor_guard_delta: int = int(result_p.get("actor_guard_delta", 0))
+				var target_guard_delta: int = int(result_p.get("target_guard_delta", 0))
+				var blocked_value: int = int(result_p.get("blocked", 0))
 				var before_enemy_momentum: int = e_running_momentum
 				var before_player_momentum_gain: int = p_running_momentum
+				var before_player_guard: int = p_running_guard
+				var before_enemy_guard: int = e_running_guard
+				var before_enemy_hp: int = e_running_hp
 				e_running_momentum = clampi(e_running_momentum + target_m_delta, 0, e_max_momentum)
 				p_running_momentum = clampi(p_running_momentum + actor_m_delta, 0, p_max_momentum)
+				p_running_guard = maxi(p_running_guard + actor_guard_delta, 0)
+				e_running_guard = maxi(e_running_guard + target_guard_delta - blocked_value, 0)
+				e_running_hp = maxi(e_running_hp + int(result_p.get("target_hp_delta", 0)), 0)
 				var breaks_enemy: bool = before_enemy_momentum > 0 and e_running_momentum <= 0
 				enemy_will_break = enemy_will_break or breaks_enemy
 				e_hp_delta += int(result_p.get("target_hp_delta", 0))
 				e_momentum_delta += target_m_delta
 				p_momentum_delta += actor_m_delta
-				steps.append({"side": "player", "phase": "effect", "card": p_card.display_name, "range": p_range_result, "damage": int(result_p.get("damage", 0)), "break": int(result_p.get("break", 0)), "gain": int(result_p.get("gain", 0)), "will_break": breaks_enemy, "actor_momentum_before": before_player_momentum_gain, "actor_momentum_after": p_running_momentum, "target_momentum_before": before_enemy_momentum, "target_momentum_after": e_running_momentum})
+				var step_p := _effect_step("player", p_card, result_p)
+				step_p["will_break"] = breaks_enemy
+				step_p["actor_momentum_before"] = before_player_momentum_gain
+				step_p["actor_momentum_after"] = p_running_momentum
+				step_p["target_momentum_before"] = before_enemy_momentum
+				step_p["target_momentum_after"] = e_running_momentum
+				step_p["actor_guard_before"] = before_player_guard
+				step_p["actor_guard_after"] = p_running_guard
+				step_p["target_guard_before"] = before_enemy_guard
+				step_p["target_guard_after"] = e_running_guard
+				step_p["target_hp_before"] = before_enemy_hp
+				step_p["target_hp_after"] = e_running_hp
+				steps.append(step_p)
+				if bool(result_p.get("shoushi_enabled", ShoushiComboRules.is_enabled())):
+					if bool(result_p.get("shoushi_should_reset", false)):
+						p_combo_rank = 0
+						p_combo_count = 0
+						p_combo_multiplier = 1
+					elif int(result_p.get("shoushi_combo_count", 0)) > 0:
+						p_combo_rank = int(result_p.get("shoushi_rank", 0))
+						p_combo_count = int(result_p.get("shoushi_combo_count", 0))
+						p_combo_multiplier = int(result_p.get("shoushi_multiplier", 1))
 				var before_effect_move_p: int = p_final
 				var before_effect_move_e: int = e_final
 				p_final = int(result_p.get("actor_final", p_final))
@@ -71,20 +121,60 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 			enemy_move_applied = true
 			steps.append({"side": "enemy", "phase": "move", "from": before_enemy_move, "to": e_final, "facing": e_facing})
 			if e_card != null:
-				var result_e: Dictionary = _resolve_one_preview_step(false, e_card, e_final, p_final, e_facing, p_facing)
+				var result_e: Dictionary = _resolve_one_preview_step(
+					false,
+					e_card,
+					e_final,
+					p_final,
+					e_facing,
+					p_facing,
+					{"hp": e_running_hp, "momentum": e_running_momentum, "guard": e_running_guard, "broken": enemy.is_broken()},
+					{"hp": p_running_hp, "momentum": p_running_momentum, "guard": p_running_guard, "broken": player.is_broken()},
+					{"previous_rank": e_combo_rank, "combo_count": e_combo_count}
+				)
 				e_range_result = str(result_e.get("range", CombatResolver.RANGE_NONE))
 				var target_m_delta_e: int = int(result_e.get("target_momentum_delta", 0))
 				var actor_m_delta_e: int = int(result_e.get("actor_momentum_delta", 0))
+				var actor_guard_delta_e: int = int(result_e.get("actor_guard_delta", 0))
+				var target_guard_delta_e: int = int(result_e.get("target_guard_delta", 0))
+				var blocked_value_e: int = int(result_e.get("blocked", 0))
 				var before_player_momentum: int = p_running_momentum
 				var before_enemy_momentum_gain: int = e_running_momentum
+				var before_enemy_guard_gain: int = e_running_guard
+				var before_player_guard: int = p_running_guard
+				var before_player_hp: int = p_running_hp
 				p_running_momentum = clampi(p_running_momentum + target_m_delta_e, 0, p_max_momentum)
 				e_running_momentum = clampi(e_running_momentum + actor_m_delta_e, 0, e_max_momentum)
+				e_running_guard = maxi(e_running_guard + actor_guard_delta_e, 0)
+				p_running_guard = maxi(p_running_guard + target_guard_delta_e - blocked_value_e, 0)
+				p_running_hp = maxi(p_running_hp + int(result_e.get("target_hp_delta", 0)), 0)
 				var breaks_player: bool = before_player_momentum > 0 and p_running_momentum <= 0
 				player_will_break = player_will_break or breaks_player
 				p_hp_delta += int(result_e.get("target_hp_delta", 0))
 				p_momentum_delta += target_m_delta_e
 				e_momentum_delta += actor_m_delta_e
-				steps.append({"side": "enemy", "phase": "effect", "card": e_card.display_name, "range": e_range_result, "damage": int(result_e.get("damage", 0)), "break": int(result_e.get("break", 0)), "gain": int(result_e.get("gain", 0)), "will_break": breaks_player, "actor_momentum_before": before_enemy_momentum_gain, "actor_momentum_after": e_running_momentum, "target_momentum_before": before_player_momentum, "target_momentum_after": p_running_momentum})
+				var step_e := _effect_step("enemy", e_card, result_e)
+				step_e["will_break"] = breaks_player
+				step_e["actor_momentum_before"] = before_enemy_momentum_gain
+				step_e["actor_momentum_after"] = e_running_momentum
+				step_e["target_momentum_before"] = before_player_momentum
+				step_e["target_momentum_after"] = p_running_momentum
+				step_e["actor_guard_before"] = before_enemy_guard_gain
+				step_e["actor_guard_after"] = e_running_guard
+				step_e["target_guard_before"] = before_player_guard
+				step_e["target_guard_after"] = p_running_guard
+				step_e["target_hp_before"] = before_player_hp
+				step_e["target_hp_after"] = p_running_hp
+				steps.append(step_e)
+				if bool(result_e.get("shoushi_enabled", ShoushiComboRules.is_enabled())):
+					if bool(result_e.get("shoushi_should_reset", false)):
+						e_combo_rank = 0
+						e_combo_count = 0
+						e_combo_multiplier = 1
+					elif int(result_e.get("shoushi_combo_count", 0)) > 0:
+						e_combo_rank = int(result_e.get("shoushi_rank", 0))
+						e_combo_count = int(result_e.get("shoushi_combo_count", 0))
+						e_combo_multiplier = int(result_e.get("shoushi_multiplier", 1))
 				var before_effect_move_e2: int = e_final
 				var before_effect_move_p2: int = p_final
 				e_final = int(result_e.get("actor_final", e_final))
@@ -122,6 +212,14 @@ func _ordered_preview_simulation(p_intent: IntentData, e_intent: IntentData) -> 
 		"enemy_will_break": enemy_will_break,
 		"player_momentum_final": p_running_momentum,
 		"enemy_momentum_final": e_running_momentum,
+		"player_guard_final": p_running_guard,
+		"enemy_guard_final": e_running_guard,
+		"player_shoushi_rank": p_combo_rank,
+		"enemy_shoushi_rank": e_combo_rank,
+		"player_shoushi_combo_count": p_combo_count,
+		"enemy_shoushi_combo_count": e_combo_count,
+		"player_shoushi_multiplier": p_combo_multiplier,
+		"enemy_shoushi_multiplier": e_combo_multiplier,
 		"order": order,
 		"steps": steps
 	}
@@ -159,22 +257,4 @@ func _effect_preview_text() -> String:
 	return "\n".join(lines)
 
 func _step_text(step: Dictionary) -> String:
-	var side_text: String = "我方" if str(step.get("side", "player")) == "player" else "敌方"
-	var phase: String = str(step.get("phase", ""))
-	if phase == "move":
-		return "%s移动：%s → %s" % [side_text, _slot_label(int(step.get("from", 0))), _slot_label(int(step.get("to", 0)))]
-	if phase == "effect":
-		var range_result: String = str(step.get("range", CombatResolver.RANGE_NONE))
-		if range_result == CombatResolver.RANGE_MISS_FACING or range_result == CombatResolver.RANGE_MISS_RANGE:
-			return "%s招式：%s / 未命中，无伤害无削势" % [side_text, str(step.get("card", "待命"))]
-		var break_text: String = " / 崩势" if bool(step.get("will_break", false)) else ""
-		return "%s招式：%s / %s / 伤%d / 势-%d%s" % [side_text, str(step.get("card", "待命")), _range_text(range_result), int(step.get("damage", 0)), int(step.get("break", 0)), break_text]
-	if phase == "effect_move":
-		var actor_from: int = int(step.get("actor_from", 0))
-		var actor_to: int = int(step.get("actor_to", actor_from))
-		var target_from: int = int(step.get("target_from", 0))
-		var target_to: int = int(step.get("target_to", target_from))
-		if actor_from == actor_to and target_from == target_to:
-			return "%s招式位移：无" % side_text
-		return "%s招式位移：自身 %s → %s；目标 %s → %s" % [side_text, _slot_label(actor_from), _slot_label(actor_to), _slot_label(target_from), _slot_label(target_to)]
-	return "%s：无" % side_text
+	return super._step_text(step)

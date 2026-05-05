@@ -21,6 +21,7 @@ func _start_session(role_id: String) -> void:
 	enemy = Fighter.new(_copy_fighter_data(fighter_catalog[enemy_role_id]))
 	enemy.set_session_realm(ENEMY_SESSION_REALM)
 	battle_count = 0
+	completed_battle_count = 0
 	node_pick_count = 0
 	battle_active = false
 	player_intent = null
@@ -88,8 +89,24 @@ func _open_gain_move() -> void:
 
 func _sample_rewards(count: int) -> Array[CardData]:
 	var pool: Array[CardData] = []
+	var fallback_pool: Array[CardData] = []
+	var max_rank := 10
+	var player_weapon := ""
+	if player != null:
+		max_rank = ShoushiComboRules.max_rank_for_realm(player.session_realm)
+		player_weapon = player.data.weapon_name
 	for template in reward_pool:
-		pool.append(template.duplicate_card())
+		var copy := template.duplicate_card()
+		fallback_pool.append(copy)
+		var style_ok := player_weapon.is_empty() or copy.weapon_style.is_empty() or copy.weapon_style == "通用" or player_weapon.find(copy.weapon_style) >= 0
+		if copy.shoushi_rank <= max_rank and style_ok and not copy.has_tag("兼容"):
+			pool.append(copy)
+	if pool.is_empty():
+		for card in fallback_pool:
+			if not card.has_tag("兼容"):
+				pool.append(card)
+	if pool.is_empty():
+		pool = fallback_pool
 	pool.shuffle()
 	return pool.slice(0, mini(count, pool.size()))
 
@@ -103,10 +120,10 @@ func _apply_enlighten() -> void:
 	if player == null:
 		return
 	if player.upgrade_realm():
-		_log("你通过【点化】将会话武境提升到 %d。" % player.session_realm)
+		_log("你通过【点化】将会话武境提升到 %d，可驾驭最高 %d 阶收式。" % [player.session_realm, ShoushiComboRules.max_rank_for_realm(player.session_realm)])
 		_open_realm_move_reward()
 	else:
-		_log("你的武境已达当前原型上限 3。")
+		_log("你的武境已达当前原型上限 10。")
 		_refresh_ui()
 
 func _open_realm_move_reward() -> void:
@@ -116,3 +133,17 @@ func _open_realm_move_reward() -> void:
 		actions.append({"text": card.short_summary(), "callback": Callable(self, "_pick_reward_card").bind(card, "武境突破")})
 	actions.append({"text": "稍后再说", "callback": Callable(self, "_hide_overlay")})
 	_show_overlay("武境突破", "从 3 张招式里选 1 张加入长期牌库。新招不会自动进入当前入战 8 张。", actions)
+
+
+func _sync_player_realm_from_completed_battles() -> void:
+	if player == null:
+		return
+	var old_realm := player.session_realm
+	var new_realm := clampi(2 + int(completed_battle_count / 2), 2, 10)
+	player.set_session_realm(new_realm)
+	if new_realm > old_realm:
+		_log("[b]武境精进：[/b] 已历战 %d 场，武境提升至 %d，可驾驭最高 %d 阶收式。" % [
+			completed_battle_count,
+			new_realm,
+			ShoushiComboRules.max_rank_for_realm(new_realm)
+		])

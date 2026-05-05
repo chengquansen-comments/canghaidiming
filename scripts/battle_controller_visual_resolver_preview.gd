@@ -310,13 +310,20 @@ func _effect_step(side: String, card: CardData, result: Dictionary) -> Dictionar
 		"phase": "effect",
 		"card": card.display_name,
 		"range": str(result.get("range", CombatResolver.RANGE_NONE)),
+		"requires_hit_check": card.requires_hit_check(),
 		"damage": int(result.get("damage", 0)),
 		"break": int(result.get("break", 0)),
 		"gain": int(result.get("gain", 0)),
+		"guard": int(result.get("guard", 0)),
 		"will_break": bool(result.get("will_break", false)),
 		"will_die": bool(result.get("will_die", false)),
 		"was_back_hit": bool(result.get("was_back_hit", false)),
-		"back_hit_turn_to": str(result.get("back_hit_turn_to", ""))
+		"back_hit_turn_to": str(result.get("back_hit_turn_to", "")),
+		"shoushi_rank": int(result.get("shoushi_rank", 0)),
+		"shoushi_combo_count": int(result.get("shoushi_combo_count", 0)),
+		"shoushi_multiplier": int(result.get("shoushi_multiplier", 1)),
+		"shoushi_triggered": bool(result.get("shoushi_triggered", false)),
+		"shoushi_mode": str(result.get("shoushi_mode", ShoushiComboRules.CURRENT_MODE))
 	}
 
 func _intent_target_position(is_player_side: bool, intent: IntentData) -> int:
@@ -338,36 +345,58 @@ func _intent_move_delta(is_player_side: bool, intent: IntentData) -> int:
 		return _intent_target_position(true, intent) - player.position
 	return _intent_target_position(false, intent) - enemy.position
 
-func _resolve_one_preview_step(is_player_side: bool, card: CardData, actor_pos: int, target_pos: int, actor_facing: String, target_facing: String) -> Dictionary:
+func _resolve_one_preview_step(is_player_side: bool, card: CardData, actor_pos: int, target_pos: int, actor_facing: String, target_facing: String, actor_override: Dictionary = {}, target_override: Dictionary = {}, combo_state: Dictionary = {}) -> Dictionary:
 	var actor: Fighter = player if is_player_side else enemy
 	var target: Fighter = enemy if is_player_side else player
 	var actor_state: Dictionary = {
-		"hp": actor.hp,
-		"momentum": actor.momentum,
-		"guard": actor.guard_points,
+		"hp": int(actor_override.get("hp", actor.hp)),
+		"momentum": int(actor_override.get("momentum", actor.momentum)),
+		"guard": int(actor_override.get("guard", actor.guard_points)),
 		"position": actor_pos,
 		"facing": actor_facing,
-		"broken": actor.is_broken()
+		"broken": bool(actor_override.get("broken", actor.is_broken()))
 	}
 	var target_state: Dictionary = {
-		"hp": target.hp,
-		"momentum": target.momentum,
-		"guard": target.guard_points,
+		"hp": int(target_override.get("hp", target.hp)),
+		"momentum": int(target_override.get("momentum", target.momentum)),
+		"guard": int(target_override.get("guard", target.guard_points)),
 		"position": target_pos,
 		"facing": target_facing,
-		"broken": target.is_broken()
+		"broken": bool(target_override.get("broken", target.is_broken()))
 	}
 	var order: Array[String] = []
 	order.append("player")
 	var sim: Dictionary = CombatResolver.resolve_exchange(actor_state, target_state, card, null, order)
 	var range_result := str(sim.get("player_range_result", CombatResolver.RANGE_NONE))
+	var combo_result := ShoushiComboRules.evaluate_action_state(
+		int(combo_state.get("previous_rank", actor.last_effective_shoushi_rank if actor != null else 0)),
+		int(combo_state.get("combo_count", actor.shoushi_combo_count if actor != null else 0)),
+		card,
+		range_result,
+		false
+	)
+	var effective_card: CardData = card.duplicate_card()
+	if bool(combo_result.get("is_effective", false)):
+		effective_card = ShoushiComboRules.build_effective_card(card, int(combo_result.get("multiplier", 1)))
+		sim = CombatResolver.resolve_exchange(actor_state, target_state, effective_card, null, order)
 	var target_hp_delta: int = int(sim.get("enemy_hp_delta", 0))
 	var target_momentum_delta: int = int(sim.get("enemy_momentum_delta", 0))
 	var actor_momentum_delta: int = int(sim.get("player_momentum_delta", 0))
+	var actor_guard_delta: int = int(sim.get("player_guard_delta", 0))
+	var target_guard_delta: int = int(sim.get("enemy_guard_delta", 0))
 	var damage_value: int = absi(target_hp_delta) if target_hp_delta < 0 else 0
 	var break_value: int = absi(target_momentum_delta) if target_momentum_delta < 0 else 0
-	var will_die := target.hp > 0 and target.hp + target_hp_delta <= 0
-	var will_break := target.momentum > 0 and target.momentum + target_momentum_delta <= 0
+	var guard_value: int = actor_guard_delta if actor_guard_delta > 0 else int(effective_card.guard)
+	var base_damage: int = int(CombatResolver.resolve_card_effect(
+		effective_card,
+		range_result,
+		bool(actor_state.get("broken", false)),
+		bool(target_state.get("broken", false)),
+		0
+	).get("damage", 0))
+	var blocked_value: int = maxi(base_damage - damage_value, 0)
+	var will_die := int(target_state.get("hp", 0)) > 0 and int(target_state.get("hp", 0)) + target_hp_delta <= 0
+	var will_break := int(target_state.get("momentum", 0)) > 0 and int(target_state.get("momentum", 0)) + target_momentum_delta <= 0
 	var was_back_hit := false
 	var back_hit_turn_to := ""
 	if not is_player_side and (range_result == CombatResolver.RANGE_HIT or (CombatResolver.ENABLE_GRAZE and range_result == CombatResolver.RANGE_GRAZE)) and (damage_value > 0 or break_value > 0):
@@ -378,16 +407,27 @@ func _resolve_one_preview_step(is_player_side: bool, card: CardData, actor_pos: 
 		"damage": damage_value,
 		"break": break_value,
 		"gain": actor_momentum_delta if actor_momentum_delta > 0 else 0,
+		"guard": guard_value,
+		"blocked": blocked_value,
 		"actor_hp_delta": int(sim.get("player_hp_delta", 0)),
 		"target_hp_delta": target_hp_delta,
 		"actor_momentum_delta": actor_momentum_delta,
 		"target_momentum_delta": target_momentum_delta,
+		"actor_guard_delta": actor_guard_delta,
+		"target_guard_delta": target_guard_delta,
 		"actor_final": int(sim.get("player_final", actor_pos)),
 		"target_final": int(sim.get("enemy_final", target_pos)),
 		"will_die": will_die,
 		"will_break": will_break,
 		"was_back_hit": was_back_hit,
-		"back_hit_turn_to": back_hit_turn_to
+		"back_hit_turn_to": back_hit_turn_to,
+		"shoushi_rank": int(combo_result.get("rank", 0)),
+		"shoushi_combo_count": int(combo_result.get("combo_count", 0)),
+		"shoushi_multiplier": int(combo_result.get("multiplier", 1)),
+		"shoushi_triggered": bool(combo_result.get("triggered", false)),
+		"shoushi_mode": str(ShoushiComboRules.CURRENT_MODE),
+		"shoushi_enabled": bool(combo_result.get("enabled", false)),
+		"shoushi_should_reset": bool(combo_result.get("should_reset", false))
 	}
 
 func _preview_back_hit(defender_pos: int, defender_facing: String, attacker_pos: int) -> bool:
@@ -459,12 +499,30 @@ func _step_text(step: Dictionary) -> String:
 		var range_result := str(step.get("range", CombatResolver.RANGE_NONE))
 		if range_result == CombatResolver.RANGE_MISS_FACING or range_result == CombatResolver.RANGE_MISS_RANGE:
 			return "%s招式：%s / 未命中，无伤害无削势" % [side_text, str(step.get("card", "待命"))]
+		var parts: Array[String] = []
+		var requires_hit_check := bool(step.get("requires_hit_check", true))
+		parts.append("%s招式：%s" % [side_text, str(step.get("card", "待命"))])
+		parts.append(_range_text(range_result) if requires_hit_check else "生效")
+		var damage := int(step.get("damage", 0))
+		var break_value := int(step.get("break", 0))
+		var guard := int(step.get("guard", 0))
+		var gain := int(step.get("gain", 0))
+		if damage > 0:
+			parts.append("伤%d" % damage)
+		if break_value > 0:
+			parts.append("势-%d" % break_value)
+		if guard > 0:
+			parts.append("格挡%d" % guard)
+		if gain > 0:
+			parts.append("势+%d" % gain)
 		var extra := ""
 		if bool(step.get("will_break", false)):
 			extra += " / 破势"
 		if bool(step.get("was_back_hit", false)):
 			extra += " / 背击"
-		return "%s招式：%s / %s / 伤%d / 势-%d%s" % [side_text, str(step.get("card", "待命")), _range_text(range_result), int(step.get("damage", 0)), int(step.get("break", 0)), extra]
+		if int(step.get("shoushi_multiplier", 1)) > 1:
+			extra += " / 收式%s" % ShoushiComboRules.combo_brief_text(int(step.get("shoushi_combo_count", 0)), int(step.get("shoushi_multiplier", 1)))
+		return "%s%s" % [" / ".join(parts), extra]
 	if phase == "effect_move":
 		var actor_from := int(step.get("actor_from", 0))
 		var actor_to := int(step.get("actor_to", actor_from))

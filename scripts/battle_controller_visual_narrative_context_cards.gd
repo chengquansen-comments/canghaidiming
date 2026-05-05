@@ -9,7 +9,7 @@ func _cards_from_configs(configs: Array) -> Array[CardData]:
 			cards.append(config_variant.duplicate_card())
 			continue
 		var config: Dictionary = config_variant
-		cards.append(CardData.new(str(config.get("id", "card")), str(config.get("name", "招式")), str(config.get("name", "")), int(config.get("min", 0)), int(config.get("max", 5)), int(config.get("cost", 1)), str(config.get("role", CardData.ROLE_GUARD)), int(config.get("gain", 0)), int(config.get("break", 0)), int(config.get("damage", 0)), int(config.get("guard", 0)), PackedStringArray(config.get("tags", [])), str(config.get("style", "")), bool(config.get("facing", true))))
+		cards.append(CardData.new(str(config.get("id", "card")), str(config.get("name", "招式")), str(config.get("name", "")), int(config.get("min", 0)), int(config.get("max", 5)), int(config.get("cost", 1)), str(config.get("role", CardData.ROLE_GUARD)), int(config.get("gain", 0)), int(config.get("break", 0)), int(config.get("damage", 0)), int(config.get("guard", 0)), PackedStringArray(config.get("tags", [])), str(config.get("style", "")), bool(config.get("facing", true)), 0, 0, 0, CardData.MOVE_NONE, int(config.get("shoushi_rank", config.get("rank", 1)))))
 	return cards
 
 func _cards_from_card_ids(card_ids) -> Array[CardData]:
@@ -52,4 +52,3 @@ func _card_id_slots_from_fighter(fighter) -> Array:
 	for slot in fighter.get_battle_deck_slots():
 		slots.append(_card_ids_from_cards(slot as Array))
 	return slots
-

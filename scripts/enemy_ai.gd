@@ -6,6 +6,7 @@ const CardData = preload("res://scripts/card_data.gd")
 const IntentData = preload("res://scripts/intent_data.gd")
 const HiddenMoveData = preload("res://scripts/hidden_move_data.gd")
 const FeintData = preload("res://scripts/feint_data.gd")
+const ShoushiComboRules = preload("res://scripts/shoushi_combo_rules.gd")
 
 var manifest_intent_weights: Dictionary = {}
 var manifest_phase_behaviors: Array = []
@@ -51,7 +52,11 @@ func choose_intent(enemy: Fighter, opponent: Fighter, current_distance: int, opp
 
 
 func _can_play_card(fighter: Fighter, card: CardData) -> bool:
-	return card.momentum_cost <= fighter.momentum
+	if card.momentum_cost > fighter.momentum:
+		return false
+	if ShoushiComboRules.is_enabled() and card.shoushi_rank > ShoushiComboRules.max_rank_for_realm(fighter.realm):
+		return false
+	return true
 
 
 func _pick_best_card(enemy: Fighter, cards: Array[CardData], current_momentum: int, current_distance: int, opponent_visible_intent: IntentData) -> CardData:
@@ -63,6 +68,8 @@ func _pick_best_card(enemy: Fighter, cards: Array[CardData], current_momentum: i
 		var score := float(_base_card_score(enemy, card, current_distance, opponent_visible_intent))
 		score += _manifest_intent_score(enemy, card, opponent_visible_intent)
 		score += _manifest_phase_score(enemy, card)
+		if ShoushiComboRules.is_enabled() and card.shoushi_rank > enemy.last_effective_shoushi_rank:
+			score += 2.0 + float(enemy.shoushi_combo_count)
 		if score > best_score:
 			best_score = score
 			best_card = card

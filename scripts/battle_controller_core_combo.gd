@@ -58,9 +58,6 @@ func _card_role_prefix(card: CardData) -> String:
 		return "【守】"
 	if card.is_feint_card():
 		return "【变】"
-	var stage := _damage_stage_tag(card)
-	if stage != "":
-		return "【攻/%s】" % stage
 	return "【攻】"
 
 func _card_restriction_reason(fighter: Fighter, card: CardData) -> String:
@@ -68,6 +65,8 @@ func _card_restriction_reason(fighter: Fighter, card: CardData) -> String:
 		return ""
 	if fighter.is_broken():
 		return "崩势中本回合无法行动"
+	if ShoushiComboRules.is_enabled() and card.shoushi_rank > ShoushiComboRules.max_rank_for_realm(fighter.realm):
+		return "武境不足，无法驾驭 %d 阶招式。" % card.shoushi_rank
 	return ""
 
 func _can_play_card(fighter: Fighter, card: CardData) -> bool:
@@ -79,6 +78,8 @@ func _can_play_card(fighter: Fighter, card: CardData) -> bool:
 
 func _resolve_combo_chain_if_any(actor: Fighter, target: Fighter, intent: IntentData) -> Array[String]:
 	var lines: Array[String] = []
+	if ShoushiComboRules.is_enabled():
+		return lines
 	if actor == null or intent == null or intent.actual_card == null:
 		return lines
 	if not actor.combo_window_active:

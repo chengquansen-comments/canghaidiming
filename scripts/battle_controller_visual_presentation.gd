@@ -118,6 +118,7 @@ func _play_attack_presentation(is_player_actor: bool, card: CardData, style: Str
 	_tween_actor_offset(is_player_actor, base_offset + lunge_offset, base_offset, 0.16, Tween.TRANS_QUAD, Tween.EASE_IN)
 	await _play_momentum_delta_presentation(is_player_actor, result)
 	_show_presentation_result_text(target_is_enemy, card, result)
+	_maybe_show_shoushi_presentation(is_player_actor, result)
 	await get_tree().create_timer(0.45).timeout
 
 func _play_guard_presentation(is_player_actor: bool, _card: CardData, result: Dictionary) -> void:
@@ -126,6 +127,7 @@ func _play_guard_presentation(is_player_actor: bool, _card: CardData, result: Di
 	var guard_value: int = int(result.get("guard", 0))
 	var label: String = "守+%d" % guard_value if guard_value > 0 else "守"
 	_show_presentation_float_text(label, is_player_actor, Color("d8c9a5"))
+	_maybe_show_shoushi_presentation(is_player_actor, result)
 	_play_presentation_guard_flash(is_player_actor)
 	await get_tree().create_timer(0.10).timeout
 	_tween_actor_offset(is_player_actor, base_offset + Vector2(0, 9), base_offset, 0.13, Tween.TRANS_SINE, Tween.EASE_OUT)
@@ -139,6 +141,7 @@ func _play_focus_presentation(is_player_actor: bool, _card: CardData, result: Di
 	var gain_value: int = int(result.get("gain", 0))
 	var label: String = "势+%d" % gain_value if gain_value > 0 else "势"
 	_show_presentation_float_text(label, is_player_actor, Color("d9b66c"))
+	_maybe_show_shoushi_presentation(is_player_actor, result)
 	_play_presentation_guard_flash(is_player_actor)
 	await get_tree().create_timer(0.10).timeout
 	_tween_actor_offset(is_player_actor, base_offset + focus_offset, base_offset, 0.12, Tween.TRANS_SINE, Tween.EASE_OUT)
@@ -394,7 +397,7 @@ func _presentation_style_for_card(card: CardData) -> String:
 	return "slash"
 
 func _presentation_result_for_side(preview_sim: Dictionary, side: String) -> Dictionary:
-	var fallback := {"range": "hit", "damage": 0, "break": 0, "gain": 0, "guard": 0}
+	var fallback := {"range": "hit", "damage": 0, "break": 0, "gain": 0, "guard": 0, "shoushi_combo_count": 0, "shoushi_multiplier": 1, "shoushi_triggered": false}
 	var steps_value = preview_sim.get("steps", [])
 	if not (steps_value is Array):
 		return fallback
@@ -411,9 +414,26 @@ func _presentation_result_for_side(preview_sim: Dictionary, side: String) -> Dic
 			"damage": int(step.get("damage", 0)),
 			"break": int(step.get("break", 0)),
 			"gain": int(step.get("gain", 0)),
-			"guard": int(step.get("guard", 0))
+			"guard": int(step.get("guard", 0)),
+			"shoushi_rank": int(step.get("shoushi_rank", 0)),
+			"shoushi_combo_count": int(step.get("shoushi_combo_count", 0)),
+			"shoushi_multiplier": int(step.get("shoushi_multiplier", 1)),
+			"shoushi_triggered": bool(step.get("shoushi_triggered", false)),
+			"shoushi_mode": str(step.get("shoushi_mode", ShoushiComboRules.CURRENT_MODE))
 		}
 	return fallback
+
+
+func _maybe_show_shoushi_presentation(is_player_actor: bool, result: Dictionary) -> void:
+	if int(result.get("shoushi_multiplier", 1)) <= 1:
+		return
+	var combo_count := int(result.get("shoushi_combo_count", 0))
+	var multiplier := int(result.get("shoushi_multiplier", 1))
+	_show_presentation_float_text(
+		"收式%s ×%d" % [ShoushiComboRules.combo_count_text(combo_count), multiplier],
+		is_player_actor,
+		Color("f2d089")
+	)
 
 func _presentation_result_should_hit(card: CardData, result: Dictionary) -> bool:
 	if card == null:

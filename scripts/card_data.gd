@@ -36,6 +36,7 @@ var self_move_after: int
 var target_push_after: int
 var target_pull_after: int
 var move_condition: String
+var shoushi_rank: int
 
 
 func _init(
@@ -56,7 +57,8 @@ func _init(
 	p_self_move_after: int = 0,
 	p_target_push_after: int = 0,
 	p_target_pull_after: int = 0,
-	p_move_condition: String = MOVE_NONE
+	p_move_condition: String = MOVE_NONE,
+	p_shoushi_rank: int = 1
 ) -> void:
 	id = p_id
 	display_name = p_display_name
@@ -75,6 +77,7 @@ func _init(
 	target_push_after = clampi(p_target_push_after, 0, 1)
 	target_pull_after = clampi(p_target_pull_after, 0, 1)
 	move_condition = _normalize_move_condition(p_move_condition)
+	shoushi_rank = clampi(p_shoushi_rank, 1, 10)
 	role = _normalize_role_once(p_role)
 
 
@@ -97,7 +100,8 @@ func duplicate_card() -> CardData:
 		self_move_after,
 		target_push_after,
 		target_pull_after,
-		move_condition
+		move_condition,
+		shoushi_rank
 	)
 
 
@@ -221,6 +225,7 @@ func short_summary() -> String:
 		parts.append("标签 %s" % " / ".join(tags))
 	if weapon_style != "":
 		parts.append("式 %s" % weapon_style)
+	parts.append("收式 %d" % shoushi_rank)
 	var move_parts := movement_summary_parts()
 	if not move_parts.is_empty():
 		parts.append("位移 %s" % " / ".join(move_parts))

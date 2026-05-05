@@ -376,11 +376,7 @@ func _short_card_type_tag_for_builder(card: CardData) -> String:
 	return card.type_label()
 
 func _deck_card_art_glyph(card: CardData) -> String:
-	if card.is_guard_card():
-		return "架"
-	if card.is_feint_card():
-		return "行"
-	return "击"
+	return ShoushiComboRules.rank_text(card.shoushi_rank)
 
 func _compact_effect_summary(card: CardData) -> String:
 	if card == null:
@@ -452,8 +448,8 @@ func _card_matches_library_filter(card: CardData, filter_label: String) -> bool:
 			return card.is_attack_card()
 		"守":
 			return card.is_guard_card()
-		"藏招":
-			return card.has_tag("藏招") or card.id.begins_with("hidden_")
+		"变":
+			return card.is_feint_card()
 	return true
 
 func _card_meta_line(card: CardData) -> String:

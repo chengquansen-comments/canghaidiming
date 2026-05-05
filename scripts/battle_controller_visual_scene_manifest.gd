@@ -20,6 +20,7 @@ var stable_debug_ai_label: Label
 var stable_debug_runtime_label: Label
 var stable_debug_actions_row: HBoxContainer
 var stable_debug_continue_button: Button
+var stable_debug_foot_alignment_button: Button
 var stable_debug_gain_button: Button
 var stable_debug_enlighten_button: Button
 var stable_debug_fusion_button: Button
@@ -235,6 +236,8 @@ func _build_stable_debug_panel() -> void:
 	stable_debug_continue_button.focus_mode = Control.FOCUS_NONE
 	stable_debug_continue_button.pressed.connect(_on_continue_narrative_pressed)
 	stable_debug_actions_row.add_child(stable_debug_continue_button)
+	stable_debug_foot_alignment_button = _make_stable_debug_action_button("", Callable(self, "_on_stable_debug_foot_alignment_pressed"), 188)
+	stable_debug_actions_row.add_child(stable_debug_foot_alignment_button)
 	stable_debug_gain_button = _make_stable_debug_action_button("调试得招", Callable(self, "_open_gain_move"))
 	stable_debug_actions_row.add_child(stable_debug_gain_button)
 	stable_debug_enlighten_button = _make_stable_debug_action_button("调试点化", Callable(self, "_apply_enlighten"))
@@ -268,10 +271,10 @@ func _make_stable_debug_label(font_size: int) -> Label:
 	label.add_theme_constant_override("shadow_offset_y", 1)
 	return label
 
-func _make_stable_debug_action_button(text: String, callback: Callable) -> Button:
+func _make_stable_debug_action_button(text: String, callback: Callable, min_width: int = 108) -> Button:
 	var button := Button.new()
 	button.text = text
-	button.custom_minimum_size = Vector2(108, 32)
+	button.custom_minimum_size = Vector2(min_width, 32)
 	button.focus_mode = Control.FOCUS_NONE
 	button.pressed.connect(callback)
 	return button
@@ -309,9 +312,18 @@ func _refresh_stable_debug_panel() -> void:
 
 func _refresh_stable_debug_action_buttons() -> void:
 	var enabled := player != null and not battle_active
+	if stable_debug_foot_alignment_button != null:
+		stable_debug_foot_alignment_button.text = "脚点辅助定位线：%s" % ("开" if _foot_alignment_debug_visible() else "关")
 	for button in [stable_debug_gain_button, stable_debug_enlighten_button, stable_debug_fusion_button]:
 		if button is Button:
 			button.disabled = not enabled
+
+func _on_stable_debug_foot_alignment_pressed() -> void:
+	_set_foot_alignment_debug_enabled(not _foot_alignment_debug_visible())
+	_refresh_stable_debug_panel()
+
+func _foot_alignment_debug_visible() -> bool:
+	return bool(Engine.get_meta(FOOT_ALIGNMENT_DEBUG_META, false))
 
 func _set_stable_label_text(label: Label, value: String, key: String) -> void:
 	if label == null:

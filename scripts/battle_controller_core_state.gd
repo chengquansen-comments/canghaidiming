@@ -11,7 +11,7 @@ const HAND_SIZE := 4
 const PLAYER_BATTLE_DECK_SIZE := 8
 const PLAYER_DECK_SLOT_COUNT := 4
 const PLAYER_DECK_CARD_COPY_LIMIT := 2
-const DECK_LIBRARY_FILTERS := ["全部", "攻", "守", "藏招"]
+const DECK_LIBRARY_FILTERS := ["全部", "攻", "守", "变"]
 const ENEMY_SESSION_REALM := 2
 const ROUND_MOMENTUM_RECOVERY := 2
 const BATTLE_SLOT_COUNT := 9
@@ -28,6 +28,7 @@ var player_role_id := ""
 var battle_active := false
 var awaiting_player_input := false
 var battle_count := 0
+var completed_battle_count := 0
 var node_pick_count := 0
 
 var player_intent: IntentData

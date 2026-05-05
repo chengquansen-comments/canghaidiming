@@ -459,7 +459,7 @@
         "max_hp": "24",
         "max_momentum": "6",
         "starting_momentum": "5",
-        "starting_realm": "1",
+        "starting_realm": "2",
         "qinggong": "1",
         "notes": "主角初始数值"
       },
@@ -1362,7 +1362,7 @@
         "max_hp": "24",
         "max_momentum": "6",
         "starting_momentum": "5",
-        "starting_realm": "1",
+        "starting_realm": "2",
         "qinggong": "1",
         "notes": "主角初始数值"
       },

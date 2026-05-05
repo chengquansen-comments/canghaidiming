@@ -229,11 +229,21 @@ func _sample_battle_reward_choices(count: int) -> Array[CardData]:
 			owned.append(str(owned_values[i]))
 	var pool: Array[CardData] = []
 	var fallback_pool: Array[CardData] = []
+	var max_rank := 10
+	var player_weapon := ""
+	if player != null and player.data != null:
+		max_rank = ShoushiComboRules.max_rank_for_realm(player.session_realm)
+		player_weapon = player.data.weapon_name
 	for template: CardData in reward_pool:
 		var card: CardData = template.duplicate_card()
 		fallback_pool.append(card)
-		if not (card.id in owned):
+		var style_ok := player_weapon.is_empty() or card.weapon_style.is_empty() or card.weapon_style == "通用" or player_weapon.find(card.weapon_style) >= 0
+		if card.shoushi_rank <= max_rank and style_ok and not card.has_tag("兼容") and not (card.id in owned):
 			pool.append(card)
+	if pool.is_empty():
+		for card in fallback_pool:
+			if not card.has_tag("兼容"):
+				pool.append(card)
 	if pool.is_empty():
 		pool = fallback_pool
 	pool.shuffle()

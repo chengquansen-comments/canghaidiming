@@ -4,7 +4,7 @@ normal	标准	22	7	5	1	1	标准敌人
 pressure	压迫	26	8	6	2	1	高压敌人
 duel	高手	30	9	7	2	1	对称式高手对决
 master	师傅	48	12	9	4	3	师傅救场演示
-player_start	主角起手	24	6	5	1	1	主角初始数值
+player_start	主角起手	24	6	5	2	1	主角初始数值
 weak_blade	弱刀兵	24	7	4	1	1	低压剧情刀兵
 normal_spear	普通枪兵	40	10	5	1	1	正式剧情普通枪兵
 normal_blade	普通刀兵	22	8	4	1	1	正式剧情普通刀兵，线性期押运官用，控制武境四左右的战斗时长

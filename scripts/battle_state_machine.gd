@@ -5,6 +5,7 @@ const Fighter = preload("res://scripts/fighter.gd")
 const IntentData = preload("res://scripts/intent_data.gd")
 const CardData = preload("res://scripts/card_data.gd")
 const CombatResolver = preload("res://scripts/combat_resolver.gd")
+const ShoushiComboRules = preload("res://scripts/shoushi_combo_rules.gd")
 
 enum BattlePhase {
 	NODE_SELECTION,
@@ -28,6 +29,7 @@ const RANGE_HIT := "hit"
 const RANGE_GRAZE := "graze"
 const RANGE_MISS_RANGE := "miss_range"
 const RANGE_MISS_FACING := "miss_facing"
+const RANGE_NONE := "none"
 const MODE_SYMMETRIC_ID := "symmetric"
 const MODE_REACTIVE_ID := "reactive"
 const BATTLE_SLOT_COUNT := 9
@@ -180,19 +182,21 @@ func resolve_intent(intent: IntentData, actor: Fighter, target: Fighter) -> Arra
 		return lines
 	if actor.hp <= 0:
 		return lines
+	var original_card: CardData = intent.actual_card
 	if is_reactive_mode() and actor.pending_control_state == Fighter.CONTROL_BROKEN:
+		var canceled_combo_result := ShoushiComboRules.evaluate_action(actor, original_card, RANGE_NONE, true)
+		_apply_shoushi_result(actor, lines, canceled_combo_result)
 		lines.append("%s 被打入崩势，本回合攻击被中断。" % actor.data.display_name)
 		return lines
 
 	_commit_intent_stance(intent, actor)
 	update_distance_from_positions(actor, target)
 
-	var card: CardData = intent.actual_card
-	lines.append("%s 施展 [b]%s[/b]。" % [actor.data.display_name, card.display_name])
-	if card.id == "idle":
+	lines.append("%s 施展 [b]%s[/b]。" % [actor.data.display_name, original_card.display_name])
+	if original_card.id == "idle":
 		lines.append("%s 本回合不出招。" % actor.data.display_name)
 		return lines
-	if card.id == "staggered":
+	if original_card.id == "staggered":
 		lines.append("%s 崩势未稳，本回合无法行动。" % actor.data.display_name)
 		return lines
 
@@ -200,59 +204,69 @@ func resolve_intent(intent: IntentData, actor: Fighter, target: Fighter) -> Arra
 	var target_state: Dictionary = _fighter_to_resolver_state(target)
 	var order: Array[String] = []
 	order.append("player")
-	var sim: Dictionary = CombatResolver.resolve_exchange(actor_state, target_state, card, null, order)
+	var sim: Dictionary = CombatResolver.resolve_exchange(actor_state, target_state, original_card, null, order)
 	var range_result: String = str(sim.get("player_range_result", RANGE_HIT))
+	var combo_result := ShoushiComboRules.evaluate_action(actor, original_card, range_result, false)
+	var multiplier := int(combo_result.get("multiplier", 1))
+	var effective_card: CardData = original_card.duplicate_card()
+	if bool(combo_result.get("is_effective", false)):
+		effective_card = ShoushiComboRules.build_effective_card(original_card, multiplier)
+		sim = CombatResolver.resolve_exchange(actor_state, target_state, effective_card, null, order)
 
-	if card.is_guard_card():
-		var guard_gain: int = int(sim.get("player_guard_delta", card.guard))
+	if effective_card.is_guard_card():
+		var guard_gain: int = int(sim.get("player_guard_delta", effective_card.guard))
 		var guard_total: int = actor.add_guard(guard_gain)
-		lines.append("%s 立起 %d 格挡，当前护值 %d。" % [card.display_name, guard_gain, guard_total])
+		lines.append("%s 立起 %d 格挡，当前护值 %d。" % [effective_card.display_name, guard_gain, guard_total])
 		_apply_resolved_positions(actor, target, sim)
+		_apply_shoushi_result(actor, lines, combo_result)
 		return lines
 
-	if card.requires_hit_check():
+	if original_card.requires_hit_check():
 		if range_result == RANGE_MISS_FACING:
-			lines.append("%s 背向目标，未能命中。" % card.display_name)
+			lines.append("%s 背向目标，未能命中。" % original_card.display_name)
+			_apply_shoushi_result(actor, lines, combo_result)
 			return lines
 		if range_result == RANGE_MISS_RANGE:
-			lines.append("%s 因距离 %d 不合式，未能命中。" % [card.display_name, current_distance])
+			lines.append("%s 因距离 %d 不合式，未能命中。" % [original_card.display_name, current_distance])
+			_apply_shoushi_result(actor, lines, combo_result)
 			return lines
 		if CombatResolver.ENABLE_GRAZE and range_result == RANGE_GRAZE:
-			lines.append("%s 距离 %d 略失准头，只擦中目标。" % [card.display_name, current_distance])
+			lines.append("%s 距离 %d 略失准头，只擦中目标。" % [original_card.display_name, current_distance])
 
 	_apply_resolved_positions(actor, target, sim)
 
-	var raw_damage: int = int(CombatResolver.resolve_card_effect(card, range_result, actor.is_broken(), target.is_broken(), 0).get("damage", 0))
+	var raw_damage: int = int(CombatResolver.resolve_card_effect(effective_card, range_result, actor.is_broken(), target.is_broken(), 0).get("damage", 0))
 	var final_damage: int = absi(int(sim.get("enemy_hp_delta", 0))) if int(sim.get("enemy_hp_delta", 0)) < 0 else 0
 	var blocked: int = maxi(raw_damage - final_damage, 0)
 	if blocked > 0:
 		target.guard_points = maxi(target.guard_points - blocked, 0)
-		lines.append("%s 被格挡化去 %d。" % [card.display_name, blocked])
+		lines.append("%s 被格挡化去 %d。" % [effective_card.display_name, blocked])
 	if raw_damage > 0:
 		if target.is_broken():
 			lines.append("%s 处于崩势，所受伤害翻倍至 %d。" % [target.data.display_name, raw_damage])
 		if final_damage > 0:
 			target.hp = maxi(target.hp - final_damage, 0)
-			lines.append("%s 命中，造成 %d 伤害。" % [card.display_name, final_damage])
+			lines.append("%s 命中，造成 %d 伤害。" % [effective_card.display_name, final_damage])
 		else:
-			lines.append("%s 被完全格挡。" % card.display_name)
-	elif card.requires_hit_check() and range_result == RANGE_HIT:
-		lines.append("%s 命中。" % card.display_name)
+			lines.append("%s 被完全格挡。" % effective_card.display_name)
+	elif original_card.requires_hit_check() and range_result == RANGE_HIT:
+		lines.append("%s 命中。" % effective_card.display_name)
 
 	var momentum_gain: int = int(sim.get("player_momentum_delta", 0))
 	if momentum_gain > 0:
 		var gained_momentum: int = actor.recover_momentum(momentum_gain)
-		lines.append("%s 增己势 %d。" % [card.display_name, gained_momentum])
+		lines.append("%s 增己势 %d。" % [effective_card.display_name, gained_momentum])
 	var break_amount: int = absi(int(sim.get("enemy_momentum_delta", 0))) if int(sim.get("enemy_momentum_delta", 0)) < 0 else 0
 	if break_amount > 0:
 		var before_break: int = target.momentum
 		target.momentum = maxi(target.momentum - break_amount, 0)
 		var actual_break: int = before_break - target.momentum
-		lines.append("%s 削敌势 %d。" % [card.display_name, actual_break])
+		lines.append("%s 削敌势 %d。" % [effective_card.display_name, actual_break])
 		if before_break > 0 and target.momentum == 0:
 			target.queue_broken_state()
 			actor.queue_combo_window()
 			lines.append("%s 的势被打到 0，下回合将崩势硬直！" % target.data.display_name)
+	_apply_shoushi_result(actor, lines, combo_result)
 	return lines
 
 
@@ -280,6 +294,41 @@ func _apply_resolved_positions(actor: Fighter, target: Fighter, sim: Dictionary)
 	actor.position = int(sim.get("player_final", actor.position))
 	target.position = int(sim.get("enemy_final", target.position))
 	update_distance_from_positions(actor, target)
+
+
+func _apply_shoushi_result(actor: Fighter, lines: Array[String], combo_result: Dictionary) -> void:
+	ShoushiComboRules.apply_state_to_actor(actor, combo_result)
+	_append_shoushi_log(lines, combo_result)
+
+
+func _append_shoushi_log(lines: Array[String], combo_result: Dictionary) -> void:
+	if not bool(combo_result.get("enabled", false)):
+		return
+	if bool(combo_result.get("should_reset", false)):
+		var reset_reason := str(combo_result.get("reason", ""))
+		if reset_reason == "missed":
+			lines.append("[b]收式断链：[/b] 招式未中，气口散乱。")
+		elif reset_reason == "canceled":
+			lines.append("[b]收式断链：[/b] 招式被打断，气口散乱。")
+		return
+	if not bool(combo_result.get("is_effective", false)):
+		return
+	var combo_count := int(combo_result.get("combo_count", 0))
+	var multiplier := int(combo_result.get("multiplier", 1))
+	var rank := int(combo_result.get("rank", 0))
+	var previous_rank := int(combo_result.get("previous_rank", 0))
+	if combo_count <= 1:
+		if previous_rank > 0 and rank <= previous_rank:
+			lines.append("[b]收式回落：[/b] 当前收式阶未高于上一式，重新起式。")
+		else:
+			lines.append("[b]收式起式：[/b] 当前收式阶 %d。" % rank)
+		return
+	lines.append("[b]收式连击：[/b] %s，收式 %d → %d，伤害 / 格挡按 ×%d 结算。" % [
+		ShoushiComboRules.combo_count_text(combo_count),
+		previous_rank,
+		rank,
+		multiplier
+	])
 
 
 func finish_round(player: Fighter, enemy: Fighter) -> void:

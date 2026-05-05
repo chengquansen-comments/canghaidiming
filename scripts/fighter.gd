@@ -29,6 +29,9 @@ var selected_battle_deck: Array[CardData] = []
 var battle_deck_slots: Array = []
 var active_battle_deck_index := 0
 var battle_deck_limit: int = 0
+var last_effective_shoushi_rank: int
+var shoushi_combo_count: int
+var shoushi_combo_multiplier: int
 
 
 func _init(p_data: FighterData) -> void:
@@ -45,6 +48,7 @@ func _init(p_data: FighterData) -> void:
 	position = data.starting_position
 	facing = data.starting_facing
 	qinggong = data.qinggong
+	reset_shoushi_combo()
 	reset_for_battle()
 
 
@@ -60,6 +64,7 @@ func reset_for_battle(hand_size: int = 4) -> void:
 	position = data.starting_position
 	facing = data.starting_facing
 	qinggong = data.qinggong
+	reset_shoushi_combo()
 	draw_pile = get_battle_deck()
 	draw_pile.shuffle()
 	discard_pile.clear()
@@ -383,7 +388,7 @@ func _remove_one_card_from_array(cards: Array[CardData], card_id: String) -> boo
 
 
 func upgrade_realm() -> bool:
-	if session_realm >= 3:
+	if session_realm >= 10:
 		return false
 	session_realm += 1
 	realm = session_realm
@@ -391,8 +396,30 @@ func upgrade_realm() -> bool:
 
 
 func set_session_realm(value: int) -> void:
-	session_realm = maxi(value, 1)
+	session_realm = clampi(value, 1, 10)
 	realm = session_realm
+
+
+func reset_shoushi_combo() -> void:
+	last_effective_shoushi_rank = 0
+	shoushi_combo_count = 0
+	shoushi_combo_multiplier = 1
+
+
+func set_shoushi_combo_state(rank: int, count: int, multiplier: int) -> void:
+	last_effective_shoushi_rank = clampi(rank, 0, 10)
+	shoushi_combo_count = maxi(count, 0)
+	shoushi_combo_multiplier = maxi(multiplier, 1)
+
+
+func shoushi_combo_label() -> String:
+	if shoushi_combo_count <= 0:
+		return "收式未起"
+	return "%d连×%d｜上一阶%d" % [
+		shoushi_combo_count,
+		shoushi_combo_multiplier,
+		last_effective_shoushi_rank
+	]
 
 
 func set_control_state(value: String) -> void:

@@ -2,6 +2,8 @@ extends "res://scripts/battle_controller_core_overlay_log.gd"
 
 # Split from battle_controller_core.gd; keep behavior-compatible with the original controller.
 
+const ShoushiComboRules = preload("res://scripts/shoushi_combo_rules.gd")
+
 func _update_phase_label() -> void:
 	if phase_label == null:
 		return
@@ -53,12 +55,20 @@ func _status_text() -> String:
 	var lines: Array[String] = []
 	lines.append("[b]当前概况[/b]")
 	lines.append("演武 %d｜距离 %d｜回合 %d" % [battle_count, state_machine.current_distance, state_machine.round_index])
-	lines.append("玩家：%s｜生命 %d/%d｜势 %d/%d｜护值 %d｜位 %d｜朝%s" % [player.data.display_name, player.hp, player.data.max_hp, player.momentum, player.data.max_momentum, player.guard_points, player.position, "左" if player.facing == "left" else "右"])
-	lines.append("敌方：%s｜生命 %d/%d｜势 %d/%d｜护值 %d｜位 %d｜朝%s" % [enemy.data.display_name, enemy.hp, enemy.data.max_hp, enemy.momentum, enemy.data.max_momentum, enemy.guard_points, enemy.position, "左" if enemy.facing == "left" else "右"])
+	lines.append("玩家：%s｜生命 %d/%d｜势 %d/%d｜护值 %d｜位 %d｜朝%s｜武境 %d｜可用收式 %d" % [player.data.display_name, player.hp, player.data.max_hp, player.momentum, player.data.max_momentum, player.guard_points, player.position, "左" if player.facing == "left" else "右", player.realm, ShoushiComboRules.max_rank_for_realm(player.realm)])
+	if ShoushiComboRules.is_enabled():
+		lines.append("玩家收式：%s" % player.shoushi_combo_label())
+	lines.append("敌方：%s｜生命 %d/%d｜势 %d/%d｜护值 %d｜位 %d｜朝%s｜武境 %d｜可用收式 %d" % [enemy.data.display_name, enemy.hp, enemy.data.max_hp, enemy.momentum, enemy.data.max_momentum, enemy.guard_points, enemy.position, "左" if enemy.facing == "left" else "右", enemy.realm, ShoushiComboRules.max_rank_for_realm(enemy.realm)])
+	if ShoushiComboRules.is_enabled():
+		lines.append("敌方收式：%s" % enemy.shoushi_combo_label())
 	lines.append("")
 	lines.append("[b]当前规则状态[/b]")
 	lines.append("- %s" % state_machine.tie_rule_text(player, enemy))
 	lines.append("- %s" % state_machine.pressure_state_text(player, enemy))
+	if ShoushiComboRules.is_enabled():
+		lines.append("- 收式阶：指数连击开启，仅放大伤害与格挡。")
+	else:
+		lines.append("- 收式阶：已关闭。")
 	return "\n".join(lines)
 
 func _preview_text() -> String:
