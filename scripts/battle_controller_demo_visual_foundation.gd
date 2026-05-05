@@ -353,8 +353,8 @@ func _slot_center_x(slot: int) -> float:
 
 func _slot_top_left(slot: int, is_player: bool) -> Vector2:
 	var center_x := _slot_center_x(slot)
-	var foot_offset := PLAYER_FOOT_OFFSET_X if is_player else ENEMY_FOOT_OFFSET_X
-	var sprite_height := ACTOR_DISPLAY_SIZE.y
-	if player_sprite != null:
-		sprite_height = player_sprite.size.y
-	return Vector2(center_x - foot_offset, STAGE_GROUND_Y - sprite_height)
+	var sprite := player_sprite if is_player else enemy_sprite
+	var foot_offset := Vector2(PLAYER_FOOT_OFFSET_X if is_player else ENEMY_FOOT_OFFSET_X, ACTOR_DISPLAY_SIZE.y)
+	if sprite != null:
+		foot_offset = BattleActorFootHelper.frame_foot_offset(sprite)
+	return Vector2(center_x - foot_offset.x, STAGE_GROUND_Y - foot_offset.y)
