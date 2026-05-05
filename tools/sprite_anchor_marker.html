@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Battle Sprite Anchor TSV Manager</title>
   <style>
-    :root { color-scheme: dark; --bg:#10151d; --panel:#182231; --line:#bfa06a; --text:#e8edf4; --muted:#aab6c5; --accent:#f2b35e; --blue:#7cb7ff; --red:#ff6b6b; --green:#7ee787; }
+    :root { color-scheme: dark; --bg:#10151d; --panel:#182231; --line:#bfa06a; --text:#e8edf4; --muted:#aab6c5; --accent:#f2b35e; --red:#ff6b6b; --green:#7ee787; }
     * { box-sizing: border-box; }
     body { margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif; }
     header { padding:14px 18px; border-bottom:1px solid rgba(191,160,106,.38); background:#111a26; position:sticky; top:0; z-index:10; }
@@ -31,7 +31,6 @@
     .mini-actions { display:flex; gap:6px; margin-top:6px; }
     .mini-actions button { margin:0; padding:5px 6px; font-size:12px; }
     .toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-bottom:12px; color:var(--muted); font-size:13px; }
-    .toolbar span { white-space:nowrap; }
     canvas { image-rendering:auto; background:linear-gradient(45deg,#2a2f38 25%,transparent 25%),linear-gradient(-45deg,#2a2f38 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#2a2f38 75%),linear-gradient(-45deg,transparent 75%,#2a2f38 75%); background-size:20px 20px; background-position:0 0,0 10px,10px -10px,-10px 0; background-color:#1b2028; border:1px solid rgba(191,160,106,.35); border-radius:10px; display:block; }
     .canvas-wrap { width:max-content; min-width:100%; }
     code { color:#ffd18a; }
@@ -40,128 +39,90 @@
 <body>
 <header>
   <h1>Battle Sprite Anchor TSV Manager</h1>
-  <div class="hint">源数据使用 <code>tables/battle_sprite_anchors.tsv</code>。本工具可读取 TSV、选择/新增/删除 asset、自动检测或手点脚点、导出 TSV。运行 <code>python3 tools/compile_battle_sprite_anchors.py</code> 生成游戏读取的 <code>data/battle_sprite_anchors.json</code>。</div>
+  <div class="hint">导入 / 编辑 <code>tables/battle_sprite_anchors.tsv</code>，下载覆盖 TSV 后运行 <code>python3 tools/compile_battle_sprite_anchors.py</code> 生成 <code>data/battle_sprite_anchors.json</code>。</div>
 </header>
 <main>
   <aside>
     <div class="group">
-      <div class="group-title">1. 读取 / 选择 TSV 资产</div>
-      <label>导入 battle_sprite_anchors.tsv</label>
-      <input id="tsvInput" type="file" accept=".tsv,text/tab-separated-values,text/plain" />
-      <div class="row">
-        <button id="newAssetBtn">新增资产</button>
-        <button class="danger" id="deleteAssetBtn">删除当前资产</button>
-      </div>
-      <label>选择 asset_id</label>
-      <select id="assetSelect"></select>
-      <label>asset_id / runtime key</label>
-      <input id="assetId" value="spearman" />
-      <label>sheet runtime path</label>
-      <input id="sheetPath" value="res://assets/pixel_battle/sheets/spearman_sheet.png" />
+      <div class="group-title">1. TSV 资产</div>
+      <label>导入 battle_sprite_anchors.tsv</label><input id="tsvInput" type="file" accept=".tsv,text/tab-separated-values,text/plain" />
+      <div class="row"><button id="newAssetBtn">新增资产</button><button class="danger" id="deleteAssetBtn">删除当前资产</button></div>
+      <label>选择 asset_id</label><select id="assetSelect"></select>
+      <label>asset_id / runtime key</label><input id="assetId" value="spearman" />
+      <label>sheet runtime path</label><input id="sheetPath" value="res://assets/pixel_battle/sheets/spearman_sheet.png" />
     </div>
-
     <div class="group">
-      <div class="group-title">2. 载入图片并描点</div>
-      <label>Sprite sheet PNG</label>
-      <input id="fileInput" type="file" accept="image/png,image/webp,image/jpeg" />
-      <div class="row3">
-        <div><label>帧宽</label><input id="frameW" type="number" value="1536" /></div>
-        <div><label>帧高</label><input id="frameH" type="number" value="512" /></div>
-        <div><label>帧数</label><input id="frameCount" type="number" value="3" /></div>
-      </div>
-      <div class="row">
-        <div><label>布局</label><select id="layout"><option value="vertical">竖排</option><option value="horizontal">横排</option></select></div>
-        <div><label>缩放</label><input id="zoom" type="number" value="0.5" step="0.1" min="0.1" /></div>
-      </div>
-      <div class="row">
-        <div><label>目标脚点 X</label><input id="targetX" type="number" value="768" /></div>
-        <div><label>目标脚点 Y</label><input id="targetY" type="number" value="492" /></div>
-      </div>
+      <div class="group-title">2. 图片与帧参数</div>
+      <label>Sprite sheet PNG</label><input id="fileInput" type="file" accept="image/png,image/webp,image/jpeg" />
+      <div class="row3"><div><label>帧宽</label><input id="frameW" type="number" value="1536" /></div><div><label>帧高</label><input id="frameH" type="number" value="512" /></div><div><label>帧数</label><input id="frameCount" type="number" value="3" /></div></div>
+      <div class="row"><div><label>布局</label><select id="layout"><option value="vertical">竖排</option><option value="horizontal">横排</option></select></div><div><label>缩放</label><input id="zoom" type="number" value="0.5" step="0.1" min="0.1" /></div></div>
+      <div class="row"><div><label>目标脚点 X</label><input id="targetX" type="number" value="768" /></div><div><label>目标脚点 Y</label><input id="targetY" type="number" value="492" /></div></div>
       <button class="primary" id="saveAssetBtn">保存当前资产到 TSV 内存</button>
     </div>
-
     <div class="group">
       <div class="group-title">3. 自动检测</div>
-      <div class="row">
-        <div><label>背景</label><select id="bgMode"><option value="alpha">透明 Alpha</option><option value="green">绿幕 #00FF00</option></select></div>
-        <div><label>底部采样带</label><input id="bottomBand" type="number" value="24" /></div>
-      </div>
-      <div class="row">
-        <div><label>Alpha 阈值</label><input id="alphaThreshold" type="number" value="8" /></div>
-        <div><label>颜色容差</label><input id="colorTolerance" type="number" value="16" /></div>
-      </div>
-      <button id="autoDetectBtn">自动描脚点</button>
-      <button id="copyTargetBtn">全部设为目标脚点</button>
+      <div class="row"><div><label>背景</label><select id="bgMode"><option value="alpha">透明 Alpha</option><option value="green">绿幕 #00FF00</option></select></div><div><label>底部采样带</label><input id="bottomBand" type="number" value="24" /></div></div>
+      <div class="row"><div><label>Alpha 阈值</label><input id="alphaThreshold" type="number" value="8" /></div><div><label>颜色容差</label><input id="colorTolerance" type="number" value="16" /></div></div>
+      <button id="autoDetectBtn">自动描脚点</button><button id="copyTargetBtn">全部设为目标脚点</button>
     </div>
-
+    <div class="group"><div class="group-title">4. 帧列表</div><div id="frameList"></div></div>
     <div class="group">
-      <div class="group-title">4. 帧列表</div>
-      <div id="frameList"></div>
-    </div>
-
-    <div class="group">
-      <div class="group-title">5. 导出 TSV / JSON 预览</div>
-      <button class="primary" id="downloadTsvBtn">下载 battle_sprite_anchors.tsv</button>
-      <button id="exportJsonBtn">生成 JSON 预览</button>
-      <button id="downloadJsonBtn">下载 JSON 预览</button>
-      <label>TSV / JSON 输出</label>
-      <textarea id="outputText" spellcheck="false"></textarea>
+      <div class="group-title">5. 导出</div>
+      <button class="primary" id="downloadTsvBtn">下载 battle_sprite_anchors.tsv</button><button id="exportJsonBtn">生成 JSON 预览</button><button id="downloadJsonBtn">下载 JSON 预览</button>
+      <label>TSV / JSON 输出</label><textarea id="outputText" spellcheck="false"></textarea>
     </div>
   </aside>
   <section class="stage">
-    <div class="toolbar">
-      <span id="fileInfo">未加载图片</span>
-      <span>红十字=当前帧脚点</span>
-      <span>蓝十字=目标脚点</span>
-      <span>黄框=自动检测 bbox</span>
-      <span>点击画布=设置当前帧脚点</span>
-    </div>
+    <div class="toolbar"><span id="fileInfo">未加载图片</span><span>红十字=当前帧脚点</span><span>蓝十字=目标脚点</span><span>黄框=自动检测 bbox</span><span>点击画布=设置当前帧脚点</span></div>
     <div class="canvas-wrap"><canvas id="canvas" width="900" height="600"></canvas></div>
   </section>
 </main>
 <script>
 const TSV_COLUMNS = ["asset_id","sheet","frame_index","frame_width","frame_height","layout","foot_anchor_x","foot_anchor_y","target_anchor_x","target_anchor_y","bbox_x","bbox_y","bbox_w","bbox_h","notes"];
-const state = { image:null, imageName:"", frames:[], active:0, assets:{} };
+const state = { image:null, imageName:"", frames:[], active:0, assets:{}, currentAssetId:"spearman" };
 const el = id => document.getElementById(id);
 const canvas = el("canvas");
 const ctx = canvas.getContext("2d");
 function intValue(id, fallback){ const n = parseInt(el(id).value,10); return Number.isFinite(n) ? n : fallback; }
 function floatValue(id, fallback){ const n = parseFloat(el(id).value); return Number.isFinite(n) ? n : fallback; }
-function frameRect(i){ const w=intValue("frameW",1536), h=intValue("frameH",512); return el("layout").value === "vertical" ? {x:0,y:i*h,w,h} : {x:i*w,y:0,w,h}; }
 function targetAnchor(){ return {x:intValue("targetX",768), y:intValue("targetY",492)}; }
 function frameCount(){ return Math.max(1, intValue("frameCount",3)); }
 function zoom(){ return Math.max(0.05, floatValue("zoom",0.5)); }
-function ensureFrames(){ const t=targetAnchor(); const count=frameCount(); state.frames=Array.from({length:count},(_,i)=>state.frames[i]||{index:i,anchor:{...t},bbox:null,target:{...t},shift:{x:0,y:0},notes:""}); state.frames.forEach(f=>{f.target={...t}; if(f.anchor) f.shift={x:t.x-f.anchor.x,y:t.y-f.anchor.y};}); if(state.active>=count) state.active=count-1; }
-function assetFromForm(){ ensureFrames(); return {asset_id:el("assetId").value.trim()||"unnamed_sprite", sheet:el("sheetPath").value.trim(), frame_width:intValue("frameW",1536), frame_height:intValue("frameH",512), layout:el("layout").value, default_anchor:targetAnchor(), frames:state.frames.map(f=>({...f}))}; }
-function applyAsset(asset){ el("assetId").value=asset.asset_id||""; el("sheetPath").value=asset.sheet||""; el("frameW").value=asset.frame_width||1536; el("frameH").value=asset.frame_height||512; el("layout").value=asset.layout||"vertical"; el("targetX").value=(asset.default_anchor||{x:768}).x; el("targetY").value=(asset.default_anchor||{y:492}).y; state.frames=(asset.frames||[]).map((f,i)=>({index:i,anchor:f.anchor||{...targetAnchor()},bbox:f.bbox||null,target:f.target||{...targetAnchor()},shift:f.shift||{x:0,y:0},notes:f.notes||""})); ensureFrames(); renderAll(); }
-function saveCurrentAsset(){ const asset=assetFromForm(); state.assets[asset.asset_id]=asset; refreshAssetSelect(asset.asset_id); renderAll(); }
-function refreshAssetSelect(selected){ const select=el("assetSelect"); select.innerHTML=""; Object.keys(state.assets).sort().forEach(id=>{const o=document.createElement("option"); o.value=id; o.textContent=id; select.appendChild(o);}); if(selected) select.value=selected; }
-function newAsset(){ const id=prompt("新 asset_id", "new_sprite"); if(!id) return; const t={x:768,y:492}; state.assets[id]={asset_id:id,sheet:"",frame_width:1536,frame_height:512,layout:"vertical",default_anchor:t,frames:[0,1,2].map(i=>({index:i,anchor:{...t},target:{...t},shift:{x:0,y:0},bbox:null,notes:""}))}; refreshAssetSelect(id); applyAsset(state.assets[id]); }
-function deleteAsset(){ const id=el("assetId").value.trim(); if(!id||!state.assets[id]) return; if(!confirm(`删除 ${id} ?`)) return; delete state.assets[id]; const next=Object.keys(state.assets).sort()[0]; refreshAssetSelect(next); if(next) applyAsset(state.assets[next]); else newAsset(); }
-function parseTsv(text){ const lines=text.replace(/^\uFEFF/,"").split(/\r?\n/).filter(x=>x.trim().length>0); if(lines.length<1) return; const header=lines[0].split("\t"); const rows=lines.slice(1).map(line=>{const cells=line.split("\t"); const row={}; header.forEach((h,i)=>row[h]=cells[i]||""); return row;}); const assets={}; rows.forEach(row=>{ const id=row.asset_id; if(!id) return; const fw=parseInt(row.frame_width||"1536",10), fh=parseInt(row.frame_height||"512",10); const target={x:parseInt(row.target_anchor_x||"768",10),y:parseInt(row.target_anchor_y||"492",10)}; if(!assets[id]) assets[id]={asset_id:id,sheet:row.sheet||"",frame_width:fw,frame_height:fh,layout:row.layout||"vertical",default_anchor:target,frames:[]}; const fi=parseInt(row.frame_index||"0",10); const foot={x:parseInt(row.foot_anchor_x||row.target_anchor_x||"768",10),y:parseInt(row.foot_anchor_y||row.target_anchor_y||"492",10)}; const bbox=row.bbox_x!==""?["bbox_x","bbox_y","bbox_w","bbox_h"].reduce((a,k)=>({...a,[k.replace("bbox_","")]:parseInt(row[k]||"0",10)}),{}):null; assets[id].frames[fi]={index:fi,anchor:foot,target,shift:{x:target.x-foot.x,y:target.y-foot.y},bbox:bbox?{x:bbox.x,y:bbox.y,w:bbox.w,h:bbox.h}:null,notes:row.notes||""}; }); state.assets=assets; const first=Object.keys(assets).sort()[0]; refreshAssetSelect(first); if(first) applyAsset(assets[first]); }
-function toTsv(){ saveCurrentAsset(); const rows=[TSV_COLUMNS.join("\t")]; Object.keys(state.assets).sort().forEach(id=>{ const a=state.assets[id]; (a.frames||[]).forEach((f,i)=>{ const anchor=f.anchor||a.default_anchor; const target=f.target||a.default_anchor; const b=f.bbox||{}; rows.push([id,a.sheet,i,a.frame_width,a.frame_height,a.layout,anchor.x,anchor.y,target.x,target.y,b.x??"",b.y??"",b.w??"",b.h??"",f.notes||""].join("\t")); }); }); return rows.join("\n")+"\n"; }
-function exportJson(){ saveCurrentAsset(); const out={version:1,assets:{}}; Object.keys(state.assets).sort().forEach(id=>{ const a=state.assets[id]; out.assets[id]={sheet:a.sheet,frame_size:[a.frame_width,a.frame_height],layout:a.layout,default_anchor:[a.default_anchor.x,a.default_anchor.y],frames:{}}; a.frames.forEach((f,i)=>{ const anchor=f.anchor||a.default_anchor; const target=f.target||a.default_anchor; out.assets[id].frames[String(i)]={foot_anchor:[anchor.x,anchor.y],target_anchor:[target.x,target.y],shift:[target.x-anchor.x,target.y-anchor.y],bbox:f.bbox?[f.bbox.x,f.bbox.y,f.bbox.w,f.bbox.h]:null}; }); }); return JSON.stringify(out,null,2)+"\n"; }
+function frameRect(i){ const w=intValue("frameW",1536), h=intValue("frameH",512); return el("layout").value === "vertical" ? {x:0,y:i*h,w,h} : {x:i*w,y:0,w,h}; }
+function makeDefaultAsset(id="spearman") { const t={x:768,y:492}; return {asset_id:id,sheet:"res://assets/pixel_battle/sheets/spearman_sheet.png",frame_width:1536,frame_height:512,layout:"vertical",default_anchor:t,frames:[0,1,2].map(i=>({index:i,anchor:{...t},target:{...t},shift:{x:0,y:0},bbox:null,notes:""}))}; }
+function ensureFrames(){ const t=targetAnchor(); const count=frameCount(); state.frames=Array.from({length:count},(_,i)=>state.frames[i]||{index:i,anchor:{...t},bbox:null,target:{...t},shift:{x:0,y:0},notes:""}); state.frames.forEach(f=>{ f.index = f.index ?? state.frames.indexOf(f); f.target={...t}; if(f.anchor) f.shift={x:t.x-f.anchor.x,y:t.y-f.anchor.y}; }); if(state.active>=count) state.active=count-1; }
+function assetFromForm(){ ensureFrames(); return {asset_id:el("assetId").value.trim()||"unnamed_sprite", sheet:el("sheetPath").value.trim(), frame_width:intValue("frameW",1536), frame_height:intValue("frameH",512), layout:el("layout").value, default_anchor:targetAnchor(), frames:state.frames.map((f,i)=>({...f,index:i}))}; }
+function applyAsset(asset){ if(!asset) return; state.currentAssetId = asset.asset_id; el("assetId").value=asset.asset_id||""; el("sheetPath").value=asset.sheet||""; el("frameW").value=asset.frame_width||1536; el("frameH").value=asset.frame_height||512; el("layout").value=asset.layout||"vertical"; el("targetX").value=(asset.default_anchor||{x:768}).x; el("targetY").value=(asset.default_anchor||{y:492}).y; state.frames=(asset.frames||[]).map((f,i)=>({index:i,anchor:f.anchor||{...targetAnchor()},bbox:f.bbox||null,target:f.target||{...targetAnchor()},shift:f.shift||{x:0,y:0},notes:f.notes||""})); ensureFrames(); refreshAssetSelect(asset.asset_id); renderAll(); }
+function saveCurrentAsset({render=true}={}){ const asset=assetFromForm(); const oldId = state.currentAssetId; if(oldId && oldId !== asset.asset_id) delete state.assets[oldId]; state.assets[asset.asset_id]=asset; state.currentAssetId=asset.asset_id; refreshAssetSelect(asset.asset_id); if(render) renderAll(); }
+function refreshAssetSelect(selected){ const select=el("assetSelect"); select.innerHTML=""; Object.keys(state.assets).sort().forEach(id=>{ const o=document.createElement("option"); o.value=id; o.textContent=id; select.appendChild(o); }); if(selected) select.value=selected; }
+function newAsset(){ const id=prompt("新 asset_id", "new_sprite"); if(!id) return; state.assets[id]=makeDefaultAsset(id); applyAsset(state.assets[id]); }
+function deleteAsset(){ const id=state.currentAssetId; if(!id||!state.assets[id]) return; if(!confirm(`删除 ${id} ?`)) return; delete state.assets[id]; const next=Object.keys(state.assets).sort()[0]; if(next) applyAsset(state.assets[next]); else { state.assets.spearman = makeDefaultAsset("spearman"); applyAsset(state.assets.spearman); } }
+function parseTsv(text){ const lines=text.replace(/^\uFEFF/,"").split(/\r?\n/).filter(x=>x.trim().length>0); if(lines.length<1) return; const header=lines[0].split("\t"); const rows=lines.slice(1).map(line=>{ const cells=line.split("\t"); const row={}; header.forEach((h,i)=>row[h]=cells[i]||""); return row; }); const assets={}; rows.forEach(row=>{ const id=(row.asset_id||"").trim(); if(!id) return; const fw=parseInt(row.frame_width||"1536",10), fh=parseInt(row.frame_height||"512",10); const target={x:parseInt(row.target_anchor_x||"768",10),y:parseInt(row.target_anchor_y||"492",10)}; if(!assets[id]) assets[id]={asset_id:id,sheet:row.sheet||"",frame_width:fw,frame_height:fh,layout:row.layout||"vertical",default_anchor:target,frames:[]}; const fi=parseInt(row.frame_index||"0",10); const foot={x:parseInt(row.foot_anchor_x||row.target_anchor_x||"768",10),y:parseInt(row.foot_anchor_y||row.target_anchor_y||"492",10)}; const bbox=row.bbox_x!==""?{x:parseInt(row.bbox_x||"0",10),y:parseInt(row.bbox_y||"0",10),w:parseInt(row.bbox_w||"0",10),h:parseInt(row.bbox_h||"0",10)}:null; assets[id].frames[fi]={index:fi,anchor:foot,target,shift:{x:target.x-foot.x,y:target.y-foot.y},bbox,notes:row.notes||""}; }); state.assets=Object.keys(assets).length ? assets : {spearman:makeDefaultAsset("spearman")}; applyAsset(state.assets[Object.keys(state.assets).sort()[0]]); }
+function toTsv(){ const rows=[TSV_COLUMNS.join("\t")]; Object.keys(state.assets).sort().forEach(id=>{ const a=state.assets[id]; (a.frames||[]).forEach((f,i)=>{ const anchor=f.anchor||a.default_anchor; const target=f.target||a.default_anchor; const b=f.bbox||{}; rows.push([id,a.sheet,i,a.frame_width,a.frame_height,a.layout,anchor.x,anchor.y,target.x,target.y,b.x??"",b.y??"",b.w??"",b.h??"",f.notes||""].join("\t")); }); }); return rows.join("\n")+"\n"; }
+function exportJson(){ saveCurrentAsset({render:false}); const out={version:1,assets:{}}; Object.keys(state.assets).sort().forEach(id=>{ const a=state.assets[id]; out.assets[id]={sheet:a.sheet,frame_size:[a.frame_width,a.frame_height],layout:a.layout,default_anchor:[a.default_anchor.x,a.default_anchor.y],frames:{}}; a.frames.forEach((f,i)=>{ const anchor=f.anchor||a.default_anchor; const target=f.target||a.default_anchor; out.assets[id].frames[String(i)]={foot_anchor:[anchor.x,anchor.y],target_anchor:[target.x,target.y],shift:[target.x-anchor.x,target.y-anchor.y],bbox:f.bbox?[f.bbox.x,f.bbox.y,f.bbox.w,f.bbox.h]:null}; }); }); return JSON.stringify(out,null,2)+"\n"; }
 function download(name,text,type){ const blob=new Blob([text],{type}); const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); }
-function loadImageFromFile(file){ const url=URL.createObjectURL(file); const img=new Image(); img.onload=()=>{state.image=img;state.imageName=file.name;autoFitZoom();renderAll();URL.revokeObjectURL(url);}; img.src=url; }
-function autoFitZoom(){ const w=intValue("frameW",1536), h=intValue("frameH",512), count=frameCount(); const totalW=el("layout").value==="vertical"?w:w*count; const z=Math.min(0.75,Math.max(0.15,(window.innerWidth-450)/Math.max(1,totalW))); el("zoom").value=z.toFixed(2); }
+function loadImageFromFile(file){ const url=URL.createObjectURL(file); const img=new Image(); img.onload=()=>{ state.image=img; state.imageName=file.name; el("fileInfo").textContent=`已加载：${file.name} (${img.width}×${img.height})`; autoFitZoom(); renderAll(); URL.revokeObjectURL(url); }; img.src=url; }
+function autoFitZoom(){ const w=intValue("frameW",1536), count=frameCount(); const totalW=el("layout").value==="vertical"?w:w*count; const z=Math.min(0.75,Math.max(0.15,(window.innerWidth-450)/Math.max(1,totalW))); el("zoom").value=z.toFixed(2); }
 function renderAll(){ ensureFrames(); drawCanvas(); renderFrameList(); el("outputText").value=toTsv(); }
 function drawCross(x,y,color,r=12){ ctx.strokeStyle=color; ctx.lineWidth=2/zoom(); ctx.beginPath(); ctx.moveTo(x-r,y); ctx.lineTo(x+r,y); ctx.moveTo(x,y-r); ctx.lineTo(x,y+r); ctx.stroke(); }
-function drawCanvas(){ const z=zoom(), w=intValue("frameW",1536), h=intValue("frameH",512), count=frameCount(), vertical=el("layout").value==="vertical"; canvas.width=Math.ceil((vertical?w:w*count)*z); canvas.height=Math.ceil((vertical?h*count:h)*z); ctx.setTransform(z,0,0,z,0,0); ctx.clearRect(0,0,canvas.width/z,canvas.height/z); if(state.image) ctx.drawImage(state.image,0,0); const t=targetAnchor(); for(let i=0;i<count;i++){ const r=frameRect(i), f=state.frames[i]; ctx.strokeStyle=i===state.active?"#f2b35e":"rgba(255,255,255,.35)"; ctx.lineWidth=i===state.active?4/z:2/z; ctx.strokeRect(r.x,r.y,r.w,r.h); if(f.bbox){ctx.strokeStyle="#ffd65c";ctx.lineWidth=2/z;ctx.strokeRect(r.x+f.bbox.x,r.y+f.bbox.y,f.bbox.w,f.bbox.h);} drawCross(r.x+t.x,r.y+t.y,"#7cb7ff",16); if(f.anchor) drawCross(r.x+f.anchor.x,r.y+f.anchor.y,"#ff6b6b",18); ctx.fillStyle="#fff"; ctx.font=`${18/z}px sans-serif`; ctx.fillText(`#${i}`,r.x+12,r.y+26);} }
+function drawCanvas(){ const z=zoom(), w=intValue("frameW",1536), h=intValue("frameH",512), count=frameCount(), vertical=el("layout").value==="vertical"; canvas.width=Math.ceil((vertical?w:w*count)*z); canvas.height=Math.ceil((vertical?h*count:h)*z); ctx.setTransform(z,0,0,z,0,0); ctx.clearRect(0,0,canvas.width/z,canvas.height/z); if(state.image) ctx.drawImage(state.image,0,0); const t=targetAnchor(); for(let i=0;i<count;i++){ const r=frameRect(i), f=state.frames[i]; ctx.strokeStyle=i===state.active?"#f2b35e":"rgba(255,255,255,.35)"; ctx.lineWidth=i===state.active?4/z:2/z; ctx.strokeRect(r.x,r.y,r.w,r.h); if(f.bbox){ctx.strokeStyle="#ffd65c";ctx.lineWidth=2/z;ctx.strokeRect(r.x+f.bbox.x,r.y+f.bbox.y,f.bbox.w,f.bbox.h);} drawCross(r.x+t.x,r.y+t.y,"#7cb7ff",16); if(f.anchor) drawCross(r.x+f.anchor.x,r.y+f.anchor.y,"#ff6b6b",18); ctx.fillStyle="#fff"; ctx.font=`${18/z}px sans-serif`; ctx.fillText(`#${i}`,r.x+12,r.y+26); } }
 function subjectPixel(data,idx){ const a=data[idx+3]; if(a<=intValue("alphaThreshold",8)) return false; if(el("bgMode").value==="green"){ const tol=intValue("colorTolerance",16); const r=data[idx],g=data[idx+1],b=data[idx+2]; if(Math.max(Math.abs(r),Math.abs(g-255),Math.abs(b))<=tol) return false; } return true; }
-function detectFrame(i){ if(!state.image) return; const r=frameRect(i), off=document.createElement("canvas"); off.width=r.w; off.height=r.h; const c=off.getContext("2d",{willReadFrequently:true}); c.drawImage(state.image,r.x,r.y,r.w,r.h,0,0,r.w,r.h); const d=c.getImageData(0,0,r.w,r.h).data; let minX=r.w,minY=r.h,maxX=-1,maxY=-1,count=0; for(let y=0;y<r.h;y++)for(let x=0;x<r.w;x++){const idx=(y*r.w+x)*4;if(subjectPixel(d,idx)){minX=Math.min(minX,x);minY=Math.min(minY,y);maxX=Math.max(maxX,x);maxY=Math.max(maxY,y);count++;}} const f=state.frames[i]; if(count<=0)return; const band=Math.max(1,intValue("bottomBand",24)), top=Math.max(0,maxY-band+1), xs=[]; let footY=maxY; for(let y=top;y<=maxY;y++)for(let x=minX;x<=maxX;x++){const idx=(y*r.w+x)*4;if(subjectPixel(d,idx)){xs.push(x);footY=Math.max(footY,y);}} xs.sort((a,b)=>a-b); const footX=xs.length?xs[Math.floor(xs.length/2)]:Math.floor((minX+maxX)/2), t=targetAnchor(); f.anchor={x:footX,y:footY}; f.target={...t}; f.shift={x:t.x-footX,y:t.y-footY}; f.bbox={x:minX,y:minY,w:maxX-minX+1,h:maxY-minY+1}; }
-function renderFrameList(){ const root=el("frameList"); root.innerHTML=""; state.frames.forEach(f=>{ const div=document.createElement("div"); div.className=`frame-card ${f.index===state.active?'active':''} ${f.anchor?'ok':'missing'}`; div.innerHTML=`<b>Frame ${f.index}</b> <span class="${f.anchor?'ok':'missing'}">${f.anchor?'已描点':'未描点'}</span><br>anchor=${f.anchor?`${f.anchor.x},${f.anchor.y}`:'-'}<br>target=${f.target.x},${f.target.y}<br>shift=${f.shift?`${f.shift.x},${f.shift.y}`:'-'}`; const actions=document.createElement("div"); actions.className="mini-actions"; const s=document.createElement("button"); s.textContent="选中"; s.onclick=()=>{state.active=f.index;renderAll();}; const d=document.createElement("button"); d.textContent="自动"; d.onclick=()=>{detectFrame(f.index);state.active=f.index;renderAll();}; actions.append(s,d); div.appendChild(actions); root.appendChild(div); }); }
-canvas.addEventListener("click",ev=>{ if(!state.image)return; const rect=canvas.getBoundingClientRect(), z=zoom(), x=(ev.clientX-rect.left)/z, y=(ev.clientY-rect.top)/z; for(let i=0;i<frameCount();i++){const r=frameRect(i); if(x>=r.x&&x<r.x+r.w&&y>=r.y&&y<r.y+r.h){const f=state.frames[i], ax=Math.round(x-r.x), ay=Math.round(y-r.y), t=targetAnchor(); state.active=i; f.anchor={x:ax,y:ay}; f.target={...t}; f.shift={x:t.x-ax,y:t.y-ay}; renderAll(); return;}} });
-el("tsvInput").onchange=e=>{const file=e.target.files[0]; if(!file)return; const reader=new FileReader(); reader.onload=()=>parseTsv(String(reader.result||"")); reader.readAsText(file);};
-el("fileInput").onchange=e=>{const file=e.target.files[0]; if(file)loadImageFromFile(file);};
-el("assetSelect").onchange=()=>applyAsset(state.assets[el("assetSelect").value]);
-el("newAssetBtn").onclick=newAsset; el("deleteAssetBtn").onclick=deleteAsset; el("saveAssetBtn").onclick=saveCurrentAsset;
-el("autoDetectBtn").onclick=()=>{ensureFrames(); for(let i=0;i<frameCount();i++)detectFrame(i); renderAll();};
-el("copyTargetBtn").onclick=()=>{const t=targetAnchor(); ensureFrames(); state.frames.forEach(f=>{f.anchor={...t}; f.target={...t}; f.shift={x:0,y:0};}); renderAll();};
-el("downloadTsvBtn").onclick=()=>download("battle_sprite_anchors.tsv",toTsv(),"text/tab-separated-values");
-el("exportJsonBtn").onclick=()=>{el("outputText").value=exportJson();};
+function detectFrame(i){ if(!state.image) return; const r=frameRect(i), off=document.createElement("canvas"); off.width=r.w; off.height=r.h; const c=off.getContext("2d",{willReadFrequently:true}); c.drawImage(state.image,r.x,r.y,r.w,r.h,0,0,r.w,r.h); const d=c.getImageData(0,0,r.w,r.h).data; let minX=r.w,minY=r.h,maxX=-1,maxY=-1,count=0; for(let y=0;y<r.h;y++)for(let x=0;x<r.w;x++){ const idx=(y*r.w+x)*4; if(subjectPixel(d,idx)){ minX=Math.min(minX,x); minY=Math.min(minY,y); maxX=Math.max(maxX,x); maxY=Math.max(maxY,y); count++; }} if(count<=0)return; const f=state.frames[i], band=Math.max(1,intValue("bottomBand",24)), top=Math.max(0,maxY-band+1), xs=[]; let footY=maxY; for(let y=top;y<=maxY;y++)for(let x=minX;x<=maxX;x++){ const idx=(y*r.w+x)*4; if(subjectPixel(d,idx)){ xs.push(x); footY=Math.max(footY,y); }} xs.sort((a,b)=>a-b); const footX=xs.length?xs[Math.floor(xs.length/2)]:Math.floor((minX+maxX)/2), t=targetAnchor(); f.anchor={x:footX,y:footY}; f.target={...t}; f.shift={x:t.x-footX,y:t.y-footY}; f.bbox={x:minX,y:minY,w:maxX-minX+1,h:maxY-minY+1}; }
+function renderFrameList(){ const root=el("frameList"); root.innerHTML=""; state.frames.forEach(f=>{ const div=document.createElement("div"); div.className=`frame-card ${f.index===state.active?'active':''} ${f.anchor?'ok':'missing'}`; div.innerHTML=`<b>Frame ${f.index}</b> <span class="${f.anchor?'ok':'missing'}">${f.anchor?'已描点':'未描点'}</span><br>anchor=${f.anchor?`${f.anchor.x},${f.anchor.y}`:'-'}<br>target=${f.target.x},${f.target.y}<br>shift=${f.shift?`${f.shift.x},${f.shift.y}`:'-'}`; const actions=document.createElement("div"); actions.className="mini-actions"; const select=document.createElement("button"); select.textContent="选中"; select.onclick=()=>{state.active=f.index;renderAll();}; const detect=document.createElement("button"); detect.textContent="自动"; detect.onclick=()=>{detectFrame(f.index);state.active=f.index;renderAll();}; actions.append(select,detect); div.appendChild(actions); root.appendChild(div); }); }
+canvas.addEventListener("click",ev=>{ if(!state.image)return; const rect=canvas.getBoundingClientRect(), z=zoom(), x=(ev.clientX-rect.left)/z, y=(ev.clientY-rect.top)/z; for(let i=0;i<frameCount();i++){ const r=frameRect(i); if(x>=r.x&&x<r.x+r.w&&y>=r.y&&y<r.y+r.h){ const f=state.frames[i], ax=Math.round(x-r.x), ay=Math.round(y-r.y), t=targetAnchor(); state.active=i; f.anchor={x:ax,y:ay}; f.target={...t}; f.shift={x:t.x-ax,y:t.y-ay}; renderAll(); return; } } });
+el("tsvInput").onchange=e=>{ const file=e.target.files[0]; if(!file)return; const reader=new FileReader(); reader.onload=()=>parseTsv(String(reader.result||"")); reader.readAsText(file); };
+el("fileInput").onchange=e=>{ const file=e.target.files[0]; if(file)loadImageFromFile(file); };
+el("assetSelect").onchange=()=>{ const id=el("assetSelect").value; if(state.assets[id]) applyAsset(state.assets[id]); };
+el("newAssetBtn").onclick=newAsset; el("deleteAssetBtn").onclick=deleteAsset; el("saveAssetBtn").onclick=()=>saveCurrentAsset({render:true});
+el("autoDetectBtn").onclick=()=>{ ensureFrames(); for(let i=0;i<frameCount();i++)detectFrame(i); renderAll(); };
+el("copyTargetBtn").onclick=()=>{ const t=targetAnchor(); ensureFrames(); state.frames.forEach(f=>{f.anchor={...t}; f.target={...t}; f.shift={x:0,y:0};}); renderAll(); };
+el("downloadTsvBtn").onclick=()=>{ saveCurrentAsset({render:false}); download("battle_sprite_anchors.tsv",toTsv(),"text/tab-separated-values"); };
+el("exportJsonBtn").onclick=()=>{ el("outputText").value=exportJson(); };
 el("downloadJsonBtn").onclick=()=>download("battle_sprite_anchors.json",exportJson(),"application/json");
-["frameW","frameH","frameCount","layout","zoom","targetX","targetY","assetId","sheetPath"].forEach(id=>el(id).addEventListener("change",renderAll));
-newAsset();
+["frameW","frameH","frameCount","layout","zoom","targetX","targetY"].forEach(id=>el(id).addEventListener("change",renderAll));
+["assetId","sheetPath"].forEach(id=>el(id).addEventListener("change",()=>saveCurrentAsset({render:true})));
+state.assets.spearman = makeDefaultAsset("spearman");
+applyAsset(state.assets.spearman);
 </script>
 </body>
 </html>
