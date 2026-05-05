@@ -47,6 +47,7 @@ func _refresh_stage_grid(force: bool = false) -> void:
 		else:
 			stage_grid_labels[i].text = ""
 	_refresh_actor_foot_highlights(player_target_slot, enemy_target_slot)
+	_refresh_foot_alignment_debug(player_target_slot, enemy_target_slot)
 
 func _stage_grid_state_signature(
 	player_target_slot: int,
@@ -209,6 +210,58 @@ func _set_actor_foot_highlights_visible(visible: bool) -> void:
 		_player_foot_grid_highlight.visible = visible
 	if _enemy_foot_grid_highlight != null:
 		_enemy_foot_grid_highlight.visible = visible
+	if _foot_debug_ground_line != null:
+		_foot_debug_ground_line.visible = visible and FOOT_ALIGNMENT_DEBUG
+	if _player_foot_debug_cross != null:
+		_player_foot_debug_cross.visible = visible and FOOT_ALIGNMENT_DEBUG
+	if _enemy_foot_debug_cross != null:
+		_enemy_foot_debug_cross.visible = visible and FOOT_ALIGNMENT_DEBUG
+
+func _refresh_foot_alignment_debug(player_target_slot: int, enemy_target_slot: int) -> void:
+	if not FOOT_ALIGNMENT_DEBUG or stage_layer == null:
+		return
+	var grid_left := (size.x - _grid_total_width()) * 0.5
+	var grid_right := grid_left + _grid_total_width()
+	if _foot_debug_ground_line == null:
+		_foot_debug_ground_line = Line2D.new()
+		_foot_debug_ground_line.z_index = 30
+		_foot_debug_ground_line.width = 2.0
+		_foot_debug_ground_line.default_color = Color(1.0, 0.9, 0.1, 0.95)
+		stage_layer.add_child(_foot_debug_ground_line)
+	_foot_debug_ground_line.points = PackedVector2Array([Vector2(grid_left, STAGE_GROUND_Y), Vector2(grid_right, STAGE_GROUND_Y)])
+	_foot_debug_ground_line.visible = battle_active
+	_position_foot_debug_cross(true, _actor_slot_foot_point(true, player_target_slot))
+	_position_foot_debug_cross(false, _actor_slot_foot_point(false, enemy_target_slot))
+
+func _position_foot_debug_cross(is_player: bool, center: Vector2) -> void:
+	var cross := _foot_debug_cross(is_player)
+	if cross == null:
+		return
+	var r := 8.0
+	cross.points = PackedVector2Array([
+		Vector2(center.x - r, center.y), Vector2(center.x + r, center.y),
+		Vector2(center.x, center.y), Vector2(center.x, center.y - r),
+		Vector2(center.x, center.y + r)
+	])
+	cross.visible = battle_active
+
+func _foot_debug_cross(is_player: bool) -> Line2D:
+	if is_player and _player_foot_debug_cross != null:
+		return _player_foot_debug_cross
+	if not is_player and _enemy_foot_debug_cross != null:
+		return _enemy_foot_debug_cross
+	if stage_layer == null:
+		return null
+	var cross := Line2D.new()
+	cross.z_index = 31
+	cross.width = 3.0
+	cross.default_color = Color(0.25, 0.8, 1.0, 0.98) if is_player else Color(1.0, 0.28, 0.16, 0.98)
+	stage_layer.add_child(cross)
+	if is_player:
+		_player_foot_debug_cross = cross
+	else:
+		_enemy_foot_debug_cross = cross
+	return cross
 
 func _refresh_stage_actor_positions(force: bool = false) -> void:
 	if player_sprite == null or enemy_sprite == null:
@@ -238,6 +291,7 @@ func _refresh_stage_actor_positions(force: bool = false) -> void:
 	player_fallback_actor.position = player_top_left
 	enemy_fallback_actor.position = enemy_top_left
 	_apply_actor_facing(player_target_slot, enemy_target_slot, player_top_left, enemy_top_left)
+	_refresh_foot_alignment_debug(player_target_slot, enemy_target_slot)
 
 func _stage_actor_state_signature(player_target_slot: int, enemy_target_slot: int, player_card: CardData, enemy_card: CardData) -> String:
 	var player_card_id := player_card.id if player_card != null else "-"
