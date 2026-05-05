@@ -7,6 +7,7 @@ var tuning_panel: PanelContainer
 var tuning_layer: CanvasLayer
 var tuning_content_root: VBoxContainer
 var tuning_label: RichTextLabel
+var foot_alignment_debug_button: Button
 var tuning_visible := false
 var tuning_total_checks := 0
 var tuning_ok_checks := 0
@@ -25,7 +26,7 @@ func _build_ui() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_F9:
+		if event.keycode == KEY_F9 or event.keycode == KEY_F10:
 			_toggle_tuning_panel()
 			get_viewport().set_input_as_handled()
 
@@ -103,8 +104,8 @@ func _build_tuning_panel() -> void:
 	tuning_panel.offset_left = 12
 	tuning_panel.offset_top = 12
 	tuning_panel.offset_right = 432
-	tuning_panel.offset_bottom = 560
-	tuning_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	tuning_panel.offset_bottom = 600
+	tuning_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(0.035, 0.045, 0.06, 0.82)
 	style.border_color = Color(0.36, 0.55, 0.78, 0.85)
@@ -114,10 +115,17 @@ func _build_tuning_panel() -> void:
 
 	tuning_content_root = VBoxContainer.new()
 	tuning_content_root.name = "TuningContentRoot"
-	tuning_content_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	tuning_content_root.mouse_filter = Control.MOUSE_FILTER_STOP
 	tuning_content_root.add_theme_constant_override("separation", 6)
-	tuning_content_root.custom_minimum_size = Vector2(392, 520)
+	tuning_content_root.custom_minimum_size = Vector2(392, 560)
 	tuning_panel.add_child(tuning_content_root)
+
+	foot_alignment_debug_button = Button.new()
+	foot_alignment_debug_button.custom_minimum_size = Vector2(392, 36)
+	foot_alignment_debug_button.focus_mode = Control.FOCUS_NONE
+	foot_alignment_debug_button.pressed.connect(_on_foot_alignment_debug_button_pressed)
+	_style_button(foot_alignment_debug_button)
+	tuning_content_root.add_child(foot_alignment_debug_button)
 
 	tuning_label = RichTextLabel.new()
 	tuning_label.fit_content = false
@@ -132,11 +140,18 @@ func _build_tuning_panel() -> void:
 	_bring_tuning_panel_to_front()
 
 
+func _on_foot_alignment_debug_button_pressed() -> void:
+	_toggle_foot_alignment_debug(false)
+	_refresh_tuning_panel()
+
+
 func _refresh_tuning_panel() -> void:
 	if tuning_label == null:
 		return
 	if tuning_visible:
 		_bring_tuning_panel_to_front()
+	if foot_alignment_debug_button != null:
+		foot_alignment_debug_button.text = "脚点辅助定位线：%s" % ("开" if foot_alignment_debug_enabled else "关")
 	var distance := absi(enemy.position - player.position) if player != null and enemy != null else -1
 	var p_card := _card_name_from_snapshot(tuning_last_snapshot.get("player_card", {}))
 	var e_card := _card_name_from_snapshot(tuning_last_snapshot.get("enemy_card", {}))
@@ -144,7 +159,8 @@ func _refresh_tuning_panel() -> void:
 	if tuning_total_checks > 0:
 		ok_rate = float(tuning_ok_checks) / float(tuning_total_checks) * 100.0
 	var text := ""
-	text += "[b]调参 / 预览诊断面板[/b]  [color=#9cc7ff]F9隐藏/显示[/color]\n"
+	text += "[b]调参 / 预览诊断面板[/b]  [color=#9cc7ff]F10隐藏/显示[/color]\n"
+	text += "脚点辅助定位线: %s\n" % ("开" if foot_alignment_debug_enabled else "关")
 	text += "真实距离: %s    检查: %d    OK: %.1f%%\n" % [str(distance), tuning_total_checks, ok_rate]
 	if player != null and enemy != null:
 		text += "玩家: pos=%d face=%s HP=%d 势=%d guard=%d\n" % [player.position, player.facing, player.hp, player.momentum, player.guard_points]
