@@ -353,10 +353,17 @@ func _slot_center_x(slot: int) -> float:
 	var left := (size.x - _grid_total_width()) * 0.5
 	return left + slot * (GRID_SLOT_WIDTH + GRID_SLOT_GAP) + GRID_SLOT_WIDTH * 0.5
 
-func _slot_top_left(slot: int, is_player: bool) -> Vector2:
-	var center_x := _slot_center_x(slot)
-	var sprite := player_sprite if is_player else enemy_sprite
-	var foot_offset := Vector2(PLAYER_FOOT_OFFSET_X if is_player else ENEMY_FOOT_OFFSET_X, ACTOR_DISPLAY_SIZE.y)
+func _slot_center_point(slot: int) -> Vector2:
+	return Vector2(_slot_center_x(slot), STAGE_GROUND_Y)
+
+func _actor_foot_offset(sprite: TextureRect, is_player: bool) -> Vector2:
 	if sprite != null:
-		foot_offset = BattleActorFootHelper.frame_foot_offset(sprite)
-	return Vector2(center_x - foot_offset.x, STAGE_GROUND_Y - foot_offset.y)
+		return BattleActorFootHelper.frame_foot_offset(sprite)
+	return Vector2(PLAYER_FOOT_OFFSET_X if is_player else ENEMY_FOOT_OFFSET_X, ACTOR_DISPLAY_SIZE.y)
+
+func _actor_top_left_for_slot(sprite: TextureRect, slot: int, is_player: bool) -> Vector2:
+	return _slot_center_point(slot) - _actor_foot_offset(sprite, is_player)
+
+func _slot_top_left(slot: int, is_player: bool) -> Vector2:
+	var sprite := player_sprite if is_player else enemy_sprite
+	return _actor_top_left_for_slot(sprite, slot, is_player)
