@@ -9,7 +9,6 @@ const BattleSkinHelper = preload("res://scripts/visual/battle_skin.gd")
 const BattleStageHelper = preload("res://scripts/visual/battle_stage_view.gd")
 const BattleHudHelper = preload("res://scripts/visual/battle_hud_view.gd")
 const BattleFxPool = preload("res://scripts/visual/battle_fx_pool.gd")
-const BattleActorFootHelper = preload("res://scripts/visual/battle_actor_view.gd")
 const WebRuntimeFlags = preload("res://scripts/web_runtime_flags.gd")
 const WEB_SMOKE_BATTLE_FLAG := "smoke_battle"
 const VISUAL_POLL_REFRESH_INTERVAL := 0.12
