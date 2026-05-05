@@ -1,5 +1,5 @@
 extends RefCounted
-class_name BattleActorRenderHelper
+class_name BattleActorFootHelper
 
 const BattleSkinHelper = preload("res://scripts/visual/battle_skin.gd")
 const BattleStageHelper = preload("res://scripts/visual/battle_stage_view.gd")
