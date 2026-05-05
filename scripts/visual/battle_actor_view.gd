@@ -5,8 +5,9 @@ const BattleSkinHelper = preload("res://scripts/visual/battle_skin.gd")
 const BattleStageHelper = preload("res://scripts/visual/battle_stage_view.gd")
 
 # Visual actor tuning for the 1600x960 battle layout.
-# Grid slot is around y=468..516. Foot point is kept just above the lower slot edge,
-# so the actor reads as standing inside the selected grid cell.
+# Actor TextureRect bounds are the actual drawn image bounds. Do not rely on
+# TextureRect's centered internal draw rect, otherwise runtime foot anchors and
+# visible feet drift apart.
 const DEFAULT_FRAME_SIZE := Vector2i(512, 512)
 const DEFAULT_FOOT_ANCHOR := Vector2(256, 500)
 const ACTOR_RENDER_SIZE := Vector2(250, 250)
@@ -29,7 +30,7 @@ static func apply_render_bounds(sprite: TextureRect, fallback: Control) -> void:
 		sprite.size = ACTOR_RENDER_SIZE
 		sprite.clip_contents = false
 		sprite.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		sprite.stretch_mode = TextureRect.STRETCH_SCALE
 	if fallback != null:
 		fallback.custom_minimum_size = ACTOR_RENDER_SIZE
 		fallback.size = ACTOR_RENDER_SIZE
@@ -43,7 +44,7 @@ static func apply_actor_meta_bounds(sprite: TextureRect, frame_size: Vector2i, f
 	sprite.size = render_size
 	sprite.clip_contents = false
 	sprite.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	sprite.stretch_mode = TextureRect.STRETCH_SCALE
 	var scaled_foot := scaled_foot_anchor(render_size, frame_size, foot_anchor)
 	sprite.set_meta(ACTOR_FRAME_FOOT_OFFSET_META, scaled_foot)
 	sprite.set_meta(ACTOR_DEFAULT_FACING_META, "left" if default_facing == "left" else "right")
@@ -59,12 +60,10 @@ static func scaled_foot_anchor(display_size: Vector2, frame_size: Vector2i, foot
 	var safe_foot_anchor := foot_anchor
 	if safe_foot_anchor == Vector2.ZERO:
 		safe_foot_anchor = DEFAULT_FOOT_ANCHOR
-	var frame_w := float(safe_frame_size.x)
-	var frame_h := float(safe_frame_size.y)
-	var scale := minf(display_size.x / frame_w, display_size.y / frame_h)
-	var drawn_size := Vector2(frame_w * scale, frame_h * scale)
-	var draw_offset := (display_size - drawn_size) * 0.5
-	return draw_offset + safe_foot_anchor * scale
+	return Vector2(
+		display_size.x * safe_foot_anchor.x / float(safe_frame_size.x),
+		display_size.y * safe_foot_anchor.y / float(safe_frame_size.y)
+	)
 
 static func frame_foot_offset(sprite: TextureRect) -> Vector2:
 	if sprite == null:
