@@ -39,11 +39,6 @@ func _build_stage_layer() -> void:
 
 	player_sprite = TextureRect.new()
 	player_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	player_sprite.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	player_sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	player_sprite.custom_minimum_size = ACTOR_DISPLAY_SIZE
-	player_sprite.size = ACTOR_DISPLAY_SIZE
-	player_sprite.clip_contents = true
 	player_sprite.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	player_sprite.z_index = 8
 	stage_layer.add_child(player_sprite)
@@ -51,14 +46,10 @@ func _build_stage_layer() -> void:
 	player_fallback_actor.position = player_sprite.position
 	player_fallback_actor.z_index = 8
 	stage_layer.add_child(player_fallback_actor)
+	BattleActorFootHelper.apply_render_bounds(player_sprite, player_fallback_actor)
 
 	enemy_sprite = TextureRect.new()
 	enemy_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	enemy_sprite.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	enemy_sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	enemy_sprite.custom_minimum_size = ACTOR_DISPLAY_SIZE
-	enemy_sprite.size = ACTOR_DISPLAY_SIZE
-	enemy_sprite.clip_contents = true
 	enemy_sprite.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	enemy_sprite.z_index = 8
 	stage_layer.add_child(enemy_sprite)
@@ -66,6 +57,7 @@ func _build_stage_layer() -> void:
 	enemy_fallback_actor.position = enemy_sprite.position
 	enemy_fallback_actor.z_index = 8
 	stage_layer.add_child(enemy_fallback_actor)
+	BattleActorFootHelper.apply_render_bounds(enemy_sprite, enemy_fallback_actor)
 
 	center_fx_layer = Control.new()
 	center_fx_layer.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
