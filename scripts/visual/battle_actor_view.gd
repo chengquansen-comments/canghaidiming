@@ -11,16 +11,19 @@ const BattleStageHelper = preload("res://scripts/visual/battle_stage_view.gd")
 const DEFAULT_FRAME_SIZE := Vector2i(512, 512)
 const DEFAULT_FOOT_ANCHOR := Vector2(256, 500)
 const ACTOR_RENDER_SIZE := Vector2(250, 250)
-# Legacy helper ground must match battle grid center, not the old lower-edge line.
-const ACTOR_GROUND_Y := 492.0
+# Legacy helper target anchor must match battle grid center, not a lower-edge ground line.
+const ACTOR_TARGET_ANCHOR_Y := 492.0
 const ACTOR_FRAME_FOOT_OFFSET_META := &"actor_frame_foot_offset"
 const ACTOR_DEFAULT_FACING_META := &"actor_default_facing"
 
 static func render_size() -> Vector2:
 	return ACTOR_RENDER_SIZE
 
+static func target_anchor_y() -> float:
+	return ACTOR_TARGET_ANCHOR_Y
+
 static func ground_y() -> float:
-	return ACTOR_GROUND_Y
+	return target_anchor_y()
 
 static func foot_offset_x() -> float:
 	return _fallback_foot_offset(ACTOR_RENDER_SIZE).x
@@ -125,7 +128,7 @@ static func animated_actor_top_left_for_sprite(scene_width: float, is_player: bo
 
 static func slot_top_left_for_foot(scene_width: float, slot: int, slot_count: int, slot_width: float, slot_gap: float, foot_offset: Vector2) -> Vector2:
 	var center_x: float = BattleStageHelper.slot_center_x(scene_width, slot, slot_count, slot_width, slot_gap)
-	return Vector2(center_x - foot_offset.x, ACTOR_GROUND_Y - foot_offset.y)
+	return Vector2(center_x - foot_offset.x, ACTOR_TARGET_ANCHOR_Y - foot_offset.y)
 
 static func animated_actor_top_left_for_foot(scene_width: float, is_player: bool, start_slot: int, target_slot: int, active: bool, phase: float, slot_count: int, slot_width: float, slot_gap: float, foot_offset: Vector2) -> Vector2:
 	var start_pos: Vector2 = slot_top_left_for_foot(scene_width, start_slot, slot_count, slot_width, slot_gap, foot_offset)
