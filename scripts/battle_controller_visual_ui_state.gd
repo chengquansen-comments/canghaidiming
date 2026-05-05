@@ -14,6 +14,7 @@ const WEB_SMOKE_BATTLE_FLAG := "smoke_battle"
 const VISUAL_POLL_REFRESH_INTERVAL := 0.12
 const BUTTON_STYLE_META := &"visual_button_style_applied"
 const MOMENTUM_DOT_ANIMATING_META := &"momentum_dot_animation_busy"
+const FOOT_ALIGNMENT_DEBUG := true
 const ENEMY_PORTRAIT_OVERRIDES := {
 	"enemy_blademaster_prologue_raider": "portrait_enemy_prologue_raider",
 	"enemy_spearman_beach_ambush": "portrait_enemy_spearman_beach_ambush",
@@ -36,6 +37,9 @@ var _node_buttons_signature := ""
 var _overlay_action_buttons: Array = []
 var _player_foot_grid_highlight: PanelContainer
 var _enemy_foot_grid_highlight: PanelContainer
+var _foot_debug_ground_line: Line2D
+var _player_foot_debug_cross: Line2D
+var _enemy_foot_debug_cross: Line2D
 var _player_momentum_dot_value := -1
 var _enemy_momentum_dot_value := -1
 var _momentum_dot_animation_serial := 0
