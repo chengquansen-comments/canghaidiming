@@ -25,9 +25,11 @@ func _refresh_character_visuals() -> void:
 	var enemy_sheet := _sheet_frame_texture(enemy_sheet_source, 0)
 	if player_sprite != null:
 		player_sprite.texture = player_sheet
+		_apply_actor_anchor_meta(true, player, 0)
 		player_sprite.modulate = Color(0.92, 0.95, 1.0, 0.96)
 	if enemy_sprite != null:
 		enemy_sprite.texture = enemy_sheet
+		_apply_actor_anchor_meta(false, enemy, 0)
 		enemy_sprite.modulate = Color(0.78, 0.82, 0.92, 0.94)
 	if player_fallback_actor != null:
 		player_fallback_actor.visible = player_sheet == null
@@ -53,6 +55,59 @@ func _refresh_character_visuals() -> void:
 		player_school_label.text = SCHOOL_NAME if player != null else ""
 	if enemy_school_label != null:
 		enemy_school_label.text = SCHOOL_NAME if enemy != null else ""
+
+func _apply_actor_anchor_meta(is_player_actor: bool, actor: Fighter, frame_index: int) -> void:
+	var sprite := player_sprite if is_player_actor else enemy_sprite
+	var source := player_sheet_source if is_player_actor else enemy_sheet_source
+	if sprite == null:
+		return
+	var asset_id := _sprite_anchor_asset_id_for(actor, not is_player_actor)
+	var frame_size := _sprite_anchor_frame_size(asset_id, source)
+	var foot_anchor := _sprite_anchor_foot_anchor(asset_id, frame_index)
+	BattleActorFootHelper.apply_actor_meta_bounds(sprite, frame_size, foot_anchor, 1.0, "right")
+
+func _sprite_anchor_asset_id_for(actor: Fighter, is_enemy_actor: bool) -> String:
+	var candidates := _sprite_anchor_candidate_ids(actor, is_enemy_actor)
+	for candidate in candidates:
+		if BattleSpriteAnchorService.has_asset(candidate):
+			return candidate
+	return candidates[0] if not candidates.is_empty() else ""
+
+func _sprite_anchor_candidate_ids(actor: Fighter, is_enemy_actor: bool) -> Array[String]:
+	var result: Array[String] = []
+	if actor == null or actor.data == null:
+		return result
+	var raw_id := str(actor.data.id)
+	var visual_id := _visual_actor_role_id_for(actor)
+	var prefix := "enemy_" if is_enemy_actor else ""
+	_add_unique_anchor_candidate(result, "%s%s" % [prefix, raw_id])
+	_add_unique_anchor_candidate(result, "%s%s" % [prefix, visual_id])
+	_add_unique_anchor_candidate(result, raw_id)
+	_add_unique_anchor_candidate(result, visual_id)
+	return result
+
+func _add_unique_anchor_candidate(result: Array[String], value: String) -> void:
+	if value == "":
+		return
+	if not result.has(value):
+		result.append(value)
+
+func _sprite_anchor_frame_size(asset_id: String, source: Texture2D) -> Vector2i:
+	if asset_id != "" and BattleSpriteAnchorService.has_asset(asset_id):
+		return BattleSpriteAnchorService.get_frame_size(asset_id)
+	if source == null:
+		return BattleActorFootHelper.DEFAULT_FRAME_SIZE
+	var source_width := maxi(source.get_width(), 1)
+	var source_height := maxi(source.get_height(), 1)
+	if source_height >= source_width:
+		return Vector2i(source_width, maxi(source_height / SHEET_FRAME_COUNT, 1))
+	return Vector2i(maxi(source_width / SHEET_FRAME_COUNT, 1), source_height)
+
+func _sprite_anchor_foot_anchor(asset_id: String, frame_index: int) -> Vector2:
+	if asset_id != "" and BattleSpriteAnchorService.has_asset(asset_id):
+		var anchor := BattleSpriteAnchorService.get_frame_anchor(asset_id, frame_index)
+		return Vector2(anchor.x, anchor.y)
+	return BattleActorFootHelper.DEFAULT_FOOT_ANCHOR
 
 func _refresh_hud_bars(force: bool = false) -> void:
 	var signature := _hud_state_signature()
