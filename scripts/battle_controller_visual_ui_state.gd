@@ -67,7 +67,7 @@ func _show_debug_settings() -> void:
 		]
 	)
 
-func _toggle_foot_alignment_debug() -> void:
+func _toggle_foot_alignment_debug(refresh_overlay: bool = true) -> void:
 	foot_alignment_debug_enabled = not foot_alignment_debug_enabled
 	_stage_grid_signature = ""
 	_stage_actor_signature = ""
@@ -75,4 +75,5 @@ func _toggle_foot_alignment_debug() -> void:
 	if player != null and enemy != null:
 		_refresh_stage_actor_positions(true)
 		_refresh_stage_grid(true)
-	_show_debug_settings()
+	if refresh_overlay:
+		_show_debug_settings()
