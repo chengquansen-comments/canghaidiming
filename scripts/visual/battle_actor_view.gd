@@ -59,10 +59,12 @@ static func scaled_foot_anchor(display_size: Vector2, frame_size: Vector2i, foot
 	var safe_foot_anchor := foot_anchor
 	if safe_foot_anchor == Vector2.ZERO:
 		safe_foot_anchor = DEFAULT_FOOT_ANCHOR
-	return Vector2(
-		safe_foot_anchor.x * display_size.x / float(safe_frame_size.x),
-		safe_foot_anchor.y * display_size.y / float(safe_frame_size.y)
-	)
+	var frame_w := float(safe_frame_size.x)
+	var frame_h := float(safe_frame_size.y)
+	var scale := minf(display_size.x / frame_w, display_size.y / frame_h)
+	var drawn_size := Vector2(frame_w * scale, frame_h * scale)
+	var draw_offset := (display_size - drawn_size) * 0.5
+	return draw_offset + safe_foot_anchor * scale
 
 static func frame_foot_offset(sprite: TextureRect) -> Vector2:
 	if sprite == null:
