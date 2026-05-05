@@ -11,7 +11,8 @@ const BattleStageHelper = preload("res://scripts/visual/battle_stage_view.gd")
 const DEFAULT_FRAME_SIZE := Vector2i(512, 512)
 const DEFAULT_FOOT_ANCHOR := Vector2(256, 500)
 const ACTOR_RENDER_SIZE := Vector2(250, 250)
-const ACTOR_GROUND_Y := 512.0
+# Legacy helper ground must match battle grid center, not the old lower-edge line.
+const ACTOR_GROUND_Y := 492.0
 const ACTOR_FRAME_FOOT_OFFSET_META := &"actor_frame_foot_offset"
 const ACTOR_DEFAULT_FACING_META := &"actor_default_facing"
 
