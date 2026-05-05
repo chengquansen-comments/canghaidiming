@@ -152,13 +152,13 @@ func _range_trapezoid_points(slot: int, origin_slot: int) -> PackedVector2Array:
 	])
 
 func _highlight_center_x(slot: int) -> float:
-	return _slot_center_x(slot)
+	return _slot_center_point(slot).x
 
 func _actor_slot_foot_point(is_player: bool, slot: int) -> Vector2:
 	var sprite := player_sprite if is_player else enemy_sprite
 	if sprite == null:
-		return Vector2(_slot_center_x(slot), STAGE_GROUND_Y)
-	return sprite.position + BattleActorFootHelper.frame_foot_offset(sprite)
+		return _slot_center_point(slot)
+	return sprite.position + _actor_foot_offset(sprite, is_player)
 
 func _refresh_actor_foot_highlights(player_target_slot: int, enemy_target_slot: int) -> void:
 	_position_actor_foot_highlight(true, player_target_slot)
@@ -168,7 +168,7 @@ func _position_actor_foot_highlight(is_player: bool, slot: int) -> void:
 	var highlight := _actor_foot_highlight(is_player)
 	if highlight == null:
 		return
-	var center := Vector2(_slot_center_x(slot), STAGE_GROUND_Y)
+	var center := _slot_center_point(slot)
 	highlight.position = Vector2(center.x - GRID_SLOT_WIDTH * 0.5, GRID_STAGE_Y)
 	highlight.size = Vector2(GRID_SLOT_WIDTH, GRID_SLOT_HEIGHT)
 	highlight.visible = battle_active
@@ -268,14 +268,13 @@ func _refresh_stage_actor_positions(force: bool = false) -> void:
 		return
 	_stage_actor_signature = signature
 
-	# Static stance must be laid out from the current frame-0 foot anchor.
-	# Set frame/anchor first, then facing, then calculate top-left from the live foot offset.
+	# Static stance must share the same slot center chain as grid highlights.
 	_set_actor_sheet_frame(player, 0)
 	_set_actor_sheet_frame(enemy, 0)
 	_set_texture_actor_facing(player_sprite, _player_preview_facing() == "left")
 	_set_texture_actor_facing(enemy_sprite, _enemy_preview_facing() == "left")
-	var player_top_left := _slot_top_left(player_target_slot, true)
-	var enemy_top_left := _slot_top_left(enemy_target_slot, false)
+	var player_top_left := _actor_top_left_for_slot(player_sprite, player_target_slot, true)
+	var enemy_top_left := _actor_top_left_for_slot(enemy_sprite, enemy_target_slot, false)
 	player_sprite.position = player_top_left
 	enemy_sprite.position = enemy_top_left
 	player_fallback_actor.position = player_top_left
@@ -288,8 +287,8 @@ func _stage_actor_state_signature(player_target_slot: int, enemy_target_slot: in
 	var enemy_card_id := enemy_card.id if enemy_card != null else "-"
 	var player_role := player.data.id if player != null else "-"
 	var enemy_role := enemy.data.id if enemy != null else "-"
-	var player_foot := BattleActorFootHelper.frame_foot_offset(player_sprite) if player_sprite != null else Vector2.ZERO
-	var enemy_foot := BattleActorFootHelper.frame_foot_offset(enemy_sprite) if enemy_sprite != null else Vector2.ZERO
+	var player_foot := _actor_foot_offset(player_sprite, true) if player_sprite != null else Vector2.ZERO
+	var enemy_foot := _actor_foot_offset(enemy_sprite, false) if enemy_sprite != null else Vector2.ZERO
 	return "%d|%d|%s|%s|%s|%s|%d|%d|%d|%d|%d|%d|%d|%d|%d|%s|%s" % [
 		player_target_slot,
 		enemy_target_slot,
