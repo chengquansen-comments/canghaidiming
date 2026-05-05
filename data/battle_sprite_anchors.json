@@ -1,4 +1,330 @@
 {
   "version": 1,
-  "assets": {}
+  "assets": {
+    "blademaster": {
+      "sheet": "res://assets/pixel_battle/sheets/blademaster_sheet.png",
+      "frame_size": [
+        1536,
+        512
+      ],
+      "layout": "vertical",
+      "default_anchor": [
+        768,
+        492
+      ],
+      "frames": {
+        "0": {
+          "foot_anchor": [
+            414,
+            481
+          ],
+          "target_anchor": [
+            768,
+            492
+          ],
+          "shift": [
+            354,
+            11
+          ],
+          "bbox": [
+            0,
+            0,
+            1536,
+            501
+          ]
+        },
+        "1": {
+          "foot_anchor": [
+            423,
+            438
+          ],
+          "target_anchor": [
+            768,
+            492
+          ],
+          "shift": [
+            345,
+            54
+          ],
+          "bbox": [
+            0,
+            0,
+            1536,
+            501
+          ]
+        },
+        "2": {
+          "foot_anchor": [
+            427,
+            444
+          ],
+          "target_anchor": [
+            768,
+            492
+          ],
+          "shift": [
+            341,
+            48
+          ],
+          "bbox": [
+            0,
+            0,
+            1536,
+            501
+          ]
+        }
+      }
+    },
+    "enemy_blademaster": {
+      "sheet": "res://assets/pixel_battle/sheets/enemy_blademaster_sheet.png",
+      "frame_size": [
+        1536,
+        512
+      ],
+      "layout": "vertical",
+      "default_anchor": [
+        768,
+        492
+      ],
+      "frames": {
+        "0": {
+          "foot_anchor": [
+            773,
+            505
+          ],
+          "target_anchor": [
+            768,
+            492
+          ],
+          "shift": [
+            -5,
+            -13
+          ],
+          "bbox": [
+            492,
+            17,
+            474,
+            484
+          ]
+        },
+        "1": {
+          "foot_anchor": [
+            670,
+            452
+          ],
+          "target_anchor": [
+            768,
+            492
+          ],
+          "shift": [
+            98,
+            40
+          ],
+          "bbox": [
+            457,
+            0,
+            770,
+            501
+          ]
+        },
+        "2": {
+          "foot_anchor": [
+            682,
+            488
+          ],
+          "target_anchor": [
+            768,
+            492
+          ],
+          "shift": [
+            86,
+            4
+          ],
+          "bbox": [
+            401,
+            39,
+            528,
+            462
+          ]
+        }
+      }
+    },
+    "enemy_spearman": {
+      "sheet": "res://assets/pixel_battle/sheets/enemy_spearman_sheet.png",
+      "frame_size": [
+        1536,
+        512
+      ],
+      "layout": "vertical",
+      "default_anchor": [
+        768,
+        492
+      ],
+      "frames": {
+        "0": {
+          "foot_anchor": [
+            498,
+            475
+          ],
+          "target_anchor": [
+            768,
+            492
+          ],
+          "shift": [
+            270,
+            17
+          ],
+          "bbox": null
+        },
+        "1": {
+          "foot_anchor": [
+            502,
+            467
+          ],
+          "target_anchor": [
+            768,
+            492
+          ],
+          "shift": [
+            266,
+            25
+          ],
+          "bbox": null
+        },
+        "2": {
+          "foot_anchor": [
+            502,
+            478
+          ],
+          "target_anchor": [
+            768,
+            492
+          ],
+          "shift": [
+            266,
+            14
+          ],
+          "bbox": null
+        }
+      }
+    },
+    "master_veteran": {
+      "sheet": "res://assets/pixel_battle/sheets/master_veteran_sheet.png",
+      "frame_size": [
+        1536,
+        512
+      ],
+      "layout": "vertical",
+      "default_anchor": [
+        768,
+        492
+      ],
+      "frames": {
+        "0": {
+          "foot_anchor": [
+            702,
+            465
+          ],
+          "target_anchor": [
+            768,
+            492
+          ],
+          "shift": [
+            66,
+            27
+          ],
+          "bbox": null
+        },
+        "1": {
+          "foot_anchor": [
+            625,
+            453
+          ],
+          "target_anchor": [
+            768,
+            492
+          ],
+          "shift": [
+            143,
+            39
+          ],
+          "bbox": null
+        },
+        "2": {
+          "foot_anchor": [
+            770,
+            496
+          ],
+          "target_anchor": [
+            768,
+            492
+          ],
+          "shift": [
+            -2,
+            -4
+          ],
+          "bbox": null
+        }
+      }
+    },
+    "spearman": {
+      "sheet": "res://assets/pixel_battle/sheets/spearman_sheet.png",
+      "frame_size": [
+        1536,
+        512
+      ],
+      "layout": "vertical",
+      "default_anchor": [
+        768,
+        492
+      ],
+      "frames": {
+        "0": {
+          "foot_anchor": [
+            402,
+            486
+          ],
+          "target_anchor": [
+            768,
+            492
+          ],
+          "shift": [
+            366,
+            6
+          ],
+          "bbox": null
+        },
+        "1": {
+          "foot_anchor": [
+            414,
+            433
+          ],
+          "target_anchor": [
+            768,
+            492
+          ],
+          "shift": [
+            354,
+            59
+          ],
+          "bbox": null
+        },
+        "2": {
+          "foot_anchor": [
+            414,
+            482
+          ],
+          "target_anchor": [
+            768,
+            492
+          ],
+          "shift": [
+            354,
+            10
+          ],
+          "bbox": null
+        }
+      }
+    }
+  }
 }

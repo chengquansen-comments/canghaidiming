@@ -1,13 +1,16 @@
 asset_id	sheet	frame_index	frame_width	frame_height	layout	foot_anchor_x	foot_anchor_y	target_anchor_x	target_anchor_y	bbox_x	bbox_y	bbox_w	bbox_h	notes
-spearman	res://assets/pixel_battle/sheets/spearman_sheet.png	0	1536	512	vertical	768	492	768	492					
-spearman	res://assets/pixel_battle/sheets/spearman_sheet.png	1	1536	512	vertical	768	492	768	492					
-spearman	res://assets/pixel_battle/sheets/spearman_sheet.png	2	1536	512	vertical	768	492	768	492					
-blademaster	res://assets/pixel_battle/sheets/blademaster_sheet.png	0	1536	512	vertical	768	492	768	492					
-blademaster	res://assets/pixel_battle/sheets/blademaster_sheet.png	1	1536	512	vertical	768	492	768	492					
-blademaster	res://assets/pixel_battle/sheets/blademaster_sheet.png	2	1536	512	vertical	768	492	768	492					
-enemy_spearman	res://assets/pixel_battle/sheets/enemy_spearman_sheet.png	0	1536	512	vertical	768	492	768	492					
-enemy_spearman	res://assets/pixel_battle/sheets/enemy_spearman_sheet.png	1	1536	512	vertical	768	492	768	492					
-enemy_spearman	res://assets/pixel_battle/sheets/enemy_spearman_sheet.png	2	1536	512	vertical	768	492	768	492					
-enemy_blademaster	res://assets/pixel_battle/sheets/enemy_blademaster_sheet.png	0	1536	512	vertical	768	492	768	492					
-enemy_blademaster	res://assets/pixel_battle/sheets/enemy_blademaster_sheet.png	1	1536	512	vertical	768	492	768	492					
-enemy_blademaster	res://assets/pixel_battle/sheets/enemy_blademaster_sheet.png	2	1536	512	vertical	768	492	768	492					
+blademaster	res://assets/pixel_battle/sheets/blademaster_sheet.png	0	1536	512	vertical	414	481	768	492	0	0	1536	501	
+blademaster	res://assets/pixel_battle/sheets/blademaster_sheet.png	1	1536	512	vertical	423	438	768	492	0	0	1536	501	
+blademaster	res://assets/pixel_battle/sheets/blademaster_sheet.png	2	1536	512	vertical	427	444	768	492	0	0	1536	501	
+enemy_blademaster	res://assets/pixel_battle/sheets/enemy_blademaster_sheet.png	0	1536	512	vertical	773	505	768	492	492	17	474	484	
+enemy_blademaster	res://assets/pixel_battle/sheets/enemy_blademaster_sheet.png	1	1536	512	vertical	670	452	768	492	457	0	770	501	
+enemy_blademaster	res://assets/pixel_battle/sheets/enemy_blademaster_sheet.png	2	1536	512	vertical	682	488	768	492	401	39	528	462	
+enemy_spearman	res://assets/pixel_battle/sheets/enemy_spearman_sheet.png	0	1536	512	vertical	498	475	768	492					
+enemy_spearman	res://assets/pixel_battle/sheets/enemy_spearman_sheet.png	1	1536	512	vertical	502	467	768	492					
+enemy_spearman	res://assets/pixel_battle/sheets/enemy_spearman_sheet.png	2	1536	512	vertical	502	478	768	492					
+master_veteran	res://assets/pixel_battle/sheets/master_veteran_sheet.png	0	1536	512	vertical	702	465	768	492					
+master_veteran	res://assets/pixel_battle/sheets/master_veteran_sheet.png	1	1536	512	vertical	625	453	768	492					
+master_veteran	res://assets/pixel_battle/sheets/master_veteran_sheet.png	2	1536	512	vertical	770	496	768	492					
+spearman	res://assets/pixel_battle/sheets/spearman_sheet.png	0	1536	512	vertical	402	486	768	492					
+spearman	res://assets/pixel_battle/sheets/spearman_sheet.png	1	1536	512	vertical	414	433	768	492					
+spearman	res://assets/pixel_battle/sheets/spearman_sheet.png	2	1536	512	vertical	414	482	768	492					
