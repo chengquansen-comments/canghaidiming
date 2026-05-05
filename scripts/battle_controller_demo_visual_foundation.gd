@@ -5,6 +5,8 @@ extends "res://scripts/battle_controller_core.gd"
 # Holds shared constants, visual node references, styles and low-level helpers.
 # Runtime refresh behavior is expected to live in battle_controller_visual_ui.gd.
 
+const BattleActorFootHelper = preload("res://scripts/visual/battle_actor_view.gd")
+
 const FRAME_SIZE := Vector2i(512, 512)
 const HUD_BAR_WIDTH := 208.0
 const SHEET_FRAME_COUNT := 3
