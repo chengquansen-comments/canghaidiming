@@ -47,7 +47,6 @@ func _refresh_stage_grid(force: bool = false) -> void:
 		else:
 			stage_grid_labels[i].text = ""
 	_refresh_actor_foot_highlights(player_target_slot, enemy_target_slot)
-	_refresh_foot_alignment_debug(player_target_slot, enemy_target_slot)
 
 func _stage_grid_state_signature(
 	player_target_slot: int,
@@ -153,22 +152,13 @@ func _range_trapezoid_points(slot: int, origin_slot: int) -> PackedVector2Array:
 	])
 
 func _highlight_center_x(slot: int) -> float:
-	var positions := _current_grid_positions()
-	var player_slot: int = positions.get("player", 0)
-	var enemy_slot: int = positions.get("enemy", 0)
-	var player_target_slot := _target_slot_for_preview(true, player_slot, enemy_slot, _player_preview_card())
-	var enemy_target_slot := _target_slot_for_preview(false, player_slot, enemy_slot, _enemy_preview_card())
-	if slot == player_target_slot and player_sprite != null:
-		return _actor_slot_foot_point(true, slot).x
-	if slot == enemy_target_slot and enemy_sprite != null:
-		return _actor_slot_foot_point(false, slot).x
 	return _slot_center_x(slot)
 
 func _actor_slot_foot_point(is_player: bool, slot: int) -> Vector2:
 	var sprite := player_sprite if is_player else enemy_sprite
 	if sprite == null:
 		return Vector2(_slot_center_x(slot), STAGE_GROUND_Y)
-	return _slot_top_left(slot, is_player) + BattleActorFootHelper.frame_foot_offset(sprite)
+	return sprite.position + BattleActorFootHelper.frame_foot_offset(sprite)
 
 func _refresh_actor_foot_highlights(player_target_slot: int, enemy_target_slot: int) -> void:
 	_position_actor_foot_highlight(true, player_target_slot)
@@ -178,7 +168,7 @@ func _position_actor_foot_highlight(is_player: bool, slot: int) -> void:
 	var highlight := _actor_foot_highlight(is_player)
 	if highlight == null:
 		return
-	var center := _actor_slot_foot_point(is_player, slot)
+	var center := Vector2(_slot_center_x(slot), STAGE_GROUND_Y)
 	highlight.position = Vector2(center.x - GRID_SLOT_WIDTH * 0.5, GRID_STAGE_Y)
 	highlight.size = Vector2(GRID_SLOT_WIDTH, GRID_SLOT_HEIGHT)
 	highlight.visible = battle_active
