@@ -63,6 +63,26 @@ func _build_stage_layer() -> void:
 	center_fx_layer.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	center_fx_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	stage_layer.add_child(center_fx_layer)
+	_build_debug_settings_button()
+
+func _build_debug_settings_button() -> void:
+	var button := Button.new()
+	button.text = "Debug"
+	button.tooltip_text = "打开战斗调试设置"
+	button.custom_minimum_size = Vector2(96, 38)
+	button.anchor_left = 1.0
+	button.anchor_right = 1.0
+	button.anchor_top = 0.0
+	button.anchor_bottom = 0.0
+	button.offset_left = -128.0
+	button.offset_right = -28.0
+	button.offset_top = 24.0
+	button.offset_bottom = 62.0
+	button.z_index = 80
+	button.mouse_filter = Control.MOUSE_FILTER_STOP
+	button.pressed.connect(Callable(self, "_show_debug_settings"))
+	_style_button(button)
+	stage_layer.add_child(button)
 
 func _build_range_overlay_layer() -> void:
 	range_overlay_layer = Node2D.new()
