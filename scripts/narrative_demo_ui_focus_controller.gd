@@ -25,10 +25,12 @@ const BUST_HERO_SABER := "res://assets/pixel_battle/portraits/hero_officer_saber
 const BUST_MASTER := "res://assets/pixel_battle/portraits/master_veteran_bust.png"
 const BUST_BOSS := "res://assets/pixel_battle/portraits/wakou_boss_bust.png"
 const DEBUG_TOGGLE_KEY := KEY_F10
+const FOOT_ALIGNMENT_DEBUG_META := "canghai_foot_alignment_debug_visible"
 
 var focus_debug_layer: Control
 var focus_debug_panel: PanelContainer
 var focus_debug_label: RichTextLabel
+var focus_foot_alignment_debug_button: Button
 var focus_story_layer: Control
 var focus_story_panel: PanelContainer
 var focus_story_label: RichTextLabel
@@ -444,7 +446,7 @@ func _ensure_focus_debug_panel() -> void:
 	focus_debug_layer.anchor_top = 0.0
 	focus_debug_layer.anchor_right = 1.0
 	focus_debug_layer.anchor_bottom = 1.0
-	focus_debug_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	focus_debug_layer.mouse_filter = Control.MOUSE_FILTER_PASS
 	focus_debug_layer.z_index = 120
 	focus_debug_layer.z_as_relative = false
 	add_child(focus_debug_layer)
@@ -455,7 +457,7 @@ func _ensure_focus_debug_panel() -> void:
 	focus_debug_panel.anchor_top = 0.225
 	focus_debug_panel.anchor_right = 0.985
 	focus_debug_panel.anchor_bottom = 0.56
-	focus_debug_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	focus_debug_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	focus_debug_panel.z_index = 121
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(0.025, 0.022, 0.018, 0.78)
@@ -469,6 +471,19 @@ func _ensure_focus_debug_panel() -> void:
 	focus_debug_panel.add_theme_stylebox_override("panel", style)
 	focus_debug_layer.add_child(focus_debug_panel)
 
+	var debug_root := VBoxContainer.new()
+	debug_root.name = "NarrativeFocusDebugRoot"
+	debug_root.mouse_filter = Control.MOUSE_FILTER_STOP
+	debug_root.add_theme_constant_override("separation", 8)
+	focus_debug_panel.add_child(debug_root)
+
+	focus_foot_alignment_debug_button = Button.new()
+	focus_foot_alignment_debug_button.name = "FootAlignmentDebugToggle"
+	focus_foot_alignment_debug_button.custom_minimum_size = Vector2(0, 34)
+	focus_foot_alignment_debug_button.focus_mode = Control.FOCUS_NONE
+	focus_foot_alignment_debug_button.pressed.connect(_on_focus_foot_alignment_debug_pressed)
+	debug_root.add_child(focus_foot_alignment_debug_button)
+
 	focus_debug_label = RichTextLabel.new()
 	focus_debug_label.name = "NarrativeFocusDebugText"
 	focus_debug_label.bbcode_enabled = true
@@ -478,7 +493,7 @@ func _ensure_focus_debug_panel() -> void:
 	focus_debug_label.add_theme_font_size_override("normal_font_size", DEBUG_FONT_SIZE)
 	focus_debug_label.add_theme_font_size_override("bold_font_size", DEBUG_FONT_SIZE)
 	focus_debug_label.add_theme_color_override("default_color", Color("f0dfb8"))
-	focus_debug_panel.add_child(focus_debug_label)
+	debug_root.add_child(focus_debug_label)
 	_apply_focus_debug_visibility()
 
 func _ensure_ending_settlement_popup() -> void:
@@ -792,7 +807,17 @@ func _hide_placeholder_labels(box: VBoxContainer) -> void:
 func _update_focus_debug_panel() -> void:
 	if focus_debug_label == null:
 		return
+	if focus_foot_alignment_debug_button != null:
+		focus_foot_alignment_debug_button.text = "脚点辅助定位线：%s" % ("开" if _foot_alignment_debug_enabled() else "关")
 	focus_debug_label.text = _focus_debug_text()
+
+func _on_focus_foot_alignment_debug_pressed() -> void:
+	var current := bool(Engine.get_meta(FOOT_ALIGNMENT_DEBUG_META, false))
+	Engine.set_meta(FOOT_ALIGNMENT_DEBUG_META, not current)
+	_update_focus_debug_panel()
+
+func _foot_alignment_debug_enabled() -> bool:
+	return bool(Engine.get_meta(FOOT_ALIGNMENT_DEBUG_META, false))
 
 func _focus_debug_text() -> String:
 	var title_text := ""
@@ -824,6 +849,7 @@ func _focus_debug_text() -> String:
 	lines.append("流程源：%s" % focus_flow_source)
 	lines.append("流程数：%d" % _flow_count())
 	lines.append("变量：军功 %d / 清望 %d / 旧案 %d" % [jun_gong, qing_wang, clues])
+	lines.append("脚点辅助定位线：%s" % ("开" if _foot_alignment_debug_enabled() else "关"))
 	lines.append("职业：%s" % profile)
 	lines.append("演出：%s" % _current_node_id())
 	if not last_hint.is_empty():

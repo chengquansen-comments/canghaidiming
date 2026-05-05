@@ -14,6 +14,7 @@ const WEB_SMOKE_BATTLE_FLAG := "smoke_battle"
 const VISUAL_POLL_REFRESH_INTERVAL := 0.12
 const BUTTON_STYLE_META := &"visual_button_style_applied"
 const MOMENTUM_DOT_ANIMATING_META := &"momentum_dot_animation_busy"
+const FOOT_ALIGNMENT_DEBUG_META := "canghai_foot_alignment_debug_visible"
 const ENEMY_PORTRAIT_OVERRIDES := {
 	"enemy_blademaster_prologue_raider": "portrait_enemy_prologue_raider",
 	"enemy_spearman_beach_ambush": "portrait_enemy_spearman_beach_ambush",
@@ -23,7 +24,7 @@ const ENEMY_PORTRAIT_OVERRIDES := {
 	"enemy_blademaster_wakou_leader": "wakou_boss_bust",
 }
 
-var foot_alignment_debug_enabled := false
+var foot_alignment_debug_enabled := bool(Engine.get_meta(FOOT_ALIGNMENT_DEBUG_META, false))
 var _visual_poll_refresh_elapsed := 0.0
 var _fx_pool := BattleFxPool.new()
 var _stage_grid_signature := ""
@@ -68,12 +69,16 @@ func _show_debug_settings() -> void:
 	)
 
 func _toggle_foot_alignment_debug(refresh_overlay: bool = true) -> void:
-	foot_alignment_debug_enabled = not foot_alignment_debug_enabled
+	_set_foot_alignment_debug_enabled(not foot_alignment_debug_enabled)
+	if refresh_overlay:
+		_show_debug_settings()
+
+func _set_foot_alignment_debug_enabled(enabled: bool) -> void:
+	foot_alignment_debug_enabled = enabled
+	Engine.set_meta(FOOT_ALIGNMENT_DEBUG_META, foot_alignment_debug_enabled)
 	_stage_grid_signature = ""
 	_stage_actor_signature = ""
 	_set_actor_foot_highlights_visible(player != null and enemy != null and battle_active)
 	if player != null and enemy != null:
 		_refresh_stage_actor_positions(true)
 		_refresh_stage_grid(true)
-	if refresh_overlay:
-		_show_debug_settings()

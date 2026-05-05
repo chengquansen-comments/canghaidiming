@@ -144,7 +144,7 @@ func _refresh_tuning_panel() -> void:
 	if tuning_total_checks > 0:
 		ok_rate = float(tuning_ok_checks) / float(tuning_total_checks) * 100.0
 	var text := ""
-	text += "[b]调参 / 预览诊断面板[/b]  [color=#9cc7ff]F9 隐藏/显示[/color]\n"
+	text += "[b]调参 / 预览诊断面板[/b]  [color=#9cc7ff]F9隐藏/显示[/color]\n"
 	text += "真实距离: %s    检查: %d    OK: %.1f%%\n" % [str(distance), tuning_total_checks, ok_rate]
 	if player != null and enemy != null:
 		text += "玩家: pos=%d face=%s HP=%d 势=%d guard=%d\n" % [player.position, player.facing, player.hp, player.momentum, player.guard_points]
