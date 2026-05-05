@@ -21,10 +21,13 @@ func _refresh_character_visuals() -> void:
 func _refresh_hud_bars() -> void:
 	pass
 
-func _refresh_stage_grid() -> void:
+func _refresh_stage_grid(force: bool = false) -> void:
 	pass
 
-func _refresh_stage_actor_positions() -> void:
+func _refresh_stage_actor_positions(force: bool = false) -> void:
+	pass
+
+func _set_actor_foot_highlights_visible(visible: bool) -> void:
 	pass
 
 func _refresh_card_detail_panel() -> void:
