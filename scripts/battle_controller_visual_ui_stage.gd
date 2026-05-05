@@ -163,6 +163,7 @@ func _actor_slot_foot_point(is_player: bool, slot: int) -> Vector2:
 func _refresh_actor_foot_highlights(player_target_slot: int, enemy_target_slot: int) -> void:
 	_position_actor_foot_highlight(true, player_target_slot)
 	_position_actor_foot_highlight(false, enemy_target_slot)
+	_refresh_foot_alignment_debug(player_target_slot, enemy_target_slot)
 
 func _position_actor_foot_highlight(is_player: bool, slot: int) -> void:
 	var highlight := _actor_foot_highlight(is_player)
@@ -201,14 +202,17 @@ func _set_actor_foot_highlights_visible(visible: bool) -> void:
 	if _enemy_foot_grid_highlight != null:
 		_enemy_foot_grid_highlight.visible = visible
 	if _foot_debug_ground_line != null:
-		_foot_debug_ground_line.visible = visible and FOOT_ALIGNMENT_DEBUG
+		_foot_debug_ground_line.visible = visible and foot_alignment_debug_enabled
 	if _player_foot_debug_cross != null:
-		_player_foot_debug_cross.visible = visible and FOOT_ALIGNMENT_DEBUG
+		_player_foot_debug_cross.visible = visible and foot_alignment_debug_enabled
 	if _enemy_foot_debug_cross != null:
-		_enemy_foot_debug_cross.visible = visible and FOOT_ALIGNMENT_DEBUG
+		_enemy_foot_debug_cross.visible = visible and foot_alignment_debug_enabled
 
 func _refresh_foot_alignment_debug(player_target_slot: int, enemy_target_slot: int) -> void:
-	if not FOOT_ALIGNMENT_DEBUG or stage_layer == null:
+	if stage_layer == null:
+		return
+	if not foot_alignment_debug_enabled:
+		_set_foot_alignment_debug_visible(false)
 		return
 	var grid_left := (size.x - _grid_total_width()) * 0.5
 	var grid_right := grid_left + _grid_total_width()
@@ -223,6 +227,14 @@ func _refresh_foot_alignment_debug(player_target_slot: int, enemy_target_slot: i
 	_position_foot_debug_cross(true, _actor_slot_foot_point(true, player_target_slot))
 	_position_foot_debug_cross(false, _actor_slot_foot_point(false, enemy_target_slot))
 
+func _set_foot_alignment_debug_visible(visible: bool) -> void:
+	if _foot_debug_ground_line != null:
+		_foot_debug_ground_line.visible = visible
+	if _player_foot_debug_cross != null:
+		_player_foot_debug_cross.visible = visible
+	if _enemy_foot_debug_cross != null:
+		_enemy_foot_debug_cross.visible = visible
+
 func _position_foot_debug_cross(is_player: bool, center: Vector2) -> void:
 	var cross := _foot_debug_cross(is_player)
 	if cross == null:
@@ -233,7 +245,7 @@ func _position_foot_debug_cross(is_player: bool, center: Vector2) -> void:
 		Vector2(center.x, center.y), Vector2(center.x, center.y - r),
 		Vector2(center.x, center.y + r)
 	])
-	cross.visible = battle_active
+	cross.visible = battle_active and foot_alignment_debug_enabled
 
 func _foot_debug_cross(is_player: bool) -> Line2D:
 	if is_player and _player_foot_debug_cross != null:
