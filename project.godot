@@ -14,6 +14,10 @@ config/name="Canghai Diming Demo"
 run/main_scene="res://scenes/Main.tscn"
 config/features=PackedStringArray("4.6")
 
+[autoload]
+
+BattleSpriteAnchorService="*res://scripts/services/battle_sprite_anchor_service.gd"
+
 [display]
 
 window/size/viewport_width=1600
