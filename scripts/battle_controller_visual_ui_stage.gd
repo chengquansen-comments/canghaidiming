@@ -224,6 +224,11 @@ func _refresh_stage_actor_positions(force: bool = false) -> void:
 	if not force and signature == _stage_actor_signature:
 		return
 	_stage_actor_signature = signature
+
+	# Static stance must be laid out from the current frame-0 foot anchor.
+	# Set frame/anchor first, then facing, then calculate top-left from the live foot offset.
+	_set_actor_sheet_frame(player, 0)
+	_set_actor_sheet_frame(enemy, 0)
 	_set_texture_actor_facing(player_sprite, _player_preview_facing() == "left")
 	_set_texture_actor_facing(enemy_sprite, _enemy_preview_facing() == "left")
 	var player_top_left := _slot_top_left(player_target_slot, true)
@@ -232,8 +237,6 @@ func _refresh_stage_actor_positions(force: bool = false) -> void:
 	enemy_sprite.position = enemy_top_left
 	player_fallback_actor.position = player_top_left
 	enemy_fallback_actor.position = enemy_top_left
-	_set_actor_sheet_frame(player, 0)
-	_set_actor_sheet_frame(enemy, 0)
 	_apply_actor_facing(player_target_slot, enemy_target_slot, player_top_left, enemy_top_left)
 
 func _stage_actor_state_signature(player_target_slot: int, enemy_target_slot: int, player_card: CardData, enemy_card: CardData) -> String:
@@ -241,7 +244,9 @@ func _stage_actor_state_signature(player_target_slot: int, enemy_target_slot: in
 	var enemy_card_id := enemy_card.id if enemy_card != null else "-"
 	var player_role := player.data.id if player != null else "-"
 	var enemy_role := enemy.data.id if enemy != null else "-"
-	return "%d|%d|%s|%s|%s|%s|%d|%d|%d|%d|%d|%s|%s" % [
+	var player_foot := BattleActorFootHelper.frame_foot_offset(player_sprite) if player_sprite != null else Vector2.ZERO
+	var enemy_foot := BattleActorFootHelper.frame_foot_offset(enemy_sprite) if enemy_sprite != null else Vector2.ZERO
+	return "%d|%d|%s|%s|%s|%s|%d|%d|%d|%d|%d|%d|%d|%d|%d|%s|%s" % [
 		player_target_slot,
 		enemy_target_slot,
 		player_card_id,
@@ -253,6 +258,10 @@ func _stage_actor_state_signature(player_target_slot: int, enemy_target_slot: in
 		int(round(player_sprite.size.y)),
 		int(round(enemy_sprite.size.x)),
 		int(round(enemy_sprite.size.y)),
+		int(round(player_foot.x)),
+		int(round(player_foot.y)),
+		int(round(enemy_foot.x)),
+		int(round(enemy_foot.y)),
 		_player_preview_facing(),
 		_enemy_preview_facing()
 	]
@@ -283,6 +292,8 @@ func _set_actor_sheet_frame(actor: Fighter, frame_index: int) -> void:
 		return
 	if actor == player and player_sprite != null and player_sheet_source != null:
 		player_sprite.texture = _sheet_frame_texture(player_sheet_source, frame_index)
+		_apply_actor_anchor_meta(true, actor, frame_index)
 		return
 	if actor == enemy and enemy_sprite != null and enemy_sheet_source != null:
 		enemy_sprite.texture = _sheet_frame_texture(enemy_sheet_source, frame_index)
+		_apply_actor_anchor_meta(false, actor, frame_index)
