@@ -2,6 +2,8 @@ extends Control
 
 const BattleFontHelper := preload("res://scripts/visual/battle_font_view.gd")
 const NarrativeBattleContext := preload("res://scripts/narrative_battle_context.gd")
+const SafeDemoRuntime := preload("res://scripts/narrative/safe_demo_runtime.gd")
+const SafeDemoView := preload("res://scripts/narrative/safe_demo_view.gd")
 const MAIN_VISUAL_SCENE := "res://scenes/MainVisual.tscn"
 const MAP_COLUMNS := ["军令", "初遇", "疑点", "压迫", "破船", "军门"]
 const PROLOGUE_MASTER_RESCUE_STEP := 6
@@ -38,6 +40,18 @@ var clues := 0
 var in_prologue := true
 var career_selected := false
 var last_hint := ""
+var _safe_demo_runtime
+var _safe_demo_view
+
+func _safe_runtime():
+	if _safe_demo_runtime == null:
+		_safe_demo_runtime = SafeDemoRuntime.new(self)
+	return _safe_demo_runtime
+
+func _safe_view():
+	if _safe_demo_view == null:
+		_safe_demo_view = SafeDemoView.new(self)
+	return _safe_demo_view
 
 const PROLOGUE := [
 	"倭寇袭村：黑屏潮声",
@@ -102,56 +116,10 @@ func _clear_narrative_state_context() -> void:
 	NarrativeBattleContext.clear_narrative_state()
 
 func _consume_battle_result_if_needed() -> void:
-	if not NarrativeBattleContext.has_result():
-		return
-	var source_id := NarrativeBattleContext.source_node_id
-	var result := NarrativeBattleContext.last_result
-	if source_id == PROLOGUE_MASTER_SOURCE_ID:
-		in_prologue = true
-		step_index = PROLOGUE_AFTER_MASTER_BATTLE_STEP
-		if result == "win":
-			clues += 1
-			last_hint = "序章战斗胜利：师父斩敌，敌人临死吐出旧案线索。"
-		else:
-			last_hint = "序章战斗返回：当前 Demo 按师父救场继续推进。"
-		NarrativeBattleContext.clear()
-		_save_narrative_state_to_context()
-		return
-	for i in range(NODES.size()):
-		var node: Dictionary = NODES[i]
-		if str(node.get("id", "")) == source_id:
-			node_index = i
-			in_prologue = false
-			break
-	if result == "win":
-		_apply_battle_result_reward(node_index)
-		NarrativeBattleContext.apply_player_growth("battle_win", 0, 0, 0, true)
-		if node_index < NODES.size() - 1:
-			node_index += 1
-		last_hint = "战斗胜利：已返回剧情，并自动推进到下一节点。武境 +1，HP / 轻功 / 势上限按武境刷新。"
-	elif result == "lose":
-		last_hint = "战斗失败：已返回剧情，当前 Demo 暂不惩罚，可选择视为胜利继续或重试。"
-	elif result == "draw":
-		last_hint = "战斗同归于尽：已返回剧情，当前 Demo 暂按线索保留处理。"
-	else:
-		last_hint = "战斗结果未知：已返回剧情。"
-	NarrativeBattleContext.clear()
-	_save_narrative_state_to_context()
+	_safe_runtime().consume_battle_result_if_needed()
 
 func _apply_battle_result_reward(source_index: int) -> void:
-	if source_index < 0 or source_index >= NODES.size():
-		return
-	var node: Dictionary = NODES[source_index]
-	match str(node.get("type", "")):
-		"普通战斗", "精英战斗":
-			jun_gong += 1
-			clues += 1
-		"Boss":
-			jun_gong += 2
-			clues += 2
-		_:
-			jun_gong += 1
-	_save_narrative_state_to_context()
+	_safe_runtime().apply_battle_result_reward(source_index)
 
 func _build_ui() -> void:
 	var root := PanelContainer.new()
@@ -267,124 +235,25 @@ func _clear_dynamic_boxes() -> void:
 		action_scroll.scroll_vertical = 0
 
 func _render() -> void:
-	_clear_dynamic_boxes()
-	if in_prologue:
-		_render_prologue()
-	else:
-		_render_node()
-	BattleFontHelper.enforce(self)
+	_safe_view().render()
 
 func _render_prologue() -> void:
-	title_label.text = "《大明之沧海嘀鸣》剧情 MVP"
-	status_label.text = "序章 %d/%d" % [step_index + 1, PROLOGUE.size()]
-	map_label.text = "尚未进入行军图"
-	scene_label.text = _format_scene_text(_prologue_scene_hint())
-	_render_visual("", _prologue_visual_hint())
-	body_label.text = PROLOGUE[step_index]
-	if step_index == PROLOGUE_CAREER_STEP:
-		body_label.text += "\n\n[b]选择出山职业[/b]\n这会初始化玩家单局数据，后续战斗都沿用并成长。"
-	if not last_hint.is_empty():
-		body_label.text += "\n\n[i]%s[/i]" % last_hint
-	vars_label.text = _vars_text()
-	_add_placeholder(map_buttons_box, "序章阶段尚未开放行军图。")
-	if step_index == PROLOGUE_MASTER_RESCUE_STEP:
-		_add_button(combat_buttons_box, "请求序章战斗：师父救场", _on_request_prologue_master_battle)
-		_add_button(combat_buttons_box, "跳过战斗继续序章", _on_skip_prologue_master_battle)
-	elif step_index == PROLOGUE_CAREER_STEP:
-		_add_placeholder(combat_buttons_box, "先选择出山职业，随后进入行军图。")
-	else:
-		_add_placeholder(combat_buttons_box, "序章当前段落无战斗跳转。")
-	if step_index == PROLOGUE_CAREER_STEP:
-		for i in range(CAREERS.size()):
-			_add_career_button(CAREERS[i], i)
-	else:
-		_add_button(choices_box, "继续", _on_continue_prologue)
+	_safe_view().render_prologue()
 
 func _render_node() -> void:
-	var node: Dictionary = NODES[node_index]
-	title_label.text = str(node.get("title", ""))
-	status_label.text = "当前：%s / %s / %s" % [str(node.get("column", "")), str(node.get("type", "")), str(node.get("id", ""))]
-	map_label.text = _map_text()
-	scene_label.text = _format_scene_text(str(node.get("scene", "")))
-	_render_visual(str(node.get("visual_path", "")), str(node.get("scene", "")))
-	body_label.text = _node_body(node)
-	if not last_hint.is_empty():
-		body_label.text += "\n\n[i]%s[/i]" % last_hint
-	vars_label.text = _vars_text()
-	_add_safe_map_buttons()
-	if _is_combat_node(node):
-		_add_button(combat_buttons_box, "请求战斗：%s" % str(node.get("combat", "")), _on_request_battle)
-		_add_button(combat_buttons_box, "视为胜利继续", _on_mock_battle_win)
-	else:
-		_add_placeholder(combat_buttons_box, "当前节点无战斗。")
-	var choices: Array = node.get("choices", [])
-	for i in range(choices.size()):
-		_add_choice_button(choices[i], i)
+	_safe_view().render_node()
 
 func _format_scene_text(raw_text: String) -> String:
-	var normalized := raw_text.replace("；", "。")
-	var parts := normalized.split("。", false)
-	var lines: Array[String] = []
-	for part in parts:
-		var clean := str(part).strip_edges()
-		if not clean.is_empty():
-			lines.append("• %s" % clean)
-	if lines.is_empty():
-		return "• 场景占位：暂无"
-	return "\n".join(lines)
+	return _safe_view().format_scene_text(raw_text)
 
 func _render_visual(path: String, fallback_text: String) -> void:
-	if path.is_empty():
-		_set_visual_placeholder("视觉诊断：path=空｜状态=文本占位", fallback_text)
-		return
-	if not ResourceLoader.exists(path):
-		_set_visual_placeholder("视觉诊断：path=%s｜exists=false｜状态=文本占位" % path, fallback_text)
-		return
-	var resource := load(path)
-	if resource is Texture2D:
-		visual_texture.texture = resource
-		visual_texture.visible = true
-		visual_label.visible = false
-		visual_debug_label.text = "视觉诊断：path=%s｜exists=true｜type=Texture2D｜状态=已显示" % path
-		return
-	var resource_class_name := "null"
-	if resource != null:
-		resource_class_name = str(resource.get_class())
-	visual_texture.texture = null
-	visual_texture.visible = false
-	visual_label.visible = true
-	visual_label.text = "视觉资源不是 Texture2D：%s" % path
-	visual_debug_label.text = "视觉诊断：path=%s｜exists=true｜type=%s｜状态=非 Texture2D" % [path, resource_class_name]
+	_safe_view().render_visual(path, fallback_text)
 
 func _set_visual_placeholder(debug_text: String, fallback_text: String) -> void:
-	visual_texture.texture = null
-	visual_texture.visible = false
-	visual_label.visible = true
-	visual_label.text = "视觉占位：%s" % fallback_text
-	visual_debug_label.text = debug_text
+	_safe_view().set_visual_placeholder(debug_text, fallback_text)
 
 func _add_safe_map_buttons() -> void:
-	var column_row := HBoxContainer.new()
-	column_row.add_theme_constant_override("separation", 8)
-	map_buttons_box.add_child(column_row)
-	for column_name in MAP_COLUMNS:
-		var column_box := VBoxContainer.new()
-		column_box.custom_minimum_size = Vector2(142, 0)
-		column_box.add_theme_constant_override("separation", 4)
-		column_row.add_child(column_box)
-		var title := Label.new()
-		title.text = column_name
-		title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		title.add_theme_font_size_override("font_size", 13)
-		column_box.add_child(title)
-		for i in range(NODES.size()):
-			var node: Dictionary = NODES[i]
-			if str(node.get("column", "")) == column_name:
-				var btn := Button.new()
-				btn.text = "%s %s" % [_map_marker_for_index(i), str(node.get("title", ""))]
-				btn.custom_minimum_size = Vector2(136, 38)
-				btn.pressed.connect(_on_map_node_pressed.bind(i))
-				column_box.add_child(btn)
+	_safe_view().add_safe_map_buttons()
 
 func _add_button(parent: VBoxContainer, text: String, callback: Callable) -> void:
 	var btn := Button.new()
@@ -426,153 +295,46 @@ func _add_choice_button(choice: Dictionary, index: int) -> void:
 	choices_box.add_child(btn)
 
 func _on_map_node_pressed(target_index: int) -> void:
-	if target_index == node_index:
-		last_hint = "地图节点：当前节点。"
-	elif target_index < node_index:
-		last_hint = "地图节点：已走过。"
-	elif target_index != node_index + 1:
-		last_hint = "地图节点：未开放。"
-	else:
-		_apply_default_map_reward(target_index)
-		_advance_to_node(target_index, "地图节点：可前往，已通过地图选路推进，并获得默认行军收益。")
-		return
-	_render()
+	_safe_runtime().on_map_node_pressed(target_index)
 
 func _apply_choice_delta(choice: Dictionary) -> void:
-	jun_gong += int(choice.get("dg", 0))
-	qing_wang += int(choice.get("dq", 0))
-	clues += int(choice.get("dc", 0))
-	NarrativeBattleContext.apply_player_growth("choice", 0, 0, 0, false)
-	_save_narrative_state_to_context()
+	_safe_runtime().apply_choice_delta(choice)
 
 func _apply_default_map_reward(target_index: int) -> void:
-	if target_index < 0 or target_index >= NODES.size():
-		return
-	var node: Dictionary = NODES[target_index]
-	match str(node.get("type", "")):
-		"普通战斗", "精英战斗":
-			jun_gong += 1
-			clues += 1
-		"Boss":
-			jun_gong += 2
-			clues += 1
-		"旧物":
-			clues += 2
-		_:
-			qing_wang += 1
-	_save_narrative_state_to_context()
+	_safe_runtime().apply_default_map_reward(target_index)
 
 func _advance_to_node(target_index: int, hint: String = "") -> void:
-	last_hint = hint
-	if target_index >= NODES.size():
-		_render_ending()
-		return
-	node_index = target_index
-	_save_narrative_state_to_context()
-	_render()
+	_safe_runtime().advance_to_node(target_index, hint)
 
 func _on_continue_prologue() -> void:
-	step_index += 1
-	if step_index >= PROLOGUE.size():
-		in_prologue = false
-		node_index = 0
-		last_hint = ""
-	_save_narrative_state_to_context()
-	_render()
+	_safe_runtime().on_continue_prologue()
 
 func _on_select_career(index: int) -> void:
-	if index < 0 or index >= CAREERS.size():
-		return
-	var career: Dictionary = CAREERS[index]
-	NarrativeBattleContext.set_player_profile({
-		"role": str(career.get("id", "spearman")),
-		"career": str(career.get("career", "长枪武官")),
-		"weapon": str(career.get("weapon", "长枪")),
-		"max_hp": int(career.get("max_hp", 36)),
-		"hp": int(career.get("hp", career.get("max_hp", 36))),
-		"max_posture": int(career.get("max_posture", 10)),
-		"posture": int(career.get("posture", 5)),
-		"martial_level": int(career.get("martial_level", 1)),
-		"qinggong": int(career.get("qinggong", 1)),
-		"battles_won": 0
-	})
-	career_selected = true
-	in_prologue = false
-	node_index = 0
-	last_hint = "已选择出山职业：%s。玩家数据已初始化，后续战斗将沿用并成长。" % NarrativeBattleContext.player_profile_debug_text()
-	_save_narrative_state_to_context()
-	_render()
+	_safe_runtime().on_select_career(index)
 
 func _on_request_prologue_master_battle() -> void:
-	_save_narrative_state_to_context()
-	NarrativeBattleContext.set_request(PROLOGUE_MASTER_ENCOUNTER_ID, PROLOGUE_MASTER_SOURCE_ID, "", false)
-	body_label.text = PROLOGUE[step_index] + "\n\n[b]序章战斗跳转[/b]\n师父救场战：玩家操控师父，用强力牌击败袭村刀手。\n%s\n即将进入 MainVisual。" % NarrativeBattleContext.debug_text()
-	BattleFontHelper.enforce(self)
-	call_deferred("_change_to_main_visual")
+	_safe_runtime().on_request_prologue_master_battle()
 
 func _on_skip_prologue_master_battle() -> void:
-	step_index = PROLOGUE_AFTER_MASTER_BATTLE_STEP
-	clues += 1
-	last_hint = "已跳过师父救场战，按胜利继续序章。"
-	_save_narrative_state_to_context()
-	_render()
+	_safe_runtime().on_skip_prologue_master_battle()
 
 func _on_request_battle() -> void:
-	var node: Dictionary = NODES[node_index]
-	var encounter_id := str(node.get("combat", ""))
-	var source_node_id := str(node.get("id", ""))
-	_save_narrative_state_to_context()
-	NarrativeBattleContext.set_request(encounter_id, source_node_id, "", true)
-	body_label.text = _node_body(node) + "\n\n[b]战斗跳转[/b]\n%s\n即将进入 MainVisual。" % NarrativeBattleContext.debug_text()
-	BattleFontHelper.enforce(self)
-	call_deferred("_change_to_main_visual")
+	_safe_runtime().on_request_battle()
 
 func _change_to_main_visual() -> void:
 	get_tree().change_scene_to_file(MAIN_VISUAL_SCENE)
 
 func _on_mock_battle_win() -> void:
-	var node: Dictionary = NODES[node_index]
-	body_label.text = _node_body(node) + "\n\n[b]战斗占位胜利[/b]\n现在可选择战后处理。"
-	BattleFontHelper.enforce(self)
+	_safe_runtime().on_mock_battle_win()
 
 func _on_choice(index: int) -> void:
-	var node: Dictionary = NODES[node_index]
-	var choices: Array = node.get("choices", [])
-	if index < 0 or index >= choices.size():
-		return
-	_apply_choice_delta(choices[index])
-	if node_index < NODES.size() - 1:
-		_advance_to_node(node_index + 1, "")
-	else:
-		_render_ending()
+	_safe_runtime().on_choice(index)
 
 func _render_ending() -> void:
-	title_label.text = "结局：潮声还在"
-	status_label.text = "单局结算"
-	map_label.text = _map_text()
-	scene_label.text = _format_scene_text("结局图占位：上报 / 掩盖 / 私查 / 借势四类结局图后续接入。")
-	_render_visual("", "结局图占位：上报 / 掩盖 / 私查 / 借势四类结局图后续接入。")
-	body_label.text = "军功 %d / 清望 %d / 旧案线索 %d\n%s\n\n案卷缺页，潮声仍在。" % [jun_gong, qing_wang, clues, NarrativeBattleContext.player_profile_debug_text()]
-	vars_label.text = _vars_text()
-	_clear_dynamic_boxes()
-	_add_placeholder(map_buttons_box, "单局已结束。")
-	_add_placeholder(combat_buttons_box, "结局阶段无战斗。")
-	_add_button(choices_box, "重开叙事", _restart)
-	BattleFontHelper.enforce(self)
+	_safe_view().render_ending()
 
 func _restart() -> void:
-	step_index = 0
-	node_index = 0
-	jun_gong = 0
-	qing_wang = 0
-	clues = 0
-	in_prologue = true
-	career_selected = false
-	last_hint = ""
-	NarrativeBattleContext.clear()
-	NarrativeBattleContext.clear_player_profile()
-	_clear_narrative_state_context()
-	_render()
+	_safe_runtime().restart()
 
 func _map_text() -> String:
 	var lines: Array[String] = []

@@ -177,7 +177,7 @@ func _make_operation_panel_floating() -> void:
 	if operation_panel == null:
 		return
 	operation_panel.add_theme_stylebox_override("panel", _transparent_panel_style())
-	operation_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	operation_panel.mouse_filter = Control.MOUSE_FILTER_PASS
 	var margin := operation_panel.get_child(0) if operation_panel.get_child_count() > 0 else null
 	if margin is MarginContainer:
 		var margin_container := margin as MarginContainer

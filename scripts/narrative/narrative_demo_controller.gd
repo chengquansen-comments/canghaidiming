@@ -5,6 +5,8 @@ const NarrativeStateScript := preload("res://scripts/narrative/narrative_state.g
 const NarrativeFontHelper := preload("res://scripts/narrative/narrative_font_helper.gd")
 const NarrativeCombatBridgeScript := preload("res://scripts/narrative/narrative_combat_bridge.gd")
 const NarrativeStaticMapLayoutScript := preload("res://scripts/narrative/narrative_static_map_layout.gd")
+const NarrativeRouteRuntime := preload("res://scripts/narrative/narrative_route_runtime.gd")
+const NarrativeChoiceRuntime := preload("res://scripts/narrative/narrative_choice_runtime.gd")
 const PROLOGUE_BACKGROUND_HINTS := {
 	"p01_tide": "res://assets/pixel_battle/backgrounds/prologue_burning_village.png",
 	"p04_blade": "res://assets/pixel_battle/backgrounds/prologue_burning_village.png",
@@ -62,6 +64,18 @@ var continue_button: Button
 var restart_button: Button
 var showing_prologue := true
 var waiting_result := false
+var _route_runtime
+var _choice_runtime
+
+func _route_runtime_helper():
+	if _route_runtime == null:
+		_route_runtime = NarrativeRouteRuntime.new(self)
+	return _route_runtime
+
+func _choice_runtime_helper():
+	if _choice_runtime == null:
+		_choice_runtime = NarrativeChoiceRuntime.new(self)
+	return _choice_runtime
 
 func _ready() -> void:
 	_build_ui()
@@ -278,480 +292,100 @@ func _clear_map() -> void:
 		child.queue_free()
 
 func _on_continue_pressed() -> void:
-	if showing_prologue:
-		_render_next_prologue_step()
-	elif waiting_result:
-		waiting_result = false
-		if not narrative.current_ending_id.is_empty():
-			_render_ending()
-		else:
-			_render_node()
-	_force_cjk_font()
+	_choice_runtime_helper().on_continue_pressed()
 
 func _render_next_prologue_step() -> void:
-	_clear_choices()
-	result_label.text = ""
-	vars_label.text = ""
-	route_label.text = "序章：短镜头链 / 尚未进入行军图"
-	_render_combat_bridge({})
-	_render_map_strip()
-	if not narrative.has_next_prologue_step():
-		showing_prologue = false
-		_render_node()
-		return
-	var step := narrative.advance_prologue()
-	title_label.text = str(step.get("title", "刀下余声")) if step.has("title") else "刀下余声"
-	type_label.text = "序章 / %d/%d" % [narrative.prologue_index, narrative.prologue_count()]
-	_render_step_art(step)
-	_render_step_portrait(step)
-	body_label.text = _format_step(step)
-	continue_button.visible = true
-	_force_cjk_font()
+	_route_runtime_helper().render_next_prologue_step()
 
 func _render_step_art(step: Dictionary) -> void:
-	var step_id := str(step.get("id", ""))
-	var bg_path := str(PROLOGUE_BACKGROUND_HINTS.get(step_id, ""))
-	if bg_path.is_empty():
-		_set_art_placeholder("序章镜头：%s" % str(step.get("kind", "black")))
-		return
-	_set_art_from_path(bg_path, "P0 序章背景占位：%s" % bg_path)
+	_route_runtime_helper().render_step_art(step)
 
 func _render_step_portrait(step: Dictionary) -> void:
-	var step_id := str(step.get("id", ""))
-	var hint: Dictionary = PROLOGUE_PORTRAIT_HINTS.get(step_id, {})
-	if hint.is_empty() and step.has("speaker"):
-		hint = _portrait_hint_for_speaker(str(step.get("speaker", "")))
-	_apply_portrait_hint(hint, "序章角色")
+	_route_runtime_helper().render_step_portrait(step)
 
 func _format_step(step: Dictionary) -> String:
-	var lines: Array[String] = []
-	var speaker := str(step.get("speaker", ""))
-	var text := str(step.get("text", ""))
-	var sfx := str(step.get("sfx", ""))
-	if not speaker.is_empty():
-		lines.append("[b]%s：[/b]" % speaker)
-	if not text.is_empty():
-		lines.append(text)
-	if not sfx.is_empty():
-		lines.append("\n[i]%s[/i]" % sfx)
-	if step.has("card"):
-		var card: Dictionary = step.get("card", {})
-		lines.append("\n[b]卡牌：%s[/b]" % str(card.get("name", "")))
-		lines.append("费用：%d" % int(card.get("cost", 0)))
-		lines.append(str(card.get("effect", "")))
-		lines.append("[i]%s[/i]" % str(card.get("description", "")))
-	if step.has("cards"):
-		lines.append("\n[b]师父手牌[/b]")
-		var cards: Array = step.get("cards", [])
-		for card_value in cards:
-			if typeof(card_value) != TYPE_DICTIONARY:
-				continue
-			var c: Dictionary = card_value
-			lines.append("• %s｜费%d｜%s" % [str(c.get("name", "")), int(c.get("cost", 0)), str(c.get("effect", ""))])
-	return "\n".join(lines)
+	return _route_runtime_helper().format_step(step)
 
 func _render_node() -> void:
-	_clear_choices()
-	var node := narrative.current_node()
-	title_label.text = str(node.get("title", "未知节点"))
-	type_label.text = narrative.node_status_text()
-	route_label.text = narrative.route_text()
-	vars_label.text = narrative.variables_text()
-	result_label.text = narrative.last_result_text
-	_render_node_art(node)
-	_render_node_portrait(node)
-	body_label.text = _format_node(node)
-	continue_button.visible = false
-	_render_map_strip()
-	_render_combat_bridge(node)
-	var choices := narrative.available_choices(node)
-	for i in range(choices.size()):
-		var choice: Dictionary = choices[i]
-		var button := Button.new()
-		button.text = _choice_button_text(choice)
-		button.custom_minimum_size = Vector2(0, 44)
-		button.pressed.connect(_on_choice_pressed.bind(i))
-		choices_box.add_child(button)
-	_force_cjk_font()
+	_route_runtime_helper().render_node()
 
 func _render_combat_bridge(node: Dictionary) -> void:
-	if combat_panel == null:
-		return
-	if node.is_empty() or not NarrativeCombatBridge.node_has_combat(node):
-		combat_panel.visible = false
-		combat_payload_label.text = ""
-		return
-	combat_panel.visible = true
-	var payload := NarrativeCombatBridge.build_payload(narrative.current_node_id, node)
-	combat_payload_label.text = "战斗桥接占位：\n%s" % _combat_payload_text(payload)
+	_route_runtime_helper().render_combat_bridge(node)
 
 func _combat_payload_text(payload: Dictionary) -> String:
-	var enemies_text := ""
-	var raw_enemies: Variant = payload.get("enemies", [])
-	if typeof(raw_enemies) == TYPE_ARRAY:
-		var parts: Array[String] = []
-		for enemy in raw_enemies:
-			parts.append(str(enemy))
-		enemies_text = ", ".join(parts)
-	return "node_id=%s｜encounter_id=%s｜enemies=%s" % [
-		str(payload.get("node_id", "")),
-		str(payload.get("encounter_id", "")),
-		enemies_text
-	]
+	return _route_runtime_helper().combat_payload_text(payload)
 
 func _on_request_battle_pressed() -> void:
-	var node := narrative.current_node()
-	var payload := combat_bridge.request_battle(narrative.current_node_id, node)
-	if payload.is_empty():
-		result_label.text = "当前节点没有 combat 配置。"
-	else:
-		result_label.text = "已请求战斗：%s" % _combat_payload_text(payload)
-	_force_cjk_font()
+	_choice_runtime_helper().on_request_battle_pressed()
 
 func _on_mock_battle_win_pressed() -> void:
-	if not combat_bridge.has_pending_battle():
-		var node := narrative.current_node()
-		combat_bridge.request_battle(narrative.current_node_id, node)
-	var payload := combat_bridge.resolve_win({"source": "narrative_demo_mock"})
-	result_label.text = "战斗占位胜利：%s。现在可选择战后处理。" % str(payload.get("encounter_id", ""))
-	_force_cjk_font()
+	_choice_runtime_helper().on_mock_battle_win_pressed()
 
 func _render_node_art(node: Dictionary) -> void:
-	var bg := str(node.get("background", ""))
-	if bg.is_empty():
-		_set_art_placeholder("当前节点暂无背景配置。")
-		return
-	_set_art_from_path(bg, "P0 节点背景占位：%s" % bg)
+	_route_runtime_helper().render_node_art(node)
 
 func _render_node_portrait(node: Dictionary) -> void:
-	var dialogue: Array = node.get("dialogue", [])
-	for line_value in dialogue:
-		if typeof(line_value) != TYPE_DICTIONARY:
-			continue
-		var line: Dictionary = line_value
-		var speaker := str(line.get("speaker", ""))
-		if not speaker.is_empty():
-			_apply_portrait_hint(_portrait_hint_for_speaker(speaker), speaker)
-			return
-	_set_portrait_placeholder("角色占位：当前节点暂无角色立绘。")
+	_route_runtime_helper().render_node_portrait(node)
 
 func _portrait_hint_for_speaker(speaker: String) -> Dictionary:
-	return SPEAKER_PORTRAIT_HINTS.get(speaker, {"name": speaker, "path": ""})
+	return _route_runtime_helper().portrait_hint_for_speaker(speaker)
 
 func _apply_portrait_hint(hint: Dictionary, fallback_name: String) -> void:
-	if hint.is_empty():
-		_set_portrait_placeholder("角色占位：%s" % fallback_name)
-		return
-	var name := str(hint.get("name", fallback_name))
-	var path := str(hint.get("path", ""))
-	if path.is_empty():
-		_set_portrait_placeholder("角色占位：%s" % name)
-		return
-	_set_portrait_from_path(path, "角色 / 旧物占位：%s\n%s" % [name, path])
+	_route_runtime_helper().apply_portrait_hint(hint, fallback_name)
 
 func _set_art_from_path(path: String, fallback_text: String) -> void:
-	if art_texture == null or art_label == null:
-		return
-	if ResourceLoader.exists(path):
-		var tex := load(path)
-		if tex is Texture2D:
-			art_texture.texture = tex
-			art_texture.visible = true
-			art_label.visible = false
-			return
-	_set_art_placeholder(fallback_text)
+	_route_runtime_helper().set_art_from_path(path, fallback_text)
 
 func _set_art_placeholder(text: String) -> void:
-	if art_texture != null:
-		art_texture.texture = null
-		art_texture.visible = false
-	if art_label != null:
-		art_label.text = text
-		art_label.visible = true
+	_route_runtime_helper().set_art_placeholder(text)
 
 func _set_portrait_from_path(path: String, fallback_text: String) -> void:
-	if portrait_texture == null or portrait_label == null:
-		return
-	if ResourceLoader.exists(path):
-		var tex := load(path)
-		if tex is Texture2D:
-			portrait_texture.texture = tex
-			portrait_texture.visible = true
-			portrait_label.visible = false
-			return
-	_set_portrait_placeholder(fallback_text)
+	_route_runtime_helper().set_portrait_from_path(path, fallback_text)
 
 func _set_portrait_placeholder(text: String) -> void:
-	if portrait_texture != null:
-		portrait_texture.texture = null
-		portrait_texture.visible = false
-	if portrait_label != null:
-		portrait_label.text = text
-		portrait_label.visible = true
+	_route_runtime_helper().set_portrait_placeholder(text)
 
 func _render_map_strip() -> void:
-	_clear_map()
-	if narrative == null or map_box == null:
-		return
-	if map_layout != null and map_layout.is_loaded():
-		_render_static_branch_map()
-		return
-	_render_fallback_route_strip()
+	_route_runtime_helper().render_map_strip()
 
 func _render_static_branch_map() -> void:
-	var columns: Array = map_layout.columns()
-	if columns.is_empty():
-		_render_fallback_route_strip()
-		return
-	for column_value in columns:
-		if typeof(column_value) != TYPE_DICTIONARY:
-			continue
-		var column: Dictionary = column_value
-		map_box.add_child(_build_map_column(column))
+	_route_runtime_helper()._render_static_branch_map()
 
 func _build_map_column(column: Dictionary) -> Control:
-	var panel := PanelContainer.new()
-	panel.custom_minimum_size = Vector2(176, 126)
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color("17202b")
-	style.border_color = Color("344354")
-	style.set_border_width_all(1)
-	style.set_corner_radius_all(12)
-	panel.add_theme_stylebox_override("panel", style)
-
-	var margin := MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 8)
-	margin.add_theme_constant_override("margin_top", 6)
-	margin.add_theme_constant_override("margin_right", 8)
-	margin.add_theme_constant_override("margin_bottom", 6)
-	panel.add_child(margin)
-
-	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 4)
-	margin.add_child(box)
-
-	var title := Label.new()
-	title.text = str(column.get("title", column.get("column_id", "")))
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.add_theme_font_size_override("font_size", 13)
-	title.modulate = Color(0.86, 0.80, 0.64, 1.0)
-	box.add_child(title)
-
-	var nodes: Array = column.get("nodes", [])
-	for node_value in nodes:
-		if typeof(node_value) != TYPE_DICTIONARY:
-			continue
-		var node_entry: Dictionary = node_value
-		box.add_child(_build_static_map_node_card(node_entry))
-	return panel
+	return _route_runtime_helper()._build_map_column(column)
 
 func _build_static_map_node_card(node_entry: Dictionary) -> Control:
-	var node_id := str(node_entry.get("node_id", ""))
-	var node := narrative.node_by_id(node_id)
-	var node_type := str(node.get("type", ""))
-	var is_current := node_id == narrative.current_node_id and narrative.current_ending_id.is_empty() and not showing_prologue
-	var is_visited := narrative.visited_node_ids.has(node_id) and not showing_prologue
-	var is_available := _is_static_map_node_available(node_id)
-
-	var card := PanelContainer.new()
-	card.custom_minimum_size = Vector2(156, 30)
-	var style := StyleBoxFlat.new()
-	style.set_corner_radius_all(8)
-	style.set_border_width_all(1)
-	style.bg_color = Color("202936")
-	style.border_color = Color("536171")
-	if is_available:
-		style.bg_color = Color("203240")
-		style.border_color = Color("6f8899")
-	if is_visited:
-		style.bg_color = Color("263548")
-		style.border_color = Color("7d8fa6")
-	if is_current:
-		style.bg_color = Color("3a2c18")
-		style.border_color = Color("d8b26e")
-	card.add_theme_stylebox_override("panel", style)
-
-	var label := Label.new()
-	label.text = "%s %s %s" % [_static_map_marker(is_current, is_visited, is_available), _node_type_icon(node_type), str(node.get("title", node_id))]
-	label.add_theme_font_size_override("font_size", 12)
-	label.clip_text = true
-	card.add_child(label)
-	return card
+	return _route_runtime_helper()._build_static_map_node_card(node_entry)
 
 func _is_static_map_node_available(node_id: String) -> bool:
-	if showing_prologue or narrative == null or map_layout == null:
-		return false
-	if node_id == narrative.current_node_id or narrative.visited_node_ids.has(node_id):
-		return true
-	var previous := map_layout.previous_nodes(node_id)
-	if previous.is_empty():
-		return node_id == narrative.current_node_id
-	for prev_id in previous:
-		if narrative.visited_node_ids.has(prev_id):
-			return true
-	return false
+	return _route_runtime_helper()._is_static_map_node_available(node_id)
 
 func _static_map_marker(is_current: bool, is_visited: bool, is_available: bool) -> String:
-	if is_current:
-		return "▶"
-	if is_visited:
-		return "●"
-	if is_available:
-		return "◎"
-	return "○"
+	return _route_runtime_helper()._static_map_marker(is_current, is_visited, is_available)
 
 func _render_fallback_route_strip() -> void:
-	var route := narrative.map_route()
-	if route.is_empty():
-		var empty_label := Label.new()
-		empty_label.text = "地图路线未配置"
-		map_box.add_child(empty_label)
-		return
-	for node_id in route:
-		map_box.add_child(_build_map_node_card(node_id))
+	_route_runtime_helper()._render_fallback_route_strip()
 
 func _build_map_node_card(node_id: String) -> Control:
-	var node := narrative.node_by_id(node_id)
-	var node_type := str(node.get("type", ""))
-	var is_current := node_id == narrative.current_node_id and narrative.current_ending_id.is_empty() and not showing_prologue
-	var is_visited := narrative.visited_node_ids.has(node_id) and not showing_prologue
-
-	var card := PanelContainer.new()
-	card.custom_minimum_size = Vector2(150, 76)
-	var style := StyleBoxFlat.new()
-	style.set_corner_radius_all(12)
-	style.set_border_width_all(2)
-	style.bg_color = Color("202936")
-	style.border_color = Color("536171")
-	if is_visited:
-		style.bg_color = Color("263548")
-		style.border_color = Color("7d8fa6")
-	if is_current:
-		style.bg_color = Color("3a2c18")
-		style.border_color = Color("d8b26e")
-	card.add_theme_stylebox_override("panel", style)
-
-	var margin := MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 8)
-	margin.add_theme_constant_override("margin_top", 6)
-	margin.add_theme_constant_override("margin_right", 8)
-	margin.add_theme_constant_override("margin_bottom", 6)
-	card.add_child(margin)
-
-	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 2)
-	margin.add_child(box)
-
-	var title := Label.new()
-	title.text = "%s %s" % [_node_marker(node_id, is_current, is_visited), str(node.get("title", node_id))]
-	title.add_theme_font_size_override("font_size", 14)
-	title.clip_text = true
-	box.add_child(title)
-
-	var type := Label.new()
-	type.text = "%s %s" % [_node_type_icon(node_type), narrative.node_type_label(node_type)]
-	type.add_theme_font_size_override("font_size", 12)
-	type.modulate = Color(0.78, 0.82, 0.86, 1.0)
-	box.add_child(type)
-
-	return card
+	return _route_runtime_helper()._build_map_node_card(node_id)
 
 func _node_marker(node_id: String, is_current: bool, is_visited: bool) -> String:
-	if is_current:
-		return "▶"
-	if is_visited:
-		return "●"
-	return "○"
+	return _route_runtime_helper()._node_marker(node_id, is_current, is_visited)
 
 func _node_type_icon(node_type: String) -> String:
-	match node_type:
-		"battle":
-			return "⚔"
-		"elite":
-			return "◆"
-		"event":
-			return "?"
-		"camp":
-			return "♨"
-		"relic":
-			return "◇"
-		"boss":
-			return "☠"
-		"ending_gate":
-			return "▣"
-		_:
-			return "·"
+	return _route_runtime_helper()._node_type_icon(node_type)
 
 func _format_node(node: Dictionary) -> String:
-	var lines: Array[String] = []
-	var bg := str(node.get("background", ""))
-	if not bg.is_empty():
-		lines.append("[i]背景：%s[/i]" % bg)
-	var narration := str(node.get("narration", ""))
-	if not narration.is_empty():
-		lines.append("[b]旁白[/b]\n%s" % narration)
-	var dialogue: Array = node.get("dialogue", [])
-	for line_value in dialogue:
-		if typeof(line_value) != TYPE_DICTIONARY:
-			continue
-		var line: Dictionary = line_value
-		lines.append("[b]%s：[/b]%s" % [str(line.get("speaker", "")), str(line.get("text", ""))])
-	if node.has("combat"):
-		var combat: Dictionary = node.get("combat", {})
-		lines.append("\n[b]战斗占位[/b]：%s" % str(combat.get("encounter_id", "")))
-		lines.append("敌人：%s" % _enemy_list_text(combat.get("enemies", [])))
-	if node.has("relic"):
-		lines.append("\n[b]旧物[/b]：%s" % str(node.get("relic", "")))
-	return "\n".join(lines)
+	return _route_runtime_helper().format_node(node)
 
 func _enemy_list_text(value: Variant) -> String:
-	var result: Array[String] = []
-	if typeof(value) == TYPE_ARRAY:
-		for item in value:
-			result.append(str(item))
-	return ", ".join(result)
+	return _route_runtime_helper()._enemy_list_text(value)
 
 func _choice_button_text(choice: Dictionary) -> String:
-	var text := str(choice.get("text", ""))
-	var delta: Dictionary = choice.get("delta", {})
-	var parts: Array[String] = []
-	for key in delta.keys():
-		var value := int(delta.get(key, 0))
-		if value == 0:
-			continue
-		var sign := "+" if value > 0 else ""
-		parts.append("%s%s%d" % [narrative.variable_short_label(str(key)), sign, value])
-	if parts.is_empty():
-		return text
-	return "%s（%s）" % [text, " / ".join(parts)]
+	return _choice_runtime_helper().choice_button_text(choice)
 
 func _on_choice_pressed(index: int) -> void:
-	var result := narrative.choose(index)
-	if not bool(result.get("ok", false)):
-		result_label.text = str(result.get("result", "无效选择。"))
-		_force_cjk_font()
-		return
-	_clear_choices()
-	result_label.text = str(result.get("result", ""))
-	vars_label.text = narrative.variables_text()
-	route_label.text = narrative.route_text()
-	_render_map_strip()
-	continue_button.visible = true
-	waiting_result = true
-	_force_cjk_font()
+	_choice_runtime_helper().on_choice_pressed(index)
 
 func _render_ending() -> void:
-	_clear_choices()
-	var ending := narrative.current_ending()
-	title_label.text = "结局：%s" % str(ending.get("title", "沉默"))
-	type_label.text = "单局结算"
-	route_label.text = narrative.route_text()
-	body_label.text = str(ending.get("text", "潮声还在。"))
-	result_label.text = narrative.last_result_text
-	vars_label.text = narrative.variables_text()
-	continue_button.visible = false
-	_render_combat_bridge({})
-	_set_art_placeholder("结局图占位：后续接入上报 / 掩盖 / 私查 / 借势四类结局图。")
-	_set_portrait_placeholder("结局人物占位")
-	_render_map_strip()
-	_force_cjk_font()
+	_choice_runtime_helper().render_ending()

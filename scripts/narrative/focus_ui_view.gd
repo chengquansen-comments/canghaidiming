@@ -1,0 +1,647 @@
+extends RefCounted
+const NarrativeBattleContext := preload("res://scripts/narrative_battle_context.gd")
+
+const HIDDEN_SCENE_ART_OVERLAY_NODE_NAMES := [
+	"CinematicMistLayer",
+	"CinematicFirePulse",
+	"CinematicMaster",
+	"CinematicHero",
+	"CinematicForegroundProp",
+	"CinematicForegroundProp2",
+	"CinematicForegroundProp3",
+	"CinematicDim",
+	"CinematicFocus",
+	"NarrativeFocusDebugLayer",
+	"NarrativeFocusArtLayer",
+	"FocusWorldMapLayer",
+]
+
+var c
+
+func _init(controller) -> void:
+	c = controller
+
+func _get(property: StringName):
+	if c == null:
+		return null
+	return c.get(property)
+
+func _set(property: StringName, value) -> bool:
+	if c == null:
+		return false
+	c.set(property, value)
+	return true
+
+func _apply_focus_debug_visibility() -> void:
+	var debug_visible: bool = NarrativeBattleContext.is_ui_debug_visible()
+	if c.focus_debug_layer != null:
+		c.focus_debug_layer.visible = debug_visible
+	if c.focus_debug_panel != null:
+		c.focus_debug_panel.visible = debug_visible
+	if c.focus_casefile_art != null:
+		c.focus_casefile_art.visible = debug_visible and c.focus_debug_panel != null and c.focus_debug_panel.visible
+
+func _add_world_map_layer() -> void:
+	if c.focus_world_map_layer != null:
+		return
+	c.focus_world_map_layer = Control.new()
+	c.focus_world_map_layer.name = "FocusWorldMapLayer"
+	c.focus_world_map_layer.anchor_left = 0.0
+	c.focus_world_map_layer.anchor_top = 0.0
+	c.focus_world_map_layer.anchor_right = 1.0
+	c.focus_world_map_layer.anchor_bottom = 0.33
+	c.focus_world_map_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	c.focus_world_map_layer.z_index = 60
+	c.focus_world_map_layer.z_as_relative = false
+	c.add_child(c.focus_world_map_layer)
+
+	c.focus_world_map_panel = PanelContainer.new()
+	c.focus_world_map_panel.name = "FocusWorldMapPanel"
+	c.focus_world_map_panel.anchor_left = 0.055
+	c.focus_world_map_panel.anchor_top = 0.035
+	c.focus_world_map_panel.anchor_right = 0.945
+	c.focus_world_map_panel.anchor_bottom = 0.205
+	c.focus_world_map_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	c.focus_world_map_panel.z_index = 61
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.035, 0.030, 0.024, 0.66)
+	style.border_color = Color(0.74, 0.60, 0.38, 0.62)
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(10)
+	style.content_margin_left = 12
+	style.content_margin_right = 12
+	style.content_margin_top = 8
+	style.content_margin_bottom = 8
+	c.focus_world_map_panel.add_theme_stylebox_override("panel", style)
+	c.focus_world_map_layer.add_child(c.focus_world_map_panel)
+
+	var root := VBoxContainer.new()
+	root.add_theme_constant_override("separation", 5)
+	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	c.focus_world_map_panel.add_child(root)
+
+	c.focus_world_map_status_label = Label.new()
+	c.focus_world_map_status_label.name = "FocusWorldMapStatusLabel"
+	c.focus_world_map_status_label.add_theme_font_size_override("font_size", 14)
+	c.focus_world_map_status_label.add_theme_color_override("font_color", Color("f0dfb8"))
+	c.focus_world_map_status_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.85))
+	c.focus_world_map_status_label.add_theme_constant_override("shadow_offset_x", 1)
+	c.focus_world_map_status_label.add_theme_constant_override("shadow_offset_y", 1)
+	c.focus_world_map_status_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	root.add_child(c.focus_world_map_status_label)
+
+	c.focus_world_map_nodes_row = HBoxContainer.new()
+	c.focus_world_map_nodes_row.name = "FocusWorldMapNodesRow"
+	c.focus_world_map_nodes_row.add_theme_constant_override("separation", 5)
+	c.focus_world_map_nodes_row.mouse_filter = Control.MOUSE_FILTER_PASS
+	c.focus_world_map_nodes_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	root.add_child(c.focus_world_map_nodes_row)
+	_refresh_world_map()
+
+func _refresh_world_map() -> void:
+	if c.focus_world_map_layer == null or c.focus_world_map_panel == null or c.focus_world_map_nodes_row == null:
+		return
+	var should_show: bool = not c.in_prologue
+	c.focus_world_map_layer.visible = should_show
+	c.focus_world_map_panel.visible = should_show
+	if not should_show:
+		return
+	if c.focus_world_map_status_label != null:
+		c.focus_world_map_status_label.text = "海疆行军图｜当前：%s｜军功 %d｜清望 %d｜旧案 %d" % [_current_world_map_title(), c.jun_gong, c.qing_wang, c.clues]
+	for child in c.focus_world_map_nodes_row.get_children():
+		child.queue_free()
+	for i in range(c._world_map_total_count()):
+		if i > 0:
+			c.focus_world_map_nodes_row.add_child(_make_world_map_line(i))
+		c.focus_world_map_nodes_row.add_child(_make_world_map_node_button(i))
+
+func _show_world_map_ui() -> void:
+	_refresh_world_map()
+
+func _current_world_map_title() -> String:
+	if c.in_prologue:
+		return c._prologue_map_title()
+	var node: Dictionary = c._node_data_at(c.node_index)
+	return str(node.get("title", ""))
+
+func _world_map_title_at(map_index: int) -> String:
+	if map_index == 0:
+		return c._prologue_map_title()
+	var node: Dictionary = c._node_data_at(map_index - 1)
+	return str(node.get("title", ""))
+
+func _world_map_marker_for_index(index: int) -> String:
+	var current: int = c._world_map_current_index()
+	if index == current:
+		return "◆ 当前"
+	if index < current:
+		return "● 已过"
+	if index == current + 1:
+		return "◎ 可前往"
+	return "○ 未开放"
+
+func _make_world_map_line(index: int) -> Label:
+	var line := Label.new()
+	line.text = "━━"
+	line.custom_minimum_size = Vector2(24, 34)
+	line.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	line.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	line.add_theme_font_size_override("font_size", 13)
+	line.add_theme_color_override("font_color", Color("c9a35b") if index <= c._world_map_current_index() else Color(0.60, 0.55, 0.46, 0.45))
+	line.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return line
+
+func _make_world_map_node_button(index: int) -> Button:
+	var btn := Button.new()
+	btn.text = "%s\n%s" % [_world_map_marker_for_index(index), _world_map_title_at(index)]
+	btn.custom_minimum_size = Vector2(116, 48)
+	btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	btn.focus_mode = Control.FOCUS_NONE
+	btn.mouse_filter = Control.MOUSE_FILTER_STOP
+	btn.disabled = index > c._world_map_current_index() + 1
+	btn.pressed.connect(c._on_world_map_node_pressed.bind(index))
+	return btn
+
+func _ensure_focus_story_caption() -> void:
+	if c.focus_story_layer != null:
+		return
+	c.focus_story_layer = Control.new()
+	c.focus_story_layer.name = "NarrativePerformanceCaptionLayer"
+	c.focus_story_layer.anchor_left = 0.0
+	c.focus_story_layer.anchor_top = 0.0
+	c.focus_story_layer.anchor_right = 1.0
+	c.focus_story_layer.anchor_bottom = 1.0
+	c.focus_story_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	c.focus_story_layer.z_index = 90
+	c.focus_story_layer.z_as_relative = false
+	c.add_child(c.focus_story_layer)
+
+	c.focus_story_panel = PanelContainer.new()
+	c.focus_story_panel.name = "NarrativePerformanceCaptionPanel"
+	c.focus_story_panel.anchor_left = 0.06
+	c.focus_story_panel.anchor_top = c.PERFORMANCE_CAPTION_TOP
+	c.focus_story_panel.anchor_right = 0.94
+	c.focus_story_panel.anchor_bottom = c.PERFORMANCE_CAPTION_BOTTOM
+	c.focus_story_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	c.focus_story_panel.z_index = 91
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.0, 0.0, 0.0, 0.0)
+	style.border_color = Color(0.0, 0.0, 0.0, 0.0)
+	style.set_border_width_all(0)
+	style.set_corner_radius_all(0)
+	style.content_margin_left = 0
+	style.content_margin_right = 0
+	style.content_margin_top = 0
+	style.content_margin_bottom = 0
+	c.focus_story_panel.add_theme_stylebox_override("panel", style)
+	c.focus_story_layer.add_child(c.focus_story_panel)
+
+	c.focus_story_label = RichTextLabel.new()
+	c.focus_story_label.name = "NarrativePerformanceCaptionText"
+	c.focus_story_label.bbcode_enabled = true
+	c.focus_story_label.fit_content = false
+	c.focus_story_label.scroll_active = false
+	c.focus_story_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	c.focus_story_label.add_theme_font_size_override("normal_font_size", c.STORY_FONT_SIZE)
+	c.focus_story_label.add_theme_font_size_override("bold_font_size", c.STORY_FONT_SIZE)
+	c.focus_story_label.add_theme_font_size_override("italics_font_size", c.STORY_FONT_SIZE)
+	c.focus_story_label.add_theme_color_override("default_color", Color("f6ead2"))
+	c.focus_story_panel.add_child(c.focus_story_label)
+
+func _update_focus_story_caption() -> void:
+	if c.focus_story_label == null:
+		return
+	var story_text := ""
+	if c.body_label != null:
+		story_text = c.body_label.text.strip_edges()
+	c.focus_story_panel.visible = not story_text.is_empty()
+	c.focus_story_label.text = "[center]%s[/center]" % story_text
+
+func _ensure_focus_debug_panel() -> void:
+	if c.focus_debug_layer != null:
+		return
+	c.focus_debug_layer = Control.new()
+	c.focus_debug_layer.name = "NarrativeFocusDebugLayer"
+	c.focus_debug_layer.anchor_left = 0.0
+	c.focus_debug_layer.anchor_top = 0.0
+	c.focus_debug_layer.anchor_right = 1.0
+	c.focus_debug_layer.anchor_bottom = 1.0
+	c.focus_debug_layer.mouse_filter = Control.MOUSE_FILTER_PASS
+	c.focus_debug_layer.z_index = 120
+	c.focus_debug_layer.z_as_relative = false
+	c.add_child(c.focus_debug_layer)
+
+	c.focus_debug_panel = PanelContainer.new()
+	c.focus_debug_panel.name = "NarrativeFocusDebugPanel"
+	c.focus_debug_panel.anchor_left = 0.68
+	c.focus_debug_panel.anchor_top = 0.225
+	c.focus_debug_panel.anchor_right = 0.985
+	c.focus_debug_panel.anchor_bottom = 0.56
+	c.focus_debug_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	c.focus_debug_panel.z_index = 121
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.025, 0.022, 0.018, 0.78)
+	style.border_color = Color(0.78, 0.62, 0.36, 0.62)
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(8)
+	style.content_margin_left = 12
+	style.content_margin_right = 12
+	style.content_margin_top = 10
+	style.content_margin_bottom = 10
+	c.focus_debug_panel.add_theme_stylebox_override("panel", style)
+	c.focus_debug_layer.add_child(c.focus_debug_panel)
+
+	var debug_root := VBoxContainer.new()
+	debug_root.name = "NarrativeFocusDebugRoot"
+	debug_root.mouse_filter = Control.MOUSE_FILTER_STOP
+	debug_root.add_theme_constant_override("separation", 8)
+	c.focus_debug_panel.add_child(debug_root)
+
+	c.focus_foot_alignment_debug_button = Button.new()
+	c.focus_foot_alignment_debug_button.name = "FootAlignmentDebugToggle"
+	c.focus_foot_alignment_debug_button.custom_minimum_size = Vector2(0, 34)
+	c.focus_foot_alignment_debug_button.focus_mode = Control.FOCUS_NONE
+	c.focus_foot_alignment_debug_button.pressed.connect(c._on_focus_foot_alignment_debug_pressed)
+	debug_root.add_child(c.focus_foot_alignment_debug_button)
+
+	c.focus_debug_label = RichTextLabel.new()
+	c.focus_debug_label.name = "NarrativeFocusDebugText"
+	c.focus_debug_label.bbcode_enabled = true
+	c.focus_debug_label.fit_content = false
+	c.focus_debug_label.scroll_active = true
+	c.focus_debug_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	c.focus_debug_label.add_theme_font_size_override("normal_font_size", c.DEBUG_FONT_SIZE)
+	c.focus_debug_label.add_theme_font_size_override("bold_font_size", c.DEBUG_FONT_SIZE)
+	c.focus_debug_label.add_theme_color_override("default_color", Color("f0dfb8"))
+	debug_root.add_child(c.focus_debug_label)
+	_apply_focus_debug_visibility()
+
+func _ensure_ending_settlement_popup() -> void:
+	if c.ending_settlement_layer != null:
+		return
+	c.ending_settlement_layer = Control.new()
+	c.ending_settlement_layer.name = "EndingSettlementLayer"
+	c.ending_settlement_layer.anchor_left = 0.0
+	c.ending_settlement_layer.anchor_top = 0.0
+	c.ending_settlement_layer.anchor_right = 1.0
+	c.ending_settlement_layer.anchor_bottom = 1.0
+	c.ending_settlement_layer.mouse_filter = Control.MOUSE_FILTER_STOP
+	c.ending_settlement_layer.z_index = 220
+	c.ending_settlement_layer.z_as_relative = false
+	c.ending_settlement_layer.visible = false
+	c.add_child(c.ending_settlement_layer)
+
+	var dim := ColorRect.new()
+	dim.name = "EndingSettlementDim"
+	dim.anchor_left = 0.0
+	dim.anchor_top = 0.0
+	dim.anchor_right = 1.0
+	dim.anchor_bottom = 1.0
+	dim.color = Color(0.0, 0.0, 0.0, 0.62)
+	dim.mouse_filter = Control.MOUSE_FILTER_STOP
+	c.ending_settlement_layer.add_child(dim)
+
+	c.ending_settlement_panel = PanelContainer.new()
+	c.ending_settlement_panel.name = "EndingSettlementPanel"
+	c.ending_settlement_panel.anchor_left = 0.18
+	c.ending_settlement_panel.anchor_top = 0.12
+	c.ending_settlement_panel.anchor_right = 0.82
+	c.ending_settlement_panel.anchor_bottom = 0.86
+	c.ending_settlement_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.055, 0.047, 0.035, 0.96)
+	style.border_color = Color(0.86, 0.68, 0.38, 0.92)
+	style.set_border_width_all(2)
+	style.set_corner_radius_all(8)
+	style.content_margin_left = 22
+	style.content_margin_right = 22
+	style.content_margin_top = 20
+	style.content_margin_bottom = 18
+	c.ending_settlement_panel.add_theme_stylebox_override("panel", style)
+	c.ending_settlement_layer.add_child(c.ending_settlement_panel)
+
+	var layout := VBoxContainer.new()
+	layout.add_theme_constant_override("separation", 16)
+	c.ending_settlement_panel.add_child(layout)
+
+	c.ending_settlement_text = RichTextLabel.new()
+	c.ending_settlement_text.name = "EndingSettlementText"
+	c.ending_settlement_text.bbcode_enabled = true
+	c.ending_settlement_text.fit_content = false
+	c.ending_settlement_text.scroll_active = true
+	c.ending_settlement_text.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	c.ending_settlement_text.mouse_filter = Control.MOUSE_FILTER_STOP
+	c.ending_settlement_text.add_theme_font_size_override("normal_font_size", 22)
+	c.ending_settlement_text.add_theme_font_size_override("bold_font_size", 25)
+	c.ending_settlement_text.add_theme_color_override("default_color", Color("f3e4c2"))
+	layout.add_child(c.ending_settlement_text)
+
+	c.ending_settlement_confirm = Button.new()
+	c.ending_settlement_confirm.name = "EndingSettlementConfirm"
+	c.ending_settlement_confirm.text = "确认"
+	c.ending_settlement_confirm.custom_minimum_size = Vector2(0, 56)
+	c.ending_settlement_confirm.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	c.ending_settlement_confirm.add_theme_font_size_override("font_size", 26)
+	c.ending_settlement_confirm.pressed.connect(c._on_ending_settlement_confirmed)
+	layout.add_child(c.ending_settlement_confirm)
+
+func _show_ending_settlement_popup() -> void:
+	_ensure_ending_settlement_popup()
+	if c.ending_settlement_layer == null or c.ending_settlement_text == null:
+		return
+	c.ending_settlement_text.text = _ending_settlement_popup_text()
+	c.ending_settlement_layer.visible = true
+	if c.ending_settlement_confirm != null:
+		c.ending_settlement_confirm.grab_focus()
+
+func _on_ending_settlement_confirmed() -> void:
+	if c.ending_settlement_layer != null:
+		c.ending_settlement_layer.visible = false
+
+func _ending_settlement_popup_text() -> String:
+	var current: Dictionary = c._ending_data()
+	var current_id := str(current.get("id", c.selected_ending_flag)).strip_edges()
+	if current_id.is_empty():
+		current_id = c.selected_ending_flag
+	var lines: Array[String] = []
+	lines.append("[center][b]结局结算[/b][/center]")
+	lines.append("")
+	lines.append("[b]本次结局：%s[/b]" % str(current.get("status", current.get("title", "结局"))))
+	lines.append(str(current.get("text", "")).strip_edges())
+	var feedback := str(current.get("feedback", "")).strip_edges()
+	if not feedback.is_empty():
+		lines.append("[color=#d9bd7a]%s[/color]" % feedback)
+	lines.append("")
+	lines.append("军功 %d / 清望 %d / 旧案线索 %d" % [c.jun_gong, c.qing_wang, c.clues])
+	lines.append("")
+	lines.append("[b]结局图鉴[/b]")
+	var catalog: Array = c._ending_catalog()
+	for ending_variant in catalog:
+		if not (ending_variant is Dictionary):
+			continue
+		var ending := ending_variant as Dictionary
+		var ending_id := str(ending.get("id", "")).strip_edges()
+		var unlocked: bool = ending_id == current_id or (not c.selected_ending_flag.is_empty() and ending_id == c.selected_ending_flag)
+		var state := "已解锁" if unlocked else "未解锁"
+		var color := "#9fe0a2" if unlocked else "#8f8778"
+		lines.append("")
+		lines.append("[color=%s][b]%s｜%s[/b][/color]" % [color, state, str(ending.get("status", ending.get("title", ending_id)))])
+		if unlocked:
+			lines.append(str(ending.get("text", "")).strip_edges())
+		else:
+			lines.append("尚未在本次流程中达成。")
+	return "\n".join(lines)
+
+func _ensure_focus_art_layer() -> void:
+	if c.focus_art_layer != null:
+		return
+	c.focus_art_layer = Control.new()
+	c.focus_art_layer.name = "NarrativeFocusArtLayer"
+	c.focus_art_layer.anchor_left = 0.0
+	c.focus_art_layer.anchor_top = 0.0
+	c.focus_art_layer.anchor_right = 1.0
+	c.focus_art_layer.anchor_bottom = 1.0
+	c.focus_art_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	c.focus_art_layer.z_index = 58
+	c.focus_art_layer.z_as_relative = false
+	c.add_child(c.focus_art_layer)
+
+	c.focus_map_art = _make_focus_texture("FocusMapBackground", c.UI_MAP_BACKGROUND, 0.055, 0.035, 0.945, 0.205, 0.20)
+	c.focus_art_layer.add_child(c.focus_map_art)
+	c.focus_title_art = _make_focus_texture("FocusTitleMark", c.UI_TITLE_MARK, 0.055, 0.045, 0.345, 0.215, 0.92)
+	c.focus_art_layer.add_child(c.focus_title_art)
+	c.focus_badge_art = _make_focus_texture("FocusMilitaryBadge", c.UI_MILITARY_BADGE, 0.012, 0.038, 0.052, 0.145, 0.86)
+	c.focus_art_layer.add_child(c.focus_badge_art)
+	c.focus_tabs_art = _make_focus_texture("FocusStrategyTabs", c.UI_STRATEGY_TABS, 0.055, 0.617, 0.330, 0.672, 0.72)
+	c.focus_art_layer.add_child(c.focus_tabs_art)
+	c.focus_casefile_art = _make_focus_texture("FocusCasefilePanel", c.UI_CASEFILE_PANEL, 0.660, 0.205, 0.995, 0.575, 0.58)
+	c.focus_art_layer.add_child(c.focus_casefile_art)
+	c.focus_bust_art = _make_focus_texture("FocusRoleBust", c.BUST_HERO, 0.026, 0.225, 0.250, 0.590, 0.54)
+	c.focus_art_layer.add_child(c.focus_bust_art)
+
+func _make_focus_texture(layer_name: String, path: String, left: float, top: float, right: float, bottom: float, alpha: float) -> TextureRect:
+	var texture_rect := TextureRect.new()
+	texture_rect.name = layer_name
+	texture_rect.anchor_left = left
+	texture_rect.anchor_top = top
+	texture_rect.anchor_right = right
+	texture_rect.anchor_bottom = bottom
+	texture_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	texture_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	texture_rect.modulate = Color(1.0, 1.0, 1.0, alpha)
+	if ResourceLoader.exists(path):
+		var resource := load(path)
+		if resource is Texture2D:
+			texture_rect.texture = resource
+	return texture_rect
+
+func _apply_focus_ui() -> void:
+	_ensure_focus_story_caption()
+	_ensure_focus_debug_panel()
+	_ensure_focus_art_layer()
+	_update_focus_story_caption()
+	_hide_operation_metadata()
+	_apply_operation_only_choice_layout()
+	_style_action_buttons()
+	_refresh_world_map()
+	_update_focus_art_layer()
+	_apply_focus_debug_visibility()
+	_update_focus_debug_panel()
+
+func _update_focus_art_layer() -> void:
+	if c.focus_art_layer == null:
+		return
+	if c.focus_title_art != null:
+		c.focus_title_art.visible = c.in_prologue
+	if c.focus_badge_art != null:
+		c.focus_badge_art.visible = not c.in_prologue
+	if c.focus_tabs_art != null:
+		c.focus_tabs_art.visible = not c.in_prologue
+	if c.focus_map_art != null:
+		c.focus_map_art.visible = not c.in_prologue
+	if c.focus_casefile_art != null:
+		c.focus_casefile_art.visible = NarrativeBattleContext.is_ui_debug_visible() and c.focus_debug_panel != null and c.focus_debug_panel.visible
+	_update_focus_bust_art()
+
+func _update_focus_bust_art() -> void:
+	if c.focus_bust_art == null:
+		return
+	var target_path := _focus_bust_path()
+	c.focus_bust_art.visible = not target_path.is_empty()
+	if target_path.is_empty() or target_path == c.focus_bust_path:
+		return
+	c.focus_bust_path = target_path
+	if ResourceLoader.exists(target_path):
+		var resource := load(target_path)
+		if resource is Texture2D:
+			c.focus_bust_art.texture = resource
+
+func _focus_bust_path() -> String:
+	if c.in_prologue:
+		if c.step_index >= c.PROLOGUE_MASTER_RESCUE_STEP and c.step_index < c.PROLOGUE_CAREER_STEP:
+			return c.BUST_MASTER
+		if c.step_index == c.PROLOGUE_CAREER_STEP:
+			return _route_hero_bust_path()
+		return ""
+	var node_id: String = c._current_node_id()
+	match node_id:
+		"night_knife_camp", "military_coverup":
+			return c.BUST_MASTER
+		"wakou_boss":
+			return c.BUST_BOSS
+		_:
+			return _route_hero_bust_path()
+
+func _route_hero_bust_path() -> String:
+	if not NarrativeBattleContext.has_player_profile():
+		return c.BUST_HERO
+	var profile: Dictionary = NarrativeBattleContext.get_player_profile()
+	var role_id := str(profile.get("role", "")).strip_edges()
+	var weapon := str(profile.get("weapon", "")).strip_edges()
+	if role_id == "blademaster" or weapon.find("刀") >= 0:
+		return c.BUST_HERO_SABER
+	if role_id == "spearman" or weapon.find("枪") >= 0:
+		return c.BUST_HERO_SPEAR
+	return c.BUST_HERO
+
+func _hide_operation_metadata() -> void:
+	_hide_control(c.title_label)
+	_hide_control(c.status_label)
+	_hide_control(c.map_label)
+	_hide_control(c.scene_label)
+	_hide_control(c.vars_label)
+	_hide_control(c.visual_label)
+	_hide_control(c.visual_debug_label)
+	_hide_control(c.body_label)
+	if c.visual_texture != null:
+		c.visual_texture.texture = null
+		_hide_control(c.visual_texture)
+	if c.map_buttons_box != null:
+		c.map_buttons_box.visible = false
+		c.map_buttons_box.custom_minimum_size = Vector2.ZERO
+		for child in c.map_buttons_box.get_children():
+			child.queue_free()
+	_hide_section_titles()
+	_hide_placeholder_labels(c.combat_buttons_box)
+	_hide_placeholder_labels(c.choices_box)
+
+func _hide_control(control: Control) -> void:
+	if control == null:
+		return
+	control.visible = false
+	control.custom_minimum_size = Vector2.ZERO
+	control.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+
+func _apply_operation_only_choice_layout() -> void:
+	var operation_panel := _find_operation_panel()
+	if operation_panel != null:
+		operation_panel.anchor_left = 0.04
+		operation_panel.anchor_top = c.OPERATION_TOP
+		operation_panel.anchor_right = 0.96
+		operation_panel.anchor_bottom = 0.92
+		operation_panel.offset_left = 0
+		operation_panel.offset_top = 0
+		operation_panel.offset_right = 0
+		operation_panel.offset_bottom = 0
+	if c.action_scroll != null:
+		c.action_scroll.visible = true
+		c.action_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		c.action_scroll.custom_minimum_size = Vector2(0, 170)
+	if c.action_content != null:
+		c.action_content.add_theme_constant_override("separation", 16)
+
+func _style_action_buttons() -> void:
+	_style_button_box(c.combat_buttons_box)
+	_style_button_box(c.choices_box)
+
+func _style_button_box(box: VBoxContainer) -> void:
+	if box == null:
+		return
+	box.visible = true
+	box.add_theme_constant_override("separation", 16)
+	for child in box.get_children():
+		if child is Button:
+			var btn := child as Button
+			btn.visible = true
+			btn.custom_minimum_size = Vector2(0, 80)
+			btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			btn.add_theme_font_size_override("font_size", c.OPTION_FONT_SIZE)
+		elif child is Label:
+			_hide_control(child as Control)
+
+func _hide_section_titles() -> void:
+	if c.action_content == null:
+		return
+	for child in c.action_content.get_children():
+		if child is Label:
+			_hide_control(child as Control)
+
+func _hide_placeholder_labels(box: VBoxContainer) -> void:
+	if box == null:
+		return
+	for child in box.get_children():
+		if child is Label:
+			_hide_control(child as Control)
+
+func _update_focus_debug_panel() -> void:
+	if c.focus_debug_label == null:
+		return
+	if c.focus_foot_alignment_debug_button != null:
+		c.focus_foot_alignment_debug_button.text = "脚点辅助定位线：%s" % ("开" if c._foot_alignment_debug_enabled() else "关")
+	c.focus_debug_label.text = _focus_debug_text()
+
+func _focus_debug_text() -> String:
+	var title_text := ""
+	var node_id := "prologue"
+	var column_text := "序章"
+	var type_text := ""
+	var scene_text := ""
+	if c.in_prologue:
+		title_text = c._safe_label_text(c.title_label, "序章")
+		node_id = "prologue_step_%d" % c.step_index
+		type_text = c._safe_label_text(c.status_label, "")
+		scene_text = c._safe_label_text(c.scene_label, "")
+	else:
+		var node: Dictionary = c._focus_current_node_data()
+		title_text = str(node.get("title", c._safe_label_text(c.title_label, "")))
+		node_id = str(node.get("id", c._current_node_id()))
+		column_text = str(node.get("column", ""))
+		type_text = str(node.get("type", ""))
+		scene_text = str(node.get("scene", c._safe_label_text(c.scene_label, "")))
+	var profile: String = NarrativeBattleContext.player_profile_debug_text()
+	if profile.is_empty():
+		profile = "未初始化"
+	var lines: Array[String] = []
+	lines.append("[b]DEBUG[/b]  [color=#9cc7ff]F10隐藏/显示[/color]")
+	lines.append("标题：%s" % title_text)
+	lines.append("节点：%s" % node_id)
+	lines.append("分类：%s / %s" % [column_text, type_text])
+	lines.append("索引：step=%d / node=%d" % [c.step_index, c.node_index])
+	lines.append("流程源：%s" % c.focus_flow_source)
+	lines.append("流程数：%d" % c._flow_count())
+	lines.append("变量：军功 %d / 清望 %d / 旧案 %d" % [c.jun_gong, c.qing_wang, c.clues])
+	lines.append("脚点辅助定位线：%s" % ("开" if c._foot_alignment_debug_enabled() else "关"))
+	lines.append("职业：%s" % profile)
+	lines.append("演出：%s" % c._current_node_id())
+	if not c.last_hint.is_empty():
+		lines.append("提示：%s" % c.last_hint.replace("\n", " / "))
+	if not scene_text.is_empty():
+		lines.append("场景：%s" % scene_text.replace("\n", " / "))
+	return "\n".join(lines)
+
+func _find_operation_panel() -> PanelContainer:
+	for child in c.get_children():
+		if child is PanelContainer:
+			return child as PanelContainer
+	return null
+
+func _hide_scene_art_overlay_nodes() -> void:
+	for node_name in HIDDEN_SCENE_ART_OVERLAY_NODE_NAMES:
+		var node: Node = c.find_child(node_name, true, false)
+		if node is CanvasItem:
+			var item := node as CanvasItem
+			item.visible = false
+		if node is Control:
+			var control := node as Control
+			control.mouse_filter = Control.MOUSE_FILTER_IGNORE

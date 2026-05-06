@@ -3,6 +3,8 @@ extends "res://scripts/narrative_demo_ui_focus_controller.gd"
 const StrategicMapGenerator := preload("res://scripts/strategic_map_generator.gd")
 const StrategicMapState := preload("res://scripts/strategic_map_state.gd")
 const StrategicNetworkMapGenerator := preload("res://scripts/strategic_network_map_generator.gd")
+const StrategicEndingFormatter := preload("res://scripts/narrative/strategic_ending_formatter.gd")
+const StrategicRewardRuntime := preload("res://scripts/narrative/strategic_reward_runtime.gd")
 const STRATEGIC_ENTRY_NODE_ID := "world_map_entry"
 const STRATEGIC_FINAL_BOSS_SOURCE_ID := "strategic_final_boss"
 
@@ -12,12 +14,24 @@ var pending_strategic_ending_render := false
 var pending_strategic_card_node: Dictionary = {}
 var pending_strategic_card_choices: Array[String] = []
 var selected_strategic_card_reward := ""
+var _strategic_reward_runtime
+var _strategic_ending_formatter
 
 # Legacy strategic-map layer.
 # Keeps the old current_map / three-choice fallback and shared strategic state.
 
 func _load_strategic_map_config() -> void:
 	strategic_config = StrategicMapGenerator.load_config()
+
+func _reward_runtime():
+	if _strategic_reward_runtime == null:
+		_strategic_reward_runtime = StrategicRewardRuntime.new(self)
+	return _strategic_reward_runtime
+
+func _ending_formatter():
+	if _strategic_ending_formatter == null:
+		_strategic_ending_formatter = StrategicEndingFormatter.new()
+	return _strategic_ending_formatter
 func _try_consume_debug_world_map_entry() -> void:
 	if not NarrativeBattleContext.has_debug_entry():
 		return
@@ -166,15 +180,7 @@ func _refresh_current_strategic_layer() -> void:
 	strategic_state["current_map"] = map_data
 	_sync_world_map_runtime_state()
 func _strategic_progress_text(map_data: Dictionary) -> String:
-	var regions: Array = map_data.get("regions", [])
-	var parts: Array[String] = []
-	for i in range(regions.size()):
-		if not (regions[i] is Dictionary):
-			continue
-		var region: Dictionary = regions[i] as Dictionary
-		var marker := "●" if i < int(strategic_state.get("region_index", 0)) else ("◆" if i == int(strategic_state.get("region_index", 0)) else "○")
-		parts.append("%s %s" % [marker, str(region.get("region_title", ""))])
-	return " / ".join(parts)
+	return _reward_runtime().strategic_progress_text(map_data)
 func _add_strategic_choice_button(node: Dictionary, index: int) -> void:
 	var effects: Dictionary = node.get("effects", {}) as Dictionary
 	var btn := Button.new()
@@ -272,113 +278,21 @@ func _apply_strategic_node(node: Dictionary) -> void:
 	_sync_world_map_runtime_state()
 	last_hint = result_text
 func _strategic_card_reward_choices(node: Dictionary) -> Array[String]:
-	var effects: Dictionary = node.get("effects", {}) as Dictionary
-	var ids := _card_reward_ids_from_effects(effects.get("card_rewards", []))
-	if ids.is_empty():
-		return []
-	var owned := _card_reward_ids_from_effects(strategic_state.get("owned_card_ids", []))
-	var fresh: Array[String] = []
-	for card_id: String in ids:
-		if not (card_id in owned):
-			fresh.append(card_id)
-	var candidates := fresh if not fresh.is_empty() else ids
-	candidates.shuffle()
-	return candidates.slice(0, mini(3, candidates.size()))
+	return _reward_runtime().strategic_card_reward_choices(node)
 func _show_strategic_card_reward_choice(node: Dictionary, card_ids: Array[String]) -> void:
-	pending_strategic_card_node = node.duplicate(true)
-	pending_strategic_card_choices = card_ids.duplicate()
-	selected_strategic_card_reward = ""
-	_clear_dynamic_boxes()
-	title_label.text = str(node.get("title", "得招"))
-	status_label.text = "%s / 招式抉择" % _strategic_type_label(str(node.get("node_type", "")))
-	map_label.text = _strategic_progress_text(strategic_state.get("current_map", {}))
-	scene_label.text = _format_scene_text(str(node.get("preview_text", "")))
-	_render_visual(str(node.get("visual_path", "")), str(node.get("title", "得招")))
-	body_label.text = "%s\n\n选择 1 张新招式加入长期牌库，然后确认。" % str(node.get("result_text", "你得了一次整理招式的机会。"))
-	vars_label.text = StrategicMapState.summary_text(strategic_state)
-	_add_placeholder(map_buttons_box, "卡牌奖励不会自动发放，需先三选一。")
-	_add_placeholder(combat_buttons_box, "非战斗节点")
-	for card_id: String in pending_strategic_card_choices:
-		var btn := Button.new()
-		btn.text = _strategic_card_choice_text(card_id, false)
-		btn.custom_minimum_size = Vector2(0, 76)
-		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		btn.pressed.connect(_select_strategic_card_reward.bind(card_id))
-		choices_box.add_child(btn)
-	var confirm := Button.new()
-	confirm.name = "StrategicCardRewardConfirm"
-	confirm.text = "确认"
-	confirm.disabled = true
-	confirm.custom_minimum_size = Vector2(0, 64)
-	confirm.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	confirm.pressed.connect(_confirm_strategic_card_reward)
-	choices_box.add_child(confirm)
-	var cancel := Button.new()
-	cancel.text = "返回本层选择"
-	cancel.custom_minimum_size = Vector2(0, 54)
-	cancel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	cancel.pressed.connect(_cancel_strategic_card_reward)
-	choices_box.add_child(cancel)
-	BattleFontHelper.enforce(self)
-	_apply_focus_ui()
-	_hide_scene_art_overlay_nodes()
+	_reward_runtime().show_strategic_card_reward_choice(node, card_ids)
 func _select_strategic_card_reward(card_id: String) -> void:
-	selected_strategic_card_reward = card_id
-	for child in choices_box.get_children():
-		if child is Button:
-			var btn := child as Button
-			if btn.name == "StrategicCardRewardConfirm":
-				btn.disabled = selected_strategic_card_reward.is_empty()
-				continue
-			if card_id in pending_strategic_card_choices:
-				for choice_id: String in pending_strategic_card_choices:
-					if btn.text.find(_strategic_card_label(choice_id)) >= 0:
-						btn.text = _strategic_card_choice_text(choice_id, choice_id == card_id)
-	body_label.text = "%s\n\n已选择：%s" % [str(pending_strategic_card_node.get("result_text", "")), _strategic_card_label(card_id)]
+	_reward_runtime().select_strategic_card_reward(card_id)
 func _confirm_strategic_card_reward() -> void:
-	if pending_strategic_card_node.is_empty() or selected_strategic_card_reward.is_empty():
-		return
-	var node := pending_strategic_card_node.duplicate(true)
-	var effects: Dictionary = node.get("effects", {}) as Dictionary
-	effects["card_rewards"] = [selected_strategic_card_reward]
-	node["effects"] = effects
-	pending_strategic_card_node.clear()
-	pending_strategic_card_choices.clear()
-	selected_strategic_card_reward = ""
-	_apply_strategic_node(node)
-	_advance_strategic_cursor()
-	_save_narrative_state_to_context()
-	_render()
+	_reward_runtime().confirm_strategic_card_reward()
 func _cancel_strategic_card_reward() -> void:
-	pending_strategic_card_node.clear()
-	pending_strategic_card_choices.clear()
-	selected_strategic_card_reward = ""
-	_render()
+	_reward_runtime().cancel_strategic_card_reward()
 func _strategic_card_choice_text(card_id: String, selected: bool) -> String:
-	var prefix := "✓ " if selected else ""
-	return "%s%s\n%s" % [prefix, _strategic_card_label(card_id), _strategic_card_hint(card_id)]
+	return _reward_runtime().strategic_card_choice_text(card_id, selected)
 func _strategic_card_label(card_id: String) -> String:
-	match card_id:
-		"reward_push": return "压线"
-		"reward_pull": return "挂带"
-		"reward_guard": return "铁壁"
-		"blade_press_break": return "压刀破架"
-		"blade_hook_pull": return "挂刀带步"
-		"blade_body_press": return "贴身撞刀"
-		"spear_retreat_sting": return "退枪留锋"
-		"spear_step_thrust": return "顺步送枪"
-	return card_id
+	return _reward_runtime().strategic_card_label(card_id)
 func _strategic_card_hint(card_id: String) -> String:
-	match card_id:
-		"reward_push": return "控线，命中后击退敌人。"
-		"reward_pull": return "拉扯，命中后拉近敌人。"
-		"reward_guard": return "架势，获得高额格挡。"
-		"blade_press_break": return "短兵破势，贴身压架。"
-		"blade_hook_pull": return "短兵拉扯，调整距离。"
-		"blade_body_press": return "极近破势，压短兵节奏。"
-		"spear_retreat_sting": return "近身脱身刺，命中后后撤。"
-		"spear_step_thrust": return "三格追击刺，命中后进身。"
-	return "加入长期牌库。"
+	return _reward_runtime().strategic_card_hint(card_id)
 func _sync_context_cards_to_strategic_state() -> void:
 	var profile := NarrativeBattleContext.get_player_profile()
 	if profile.is_empty():
@@ -456,141 +370,17 @@ func _find_strategic_node(node_id: String) -> Dictionary:
 func _strategic_node_triggers_combat(node: Dictionary) -> bool:
 	return str(node.get("node_type", "")).begins_with("combat_") and not str(node.get("encounter_id", "")).is_empty()
 func _strategic_type_label(node_type: String) -> String:
-	match node_type:
-		"combat_common": return "普通战斗"
-		"combat_elite": return "强敌"
-		"military": return "军功"
-		"case": return "旧案"
-		"reputation": return "清望"
-		"rest": return "休整"
-		"risk": return "风险"
-	return node_type
+	return _reward_runtime().strategic_type_label(node_type)
 func _strategic_effects_text(effects: Dictionary) -> String:
-	var parts: Array[String] = []
-	var labels := {
-		"military_merit": "军功",
-		"clean_reputation": "清望",
-		"case_clues": "旧案",
-	}
-	for key in labels.keys():
-		var value := int(effects.get(key, 0))
-		if value != 0:
-			parts.append("%s %+d" % [str(labels[key]), value])
-	var card_rewards := _card_reward_ids_from_effects(effects.get("card_rewards", []))
-	if not card_rewards.is_empty():
-		parts.append("招式 +%d" % card_rewards.size())
-	return "收益：%s" % (" / ".join(parts) if not parts.is_empty() else "无")
+	return _reward_runtime().strategic_effects_text(effects)
 func _card_reward_ids_from_effects(value) -> Array[String]:
-	var ids: Array[String] = []
-	if value is Array or value is PackedStringArray:
-		for item in value:
-			var card_id := str(item)
-			if not card_id.is_empty():
-				ids.append(card_id)
-	elif value is String:
-		var card_id := str(value)
-		if not card_id.is_empty():
-			ids.append(card_id)
-	return ids
+	return _reward_runtime().card_reward_ids_from_effects(value)
 func _strategic_combat_pool_text(node: Dictionary) -> String:
-	if not str(node.get("node_type", "")).begins_with("combat_"):
-		return ""
-	var pool_id := str(node.get("combat_pool_id", ""))
-	var recommended_min := int(node.get("recommended_martial_min", 0))
-	var recommended_max := int(node.get("recommended_martial_max", 0))
-	var enemy_martial := int(node.get("enemy_martial_level", 0))
-	if pool_id.is_empty():
-		return ""
-	return "敌类%s 武境%d-%d 敌%d" % [pool_id, recommended_min, recommended_max, enemy_martial]
+	return _reward_runtime().strategic_combat_pool_text(node)
 func _ending_data_for_flag(flag: String) -> Dictionary:
-	match flag:
-		"true_resolution":
-			return {
-				"id": "true_resolution",
-				"title": "结局：海门真收束",
-				"status": "海门真收束",
-				"text": "堂上开卷。\n\n海门起风。\n\n这一次，军令、人声、旧案都没有退。",
-				"feedback": "军功让你进堂，旧案让你说话，清望让别人敢信。"
-			}
-		"court_exposure":
-			return {
-				"id": "court_exposure",
-				"title": "结局：堂审翻案",
-				"status": "堂审翻案",
-				"text": "案卷被迫摊开。\n\n堂外很静。\n\n你赢了一场堂审，却还要等人敢抬头。\n\n然而这就是事情的真相吗？",
-				"feedback": "军功和旧案足以开卷，但清望不足时，真相仍显得孤。"
-			}
-		"reputation_redress":
-			return {
-				"id": "reputation_redress",
-				"title": "结局：清望昭雪",
-				"status": "清望昭雪",
-				"text": "堂上无人开口。\n\n堂外，有人替你跪了一地。\n\n案卷终于不能只在灯下合上。\n\n然而这就是事情的真相吗？",
-				"feedback": "清望让别人敢信你，旧案因此有了见光的缝。"
-			}
-		"military_reputation":
-			return {
-				"id": "military_reputation",
-				"title": "结局：封海得众",
-				"status": "封海得众",
-				"text": "海口封住了。\n\n百姓没有散。\n\n你第一次觉得军令也能护住活人。\n\n然而这就是你想要的吗？",
-				"feedback": "军功给你权力，清望让权力没有只剩冷铁。"
-			}
-		"private_truth":
-			return {
-				"id": "private_truth",
-				"title": "结局：私查真相",
-				"status": "私查真相",
-				"text": "箭从岸上来。\n\n这一次，没有人替他灭口。\n\n师父站得很远。\n\n然而这就是事情的真相吗？",
-				"feedback": "旧案让你说得出话，但没有足够军功时，真相仍难进堂。"
-			}
-		"military_promotion":
-			return {
-				"id": "military_promotion",
-				"title": "结局：军功升迁",
-				"status": "军功升迁",
-				"text": "你升入卫中。\n\n旧案也封在卫中。\n\n潮声隔着官印，仍然很近。\n\n然而这就是你想要的吗？",
-				"feedback": "军功让你进得了堂，也让堂门在你身后落锁。"
-			}
-		"isolated_evidence":
-			return {
-				"id": "isolated_evidence",
-				"title": "结局：孤证难鸣",
-				"status": "孤证难鸣",
-				"text": "你知道箭从哪里来。\n\n纸也知道。\n\n可是堂上没有人接这句话。\n\n然而这就是事情的真相吗？",
-				"feedback": "旧案足够深，但军功和清望都不足时，真相只能先活在你手里。"
-			}
-		"martial_survival":
-			return {
-				"id": "martial_survival",
-				"title": "结局：武境破围",
-				"status": "武境破围",
-				"text": "你杀出海门。\n\n身后火起，堂上灯灭。\n\n旧案没有开卷，但没人再敢轻易灭你的口。\n\n然而这就是你想要的吗？",
-				"feedback": "武境能让你活下来，却不能替你赢得堂口和人心。"
-			}
-		"surface_pirate":
-			return {
-				"id": "surface_pirate",
-				"title": "结局：表层平倭",
-				"status": "表层平倭",
-				"text": "倭患平了。\n\n案卷仍少一页。\n\n师父没有看你。\n\n然而这就是你想要的吗？",
-				"feedback": "表面的海寇被清掉了，旧案还在潮下。"
-			}
-	return super._ending_data_for_flag(flag)
+	var ending: Dictionary = _ending_formatter().ending_data_for_flag(flag)
+	if ending.is_empty():
+		return super._ending_data_for_flag(flag)
+	return ending
 func _ending_catalog() -> Array[Dictionary]:
-	var catalog: Array[Dictionary] = []
-	for flag in [
-		"true_resolution",
-		"court_exposure",
-		"reputation_redress",
-		"military_reputation",
-		"military_promotion",
-		"private_truth",
-		"isolated_evidence",
-		"martial_survival",
-		"surface_pirate",
-	]:
-		var ending := _ending_data_for_flag(flag)
-		if not ending.is_empty():
-			catalog.append(ending)
-	return catalog
+	return _ending_formatter().ending_catalog()

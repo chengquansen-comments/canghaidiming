@@ -181,7 +181,7 @@ func _clear_pending_boss_node() -> void:
 		Engine.remove_meta(META_PENDING_BOSS_NODE)
 
 func _battle_growth_reward_for_source(source_index: int) -> Dictionary:
-	if source_index < 0 or source_index >= MVP_NODE_IDS.size():
+	if source_index < 0 or source_index >= _active_node_count():
 		return {"hp_gain": 0, "posture_gain": 0, "martial_gain": 0, "heal_full": false}
 	var node: Dictionary = _node_data_at(source_index)
 	var combat := _node_level_combat(node)
@@ -218,7 +218,7 @@ func _consume_battle_result_if_needed() -> void:
 		NarrativeBattleContext.clear()
 		_save_narrative_state_to_context()
 		return
-	for i in range(MVP_NODE_IDS.size()):
+	for i in range(_active_node_count()):
 		if _node_id_at(i) == source_id:
 			node_index = i
 			in_prologue = false
@@ -312,7 +312,7 @@ func _on_continue_after_choice_result() -> void:
 	choice_result_sentence_index = 0
 	if _node_id_at(node_index) == BOSS_NODE_ID:
 		boss_battle_completed = false
-	if node_index < MVP_NODE_IDS.size() - 1:
+	if node_index < _active_node_count() - 1:
 		_advance_to_node(node_index + 1, "")
 	else:
 		_render_ending()

@@ -46,6 +46,9 @@ func _render_prologue() -> void:
 
 	_add_button(choices_box, "继续", _on_continue_prologue)
 
+func _render_node() -> void:
+	super._render_node()
+
 func _prologue_display_title(step_data: Dictionary) -> String:
 	var step_title := str(step_data.get("title", ""))
 	if not step_title.is_empty():
@@ -119,7 +122,7 @@ func _current_world_map_title() -> String:
 	return str(node.get("title", ""))
 
 func _world_map_total_count() -> int:
-	return MVP_NODE_IDS.size() + 1
+	return _active_node_count() + 1
 
 func _world_map_current_index() -> int:
 	return 0 if in_prologue else node_index + 1

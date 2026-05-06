@@ -61,6 +61,16 @@ var rival_gu_bond: int = 0
 var rival_shen_bond: int = 0
 var rival_qi_bond: int = 0
 
+func _active_node_ids() -> Array:
+	if has_method("_flow_node_ids"):
+		var value = call("_flow_node_ids")
+		if value is Array and not (value as Array).is_empty():
+			return (value as Array).duplicate()
+	return MVP_NODE_IDS
+
+func _active_node_count() -> int:
+	return _active_node_ids().size()
+
 func _narrative_state_snapshot() -> Dictionary:
 	var base_state := super._narrative_state_snapshot()
 	base_state[VAR_RIVAL_GU_BOND] = rival_gu_bond
@@ -124,8 +134,9 @@ func _record_choice_ending_flag(choice: Dictionary) -> void:
 		selected_ending_flag = ending_flag
 
 func _node_id_at(index: int) -> String:
-	if index >= 0 and index < MVP_NODE_IDS.size():
-		return str(MVP_NODE_IDS[index])
+	var active_ids := _active_node_ids()
+	if index >= 0 and index < active_ids.size():
+		return str(active_ids[index])
 	return ""
 
 func _node_meta(node_id: String) -> Dictionary:
@@ -230,7 +241,7 @@ func _on_choice(index: int) -> void:
 		_record_choice_ending_flag(choices[index] as Dictionary)
 	_apply_canonical_effects(_choice_effects_for_index(index))
 	NarrativeBattleContext.apply_player_growth("choice", 0, 0, 0, false)
-	if node_index < MVP_NODE_IDS.size() - 1:
+	if node_index < _active_node_count() - 1:
 		_advance_to_node(node_index + 1, "")
 	else:
 		_render_ending()
@@ -251,7 +262,7 @@ func _battle_reward_for_source(source_index: int) -> Dictionary:
 	var context_reward = NarrativeBattleContext.get_enemy_config().get("reward", {})
 	if context_reward is Dictionary and not (context_reward as Dictionary).is_empty():
 		return _normalize_effects(context_reward)
-	if source_index < 0 or source_index >= MVP_NODE_IDS.size():
+	if source_index < 0 or source_index >= _active_node_count():
 		return {
 			VAR_MILITARY_MERIT: 0,
 			VAR_CLEAN_REPUTATION: 0,
@@ -275,7 +286,7 @@ func _battle_reward_for_source(source_index: int) -> Dictionary:
 			return {VAR_MILITARY_MERIT: 1, VAR_CLEAN_REPUTATION: 0, VAR_CASE_CLUES: 0, VAR_SOLDIER_TRUST: 0, VAR_RIVAL_GU_BOND: 0, VAR_RIVAL_SHEN_BOND: 0, VAR_RIVAL_QI_BOND: 0}
 
 func _battle_growth_reward_for_source(source_index: int) -> Dictionary:
-	if source_index < 0 or source_index >= MVP_NODE_IDS.size():
+	if source_index < 0 or source_index >= _active_node_count():
 		return {"hp_gain": 0, "posture_gain": 0, "martial_gain": 0, "heal_full": false}
 	var node: Dictionary = _node_data_at(source_index)
 	var encounter_id := str(node.get("combat", ""))
@@ -310,7 +321,7 @@ func _consume_battle_result_if_needed() -> void:
 		NarrativeBattleContext.clear()
 		_save_narrative_state_to_context()
 		return
-	for i in range(MVP_NODE_IDS.size()):
+	for i in range(_active_node_count()):
 		if _node_id_at(i) == source_id:
 			node_index = i
 			in_prologue = false
@@ -318,7 +329,7 @@ func _consume_battle_result_if_needed() -> void:
 	if result == "win":
 		var growth := _battle_growth_reward_for_source(node_index)
 		_apply_battle_result_reward(node_index)
-		if node_index < MVP_NODE_IDS.size() - 1:
+		if node_index < _active_node_count() - 1:
 			node_index += 1
 			node_sentence_index = 0
 		last_hint = str(growth.get("reward_text", "战斗胜利：已返回剧情，并自动推进到下一节点。"))
@@ -389,7 +400,7 @@ func _map_text() -> String:
 	var lines: Array[String] = []
 	for col in MAP_COLUMNS:
 		var items: Array[String] = []
-		for i in range(MVP_NODE_IDS.size()):
+		for i in range(_active_node_count()):
 			var n: Dictionary = _node_data_at(i)
 			if str(n.get("column", "")) == col:
 				items.append("%s %s" % [_map_marker_for_index(i), str(n.get("title", ""))])
@@ -410,7 +421,7 @@ func _add_safe_map_buttons() -> void:
 		title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		title.add_theme_font_size_override("font_size", 13)
 		column_box.add_child(title)
-		for i in range(MVP_NODE_IDS.size()):
+		for i in range(_active_node_count()):
 			var node: Dictionary = _node_data_at(i)
 			if str(node.get("column", "")) == column_name:
 				var btn := Button.new()
@@ -429,7 +440,7 @@ func _refresh_world_map() -> void:
 		world_map_status_label.text = "海疆行军图｜当前：%s｜军功 %d｜清望 %d｜旧案 %d" % [_current_world_map_title(), jun_gong, qing_wang, clues]
 	for child: Node in world_map_nodes_row.get_children():
 		child.queue_free()
-	for i in range(MVP_NODE_IDS.size()):
+	for i in range(_active_node_count()):
 		if i > 0:
 			world_map_nodes_row.add_child(_make_world_map_line(i))
 		world_map_nodes_row.add_child(_make_world_map_node_button(i))
@@ -471,7 +482,7 @@ func _on_map_node_pressed(target_index: int) -> void:
 	_render()
 
 func _apply_default_map_reward(target_index: int) -> void:
-	if target_index < 0 or target_index >= MVP_NODE_IDS.size():
+	if target_index < 0 or target_index >= _active_node_count():
 		return
 	var node: Dictionary = _node_data_at(target_index)
 	match str(node.get("type", "")):
@@ -489,7 +500,7 @@ func _apply_default_map_reward(target_index: int) -> void:
 func _advance_to_node(target_index: int, hint: String = "") -> void:
 	last_hint = hint
 	node_sentence_index = 0
-	if target_index >= MVP_NODE_IDS.size():
+	if target_index >= _active_node_count():
 		_render_ending()
 		return
 	node_index = target_index
