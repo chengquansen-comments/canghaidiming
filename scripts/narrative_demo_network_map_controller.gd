@@ -129,12 +129,9 @@ func _execute_network_non_combat_node(node: Dictionary) -> void:
 	var graph: Dictionary = strategic_state.get("network_map", {}) as Dictionary
 	if graph.is_empty():
 		return
-	var runtime_node := node.duplicate(true)
-	if not runtime_node.has("node_id"):
-		runtime_node["node_id"] = str(node.get("pool_node_id", node.get("map_graph_id", "")))
-	_apply_strategic_node(runtime_node)
-	_complete_network_node(graph, node)
-	_refresh_network_node_states(graph)
+	_apply_strategic_node(StrategicNetworkMapRuntime.runtime_node_for_effects(node))
+	StrategicNetworkMapRuntime.complete_node(graph, node)
+	StrategicNetworkMapRuntime.refresh_node_states(graph)
 	_sync_network_state_from_graph(graph)
 	var result_text := str(node.get("result_text", ""))
 	if result_text.is_empty():
@@ -163,14 +160,6 @@ func _enter_network_combat_node(node: Dictionary) -> void:
 	_save_narrative_state_to_context()
 	NarrativeBattleContext.set_request_from_combat(request, "map_" + node_id)
 	get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
-
-
-func _complete_network_node(graph: Dictionary, node: Dictionary) -> void:
-	StrategicNetworkMapRuntime.complete_node(graph, node)
-
-
-func _refresh_network_node_states(graph: Dictionary) -> void:
-	StrategicNetworkMapRuntime.refresh_node_states(graph)
 
 
 func _sync_network_state_from_graph(graph: Dictionary) -> void:
@@ -212,7 +201,7 @@ func _consume_network_node_battle(source_id: String, result: String) -> void:
 	last_hint = str(outcome.get("last_hint", ""))
 	var node: Dictionary = outcome.get("node", {}) as Dictionary
 	if bool(outcome.get("completed", false)) and not node.is_empty():
-		_apply_strategic_node(StrategicNetworkMapBattleResult.runtime_node_for_effects(node))
+		_apply_strategic_node(StrategicNetworkMapRuntime.runtime_node_for_effects(node))
 		NarrativeBattleContext.apply_player_growth("battle_win", 0, 0, 0, true)
 	if bool(outcome.get("mutated", false)):
 		_sync_network_state_from_graph(graph)
