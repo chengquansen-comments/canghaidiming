@@ -1,12 +1,18 @@
 extends RefCounted
 
-const BattleFontHelper := preload("res://scripts/visual/battle_font_view.gd")
 const StrategicMapState := preload("res://scripts/strategic_map_state.gd")
+const StrategicRewardView := preload("res://scripts/narrative/strategic_reward_view.gd")
 
 var c
+var _reward_view
 
 func _init(controller) -> void:
 	c = controller
+
+func _view():
+	if _reward_view == null:
+		_reward_view = StrategicRewardView.new(c)
+	return _reward_view
 
 func strategic_card_reward_choices(node: Dictionary) -> Array[String]:
 	var effects: Dictionary = node.get("effects", {}) as Dictionary
@@ -26,54 +32,17 @@ func show_strategic_card_reward_choice(node: Dictionary, card_ids: Array[String]
 	c.pending_strategic_card_node = node.duplicate(true)
 	c.pending_strategic_card_choices = card_ids.duplicate()
 	c.selected_strategic_card_reward = ""
-	c._clear_dynamic_boxes()
-	c.title_label.text = str(node.get("title", "得招"))
-	c.status_label.text = "%s / 招式抉择" % c._strategic_type_label(str(node.get("node_type", "")))
-	c.map_label.text = c._strategic_progress_text(c.strategic_state.get("current_map", {}))
-	c.scene_label.text = c._format_scene_text(str(node.get("preview_text", "")))
-	c._render_visual(str(node.get("visual_path", "")), str(node.get("title", "得招")))
-	c.body_label.text = "%s\n\n选择 1 张新招式加入长期牌库，然后确认。" % str(node.get("result_text", "你得了一次整理招式的机会。"))
-	c.vars_label.text = StrategicMapState.summary_text(c.strategic_state)
-	c._add_placeholder(c.map_buttons_box, "卡牌奖励不会自动发放，需先三选一。")
-	c._add_placeholder(c.combat_buttons_box, "非战斗节点")
-	for card_id: String in c.pending_strategic_card_choices:
-		var btn := Button.new()
-		btn.text = strategic_card_choice_text(card_id, false)
-		btn.custom_minimum_size = Vector2(0, 76)
-		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		btn.pressed.connect(c._select_strategic_card_reward.bind(card_id))
-		c.choices_box.add_child(btn)
-	var confirm := Button.new()
-	confirm.name = "StrategicCardRewardConfirm"
-	confirm.text = "确认"
-	confirm.disabled = true
-	confirm.custom_minimum_size = Vector2(0, 64)
-	confirm.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	confirm.pressed.connect(c._confirm_strategic_card_reward)
-	c.choices_box.add_child(confirm)
-	var cancel := Button.new()
-	cancel.text = "返回本层选择"
-	cancel.custom_minimum_size = Vector2(0, 54)
-	cancel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	cancel.pressed.connect(c._cancel_strategic_card_reward)
-	c.choices_box.add_child(cancel)
-	BattleFontHelper.enforce(c)
-	c._apply_focus_ui()
-	c._hide_scene_art_overlay_nodes()
+	_view().render_reward_choice(
+		node,
+		card_ids,
+		Callable(c, "_select_strategic_card_reward"),
+		Callable(c, "_confirm_strategic_card_reward"),
+		Callable(c, "_cancel_strategic_card_reward")
+	)
 
 func select_strategic_card_reward(card_id: String) -> void:
 	c.selected_strategic_card_reward = card_id
-	for child in c.choices_box.get_children():
-		if child is Button:
-			var btn := child as Button
-			if btn.name == "StrategicCardRewardConfirm":
-				btn.disabled = c.selected_strategic_card_reward.is_empty()
-				continue
-			if card_id in c.pending_strategic_card_choices:
-				for choice_id: String in c.pending_strategic_card_choices:
-					if btn.text.find(strategic_card_label(choice_id)) >= 0:
-						btn.text = strategic_card_choice_text(choice_id, choice_id == card_id)
-	c.body_label.text = "%s\n\n已选择：%s" % [str(c.pending_strategic_card_node.get("result_text", "")), strategic_card_label(card_id)]
+	_view().refresh_selected_card(card_id, c.pending_strategic_card_choices, c.pending_strategic_card_node)
 
 func confirm_strategic_card_reward() -> void:
 	if c.pending_strategic_card_node.is_empty() or c.selected_strategic_card_reward.is_empty():
