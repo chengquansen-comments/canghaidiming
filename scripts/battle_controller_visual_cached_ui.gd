@@ -2,19 +2,22 @@ extends "res://scripts/battle_controller_visual_ui.gd"
 
 const BattleActorRenderHelper = preload("res://scripts/visual/battle_actor_view.gd")
 const BattleFontHelper = preload("res://scripts/visual/battle_font_view.gd")
+const BattleRangeOverlayCacheView := preload("res://scripts/visual/battle_range_overlay_cache_view.gd")
 const ActorAnimationRuntime = preload("res://scripts/visual/actor_animation_runtime.gd")
 
 var _last_stage_grid_state: Dictionary = {}
-var _range_polygon_pool: Array[Polygon2D] = []
-var _range_line_pool: Array[Line2D] = []
-var _active_range_polygons: Array[Polygon2D] = []
-var _active_range_lines: Array[Line2D] = []
+var _range_overlay_cache
 var _player_actor_runtime: ActorAnimationRuntime = null
 var _enemy_actor_runtime: ActorAnimationRuntime = null
 var _player_actor_runtime_meta_path := ""
 var _enemy_actor_runtime_meta_path := ""
 var _last_player_animation_card: CardData = null
 var _last_enemy_animation_card: CardData = null
+
+func _range_overlay_view():
+	if _range_overlay_cache == null:
+		_range_overlay_cache = BattleRangeOverlayCacheView.new(self)
+	return _range_overlay_cache
 
 func _ready() -> void:
 	super()
@@ -161,62 +164,22 @@ func _legacy_effect_preview_context() -> Dictionary:
 	return BattleHudHelper.build_effect_preview_context(input)
 
 func _clear_range_trapezoids() -> void:
-	_recycle_range_overlay_nodes()
+	_range_overlay_view().clear_range_trapezoids()
 
 func _refresh_range_trapezoids(player_range: Array[int], player_origin_slot: int, enemy_range: Array[int], enemy_origin_slot: int) -> void:
-	if range_overlay_layer == null:
-		return
-	_recycle_range_overlay_nodes()
-	var player_style: Dictionary = BattleStageHelper.range_overlay_style(true)
-	for slot in player_range:
-		_draw_range_trapezoid(slot, player_origin_slot, int(player_style.get("polygon_z", 2)), player_style.get("fill_color", Color(1, 1, 1, 0.2)) as Color, player_style.get("outline_color", Color(1, 1, 1, 0.7)) as Color)
-	var enemy_style: Dictionary = BattleStageHelper.range_overlay_style(false)
-	for slot in enemy_range:
-		_draw_range_trapezoid(slot, enemy_origin_slot, int(enemy_style.get("polygon_z", 2)), enemy_style.get("fill_color", Color(1, 1, 1, 0.2)) as Color, enemy_style.get("outline_color", Color(1, 1, 1, 0.7)) as Color)
+	_range_overlay_view().refresh_range_trapezoids(player_range, player_origin_slot, enemy_range, enemy_origin_slot)
 
 func _draw_range_trapezoid(slot: int, origin_slot: int, z_index: int, fill_color: Color, outline_color: Color) -> void:
-	if range_overlay_layer == null:
-		return
-	var points: PackedVector2Array = _range_trapezoid_points(slot, origin_slot)
-	var polygon: Polygon2D = _take_range_polygon()
-	polygon.polygon = points
-	polygon.color = fill_color
-	polygon.z_index = z_index
-	polygon.visible = true
-	_active_range_polygons.append(polygon)
-	var outline: Line2D = _take_range_line()
-	outline.points = points
-	outline.closed = true
-	outline.width = 3.0
-	outline.default_color = outline_color
-	outline.joint_mode = Line2D.LINE_JOINT_ROUND
-	outline.z_index = z_index + 1
-	outline.visible = true
-	_active_range_lines.append(outline)
+	_range_overlay_view().draw_range_trapezoid(slot, origin_slot, z_index, fill_color, outline_color)
 
 func _take_range_polygon() -> Polygon2D:
-	if not _range_polygon_pool.is_empty():
-		return _range_polygon_pool.pop_back()
-	var polygon: Polygon2D = Polygon2D.new()
-	range_overlay_layer.add_child(polygon)
-	return polygon
+	return _range_overlay_view().take_range_polygon()
 
 func _take_range_line() -> Line2D:
-	if not _range_line_pool.is_empty():
-		return _range_line_pool.pop_back()
-	var line: Line2D = Line2D.new()
-	range_overlay_layer.add_child(line)
-	return line
+	return _range_overlay_view().take_range_line()
 
 func _recycle_range_overlay_nodes() -> void:
-	for polygon in _active_range_polygons:
-		polygon.visible = false
-		_range_polygon_pool.append(polygon)
-	for line in _active_range_lines:
-		line.visible = false
-		_range_line_pool.append(line)
-	_active_range_polygons.clear()
-	_active_range_lines.clear()
+	_range_overlay_view().recycle_range_overlay_nodes()
 
 func _refresh_stage_grid(show_ranges: bool = true) -> void:
 	if stage_grid_cells.is_empty():
