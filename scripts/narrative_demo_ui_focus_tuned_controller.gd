@@ -16,6 +16,7 @@ const StrategicEndingFormatter := preload("res://scripts/narrative/strategic_end
 const StrategicFinalGateView := preload("res://scripts/narrative/strategic_final_gate_view.gd")
 const StrategicLegacyMapView := preload("res://scripts/narrative/strategic_legacy_map_view.gd")
 const StrategicRewardRuntime := preload("res://scripts/narrative/strategic_reward_runtime.gd")
+const StrategicDebugProfileBuilder := preload("res://scripts/narrative/strategic_debug_profile_builder.gd")
 const StrategicMapSessionRuntime := preload("res://scripts/narrative/strategic_map_session_runtime.gd")
 const StrategicWorldMapRuntime := preload("res://scripts/narrative/strategic_world_map_runtime.gd")
 const STRATEGIC_ENTRY_NODE_ID := "world_map_entry"
@@ -81,46 +82,9 @@ func _try_consume_debug_world_map_entry() -> void:
 func _ensure_debug_world_map_player_profile(role: String = "spearman", martial_level: int = 1) -> void:
 	if NarrativeBattleContext.has_player_profile():
 		return
-	var owned_card_ids: Array[String] = []
-	if role == "blademaster":
-		owned_card_ids = [
-			"blade_press_break",
-			"blade_press_break",
-			"blade_hook_pull",
-			"blade_hook_pull",
-			"blade_body_press",
-			"blade_body_press",
-			"reward_guard",
-			"reward_guard",
-		]
-	else:
-		owned_card_ids = [
-			"spear_step_thrust",
-			"spear_step_thrust",
-			"spear_retreat_sting",
-			"spear_retreat_sting",
-			"reward_push",
-			"reward_push",
-			"reward_guard",
-			"reward_guard",
-		]
-	var selected_loadout_ids := owned_card_ids.duplicate()
-	NarrativeBattleContext.set_player_profile({
-		"role": role,
-		"career": "调试武生",
-		"weapon": "长枪" if role == "spearman" else "腰刀",
-		"martial_level": martial_level,
-		"max_hp": 32,
-		"hp": 32,
-		"max_posture": 10,
-		"posture": 5,
-		"qinggong": 1,
-		"owned_card_ids": owned_card_ids,
-		"selected_loadout_ids": selected_loadout_ids,
-		"deck_slots": [],
-		"active_deck_index": 0,
-		"debug_profile": true,
-	})
+	NarrativeBattleContext.set_player_profile(
+		StrategicDebugProfileBuilder.build_profile(role, martial_level)
+	)
 
 func _start_strategic_map(hint: String = "") -> void:
 	if strategic_config.is_empty():
