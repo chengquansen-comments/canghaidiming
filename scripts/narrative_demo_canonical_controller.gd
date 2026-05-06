@@ -4,6 +4,7 @@ const CanonicalEffectsRuntime := preload("res://scripts/narrative/canonical_effe
 const CanonicalNodeRegistry := preload("res://scripts/narrative/canonical_node_registry.gd")
 const CanonicalStorySegmentRuntime := preload("res://scripts/narrative/canonical_story_segment_runtime.gd")
 const CanonicalEndingRuntime := preload("res://scripts/narrative/canonical_ending_runtime.gd")
+const CanonicalBattleRewardRuntime := preload("res://scripts/narrative/canonical_battle_reward_runtime.gd")
 
 # Canonical narrative variable names for the MVP runtime.
 # Internal legacy counters are kept as storage for compatibility with older controllers:
@@ -202,39 +203,39 @@ func _apply_choice_delta(choice: Dictionary) -> void:
 
 func _battle_reward_for_source(source_index: int) -> Dictionary:
 	var context_reward = NarrativeBattleContext.get_enemy_config().get("reward", {})
-	if context_reward is Dictionary and not (context_reward as Dictionary).is_empty():
-		return _normalize_effects(context_reward)
-	if source_index < 0 or source_index >= _active_node_count():
-		return {
-			VAR_MILITARY_MERIT: 0,
-			VAR_CLEAN_REPUTATION: 0,
-			VAR_CASE_CLUES: 0,
-			VAR_SOLDIER_TRUST: 0,
-			VAR_RIVAL_GU_BOND: 0,
-			VAR_RIVAL_SHEN_BOND: 0,
-			VAR_RIVAL_QI_BOND: 0
-		}
-	var node: Dictionary = _node_data_at(source_index)
-	var encounter_id := str(node.get("combat", ""))
-	if has_method("_formal_reward_for_encounter"):
-		var formal_reward: Dictionary = _formal_reward_for_encounter(encounter_id, str(node.get("type", "")))
-		return _normalize_effects(formal_reward)
-	match str(node.get("type", "")):
-		"普通战斗", "精英战斗":
-			return {VAR_MILITARY_MERIT: 1, VAR_CLEAN_REPUTATION: 0, VAR_CASE_CLUES: 1, VAR_SOLDIER_TRUST: 0, VAR_RIVAL_GU_BOND: 0, VAR_RIVAL_SHEN_BOND: 0, VAR_RIVAL_QI_BOND: 0}
-		"Boss":
-			return {VAR_MILITARY_MERIT: 2, VAR_CLEAN_REPUTATION: 0, VAR_CASE_CLUES: 2, VAR_SOLDIER_TRUST: 0, VAR_RIVAL_GU_BOND: 0, VAR_RIVAL_SHEN_BOND: 0, VAR_RIVAL_QI_BOND: 0}
-		_:
-			return {VAR_MILITARY_MERIT: 1, VAR_CLEAN_REPUTATION: 0, VAR_CASE_CLUES: 0, VAR_SOLDIER_TRUST: 0, VAR_RIVAL_GU_BOND: 0, VAR_RIVAL_SHEN_BOND: 0, VAR_RIVAL_QI_BOND: 0}
+	var normalized_context_reward: Dictionary = {}
+	if context_reward is Dictionary:
+		normalized_context_reward = context_reward as Dictionary
+
+	var node: Dictionary = {}
+	var formal_reward: Dictionary = {}
+	if source_index >= 0 and source_index < _active_node_count():
+		node = _node_data_at(source_index)
+		var encounter_id := str(node.get("combat", ""))
+		if has_method("_formal_reward_for_encounter"):
+			formal_reward = _formal_reward_for_encounter(encounter_id, str(node.get("type", "")))
+
+	return CanonicalBattleRewardRuntime.reward_from_context_or_node(
+		normalized_context_reward,
+		source_index,
+		_active_node_count(),
+		node,
+		formal_reward
+	)
 
 func _battle_growth_reward_for_source(source_index: int) -> Dictionary:
-	if source_index < 0 or source_index >= _active_node_count():
-		return {"hp_gain": 0, "posture_gain": 0, "martial_gain": 0, "heal_full": false}
-	var node: Dictionary = _node_data_at(source_index)
-	var encounter_id := str(node.get("combat", ""))
-	if has_method("_formal_reward_for_encounter"):
-		return _formal_reward_for_encounter(encounter_id, str(node.get("type", "")))
-	return {"hp_gain": 0, "posture_gain": 0, "martial_gain": 0, "heal_full": true}
+	var formal_reward: Dictionary = {}
+	if source_index >= 0 and source_index < _active_node_count():
+		var node: Dictionary = _node_data_at(source_index)
+		var encounter_id := str(node.get("combat", ""))
+		if has_method("_formal_reward_for_encounter"):
+			formal_reward = _formal_reward_for_encounter(encounter_id, str(node.get("type", "")))
+
+	return CanonicalBattleRewardRuntime.growth_reward(
+		source_index,
+		_active_node_count(),
+		formal_reward
+	)
 
 func _apply_battle_result_reward(source_index: int) -> void:
 	_apply_canonical_effects(_battle_reward_for_source(source_index))
