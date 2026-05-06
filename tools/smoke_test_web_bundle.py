@@ -26,6 +26,7 @@ HTTP_TIMEOUT_SECONDS = 20.0
 RETRY_DELAY_SECONDS = 0.2
 HTTP_RETRIES = 30
 BROWSER_VIRTUAL_TIME_BUDGET_MS = 20000
+BROWSER_TIMEOUT_SECONDS = float(os.environ.get("CANGHAI_WEB_SMOKE_BROWSER_TIMEOUT_SECONDS", "90"))
 
 
 class IndexAssetParser(HTMLParser):
@@ -121,6 +122,11 @@ def find_chrome() -> str | None:
 
 
 def maybe_run_browser_smoke(base_url: str) -> None:
+    browser_smoke = os.environ.get("CANGHAI_WEB_SMOKE_BROWSER", "1").strip().lower()
+    if browser_smoke in {"0", "false", "no", "off"}:
+        print("[web-bundle] browser smoke skipped: CANGHAI_WEB_SMOKE_BROWSER=0")
+        return
+
     chrome = find_chrome()
     if chrome is None:
         print("[web-bundle] browser smoke skipped: Chrome/Chromium not found")
@@ -140,7 +146,7 @@ def maybe_run_browser_smoke(base_url: str) -> None:
             check=False,
             capture_output=True,
             text=True,
-            timeout=HTTP_TIMEOUT_SECONDS,
+            timeout=BROWSER_TIMEOUT_SECONDS,
         )
     except subprocess.TimeoutExpired as error:
         raise SystemExit(f"Browser smoke timed out: {error}") from error
@@ -172,7 +178,8 @@ def run_http_smoke(root: Path, host: str, port: int) -> None:
         thread = threading.Thread(target=httpd.serve_forever, daemon=True)
         thread.start()
         try:
-            base_url = f"http://{host}:{port}"
+            actual_port = httpd.server_address[1]
+            base_url = f"http://{host}:{actual_port}"
             validate_index_page(base_url)
             maybe_run_browser_smoke(base_url)
         finally:

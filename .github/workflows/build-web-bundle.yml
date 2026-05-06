@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - feature/symmetry-gameplay
+      - main
     paths:
       - 'project.godot'
       - 'export_presets.cfg'
@@ -15,9 +15,23 @@ on:
       - 'web_shell.html'
       - '.github/workflows/build-web-bundle.yml'
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
   build-web:
     runs-on: ubuntu-latest
+    env:
+      CANGHAI_WEB_TOTAL_BUDGET_MB: '160'
+      CANGHAI_WEB_PCK_BUDGET_MB: '120'
+      CANGHAI_WEB_WASM_BUDGET_MB: '40'
+      CANGHAI_WEB_SMOKE_BROWSER: '0'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,6 +47,9 @@ jobs:
 
       - name: Build web bundle
         run: tools/build_web_bundle.sh
+
+      - name: Prepare GitHub Pages bundle
+        run: touch build/web/.nojekyll
 
       - name: Upload web bundle directory
         uses: actions/upload-artifact@v4
@@ -53,3 +70,22 @@ jobs:
           path: |
             build/web/manifest.json
             build/web/checksums.txt
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy-pages:
+    needs: build-web
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
