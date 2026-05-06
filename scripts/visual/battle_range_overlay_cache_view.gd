@@ -1,5 +1,7 @@
 extends RefCounted
 
+const BattleStageHelper := preload("res://scripts/visual/battle_stage_view.gd")
+
 # Cached range overlay polygon/line renderer for battle grid previews.
 #
 # Requires owner:
