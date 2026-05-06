@@ -32,6 +32,8 @@ jobs:
       CANGHAI_WEB_PCK_BUDGET_MB: '120'
       CANGHAI_WEB_WASM_BUDGET_MB: '40'
       CANGHAI_WEB_SMOKE_BROWSER: '0'
+      CANGHAI_WEB_SMOKE_BATTLE_HUD: '0'
+      CANGHAI_WEB_SMOKE_BATTLE_ROUND_CORE: '0'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -39,7 +41,7 @@ jobs:
       - name: Setup Godot
         uses: chickensoft-games/setup-godot@v2
         with:
-          version: 4.4.1
+          version: 4.6.2
           include-templates: true
 
       - name: Prepare scripts

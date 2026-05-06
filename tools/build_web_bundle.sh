@@ -8,11 +8,21 @@ TOTAL_BUDGET_MB="${CANGHAI_WEB_TOTAL_BUDGET_MB:-64}"
 PCK_BUDGET_MB="${CANGHAI_WEB_PCK_BUDGET_MB:-16}"
 WASM_BUDGET_MB="${CANGHAI_WEB_WASM_BUDGET_MB:-40}"
 SMOKE_PORT="${CANGHAI_WEB_SMOKE_PORT:-0}"
+IMPORT_BEFORE_BUILD="${CANGHAI_WEB_IMPORT_BEFORE_BUILD:-1}"
+RUN_BATTLE_HUD_SMOKE="${CANGHAI_WEB_SMOKE_BATTLE_HUD:-1}"
+RUN_BATTLE_ROUND_CORE_SMOKE="${CANGHAI_WEB_SMOKE_BATTLE_ROUND_CORE:-1}"
 
 python3 "$PROJECT_ROOT/scripts/compile_tables.py"
 python3 "$PROJECT_ROOT/tools/validate_performance_tracks.py"
-godot --headless --path "$PROJECT_ROOT" --script "$PROJECT_ROOT/tools/smoke_battle_hud_helper.gd"
-godot --headless --path "$PROJECT_ROOT" --script "$PROJECT_ROOT/tools/smoke_battle_round_core.gd"
+if [[ "$IMPORT_BEFORE_BUILD" != "0" ]]; then
+  godot --headless --path "$PROJECT_ROOT" --import --quit
+fi
+if [[ "$RUN_BATTLE_HUD_SMOKE" != "0" ]]; then
+  godot --headless --path "$PROJECT_ROOT" --script "$PROJECT_ROOT/tools/smoke_battle_hud_helper.gd"
+fi
+if [[ "$RUN_BATTLE_ROUND_CORE_SMOKE" != "0" ]]; then
+  godot --headless --path "$PROJECT_ROOT" --script "$PROJECT_ROOT/tools/smoke_battle_round_core.gd"
+fi
 "$PROJECT_ROOT/tools/export_web_build.sh" "$OUTPUT_DIR"
 python3 "$PROJECT_ROOT/tools/validate_web_bundle.py" "$OUTPUT_DIR"
 python3 "$PROJECT_ROOT/tools/report_web_bundle.py" "$OUTPUT_DIR"
