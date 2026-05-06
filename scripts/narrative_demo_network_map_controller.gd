@@ -5,6 +5,7 @@ const StrategicNetworkMapFormatter := preload("res://scripts/strategic_network_m
 const StrategicNetworkBattleBridge := preload("res://scripts/strategic_network_battle_bridge.gd")
 const StrategicNetworkMapConfirm := preload("res://scripts/strategic_network_map_confirm.gd")
 const StrategicNetworkMapOverlay := preload("res://scripts/strategic_network_map_overlay.gd")
+const StrategicNetworkMapBattleResult := preload("res://scripts/strategic_network_map_battle_result.gd")
 const NetworkMapGenerator := preload("res://scripts/strategic_network_map_generator.gd")
 const NETWORK_FINAL_BOSS_ENCOUNTER_ID := "enc_boss_ext_wakou_leader"
 const NETWORK_FINAL_BOSS_BATTLE_ID := "boss_ext_wakou_leader"
@@ -16,6 +17,7 @@ var _network_overlay: StrategicNetworkMapOverlay = null
 # State transitions and strategic_state mirror writes are delegated to StrategicNetworkMapRuntime.
 # Overlay UI construction and panel rendering are delegated to StrategicNetworkMapOverlay.
 # Confirm-state checks and block reasons are delegated to StrategicNetworkMapConfirm.
+# Battle-return graph transitions are delegated to StrategicNetworkMapBattleResult.
 
 func _render_strategic_map() -> void:
 	var graph_variant = strategic_state.get("network_map", {})
@@ -204,40 +206,16 @@ func _render_network_overlay_footer(_graph: Dictionary) -> void:
 
 func _consume_network_node_battle(source_id: String, result: String) -> void:
 	var graph: Dictionary = strategic_state.get("network_map", {}) as Dictionary
-	if graph.is_empty():
-		last_hint = "战斗返回：未找到大势图。"
-		return
-	var pending_id := str(graph.get("pending_map_node_id", ""))
-	if pending_id.is_empty():
-		last_hint = "战斗返回：未找到 pending 节点。"
-		return
-	var expected_source_id := "map_" + pending_id
-	if source_id != expected_source_id:
-		push_warning("Network map battle source mismatch: expected %s, got %s" % [expected_source_id, source_id])
-	var node := StrategicNetworkMapRuntime.find_node(graph, pending_id)
-	if node.is_empty():
-		last_hint = "战斗返回：未找到大势图节点。"
-		StrategicNetworkMapRuntime.clear_pending(graph)
+	var outcome := StrategicNetworkMapBattleResult.consume_battle_result(graph, source_id, result)
+	if bool(outcome.get("source_mismatch", false)):
+		push_warning("Network map battle source mismatch: expected %s, got %s" % [str(outcome.get("expected_source_id", "")), source_id])
+	last_hint = str(outcome.get("last_hint", ""))
+	var node: Dictionary = outcome.get("node", {}) as Dictionary
+	if bool(outcome.get("completed", false)) and not node.is_empty():
+		_apply_strategic_node(StrategicNetworkMapBattleResult.runtime_node_for_effects(node))
+		NarrativeBattleContext.apply_player_growth("battle_win", 0, 0, 0, true)
+	if bool(outcome.get("mutated", false)):
 		_sync_network_state_from_graph(graph)
-		return
-	if result != "win":
-		last_hint = "战斗未胜：当前节点可重试。"
-		StrategicNetworkMapRuntime.clear_pending(graph)
-		_sync_network_state_from_graph(graph)
-		return
-	var runtime_node := node.duplicate(true)
-	if not runtime_node.has("node_id"):
-		runtime_node["node_id"] = str(node.get("pool_node_id", node.get("map_graph_id", "")))
-	_apply_strategic_node(runtime_node)
-	NarrativeBattleContext.apply_player_growth("battle_win", 0, 0, 0, true)
-	_complete_network_node(graph, node)
-	_refresh_network_node_states(graph)
-	StrategicNetworkMapRuntime.clear_pending(graph)
-	var result_text := str(node.get("result_text", ""))
-	if result_text.is_empty():
-		result_text = "战事暂歇，海风又压回岸边。"
-	last_hint = result_text
-	_sync_network_state_from_graph(graph)
 
 
 func _render_network_overlay_complete(graph: Dictionary) -> void:
