@@ -19,6 +19,7 @@ const StrategicRewardRuntime := preload("res://scripts/narrative/strategic_rewar
 const StrategicCardStateBridge := preload("res://scripts/narrative/strategic_card_state_bridge.gd")
 const StrategicDebugProfileBuilder := preload("res://scripts/narrative/strategic_debug_profile_builder.gd")
 const StrategicMapSessionRuntime := preload("res://scripts/narrative/strategic_map_session_runtime.gd")
+const StrategicNodeApplyRuntime := preload("res://scripts/narrative/strategic_node_apply_runtime.gd")
 const StrategicWorldMapRuntime := preload("res://scripts/narrative/strategic_world_map_runtime.gd")
 const STRATEGIC_ENTRY_NODE_ID := "world_map_entry"
 const STRATEGIC_FINAL_BOSS_SOURCE_ID := "strategic_final_boss"
@@ -209,22 +210,17 @@ func _consume_strategic_node_battle(source_id: String, result: String) -> void:
 
 func _apply_strategic_node(node: Dictionary) -> void:
 	_sync_context_cards_to_strategic_state()
-	var effects: Dictionary = node.get("effects", {}) as Dictionary
-	strategic_state = StrategicMapState.apply_effects(strategic_state, effects)
+	var outcome: Dictionary = StrategicNodeApplyRuntime.apply_node(strategic_state, node, jun_gong, qing_wang, clues)
+	var state_variant = outcome.get("strategic_state", strategic_state)
+	if state_variant is Dictionary:
+		strategic_state = state_variant as Dictionary
 	_sync_strategic_cards_to_context()
 	_sync_context_cards_to_strategic_state()
-	jun_gong = int(strategic_state.get("military_merit", jun_gong))
-	qing_wang = int(strategic_state.get("clean_reputation", qing_wang))
-	clues = int(strategic_state.get("case_clues", clues))
-	var selected: Array = strategic_state.get("selected_nodes", [])
-	selected.append(str(node.get("node_id", "")))
-	strategic_state["selected_nodes"] = selected
-	var result_text := str(node.get("result_text", ""))
-	strategic_state["last_node_result"] = result_text
-	strategic_state["current_world_map_node_id"] = str(node.get("node_id", ""))
-	strategic_state["current_world_map_node_effects"] = effects.duplicate(true)
+	jun_gong = int(outcome.get("military_merit", jun_gong))
+	qing_wang = int(outcome.get("clean_reputation", qing_wang))
+	clues = int(outcome.get("case_clues", clues))
+	last_hint = str(outcome.get("last_hint", ""))
 	_sync_world_map_runtime_state()
-	last_hint = result_text
 
 func _strategic_card_reward_choices(node: Dictionary) -> Array[String]:
 	return _reward_runtime().strategic_card_reward_choices(node)
