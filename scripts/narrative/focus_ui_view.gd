@@ -3,6 +3,7 @@ const NarrativeBattleContext := preload("res://scripts/narrative_battle_context.
 const FocusArtLayerView := preload("res://scripts/narrative/focus_art_layer_view.gd")
 const FocusDebugPanelView := preload("res://scripts/narrative/focus_debug_panel_view.gd")
 const FocusEndingSettlementView := preload("res://scripts/narrative/focus_ending_settlement_view.gd")
+const FocusStoryCaptionView := preload("res://scripts/narrative/focus_story_caption_view.gd")
 const FocusWorldMapView := preload("res://scripts/narrative/focus_world_map_view.gd")
 
 const HIDDEN_SCENE_ART_OVERLAY_NODE_NAMES := [
@@ -24,6 +25,7 @@ var c
 var _focus_art_layer_view
 var _focus_debug_panel_view
 var _focus_ending_settlement_view
+var _focus_story_caption_view
 var _focus_world_map_view
 
 func _init(controller) -> void:
@@ -54,6 +56,11 @@ func _ending_settlement_view():
 	if _focus_ending_settlement_view == null:
 		_focus_ending_settlement_view = FocusEndingSettlementView.new(c)
 	return _focus_ending_settlement_view
+
+func _story_caption_view():
+	if _focus_story_caption_view == null:
+		_focus_story_caption_view = FocusStoryCaptionView.new(c)
+	return _focus_story_caption_view
 
 func _world_map_view():
 	if _focus_world_map_view == null:
@@ -88,59 +95,10 @@ func _make_world_map_node_button(index: int) -> Button:
 	return _world_map_view().make_world_map_node_button(index)
 
 func _ensure_focus_story_caption() -> void:
-	if c.focus_story_layer != null:
-		return
-	c.focus_story_layer = Control.new()
-	c.focus_story_layer.name = "NarrativePerformanceCaptionLayer"
-	c.focus_story_layer.anchor_left = 0.0
-	c.focus_story_layer.anchor_top = 0.0
-	c.focus_story_layer.anchor_right = 1.0
-	c.focus_story_layer.anchor_bottom = 1.0
-	c.focus_story_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	c.focus_story_layer.z_index = 90
-	c.focus_story_layer.z_as_relative = false
-	c.add_child(c.focus_story_layer)
-
-	c.focus_story_panel = PanelContainer.new()
-	c.focus_story_panel.name = "NarrativePerformanceCaptionPanel"
-	c.focus_story_panel.anchor_left = 0.06
-	c.focus_story_panel.anchor_top = c.PERFORMANCE_CAPTION_TOP
-	c.focus_story_panel.anchor_right = 0.94
-	c.focus_story_panel.anchor_bottom = c.PERFORMANCE_CAPTION_BOTTOM
-	c.focus_story_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	c.focus_story_panel.z_index = 91
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.0, 0.0, 0.0, 0.0)
-	style.border_color = Color(0.0, 0.0, 0.0, 0.0)
-	style.set_border_width_all(0)
-	style.set_corner_radius_all(0)
-	style.content_margin_left = 0
-	style.content_margin_right = 0
-	style.content_margin_top = 0
-	style.content_margin_bottom = 0
-	c.focus_story_panel.add_theme_stylebox_override("panel", style)
-	c.focus_story_layer.add_child(c.focus_story_panel)
-
-	c.focus_story_label = RichTextLabel.new()
-	c.focus_story_label.name = "NarrativePerformanceCaptionText"
-	c.focus_story_label.bbcode_enabled = true
-	c.focus_story_label.fit_content = false
-	c.focus_story_label.scroll_active = false
-	c.focus_story_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	c.focus_story_label.add_theme_font_size_override("normal_font_size", c.STORY_FONT_SIZE)
-	c.focus_story_label.add_theme_font_size_override("bold_font_size", c.STORY_FONT_SIZE)
-	c.focus_story_label.add_theme_font_size_override("italics_font_size", c.STORY_FONT_SIZE)
-	c.focus_story_label.add_theme_color_override("default_color", Color("f6ead2"))
-	c.focus_story_panel.add_child(c.focus_story_label)
+	_story_caption_view().ensure_story_caption()
 
 func _update_focus_story_caption() -> void:
-	if c.focus_story_label == null:
-		return
-	var story_text := ""
-	if c.body_label != null:
-		story_text = c.body_label.text.strip_edges()
-	c.focus_story_panel.visible = not story_text.is_empty()
-	c.focus_story_label.text = "[center]%s[/center]" % story_text
+	_story_caption_view().update_story_caption()
 
 func _ensure_focus_debug_panel() -> void:
 	_debug_panel_view().ensure_debug_panel()
