@@ -4,6 +4,7 @@ const StrategicMapGenerator := preload("res://scripts/strategic_map_generator.gd
 const StrategicMapState := preload("res://scripts/strategic_map_state.gd")
 const StrategicNetworkMapGenerator := preload("res://scripts/strategic_network_map_generator.gd")
 const StrategicEndingFormatter := preload("res://scripts/narrative/strategic_ending_formatter.gd")
+const StrategicFinalGateView := preload("res://scripts/narrative/strategic_final_gate_view.gd")
 const StrategicRewardRuntime := preload("res://scripts/narrative/strategic_reward_runtime.gd")
 const STRATEGIC_ENTRY_NODE_ID := "world_map_entry"
 const STRATEGIC_FINAL_BOSS_SOURCE_ID := "strategic_final_boss"
@@ -16,6 +17,7 @@ var pending_strategic_card_choices: Array[String] = []
 var selected_strategic_card_reward := ""
 var _strategic_reward_runtime
 var _strategic_ending_formatter
+var _strategic_final_gate_view
 
 # Legacy strategic-map layer.
 # Keeps the old current_map / three-choice fallback and shared strategic state.
@@ -32,6 +34,11 @@ func _ending_formatter():
 	if _strategic_ending_formatter == null:
 		_strategic_ending_formatter = StrategicEndingFormatter.new()
 	return _strategic_ending_formatter
+
+func _final_gate_view():
+	if _strategic_final_gate_view == null:
+		_strategic_final_gate_view = StrategicFinalGateView.new(self)
+	return _strategic_final_gate_view
 func _try_consume_debug_world_map_entry() -> void:
 	if not NarrativeBattleContext.has_debug_entry():
 		return
@@ -319,18 +326,7 @@ func _prepare_strategic_final_gate() -> void:
 	_sync_world_map_runtime_state()
 	if not _base_ui_ready():
 		return
-	title_label.text = "海门收束"
-	status_label.text = str(boss.get("title", "终局门槛"))
-	map_label.text = "大势图已走完：%d 个节点" % [(strategic_state.get("selected_nodes", []) as Array).size()]
-	scene_label.text = _format_scene_text("海门风紧，所有线索都被推到最后一战前。")
-	_render_visual("res://assets/pixel_battle/backgrounds/battle_bg_broken_ship.png", "海门收束")
-	body_label.text = str(boss.get("intro_text", "倭患仍在海上。案卷仍少一页。"))
-	if not last_hint.is_empty():
-		body_label.text += "\n\n[i]%s[/i]" % last_hint
-	vars_label.text = StrategicMapState.summary_text(strategic_state)
-	_add_placeholder(map_buttons_box, "终局版本由军功、清望、旧案、武境共同决定。")
-	_add_button(combat_buttons_box, "进入终局战：%s" % str(boss.get("title", "海门收束")), _on_strategic_final_boss)
-	_add_placeholder(choices_box, "终局战胜利后进入对应结局。")
+	_final_gate_view().render(boss, strategic_state, last_hint, Callable(self, "_on_strategic_final_boss"))
 func _on_strategic_final_boss() -> void:
 	var boss: Dictionary = strategic_state.get("final_boss", {}) as Dictionary
 	if boss.is_empty():
