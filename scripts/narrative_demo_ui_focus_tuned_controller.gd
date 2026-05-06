@@ -32,8 +32,7 @@ func _render() -> void:
 		_hide_scene_art_overlay_nodes()
 		_sync_network_overlay_visibility()
 		return
-	if network_overlay_layer != null:
-		network_overlay_layer.visible = false
+	_network_overlay_view().set_visible(false)
 	super._render()
 	_apply_tuned_scene_art_view()
 	_sync_network_overlay_visibility()
