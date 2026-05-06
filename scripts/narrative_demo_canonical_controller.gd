@@ -1,5 +1,7 @@
 extends "res://scripts/narrative_demo_fragmented_controller.gd"
 
+const CanonicalEffectsRuntime := preload("res://scripts/narrative/canonical_effects_runtime.gd")
+
 # Canonical narrative variable names for the MVP runtime.
 # Internal legacy counters are kept as storage for compatibility with older controllers:
 #   jun_gong  -> military_merit
@@ -88,41 +90,26 @@ func _restore_narrative_state_from_context() -> void:
 	rival_qi_bond = int(state.get(VAR_RIVAL_QI_BOND, rival_qi_bond))
 
 func _canonical_state() -> Dictionary:
-	return {
-		VAR_MILITARY_MERIT: jun_gong,
-		VAR_CLEAN_REPUTATION: qing_wang,
-		VAR_CASE_CLUES: clues,
-		VAR_SOLDIER_TRUST: 0,
-		VAR_RIVAL_GU_BOND: rival_gu_bond,
-		VAR_RIVAL_SHEN_BOND: rival_shen_bond,
-		VAR_RIVAL_QI_BOND: rival_qi_bond
-	}
+	return CanonicalEffectsRuntime.canonical_state(
+		jun_gong,
+		qing_wang,
+		clues,
+		rival_gu_bond,
+		rival_shen_bond,
+		rival_qi_bond
+	)
 
 func _normalize_effects(raw_effects: Dictionary) -> Dictionary:
-	var normalized := {
-		VAR_MILITARY_MERIT: 0,
-		VAR_CLEAN_REPUTATION: 0,
-		VAR_CASE_CLUES: 0,
-		VAR_SOLDIER_TRUST: 0,
-		VAR_RIVAL_GU_BOND: 0,
-		VAR_RIVAL_SHEN_BOND: 0,
-		VAR_RIVAL_QI_BOND: 0
-	}
-	for raw_key in raw_effects.keys():
-		var key := str(raw_key)
-		var canonical_key := str(LEGACY_VAR_ALIASES.get(key, key))
-		if normalized.has(canonical_key):
-			normalized[canonical_key] = int(normalized[canonical_key]) + int(raw_effects[raw_key])
-	return normalized
+	return CanonicalEffectsRuntime.normalize_effects(raw_effects)
 
 func _apply_canonical_effects(effects: Dictionary) -> void:
-	var normalized := _normalize_effects(effects)
-	jun_gong += int(normalized[VAR_MILITARY_MERIT])
-	qing_wang += int(normalized[VAR_CLEAN_REPUTATION])
-	clues += int(normalized[VAR_CASE_CLUES])
-	rival_gu_bond += int(normalized[VAR_RIVAL_GU_BOND])
-	rival_shen_bond += int(normalized[VAR_RIVAL_SHEN_BOND])
-	rival_qi_bond += int(normalized[VAR_RIVAL_QI_BOND])
+	var values := CanonicalEffectsRuntime.apply_effects_to_values(_canonical_state(), effects)
+	jun_gong = int(values[CanonicalEffectsRuntime.VAR_MILITARY_MERIT])
+	qing_wang = int(values[CanonicalEffectsRuntime.VAR_CLEAN_REPUTATION])
+	clues = int(values[CanonicalEffectsRuntime.VAR_CASE_CLUES])
+	rival_gu_bond = int(values[CanonicalEffectsRuntime.VAR_RIVAL_GU_BOND])
+	rival_shen_bond = int(values[CanonicalEffectsRuntime.VAR_RIVAL_SHEN_BOND])
+	rival_qi_bond = int(values[CanonicalEffectsRuntime.VAR_RIVAL_QI_BOND])
 	_save_narrative_state_to_context()
 
 func _record_choice_ending_flag(choice: Dictionary) -> void:
@@ -247,15 +234,7 @@ func _on_choice(index: int) -> void:
 		_render_ending()
 
 func _apply_choice_delta(choice: Dictionary) -> void:
-	_apply_canonical_effects({
-		VAR_MILITARY_MERIT: int(choice.get(VAR_MILITARY_MERIT, choice.get("dg", choice.get("jun_gong", 0)))),
-		VAR_CLEAN_REPUTATION: int(choice.get(VAR_CLEAN_REPUTATION, choice.get("dq", choice.get("qing_wang", choice.get("public_repute", 0))))),
-		VAR_CASE_CLUES: int(choice.get(VAR_CASE_CLUES, choice.get("dc", choice.get("clues", 0)))),
-		VAR_SOLDIER_TRUST: int(choice.get(VAR_SOLDIER_TRUST, 0)),
-		VAR_RIVAL_GU_BOND: int(choice.get(VAR_RIVAL_GU_BOND, 0)),
-		VAR_RIVAL_SHEN_BOND: int(choice.get(VAR_RIVAL_SHEN_BOND, 0)),
-		VAR_RIVAL_QI_BOND: int(choice.get(VAR_RIVAL_QI_BOND, 0))
-	})
+	_apply_canonical_effects(CanonicalEffectsRuntime.choice_delta(choice))
 	NarrativeBattleContext.apply_player_growth("choice", 0, 0, 0, false)
 
 func _battle_reward_for_source(source_index: int) -> Dictionary:
