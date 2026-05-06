@@ -22,7 +22,7 @@
 
 ## Current P0 Structural Risk
 
-当前最高优先级不再只是单文件体积，而是：**视觉战斗与大地图 controller 的继承链过深，AI 追踪 super 调用和状态来源的成本升高。**
+当前最高优先级不再只是继承深度，而是：**在保持短继承链后，聚合 controller 重新膨胀，AI 修改定位成本回升。**
 
 治理原则：
 
@@ -35,9 +35,9 @@
 
 | Size | Level | File | 建议方向 |
 |---:|---|---|---|
+| 35.5KB | HIGH_RISK | `scripts/narrative_demo_ui_focus_tuned_controller.gd` | 保持入口不变，按职责横向外迁 runtime/helper；禁止继续追加逻辑。 |
 | 58.2KB | HIGH_RISK | `scripts/compile_tables.py` | 拆出 table loader / validator / writer，主文件只保留 CLI 调度。 |
 | 33.9KB | SPLIT_REQUIRED | `tools/render_art_prompt.py` | 拆出 prompt loader / renderer / CLI。 |
-| 27.6KB | SPLIT_REQUIRED | `scripts/narrative_demo_strategic_legacy_controller.gd` | 拆出 ending/final gate 文案与奖励 runtime。 |
 | 27.0KB | SPLIT_REQUIRED | `scripts/narrative/narrative_demo_controller.gd` | 拆出节点路由与选择处理。 |
 | 27.0KB | SPLIT_REQUIRED | `scripts/narrative_battle_context.gd` | 拆出 player profile 与 battle request/result bridge。 |
 | 25.7KB | SPLIT_REQUIRED | `scripts/battle_controller_visual_resolver_preview.gd` | 拆出 preview runtime 与 formatter。 |
@@ -49,7 +49,6 @@
 |---:|---|---|---|
 | 24.9KB | WARN | `scripts/narrative_demo_canonical_controller.gd` | 新增逻辑先进 helper。 |
 | 24.5KB | WARN | `scripts/battle_controller_visual_presentation_stepwise_exchange.gd` | 继续拆 stepwise 子模块，避免 exchange 层变大。 |
-| 22.8KB | WARN | `scripts/narrative_demo_network_map_controller.gd` | 保持 map 调度层，不回填 overlay/runtime/bridge 细节。 |
 | 21.4KB | WARN | `scripts/battle_controller_core_deck_builder.gd` | 若加功能，先抽 deck helper。 |
 | 21.1KB | WARN | `scripts/battle_controller_visual_cached_ui.gd` | 避免继续堆缓存策略。 |
 | 20.5KB | WARN | `tools/art_asset_pipeline.py` | 后续按 loader / processor / exporter 拆。 |
@@ -63,7 +62,9 @@
 | `scripts/battle_controller_core.gd` | 已变为 thin wrapper，真实逻辑拆入 `battle_controller_core_*` 层。 |
 | `scripts/battle_controller_visual_ui.gd` | 已变为 thin compatibility entry，真实逻辑拆入 `battle_controller_visual_ui_*` 层。 |
 | `scripts/battle_controller_visual_presentation_stepwise.gd` | 已变为 stepwise wrapper，真实逻辑拆入 fx/focus/facing/draft/exchange 层。 |
-| `scripts/narrative_demo_ui_focus_tuned_controller.gd` | 已降到约 8.8KB，保持调度层定位。 |
+| `scripts/narrative_demo_strategic_legacy_controller.gd` | 已变为 legacy compatibility alias，不再承载运行逻辑。 |
+| `scripts/narrative_demo_network_map_controller.gd` | 已变为 legacy compatibility alias，不再承载运行逻辑。 |
+| `scripts/narrative/strategic_world_map_runtime.gd` | 新增 runtime helper，承接 world map runtime mirror 同步、node lookup、combat trigger 判断。 |
 | `scripts/narrative_demo_ui_focus_controller.gd` | 已拆分为 view/runtime/helper 委托结构，约 8.4KB。 |
 | `scripts/battle_controller_visual_responsive_ui.gd` | 已降到 13,078 bytes，低于 20KB。 |
 | `scripts/battle_controller_visual_presentation.gd` | 已降到 19,368 bytes，低于 20KB。 |
@@ -78,10 +79,10 @@
 
 ## Recommended Next Work
 
-1. 先治理继承链 P0：减少 MainVisual 高频链路中的薄继承层，但不整文件合并 controller。
+1. 先治理聚合 P0：保持短继承链不回退，持续把 `narrative_demo_ui_focus_tuned_controller.gd` 的运行逻辑外迁到 runtime/helper。
 2. 拆 `scripts/compile_tables.py`，因为它是唯一仍超过 35KB 的代码文件。
 3. 拆 `tools/render_art_prompt.py`，风险低、收益高。
-4. 收口 `scripts/narrative_demo_network_map_controller.gd`：调用 `StrategicNetworkMapRuntime.complete_node()`、`refresh_node_states()`、`sync_mirror_fields()`，删除重复实现。
+4. 增量外迁 strategic/network 逻辑：优先迁 pure runtime 函数，并保留 controller 同名 wrapper。
 5. 不再新增 controller 继承层；新功能优先进入 helper / runtime / view / formatter / bridge。
 
 ## Validation Commands

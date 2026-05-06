@@ -1,7 +1,7 @@
 # Refactor TODO
 
 按 `docs/CODE_ORGANIZATION.md` 执行的小步重构清单。
-更新时间：2026-05-06（网络大势图 controller 收口后）。
+更新时间：2026-05-06（alias 收口后，tuned 聚合外迁中）。
 
 ## 规则（执行时必须遵守）
 
@@ -31,11 +31,11 @@
 
 ## P1（两周内，优先拆分）
 
-### 3) `scripts/narrative_demo_strategic_legacy_controller.gd`（27.6KB）
+### 3) `scripts/narrative_demo_ui_focus_tuned_controller.gd`（~35KB，HIGH_RISK）
 
-- [ ] 抽离 ending/final gate 文案到 `scripts/narrative/strategic_ending_formatter.gd`。
-- [ ] 抽离奖励计算到 `scripts/narrative/strategic_reward_runtime.gd`。
-- [ ] legacy controller 降到 `<25KB`。
+- [ ] 保持 `scripts/narrative_demo_strategic_legacy_controller.gd` 和 `scripts/narrative_demo_network_map_controller.gd` 为 alias，不回退继承深度优化。
+- [ ] 只做“横向外迁”：把 strategic/network 运行逻辑迁到 runtime/helper。
+- [ ] controller 保留同名 wrapper，避免调用链断裂。
 
 ### 4) `scripts/narrative/narrative_demo_controller.gd`（27.0KB）
 
@@ -61,14 +61,20 @@
 
 - [ ] `scripts/narrative_demo_canonical_controller.gd`（24.9KB）：新增逻辑先进 helper。
 - [ ] `scripts/battle_controller_visual_presentation_stepwise_exchange.gd`（24.5KB）：继续拆 stepwise 子模块。
-- [x] `scripts/narrative_demo_network_map_controller.gd`：已收口为调度层，overlay/runtime/confirm/battle-result helper 已拆出，保持不回填细节逻辑。
+- [x] `scripts/narrative_demo_network_map_controller.gd`：已变为 legacy compatibility alias。
 - [ ] `scripts/battle_controller_core_deck_builder.gd`（21.4KB）：若加功能，先抽 deck helper。
 - [ ] `scripts/battle_controller_visual_cached_ui.gd`（21.1KB）：避免继续堆缓存策略。
 - [ ] `tools/art_asset_pipeline.py`（20.5KB）：后续按 loader/processor/exporter 拆。
 
 ## 已完成并保持不回退
 
-- [x] `narrative_demo_ui_focus_tuned_controller.gd` 已降到 8.8KB，保持“调度层”定位。
+- [x] `narrative_demo_strategic_legacy_controller.gd` 已变为 legacy compatibility alias。
+- [x] `narrative_demo_network_map_controller.gd` 已变为 legacy compatibility alias。
+- [x] 新增 `scripts/narrative/strategic_world_map_runtime.gd`，承接：
+  - world map runtime mirror 同步（`sync_runtime_state`）
+  - strategic node lookup（`find_node`）
+  - combat trigger 判断（`node_triggers_combat`）
+- [ ] `narrative_demo_ui_focus_tuned_controller.gd` 当前是主要聚合入口，禁止继续追加逻辑；仅允许向 runtime/helper 外迁。
 - [x] `narrative_demo_ui_focus_controller.gd` 已拆分为 view/runtime/helper 委托结构，控制器降到 8.4KB。
 - [x] `battle_controller_visual_responsive_ui.gd` 已降到 `13,078` bytes，低于 `20KB`。
 - [x] `battle_controller_visual_presentation.gd` 已降到 `19,368` bytes，低于 `20KB`。
