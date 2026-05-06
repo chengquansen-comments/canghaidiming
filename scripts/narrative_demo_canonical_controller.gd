@@ -2,6 +2,7 @@ extends "res://scripts/narrative_demo_fragmented_controller.gd"
 
 const CanonicalEffectsRuntime := preload("res://scripts/narrative/canonical_effects_runtime.gd")
 const CanonicalNodeRegistry := preload("res://scripts/narrative/canonical_node_registry.gd")
+const CanonicalStorySegmentRuntime := preload("res://scripts/narrative/canonical_story_segment_runtime.gd")
 
 # Canonical narrative variable names for the MVP runtime.
 # Internal legacy counters are kept as storage for compatibility with older controllers:
@@ -135,31 +136,16 @@ func _configured_choices_for_node(node_id: String) -> Array:
 	return CanonicalNodeRegistry.configured_choices(_node_config(node_id))
 
 func _node_story_segments(node: Dictionary) -> Array[String]:
-	var segments: Array[String] = []
-	_append_text_segments(segments, str(node.get("text", "")))
-	var combat = node.get("combat", {})
-	if combat is Dictionary and bool((combat as Dictionary).get("enabled", false)):
-		_append_text_segments(segments, str((combat as Dictionary).get("pre", "")))
-	if segments.is_empty():
-		segments.append("")
-	return segments
+	return CanonicalStorySegmentRuntime.node_story_segments(node)
 
 func _append_text_segments(segments: Array[String], raw_text: String) -> void:
-	var normalized := raw_text.replace("\r", "")
-	var lines := normalized.split("\n")
-	for raw_line in lines:
-		var line := str(raw_line).strip_edges()
-		if not line.is_empty():
-			segments.append(line)
+	CanonicalStorySegmentRuntime.append_text_segments(segments, raw_text)
 
 func _is_node_story_complete(node: Dictionary) -> bool:
-	var segments := _node_story_segments(node)
-	return node_sentence_index >= segments.size() - 1
+	return CanonicalStorySegmentRuntime.is_node_story_complete(node, node_sentence_index)
 
 func _current_node_story_text(node: Dictionary) -> String:
-	var segments := _node_story_segments(node)
-	var safe_index = clamp(node_sentence_index, 0, segments.size() - 1)
-	return str(segments[safe_index])
+	return CanonicalStorySegmentRuntime.current_node_story_text(node, node_sentence_index)
 
 func _on_continue_node_sentence() -> void:
 	node_sentence_index += 1
