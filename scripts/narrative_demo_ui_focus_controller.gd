@@ -80,7 +80,6 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	super._process(delta)
-	_apply_focus_ui()
 	_hide_scene_art_overlay_nodes()
 
 func _render() -> void:
