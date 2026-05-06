@@ -262,14 +262,15 @@ func _on_network_final_boss_pressed() -> void:
 		"battle_id": NETWORK_FINAL_BOSS_BATTLE_ID,
 		"ending_flag": "surface_pirate",
 	}
+	var request := StrategicNetworkBattleBridge.final_boss_request(NETWORK_FINAL_BOSS_ENCOUNTER_ID, NETWORK_FINAL_BOSS_BATTLE_ID)
+	if not bool(request.get("enabled", false)):
+		last_hint = str(request.get("blocked_reason", "终局战暂未接入。"))
+		_save_narrative_state_to_context()
+		_render()
+		return
 	_sync_strategic_cards_to_context()
 	_save_narrative_state_to_context()
-	NarrativeBattleContext.set_request_from_combat({
-		"enabled": true,
-		"encounter_id": NETWORK_FINAL_BOSS_ENCOUNTER_ID,
-		"battle_id": NETWORK_FINAL_BOSS_BATTLE_ID,
-		"override_player_profile": true,
-	}, STRATEGIC_FINAL_BOSS_SOURCE_ID)
+	NarrativeBattleContext.set_request_from_combat(request, STRATEGIC_FINAL_BOSS_SOURCE_ID)
 	get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
 
 
