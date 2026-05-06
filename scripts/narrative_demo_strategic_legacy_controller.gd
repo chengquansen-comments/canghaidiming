@@ -5,6 +5,7 @@ const StrategicMapState := preload("res://scripts/strategic_map_state.gd")
 const StrategicNetworkMapGenerator := preload("res://scripts/strategic_network_map_generator.gd")
 const StrategicEndingFormatter := preload("res://scripts/narrative/strategic_ending_formatter.gd")
 const StrategicFinalGateView := preload("res://scripts/narrative/strategic_final_gate_view.gd")
+const StrategicLegacyMapView := preload("res://scripts/narrative/strategic_legacy_map_view.gd")
 const StrategicRewardRuntime := preload("res://scripts/narrative/strategic_reward_runtime.gd")
 const STRATEGIC_ENTRY_NODE_ID := "world_map_entry"
 const STRATEGIC_FINAL_BOSS_SOURCE_ID := "strategic_final_boss"
@@ -18,6 +19,7 @@ var selected_strategic_card_reward := ""
 var _strategic_reward_runtime
 var _strategic_ending_formatter
 var _strategic_final_gate_view
+var _strategic_legacy_map_view
 
 # Legacy strategic-map layer.
 # Keeps the old current_map / three-choice fallback and shared strategic state.
@@ -39,6 +41,11 @@ func _final_gate_view():
 	if _strategic_final_gate_view == null:
 		_strategic_final_gate_view = StrategicFinalGateView.new(self)
 	return _strategic_final_gate_view
+
+func _legacy_map_view():
+	if _strategic_legacy_map_view == null:
+		_strategic_legacy_map_view = StrategicLegacyMapView.new(self)
+	return _strategic_legacy_map_view
 func _try_consume_debug_world_map_entry() -> void:
 	if not NarrativeBattleContext.has_debug_entry():
 		return
@@ -146,21 +153,16 @@ func _render_legacy_strategic_map() -> void:
 	if region.is_empty() or layer.is_empty():
 		_prepare_strategic_final_gate()
 		return
-	title_label.text = "海疆大势图"
-	status_label.text = "%s｜第 %d 层" % [str(region.get("region_title", "海疆")), layer_index + 1]
-	map_label.text = _strategic_progress_text(map_data)
-	scene_label.text = _format_scene_text("军情、海防与旧案线索被摊在同一张图上。")
-	_render_visual("res://assets/pixel_battle/backgrounds/map_march_coast.png", "海疆大势图")
-	body_label.text = "你不再只沿着一条案线走。\n\n每一步只看四件事：军功、清望、旧案、武境。"
-	if not last_hint.is_empty():
-		body_label.text += "\n\n[i]%s[/i]" % last_hint
-	vars_label.text = StrategicMapState.summary_text(strategic_state)
-	_add_placeholder(map_buttons_box, "每层三选一。选中后应用收益；战斗节点会跳转 MainVisual。")
-	_add_placeholder(combat_buttons_box, "当前层候选节点")
-	var choices: Array = layer.get("choices", [])
-	for i in range(choices.size()):
-		if choices[i] is Dictionary:
-			_add_strategic_choice_button(choices[i] as Dictionary, i)
+	_legacy_map_view().render(
+		region,
+		layer,
+		map_data,
+		strategic_state,
+		layer_index,
+		last_hint,
+		_strategic_progress_text(map_data),
+		Callable(self, "_on_strategic_choice")
+	)
 func _refresh_current_strategic_layer() -> void:
 	var map_data: Dictionary = strategic_state.get("current_map", {}) as Dictionary
 	var region_index := int(strategic_state.get("region_index", 0))
@@ -188,23 +190,6 @@ func _refresh_current_strategic_layer() -> void:
 	_sync_world_map_runtime_state()
 func _strategic_progress_text(map_data: Dictionary) -> String:
 	return _reward_runtime().strategic_progress_text(map_data)
-func _add_strategic_choice_button(node: Dictionary, index: int) -> void:
-	var effects: Dictionary = node.get("effects", {}) as Dictionary
-	var btn := Button.new()
-	var scope_text := StrategicMapState.event_scope_text(node)
-	var combat_text := _strategic_combat_pool_text(node)
-	btn.text = "%s｜%s%s%s\n%s\n%s" % [
-		str(node.get("title", "")),
-		_strategic_type_label(str(node.get("node_type", ""))),
-		"｜%s" % scope_text if not scope_text.is_empty() else "",
-		"｜%s" % combat_text if not combat_text.is_empty() else "",
-		str(node.get("preview_text", "")),
-		_strategic_effects_text(effects),
-	]
-	btn.custom_minimum_size = Vector2(0, 76)
-	btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	btn.pressed.connect(_on_strategic_choice.bind(index))
-	choices_box.add_child(btn)
 func _on_strategic_choice(index: int) -> void:
 	var layer := StrategicMapGenerator.current_layer(strategic_state.get("current_map", {}), int(strategic_state.get("region_index", 0)), int(strategic_state.get("layer_index", 0)))
 	var choices: Array = layer.get("choices", [])
