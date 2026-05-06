@@ -1,9 +1,11 @@
 extends "res://scripts/narrative_demo_ui_focus_controller.gd"
 
-# Final UI tuning layer.
-# Keeps narrative presentation simple: static scene art + caption + bottom floating choices.
-# Motion/effects are disabled at the cinematic controller source; this layer only
-# applies layout polish and hides optional debug/map UI.
+# Main narrative strategic orchestration entry.
+# Keeps the active inheritance chain short while delegating concrete work to
+# runtime/view/formatter/bridge helpers.
+# Do not add new business logic here directly. New strategic, network, reward,
+# or battle-return behavior should move into helper modules and be called here
+# through thin wrappers.
 
 const TUNED_STORY_FONT_SIZE := 72
 const TUNED_OPTION_FONT_SIZE := 25
