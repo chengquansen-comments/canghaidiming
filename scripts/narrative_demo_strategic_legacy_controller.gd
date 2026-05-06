@@ -156,7 +156,6 @@ func _render_legacy_strategic_map() -> void:
 	_legacy_map_view().render(
 		region,
 		layer,
-		map_data,
 		strategic_state,
 		layer_index,
 		last_hint,
