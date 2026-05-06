@@ -1,18 +1,19 @@
 extends "res://scripts/battle_controller_visual_ui.gd"
 
 const BattleActorRenderHelper = preload("res://scripts/visual/battle_actor_view.gd")
+const BattleActorRuntimeCache := preload("res://scripts/visual/battle_actor_runtime_cache.gd")
 const BattleFontHelper = preload("res://scripts/visual/battle_font_view.gd")
 const BattleRangeOverlayCacheView := preload("res://scripts/visual/battle_range_overlay_cache_view.gd")
 const ActorAnimationRuntime = preload("res://scripts/visual/actor_animation_runtime.gd")
 
 var _last_stage_grid_state: Dictionary = {}
+var _actor_runtime_cache
 var _range_overlay_cache
-var _player_actor_runtime: ActorAnimationRuntime = null
-var _enemy_actor_runtime: ActorAnimationRuntime = null
-var _player_actor_runtime_meta_path := ""
-var _enemy_actor_runtime_meta_path := ""
-var _last_player_animation_card: CardData = null
-var _last_enemy_animation_card: CardData = null
+
+func _actor_runtime_view():
+	if _actor_runtime_cache == null:
+		_actor_runtime_cache = BattleActorRuntimeCache.new(self)
+	return _actor_runtime_cache
 
 func _range_overlay_view():
 	if _range_overlay_cache == null:
@@ -61,9 +62,9 @@ func _build_stage_layer() -> void:
 func _set_actor_sheet_frame(actor: Fighter, frame_index: int) -> void:
 	if actor == null:
 		return
-	if player != null and actor.data.id == player.data.id and _player_actor_runtime != null and _player_actor_runtime.is_ready:
+	if player != null and actor.data.id == player.data.id and _actor_runtime_view().actor_runtime_is_ready(true):
 		return
-	if enemy != null and actor.data.id == enemy.data.id and _enemy_actor_runtime != null and _enemy_actor_runtime.is_ready:
+	if enemy != null and actor.data.id == enemy.data.id and _actor_runtime_view().actor_runtime_is_ready(false):
 		return
 	super._set_actor_sheet_frame(actor, frame_index)
 
@@ -237,149 +238,46 @@ func _apply_stage_grid_slot(slot: int, fill: Color, has_player: bool, has_enemy:
 		stage_grid_labels[slot].text = "○"
 
 func _update_actor_animation_runtimes(delta: float) -> void:
-	if _player_actor_runtime != null and _player_actor_runtime.is_ready:
-		_player_actor_runtime.update(delta)
-	if _enemy_actor_runtime != null and _enemy_actor_runtime.is_ready:
-		_enemy_actor_runtime.update(delta)
+	_actor_runtime_view().update_actor_animation_runtimes(delta)
 
 func _ensure_actor_animation_runtimes() -> void:
-	_ensure_single_actor_runtime(true)
-	_ensure_single_actor_runtime(false)
+	_actor_runtime_view().ensure_actor_animation_runtimes()
 
 func _ensure_single_actor_runtime(is_player_actor: bool) -> void:
-	var fighter: Fighter = player if is_player_actor else enemy
-	var sprite: TextureRect = player_sprite if is_player_actor else enemy_sprite
-	if fighter == null or sprite == null:
-		_clear_actor_runtime(is_player_actor)
-		return
-	var meta_path: String = _actor_meta_path_for(fighter, not is_player_actor)
-	if meta_path == "":
-		_clear_actor_runtime(is_player_actor)
-		return
-	if is_player_actor:
-		if _player_actor_runtime != null and _player_actor_runtime_meta_path == meta_path:
-			return
-		_player_actor_runtime = _create_actor_runtime("player", meta_path, sprite)
-		_player_actor_runtime_meta_path = meta_path if _player_actor_runtime != null and _player_actor_runtime.is_ready else ""
-		_invalidate_stage_preview()
-		call_deferred("_refresh_stage_actor_positions", true)
-	else:
-		if _enemy_actor_runtime != null and _enemy_actor_runtime_meta_path == meta_path:
-			return
-		_enemy_actor_runtime = _create_actor_runtime("enemy", meta_path, sprite)
-		_enemy_actor_runtime_meta_path = meta_path if _enemy_actor_runtime != null and _enemy_actor_runtime.is_ready else ""
-		_invalidate_stage_preview()
-		call_deferred("_refresh_stage_actor_positions", true)
+	_actor_runtime_view().ensure_single_actor_runtime(is_player_actor)
 
 func _create_actor_runtime(actor_key: String, meta_path: String, sprite: TextureRect) -> ActorAnimationRuntime:
-	var runtime: ActorAnimationRuntime = ActorAnimationRuntime.new()
-	runtime.runtime_ready.connect(_on_actor_runtime_ready)
-	runtime.runtime_failed.connect(_on_actor_runtime_failed)
-	runtime.hit_frame_reached.connect(_on_actor_runtime_hit_frame)
-	runtime.animation_finished.connect(_on_actor_runtime_animation_finished)
-	var ok: bool = runtime.bind(actor_key, meta_path, sprite)
-	return runtime if ok else null
+	return _actor_runtime_view().create_actor_runtime(actor_key, meta_path, sprite)
 
 func _clear_actor_runtime(is_player_actor: bool) -> void:
-	if is_player_actor:
-		_player_actor_runtime = null
-		_player_actor_runtime_meta_path = ""
-	else:
-		_enemy_actor_runtime = null
-		_enemy_actor_runtime_meta_path = ""
+	_actor_runtime_view().clear_actor_runtime(is_player_actor)
 
 func _refresh_actor_runtime_visuals() -> void:
-	_refresh_single_actor_runtime_visual(_player_actor_runtime, player_fallback_actor)
-	_refresh_single_actor_runtime_visual(_enemy_actor_runtime, enemy_fallback_actor)
+	_actor_runtime_view().refresh_actor_runtime_visuals()
 
 func _refresh_single_actor_runtime_visual(runtime: ActorAnimationRuntime, fallback: Control) -> void:
-	if runtime == null or not runtime.is_ready:
-		return
-	if fallback != null:
-		fallback.visible = false
-	if runtime.player != null and runtime.player.playing:
-		runtime.player._apply_current_frame()
-		return
-	runtime.play_idle(false)
+	_actor_runtime_view().refresh_single_actor_runtime_visual(runtime, fallback)
 
 func _intent_card(intent: IntentData) -> CardData:
-	if intent != null and intent.actual_card != null:
-		return intent.actual_card
-	return null
+	return _actor_runtime_view().intent_card(intent)
 
 func _play_actor_runtime_for_card(is_player_actor: bool, card: CardData) -> void:
-	var runtime: ActorAnimationRuntime = _player_actor_runtime if is_player_actor else _enemy_actor_runtime
-	if runtime == null or not runtime.is_ready:
-		return
-	var event_name: String = _animation_event_for_card(card)
-	if event_name == "":
-		return
-	if is_player_actor:
-		_last_player_animation_card = card
-	else:
-		_last_enemy_animation_card = card
-	runtime.play_event(event_name, true)
+	_actor_runtime_view().play_actor_runtime_for_card(is_player_actor, card)
 
 func _animation_event_for_card(card: CardData) -> String:
-	if card == null:
-		return "idle"
-	if card.is_guard_card():
-		return "guard"
-	if card.is_feint_card():
-		return "focus"
-	if card.damage > 0:
-		return "attack_heavy" if _card_has_tag(card, "终结") else "attack_light"
-	if card.break_momentum > 0:
-		return "focus"
-	return "idle"
+	return _actor_runtime_view().animation_event_for_card(card)
 
 func _card_has_tag(card: CardData, tag: String) -> bool:
-	if card == null:
-		return false
-	for item in card.tags:
-		if str(item) == tag:
-			return true
-	return false
+	return _actor_runtime_view().card_has_tag(card, tag)
 
 func _play_defender_reaction_for_hit_frame(attacker_key: String) -> void:
-	var attacking_card: CardData = _last_player_animation_card if attacker_key == "player" else _last_enemy_animation_card
-	var defender_runtime: ActorAnimationRuntime = _enemy_actor_runtime if attacker_key == "player" else _player_actor_runtime
-	var defender: Fighter = enemy if attacker_key == "player" else player
-	if defender_runtime == null or not defender_runtime.is_ready or attacking_card == null:
-		return
-	var event_name := "hit"
-	if defender != null and defender.is_broken():
-		event_name = "break"
-	elif attacking_card.break_momentum > 0 and attacking_card.damage <= 0:
-		event_name = "break"
-	elif attacking_card.guard > 0:
-		event_name = "guard"
-	defender_runtime.play_event(event_name, true)
+	_actor_runtime_view().play_defender_reaction_for_hit_frame(attacker_key)
 
 func _trigger_runtime_fx_feedback(actor_key: String, fx_id: String, impact_offset: Vector2) -> void:
-	var attacking_card: CardData = _last_player_animation_card if actor_key == "player" else _last_enemy_animation_card
-	var attacker: Fighter = player if actor_key == "player" else enemy
-	var defender: Fighter = enemy if actor_key == "player" else player
-	if attacker == null or defender == null:
-		return
-	var profession_id: String = str(attacker.data.id)
-	var is_finisher: bool = _card_has_tag(attacking_card, "终结")
-	var color: Color = _runtime_fx_color(fx_id, profession_id, is_finisher)
-	if fx_id == "pierce_streak" or profession_id == "spearman":
-		_show_pierce_line(color, is_finisher)
-	elif fx_id == "slash_arc" or profession_id == "blademaster":
-		_show_slash_cut(color, is_finisher)
-	else:
-		_play_profession_shape_feedback(profession_id, color, is_finisher, false)
-	_show_target_receive_feedback(defender, profession_id, color, is_finisher)
-	_impact_feedback(color, 6.2 if is_finisher else 3.8, profession_id == "spearman", is_finisher)
+	_actor_runtime_view().trigger_runtime_fx_feedback(actor_key, fx_id, impact_offset)
 
 func _runtime_fx_color(fx_id: String, profession_id: String, is_finisher: bool) -> Color:
-	if fx_id == "pierce_streak" or profession_id == "spearman":
-		return Color("dff4ff") if is_finisher else Color("9fd8ff")
-	if fx_id == "slash_arc" or profession_id == "blademaster":
-		return Color("ffd1a8") if is_finisher else Color("ff9f73")
-	return Color("f5d889") if is_finisher else Color("d9c18a")
+	return _actor_runtime_view().runtime_fx_color(fx_id, profession_id, is_finisher)
 
 func _actor_meta_path_for(fighter: Fighter, prefer_enemy_variant: bool) -> String:
 	if fighter == null or fighter.data == null:
