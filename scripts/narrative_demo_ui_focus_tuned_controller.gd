@@ -16,6 +16,7 @@ const StrategicEndingFormatter := preload("res://scripts/narrative/strategic_end
 const StrategicFinalGateView := preload("res://scripts/narrative/strategic_final_gate_view.gd")
 const StrategicLegacyMapView := preload("res://scripts/narrative/strategic_legacy_map_view.gd")
 const StrategicRewardRuntime := preload("res://scripts/narrative/strategic_reward_runtime.gd")
+const StrategicCardStateBridge := preload("res://scripts/narrative/strategic_card_state_bridge.gd")
 const StrategicDebugProfileBuilder := preload("res://scripts/narrative/strategic_debug_profile_builder.gd")
 const StrategicMapSessionRuntime := preload("res://scripts/narrative/strategic_map_session_runtime.gd")
 const StrategicWorldMapRuntime := preload("res://scripts/narrative/strategic_world_map_runtime.gd")
@@ -250,15 +251,10 @@ func _strategic_card_hint(card_id: String) -> String:
 	return _reward_runtime().strategic_card_hint(card_id)
 
 func _sync_context_cards_to_strategic_state() -> void:
-	var profile := NarrativeBattleContext.get_player_profile()
-	if profile.is_empty():
-		return
-	strategic_state = StrategicMapState.sync_card_state_from_profile(strategic_state, profile)
+	strategic_state = StrategicCardStateBridge.sync_context_cards_to_state(strategic_state)
 
 func _sync_strategic_cards_to_context() -> void:
-	if not NarrativeBattleContext.has_player_profile():
-		return
-	NarrativeBattleContext.set_player_card_state(strategic_state.get("owned_card_ids", []), strategic_state.get("selected_loadout_ids", []), strategic_state.get("deck_slots", []), int(strategic_state.get("active_deck_index", 0)))
+	StrategicCardStateBridge.sync_state_cards_to_context(strategic_state)
 
 func _advance_strategic_cursor() -> void:
 	var map_complete := StrategicWorldMapRuntime.advance_cursor(strategic_state)
