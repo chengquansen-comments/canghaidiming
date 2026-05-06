@@ -16,6 +16,7 @@ const StrategicEndingFormatter := preload("res://scripts/narrative/strategic_end
 const StrategicFinalGateView := preload("res://scripts/narrative/strategic_final_gate_view.gd")
 const StrategicLegacyMapView := preload("res://scripts/narrative/strategic_legacy_map_view.gd")
 const StrategicRewardRuntime := preload("res://scripts/narrative/strategic_reward_runtime.gd")
+const StrategicWorldMapRuntime := preload("res://scripts/narrative/strategic_world_map_runtime.gd")
 const STRATEGIC_ENTRY_NODE_ID := "world_map_entry"
 const STRATEGIC_FINAL_BOSS_SOURCE_ID := "strategic_final_boss"
 const StrategicNetworkMapFormatter := preload("res://scripts/strategic_network_map_formatter.gd")
@@ -359,21 +360,7 @@ func _on_strategic_final_boss() -> void:
 	get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
 
 func _sync_world_map_runtime_state() -> void:
-	var map_data: Dictionary = strategic_state.get("current_map", {}) as Dictionary
-	var region_index := int(strategic_state.get("region_index", 0))
-	var layer_index := int(strategic_state.get("layer_index", 0))
-	var region := StrategicMapGenerator.current_region(map_data, region_index)
-	var layer := StrategicMapGenerator.current_layer(map_data, region_index, layer_index)
-	var generated_nodes: Array[String] = []
-	var choices: Array = layer.get("choices", [])
-	for choice_variant in choices:
-		if choice_variant is Dictionary:
-			generated_nodes.append(str((choice_variant as Dictionary).get("node_id", "")))
-	strategic_state["current_region_id"] = str(region.get("region_id", ""))
-	strategic_state["current_region_layer"] = layer_index + 1
-	strategic_state["world_map_generated_nodes"] = generated_nodes
-	strategic_state["world_map_completed_nodes"] = (strategic_state.get("selected_nodes", []) as Array).duplicate(true)
-	strategic_state["is_world_map_active"] = bool(strategic_state.get("active", false))
+	StrategicWorldMapRuntime.sync_runtime_state(strategic_state)
 
 func _find_strategic_node(node_id: String) -> Dictionary:
 	var node_pool: Array = strategic_config.get("node_pool", [])
