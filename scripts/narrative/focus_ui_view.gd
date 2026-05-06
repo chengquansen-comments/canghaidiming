@@ -274,7 +274,7 @@ func _ending_settlement_popup_text() -> String:
 	if current_id.is_empty():
 		current_id = c.selected_ending_flag
 	var lines: Array[String] = []
-	lines.append("[center][b]结局结算[/b][/center]
+	lines.append("[center][b]结局结算[/b][/center]")
 	lines.append("")
 	lines.append("[b]本次结局：%s[/b]" % str(current.get("status", current.get("title", "结局"))))
 	lines.append(str(current.get("text", "")).strip_edges())
