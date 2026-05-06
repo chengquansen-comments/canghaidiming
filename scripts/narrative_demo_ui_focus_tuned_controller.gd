@@ -16,6 +16,7 @@ const StrategicEndingFormatter := preload("res://scripts/narrative/strategic_end
 const StrategicFinalGateView := preload("res://scripts/narrative/strategic_final_gate_view.gd")
 const StrategicLegacyMapView := preload("res://scripts/narrative/strategic_legacy_map_view.gd")
 const StrategicRewardRuntime := preload("res://scripts/narrative/strategic_reward_runtime.gd")
+const StrategicMapSessionRuntime := preload("res://scripts/narrative/strategic_map_session_runtime.gd")
 const StrategicWorldMapRuntime := preload("res://scripts/narrative/strategic_world_map_runtime.gd")
 const STRATEGIC_ENTRY_NODE_ID := "world_map_entry"
 const STRATEGIC_FINAL_BOSS_SOURCE_ID := "strategic_final_boss"
@@ -126,21 +127,15 @@ func _start_strategic_map(hint: String = "") -> void:
 		last_hint = "大势图配置缺失，暂按线性节点继续。"
 		super._advance_to_node(node_index + 1, last_hint)
 		return
-	var base := StrategicMapState.default_state()
-	base["active"] = true
-	base["seed"] = 1701 + jun_gong * 17 + qing_wang * 31 + clues * 43
-	base["military_merit"] = jun_gong
-	base["clean_reputation"] = qing_wang
-	base["case_clues"] = clues
 	var profile := NarrativeBattleContext.get_player_profile()
-	base["martial_level"] = int(profile.get("martial_level", 1))
-	base = StrategicMapState.sync_card_state_from_profile(base, profile)
-	base["current_map"] = StrategicMapGenerator.generate_map(strategic_config, base, int(base["seed"]))
-	base["network_map"] = StrategicNetworkMapGenerator.generate_network_map(strategic_config, base, int(base["seed"]))
-	var network_map: Dictionary = base.get("network_map", {}) as Dictionary
-	StrategicNetworkMapRuntime.sync_mirror_fields(base, network_map)
-	print(StrategicNetworkMapGenerator.summarize_network_map(network_map))
-	strategic_state = base
+	strategic_state = StrategicMapSessionRuntime.build_initial_state(
+		strategic_config,
+		profile,
+		jun_gong,
+		qing_wang,
+		clues
+	)
+	print(StrategicMapSessionRuntime.summarize_network_map(strategic_state))
 	_sync_world_map_runtime_state()
 	last_hint = hint
 	_save_narrative_state_to_context()
