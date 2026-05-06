@@ -18,6 +18,7 @@ const StrategicLegacyMapView := preload("res://scripts/narrative/strategic_legac
 const StrategicRewardRuntime := preload("res://scripts/narrative/strategic_reward_runtime.gd")
 const StrategicCardStateBridge := preload("res://scripts/narrative/strategic_card_state_bridge.gd")
 const StrategicDebugProfileBuilder := preload("res://scripts/narrative/strategic_debug_profile_builder.gd")
+const StrategicLegacyBattleResultRuntime := preload("res://scripts/narrative/strategic_legacy_battle_result_runtime.gd")
 const StrategicMapSessionRuntime := preload("res://scripts/narrative/strategic_map_session_runtime.gd")
 const StrategicNodeApplyRuntime := preload("res://scripts/narrative/strategic_node_apply_runtime.gd")
 const StrategicWorldMapRuntime := preload("res://scripts/narrative/strategic_world_map_runtime.gd")
@@ -186,17 +187,13 @@ func _on_strategic_choice(index: int) -> void:
 
 func _consume_strategic_node_battle(source_id: String, result: String) -> void:
 	var pending := _load_pending_choice()
-	if result != "win":
-		last_hint = "大势图战斗未胜：当前层暂不推进。"
+	var outcome: Dictionary = StrategicLegacyBattleResultRuntime.consume_result(strategic_config, source_id, result)
+	if not bool(outcome.get("completed", false)):
+		last_hint = str(outcome.get("last_hint", ""))
 		_clear_pending_choice()
 		_sync_world_map_runtime_state()
 		return
-	var node := _find_strategic_node(source_id)
-	if node.is_empty():
-		last_hint = "大势图战斗胜利：未找到节点配置，暂不结算。"
-		_clear_pending_choice()
-		_sync_world_map_runtime_state()
-		return
+	var node: Dictionary = outcome.get("node", {}) as Dictionary
 	_apply_strategic_node(node)
 	NarrativeBattleContext.apply_player_growth("battle_win", 0, 0, 0, true)
 	var profile := NarrativeBattleContext.get_player_profile()
