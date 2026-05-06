@@ -21,6 +21,7 @@ const StrategicChoiceRuntime := preload("res://scripts/narrative/strategic_choic
 const StrategicDebugProfileBuilder := preload("res://scripts/narrative/strategic_debug_profile_builder.gd")
 const StrategicLegacyBattleResultRuntime := preload("res://scripts/narrative/strategic_legacy_battle_result_runtime.gd")
 const StrategicMapSessionRuntime := preload("res://scripts/narrative/strategic_map_session_runtime.gd")
+const StrategicNetworkMapControllerRuntime := preload("res://scripts/narrative/strategic_network_map_controller_runtime.gd")
 const StrategicNodeApplyRuntime := preload("res://scripts/narrative/strategic_node_apply_runtime.gd")
 const StrategicWorldMapRuntime := preload("res://scripts/narrative/strategic_world_map_runtime.gd")
 const STRATEGIC_ENTRY_NODE_ID := "world_map_entry"
@@ -438,18 +439,7 @@ func _on_network_node_clicked(map_graph_id: String) -> void:
 	_render()
 
 func _network_progress_text(graph: Dictionary) -> String:
-	var nodes: Array = graph.get("nodes", [])
-	var layer_count := int(graph.get("layer_count", 0))
-	var completed := (graph.get("completed_node_ids", []) as Array).size()
-	var available := (graph.get("available_node_ids", []) as Array).size()
-	return "run=%s｜seed=%d｜层数=%d｜节点=%d｜已完成=%d｜可达=%d" % [
-		str(graph.get("run_id", "")),
-		int(graph.get("seed", 0)),
-		layer_count,
-		nodes.size(),
-		completed,
-		available,
-	]
+	return StrategicNetworkMapControllerRuntime.progress_text(graph)
 
 func _sync_network_overlay_visibility() -> void:
 	var graph_variant = strategic_state.get("network_map", {})
@@ -459,19 +449,10 @@ func _sync_network_overlay_visibility() -> void:
 	_network_overlay_view().sync_visibility(should_show, focus_story_layer, focus_world_map_layer)
 
 func _network_preview_text(graph: Dictionary) -> String:
-	var selected_id := str(graph.get("selected_node_id", ""))
-	var node := StrategicNetworkMapRuntime.find_node(graph, selected_id)
-	if node.is_empty():
-		return "尚未选中节点。"
-	return StrategicNetworkMapFormatter.preview_text(
-		graph,
-		node,
-		_network_confirm_meta(graph, node),
-		StrategicNetworkBattleBridge.combat_request_for_node(node)
-	)
+	return StrategicNetworkMapControllerRuntime.preview_text(graph)
 
 func _network_confirm_meta(graph: Dictionary, node: Dictionary) -> Dictionary:
-	return StrategicNetworkMapConfirm.confirm_meta(graph, node)
+	return StrategicNetworkMapControllerRuntime.confirm_meta(graph, node)
 
 func _confirm_network_node() -> void:
 	var graph: Dictionary = strategic_state.get("network_map", {}) as Dictionary
@@ -600,7 +581,7 @@ func _on_network_final_boss_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
 
 func _network_state_summary_text() -> String:
-	return StrategicMapState.summary_text(strategic_state)
+	return StrategicNetworkMapControllerRuntime.state_summary_text(strategic_state)
 
 func _continue_legacy_linear_flow() -> void:
 	strategic_state["active"] = false
