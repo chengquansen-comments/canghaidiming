@@ -6,12 +6,12 @@
 
 - `scenes/Main.tscn`
   - launcher entry
-- `scenes/MainText.tscn`
-  - pure text/debug battle entry
 - `scenes/MainVisual.tscn`
   - visual/demo battle entry
 - `scenes/battle_demo_visual.tscn`
   - visual/demo scene alias, now also routes through the visual entry
+
+Note: the old text-battle prototype chain remains in `scripts/Main*.gd` as legacy code and is not mounted by current runtime scenes.
 
 ## Controller layering
 

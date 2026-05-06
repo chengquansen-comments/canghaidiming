@@ -101,11 +101,12 @@ godot --headless --import --quit
 - `scenes/Main.tscn`：总入口，挂载 `scripts/main_runtime_router.gd`
 - 桌面端：`scenes/MainDesktop.tscn`
   - 进入剧情 MVP：`scenes/NarrativeDemo.tscn`
-  - 进入字符版战斗：`scenes/MainText.tscn`
   - 进入视觉版战斗：`scenes/MainVisual.tscn`
 - Web 端：`scenes/MainWeb.tscn`
   - 支持直接进入剧情 MVP 或战斗测试
   - 支持 query flag：`narrative_mvp` / `smoke_battle`
+
+说明：`scripts/Main*.gd` 是早期字符战斗原型链路，当前默认启动流不再挂载。
 
 ## 当前已实现内容
 
@@ -179,7 +180,7 @@ godot --path .
 | `dq` | `clean_reputation`，旧静态节点选择字段 |
 | `dc` | `case_clues`，旧静态节点选择字段 |
 
-`scenes/NarrativeDemo.tscn` 当前挂载 `scripts/narrative_demo_canonical_controller.gd`，该控制器会把旧字段自动映射到 canonical variables，避免旧 Demo 节点和新 TSV 运行源混用时出现变量含义漂移。
+`scenes/NarrativeDemo.tscn` 当前挂载 `scripts/narrative_demo_ui_focus_tuned_controller.gd`（其运行链仍保留 canonical 变量映射层），可避免旧 Demo 字段与新 TSV 运行源混用时出现变量含义漂移。
 
 ## 数据驱动说明
 
