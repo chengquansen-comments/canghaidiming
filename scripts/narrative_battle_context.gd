@@ -1,8 +1,8 @@
 extends Node
 
-const BattleProfileBuilder := preload("res://scripts/narrative/battle_profile_builder.gd")
-const BattleContextBridge := preload("res://scripts/narrative/battle_context_bridge.gd")
-const BattleContextMetaStore := preload("res://scripts/narrative/battle_context_meta_store.gd")
+const BattleProfileBuilder := preload("res://scripts/battle_profile_builder.gd")
+const BattleContextBridge := preload("res://scripts/battle_context_bridge.gd")
+const BattleContextMetaStore := preload("res://scripts/battle_context_meta_store.gd")
 
 const PLAYER_INITIAL_HP := 20
 const PLAYER_INITIAL_QINGGONG := 1

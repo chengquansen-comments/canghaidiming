@@ -2,8 +2,8 @@ extends Control
 
 const BattleFontHelper := preload("res://scripts/visual/battle_font_view.gd")
 const NarrativeBattleContext := preload("res://scripts/narrative_battle_context.gd")
-const SafeDemoRuntime := preload("res://scripts/narrative/safe_demo_runtime.gd")
-const SafeDemoView := preload("res://scripts/narrative/safe_demo_view.gd")
+const SafeDemoRuntime := preload("res://scripts/safe_demo_runtime.gd")
+const SafeDemoView := preload("res://scripts/safe_demo_view.gd")
 const MAIN_VISUAL_SCENE := "res://scenes/MainVisual.tscn"
 const MAP_COLUMNS := ["军令", "初遇", "疑点", "压迫", "破船", "军门"]
 const PROLOGUE_MASTER_RESCUE_STEP := 6

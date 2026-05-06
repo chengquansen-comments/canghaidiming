@@ -17,8 +17,8 @@ func on_continue_pressed() -> void:
 	c._force_cjk_font()
 
 func on_request_battle_pressed() -> void:
-	var node := c.narrative.current_node()
-	var payload := c.combat_bridge.request_battle(c.narrative.current_node_id, node)
+	var node: Dictionary = c.narrative.current_node()
+	var payload: Dictionary = c.combat_bridge.request_battle(c.narrative.current_node_id, node)
 	if payload.is_empty():
 		c.result_label.text = "当前节点没有 combat 配置。"
 	else:
@@ -27,9 +27,9 @@ func on_request_battle_pressed() -> void:
 
 func on_mock_battle_win_pressed() -> void:
 	if not c.combat_bridge.has_pending_battle():
-		var node := c.narrative.current_node()
+		var node: Dictionary = c.narrative.current_node()
 		c.combat_bridge.request_battle(c.narrative.current_node_id, node)
-	var payload := c.combat_bridge.resolve_win({"source": "narrative_demo_mock"})
+	var payload: Dictionary = c.combat_bridge.resolve_win({"source": "narrative_demo_mock"})
 	c.result_label.text = "战斗占位胜利：%s。现在可选择战后处理。" % str(payload.get("encounter_id", ""))
 	c._force_cjk_font()
 
@@ -48,7 +48,7 @@ func choice_button_text(choice: Dictionary) -> String:
 	return "%s（%s）" % [text, " / ".join(parts)]
 
 func on_choice_pressed(index: int) -> void:
-	var result := c.narrative.choose(index)
+	var result: Dictionary = c.narrative.choose(index)
 	if not bool(result.get("ok", false)):
 		c.result_label.text = str(result.get("result", "无效选择。"))
 		c._force_cjk_font()
@@ -64,7 +64,7 @@ func on_choice_pressed(index: int) -> void:
 
 func render_ending() -> void:
 	c._clear_choices()
-	var ending := c.narrative.current_ending()
+	var ending: Dictionary = c.narrative.current_ending()
 	c.title_label.text = "结局：%s" % str(ending.get("title", "沉默"))
 	c.type_label.text = "单局结算"
 	c.route_label.text = c.narrative.route_text()

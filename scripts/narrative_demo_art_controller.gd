@@ -44,7 +44,6 @@ func _ready() -> void:
 	super._ready()
 
 func _process(delta: float) -> void:
-	super._process(delta)
 	_update_performance_motion(delta)
 
 func _render_visual(path: String, fallback_text: String) -> void:

@@ -37,9 +37,9 @@ const SPEAKER_PORTRAIT_HINTS := {
 	"旧物": {"name": "旧物：官造火铳", "path": "res://assets/pixel_battle/relics/relic_ming_firearm.png"}
 }
 
-var narrative: NarrativeState
-var combat_bridge: NarrativeCombatBridge
-var map_layout: NarrativeStaticMapLayout
+var narrative
+var combat_bridge
+var map_layout
 var root_panel: PanelContainer
 var title_label: Label
 var type_label: Label
@@ -125,7 +125,7 @@ func _build_ui() -> void:
 	route_label.modulate = Color(0.66, 0.78, 0.84, 1.0)
 	layout.add_child(route_label)
 
-	var map_scroll := HScrollContainer.new()
+	var map_scroll := ScrollContainer.new()
 	map_scroll.custom_minimum_size = Vector2(0, 142)
 	map_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	map_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -265,7 +265,7 @@ func _start_narrative() -> void:
 	combat_bridge = NarrativeCombatBridgeScript.new()
 	map_layout = NarrativeStaticMapLayoutScript.new()
 	map_layout.load_from_path()
-	var ok := narrative.load_from_path()
+	var ok: bool = narrative.load_from_path()
 	showing_prologue = true
 	waiting_result = false
 	result_label.text = ""

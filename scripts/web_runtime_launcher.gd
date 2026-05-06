@@ -2,9 +2,15 @@ extends Control
 
 const WEB_VISUAL_SCENE := "res://scenes/MainVisual.tscn"
 const NARRATIVE_MVP_SCENE := "res://scenes/NarrativeDemo.tscn"
+const NARRATIVE_MVP_WEB_SCENE := "res://scenes/NarrativeDemoWeb.tscn"
 const WebRuntimeFlags = preload("res://scripts/web_runtime_flags.gd")
 const BattleFontHelper = preload("res://scripts/visual/battle_font_view.gd")
 const NarrativeBattleContext = preload("res://scripts/narrative_battle_context.gd")
+const _ExportAnchorBattleProfileBuilder = preload("res://scripts/battle_profile_builder.gd")
+const _ExportAnchorBattleContextBridge = preload("res://scripts/battle_context_bridge.gd")
+const _ExportAnchorBattleContextMetaStore = preload("res://scripts/battle_context_meta_store.gd")
+const _ExportAnchorSafeDemoRuntime = preload("res://scripts/safe_demo_runtime.gd")
+const _ExportAnchorSafeDemoView = preload("res://scripts/safe_demo_view.gd")
 const SMOKE_BATTLE_FLAG := "smoke_battle"
 const NARRATIVE_FLAG := "narrative_mvp"
 
@@ -13,7 +19,7 @@ var _content_box: VBoxContainer
 
 func _ready() -> void:
 	if not OS.has_feature("web"):
-		get_tree().change_scene_to_file(WEB_VISUAL_SCENE)
+		call_deferred("_open_desktop_visual_scene")
 		return
 	_build_ui()
 	_force_cjk_font()
@@ -26,6 +32,9 @@ func _ready() -> void:
 		_status_label.text += "\nNarrative：自动进入剧情 MVP。"
 		_force_cjk_font()
 		call_deferred("_enter_narrative_mvp_scene")
+
+func _open_desktop_visual_scene() -> void:
+	get_tree().change_scene_to_file(WEB_VISUAL_SCENE)
 
 func _force_cjk_font() -> void:
 	BattleFontHelper.enforce(self)
@@ -180,4 +189,4 @@ func _enter_visual_scene() -> void:
 
 func _enter_narrative_mvp_scene() -> void:
 	WebRuntimeFlags.set_body_dataset("webSmokeBattle", "narrative-scene-change-requested")
-	get_tree().change_scene_to_file(NARRATIVE_MVP_SCENE)
+	get_tree().change_scene_to_file(NARRATIVE_MVP_WEB_SCENE if OS.has_feature("web") else NARRATIVE_MVP_SCENE)

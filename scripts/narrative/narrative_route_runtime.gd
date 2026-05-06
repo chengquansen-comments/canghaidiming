@@ -1,5 +1,7 @@
 extends RefCounted
 
+const NarrativeCombatBridgeScript := preload("res://scripts/narrative/narrative_combat_bridge.gd")
+
 var c
 
 func _init(controller) -> void:
@@ -16,7 +18,7 @@ func render_next_prologue_step() -> void:
 		c.showing_prologue = false
 		c._render_node()
 		return
-	var step := c.narrative.advance_prologue()
+	var step: Dictionary = c.narrative.advance_prologue()
 	c.title_label.text = str(step.get("title", "刀下余声")) if step.has("title") else "刀下余声"
 	c.type_label.text = "序章 / %d/%d" % [c.narrative.prologue_index, c.narrative.prologue_count()]
 	c._render_step_art(step)
@@ -72,7 +74,7 @@ func _format_step(step: Dictionary) -> String:
 
 func render_node() -> void:
 	c._clear_choices()
-	var node := c.narrative.current_node()
+	var node: Dictionary = c.narrative.current_node()
 	c.title_label.text = str(node.get("title", "未知节点"))
 	c.type_label.text = c.narrative.node_status_text()
 	c.route_label.text = c.narrative.route_text()
@@ -84,7 +86,7 @@ func render_node() -> void:
 	c.continue_button.visible = false
 	c._render_map_strip()
 	c._render_combat_bridge(node)
-	var choices := c.narrative.available_choices(node)
+	var choices: Array = c.narrative.available_choices(node)
 	for i in range(choices.size()):
 		var choice: Dictionary = choices[i]
 		var button := Button.new()
@@ -97,12 +99,12 @@ func render_node() -> void:
 func render_combat_bridge(node: Dictionary) -> void:
 	if c.combat_panel == null:
 		return
-	if node.is_empty() or not NarrativeCombatBridge.node_has_combat(node):
+	if node.is_empty() or not NarrativeCombatBridgeScript.node_has_combat(node):
 		c.combat_panel.visible = false
 		c.combat_payload_label.text = ""
 		return
 	c.combat_panel.visible = true
-	var payload := NarrativeCombatBridge.build_payload(c.narrative.current_node_id, node)
+	var payload: Dictionary = NarrativeCombatBridgeScript.build_payload(c.narrative.current_node_id, node)
 	c.combat_payload_label.text = "战斗桥接占位：\n%s" % combat_payload_text(payload)
 
 func combat_payload_text(payload: Dictionary) -> String:
@@ -252,11 +254,11 @@ func _build_map_column(column: Dictionary) -> Control:
 
 func _build_static_map_node_card(node_entry: Dictionary) -> Control:
 	var node_id := str(node_entry.get("node_id", ""))
-	var node := c.narrative.node_by_id(node_id)
+	var node: Dictionary = c.narrative.node_by_id(node_id)
 	var node_type := str(node.get("type", ""))
-	var is_current := node_id == c.narrative.current_node_id and c.narrative.current_ending_id.is_empty() and not c.showing_prologue
-	var is_visited := c.narrative.visited_node_ids.has(node_id) and not c.showing_prologue
-	var is_available := _is_static_map_node_available(node_id)
+	var is_current: bool = node_id == c.narrative.current_node_id and c.narrative.current_ending_id.is_empty() and not c.showing_prologue
+	var is_visited: bool = c.narrative.visited_node_ids.has(node_id) and not c.showing_prologue
+	var is_available: bool = _is_static_map_node_available(node_id)
 	var card := PanelContainer.new()
 	card.custom_minimum_size = Vector2(156, 30)
 	var style := StyleBoxFlat.new()
@@ -286,7 +288,7 @@ func _is_static_map_node_available(node_id: String) -> bool:
 		return false
 	if node_id == c.narrative.current_node_id or c.narrative.visited_node_ids.has(node_id):
 		return true
-	var previous := c.map_layout.previous_nodes(node_id)
+	var previous: Array = c.map_layout.previous_nodes(node_id)
 	if previous.is_empty():
 		return node_id == c.narrative.current_node_id
 	for prev_id in previous:
@@ -304,7 +306,7 @@ func _static_map_marker(is_current: bool, is_visited: bool, is_available: bool) 
 	return "○"
 
 func _render_fallback_route_strip() -> void:
-	var route := c.narrative.map_route()
+	var route: Array = c.narrative.map_route()
 	if route.is_empty():
 		var empty_label := Label.new()
 		empty_label.text = "地图路线未配置"
@@ -314,10 +316,10 @@ func _render_fallback_route_strip() -> void:
 		c.map_box.add_child(_build_map_node_card(node_id))
 
 func _build_map_node_card(node_id: String) -> Control:
-	var node := c.narrative.node_by_id(node_id)
+	var node: Dictionary = c.narrative.node_by_id(node_id)
 	var node_type := str(node.get("type", ""))
-	var is_current := node_id == c.narrative.current_node_id and c.narrative.current_ending_id.is_empty() and not c.showing_prologue
-	var is_visited := c.narrative.visited_node_ids.has(node_id) and not c.showing_prologue
+	var is_current: bool = node_id == c.narrative.current_node_id and c.narrative.current_ending_id.is_empty() and not c.showing_prologue
+	var is_visited: bool = c.narrative.visited_node_ids.has(node_id) and not c.showing_prologue
 	var card := PanelContainer.new()
 	card.custom_minimum_size = Vector2(150, 76)
 	var style := StyleBoxFlat.new()
