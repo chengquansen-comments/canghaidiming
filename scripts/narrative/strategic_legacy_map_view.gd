@@ -46,15 +46,17 @@ func _add_choice_button(node: Dictionary, index: int, choice_callback: Callable)
 		return
 	var effects: Dictionary = node.get("effects", {}) as Dictionary
 	var btn := Button.new()
-	var scope_text := StrategicMapState.event_scope_text(node)
-	var combat_text := owner._strategic_combat_pool_text(node)
+	var scope_text: String = StrategicMapState.event_scope_text(node)
+	var combat_text: String = owner._strategic_combat_pool_text(node)
+	var type_label: String = owner._strategic_type_label(str(node.get("node_type", "")))
+	var effects_text: String = owner._strategic_effects_text(effects)
 	btn.text = "%s｜%s%s%s\n%s\n%s" % [
 		str(node.get("title", "")),
-		owner._strategic_type_label(str(node.get("node_type", ""))),
+		type_label,
 		"｜%s" % scope_text if not scope_text.is_empty() else "",
 		"｜%s" % combat_text if not combat_text.is_empty() else "",
 		str(node.get("preview_text", "")),
-		owner._strategic_effects_text(effects),
+		effects_text,
 	]
 	btn.custom_minimum_size = CHOICE_MINIMUM_SIZE
 	btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
