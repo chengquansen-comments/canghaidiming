@@ -179,30 +179,7 @@ func _render_legacy_strategic_map() -> void:
 	)
 
 func _refresh_current_strategic_layer() -> void:
-	var map_data: Dictionary = strategic_state.get("current_map", {}) as Dictionary
-	var region_index := int(strategic_state.get("region_index", 0))
-	var layer_index := int(strategic_state.get("layer_index", 0))
-	var layer := StrategicMapGenerator.current_layer(map_data, region_index, layer_index)
-	var martial_level := int(strategic_state.get("martial_level", 1))
-	if int(layer.get("generated_for_martial_level", -1)) == martial_level:
-		return
-	var seed_value := int(strategic_state.get("seed", 1701)) + region_index * 101 + layer_index * 17 + martial_level * 1009
-	var refreshed := StrategicMapGenerator.refresh_layer(strategic_config, map_data, strategic_state, region_index, layer_index, seed_value)
-	if refreshed.is_empty():
-		return
-	var regions: Array = map_data.get("regions", [])
-	if region_index < 0 or region_index >= regions.size() or not (regions[region_index] is Dictionary):
-		return
-	var region := regions[region_index] as Dictionary
-	var layers: Array = region.get("layers", [])
-	if layer_index < 0 or layer_index >= layers.size():
-		return
-	layers[layer_index] = refreshed
-	region["layers"] = layers
-	regions[region_index] = region
-	map_data["regions"] = regions
-	strategic_state["current_map"] = map_data
-	_sync_world_map_runtime_state()
+	StrategicWorldMapRuntime.refresh_current_layer(strategic_config, strategic_state)
 
 func _strategic_progress_text(map_data: Dictionary) -> String:
 	return _reward_runtime().strategic_progress_text(map_data)
@@ -325,21 +302,15 @@ func _sync_strategic_cards_to_context() -> void:
 	NarrativeBattleContext.set_player_card_state(strategic_state.get("owned_card_ids", []), strategic_state.get("selected_loadout_ids", []), strategic_state.get("deck_slots", []), int(strategic_state.get("active_deck_index", 0)))
 
 func _advance_strategic_cursor() -> void:
-	var cursor := StrategicMapGenerator.advance_cursor(strategic_state.get("current_map", {}), int(strategic_state.get("region_index", 0)), int(strategic_state.get("layer_index", 0)))
-	strategic_state["region_index"] = int(cursor.get("region_index", 0))
-	strategic_state["layer_index"] = int(cursor.get("layer_index", 0))
-	_sync_world_map_runtime_state()
-	if StrategicMapGenerator.is_map_complete(strategic_state.get("current_map", {}), int(strategic_state.get("region_index", 0)), int(strategic_state.get("layer_index", 0))):
+	var map_complete := StrategicWorldMapRuntime.advance_cursor(strategic_state)
+	if map_complete:
 		if _base_ui_ready():
 			_prepare_strategic_final_gate()
 		else:
-			strategic_state["final_boss"] = StrategicMapGenerator.select_final_boss(strategic_config, strategic_state)
+			strategic_state["final_boss"] = StrategicWorldMapRuntime.select_final_boss(strategic_config, strategic_state)
 
 func _prepare_strategic_final_gate() -> void:
-	var boss := StrategicMapGenerator.select_final_boss(strategic_config, strategic_state)
-	strategic_state["final_boss"] = boss
-	strategic_state["is_world_map_active"] = false
-	_sync_world_map_runtime_state()
+	var boss := StrategicWorldMapRuntime.prepare_final_gate_state(strategic_config, strategic_state)
 	if not _base_ui_ready():
 		return
 	_final_gate_view().render(boss, strategic_state, last_hint, Callable(self, "_on_strategic_final_boss"))
@@ -347,7 +318,7 @@ func _prepare_strategic_final_gate() -> void:
 func _on_strategic_final_boss() -> void:
 	var boss: Dictionary = strategic_state.get("final_boss", {}) as Dictionary
 	if boss.is_empty():
-		boss = StrategicMapGenerator.select_final_boss(strategic_config, strategic_state)
+		boss = StrategicWorldMapRuntime.select_final_boss(strategic_config, strategic_state)
 		strategic_state["final_boss"] = boss
 	_sync_strategic_cards_to_context()
 	_save_narrative_state_to_context()
