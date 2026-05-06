@@ -6,6 +6,7 @@ const CanonicalStorySegmentRuntime := preload("res://scripts/narrative/canonical
 const CanonicalEndingRuntime := preload("res://scripts/narrative/canonical_ending_runtime.gd")
 const CanonicalBattleRewardRuntime := preload("res://scripts/narrative/canonical_battle_reward_runtime.gd")
 const CanonicalMapRuntime := preload("res://scripts/narrative/canonical_map_runtime.gd")
+const CanonicalMapViewRuntime := preload("res://scripts/narrative/canonical_map_view_runtime.gd")
 
 # Canonical narrative variable names for the MVP runtime.
 # Internal legacy counters are kept as storage for compatibility with older controllers:
@@ -349,27 +350,16 @@ func _map_text() -> String:
 	return CanonicalMapRuntime.map_text(MAP_COLUMNS, nodes, node_index)
 
 func _add_safe_map_buttons() -> void:
-	var column_row := HBoxContainer.new()
-	column_row.add_theme_constant_override("separation", 8)
-	map_buttons_box.add_child(column_row)
-	for column_name in MAP_COLUMNS:
-		var column_box := VBoxContainer.new()
-		column_box.custom_minimum_size = Vector2(142, 0)
-		column_box.add_theme_constant_override("separation", 4)
-		column_row.add_child(column_box)
-		var title := Label.new()
-		title.text = column_name
-		title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		title.add_theme_font_size_override("font_size", 13)
-		column_box.add_child(title)
-		for i in range(_active_node_count()):
-			var node: Dictionary = _node_data_at(i)
-			if str(node.get("column", "")) == column_name:
-				var btn := Button.new()
-				btn.text = "%s %s" % [_map_marker_for_index(i), str(node.get("title", ""))]
-				btn.custom_minimum_size = Vector2(136, 38)
-				btn.pressed.connect(_on_map_node_pressed.bind(i))
-				column_box.add_child(btn)
+	var nodes: Array = []
+	for i in range(_active_node_count()):
+		nodes.append(_node_data_at(i))
+	CanonicalMapViewRuntime.add_safe_map_buttons(
+		map_buttons_box,
+		MAP_COLUMNS,
+		nodes,
+		node_index,
+		_on_map_node_pressed
+	)
 
 func _refresh_world_map() -> void:
 	if world_map_layer == null or world_map_panel == null or world_map_nodes_row == null:
@@ -387,27 +377,15 @@ func _refresh_world_map() -> void:
 		world_map_nodes_row.add_child(_make_world_map_node_button(i))
 
 func _make_world_map_line(index: int) -> Label:
-	var line := Label.new()
-	line.text = "━━"
-	line.custom_minimum_size = Vector2(24, 34)
-	line.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	line.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	line.add_theme_font_size_override("font_size", 13)
-	line.add_theme_color_override("font_color", Color("c9a35b") if index <= node_index else Color(0.60, 0.55, 0.46, 0.45))
-	line.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	return line
+	return CanonicalMapViewRuntime.make_world_map_line(index, node_index)
 
 func _make_world_map_node_button(index: int) -> Button:
-	var node: Dictionary = _node_data_at(index)
-	var btn := Button.new()
-	btn.text = "%s\n%s" % [_world_map_marker_for_index(index), str(node.get("title", ""))]
-	btn.custom_minimum_size = Vector2(116, 48)
-	btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	btn.focus_mode = Control.FOCUS_NONE
-	btn.mouse_filter = Control.MOUSE_FILTER_STOP
-	btn.disabled = index > node_index + 1
-	btn.pressed.connect(_on_map_node_pressed.bind(index))
-	return btn
+	return CanonicalMapViewRuntime.make_world_map_node_button(
+		index,
+		_node_data_at(index),
+		node_index,
+		_on_map_node_pressed
+	)
 
 func _on_map_node_pressed(target_index: int) -> void:
 	if target_index == node_index:
