@@ -1,30 +1,16 @@
 extends RefCounted
-const NarrativeBattleContext := preload("res://scripts/narrative_battle_context.gd")
 const FocusArtLayerView := preload("res://scripts/narrative/focus_art_layer_view.gd")
 const FocusDebugPanelView := preload("res://scripts/narrative/focus_debug_panel_view.gd")
 const FocusEndingSettlementView := preload("res://scripts/narrative/focus_ending_settlement_view.gd")
+const FocusOperationLayoutView := preload("res://scripts/narrative/focus_operation_layout_view.gd")
 const FocusStoryCaptionView := preload("res://scripts/narrative/focus_story_caption_view.gd")
 const FocusWorldMapView := preload("res://scripts/narrative/focus_world_map_view.gd")
-
-const HIDDEN_SCENE_ART_OVERLAY_NODE_NAMES := [
-	"CinematicMistLayer",
-	"CinematicFirePulse",
-	"CinematicMaster",
-	"CinematicHero",
-	"CinematicForegroundProp",
-	"CinematicForegroundProp2",
-	"CinematicForegroundProp3",
-	"CinematicDim",
-	"CinematicFocus",
-	"NarrativeFocusDebugLayer",
-	"NarrativeFocusArtLayer",
-	"FocusWorldMapLayer",
-]
 
 var c
 var _focus_art_layer_view
 var _focus_debug_panel_view
 var _focus_ending_settlement_view
+var _focus_operation_layout_view
 var _focus_story_caption_view
 var _focus_world_map_view
 
@@ -56,6 +42,11 @@ func _ending_settlement_view():
 	if _focus_ending_settlement_view == null:
 		_focus_ending_settlement_view = FocusEndingSettlementView.new(c)
 	return _focus_ending_settlement_view
+
+func _operation_layout_view():
+	if _focus_operation_layout_view == null:
+		_focus_operation_layout_view = FocusOperationLayoutView.new(c)
+	return _focus_operation_layout_view
 
 func _story_caption_view():
 	if _focus_story_caption_view == null:
@@ -147,83 +138,25 @@ func _route_hero_bust_path() -> String:
 	return _art_layer_view().route_hero_bust_path()
 
 func _hide_operation_metadata() -> void:
-	_hide_control(c.title_label)
-	_hide_control(c.status_label)
-	_hide_control(c.map_label)
-	_hide_control(c.scene_label)
-	_hide_control(c.vars_label)
-	_hide_control(c.visual_label)
-	_hide_control(c.visual_debug_label)
-	_hide_control(c.body_label)
-	if c.visual_texture != null:
-		c.visual_texture.texture = null
-		_hide_control(c.visual_texture)
-	if c.map_buttons_box != null:
-		c.map_buttons_box.visible = false
-		c.map_buttons_box.custom_minimum_size = Vector2.ZERO
-		for child in c.map_buttons_box.get_children():
-			child.queue_free()
-	_hide_section_titles()
-	_hide_placeholder_labels(c.combat_buttons_box)
-	_hide_placeholder_labels(c.choices_box)
+	_operation_layout_view().hide_operation_metadata()
 
 func _hide_control(control: Control) -> void:
-	if control == null:
-		return
-	control.visible = false
-	control.custom_minimum_size = Vector2.ZERO
-	control.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	_operation_layout_view().hide_control(control)
 
 func _apply_operation_only_choice_layout() -> void:
-	var operation_panel := _find_operation_panel()
-	if operation_panel != null:
-		operation_panel.anchor_left = 0.04
-		operation_panel.anchor_top = c.OPERATION_TOP
-		operation_panel.anchor_right = 0.96
-		operation_panel.anchor_bottom = 0.92
-		operation_panel.offset_left = 0
-		operation_panel.offset_top = 0
-		operation_panel.offset_right = 0
-		operation_panel.offset_bottom = 0
-	if c.action_scroll != null:
-		c.action_scroll.visible = true
-		c.action_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		c.action_scroll.custom_minimum_size = Vector2(0, 170)
-	if c.action_content != null:
-		c.action_content.add_theme_constant_override("separation", 16)
+	_operation_layout_view().apply_operation_only_choice_layout()
 
 func _style_action_buttons() -> void:
-	_style_button_box(c.combat_buttons_box)
-	_style_button_box(c.choices_box)
+	_operation_layout_view().style_action_buttons()
 
 func _style_button_box(box: VBoxContainer) -> void:
-	if box == null:
-		return
-	box.visible = true
-	box.add_theme_constant_override("separation", 16)
-	for child in box.get_children():
-		if child is Button:
-			var btn := child as Button
-			btn.visible = true
-			btn.custom_minimum_size = Vector2(0, 80)
-			btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			btn.add_theme_font_size_override("font_size", c.OPTION_FONT_SIZE)
-		elif child is Label:
-			_hide_control(child as Control)
+	_operation_layout_view().style_button_box(box)
 
 func _hide_section_titles() -> void:
-	if c.action_content == null:
-		return
-	for child in c.action_content.get_children():
-		if child is Label:
-			_hide_control(child as Control)
+	_operation_layout_view().hide_section_titles()
 
 func _hide_placeholder_labels(box: VBoxContainer) -> void:
-	if box == null:
-		return
-	for child in box.get_children():
-		if child is Label:
-			_hide_control(child as Control)
+	_operation_layout_view().hide_placeholder_labels(box)
 
 func _update_focus_debug_panel() -> void:
 	_debug_panel_view().update_debug_panel()
@@ -232,17 +165,7 @@ func _focus_debug_text() -> String:
 	return _debug_panel_view().debug_text()
 
 func _find_operation_panel() -> PanelContainer:
-	for child in c.get_children():
-		if child is PanelContainer:
-			return child as PanelContainer
-	return null
+	return _operation_layout_view().find_operation_panel()
 
 func _hide_scene_art_overlay_nodes() -> void:
-	for node_name in HIDDEN_SCENE_ART_OVERLAY_NODE_NAMES:
-		var node: Node = c.find_child(node_name, true, false)
-		if node is CanvasItem:
-			var item := node as CanvasItem
-			item.visible = false
-		if node is Control:
-			var control := node as Control
-			control.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_operation_layout_view().hide_scene_art_overlay_nodes()
