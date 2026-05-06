@@ -3,6 +3,7 @@ extends "res://scripts/narrative_demo_strategic_legacy_controller.gd"
 const StrategicNetworkMapRuntime := preload("res://scripts/strategic_network_map_runtime.gd")
 const StrategicNetworkMapFormatter := preload("res://scripts/strategic_network_map_formatter.gd")
 const StrategicNetworkBattleBridge := preload("res://scripts/strategic_network_battle_bridge.gd")
+const StrategicNetworkMapConfirm := preload("res://scripts/strategic_network_map_confirm.gd")
 const StrategicNetworkMapOverlay := preload("res://scripts/strategic_network_map_overlay.gd")
 const NetworkMapGenerator := preload("res://scripts/strategic_network_map_generator.gd")
 const NETWORK_FINAL_BOSS_ENCOUNTER_ID := "enc_boss_ext_wakou_leader"
@@ -14,6 +15,7 @@ var _network_overlay: StrategicNetworkMapOverlay = null
 # Handles network node selection, node execution, battle pending, and final gate.
 # State transitions and strategic_state mirror writes are delegated to StrategicNetworkMapRuntime.
 # Overlay UI construction and panel rendering are delegated to StrategicNetworkMapOverlay.
+# Confirm-state checks and block reasons are delegated to StrategicNetworkMapConfirm.
 
 func _render_strategic_map() -> void:
 	var graph_variant = strategic_state.get("network_map", {})
@@ -89,20 +91,16 @@ func _network_preview_text(graph: Dictionary) -> String:
 	var node := StrategicNetworkMapRuntime.find_node(graph, selected_id)
 	if node.is_empty():
 		return "尚未选中节点。"
-	var confirm_meta := _network_confirm_meta(graph, node)
 	return StrategicNetworkMapFormatter.preview_text(
 		graph,
 		node,
-		confirm_meta,
+		_network_confirm_meta(graph, node),
 		StrategicNetworkBattleBridge.combat_request_for_node(node)
 	)
 
 
 func _network_confirm_meta(graph: Dictionary, node: Dictionary) -> Dictionary:
-	return {
-		"enabled": _network_selected_can_confirm(graph),
-		"reason": _network_confirm_block_reason(node),
-	}
+	return StrategicNetworkMapConfirm.confirm_meta(graph, node)
 
 
 func _confirm_network_node() -> void:
@@ -115,8 +113,8 @@ func _confirm_network_node() -> void:
 		last_hint = "未选中有效的大势图节点。"
 		_render()
 		return
-	if not _network_selected_can_confirm(graph):
-		last_hint = _network_confirm_block_reason(node)
+	if not StrategicNetworkMapConfirm.selected_can_confirm(graph):
+		last_hint = StrategicNetworkMapConfirm.block_reason(node)
 		_render()
 		return
 	if StrategicNetworkBattleBridge.is_combat_node(node):
@@ -163,48 +161,6 @@ func _enter_network_combat_node(node: Dictionary) -> void:
 	_save_narrative_state_to_context()
 	NarrativeBattleContext.set_request_from_combat(request, "map_" + node_id)
 	get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
-
-
-func _network_node_can_confirm(node: Dictionary) -> bool:
-	var state := str(node.get("state", "locked"))
-	if not (state == "available" or state == "start"):
-		return false
-	if StrategicNetworkBattleBridge.is_combat_node(node):
-		var request := StrategicNetworkBattleBridge.combat_request_for_node(node)
-		if not bool(request.get("enabled", false)):
-			return false
-	return true
-
-
-func _network_confirm_block_reason(node: Dictionary) -> String:
-	var state := str(node.get("state", "locked"))
-	match state:
-		"locked":
-			return "未解锁。"
-		"unreachable":
-			return "当前路线不可达。"
-		"completed":
-			return "已完成，不可重复执行。"
-		"available", "start":
-			if StrategicNetworkBattleBridge.is_combat_node(node):
-				var request := StrategicNetworkBattleBridge.combat_request_for_node(node)
-				if not bool(request.get("enabled", false)):
-					return str(request.get("blocked_reason", "该 combat_pool 暂未接入战斗。"))
-			return ""
-	return "当前节点不可前往。"
-
-
-func _network_selected_can_confirm(graph: Dictionary) -> bool:
-	if bool(graph.get("map_complete", false)):
-		return false
-	var selected_id := str(graph.get("selected_node_id", ""))
-	var node := StrategicNetworkMapRuntime.find_node(graph, selected_id)
-	if node.is_empty():
-		return false
-	var available := StrategicNetworkMapRuntime.valid_available_ids(graph, graph.get("available_node_ids", []))
-	if not available.has(selected_id):
-		return false
-	return _network_node_can_confirm(node)
 
 
 func _complete_network_node(graph: Dictionary, node: Dictionary) -> void:
