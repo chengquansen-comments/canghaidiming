@@ -21,7 +21,7 @@ func _init(owner_node) -> void:
 	owner = owner_node
 
 
-func render(region: Dictionary, layer: Dictionary, map_data: Dictionary, strategic_state: Dictionary, layer_index: int, last_hint: String, progress_text: String, choice_callback: Callable) -> void:
+func render(region: Dictionary, layer: Dictionary, strategic_state: Dictionary, layer_index: int, last_hint: String, progress_text: String, choice_callback: Callable) -> void:
 	if owner == null:
 		return
 	owner.title_label.text = TITLE_TEXT
