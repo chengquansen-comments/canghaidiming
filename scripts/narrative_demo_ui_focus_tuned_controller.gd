@@ -17,6 +17,7 @@ const StrategicFinalGateView := preload("res://scripts/narrative/strategic_final
 const StrategicLegacyMapView := preload("res://scripts/narrative/strategic_legacy_map_view.gd")
 const StrategicRewardRuntime := preload("res://scripts/narrative/strategic_reward_runtime.gd")
 const StrategicCardStateBridge := preload("res://scripts/narrative/strategic_card_state_bridge.gd")
+const StrategicChoiceRuntime := preload("res://scripts/narrative/strategic_choice_runtime.gd")
 const StrategicDebugProfileBuilder := preload("res://scripts/narrative/strategic_debug_profile_builder.gd")
 const StrategicLegacyBattleResultRuntime := preload("res://scripts/narrative/strategic_legacy_battle_result_runtime.gd")
 const StrategicMapSessionRuntime := preload("res://scripts/narrative/strategic_map_session_runtime.gd")
@@ -147,19 +148,13 @@ func _strategic_progress_text(map_data: Dictionary) -> String:
 	return _reward_runtime().strategic_progress_text(map_data)
 
 func _on_strategic_choice(index: int) -> void:
-	var layer := StrategicMapGenerator.current_layer(strategic_state.get("current_map", {}), int(strategic_state.get("region_index", 0)), int(strategic_state.get("layer_index", 0)))
-	var choices: Array = layer.get("choices", [])
-	if index < 0 or index >= choices.size() or not (choices[index] is Dictionary):
+	var node := StrategicChoiceRuntime.current_choice(strategic_state, index)
+	if node.is_empty():
 		return
-	var node := choices[index] as Dictionary
 	if _strategic_node_triggers_combat(node):
 		strategic_state["current_world_map_node_id"] = str(node.get("node_id", ""))
 		strategic_state["current_world_map_node_effects"] = (node.get("effects", {}) as Dictionary).duplicate(true)
-		_store_pending_choice(str(node.get("node_id", "")), {
-			"label": str(node.get("title", "")),
-			"result": str(node.get("result_text", "")),
-			"effects": node.get("effects", {}),
-		})
+		_store_pending_choice(str(node.get("node_id", "")), StrategicChoiceRuntime.pending_payload(node))
 		_sync_world_map_runtime_state()
 		_sync_strategic_cards_to_context()
 		_save_narrative_state_to_context()
