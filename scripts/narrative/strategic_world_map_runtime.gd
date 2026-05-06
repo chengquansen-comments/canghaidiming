@@ -18,3 +18,10 @@ static func sync_runtime_state(strategic_state: Dictionary) -> void:
 	strategic_state["world_map_generated_nodes"] = generated_nodes
 	strategic_state["world_map_completed_nodes"] = (strategic_state.get("selected_nodes", []) as Array).duplicate(true)
 	strategic_state["is_world_map_active"] = bool(strategic_state.get("active", false))
+
+static func find_node(strategic_config: Dictionary, node_id: String) -> Dictionary:
+	var node_pool: Array = strategic_config.get("node_pool", [])
+	for item in node_pool:
+		if item is Dictionary and str((item as Dictionary).get("node_id", "")) == node_id:
+			return (item as Dictionary).duplicate(true)
+	return {}
