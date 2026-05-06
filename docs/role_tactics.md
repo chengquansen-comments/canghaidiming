@@ -1,51 +1,13 @@
-# v0.5.0 Role Tactics
+# 攻守变 role 归档
 
-`CardData.role` 的合法语义已收敛为三类：
+当前 `CardData.role` 口径已并入 [BATTLE.md](BATTLE.md) 的“收式阶与攻守变”小节。
 
-- `CardData.ROLE_GUARD` (`"guard"`)：守
-- `CardData.ROLE_ATTACK` (`"attack"`)：攻
-- `CardData.ROLE_FEINT` (`"feint"`)：变
+保留结论：
 
-中文显示统一由 `CardData.type_label()` 输出：`守 / 攻 / 变`。
+- 合法值只允许 `guard`、`attack`、`feint`。
+- 中文显示为“守 / 攻 / 变”。
+- role 只用于 UI、敌方意图、AI 倾向、日志和统计。
+- role 不参与 `CombatResolver` 硬克制。
+- 擦中当前默认关闭：`ENABLE_GRAZE := false`。
 
-`role` 仅用于：
-
-- UI 标签
-- 敌方意图类型展示
-- AI 选牌倾向
-- 日志与统计字段
-
-`role` 不参与 `CombatResolver` 硬克制，不允许引入守攻变猜拳，不允许基于 `role` 直接改伤害、护值、削势、命中或位移。
-
-旧值 `momentum / damage / defense` 仅作为 `CardData._init()` 的兼容输入保留，并在构造时一次性归一化。
-
-外部数据（如 `data/enemy_manifest.json`、相关 `tables/*.tsv`、动态配置中的卡牌 `role` 字段）也应显式使用 `guard / attack / feint`，不应继续写入 legacy 值。
-
-新卡牌定义必须显式使用：
-
-- `CardData.ROLE_GUARD`
-- `CardData.ROLE_ATTACK`
-- `CardData.ROLE_FEINT`
-
-## 单局设计空间（v0.5.0）
-
-三类牌在单局中应共同覆盖完整战术空间：
-
-- 攻：打血、削势、控位、锁位、封招、破护、险招。
-- 守：格挡、受击回势、免削势、稳位、反击、抗崩势、守后强化。
-- 变：换距、回势、下回合加伤、下回合穿护、轻功提升、夺机、诱敌落空收益、解除控制。
-
-## 擦中开关
-
-擦中规则由 `scripts/combat_resolver.gd` 中常量控制：
-
-- `const ENABLE_GRAZE := false`
-
-含义：
-
-- `false`：关闭擦中，距离差 1 格按 `miss_range` 处理。
-- `true`：开启擦中，距离差 1 格按 `graze` 处理，并恢复半伤害与削势衰减规则。
-
-说明：
-
-- `RANGE_GRAZE` 与 `MOVE_ON_GRAZE` 作为 legacy 与可恢复规则保留，不删除。
+后续新增 role 或恢复擦中规则，直接更新 [BATTLE.md](BATTLE.md) 和真实结算链路。

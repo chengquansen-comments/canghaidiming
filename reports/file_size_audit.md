@@ -25,20 +25,20 @@ This audit separates file-size risk into two primary scopes:
 | Level | Count |
 |---|---:|
 | HIGH_RISK | 14 |
-| SPLIT_REQUIRED | 10 |
-| WARN | 15 |
-| OK | 387 |
-| Total | 426 |
+| SPLIT_REQUIRED | 8 |
+| WARN | 12 |
+| OK | 403 |
+| Total | 437 |
 
 ### Code Files
 
 | Level | Count |
 |---|---:|
 | HIGH_RISK | 1 |
-| SPLIT_REQUIRED | 3 |
-| WARN | 5 |
-| OK | 242 |
-| Total | 251 |
+| SPLIT_REQUIRED | 1 |
+| WARN | 6 |
+| OK | 251 |
+| Total | 259 |
 
 ### Data / Document Files
 
@@ -46,9 +46,9 @@ This audit separates file-size risk into two primary scopes:
 |---|---:|
 | HIGH_RISK | 5 |
 | SPLIT_REQUIRED | 3 |
-| WARN | 10 |
-| OK | 129 |
-| Total | 147 |
+| WARN | 6 |
+| OK | 136 |
+| Total | 150 |
 
 ### Other Files
 
@@ -68,8 +68,6 @@ These files are the highest priority for code organization work.
 |---:|---|---|---|---|
 | 58.2 KB | HIGH_RISK | code | python_script | `scripts/compile_tables.py` |
 | 33.9 KB | SPLIT_REQUIRED | code | tool_script | `tools/render_art_prompt.py` |
-| 25.4 KB | SPLIT_REQUIRED | code | gd_script | `scripts/narrative/focus_ui_view.gd` |
-| 25.2 KB | SPLIT_REQUIRED | code | gd_script | `scripts/narrative_demo_canonical_controller.gd` |
 
 ## Code Watch List
 
@@ -77,6 +75,7 @@ These files are the highest priority for code organization work.
 |---:|---|---|---|---|
 | 24.5 KB | WARN | code | gd_script | `scripts/battle_controller_visual_presentation_stepwise_exchange.gd` |
 | 24.4 KB | WARN | code | gd_script | `scripts/battle_controller_visual_story_return.gd` |
+| 24.1 KB | WARN | code | gd_script | `scripts/narrative_demo_canonical_controller.gd` |
 | 21.4 KB | WARN | code | gd_script | `scripts/battle_controller_core_deck_builder.gd` |
 | 21.1 KB | WARN | code | gd_script | `scripts/battle_controller_visual_cached_ui.gd` |
 | 20.5 KB | WARN | code | tool_script | `tools/art_asset_pipeline.py` |
@@ -94,17 +93,13 @@ These files are large, but should not be treated the same as oversized controlle
 | 39.9 KB | HIGH_RISK | content | data | `data/enemy_manifest.json` |
 | 32.0 KB | SPLIT_REQUIRED | content | data_like | `tables/narrative_mvp_nodes.tsv` |
 | 27.7 KB | SPLIT_REQUIRED | content | data | `data/performance_tracks.json` |
-| 27.0 KB | SPLIT_REQUIRED | content | docs | `reports/file_size_audit.md` |
+| 25.9 KB | SPLIT_REQUIRED | content | docs | `reports/file_size_audit.md` |
 | 24.4 KB | WARN | content | data_like | `tables_副本/narrative_mvp_nodes.tsv` |
 | 23.8 KB | WARN | content | docs | `archive/docs/narrative/NARRATIVE_MVP_PROGRESS.md` |
+| 23.8 KB | WARN | content | docs | `docs/ART_PIPELINE.md` |
 | 23.7 KB | WARN | content | data_like | `tables/art_backlog.tsv` |
 | 23.4 KB | WARN | content | docs | `archive/docs/narrative/MVP_NARRATIVE_SCRIPT.md` |
 | 23.2 KB | WARN | content | data_like | `tables/map_node_pool.tsv` |
-| 22.5 KB | WARN | content | docs | `docs/ART_PIPELINE.md` |
-| 21.5 KB | WARN | content | docs | `docs/NARRATIVE.md` |
-| 21.4 KB | WARN | content | docs | `docs/carddata_movement_v032_change_list.md` |
-| 21.1 KB | WARN | content | docs | `docs/symmetry_gameplay_v031_execution_list.md` |
-| 20.7 KB | WARN | content | docs | `docs/single_battle_rules_current.md` |
 
 ## Largest Files
 
@@ -129,25 +124,20 @@ These files are large, but should not be treated the same as oversized controlle
 | 33.9 KB | SPLIT_REQUIRED | code | tool_script | `tools/render_art_prompt.py` |
 | 33.3 KB | SPLIT_REQUIRED | other | reports | `reports/story_battle_number_report_smoke.json` |
 | 32.0 KB | SPLIT_REQUIRED | content | data_like | `tables/narrative_mvp_nodes.tsv` |
-| 29.4 KB | SPLIT_REQUIRED | other | reports | `reports/file_size_audit.csv` |
+| 29.9 KB | SPLIT_REQUIRED | other | reports | `reports/file_size_audit.csv` |
 | 27.7 KB | SPLIT_REQUIRED | content | data | `data/performance_tracks.json` |
-| 27.0 KB | SPLIT_REQUIRED | content | docs | `reports/file_size_audit.md` |
-| 25.4 KB | SPLIT_REQUIRED | code | gd_script | `scripts/narrative/focus_ui_view.gd` |
-| 25.2 KB | SPLIT_REQUIRED | code | gd_script | `scripts/narrative_demo_canonical_controller.gd` |
+| 25.9 KB | SPLIT_REQUIRED | content | docs | `reports/file_size_audit.md` |
 | 24.5 KB | WARN | code | gd_script | `scripts/battle_controller_visual_presentation_stepwise_exchange.gd` |
 | 24.4 KB | WARN | content | data_like | `tables_副本/narrative_mvp_nodes.tsv` |
 | 24.4 KB | WARN | code | gd_script | `scripts/battle_controller_visual_story_return.gd` |
+| 24.1 KB | WARN | code | gd_script | `scripts/narrative_demo_canonical_controller.gd` |
 | 23.8 KB | WARN | content | docs | `archive/docs/narrative/NARRATIVE_MVP_PROGRESS.md` |
+| 23.8 KB | WARN | content | docs | `docs/ART_PIPELINE.md` |
 | 23.7 KB | WARN | content | data_like | `tables/art_backlog.tsv` |
 | 23.4 KB | WARN | content | docs | `archive/docs/narrative/MVP_NARRATIVE_SCRIPT.md` |
 | 23.2 KB | WARN | content | data_like | `tables/map_node_pool.tsv` |
-| 22.5 KB | WARN | content | docs | `docs/ART_PIPELINE.md` |
-| 21.5 KB | WARN | content | docs | `docs/NARRATIVE.md` |
-| 21.4 KB | WARN | content | docs | `docs/carddata_movement_v032_change_list.md` |
 | 21.4 KB | WARN | code | gd_script | `scripts/battle_controller_core_deck_builder.gd` |
-| 21.1 KB | WARN | content | docs | `docs/symmetry_gameplay_v031_execution_list.md` |
 | 21.1 KB | WARN | code | gd_script | `scripts/battle_controller_visual_cached_ui.gd` |
-| 20.7 KB | WARN | content | docs | `docs/single_battle_rules_current.md` |
 | 20.5 KB | WARN | code | tool_script | `tools/art_asset_pipeline.py` |
 | 20.0 KB | OK | code | gd_script | `scripts/narrative_demo_ui_focus_tuned_controller.gd` |
 | 18.9 KB | OK | code | gd_script | `scripts/battle_controller_visual_presentation.gd` |
@@ -158,17 +148,21 @@ These files are large, but should not be treated the same as oversized controlle
 | 17.3 KB | OK | code | tool_script | `tools/alpha_matte_cleanup.py` |
 | 17.2 KB | OK | code | gd_script | `scripts/narrative_demo_performance_controller.gd` |
 | 17.1 KB | OK | code | gd_script | `scripts/battle_controller_visual_scene_manifest.gd` |
-| 16.4 KB | OK | content | docs | `docs/web_refactor_progress.md` |
 | 16.4 KB | OK | code | tool_script | `tools/promote_final_art_assets.py` |
+| 16.2 KB | OK | content | data | `data/narrative/mvp_compressed_narrative.json` |
+| 16.0 KB | OK | code | gd_script | `scripts/Main_combat.gd` |
+| 15.8 KB | OK | code | gd_script | `scripts/narrative_demo_safe_controller.gd` |
+| 15.8 KB | OK | code | gd_script | `scripts/Main_ui.gd` |
+| 15.4 KB | OK | content | docs | `docs/BATTLE.md` |
+| 15.1 KB | OK | code | tool_script | `tools/generate_first_battle_formal_png_assets.py` |
 
 ## GDScript Files
 
 | Size | Level | Scope | Category | File |
 |---:|---|---|---|---|
-| 25.4 KB | SPLIT_REQUIRED | code | gd_script | `scripts/narrative/focus_ui_view.gd` |
-| 25.2 KB | SPLIT_REQUIRED | code | gd_script | `scripts/narrative_demo_canonical_controller.gd` |
 | 24.5 KB | WARN | code | gd_script | `scripts/battle_controller_visual_presentation_stepwise_exchange.gd` |
 | 24.4 KB | WARN | code | gd_script | `scripts/battle_controller_visual_story_return.gd` |
+| 24.1 KB | WARN | code | gd_script | `scripts/narrative_demo_canonical_controller.gd` |
 | 21.4 KB | WARN | code | gd_script | `scripts/battle_controller_core_deck_builder.gd` |
 | 21.1 KB | WARN | code | gd_script | `scripts/battle_controller_visual_cached_ui.gd` |
 | 20.0 KB | OK | code | gd_script | `scripts/narrative_demo_ui_focus_tuned_controller.gd` |
@@ -259,12 +253,16 @@ These files are large, but should not be treated the same as oversized controlle
 | 5.7 KB | OK | code | gd_script | `scripts/visual/responsive_ui_bindings.gd` |
 | 5.7 KB | OK | code | gd_script | `scripts/narrative/strategic_network_map_flow_runtime.gd` |
 | 5.7 KB | OK | code | gd_script | `scripts/card_data.gd` |
+| 5.6 KB | OK | code | gd_script | `scripts/narrative/focus_debug_panel_view.gd` |
 | 5.5 KB | OK | code | gd_script | `scripts/battle_controller_visual_preview_checked.gd` |
 | 5.5 KB | OK | code | gd_script | `scripts/battle_controller_core_deck_view_fusion.gd` |
+| 5.4 KB | OK | code | gd_script | `scripts/narrative/focus_world_map_view.gd` |
+| 5.4 KB | OK | code | gd_script | `scripts/narrative/focus_ui_view.gd` |
 | 5.4 KB | OK | code | gd_script | `scripts/battle_controller_core_catalog.gd` |
 | 5.4 KB | OK | code | gd_script | `scripts/battle_effect_applier.gd` |
 | 5.3 KB | OK | code | gd_script | `scripts/battle_controller_visual_narrative_context_foundation.gd` |
 | 5.2 KB | OK | code | gd_script | `scripts/battle_controller_visual_presentation_mode_aware.gd` |
+| 5.2 KB | OK | code | gd_script | `scripts/narrative/focus_ending_settlement_view.gd` |
 | 5.2 KB | OK | code | gd_script | `scripts/auto_battle_sampler_aggregate.gd` |
 | 5.1 KB | OK | code | gd_script | `scripts/narrative/battle_context_bridge.gd` |
 | 5.1 KB | OK | code | gd_script | `scripts/narrative/strategic_tuned_ui_runtime.gd` |
@@ -278,6 +276,7 @@ These files are large, but should not be treated the same as oversized controlle
 | 4.8 KB | OK | code | gd_script | `scripts/narrative/battle_context_meta_store.gd` |
 | 4.7 KB | OK | code | gd_script | `scripts/battle_controller_visual_hot_tuning_pipeline.gd` |
 | 4.7 KB | OK | code | gd_script | `scripts/battle_controller_visual_ui_overlay.gd` |
+| 4.7 KB | OK | code | gd_script | `scripts/narrative/focus_art_layer_view.gd` |
 | 4.6 KB | OK | code | gd_script | `scripts/auto_battle_sampler_report.gd` |
 | 4.6 KB | OK | code | gd_script | `scripts/main_mode_launcher.gd` |
 | 4.5 KB | OK | code | gd_script | `scripts/battle_controller_visual_hot_tuning_profile_snapshot.gd` |
@@ -293,12 +292,15 @@ These files are large, but should not be treated the same as oversized controlle
 | 4.0 KB | OK | code | gd_script | `scripts/battle_controller_visual_ui_state.gd` |
 | 3.9 KB | OK | code | gd_script | `tools/smoke_player_card_state_pipeline.gd` |
 | 3.9 KB | OK | code | gd_script | `tools/smoke_strategic_map_routes.gd` |
+| 3.7 KB | OK | code | gd_script | `scripts/narrative/focus_operation_layout_view.gd` |
 | 3.7 KB | OK | code | gd_script | `scripts/narrative/strategic_ending_formatter.gd` |
 | 3.7 KB | OK | code | gd_script | `scripts/strategic_network_map_style.gd` |
 | 3.6 KB | OK | code | gd_script | `tools/smoke_strategic_map_battle_return_ready.gd` |
 | 3.6 KB | OK | code | gd_script | `scripts/strategic_network_battle_bridge.gd` |
 | 3.6 KB | OK | code | gd_script | `scripts/battle_controller_visual_hot_tuning_sampler_cards.gd` |
 | 3.4 KB | OK | code | gd_script | `scripts/narrative/strategic_reward_view.gd` |
+| 3.4 KB | OK | code | gd_script | `scripts/narrative/canonical_node_registry.gd` |
+| 3.4 KB | OK | code | gd_script | `scripts/narrative/canonical_effects_runtime.gd` |
 | 3.3 KB | OK | code | gd_script | `tools/smoke_narrative_battle_call_override.gd` |
 | 3.3 KB | OK | code | gd_script | `scripts/narrative_demo_formal_controller.gd` |
 | 3.2 KB | OK | code | gd_script | `tools/smoke_battle_number_profiles.gd` |
@@ -316,6 +318,7 @@ These files are large, but should not be treated the same as oversized controlle
 | 2.7 KB | OK | code | gd_script | `tools/smoke_narrative_prologue_png.gd` |
 | 2.7 KB | OK | code | gd_script | `tools/smoke_battle_round_core.gd` |
 | 2.7 KB | OK | code | gd_script | `scripts/narrative/narrative_choice_runtime.gd` |
+| 2.6 KB | OK | code | gd_script | `scripts/narrative/focus_story_caption_view.gd` |
 | 2.5 KB | OK | code | gd_script | `scripts/battle_controller_core_state.gd` |
 | 2.5 KB | OK | code | gd_script | `tools/smoke_strategic_map_random_routes.gd` |
 | 2.5 KB | OK | code | gd_script | `scripts/battle_controller_visual_ui_flow.gd` |

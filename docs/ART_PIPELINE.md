@@ -242,6 +242,44 @@ art_reference/final/pixel_battle/sheets/spearman_sheet.png
 → ActorAnimationRuntime 按 frame_size / foot_anchor / sheet_layout=vertical 渲染
 ```
 
+### 7.1 Spearman 最低动作包
+
+当前运行素材仍可回退到旧 3 帧 sheet；下一步 spearman 动作包只替换 `spearman`，不同时动 `enemy_spearman` / `blademaster`。
+
+目标目录：
+
+```text
+assets/pixel_battle/actors/spearman/
+  spearman_idle.png
+  spearman_move_forward.png
+  spearman_attack_light.png
+  spearman_guard.png
+  spearman_hit.png
+  spearman_break.png
+  spearman.meta.json
+```
+
+动作规格：
+
+| 动作 | 帧数 | fps | 重点 |
+|---|---:|---:|---|
+| `idle` | 6-8 | 8 | 轻微呼吸，枪杆微动，脚底稳定 |
+| `move_forward` | 6 | 10-12 | 进身抢位，不在帧内跨格 |
+| `attack_light` | 8 | 12-15 | 中平直刺，`hit_frame=5` |
+| `guard` | 6 | 8-10 | 横枪或回枪成圆，防守轮廓明确 |
+| `hit` | 5 | 12-15 | 短促受击，脚底不跳 |
+| `break` | 8 | 10-12 | 破势失衡，枪杆下坠 |
+
+动作包到位后必须依次跑：
+
+```bash
+python3 tools/validate_actor_meta.py assets/pixel_battle/actors/spearman/spearman.meta.json
+python3 tools/validate_actor_sheet.py assets/pixel_battle/actors/spearman/spearman.meta.json
+python3 tools/validate_actor_bundle.py assets/pixel_battle/actors/spearman
+```
+
+Web 验收重点：idle 不乱跳、attack 命中帧清楚、guard 轮廓可读、hit / break 不被裁脚，切换动作无明显白屏或透明闪烁。
+
 ## 8. 非透明底处理
 
 生成图如果带浅色底、棋盘底、纸色底，不直接进运行资源，也不要在 `assets/` 运行 PNG 上反复擦边。正式角色源图优先使用 `#00FF00` 纯色亮绿色抠图底；先回到 `art_reference/final/...` 的源图层处理，再导出运行图。

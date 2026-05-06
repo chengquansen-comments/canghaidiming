@@ -18,6 +18,21 @@
 
 正式剧情战斗的敌我数值与卡组不再以 `enemy_manifest` 为主源。当前主源是 `data/story_battles/*.tsv`，由 `scripts/compile_tables.py` 编译到 `data/story_battles.json` 后运行读取。
 
+### 规则源优先级
+
+规则冲突时按这个顺序判断：
+
+| 优先级 | 来源 | 负责范围 |
+|---:|---|---|
+| 1 | `scripts/combat_resolver.gd` | 命中、伤害、削势、格挡、崩势预判、招式位移的纯计算 |
+| 2 | `scripts/battle_state_machine.gd` | 回合阶段、行动顺序、真实结算写回、回合结束 |
+| 3 | `scripts/battle_effect_applier.gd` | reactive 敌方预移动、pressure_profile 等规则副作用 |
+| 4 | `data/story_battles/*.tsv` + `scripts/story_battle_loader.gd` | 正式剧情战斗配置 |
+| 5 | `scripts/card_data.gd` + `battle_controller_core.gd::_build_catalog()` | 当前卡牌定义和招式数值 |
+| 6 | visual wrapper | 预览、虚影、箭头、动画、日志和状态栏展示 |
+
+新增规则时必须同步真实结算、预览、演出和 sampler；禁止只改 UI 预览或在多个 wrapper 中重复实现规则。
+
 ## 活跃入口
 
 ### 运行场景
@@ -148,6 +163,7 @@ scripts/battle_controller_core.gd::_build_catalog()
 - 每张牌只能拥有一种 `role`：攻、守、变。
 - `CardData.role` 的合法值只允许 `guard`、`attack`、`feint`；中文显示统一为“守 / 攻 / 变”。
 - 攻 / 守 / 变只用于 UI、敌方意图展示、AI 倾向、日志与统计，不参与 `CombatResolver` 硬克制。
+- 旧 `momentum / damage / defense` 仅作为兼容输入保留，外部数据应显式写 `guard / attack / feint`。
 - 攻牌覆盖打血、削势、控位、锁位、封招、破护、险招。
 - 守牌覆盖格挡、受击回势、免削势、稳位、反击、抗崩势、守后强化。
 - 变牌覆盖换距、回势、下回合加伤、下回合穿护、轻功提升、夺机、诱敌落空收益、解除控制。
@@ -163,6 +179,7 @@ scripts/battle_controller_core.gd::_build_catalog()
 - 若当前收式阶不高于上一有效招式，则当前招式重新起式。
 - 连击可以跨回合保留。
 - 收式阶规则由独立模块 `scripts/shoushi_combo_rules.gd` 控制，可整体关闭或切换规则模式。
+- 擦中当前默认关闭：`scripts/combat_resolver.gd` 中 `ENABLE_GRAZE := false`。若未来恢复，需同步真实结算、预览、日志和 sampler。
 
 ## 配置流程
 
@@ -184,6 +201,20 @@ scripts/battle_controller_core.gd::_build_catalog()
 轻功是硬约束：基础数值最小值为 `1`。除非未来某张特殊招式牌明确写了临时效果，否则配置和热调都不应把轻功调到 `0`。
 
 调整数值时默认只在现有管线内工作：改 `fighter_stat_sets.tsv`、`story_deck_sets.tsv`、`story_encounters.tsv`、职业初始 profile、正式剧情奖励或 F9 调参配置。不要为了修一个战斗强弱问题新增新的职业成长轴、新资源、新难度倍率或额外结算分支，除非用户主动提出或明确批准。
+
+### 默认占位 encounter
+
+新生产战斗在没有明确敌我约束时，优先复用站位测试占位方案：
+
+| 类型 | id | 说明 |
+|---|---|---|
+| encounter | `enc_stance_probe` | 站位约束测试，`reactive`，`edge_pressure` |
+| 玩家数值 | `stance_player_probe` | 26 HP，8 势上限，初始势 5，轻功 2 |
+| 敌方数值 | `stance_enemy_probe` | 30 HP，8 势上限，初始势 5，轻功 2 |
+| 玩家牌组 | `player_stance_probe` | 中距离控距和有限前后位移 |
+| 敌方牌组 | `enemy_stance_probe` | 持续压线但不过度爆发 |
+
+启用时只改当前 encounter 或新增测试 encounter，不批量覆盖。回退时移除剧情引用并切回原 encounter；不要为占位方案新增资源线、结算模式或卡牌定义。
 
 ## 结算模式
 
@@ -321,9 +352,11 @@ Godot headless 可能输出已有 RID leak 警告；只要命令退出码为 0�
 
 | 文档 | 当前定位 |
 |---|---|
-| `docs/single_battle_rules_current.md` | 详细规则附录 |
-| `docs/BATTLE_PRESENTATION_LAYER.md` | 表演层细节附录 |
-| `docs/reactive_settlement_v040.md` | 反应式早期设计案 / 历史参考 |
+| `docs/single_battle_rules_current.md` | 单局详细规则归档，核心口径已并入本文 |
+| `docs/BATTLE_PRESENTATION_LAYER.md` | 表演层归档，核心口径已并入本文和 `docs/UI_PIPELINE.md` |
+| `docs/reactive_settlement_v040.md` | 反应式早期设计案归档 |
 | `docs/wuxia_battle_ui_godot_design.md` | UI 早期结构参考 |
-| `docs/balance_rules.md` | 旧卡牌预算参考 |
-| `docs/ENEMY_MANIFEST_RUNTIME.md` | 旧 manifest 运行时参考 |
+| `docs/balance_rules.md` | 旧卡牌预算公式归档 |
+| `docs/ENEMY_MANIFEST_RUNTIME.md` | 旧 manifest 兼容归档 |
+| `docs/STANCE_PLACEHOLDER_DECKS.md` | 默认占位 encounter 历史记录 |
+| `docs/role_tactics.md` | 攻守变 role 与擦中开关历史记录 |

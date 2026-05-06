@@ -170,6 +170,7 @@ battle_controller_visual_resolver_preview.gd
 - 玩家看到的目标朝向 = 真实结算使用的朝向 = 演出出招前的朝向。
 - `cached_ui` 中的旧预览只保留为 legacy fallback，不能覆盖正式预览。
 - UI 层不重新发明结算规则，只消费 resolver / state machine 给出的模拟结果。
+- 字符版预览是 legacy debug 表达，仍使用 9 格四行结构：初位、我攻 / 敌攻、敌攻 / 我攻、终位；具体真实规则仍以 resolver / state machine 为准。
 
 目标格位 / 朝向输入：
 
@@ -326,5 +327,6 @@ Godot headless smoke 退出时可能出现已知 RID/resource leak 提示；只�
 | `docs/ui_architecture_refactor.md` | 早期 UI 拆层笔记，已被本文档吸收 |
 | `docs/wuxia_battle_ui_godot_design.md` | 早期视觉布局细节附录，标题和部分文案已过时 |
 | `docs/BATTLE_PRESENTATION_LAYER.md` | 演出层历史 phase 和细节附录 |
+| `docs/text_preview_stage_design.md` | 字符版站位预览历史说明，核心口径已并入本文 |
 | `docs/web_refactor_progress.md` | Web 化阶段进度记录，不作为 UI 架构主入口 |
-| `docs/web_build_known_issues.md` | Web 已知问题清单 |
+| `docs/web_build_known_issues.md` | Web 已知问题归档，核心口径已并入 `docs/web_refactor_progress.md` |
