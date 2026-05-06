@@ -5,6 +5,7 @@ extends RefCounted
 # This file only writes UI nodes and calls existing view helpers on the owner.
 # It does not select bosses, mutate strategic_state, save context, or switch scenes.
 
+const StrategicMapState := preload("res://scripts/strategic_map_state.gd")
 const BACKGROUND_PATH := "res://assets/pixel_battle/backgrounds/battle_bg_broken_ship.png"
 const TITLE_TEXT := "海门收束"
 const SCENE_TEXT := "海门风紧，所有线索都被推到最后一战前。"
@@ -30,7 +31,7 @@ func render(boss: Dictionary, strategic_state: Dictionary, last_hint: String, fi
 	owner.body_label.text = str(boss.get("intro_text", DEFAULT_INTRO_TEXT))
 	if not last_hint.is_empty():
 		owner.body_label.text += "\n\n[i]%s[/i]" % last_hint
-	owner.vars_label.text = owner.StrategicMapState.summary_text(strategic_state)
+	owner.vars_label.text = StrategicMapState.summary_text(strategic_state)
 	owner._add_placeholder(owner.map_buttons_box, MAP_PLACEHOLDER)
 	owner._add_button(owner.combat_buttons_box, "进入终局战：%s" % str(boss.get("title", TITLE_TEXT)), final_boss_callback)
 	owner._add_placeholder(owner.choices_box, CHOICES_PLACEHOLDER)
