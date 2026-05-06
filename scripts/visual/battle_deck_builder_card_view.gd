@@ -33,14 +33,14 @@ static func deck_builder_page_spacer() -> Control:
 	return spacer
 
 
-static func build_deck_library_card_button(card: CardData, disabled: bool) -> Button:
+static func build_deck_library_card_button(card: CardData, disabled: bool, art_glyph: String) -> Button:
 	var button := Button.new()
 	button.custom_minimum_size = Vector2(148, 200)
 	button.text = ""
 	button.tooltip_text = card.short_summary()
 	button.disabled = disabled
 	apply_deck_library_card_style(button, card, disabled)
-	build_deck_library_card_face(button, card)
+	build_deck_library_card_face(button, card, art_glyph)
 	return button
 
 
@@ -84,7 +84,7 @@ static func make_flat_card_style(fill: Color, border: Color, border_width: int) 
 	return style
 
 
-static func build_deck_library_card_face(button: Button, card: CardData) -> void:
+static func build_deck_library_card_face(button: Button, card: CardData, art_glyph: String) -> void:
 	var face := MarginContainer.new()
 	face.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	face.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -140,7 +140,7 @@ static func build_deck_library_card_face(button: Button, card: CardData) -> void
 	box.add_child(art)
 
 	var art_label := Label.new()
-	art_label.text = deck_card_art_glyph(card)
+	art_label.text = art_glyph
 	art_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	art_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	art_label.add_theme_font_size_override("font_size", 20)
@@ -195,10 +195,6 @@ static func deck_card_art_style(card: CardData) -> StyleBoxFlat:
 
 static func short_card_type_tag_for_builder(card: CardData) -> String:
 	return card.type_label()
-
-
-static func deck_card_art_glyph(card: CardData) -> String:
-	return ShoushiComboRules.rank_text(card.shoushi_rank)
 
 
 static func compact_effect_summary(card: CardData) -> String:
