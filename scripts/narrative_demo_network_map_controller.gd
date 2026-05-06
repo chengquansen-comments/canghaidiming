@@ -17,6 +17,7 @@ var network_footer_container: HBoxContainer = null
 
 # Network-map layer.
 # Handles overlay rendering, network node selection, node execution, battle pending, and final gate.
+# State transitions and strategic_state mirror writes are delegated to StrategicNetworkMapRuntime.
 
 func _render_strategic_map() -> void:
 	var graph_variant = strategic_state.get("network_map", {})
@@ -31,7 +32,7 @@ func _render_network_strategic_map(graph: Dictionary) -> void:
 	network_overlay_layer.visible = true
 	_clear_network_overlay_dynamic()
 	StrategicNetworkMapRuntime.ensure_selected_node(graph)
-	strategic_state["network_map"] = graph
+	_sync_network_state_from_graph(graph)
 	title_label.text = "海疆大势图"
 	status_label.text = "完整网络图｜第 %d / %d 层" % [int(graph.get("current_layer", 0)) + 1, int(graph.get("layer_count", 10))]
 	map_label.text = _network_progress_text(graph)
@@ -53,8 +54,7 @@ func _on_network_node_clicked(map_graph_id: String) -> void:
 	if graph.is_empty():
 		return
 	graph["selected_node_id"] = map_graph_id
-	strategic_state["network_map"] = graph
-	strategic_state["selected_node_id"] = map_graph_id
+	_sync_network_state_from_graph(graph)
 	_save_narrative_state_to_context()
 	_render()
 
@@ -191,26 +191,13 @@ func _network_preview_text(graph: Dictionary) -> String:
 	var node := StrategicNetworkMapRuntime.find_node(graph, selected_id)
 	if node.is_empty():
 		return "尚未选中节点。"
-	var node_type := str(node.get("node_type", ""))
-	var mark := StrategicNetworkMapFormatter.node_type_mark(node_type)
-	var type_label := StrategicNetworkMapFormatter.node_type_label(node_type)
-	var state_label := StrategicNetworkMapFormatter.state_label(str(node.get("state", "locked")))
-	var text := ""
-	text += "[b]【%s】%s[/b]\n" % [str(node.get("title", "")), mark]
-	text += "类型：%s\n" % type_label
-	text += "状态：%s\n\n" % state_label
-	text += "主线：%s\n" % StrategicNetworkMapFormatter.line_label(str(node.get("primary_line", "")))
-	text += "副线：%s\n\n" % StrategicNetworkMapFormatter.line_label(str(node.get("secondary_line", "")))
-	text += "%s\n\n" % str(node.get("preview_text", ""))
-	text += "[b]预期影响：[/b]\n%s\n\n" % StrategicNetworkMapFormatter.effects_preview_text(node.get("effects", {}) as Dictionary)
-	text += "[b]标签：[/b]\n%s\n\n" % StrategicNetworkMapFormatter.tags_text(node.get("tags", []) as Array)
-	text += "[b]战斗：[/b]\n%s\n\n" % StrategicNetworkMapFormatter.combat_debug_text(node, StrategicNetworkBattleBridge.combat_request_for_node(node))
 	var confirm_meta := _network_confirm_meta(graph, node)
-	if bool(confirm_meta.get("enabled", false)):
-		text += "[b]前往状态：[/b]\n可确认前往"
-	else:
-		text += "[b]前往状态：[/b]\n不可前往：%s" % str(confirm_meta.get("reason", "未解锁"))
-	return text
+	return StrategicNetworkMapFormatter.preview_text(
+		graph,
+		node,
+		confirm_meta,
+		StrategicNetworkBattleBridge.combat_request_for_node(node)
+	)
 
 
 func _network_confirm_meta(graph: Dictionary, node: Dictionary) -> Dictionary:
@@ -250,11 +237,7 @@ func _execute_network_non_combat_node(node: Dictionary) -> void:
 	_apply_strategic_node(runtime_node)
 	_complete_network_node(graph, node)
 	_refresh_network_node_states(graph)
-	strategic_state["network_map"] = graph
-	strategic_state["selected_node_id"] = str(graph.get("selected_node_id", ""))
-	strategic_state["available_node_ids"] = (graph.get("available_node_ids", []) as Array).duplicate(true)
-	strategic_state["completed_node_ids"] = (graph.get("completed_node_ids", []) as Array).duplicate(true)
-	strategic_state["current_node_id"] = str(graph.get("current_node_id", ""))
+	_sync_network_state_from_graph(graph)
 	var result_text := str(node.get("result_text", ""))
 	if result_text.is_empty():
 		result_text = "你记下了这一处海疆线索。"
@@ -277,7 +260,7 @@ func _enter_network_combat_node(node: Dictionary) -> void:
 	graph["pending_map_node_id"] = node_id
 	graph["pending_result_text"] = str(node.get("result_text", ""))
 	graph["pending_effects"] = (node.get("effects", {}) as Dictionary).duplicate(true)
-	strategic_state["network_map"] = graph
+	_sync_network_state_from_graph(graph)
 	_sync_strategic_cards_to_context()
 	_save_narrative_state_to_context()
 	NarrativeBattleContext.set_request_from_combat(request, "map_" + node_id)
@@ -327,53 +310,15 @@ func _network_selected_can_confirm(graph: Dictionary) -> bool:
 
 
 func _complete_network_node(graph: Dictionary, node: Dictionary) -> void:
-	var node_id := str(node.get("map_graph_id", ""))
-	if node_id.is_empty():
-		return
-	var completed: Array = graph.get("completed_node_ids", [])
-	if not completed.has(node_id):
-		completed.append(node_id)
-	var outgoing: Array = []
-	for item in node.get("outgoing", []):
-		var out_id := str(item)
-		if not out_id.is_empty():
-			outgoing.append(out_id)
-	graph["completed_node_ids"] = completed
-	graph["current_node_id"] = node_id
-	graph["current_layer"] = int(node.get("layer", 0)) + 1
-	var valid_outgoing := StrategicNetworkMapRuntime.valid_available_ids(graph, outgoing)
-	graph["available_node_ids"] = valid_outgoing
-	if not valid_outgoing.is_empty():
-		graph["selected_node_id"] = str(valid_outgoing[0])
-		graph["map_complete"] = false
-	else:
-		graph["selected_node_id"] = node_id
-		graph["map_complete"] = true
+	StrategicNetworkMapRuntime.complete_node(graph, node)
 
 
 func _refresh_network_node_states(graph: Dictionary) -> void:
-	var completed: Array = graph.get("completed_node_ids", [])
-	var available: Array = graph.get("available_node_ids", [])
-	var current_layer := int(graph.get("current_layer", 0))
-	var nodes: Array = graph.get("nodes", [])
-	for i in range(nodes.size()):
-		if not (nodes[i] is Dictionary):
-			continue
-		var node: Dictionary = nodes[i] as Dictionary
-		var node_id := str(node.get("map_graph_id", ""))
-		var layer := int(node.get("layer", 0))
-		if completed.has(node_id):
-			node["state"] = "completed"
-		elif available.has(node_id):
-			node["state"] = "available"
-		elif layer < current_layer:
-			node["state"] = "unreachable"
-		elif layer == current_layer:
-			node["state"] = "unreachable"
-		else:
-			node["state"] = "locked"
-		nodes[i] = node
-	graph["nodes"] = nodes
+	StrategicNetworkMapRuntime.refresh_node_states(graph)
+
+
+func _sync_network_state_from_graph(graph: Dictionary) -> void:
+	StrategicNetworkMapRuntime.sync_mirror_fields(strategic_state, graph)
 
 
 func _render_network_overlay_map_view(graph: Dictionary) -> void:
@@ -449,12 +394,12 @@ func _consume_network_node_battle(source_id: String, result: String) -> void:
 	if node.is_empty():
 		last_hint = "战斗返回：未找到大势图节点。"
 		StrategicNetworkMapRuntime.clear_pending(graph)
-		strategic_state["network_map"] = graph
+		_sync_network_state_from_graph(graph)
 		return
 	if result != "win":
 		last_hint = "战斗未胜：当前节点可重试。"
 		StrategicNetworkMapRuntime.clear_pending(graph)
-		strategic_state["network_map"] = graph
+		_sync_network_state_from_graph(graph)
 		return
 	var runtime_node := node.duplicate(true)
 	if not runtime_node.has("node_id"):
@@ -468,11 +413,7 @@ func _consume_network_node_battle(source_id: String, result: String) -> void:
 	if result_text.is_empty():
 		result_text = "战事暂歇，海风又压回岸边。"
 	last_hint = result_text
-	strategic_state["network_map"] = graph
-	strategic_state["selected_node_id"] = str(graph.get("selected_node_id", ""))
-	strategic_state["available_node_ids"] = (graph.get("available_node_ids", []) as Array).duplicate(true)
-	strategic_state["completed_node_ids"] = (graph.get("completed_node_ids", []) as Array).duplicate(true)
-	strategic_state["current_node_id"] = str(graph.get("current_node_id", ""))
+	_sync_network_state_from_graph(graph)
 
 
 func _render_network_overlay_complete(graph: Dictionary) -> void:
@@ -550,13 +491,6 @@ func _ensure_network_map_for_state(warn_if_regenerated: bool = false) -> void:
 	var seed_value := int(strategic_state.get("seed", 1701))
 	if warn_if_regenerated:
 		push_warning("strategic_state.network_map missing during restore, regenerating from seed=%d" % seed_value)
-	strategic_state["network_map"] = NetworkMapGenerator.generate_network_map(strategic_config, strategic_state, seed_value)
-	var network_map: Dictionary = strategic_state.get("network_map", {}) as Dictionary
-	strategic_state["selected_node_id"] = str(network_map.get("selected_node_id", ""))
-	strategic_state["available_node_ids"] = (network_map.get("available_node_ids", []) as Array).duplicate(true)
-	strategic_state["completed_node_ids"] = (network_map.get("completed_node_ids", []) as Array).duplicate(true)
-	strategic_state["current_node_id"] = str(network_map.get("current_node_id", ""))
-	strategic_state["pending_map_node_id"] = str(network_map.get("pending_map_node_id", ""))
-	strategic_state["pending_result_text"] = str(network_map.get("pending_result_text", ""))
-	strategic_state["pending_effects"] = (network_map.get("pending_effects", {}) as Dictionary).duplicate(true)
+	var network_map: Dictionary = NetworkMapGenerator.generate_network_map(strategic_config, strategic_state, seed_value)
+	_sync_network_state_from_graph(network_map)
 	print(NetworkMapGenerator.summarize_network_map(network_map))
