@@ -24,6 +24,7 @@ const StrategicDebugProfileBuilder := preload("res://scripts/narrative/strategic
 const StrategicLegacyBattleResultRuntime := preload("res://scripts/narrative/strategic_legacy_battle_result_runtime.gd")
 const StrategicMapSessionRuntime := preload("res://scripts/narrative/strategic_map_session_runtime.gd")
 const StrategicNetworkMapControllerRuntime := preload("res://scripts/narrative/strategic_network_map_controller_runtime.gd")
+const StrategicNetworkMapFlowRuntime := preload("res://scripts/narrative/strategic_network_map_flow_runtime.gd")
 const StrategicNodeApplyRuntime := preload("res://scripts/narrative/strategic_node_apply_runtime.gd")
 const StrategicWorldMapRuntime := preload("res://scripts/narrative/strategic_world_map_runtime.gd")
 const STRATEGIC_ENTRY_NODE_ID := "world_map_entry"
@@ -429,16 +430,7 @@ func _network_overlay_view() -> StrategicNetworkMapOverlay:
 	return _network_overlay
 
 func _on_network_node_clicked(map_graph_id: String) -> void:
-	var graph_variant = strategic_state.get("network_map", {})
-	if not (graph_variant is Dictionary):
-		return
-	var graph := graph_variant as Dictionary
-	if graph.is_empty():
-		return
-	graph["selected_node_id"] = map_graph_id
-	_sync_network_state_from_graph(graph)
-	_save_narrative_state_to_context()
-	_render()
+	StrategicNetworkMapFlowRuntime.on_network_node_clicked(self, map_graph_id)
 
 func _network_progress_text(graph: Dictionary) -> String:
 	return StrategicNetworkMapControllerRuntime.progress_text(graph)
@@ -457,58 +449,13 @@ func _network_confirm_meta(graph: Dictionary, node: Dictionary) -> Dictionary:
 	return StrategicNetworkMapControllerRuntime.confirm_meta(graph, node)
 
 func _confirm_network_node() -> void:
-	var graph: Dictionary = strategic_state.get("network_map", {}) as Dictionary
-	if graph.is_empty():
-		return
-	var selected_id := str(graph.get("selected_node_id", ""))
-	var node := StrategicNetworkMapRuntime.find_node(graph, selected_id)
-	if node.is_empty():
-		last_hint = "未选中有效的大势图节点。"
-		_render()
-		return
-	if not StrategicNetworkMapConfirm.selected_can_confirm(graph):
-		last_hint = StrategicNetworkMapConfirm.block_reason(node)
-		_render()
-		return
-	if StrategicNetworkBattleBridge.is_combat_node(node):
-		_enter_network_combat_node(node)
-		return
-	_execute_network_non_combat_node(node)
+	StrategicNetworkMapFlowRuntime.confirm_network_node(self)
 
 func _execute_network_non_combat_node(node: Dictionary) -> void:
-	var graph: Dictionary = strategic_state.get("network_map", {}) as Dictionary
-	if graph.is_empty():
-		return
-	_apply_strategic_node(StrategicNetworkMapRuntime.runtime_node_for_effects(node))
-	StrategicNetworkMapRuntime.complete_node(graph, node)
-	StrategicNetworkMapRuntime.refresh_node_states(graph)
-	_sync_network_state_from_graph(graph)
-	var result_text := str(node.get("result_text", ""))
-	if result_text.is_empty():
-		result_text = "你记下了这一处海疆线索。"
-	last_hint = result_text
-	_save_narrative_state_to_context()
-	_render()
+	StrategicNetworkMapFlowRuntime.execute_network_non_combat_node(self, node)
 
 func _enter_network_combat_node(node: Dictionary) -> void:
-	var graph: Dictionary = strategic_state.get("network_map", {}) as Dictionary
-	if graph.is_empty():
-		return
-	var request := StrategicNetworkBattleBridge.combat_request_for_node(node)
-	if not bool(request.get("enabled", false)):
-		last_hint = str(request.get("blocked_reason", "该战斗节点暂未接入。"))
-		_save_narrative_state_to_context()
-		_render()
-		return
-	var node_id := str(node.get("map_graph_id", ""))
-	graph["pending_map_node_id"] = node_id
-	graph["pending_result_text"] = str(node.get("result_text", ""))
-	graph["pending_effects"] = (node.get("effects", {}) as Dictionary).duplicate(true)
-	_sync_network_state_from_graph(graph)
-	_sync_strategic_cards_to_context()
-	_save_narrative_state_to_context()
-	NarrativeBattleContext.set_request_from_combat(request, "map_" + node_id)
-	get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
+	StrategicNetworkMapFlowRuntime.enter_network_combat_node(self, node)
 
 func _sync_network_state_from_graph(graph: Dictionary) -> void:
 	StrategicNetworkMapRuntime.sync_mirror_fields(strategic_state, graph)
@@ -538,17 +485,7 @@ func _render_network_overlay_footer(_graph: Dictionary) -> void:
 	)
 
 func _consume_network_node_battle(source_id: String, result: String) -> void:
-	var graph: Dictionary = strategic_state.get("network_map", {}) as Dictionary
-	var outcome := StrategicNetworkMapBattleResult.consume_battle_result(graph, source_id, result)
-	if bool(outcome.get("source_mismatch", false)):
-		push_warning("Network map battle source mismatch: expected %s, got %s" % [str(outcome.get("expected_source_id", "")), source_id])
-	last_hint = str(outcome.get("last_hint", ""))
-	var node: Dictionary = outcome.get("node", {}) as Dictionary
-	if bool(outcome.get("completed", false)) and not node.is_empty():
-		_apply_strategic_node(StrategicNetworkMapRuntime.runtime_node_for_effects(node))
-		NarrativeBattleContext.apply_player_growth("battle_win", 0, 0, 0, true)
-	if bool(outcome.get("mutated", false)):
-		_sync_network_state_from_graph(graph)
+	StrategicNetworkMapFlowRuntime.consume_network_node_battle(self, source_id, result)
 
 func _render_network_overlay_complete(graph: Dictionary) -> void:
 	_render_network_overlay_map_view(graph)
@@ -559,28 +496,7 @@ func _render_network_overlay_complete(graph: Dictionary) -> void:
 	_render_network_overlay_footer(graph)
 
 func _on_network_final_boss_pressed() -> void:
-	var graph: Dictionary = strategic_state.get("network_map", {}) as Dictionary
-	if graph.is_empty():
-		last_hint = "终局门未开启：未找到海疆大势图。"
-		_render()
-		return
-	strategic_state["final_gate_active"] = true
-	strategic_state["final_boss"] = {
-		"title": "海门收束",
-		"encounter_id": NETWORK_FINAL_BOSS_ENCOUNTER_ID,
-		"battle_id": NETWORK_FINAL_BOSS_BATTLE_ID,
-		"ending_flag": "surface_pirate",
-	}
-	var request := StrategicNetworkBattleBridge.final_boss_request(NETWORK_FINAL_BOSS_ENCOUNTER_ID, NETWORK_FINAL_BOSS_BATTLE_ID)
-	if not bool(request.get("enabled", false)):
-		last_hint = str(request.get("blocked_reason", "终局战暂未接入。"))
-		_save_narrative_state_to_context()
-		_render()
-		return
-	_sync_strategic_cards_to_context()
-	_save_narrative_state_to_context()
-	NarrativeBattleContext.set_request_from_combat(request, STRATEGIC_FINAL_BOSS_SOURCE_ID)
-	get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
+	StrategicNetworkMapFlowRuntime.on_network_final_boss_pressed(self)
 
 func _network_state_summary_text() -> String:
 	return StrategicNetworkMapControllerRuntime.state_summary_text(strategic_state)
@@ -602,15 +518,7 @@ func _find_flow_index_by_node_id(node_id: String) -> int:
 	return -1
 
 func _ensure_network_map_for_state(warn_if_regenerated: bool = false) -> void:
-	var map_variant = strategic_state.get("network_map", {})
-	if map_variant is Dictionary and not (map_variant as Dictionary).is_empty():
-		return
-	var seed_value := int(strategic_state.get("seed", 1701))
-	if warn_if_regenerated:
-		push_warning("strategic_state.network_map missing during restore, regenerating from seed=%d" % seed_value)
-	var network_map: Dictionary = NetworkMapGenerator.generate_network_map(strategic_config, strategic_state, seed_value)
-	_sync_network_state_from_graph(network_map)
-	print(NetworkMapGenerator.summarize_network_map(network_map))
+	StrategicNetworkMapFlowRuntime.ensure_network_map_for_state(self, warn_if_regenerated)
 
 func _ensure_focus_story_caption() -> void:
 	if focus_story_layer != null:
