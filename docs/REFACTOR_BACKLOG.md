@@ -1,11 +1,12 @@
 # Refactor TODO
 
 按 `docs/CODE_ORGANIZATION.md` 执行的小步重构清单。
-更新时间：2026-05-06（alias 收口后，tuned 聚合外迁中）。
+更新时间：2026-05-06（alias 收口保持，tuned 已降到 20KB 以下）。
 
 ## 规则（执行时必须遵守）
 
 - [ ] 单次提交只做一类事：新增 helper 或替换一个函数，不做跨职责大改。
+- [ ] 禁止新增任何 `>20KB` 的 `.gd` 文件；新增 GDScript 必须控制在 `20KB` 以下。
 - [ ] `>25KB` 文件不继续追加新功能，只做迁移或 bugfix。
 - [ ] 不直接编辑 `data/*.json`，改 `tables/*.tsv` 后用 `python3 scripts/compile_tables.py` 生成。
 - [ ] 每次迁移后都跑最小验证命令（见文末）。
@@ -31,11 +32,12 @@
 
 ## P1（两周内，优先拆分）
 
-### 3) `scripts/narrative_demo_ui_focus_tuned_controller.gd`（~35KB，HIGH_RISK）
+### 3) `scripts/narrative_demo_ui_focus_tuned_controller.gd`（20.0KB，OK）
 
-- [ ] 保持 `scripts/narrative_demo_strategic_legacy_controller.gd` 和 `scripts/narrative_demo_network_map_controller.gd` 为 alias，不回退继承深度优化。
-- [ ] 只做“横向外迁”：把 strategic/network 运行逻辑迁到 runtime/helper。
-- [ ] controller 保留同名 wrapper，避免调用链断裂。
+- [x] 保持 `scripts/narrative_demo_strategic_legacy_controller.gd` 和 `scripts/narrative_demo_network_map_controller.gd` 为 alias，不回退继承深度优化。
+- [x] 已完成“横向外迁”：strategic/network 运行逻辑迁到 runtime/helper。
+- [x] controller 保留同名 wrapper，未打断调用链。
+- [ ] 后续仍禁止向该文件新增业务职责；仅允许 orchestration/wrapper 与继续外迁。
 
 ### 4) `scripts/narrative/narrative_demo_controller.gd`（27.0KB）
 
@@ -74,7 +76,20 @@
   - world map runtime mirror 同步（`sync_runtime_state`）
   - strategic node lookup（`find_node`）
   - combat trigger 判断（`node_triggers_combat`）
-- [ ] `narrative_demo_ui_focus_tuned_controller.gd` 当前是主要聚合入口，禁止继续追加逻辑；仅允许向 runtime/helper 外迁。
+- [x] 新增 `scripts/narrative/strategic_map_session_runtime.gd`，承接：
+  - 初始 strategic session state 构造（`build_initial_state`）
+  - network map 摘要输出（`summarize_network_map`）
+- [x] 新增 `scripts/narrative/strategic_debug_profile_builder.gd`，承接 debug world-map profile 构造。
+- [x] 新增 `scripts/narrative/strategic_card_state_bridge.gd`，承接 strategic_state 与 context card state 同步。
+- [x] 新增 `scripts/narrative/strategic_node_apply_runtime.gd`，承接 strategic node effects 状态应用。
+- [x] 新增 `scripts/narrative/strategic_legacy_battle_result_runtime.gd`，承接 legacy strategic battle failure 判定与节点查找。
+- [x] 新增 `scripts/narrative/strategic_choice_runtime.gd`，承接当前 layer choice 读取与 pending payload 构造。
+- [x] 新增 `scripts/narrative/strategic_network_map_controller_runtime.gd`，承接 network map 文本/确认元数据与渲染编排辅助。
+- [x] 新增 `scripts/narrative/strategic_network_map_flow_runtime.gd`，承接 network flow（点击确认、非战斗结算、战斗进入、结果消费、终局按钮等）调度。
+- [x] 新增 `scripts/narrative/strategic_tuned_ui_runtime.gd`，承接 tuned caption / overlay / scene-art UI 处理。
+- [x] 新增 `scripts/narrative/strategic_battle_result_router_runtime.gd`，承接 battle result 分发路由。
+- [x] 新增的 `.gd` helper/runtime 文件必须遵守 `20KB` 硬上限；若接近上限，继续横向拆分，不允许再造新的聚合 controller。
+- [x] `narrative_demo_ui_focus_tuned_controller.gd` 已降到 `20,467` bytes（< `20*1024`），当前作为主要聚合入口，仅允许 orchestration/wrapper 与外迁。
 - [x] `narrative_demo_ui_focus_controller.gd` 已拆分为 view/runtime/helper 委托结构，控制器降到 8.4KB。
 - [x] `battle_controller_visual_responsive_ui.gd` 已降到 `13,078` bytes，低于 `20KB`。
 - [x] `battle_controller_visual_presentation.gd` 已降到 `19,368` bytes，低于 `20KB`。
