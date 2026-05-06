@@ -106,6 +106,12 @@ static func refresh_node_states(graph: Dictionary) -> void:
 		nodes[i] = node
 	graph["nodes"] = nodes
 
+static func runtime_node_for_effects(node: Dictionary) -> Dictionary:
+	var runtime_node := node.duplicate(true)
+	if not runtime_node.has("node_id"):
+		runtime_node["node_id"] = str(node.get("pool_node_id", node.get("map_graph_id", "")))
+	return runtime_node
+
 static func clear_pending(graph: Dictionary) -> void:
 	graph["pending_map_node_id"] = ""
 	graph["pending_result_text"] = ""
