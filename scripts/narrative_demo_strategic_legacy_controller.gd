@@ -3,6 +3,7 @@ extends "res://scripts/narrative_demo_ui_focus_controller.gd"
 const StrategicMapGenerator := preload("res://scripts/strategic_map_generator.gd")
 const StrategicMapState := preload("res://scripts/strategic_map_state.gd")
 const StrategicNetworkMapGenerator := preload("res://scripts/strategic_network_map_generator.gd")
+const StrategicNetworkBattleBridge := preload("res://scripts/strategic_network_battle_bridge.gd")
 const StrategicEndingFormatter := preload("res://scripts/narrative/strategic_ending_formatter.gd")
 const StrategicRewardRuntime := preload("res://scripts/narrative/strategic_reward_runtime.gd")
 const STRATEGIC_ENTRY_NODE_ID := "world_map_entry"
@@ -205,6 +206,11 @@ func _on_strategic_choice(index: int) -> void:
 		return
 	var node := choices[index] as Dictionary
 	if _strategic_node_triggers_combat(node):
+		var request := StrategicNetworkBattleBridge.combat_request_for_node(node)
+		if not bool(request.get("enabled", false)):
+			last_hint = str(request.get("blocked_reason", "该战斗节点暂未接入。"))
+			_render()
+			return
 		strategic_state["current_world_map_node_id"] = str(node.get("node_id", ""))
 		strategic_state["current_world_map_node_effects"] = (node.get("effects", {}) as Dictionary).duplicate(true)
 		_store_pending_choice(str(node.get("node_id", "")), {
@@ -215,16 +221,7 @@ func _on_strategic_choice(index: int) -> void:
 		_sync_world_map_runtime_state()
 		_sync_strategic_cards_to_context()
 		_save_narrative_state_to_context()
-		NarrativeBattleContext.set_request_from_combat({
-			"enabled": true,
-			"encounter_id": str(node.get("encounter_id", "")),
-			"battle_id": str(node.get("battle_id", "")),
-			"override_player_profile": true,
-			"combat_pool_id": str(node.get("combat_pool_id", "")),
-			"recommended_martial_min": int(node.get("recommended_martial_min", 0)),
-			"recommended_martial_max": int(node.get("recommended_martial_max", 0)),
-			"enemy_martial_level": int(node.get("enemy_martial_level", 0)),
-		}, str(node.get("node_id", "")))
+		NarrativeBattleContext.set_request_from_combat(request, str(node.get("node_id", "")))
 		get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
 		return
 	var reward_choices := _strategic_card_reward_choices(node)
@@ -336,14 +333,14 @@ func _on_strategic_final_boss() -> void:
 	if boss.is_empty():
 		boss = StrategicMapGenerator.select_final_boss(strategic_config, strategic_state)
 		strategic_state["final_boss"] = boss
+	var request := StrategicNetworkBattleBridge.final_boss_request(str(boss.get("encounter_id", "enc_boss_ext_wakou_leader")), str(boss.get("battle_id", "boss_ext_wakou_leader")))
+	if not bool(request.get("enabled", false)):
+		last_hint = str(request.get("blocked_reason", "终局战暂未接入。"))
+		_render()
+		return
 	_sync_strategic_cards_to_context()
 	_save_narrative_state_to_context()
-	NarrativeBattleContext.set_request_from_combat({
-		"enabled": true,
-		"encounter_id": str(boss.get("encounter_id", "enc_boss_ext_wakou_leader")),
-		"battle_id": str(boss.get("battle_id", "boss_ext_wakou_leader")),
-		"override_player_profile": true,
-	}, STRATEGIC_FINAL_BOSS_SOURCE_ID)
+	NarrativeBattleContext.set_request_from_combat(request, STRATEGIC_FINAL_BOSS_SOURCE_ID)
 	get_tree().change_scene_to_file("res://scenes/MainVisual.tscn")
 func _sync_world_map_runtime_state() -> void:
 	var map_data: Dictionary = strategic_state.get("current_map", {}) as Dictionary
