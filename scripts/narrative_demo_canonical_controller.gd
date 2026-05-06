@@ -5,6 +5,7 @@ const CanonicalNodeRegistry := preload("res://scripts/narrative/canonical_node_r
 const CanonicalStorySegmentRuntime := preload("res://scripts/narrative/canonical_story_segment_runtime.gd")
 const CanonicalEndingRuntime := preload("res://scripts/narrative/canonical_ending_runtime.gd")
 const CanonicalBattleRewardRuntime := preload("res://scripts/narrative/canonical_battle_reward_runtime.gd")
+const CanonicalMapRuntime := preload("res://scripts/narrative/canonical_map_runtime.gd")
 
 # Canonical narrative variable names for the MVP runtime.
 # Internal legacy counters are kept as storage for compatibility with older controllers:
@@ -333,22 +334,19 @@ func _current_node_id() -> String:
 	return _node_id_at(node_index)
 
 func _current_world_map_title() -> String:
-	var node: Dictionary = _node_data_at(node_index)
-	return str(node.get("title", ""))
+	return CanonicalMapRuntime.current_world_map_title(_node_data_at(node_index))
 
 func _vars_text() -> String:
-	return "军功 %d / 清望 %d / 旧案线索 %d" % [jun_gong, qing_wang, clues]
+	return CanonicalMapRuntime.vars_text(jun_gong, qing_wang, clues)
+
+func _map_marker_for_index(index: int) -> String:
+	return CanonicalMapRuntime.map_marker_for_index(index, node_index)
 
 func _map_text() -> String:
-	var lines: Array[String] = []
-	for col in MAP_COLUMNS:
-		var items: Array[String] = []
-		for i in range(_active_node_count()):
-			var n: Dictionary = _node_data_at(i)
-			if str(n.get("column", "")) == col:
-				items.append("%s %s" % [_map_marker_for_index(i), str(n.get("title", ""))])
-		lines.append("【%s】%s" % [col, " / ".join(items)])
-	return "\n".join(lines)
+	var nodes: Array = []
+	for i in range(_active_node_count()):
+		nodes.append(_node_data_at(i))
+	return CanonicalMapRuntime.map_text(MAP_COLUMNS, nodes, node_index)
 
 func _add_safe_map_buttons() -> void:
 	var column_row := HBoxContainer.new()
@@ -427,18 +425,7 @@ func _on_map_node_pressed(target_index: int) -> void:
 func _apply_default_map_reward(target_index: int) -> void:
 	if target_index < 0 or target_index >= _active_node_count():
 		return
-	var node: Dictionary = _node_data_at(target_index)
-	match str(node.get("type", "")):
-		"普通战斗", "精英战斗":
-			jun_gong += 1
-			clues += 1
-		"Boss":
-			jun_gong += 2
-			clues += 1
-		"旧物":
-			clues += 2
-		_:
-			qing_wang += 1
+	_apply_canonical_effects(CanonicalMapRuntime.default_map_reward_for_node(_node_data_at(target_index)))
 
 func _advance_to_node(target_index: int, hint: String = "") -> void:
 	last_hint = hint
