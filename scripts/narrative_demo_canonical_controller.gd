@@ -1,6 +1,7 @@
 extends "res://scripts/narrative_demo_fragmented_controller.gd"
 
 const CanonicalEffectsRuntime := preload("res://scripts/narrative/canonical_effects_runtime.gd")
+const CanonicalNodeRegistry := preload("res://scripts/narrative/canonical_node_registry.gd")
 
 # Canonical narrative variable names for the MVP runtime.
 # Internal legacy counters are kept as storage for compatibility with older controllers:
@@ -67,8 +68,8 @@ func _active_node_ids() -> Array:
 	if has_method("_flow_node_ids"):
 		var value = call("_flow_node_ids")
 		if value is Array and not (value as Array).is_empty():
-			return (value as Array).duplicate()
-	return MVP_NODE_IDS
+			return CanonicalNodeRegistry.active_node_ids(value as Array)
+	return CanonicalNodeRegistry.active_node_ids()
 
 func _active_node_count() -> int:
 	return _active_node_ids().size()
@@ -121,39 +122,17 @@ func _record_choice_ending_flag(choice: Dictionary) -> void:
 		selected_ending_flag = ending_flag
 
 func _node_id_at(index: int) -> String:
-	var active_ids := _active_node_ids()
-	if index >= 0 and index < active_ids.size():
-		return str(active_ids[index])
-	return ""
+	return CanonicalNodeRegistry.node_id_at(_active_node_ids(), index)
 
 func _node_meta(node_id: String) -> Dictionary:
-	var meta = MVP_NODE_META.get(node_id, {})
-	return meta if meta is Dictionary else {}
+	return CanonicalNodeRegistry.node_meta(node_id)
 
 func _node_data_at(index: int) -> Dictionary:
 	var node_id := _node_id_at(index)
-	var node: Dictionary = {}
-	var meta := _node_meta(node_id)
-	for key in meta.keys():
-		node[key] = meta[key]
-	var configured := _node_config(node_id)
-	for key in configured.keys():
-		node[key] = configured[key]
-	node["id"] = node_id
-	if not node.has("title"):
-		node["title"] = node_id
-	if not node.has("column"):
-		node["column"] = ""
-	if not node.has("type"):
-		node["type"] = "事件"
-	if not node.has("visual_path"):
-		node["visual_path"] = ""
-	return node
+	return CanonicalNodeRegistry.merge_node_data(node_id, _node_config(node_id))
 
 func _configured_choices_for_node(node_id: String) -> Array:
-	var node_data := _node_config(node_id)
-	var choices = node_data.get("choices", [])
-	return choices if choices is Array else []
+	return CanonicalNodeRegistry.configured_choices(_node_config(node_id))
 
 func _node_story_segments(node: Dictionary) -> Array[String]:
 	var segments: Array[String] = []
