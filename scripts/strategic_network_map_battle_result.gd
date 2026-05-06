@@ -34,10 +34,7 @@ static func consume_battle_result(graph: Dictionary, source_id: String, result: 
 
 
 static func runtime_node_for_effects(node: Dictionary) -> Dictionary:
-	var runtime_node := node.duplicate(true)
-	if not runtime_node.has("node_id"):
-		runtime_node["node_id"] = str(node.get("pool_node_id", node.get("map_graph_id", "")))
-	return runtime_node
+	return StrategicNetworkMapRuntime.runtime_node_for_effects(node)
 
 
 static func _response(mutated: bool, hint: String, node: Dictionary, completed: bool, source_mismatch: bool, status: String, expected_source_id: String = "") -> Dictionary:
