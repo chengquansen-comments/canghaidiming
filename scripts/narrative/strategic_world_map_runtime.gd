@@ -25,3 +25,6 @@ static func find_node(strategic_config: Dictionary, node_id: String) -> Dictiona
 		if item is Dictionary and str((item as Dictionary).get("node_id", "")) == node_id:
 			return (item as Dictionary).duplicate(true)
 	return {}
+
+static func node_triggers_combat(node: Dictionary) -> bool:
+	return str(node.get("node_type", "")).begins_with("combat_") and not str(node.get("encounter_id", "")).is_empty()

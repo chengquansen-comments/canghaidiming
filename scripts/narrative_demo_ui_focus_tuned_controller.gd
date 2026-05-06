@@ -366,7 +366,7 @@ func _find_strategic_node(node_id: String) -> Dictionary:
 	return StrategicWorldMapRuntime.find_node(strategic_config, node_id)
 
 func _strategic_node_triggers_combat(node: Dictionary) -> bool:
-	return str(node.get("node_type", "")).begins_with("combat_") and not str(node.get("encounter_id", "")).is_empty()
+	return StrategicWorldMapRuntime.node_triggers_combat(node)
 
 func _strategic_type_label(node_type: String) -> String:
 	return _reward_runtime().strategic_type_label(node_type)
