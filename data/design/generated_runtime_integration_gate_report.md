@@ -1,12 +1,12 @@
-# Runtime Integration Gate Report
+# Runtime Integration Gate 报告
 
-- Stage: v0.9a read-only integration gate
+- 阶段：v0.9a 只读 integration gate
 - gate_status: disabled
 - gate_default_disabled: true
 - runtime_dir_allowed_only: true
 - blocked_reason: none
 
-## Gate Row
+## Gate 结果行
 
 | Config Path | Gate Script | Runtime Enabled | Probe Enabled | Integration Mode | Fallback Mode | Gate Status | Write API Present | Existing GD Reference Count |
 |---|---|---|---|---|---|---|---|---|

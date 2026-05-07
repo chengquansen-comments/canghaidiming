@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CI-friendly regression runner for Content Engine v0.8h."""
+"""Content Engine v0.8h 的 CI 友好回归执行器。"""
 
 from __future__ import annotations
 
@@ -198,22 +198,22 @@ def write_md(path: Path, rows: list[dict[str, str]], summary: dict[str, str]) ->
     failed = [r for r in rows if r["status"] != "PASS"]
 
     lines = [
-        "# Content Engine Regression Report",
+        "# Content Engine 回归报告",
         "",
-        f"- Overall: {overall}",
-        f"- Step count: {len(rows)}",
-        f"- Required PASS: {sum(1 for r in required_rows if r['status']=='PASS')}/{len(required_rows)}",
-        f"- Failed required steps: {len(failed_required)}",
+        f"- 总体结果：{overall}",
+        f"- 步骤总数：{len(rows)}",
+        f"- 必需步骤通过：{sum(1 for r in required_rows if r['status']=='PASS')}/{len(required_rows)}",
+        f"- 必需步骤失败数：{len(failed_required)}",
         "",
-        "## Phase Summary",
+        "## 阶段汇总",
         "",
     ]
     for phase, (total, passed) in sorted(phases.items()):
         lines.append(f"- {phase}: {passed}/{total} PASS")
 
-    lines.extend(["", "## Failed Steps", ""])
+    lines.extend(["", "## 失败步骤", ""])
     if not failed:
-        lines.append("- none")
+        lines.append("- 无")
     else:
         for row in failed:
             lines.append(f"- {row['step_id']} {row['step_name']} (required={row['required']}) exit={row['exit_code']}")
@@ -221,40 +221,40 @@ def write_md(path: Path, rows: list[dict[str, str]], summary: dict[str, str]) ->
     lines.extend(
         [
             "",
-            "## Runtime Safety Summary",
+            "## Runtime 安全性摘要",
             "",
             f"- preview_formal_runtime_sha_unchanged: {summary['preview_sha_unchanged']}",
             f"- preview_runtime_dir_allowed_only: {summary['preview_runtime_allowed_only']}",
             f"- runtime_dir_allowed_only_end: {summary['runtime_allowed_only_end']}",
             "",
-            "## Manifest/Checksum Summary",
+            "## Manifest/Checksum 摘要",
             "",
             f"- runtime_export_manifest_validator_pass: {summary['manifest_validator_pass']}",
             "",
-            "## Loader/Probe Summary",
+            "## Loader/Probe 摘要",
             "",
             f"- runtime_loader_godot_probe_validator_pass: {summary['godot_probe_validator_pass']}",
             f"- runtime_loader_scaffold_validator_pass: {summary['scaffold_validator_pass']}",
             "",
-            "## Negative Fixture Summary",
+            "## Negative Fixture 摘要",
             "",
             f"- runtime_loader_negative_fixture_validator_pass: {summary['negative_validator_pass']}",
             f"- negative_fixture_match_all_matched: {summary['negative_match_all']}",
             f"- negative_fixture_returned_domain_count_zero: {summary['negative_returned_zero']}",
             f"- negative_fixture_write_api_present_false: {summary['negative_write_api_false']}",
             "",
-            "## Godot Warning Summary",
+            "## Godot Warning 摘要",
             "",
             f"- warning_detected: {summary['warning_detected']}",
-            "- Godot warning is tracked as independent hygiene issue and does not block content engine regression when exit code is 0.",
+            "- 当 Godot 退出码为 0 时，warning 作为独立 hygiene issue 记录，不阻塞 content engine regression。",
             "",
-            "## High-Risk Files",
+            "## 高风险文件",
             "",
-            "- scripts/card_data.gd unchanged",
-            "- scripts/battle_state_machine.gd unchanged",
-            "- scripts/combat_resolver.gd unchanged",
-            "- scenes/*.tscn unchanged",
-            "- data/story_battles/*.tsv unchanged",
+            "- scripts/card_data.gd 未修改",
+            "- scripts/battle_state_machine.gd 未修改",
+            "- scripts/combat_resolver.gd 未修改",
+            "- scenes/*.tscn 未修改",
+            "- data/story_battles/*.tsv 未修改",
             "",
         ]
     )

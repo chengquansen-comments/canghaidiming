@@ -1,6 +1,6 @@
-# Runtime Battle Reward Compare Report
+# Runtime Battle Reward 对比报告
 
-- Stage: v0.9b battle_reward single-domain read-only compare
+- 阶段：v0.9b battle_reward 单域只读对比
 - runtime_domain: battle_reward
 - runtime_loaded: true
 - legacy_source_status: found
@@ -8,17 +8,17 @@
 - comparable: true
 - blocked_reason: none
 
-## Compare Row
+## 对比结果行
 
 | Runtime Domain | Artifact ID | Runtime Record Count | Runtime Field Count | Legacy Source Status | Legacy Source Path | Legacy Record Count | Legacy Field Count | Comparable |
 |---|---|---|---|---|---|---|---|---|
-| battle_reward | generated_battle_reward_plan | 0 | 0 | found | data/design/generated_battle_reward_plan.tsv | 45 | 30 | true |
+| battle_reward | generated_battle_reward_plan | 45 | 30 | found | data/design/generated_battle_reward_plan.tsv | 45 | 30 | true |
 
-## Diff Summary
+## 差异摘要
 
 - schema_match_status: matched
-- record_count_match_status: mismatched
-- field_count_match_status: mismatched
-- missing_in_runtime_count: 45
+- record_count_match_status: matched
+- field_count_match_status: matched
+- missing_in_runtime_count: 0
 - extra_in_runtime_count: 0
 - changed_record_count: 0

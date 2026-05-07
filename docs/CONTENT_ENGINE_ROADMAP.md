@@ -1,4 +1,4 @@
-# Content Engine Roadmap
+# Content Engine 路线图
 
 ## 总体结构
 
@@ -228,20 +228,49 @@ v0.5 建议拆分：
 - 允许将 Godot headless 检查作为 optional job（当 CI 环境已安装 Godot 时启用）。
 - v0.8i 不新增 runtime 功能，不接入正式 loader，不替换 card/reward 正式数据源。
 
-### v0.9a read-only integration gate
+### v0.9a 只读 integration gate
 
 - 新增 `runtime_loader_config.json` 与独立 gate scaffold（`content_engine_runtime_gate.gd`）。
 - gate 默认 `disabled`，只做只读配置/目录/manifest 检查，异常时 fail-closed。
 - 不接入战斗主流程，不替换正式 card/reward 数据源，不修改战斗逻辑文件。
 - 新增 gate probe/validator 与 gate report（TSV/MD）。
 
-### v0.9b battle_reward single-domain read-only compare
+### v0.9b battle_reward 单域只读对比
 
 - 新增 `runtime_battle_reward_compare.py` 与 validator。
 - compare 输入来自 runtime manifest/config/battle_reward，以及 legacy/design reward source。
 - 仅处理 `battle_reward` 单 domain；`card_pool` 保持 out_of_scope。
 - 输出差异报告供评估，不替换正式奖励逻辑，不接入战斗主流程。
 - legacy source not_found/ambiguous 可记录为非阻塞 compare 结果。
+
+### v0.9c battle_reward runtime hydration
+
+- 新增 `runtime_battle_reward_hydrator.py` 与 validator。
+- hydration 输入固定为 `generated_battle_reward_plan.tsv` + `battle_reward.json` + `runtime_manifest.json`。
+- 将 battle_reward runtime records 从空 scaffold 水合为真实记录，并更新 manifest checksum/fingerprint。
+- 仍不接入正式奖励逻辑，不替换主流程数据源，不改战斗主流程脚本。
+
+### v0.9d battle_reward read-only Godot compare/probe
+
+- 新增 `content_engine_battle_reward_probe.gd`（headless-only probe）与 `runtime_battle_reward_godot_compare.py` + validator。
+- probe 采用 manifest-first：先读 `runtime_manifest.json`，再按 manifest entry 读取 `battle_reward.json`。
+- probe 只处理 `battle_reward` 单域，`card_pool` 保持 out_of_scope。
+- probe 只读，不允许 runtime/scene/resource 写入 API。
+- 输出 `generated_runtime_battle_reward_godot_compare_report.tsv` 与 `generated_runtime_battle_reward_godot_compare_report.md`。
+- `runtime_loader_config.json` 仍保持 `disabled`，`integration_status` 保持 compare-only，不接入正式奖励逻辑，不替换正式数据源。
+- v0.9e 再评估 gated read-only integration probe；v1.0 再评估正式替换奖励源。
+
+### v0.9-lite 管线收敛与简化入口
+
+- 本阶段不新增 runtime 功能，不接入正式 loader，不替换正式奖励数据源。
+- 新增 lite 入口：
+  - `content_engine_export.py`
+  - `content_engine_validate.py`
+  - `content_engine_godot_probe.py`
+  - `content_engine_check.py`
+- `content_engine_check.py` 作为日常总入口，固定执行导出、校验、Godot 只读探测和基础 hygiene 命令。
+- 高级链路（dry-run/overlay/diff/manifest/preflight/scaffold/probe/negative/regression）保留为 advanced/audit mode，不删除。
+- 当前 `battle_reward` 维持 45 条 design/runtime/Godot 对齐；`card_pool` 继续 out_of_scope，不伪造业务数据。
 
 ### v0.9 auto battle sampler integration
 

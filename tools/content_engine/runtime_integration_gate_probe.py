@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Static/text probe for Content Engine v0.9a read-only integration gate."""
+"""用于 Content Engine v0.9a 只读 integration gate 的静态/文本探针。"""
 
 from __future__ import annotations
 
@@ -47,7 +47,7 @@ REPORT_FIELDS = [
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Probe v0.9a runtime integration gate constraints.")
+    parser = argparse.ArgumentParser(description="探测 v0.9a runtime integration gate 约束。")
     parser.add_argument("--config", default=str(CONFIG_PATH))
     parser.add_argument("--gate", default=str(GATE_SCRIPT))
     parser.add_argument("--runtime-dir", default=str(RUNTIME_ROOT))
@@ -180,15 +180,15 @@ def main() -> int:
         writer.writerow(row)
 
     lines = [
-        "# Runtime Integration Gate Report",
+        "# Runtime Integration Gate 报告",
         "",
-        "- Stage: v0.9a read-only integration gate",
+        "- 阶段：v0.9a 只读 integration gate",
         f"- gate_status: {row['gate_status']}",
         f"- gate_default_disabled: {row['gate_default_disabled']}",
         f"- runtime_dir_allowed_only: {row['runtime_dir_allowed_only']}",
         f"- blocked_reason: {row['blocked_reason'] or 'none'}",
         "",
-        "## Gate Row",
+        "## Gate 结果行",
         "",
         "| Config Path | Gate Script | Runtime Enabled | Probe Enabled | Integration Mode | Fallback Mode | Gate Status | Write API Present | Existing GD Reference Count |",
         "|---|---|---|---|---|---|---|---|---|",

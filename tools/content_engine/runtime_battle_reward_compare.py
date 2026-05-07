@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""v0.9b battle_reward single-domain read-only compare report generator."""
+"""v0.9b battle_reward 单域只读对比报告生成器。"""
 
 from __future__ import annotations
 
@@ -50,7 +50,7 @@ FIELDS = [
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Generate runtime battle_reward read-only compare report.")
+    parser = argparse.ArgumentParser(description="生成 runtime battle_reward 只读对比报告。")
     parser.add_argument("--manifest", default=str(MANIFEST_PATH))
     parser.add_argument("--config", default=str(CONFIG_PATH))
     parser.add_argument("--runtime-battle-reward", default=str(RUNTIME_BATTLE_REWARD_PATH))
@@ -107,7 +107,7 @@ def main() -> int:
 
     blocked: list[str] = []
 
-    # Required inputs
+    # 必需输入
     if not manifest_path.exists():
         raise FileNotFoundError(f"Missing manifest: {manifest_path}")
     if not config_path.exists():
@@ -144,7 +144,7 @@ def main() -> int:
     runtime_record_count = int(runtime_payload.get("record_count", 0))
     runtime_field_count = int(runtime_payload.get("field_count", 0))
 
-    # Legacy source discovery: first use manifest source_design_path, then fallback scan.
+    # 旧奖励源识别：优先使用 manifest 的 source_design_path，其次静态扫描候选 TSV。
     source_design_path = str(entry.get("source_design_path", ""))
     candidate_paths: list[Path] = []
     if source_design_path:
@@ -203,10 +203,10 @@ def main() -> int:
         blocked.append("formal_data_source_replaced")
 
     read_only = True
-    integration_status = "compare_only"
+    integration_status = "hydrated_compare_only" if runtime_record_count > 0 else "compare_only"
     risk_level = "low"
     if blocked:
-        # legacy source ambiguity/not_found are non-blocking for v0.9b, keep medium.
+        # v0.9b 中 legacy not_found/ambiguous 仅作为非阻塞风险记录。
         if any(x in {"runtime_dir_not_allowlisted", "formal_data_source_replaced"} for x in blocked):
             risk_level = "high"
         else:
@@ -236,7 +236,7 @@ def main() -> int:
         "integration_status": integration_status,
         "risk_level": risk_level,
         "blocked_reason": ",".join(sorted(set(blocked))),
-        "notes": "v0.9b compare-only report; no reward logic replacement and no main-flow integration.",
+        "notes": "v0.9b 仅做对比报告，不替换奖励逻辑，不接入主流程。",
     }
 
     out_tsv.parent.mkdir(parents=True, exist_ok=True)
@@ -246,9 +246,9 @@ def main() -> int:
         w.writerow(row)
 
     lines = [
-        "# Runtime Battle Reward Compare Report",
+        "# Runtime Battle Reward 对比报告",
         "",
-        "- Stage: v0.9b battle_reward single-domain read-only compare",
+        "- 阶段：v0.9b battle_reward 单域只读对比",
         f"- runtime_domain: {row['runtime_domain']}",
         f"- runtime_loaded: {row['runtime_loaded']}",
         f"- legacy_source_status: {row['legacy_source_status']}",
@@ -256,7 +256,7 @@ def main() -> int:
         f"- comparable: {row['comparable']}",
         f"- blocked_reason: {row['blocked_reason'] or 'none'}",
         "",
-        "## Compare Row",
+        "## 对比结果行",
         "",
         "| Runtime Domain | Artifact ID | Runtime Record Count | Runtime Field Count | Legacy Source Status | Legacy Source Path | Legacy Record Count | Legacy Field Count | Comparable |",
         "|---|---|---|---|---|---|---|---|---|",
@@ -265,7 +265,7 @@ def main() -> int:
             f"{row['legacy_source_status']} | {row['legacy_source_path']} | {row['legacy_record_count']} | {row['legacy_field_count']} | {row['comparable']} |"
         ),
         "",
-        "## Diff Summary",
+        "## 差异摘要",
         "",
         f"- schema_match_status: {row['schema_match_status']}",
         f"- record_count_match_status: {row['record_count_match_status']}",

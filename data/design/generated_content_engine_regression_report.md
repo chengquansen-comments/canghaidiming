@@ -1,11 +1,11 @@
-# Content Engine Regression Report
+# Content Engine 回归报告
 
-- Overall: PASS
-- Step count: 28
-- Required PASS: 24/24
-- Failed required steps: 0
+- 总体结果：PASS
+- 步骤总数：28
+- 必需步骤通过：24/24
+- 必需步骤失败数：0
 
-## Phase Summary
+## 阶段汇总
 
 - compile: 1/1 PASS
 - guarded_write: 1/2 PASS
@@ -17,44 +17,44 @@
 - probe: 2/2 PASS
 - scaffold: 2/2 PASS
 
-## Failed Steps
+## 失败步骤
 
 - 3 runtime_export_dry_run_validator (required=false) exit=1
 - 7 runtime_export_diff_report_validator (required=false) exit=1
 - 9 runtime_exporter_preview_validator (required=false) exit=1
 - 13 runtime_exporter_guarded_write_validator (required=false) exit=1
 
-## Runtime Safety Summary
+## Runtime 安全性摘要
 
 - preview_formal_runtime_sha_unchanged: true
 - preview_runtime_dir_allowed_only: true
 - runtime_dir_allowed_only_end: true
 
-## Manifest/Checksum Summary
+## Manifest/Checksum 摘要
 
 - runtime_export_manifest_validator_pass: true
 
-## Loader/Probe Summary
+## Loader/Probe 摘要
 
 - runtime_loader_godot_probe_validator_pass: true
 - runtime_loader_scaffold_validator_pass: true
 
-## Negative Fixture Summary
+## Negative Fixture 摘要
 
 - runtime_loader_negative_fixture_validator_pass: true
 - negative_fixture_match_all_matched: true
 - negative_fixture_returned_domain_count_zero: true
 - negative_fixture_write_api_present_false: true
 
-## Godot Warning Summary
+## Godot Warning 摘要
 
 - warning_detected: true
-- Godot warning is tracked as independent hygiene issue and does not block content engine regression when exit code is 0.
+- 当 Godot 退出码为 0 时，warning 作为独立 hygiene issue 记录，不阻塞 content engine regression。
 
-## High-Risk Files
+## 高风险文件
 
-- scripts/card_data.gd unchanged
-- scripts/battle_state_machine.gd unchanged
-- scripts/combat_resolver.gd unchanged
-- scenes/*.tscn unchanged
-- data/story_battles/*.tsv unchanged
+- scripts/card_data.gd 未修改
+- scripts/battle_state_machine.gd 未修改
+- scripts/combat_resolver.gd 未修改
+- scenes/*.tscn 未修改
+- data/story_battles/*.tsv 未修改

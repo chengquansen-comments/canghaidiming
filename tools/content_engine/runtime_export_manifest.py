@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate runtime manifest/checksum/rollback reports for Content Engine v0.8c."""
+"""为 Content Engine v0.8c 生成 runtime manifest/checksum/rollback 报告。"""
 
 from __future__ import annotations
 
@@ -39,7 +39,7 @@ REPORT_FIELDS = [
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Generate runtime manifest/checksum/rollback reports.")
+    parser = argparse.ArgumentParser(description="生成 runtime manifest/checksum/rollback 报告。")
     parser.add_argument("--design-dir", default="data/design")
     parser.add_argument("--runtime-dir", default=str(RUNTIME_DIR))
     parser.add_argument("--write-result", default=f"data/design/{WRITE_RESULT_TSV}")
@@ -216,13 +216,13 @@ def write_report_md(path: Path, rows: list[dict[str, str]]) -> None:
     registered = [row for row in rows if row["manifest_status"] == "registered"]
     blocked = [row for row in rows if row["manifest_status"] == "blocked"]
     lines = [
-        "# Runtime Export Manifest Report",
+        "# Runtime 导出 Manifest 报告",
         "",
-        f"- Rows: {len(rows)}",
-        f"- Registered: {len(registered)}",
-        f"- Blocked: {len(blocked)}",
+        f"- 行数：{len(rows)}",
+        f"- registered：{len(registered)}",
+        f"- blocked：{len(blocked)}",
         "",
-        "## Manifest Rows",
+        "## Manifest 明细",
         "",
         "| Runtime Domain | Artifact ID | Runtime Path | Exists | File Size | Manifest Status | Blocked Reason |",
         "|---|---|---|---|---|---|---|",
@@ -240,9 +240,9 @@ def write_rollback_md(path: Path, manifest: dict[str, object]) -> None:
     files = manifest.get("files", [])
     runtime_paths = [str(item.get("runtime_path") or "") for item in files if isinstance(item, dict)]
     lines = [
-        "# Runtime Export Rollback Report",
+        "# Runtime 导出回滚报告",
         "",
-        "## Runtime Files Written",
+        "## 已写入 Runtime 文件",
         "",
     ]
     for runtime_path in runtime_paths:
@@ -250,9 +250,9 @@ def write_rollback_md(path: Path, manifest: dict[str, object]) -> None:
     lines.extend(
         [
             "",
-            "## Rollback Steps",
+            "## 回滚步骤",
             "",
-            "删除以下文件即可回滚本次 runtime content 写入：",
+            "删除以下文件即可回滚本次 runtime 内容写入：",
             "",
         ]
     )
@@ -261,11 +261,11 @@ def write_rollback_md(path: Path, manifest: dict[str, object]) -> None:
     lines.extend(
         [
             "",
-            "`runtime_manifest.json` 是否必要：",
-            "- 对于严格回滚到 v0.8b 写入前状态，建议一并删除 `data/runtime/content_engine/runtime_manifest.json`。",
-            "- 如果只想保留审计记录，可保留 manifest，但它将描述已删除文件并在 validator 中失败。",
+            "`runtime_manifest.json` 处理建议：",
+            "- 若要严格回滚到 v0.8b 写入前状态，建议一并删除 `data/runtime/content_engine/runtime_manifest.json`。",
+            "- 若仅保留审计记录，可保留 manifest；但其会描述已删除文件，并在 validator 中失败。",
             "",
-            "## Re-run Commands",
+            "## 重跑命令",
             "",
             "回滚后可按顺序重新执行：",
             "",
@@ -276,9 +276,9 @@ def write_rollback_md(path: Path, manifest: dict[str, object]) -> None:
             "5. manifest: `python3 tools/content_engine/runtime_export_manifest.py`",
             "6. manifest validator: `python3 tools/content_engine/runtime_export_manifest_validator.py`",
             "",
-            "## Scope Boundary",
+            "## 范围边界",
             "",
-            "当前 rollback 流程只涉及 runtime content files，不涉及 Godot loader（当前尚未接入 loader）。",
+            "当前回滚流程仅涉及 runtime 内容文件，不涉及 Godot loader（当前尚未接入 loader）。",
             "",
         ]
     )
@@ -313,7 +313,7 @@ def main() -> int:
         print(f"ERROR: {exc}")
         return 1
 
-    print(f"Wrote {out_manifest}, {out_report}, {out_report_md}, and {out_rollback_md}.")
+    print(f"已写入 {out_manifest}、{out_report}、{out_report_md}、{out_rollback_md}。")
     return 0
 
 

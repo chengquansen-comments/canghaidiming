@@ -38,7 +38,7 @@ python3 tools/run_web_preview.py --dir build/web --host 127.0.0.1 --port 8060
 
 Web 部署、字体子集、预算、端口和 GitHub Pages 口径见 [docs/web_refactor_progress.md](docs/web_refactor_progress.md)。
 
-## Content Engine Regression（v0.8h / v0.8i）
+## Content Engine 回归（v0.8h / v0.8i）
 
 当前稳定回归入口：
 
@@ -58,9 +58,9 @@ v0.8i 仅新增 CI / workflow draft，不接入正式 loader，不替换正式 c
 - `docs/CONTENT_ENGINE_CI.md`
 - `docs/CONTENT_ENGINE_ROADMAP.md`
 
-## Content Engine Integration Gate（v0.9a）
+## Content Engine 集成门禁（v0.9a）
 
-v0.9a 新增 read-only integration gate，默认 disabled，不接入战斗主流程，不替换正式数据源。
+v0.9a 新增只读 integration gate，默认 `disabled`，不接入战斗主流程，不替换正式数据源。
 
 ```bash
 python3 tools/content_engine/runtime_integration_gate_probe.py
@@ -76,9 +76,9 @@ python3 tools/content_engine/runtime_integration_gate_validator.py
 
 - `docs/CONTENT_ENGINE_V0_9A.md`
 
-## Content Engine Battle Reward Compare（v0.9b）
+## Content Engine Battle Reward 对比（v0.9b）
 
-v0.9b 新增 `battle_reward` 单 domain read-only compare，仅输出差异报告，不替换正式奖励逻辑。
+v0.9b 新增 `battle_reward` 单 domain 只读对比，仅输出差异报告，不替换正式奖励逻辑。
 
 ```bash
 python3 tools/content_engine/runtime_battle_reward_compare.py
@@ -93,6 +93,71 @@ python3 tools/content_engine/runtime_battle_reward_compare_validator.py
 说明文档：
 
 - `docs/CONTENT_ENGINE_V0_9B.md`
+
+## Content Engine Battle Reward 水合（v0.9c）
+
+v0.9c 新增 `battle_reward` runtime hydration：将 runtime 空 scaffold 数据水合为来自 `generated_battle_reward_plan.tsv` 的真实 records。
+本阶段仍不接入正式奖励逻辑，不替换主流程数据源。
+
+```bash
+python3 tools/content_engine/runtime_battle_reward_hydrator.py
+python3 tools/content_engine/runtime_battle_reward_hydrator_validator.py
+```
+
+报告输出：
+
+- `data/design/generated_runtime_battle_reward_hydration_report.tsv`
+- `data/design/generated_runtime_battle_reward_hydration_report.md`
+
+说明文档：
+
+- `docs/CONTENT_ENGINE_V0_9C.md`
+
+## Content Engine Battle Reward Godot 对比探针（v0.9d）
+
+v0.9d 新增 `battle_reward` read-only Godot compare/probe：在 Godot headless 里按 manifest-first 读取 hydrated runtime 内容，并与 Python compare/legacy source 做只读对比。
+本阶段仍不接入正式奖励逻辑，不替换正式数据源，不改战斗主流程。
+
+```bash
+python3 tools/content_engine/runtime_battle_reward_godot_compare.py
+python3 tools/content_engine/runtime_battle_reward_godot_compare_validator.py
+```
+
+报告输出：
+
+- `data/design/generated_runtime_battle_reward_godot_compare_report.tsv`
+- `data/design/generated_runtime_battle_reward_godot_compare_report.md`
+
+说明文档：
+
+- `docs/CONTENT_ENGINE_V0_9D.md`
+
+## Content Engine Lite 日常入口（v0.9-lite）
+
+v0.9-lite 的目标是管线收敛与简化入口，不新增 runtime 能力，不接入正式 loader，不替换正式奖励数据源。
+日常使用建议统一走：
+
+```bash
+python3 tools/content_engine/content_engine_check.py
+```
+
+可拆分执行的简化入口：
+
+```bash
+python3 tools/content_engine/content_engine_export.py --domain battle_reward --write
+python3 tools/content_engine/content_engine_validate.py
+python3 tools/content_engine/content_engine_godot_probe.py
+```
+
+lite 日常报告输出：
+
+- `data/design/generated_content_engine_lite_check_report.tsv`
+- `data/design/generated_content_engine_lite_check_report.md`
+
+说明文档：
+
+- `docs/CONTENT_ENGINE.md`
+- `docs/CONTENT_ENGINE_V0_9_LITE.md`
 
 ## 当前主链路
 

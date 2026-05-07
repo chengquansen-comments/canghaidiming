@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate v0.9b runtime battle_reward compare report and isolation constraints."""
+"""验证 v0.9b runtime battle_reward 对比报告与隔离边界。"""
 
 from __future__ import annotations
 
@@ -128,7 +128,7 @@ def is_int_text(value: str) -> bool:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Validate runtime battle_reward compare report.")
+    parser = argparse.ArgumentParser(description="验证 runtime battle_reward 对比报告。")
     parser.add_argument("--report", default=str(REPORT_TSV))
     parser.add_argument("--report-md", default=str(REPORT_MD))
     args = parser.parse_args()
@@ -164,7 +164,7 @@ def main() -> int:
     else:
         report.pass_("formal_data_source_replaced is false")
 
-    if row["integration_status"] not in {"not_integrated", "compare_only"}:
+    if row["integration_status"] not in {"not_integrated", "compare_only", "hydrated_compare_only"}:
         report.fail(f"integration_status invalid: {row['integration_status']}")
     else:
         report.pass_(f"integration_status valid: {row['integration_status']}")

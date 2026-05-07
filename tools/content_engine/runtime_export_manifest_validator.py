@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate runtime manifest/checksum/rollback outputs for Content Engine v0.8c."""
+"""验证 Content Engine v0.8c 的 runtime manifest/checksum/rollback 输出。"""
 
 from __future__ import annotations
 
@@ -246,7 +246,7 @@ def validate_report_files(report_tsv: Path, report_md: Path, rollback_md: Path, 
         report.fail(f"Missing manifest report MD: {report_md}")
     else:
         text = report_md.read_text(encoding="utf-8")
-        for section in ["Runtime Export Manifest Report", "Manifest Rows"]:
+        for section in ["Runtime 导出 Manifest 报告", "Manifest 明细"]:
             if section not in text:
                 report.fail(f"manifest report markdown missing section: {section}")
 
@@ -255,12 +255,12 @@ def validate_report_files(report_tsv: Path, report_md: Path, rollback_md: Path, 
     else:
         text = rollback_md.read_text(encoding="utf-8")
         for token in [
-            "Runtime Files Written",
-            "Rollback Steps",
+            "已写入 Runtime 文件",
+            "回滚步骤",
             "runtime_manifest.json",
             "no-write",
             "guarded-write",
-            "manifest validator",
+            "重跑命令",
             "尚未接入 loader",
         ]:
             if token not in text:

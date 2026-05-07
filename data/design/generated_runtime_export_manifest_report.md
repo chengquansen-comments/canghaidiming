@@ -1,10 +1,10 @@
-# Runtime Export Manifest Report
+# Runtime 导出 Manifest 报告
 
-- Rows: 2
-- Registered: 2
-- Blocked: 0
+- 行数：2
+- registered：2
+- blocked：0
 
-## Manifest Rows
+## Manifest 明细
 
 | Runtime Domain | Artifact ID | Runtime Path | Exists | File Size | Manifest Status | Blocked Reason |
 |---|---|---|---|---|---|---|
