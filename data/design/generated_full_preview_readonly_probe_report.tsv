@@ -1,0 +1,13 @@
+check_id	status	expected	actual	notes
+manifest_runtime_ready	PASS	false	false	full preview manifest 必须 runtime_ready=false
+manifest_preview_only	PASS	true	true	full preview manifest 必须 preview_only=true
+domain_path_exists::battle_rewards	PASS	true	true	data/runtime_preview/content_engine/battle_rewards.preview.json
+domain_path_exists::battle_slots	PASS	true	true	data/runtime_preview/content_engine/battle_slots.preview.json
+domain_path_exists::enemy_decks	PASS	true	true	data/runtime_preview/content_engine/enemy_decks.preview.json
+domain_path_exists::card_pool	PASS	true	true	data/runtime_preview/content_engine/card_pool.preview.json
+domain_path_exists::operation_nodes	PASS	true	true	data/runtime_preview/content_engine/operation_nodes.preview.json
+domain_path_exists::narrative_nodes	PASS	true	true	data/runtime_preview/content_engine/narrative_nodes.preview.json
+domain_path_exists::route_gates	PASS	true	true	data/runtime_preview/content_engine/route_gates.preview.json
+selected_reward_policy	PASS	legacy	legacy	selected_reward_policy 必须 legacy
+content_engine_enabled	PASS	false	false	content_engine_enabled 必须 false
+generated_at	PASS	iso8601	2026-05-07T12:39:02+00:00	probe 生成时间

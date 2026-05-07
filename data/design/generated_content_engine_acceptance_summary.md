@@ -1,6 +1,6 @@
 # Content Engine Acceptance Summary
 
-- run_id=acceptance-20260507T123525Z-32fdba1d
+- run_id=acceptance-20260507T123901Z-747533c8
 - overall_status=PASS
 - selected_reward: legacy
 - runtime_loader_config: disabled
@@ -19,6 +19,9 @@
 | battle_reward_runtime_test_harness | pass | data/design/generated_battle_reward_runtime_test_harness_report.tsv | true | true |
 | battle_reward_runtime_test_harness | pass | data/design/generated_battle_reward_runtime_test_harness_report.md | true | true |
 | battle_reward_runtime_test_harness_validator | PASS | none | true | true |
+| full_preview_readonly_probe_py | pass | data/design/generated_full_preview_readonly_probe_report.tsv | true | true |
+| full_preview_readonly_probe_godot | pass | data/design/generated_full_preview_godot_readonly_report.tsv | true | true |
+| full_preview_readonly_validator | PASS | none | true | true |
 | content_engine_regression_runner | pass | data/design/generated_content_engine_regression_report.tsv | true | true |
 | content_engine_regression_runner | pass | data/design/generated_content_engine_regression_report.md | true | true |
 | content_engine_regression_validator | PASS | none | true | true |

@@ -1,0 +1,26 @@
+check_id	status	expected	actual	notes
+manifest_runtime_ready	PASS	false	false	manifest runtime_ready 必须 false
+manifest_preview_only	PASS	true	true	manifest preview_only 必须 true
+selected_reward_policy	PASS	legacy	legacy	selected_reward_policy 必须 legacy
+content_engine_enabled	PASS	false	false	content_engine_enabled 必须 false
+count::battle_rewards	PASS	45	45	domain 条目数校验
+runtime_ready::battle_rewards	PASS	false	false	domain runtime_ready 必须 false
+preview_only::battle_rewards	PASS	true	true	domain preview_only 必须 true
+count::battle_slots	PASS	16	16	domain 条目数校验
+runtime_ready::battle_slots	PASS	false	false	domain runtime_ready 必须 false
+preview_only::battle_slots	PASS	true	true	domain preview_only 必须 true
+count::enemy_decks	PASS	39	39	domain 条目数校验
+runtime_ready::enemy_decks	PASS	false	false	domain runtime_ready 必须 false
+preview_only::enemy_decks	PASS	true	true	domain preview_only 必须 true
+count::card_pool	PASS	72	72	domain 条目数校验
+runtime_ready::card_pool	PASS	false	false	domain runtime_ready 必须 false
+preview_only::card_pool	PASS	true	true	domain preview_only 必须 true
+count::operation_nodes	PASS	10	10	domain 条目数校验
+runtime_ready::operation_nodes	PASS	false	false	domain runtime_ready 必须 false
+preview_only::operation_nodes	PASS	true	true	domain preview_only 必须 true
+count::narrative_nodes	PASS	28	28	domain 条目数校验
+runtime_ready::narrative_nodes	PASS	false	false	domain runtime_ready 必须 false
+preview_only::narrative_nodes	PASS	true	true	domain preview_only 必须 true
+count::route_gates	PASS	9	9	domain 条目数校验
+runtime_ready::route_gates	PASS	false	false	domain runtime_ready 必须 false
+preview_only::route_gates	PASS	true	true	domain preview_only 必须 true

@@ -19,6 +19,9 @@ REQUIRED_CHECK_IDS = {
     "battle_reward_shadow_freeze_validator",
     "battle_reward_runtime_test_harness",
     "battle_reward_runtime_test_harness_validator",
+    "full_preview_readonly_probe_py",
+    "full_preview_readonly_probe_godot",
+    "full_preview_readonly_validator",
     "content_engine_regression_runner",
     "content_engine_regression_validator",
 }
