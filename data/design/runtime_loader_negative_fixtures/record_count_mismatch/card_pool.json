@@ -1,0 +1,14 @@
+{
+  "runtime_domain": "card_pool",
+  "artifact_id": "generated_card_pool",
+  "export_version": "v0.8b",
+  "source_design_path": "data/design/generated_card_pool.tsv",
+  "schema_fingerprint": "4ea30afa86c66582b9f8cd30ef28eae900e3f38648dc9e08885f4856bef351e9",
+  "content_fingerprint": "6f6b56c50f7986651f144e85b0ead1dae50d06bc6b5942cfaf9c87f85be99beb",
+  "record_count": 1,
+  "field_count": 0,
+  "records": [],
+  "generated_by": "tools/content_engine/runtime_exporter.py",
+  "generated_at": "2026-05-07T08:18:14Z",
+  "notes": "v0.8b writes guarded runtime scaffold content only; business records are not materialized in this stage."
+}

@@ -1,0 +1,71 @@
+{
+  "fixture_root": "data/design/runtime_loader_negative_fixtures",
+  "formal_runtime_root": "data/runtime/content_engine",
+  "formal_runtime_sha256_before": {
+    "card_pool.json": "e31582d7d8b342e3d7083484dc8dd0cc8fe38ab872dbc8b71f535bbf09c36e0f",
+    "battle_reward.json": "b7f3a3bd2446cb64dbe393da0c02d35cacbf24e1348f35e66586ca0582e880be",
+    "runtime_manifest.json": "89cdcd08be38eddc1687c56bc6069e823c72702dd0a99f3b44b932e24b58b08d"
+  },
+  "cases": [
+    {
+      "fixture_name": "valid_control",
+      "expected_ok": true,
+      "expected_error_type": "none"
+    },
+    {
+      "fixture_name": "missing_manifest_field",
+      "expected_ok": false,
+      "expected_error_type": "manifest_missing_field"
+    },
+    {
+      "fixture_name": "checksum_mismatch",
+      "expected_ok": false,
+      "expected_error_type": "checksum_mismatch"
+    },
+    {
+      "fixture_name": "schema_fingerprint_mismatch",
+      "expected_ok": false,
+      "expected_error_type": "schema_fingerprint_mismatch"
+    },
+    {
+      "fixture_name": "content_fingerprint_mismatch",
+      "expected_ok": false,
+      "expected_error_type": "content_fingerprint_mismatch"
+    },
+    {
+      "fixture_name": "unknown_runtime_file",
+      "expected_ok": false,
+      "expected_error_type": "unknown_runtime_file"
+    },
+    {
+      "fixture_name": "extra_runtime_file_present",
+      "expected_ok": false,
+      "expected_error_type": "extra_runtime_file_present"
+    },
+    {
+      "fixture_name": "unsafe_runtime_path",
+      "expected_ok": false,
+      "expected_error_type": "unsafe_runtime_path"
+    },
+    {
+      "fixture_name": "malformed_runtime_json",
+      "expected_ok": false,
+      "expected_error_type": "malformed_runtime_json"
+    },
+    {
+      "fixture_name": "domain_mismatch",
+      "expected_ok": false,
+      "expected_error_type": "domain_mismatch"
+    },
+    {
+      "fixture_name": "record_count_mismatch",
+      "expected_ok": false,
+      "expected_error_type": "record_count_mismatch"
+    },
+    {
+      "fixture_name": "field_count_mismatch",
+      "expected_ok": false,
+      "expected_error_type": "field_count_mismatch"
+    }
+  ]
+}

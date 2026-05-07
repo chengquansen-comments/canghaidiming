@@ -1,0 +1,9 @@
+route	checkpoint	battle_count_cumulative	martial_xp_min	martial_xp_default	martial_xp_max	expected_realm_min	expected_realm_default	expected_realm_max	expected_lightness_min	expected_lightness_default	expected_lightness_max	can_reach_realm_10	can_unlock_true_ending	can_unlock_wuzhuangyuan	notes
+normal	normal_after_wuju	6	32	32	32	4	4	4	0	1	1	FALSE	FALSE	FALSE	序章 + 武举线结束，进入大地图前。
+normal	normal_after_big_map	21	128	128	128	9	9	9	1	2	2	FALSE	FALSE	FALSE	普通路线大地图结束，目标 8-9 境。
+normal	normal_after_boss	22	140	140	140	9	9	9	1	2	2	FALSE	FALSE	FALSE	普通结局完成，最终 8-9 境。
+elite	elite_after_big_map	21	142	147	154	9	10	10	2	2	2	TRUE	TRUE	FALSE	精英路线大地图后接近或达到 10 境。
+true_route	true_after_boss_1	22	154	154	154	10	10	10	2	2	3	TRUE	TRUE	FALSE	真结局 Boss 1 后稳定 10 境。
+true_route	true_after_true_boss	23	170	170	170	10	10	10	2	3	3	TRUE	TRUE	FALSE	真 Boss 按 10 境设计；轻功 4 不是硬门槛。
+wuzhuangyuan	wuzhuangyuan_before_exam	21	145	154	166	10	10	10	2	3	4	TRUE	TRUE	TRUE	触发条件：武境 10 + 军功高；轻功 4 只来自奇遇或特殊标记。
+wuzhuangyuan	wuzhuangyuan_after_exam	26	185	204	226	10	10	10	2	3	4	TRUE	TRUE	TRUE	回京考试 5 战后获得武状元特殊结局。

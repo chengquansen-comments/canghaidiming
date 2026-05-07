@@ -1,0 +1,14 @@
+{
+  "runtime_domain": "battle_reward",
+  "artifact_id": "generated_battle_reward_plan",
+  "export_version": "v0.8b",
+  "source_design_path": "data/design/generated_battle_reward_plan.tsv",
+  "schema_fingerprint": "6afc401b075e5da7db58fe9f869e74438451368dbea4c686fcae9222b3985775",
+  "content_fingerprint": "cf6ffc4e9ad078df51fc26e5b84746aeae3edd429cff92ceae0f48e79c4059bb",
+  "record_count": 0,
+  "field_count": 0,
+  "records": [],
+  "generated_by": "tools/content_engine/runtime_exporter.py",
+  "generated_at": "2026-05-07T08:18:14Z",
+  "notes": "v0.8b writes guarded runtime scaffold content only; business records are not materialized in this stage."
+}

@@ -1,0 +1,12 @@
+runtime_domain	artifact_id	validator_status	approval_status	approved_for_export	waiver_flags	waiver_status	approved_by	approved_at	approval_notes
+enemy_deck	generated_enemy_deck_sets	WARN	pending	false	waiver_required	unresolved			WARN artifact pending waiver clearance.
+enemy_deck	generated_card_pool	PASS	pending	false		none			Manual review pending for enemy_deck usage.
+enemy_deck	generated_enemy_deck_skeleton	WARN	pending	false	waiver_required	unresolved			WARN artifact pending waiver clearance.
+card_pool	generated_card_pool	PASS	approved	true		none	content_owner	2026-05-07T12:00:00+08:00	Low-risk sample approved for overlay candidate.
+battle_reward	generated_battle_reward_plan	PASS	approved	true		none	content_owner	2026-05-07T12:05:00+08:00	Low-risk sample approved for overlay candidate.
+operation_node	generated_operation_node_plan	PASS	pending	false		none			Manual review pending.
+narrative_node	generated_narrative_node_plan	PASS	pending	false		none			Narrative skeleton still pending manual review.
+route_gate	generated_route_gate_plan	PASS	pending	false		none			Route gate plan pending manual review.
+package_manifest	generated_content_package_manifest	PASS	pending	false		none			Package manifest export approval pending.
+package_manifest	generated_validator_summary	NOT_FOUND	pending	false		pending			Validator summary is governance input only.
+package_manifest	generated_content_package_approval	NOT_FOUND	pending	false		pending			Approval table artifact is governance input only.

@@ -1,0 +1,102 @@
+step_id	phase	step_name	command	exit_code	status	duration_ms	stdout_tail	stderr_tail	required	blocked_reason	notes
+1	compile	py_compile	python3 -m py_compile tools/content_engine/runtime_export_dry_run.py tools/content_engine/runtime_export_dry_run_validator.py tools/content_engine/runtime_export_approval_overlay.py tools/content_engine/runtime_export_approval_validator.py tools/content_engine/runtime_export_diff_report.py tools/content_engine/runtime_export_diff_report_validator.py tools/content_engine/runtime_exporter.py tools/content_engine/runtime_exporter_validator.py tools/content_engine/runtime_export_manifest.py tools/content_engine/runtime_export_manifest_validator.py tools/content_engine/runtime_loader_preflight.py tools/content_engine/runtime_loader_preflight_validator.py tools/content_engine/runtime_loader_scaffold_probe.py tools/content_engine/runtime_loader_scaffold_validator.py tools/content_engine/runtime_loader_godot_probe.py tools/content_engine/runtime_loader_godot_probe_validator.py tools/content_engine/runtime_loader_negative_fixture_builder.py tools/content_engine/runtime_loader_negative_fixture_probe.py tools/content_engine/runtime_loader_negative_fixture_validator.py	0	PASS	96			true		
+2	preview	runtime_export_dry_run	python3 tools/content_engine/runtime_export_dry_run.py	0	PASS	78	Wrote data/design/generated_runtime_export_dry_run.tsv and data/design/generated_runtime_export_dry_run.md with 7 runtime dry-run rows.		true		
+3	preview	runtime_export_dry_run_validator	python3 tools/content_engine/runtime_export_dry_run_validator.py	1	FAIL	70	"PASS: Found data/design/generated_runtime_export_dry_run.tsv
+PASS: Found data/design/generated_runtime_export_dry_run.md
+PASS: All 7 required runtime domains are present.
+PASS: dry_run_id values are unique.
+PASS: All would_export values are false.
+PASS: All blocked values are true.
+PASS: approved_for_export=true count is 0 in current approval table.
+PASS: Markdown does not claim runtime export implementation.
+PASS: Markdown states runtime files written as 0.
+FAIL: v0.7b must not write runtime JSON files: data/runtime/content_engine/card_pool.json
+RESULT: FAIL"		false		
+4	preview	runtime_export_approval_overlay	python3 tools/content_engine/runtime_export_approval_overlay.py	0	PASS	77	Wrote data/design/generated_runtime_export_approval_overlay.tsv and data/design/generated_runtime_export_approval_overlay.md with 7 overlay rows.		true		
+5	preview	runtime_export_approval_validator	python3 tools/content_engine/runtime_export_approval_validator.py	0	PASS	81	"PASS: Found data/design/runtime_export_approval.tsv
+PASS: Found data/design/generated_runtime_export_dry_run.tsv
+PASS: Found data/design/generated_runtime_export_approval_overlay.tsv
+PASS: Found data/design/generated_runtime_export_approval_overlay.md
+PASS: Approval table fields, enums, and manual approval constraints validated.
+PASS: Overlay runtime domains match dry-run domains.
+PASS: Overlay would_export/blocked gating rules validated.
+PASS: Overlay markdown confirms runtime files written: 0
+RESULT: PASS"		true		
+6	preview	runtime_export_diff_report	python3 tools/content_engine/runtime_export_diff_report.py	0	PASS	85	Wrote data/design/generated_runtime_export_diff_report.tsv and data/design/generated_runtime_export_diff_report.md with 7 diff report rows.		true		
+7	preview	runtime_export_diff_report_validator	python3 tools/content_engine/runtime_export_diff_report_validator.py	1	FAIL	88	"PASS: Found data/design/generated_runtime_export_approval_overlay.tsv
+PASS: Found data/design/generated_runtime_export_diff_report.tsv
+PASS: Found data/design/generated_runtime_export_diff_report.md
+PASS: Diff report row invariants validated.
+PASS: Diff markdown confirms runtime files written: 0
+FAIL: data/runtime/content_engine/ must not exist in v0.7d.
+RESULT: FAIL"		false		
+8	preview	runtime_exporter_preview	python3 tools/content_engine/runtime_exporter.py	0	PASS	79	Wrote data/design/generated_runtime_exporter_plan.tsv, data/design/generated_runtime_exporter_plan.md, data/design/generated_runtime_exporter_write_result.tsv, and data/design/generated_runtime_exporter_write_result.md with 7 exporter rows.		true		
+9	preview	runtime_exporter_preview_validator	python3 tools/content_engine/runtime_exporter_validator.py	1	FAIL	73	"PASS: Found data/design/generated_runtime_export_diff_report.tsv
+PASS: Found data/design/generated_runtime_exporter_plan.tsv
+PASS: Found data/design/generated_runtime_exporter_plan.md
+PASS: Found data/design/generated_runtime_exporter_write_result.tsv
+PASS: Found data/design/generated_runtime_exporter_write_result.md
+PASS: Allowed candidate count matches diff planned_create count: 2
+PASS: Current expected allowed candidate count is 2.
+FAIL: data/runtime/content_engine/ must not exist in no-write mode.
+RESULT: FAIL"		false		
+10	preview	preview_formal_runtime_sha_unchanged	<internal-check>	0	PASS	1			true		baseline={'card_pool.json': '39af5c7db09a1793e9ce782c6bac2f8f4ac37ccadd93ec84bbb2dc4ec8ac5cca', 'battle_reward.json': 'b6215661e6dfae119e0f5f9d2fb43acf6a7fe4455ca7f4269b81345b129f53f6', 'runtime_manifest.json': 'ab3c27c94cbb5633ae6a724de936c6a2c9e50ec4c303bda4d4aaa4479ddd8856'} current={'card_pool.json': '39af5c7db09a1793e9ce782c6bac2f8f4ac37ccadd93ec84bbb2dc4ec8ac5cca', 'battle_reward.json': 'b6215661e6dfae119e0f5f9d2fb43acf6a7fe4455ca7f4269b81345b129f53f6', 'runtime_manifest.json': 'ab3c27c94cbb5633ae6a724de936c6a2c9e50ec4c303bda4d4aaa4479ddd8856'}
+11	preview	preview_runtime_dir_allowed_only	<internal-check>	0	PASS	1			true		runtime_files=['battle_reward.json', 'card_pool.json', 'runtime_manifest.json']
+12	guarded_write	runtime_exporter_guarded_write	python3 tools/content_engine/runtime_exporter.py --write-runtime --confirm-runtime-export	0	PASS	80	Wrote data/design/generated_runtime_exporter_plan.tsv, data/design/generated_runtime_exporter_plan.md, data/design/generated_runtime_exporter_write_result.tsv, and data/design/generated_runtime_exporter_write_result.md with 7 exporter rows.		true		
+13	guarded_write	runtime_exporter_guarded_write_validator	python3 tools/content_engine/runtime_exporter_validator.py --allow-runtime-files	1	FAIL	77	"PASS: Found data/design/generated_runtime_export_diff_report.tsv
+PASS: Found data/design/generated_runtime_exporter_plan.tsv
+PASS: Found data/design/generated_runtime_exporter_plan.md
+PASS: Found data/design/generated_runtime_exporter_write_result.tsv
+PASS: Found data/design/generated_runtime_exporter_write_result.md
+PASS: Allowed candidate count matches diff planned_create count: 2
+PASS: Current expected allowed candidate count is 2.
+FAIL: runtime directory contains non-allowlisted files: runtime_manifest.json
+FAIL: runtime directory must contain exactly allowlisted files: expected=['battle_reward.json', 'card_pool.json'], actual=['battle_reward.json', 'card_pool.json', 'runtime_manifest.json']
+RESULT: FAIL"		false		
+14	manifest	runtime_export_manifest	python3 tools/content_engine/runtime_export_manifest.py	0	PASS	76	Wrote data/runtime/content_engine/runtime_manifest.json, data/design/generated_runtime_export_manifest_report.tsv, data/design/generated_runtime_export_manifest_report.md, and data/design/generated_runtime_export_rollback_report.md.		true		
+15	manifest	runtime_export_manifest_validator	python3 tools/content_engine/runtime_export_manifest_validator.py	0	PASS	79	"PASS: write_result written count is 2.
+PASS: write_result failed_validation count is 0.
+PASS: runtime directory contains only allowlisted files + runtime_manifest.json.
+PASS: manifest lists exactly card_pool.json and battle_reward.json.
+RESULT: PASS"		true		
+16	preflight	runtime_loader_preflight	python3 tools/content_engine/runtime_loader_preflight.py	0	PASS	78	Wrote data/design/generated_runtime_loader_preflight_report.tsv and data/design/generated_runtime_loader_preflight_report.md with 2 preflight rows.		true		
+17	preflight	runtime_loader_preflight_validator	python3 tools/content_engine/runtime_loader_preflight_validator.py	0	PASS	124	"PASS: write_result written count is 2.
+PASS: write_result failed_validation count is 0.
+PASS: runtime directory contains only allowlisted files + runtime_manifest.json.
+PASS: manifest lists exactly card_pool.json and battle_reward.json.
+RESULT: PASS"		true		
+18	scaffold	runtime_loader_scaffold_probe	python3 tools/content_engine/runtime_loader_scaffold_probe.py	0	PASS	118	Wrote data/design/generated_runtime_loader_scaffold_report.tsv and data/design/generated_runtime_loader_scaffold_report.md.		true		
+19	scaffold	runtime_loader_scaffold_validator	python3 tools/content_engine/runtime_loader_scaffold_validator.py	0	PASS	190	"PASS: no existing .gd files reference the scaffold loader
+PASS: runtime dir contains exactly 3 expected files
+PASS: runtime_export_manifest_validator check passed
+RESULT: PASS"		true		
+20	probe	runtime_loader_godot_probe	python3 tools/content_engine/runtime_loader_godot_probe.py	0	PASS	390	Wrote data/design/generated_runtime_loader_godot_probe_report.tsv and data/design/generated_runtime_loader_godot_probe_report.md.		true		
+21	probe	runtime_loader_godot_probe_validator	python3 tools/content_engine/runtime_loader_godot_probe_validator.py	0	PASS	329	"PASS: runtime dir keeps expected 3-file set
+PASS: no existing .gd references to loader/probe
+PASS: runtime_export_manifest_validator passed
+PASS: runtime_loader_scaffold_validator passed
+RESULT: PASS"		true		
+22	negative_fixture	runtime_loader_negative_fixture_builder	python3 tools/content_engine/runtime_loader_negative_fixture_builder.py	0	PASS	74	Built 12 fixtures under data/design/runtime_loader_negative_fixtures.		true		
+23	negative_fixture	runtime_loader_negative_fixture_probe	python3 tools/content_engine/runtime_loader_negative_fixture_probe.py	0	PASS	59	Wrote data/design/generated_runtime_loader_negative_fixture_report.tsv and data/design/generated_runtime_loader_negative_fixture_report.md with 12 fixture rows.		true		
+24	negative_fixture	runtime_loader_negative_fixture_validator	python3 tools/content_engine/runtime_loader_negative_fixture_validator.py	0	PASS	549	"PASS: formal runtime sha256 unchanged
+PASS: runtime dir still has only 3 formal files
+PASS: runtime_export_manifest_validator passed
+PASS: runtime_loader_godot_probe_validator passed
+RESULT: PASS"		true		
+25	hygiene	git_diff_check	git diff --check	0	PASS	41			true		
+26	hygiene	godot_headless_quit	godot --headless --path . --quit	0	PASS	426	"Godot Engine v4.6.2.stable.official.71f334935 - https://godotengine.org
+"		true		
+27	hygiene	godot_headless_mainvisual	godot --headless --path . --quit scenes/MainVisual.tscn	0	PASS	1100	"Godot Engine v4.6.2.stable.official.71f334935 - https://godotengine.org
+
+StoryBattle data validation: OK
+templates=21 decks=26 stats=16 encounters=24
+[settlement-mode] reactive"	"WARNING: 14 RIDs of type ""CanvasItem"" were leaked.
+     at: _free_rids (servers/rendering/renderer_canvas_cull.cpp:2692)
+ERROR: 4 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 14 RID allocations of type 'PN18TextServerAdvanced22ShapedTextDataAdvancedE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2641)
+ERROR: 1 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:810)"	true		warning_detected=true; treated as Godot hygiene issue when exit_code=0
+28	hygiene	runtime_dir_allowed_only_end	<internal-check>	0	PASS	1			true		runtime_files=['battle_reward.json', 'card_pool.json', 'runtime_manifest.json']

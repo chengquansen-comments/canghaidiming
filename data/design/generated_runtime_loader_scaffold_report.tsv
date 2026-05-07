@@ -1,0 +1,2 @@
+scaffold_file	manifest_path	allowed_runtime_files	manifest_first	direct_runtime_read_disallowed	fail_closed	write_api_present	existing_gd_reference_count	integration_status	runtime_dir_file_count	runtime_dir_allowed_only	risk_level	blocked_reason	notes
+scripts/content_engine_runtime_loader.gd	data/runtime/content_engine/runtime_manifest.json	card_pool.json,battle_reward.json	true	true	true	false	0	not_integrated	3	true	low		v0.8e scaffold is read-only and not integrated into main battle flow.

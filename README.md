@@ -26,6 +26,38 @@ godot --headless --quit res://scenes/MainVisual.tscn
 godot --headless --quit res://scenes/NarrativeDemo.tscn
 ```
 
+Web 构建 / 预览入口：
+
+```bash
+python3 tools/subset_cjk_font.py
+python3 tools/validate_cjk_font.py assets/fonts/cjk_font_runtime.ttf
+./tools/build_web_bundle.sh
+./tools/build_and_serve_web.sh
+python3 tools/run_web_preview.py --dir build/web --host 127.0.0.1 --port 8060
+```
+
+Web 部署、字体子集、预算、端口和 GitHub Pages 口径见 [docs/web_refactor_progress.md](docs/web_refactor_progress.md)。
+
+## Content Engine Regression（v0.8h / v0.8i）
+
+当前稳定回归入口：
+
+```bash
+python3 tools/content_engine/content_engine_regression_runner.py
+python3 tools/content_engine/content_engine_regression_validator.py
+```
+
+回归报告输出：
+
+- `data/design/generated_content_engine_regression_report.tsv`
+- `data/design/generated_content_engine_regression_report.md`
+
+v0.8i 仅新增 CI / workflow draft，不接入正式 loader，不替换正式 card/reward 数据源。详见：
+
+- `docs/CONTENT_ENGINE_V0_8I.md`
+- `docs/CONTENT_ENGINE_CI.md`
+- `docs/CONTENT_ENGINE_ROADMAP.md`
+
 ## 当前主链路
 
 | 方向 | 当前入口 | 说明 |

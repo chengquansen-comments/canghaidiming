@@ -281,7 +281,7 @@ Web 运行入口：
 ```text
 scenes/MainWeb.tscn
 → scripts/web_runtime_launcher.gd
-→ scenes/MainVisual.tscn
+→ scenes/NarrativeDemoWeb.tscn / scenes/MainVisual.tscn
 ```
 
 Web 约束：
@@ -290,7 +290,7 @@ Web 约束：
 - 避免高频设置 theme override。
 - 大图源放在 `art_reference/`，运行资源只引用 `assets/`。
 - `build/`、`dist/`、`.godot/` 不作为源文件。
-- Web 构建问题记录在 `docs/web_build_known_issues.md`。
+- Web 部署、预算和本地预览口径记录在 `docs/web_refactor_progress.md`；构建问题附录记录在 `docs/web_build_known_issues.md`。
 
 ## 12. 验收命令
 

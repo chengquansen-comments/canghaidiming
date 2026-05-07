@@ -1,0 +1,17 @@
+battle_slot_id	stage	route_type	battle_type	slot_index	min_count	default_count	max_count	expected_player_realm	expected_lightness_level	enemy_pool_scope	is_fixed	notes
+prologue_01	prologue	common	tutorial	1	1	1	1	1	0	tutorial	TRUE	序章教学 / 剧情战。
+wuju_weapon_01	wuju	common	weapon_trial	1	1	1	1	2	0-1	wuju_weapon	TRUE	长枪兵器试。
+wuju_weapon_02	wuju	common	weapon_trial	2	1	1	1	2-3	0-1	wuju_weapon	TRUE	单刀兵器试。
+wuju_exam_01	wuju	common	exam	3	1	1	1	3	1	wuju_exam	TRUE	步法 / 距离考核。
+wuju_exam_02	wuju	common	exam	4	1	1	1	3	1	wuju_exam	TRUE	兵器 / 招式考核。
+wuju_exam_03	wuju	common	exam	5	1	1	1	3-4	1	wuju_exam	TRUE	对人战考核。
+big_map_normal_pool	big_map	common	normal	1	10	11	12	4-8	1-2	big_map_normal	FALSE	大地图普通战池行，未来可展开为候选 slot。
+big_map_elite_pool	big_map	common	elite	2	3	4	5	7-10	1-2	big_map_elite	FALSE	大地图精英战池行，控制 20%-30% 默认比例。
+normal_boss_01	ending_normal	normal	boss	1	1	1	1	8-9	1-2	boss_normal	TRUE	普通结局 Boss，8-9 境可通。
+true_boss_01	ending_true	true_route	boss	1	1	1	1	9-10	2-3	boss_true	TRUE	真结局 Boss 1。
+true_boss_02	ending_true	true_route	true_boss	2	1	1	1	10	2-3	boss_true	TRUE	真 Boss，按武道 10 境设计。
+wz_exam_01	wuzhuangyuan	wuzhuangyuan	wuzhuangyuan_exam	1	1	1	1	10	2-4	wuzhuangyuan_exam	TRUE	武状元回京考试固定战斗。
+wz_exam_02	wuzhuangyuan	wuzhuangyuan	wuzhuangyuan_exam	2	1	1	1	10	2-4	wuzhuangyuan_exam	TRUE	武状元回京考试固定战斗。
+wz_exam_03	wuzhuangyuan	wuzhuangyuan	wuzhuangyuan_exam	3	1	1	1	10	2-4	wuzhuangyuan_exam	TRUE	武状元回京考试固定战斗。
+wz_exam_04	wuzhuangyuan	wuzhuangyuan	wuzhuangyuan_exam	4	1	1	1	10	2-4	wuzhuangyuan_exam	TRUE	武状元回京考试固定战斗。
+wz_exam_05	wuzhuangyuan	wuzhuangyuan	wuzhuangyuan_exam	5	1	1	1	10	2-4	wuzhuangyuan_exam	TRUE	武状元回京考试固定战斗。

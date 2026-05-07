@@ -1,0 +1,102 @@
+config_id	category	scope	route	stage	metric	min_value	default_value	max_value	unit	value_type	enum_value	is_tunable	source_section	notes
+flow_prologue_battles	flow_count	global	all	prologue	序章战斗数	1	1	1	battle	int		FALSE	二、完整战斗数量规划	剧情教学 / 师父救场
+flow_wuju_total_battles	flow_count	global	all	wuju	武举线总战斗数	5	5	5	battle	int		FALSE	二、完整战斗数量规划	含兵器使用 2 场 + 武举正式考核 3 场
+flow_wuju_weapon_trial_battles	flow_count	global	all	wuju_weapon_trial	武举兵器使用教学战斗数	2	2	2	battle	int		FALSE	四、武举线	并入武举线
+flow_wuju_formal_exam_battles	flow_count	global	all	wuju_formal_exam	武举正式考核战斗数	3	3	3	battle	int		FALSE	四、武举线	步法 / 兵器 / 对人战
+flow_big_map_battles	flow_count	global	all	big_map	大地图实际战斗数	14	15	16	battle	int		TRUE	二、完整战斗数量规划	成长曲线按 15 场测算
+flow_normal_boss_battles	flow_count	ending	normal	boss	普通结局 Boss 数	1	1	1	battle	int		FALSE	二、完整战斗数量规划	8-9 境可通
+flow_true_boss_battles	flow_count	ending	true	boss	真结局 Boss 数	2	2	2	battle	int		FALSE	二、完整战斗数量规划	Boss 1 + 真 Boss
+flow_wuzhuangyuan_exam_battles	flow_count	ending	wuzhuangyuan	wuzhuangyuan_exam	武状元回京考试战斗数	5	5	5	battle	int		FALSE	二、完整战斗数量规划	走完获得武状元特殊结局
+flow_route_total_normal	route_total	ending	normal	full_run	普通结局总战斗数	22	22	22	battle	int		TRUE	二、完整战斗数量规划	序章 1 + 武举 5 + 大地图 15 + 普通 Boss 1
+flow_route_total_true	route_total	ending	true	full_run	真结局总战斗数	23	23	23	battle	int		TRUE	二、完整战斗数量规划	序章 1 + 武举 5 + 大地图 15 + 真结局 Boss 2
+flow_route_total_wuzhuangyuan	route_total	ending	wuzhuangyuan	full_run	武状元特殊结局总战斗数	26	26	26	battle	int		TRUE	二、完整战斗数量规划	序章 1 + 武举 5 + 大地图 15 + 回京考试 5
+big_map_normal_route_normal_battles	big_map_mix	big_map	normal	big_map	普通路线普通战斗数	12	12	12	battle	int		TRUE	五、大地图战斗规划	普通路线：12 普通 + 3 精英
+big_map_normal_route_elite_battles	big_map_mix	big_map	normal	big_map	普通路线精英战斗数	3	3	3	battle	int		TRUE	五、大地图战斗规划	最终 8-9 境
+big_map_standard_route_normal_battles	big_map_mix	big_map	standard	big_map	标准路线普通战斗数	11	11	11	battle	int		TRUE	五、大地图战斗规划	标准路线：11 普通 + 4 精英
+big_map_standard_route_elite_battles	big_map_mix	big_map	standard	big_map	标准路线精英战斗数	4	4	4	battle	int		TRUE	五、大地图战斗规划	接近或达到 10 境
+big_map_elite_route_normal_battles	big_map_mix	big_map	elite	big_map	精英路线普通战斗数	10	10	10	battle	int		TRUE	五、大地图战斗规划	精英路线：10 普通 + 5 精英
+big_map_elite_route_elite_battles	big_map_mix	big_map	elite	big_map	精英路线精英战斗数	5	5	5	battle	int		TRUE	五、大地图战斗规划	稳定 10 境，真结局 / 武状元候选
+big_map_elite_battle_count	big_map_ratio	big_map	all	big_map	每局精英战斗数量	3	4	5	battle	int		TRUE	五、大地图战斗规划	15 场中约 3-5 场精英
+big_map_elite_ratio	big_map_ratio	big_map	all	big_map	精英战比例	0.2	0.27	0.3333	ratio	float		TRUE	五、大地图战斗规划	设计目标约 20%-30%；5/15 为高压路线硬上限，实际约 33.3%
+big_map_segment_count	big_map_structure	big_map	all	big_map	大地图分段数	3	3	3	segment	int		FALSE	五、大地图战斗规划	前段 / 中段 / 后段
+big_map_segment_battles	big_map_structure	big_map	all	big_map_segment	每段战斗数	5	5	5	battle	int		FALSE	五、大地图战斗规划	M01-M05 / M06-M10 / M11-M15
+big_map_early_elite_count	big_map_structure	big_map	all	M01-M05	前段精英数	0	1	1	battle	int		TRUE	五、大地图战斗规划	基础构筑检查，不放连续精英
+big_map_mid_elite_count	big_map_structure	big_map	all	M06-M10	中段精英数	1	2	2	battle	int		TRUE	五、大地图战斗规划	构筑分化
+big_map_late_elite_count	big_map_structure	big_map	all	M11-M15	后段精英数	2	2	2	battle	int		TRUE	五、大地图战斗规划	Boss / 结局路线前压力测试
+big_map_combat_nodes	node_ratio	big_map	all	big_map	大地图战斗节点数	14	15	16	node	int		TRUE	八、经营节点比例	与大地图实际战斗数保持一致
+big_map_operation_nodes	node_ratio	big_map	all	big_map	大地图经营 / 事件 / 修行节点数	7	8	10	node	int		TRUE	八、经营节点比例	占总经过节点 30%-40%
+big_map_total_nodes	node_ratio	big_map	all	big_map	大地图总经过节点数	22	23	26	node	int		TRUE	八、经营节点比例	战斗节点 + 经营节点
+big_map_operation_ratio	node_ratio	big_map	all	big_map	经营节点占比	0.3	0.348	0.4	ratio	float		TRUE	八、经营节点比例	默认 8 / 23 ≈ 34.8%
+big_map_combat_to_operation_ratio	node_ratio	big_map	all	big_map	战斗经营比例	2	2	2	ratio	float		TRUE	八、经营节点比例	战斗 : 经营 ≈ 2 : 1
+max_consecutive_normal_battles	node_mix_rule	big_map	all	big_map	连续普通战斗上限	3	3	3	battle	int		TRUE	十八、战斗与经营混排规则	避免连续战斗过长
+max_consecutive_with_elite_battles	node_mix_rule	big_map	all	big_map	连续含精英战斗上限	2	2	2	battle	int		TRUE	十八、战斗与经营混排规则	精英战后必须出现经营 / 休整 / 奖励节点候选
+build_adjustment_interval	node_mix_rule	global	all	all	构筑调整机会间隔	5	5	5	battle	int		TRUE	十八、战斗与经营混排规则	每 5 场战斗至少 1 次构筑调整机会
+big_map_pool_multiplier	enemy_pool	big_map	all	big_map	大地图候选池倍率	2	2	2	multiplier	float		TRUE	六、大地图敌人池与卡组池	候选池 ≈ 实际体验战斗数量的 2 倍
+big_map_candidate_pool_total	enemy_pool	big_map	all	big_map	大地图候选 battle slot / enemy deck 总数	28	30	32	count	int		TRUE	六、大地图敌人池与卡组池	推荐默认 30
+big_map_normal_enemy_candidates	enemy_pool	big_map	all	big_map_normal	普通敌人候选数	20	22	24	count	int		TRUE	六、大地图敌人池与卡组池	普通敌人实际体验 10-12 的约 2 倍
+big_map_elite_enemy_candidates	enemy_pool	big_map	all	big_map_elite	精英敌人候选数	8	9	10	count	int		TRUE	六、大地图敌人池与卡组池	精英敌人实际体验 3-5 的约 2 倍
+big_map_rare_event_battle_candidates	enemy_pool	big_map	all	big_map_event	稀有 / 事件战斗候选数	2	2	3	count	int		TRUE	六、大地图敌人池与卡组池	可选稀有战斗
+big_map_archetype_count	enemy_pool	big_map	all	big_map	大地图 enemy archetype 数	10	12	14	count	int		TRUE	六、大地图敌人池与卡组池	目标 10-14 个 archetype
+big_map_visual_identity_count	enemy_pool	big_map	all	big_map	大地图视觉身份数	12	14	16	count	int		TRUE	六、大地图敌人池与卡组池	不要求 30 套完全不同敌人美术
+big_map_deck_variant_count	enemy_pool	big_map	all	big_map	大地图 deck variant 数	28	30	32	count	int		TRUE	六、大地图敌人池与卡组池	与大地图候选池对齐
+production_candidate_battle_slots_total	production_scope	global	all	all	总候选 battle slot / deck variant 制作规模	42	45	48	count	int		TRUE	二十、制作数量反推	含序章、武举、大地图、Boss、武状元
+production_deck_minimal_total	production_scope	global	all	all	可运行最小版 deck 总数	32	32	32	deck	int		TRUE	二十、制作数量反推	教学/武举6 + 普通12 + 精英6 + Boss3 + 武状元5
+production_deck_formal_total	production_scope	global	all	all	正式可重复版 deck 总数	42	46	50	deck	int		TRUE	二十、制作数量反推	正式可重复版合计 42-50
+production_visual_identity_total	production_scope	global	all	all	美术身份总数	21	24	28	visual_identity	int		TRUE	二十、制作数量反推	武状元考试敌人可复用京营武官 / 教头 / 殿前考官体系
+production_teaching_wuju_decks	production_scope	global	all	tutorial_wuju	教学 / 武举 deck 数	6	6	6	deck	int		TRUE	二十、制作数量反推	序章 + 武举线
+production_big_map_normal_decks	production_scope	big_map	all	big_map_normal	大地图普通 deck 数	20	22	24	deck	int		TRUE	二十、制作数量反推	正式可重复版
+production_big_map_elite_decks	production_scope	big_map	all	big_map_elite	大地图精英 deck 数	8	9	10	deck	int		TRUE	二十、制作数量反推	正式可重复版
+production_boss_decks	production_scope	ending	all	boss	Boss deck 数	3	4	5	deck	int		TRUE	二十、制作数量反推	普通 Boss + 真结局 Boss + 阶段变体
+production_wuzhuangyuan_decks	production_scope	ending	wuzhuangyuan	wuzhuangyuan_exam	武状元考试 deck 数	5	5	5	deck	int		TRUE	二十、制作数量反推	5 场考试专用
+martial_realm_1_xp_threshold	martial_threshold	global	all	martial_realm	武道第 1 境累计 XP 阈值	0	0	0	martial_xp	int		TRUE	九、武道十境成长	隐藏累计值 martial_xp
+martial_realm_2_xp_threshold	martial_threshold	global	all	martial_realm	武道第 2 境累计 XP 阈值	8	8	8	martial_xp	int		TRUE	九、武道十境成长	隐藏累计值 martial_xp
+martial_realm_3_xp_threshold	martial_threshold	global	all	martial_realm	武道第 3 境累计 XP 阈值	18	18	18	martial_xp	int		TRUE	九、武道十境成长	隐藏累计值 martial_xp
+martial_realm_4_xp_threshold	martial_threshold	global	all	martial_realm	武道第 4 境累计 XP 阈值	30	30	30	martial_xp	int		TRUE	九、武道十境成长	隐藏累计值 martial_xp
+martial_realm_5_xp_threshold	martial_threshold	global	all	martial_realm	武道第 5 境累计 XP 阈值	44	44	44	martial_xp	int		TRUE	九、武道十境成长	隐藏累计值 martial_xp
+martial_realm_6_xp_threshold	martial_threshold	global	all	martial_realm	武道第 6 境累计 XP 阈值	60	60	60	martial_xp	int		TRUE	九、武道十境成长	隐藏累计值 martial_xp
+martial_realm_7_xp_threshold	martial_threshold	global	all	martial_realm	武道第 7 境累计 XP 阈值	78	78	78	martial_xp	int		TRUE	九、武道十境成长	隐藏累计值 martial_xp
+martial_realm_8_xp_threshold	martial_threshold	global	all	martial_realm	武道第 8 境累计 XP 阈值	98	98	98	martial_xp	int		TRUE	九、武道十境成长	隐藏累计值 martial_xp
+martial_realm_9_xp_threshold	martial_threshold	global	all	martial_realm	武道第 9 境累计 XP 阈值	120	120	120	martial_xp	int		TRUE	九、武道十境成长	隐藏累计值 martial_xp
+martial_realm_10_xp_threshold	martial_threshold	global	all	martial_realm	武道第 10 境累计 XP 阈值	145	145	145	martial_xp	int		TRUE	九、武道十境成长	隐藏累计值 martial_xp
+reward_prologue_martial_xp	martial_reward	global	all	prologue	序章 martial_xp 奖励	3	3	3	martial_xp	int		TRUE	九、武道十境成长 / 十、武道成长曲线测算	少量武道，不给轻功突破
+reward_wuju_weapon_trial_martial_xp	martial_reward	global	all	wuju_weapon_trial	武举兵器试 martial_xp 单场奖励	5	5	5	martial_xp	int		TRUE	九、武道十境成长 / 十、武道成长曲线测算	2 场兵器试
+reward_wuju_exam_1_martial_xp	martial_reward	global	all	wuju_exam_1	武举一试 martial_xp 奖励	5	5	5	martial_xp	int		TRUE	九、武道十境成长 / 十、武道成长曲线测算	步法 / 距离
+reward_wuju_exam_2_martial_xp	martial_reward	global	all	wuju_exam_2	武举二试 martial_xp 奖励	6	6	6	martial_xp	int		TRUE	九、武道十境成长 / 十、武道成长曲线测算	兵器 / 招式
+reward_wuju_exam_3_martial_xp	martial_reward	global	all	wuju_exam_3	武举三试 martial_xp 奖励	8	8	8	martial_xp	int		TRUE	九、武道十境成长 / 十、武道成长曲线测算	对人战
+reward_big_map_normal_martial_xp	martial_reward	big_map	all	normal_battle	大地图普通战 martial_xp 单场奖励	5	5	5	martial_xp	int		TRUE	九、武道十境成长 / 十、武道成长曲线测算	普通战斗基准收益
+reward_big_map_elite_martial_xp	martial_reward	big_map	all	elite_battle	大地图精英战 martial_xp 单场奖励	12	12	12	martial_xp	int		TRUE	九、武道十境成长 / 十、武道成长曲线测算	精英路线稳定 10 境的关键收益
+reward_normal_boss_martial_xp	martial_reward	ending	normal	normal_boss	普通 Boss martial_xp 奖励	12	12	12	martial_xp	int		TRUE	九、武道十境成长 / 十、武道成长曲线测算	普通结局 Boss
+reward_true_boss_1_martial_xp	martial_reward	ending	true	true_boss_1	真结局 Boss 1 martial_xp 奖励	12	12	12	martial_xp	int		TRUE	九、武道十境成长 / 十、武道成长曲线测算	旧案守门人 / 军门强敌
+reward_true_boss_final_martial_xp	martial_reward	ending	true	true_boss_final	真 Boss martial_xp 奖励	16	16	16	martial_xp	int		TRUE	九、武道十境成长 / 十、武道成长曲线测算	按第 10 境强度设计
+reward_wz01_martial_xp	martial_reward	ending	wuzhuangyuan	WZ01	武状元 WZ01 martial_xp 奖励	8	8	8	martial_xp	int		TRUE	十五、武状元路线 5 场战斗设计	入京校阅
+reward_wz02_martial_xp	martial_reward	ending	wuzhuangyuan	WZ02	武状元 WZ02 martial_xp 奖励	8	8	8	martial_xp	int		TRUE	十五、武状元路线 5 场战斗设计	步战较艺
+reward_wz03_martial_xp	martial_reward	ending	wuzhuangyuan	WZ03	武状元 WZ03 martial_xp 奖励	9	9	9	martial_xp	int		TRUE	十五、武状元路线 5 场战斗设计	马步兵械
+reward_wz04_martial_xp	martial_reward	ending	wuzhuangyuan	WZ04	武状元 WZ04 martial_xp 奖励	10	10	10	martial_xp	int		TRUE	十五、武状元路线 5 场战斗设计	擂台连胜
+reward_wz05_martial_xp	martial_reward	ending	wuzhuangyuan	WZ05	武状元 WZ05 martial_xp 奖励	12	12	12	martial_xp	int		TRUE	十五、武状元路线 5 场战斗设计	殿前终试
+curve_pre_big_map_martial_xp_total	martial_curve	global	all	pre_big_map	进入大地图前累计 martial_xp	32	32	32	martial_xp	int		TRUE	十、武道成长曲线测算	序章 3 + 兵器试 10 + 武举正式试 19
+curve_normal_route_martial_xp_total	martial_curve	ending	normal	full_run	普通路线 martial_xp 总量	140	140	140	martial_xp	int		TRUE	十、武道成长曲线测算	最终第 9 境附近，保守路线可能第 8 境
+curve_standard_route_martial_xp_total	martial_curve	ending	standard	full_run	标准路线 martial_xp 总量	147	147	147	martial_xp	int		TRUE	十、武道成长曲线测算	第 10 境
+curve_elite_route_pre_boss_martial_xp	martial_curve	ending	elite	before_boss	精英路线大地图结束 martial_xp	142	142	142	martial_xp	int		TRUE	十、武道成长曲线测算	接近第 10 境
+curve_elite_route_after_boss1_martial_xp	martial_curve	ending	elite	after_boss1	精英路线 Boss 1 后 martial_xp	154	154	154	martial_xp	int		TRUE	十、武道成长曲线测算	稳定第 10 境
+realm_10_damage_multiplier	realm_bonus	global	all	martial_realm_10	第 10 境伤害倍率	1.1	1.1	1.1	multiplier	float		TRUE	十一、第 10 境奖励	明确数值收益
+realm_10_break_momentum_multiplier	realm_bonus	global	all	martial_realm_10	第 10 境削势倍率	1.1	1.1	1.1	multiplier	float		TRUE	十一、第 10 境奖励	明确数值收益
+realm_10_max_momentum_bonus	realm_bonus	global	all	martial_realm_10	第 10 境势上限加成	1	1	1	momentum	int		TRUE	十一、第 10 境奖励	max_momentum_bonus
+realm_10_starting_momentum_bonus	realm_bonus	global	all	martial_realm_10	第 10 境起始势加成	1	1	1	momentum	int		TRUE	十一、第 10 境奖励	starting_momentum_bonus
+lightness_initial_level	lightness_rule	global	all	lightness	轻功初始等级	0	0	0	level	int		FALSE	十二、轻功成长规则	常人步法
+lightness_max_level	lightness_rule	global	all	lightness	轻功等级上限	4	4	4	level	int		FALSE	十二、轻功成长规则	极度稀缺横向资源
+lightness_normal_cap	lightness_rule	global	normal	lightness	正常路线轻功上限	2	2	2	level	int		FALSE	十二、轻功成长规则	没有奇遇标记不能超过 2
+lightness_wuju_end_max	lightness_rule	global	all	wuju	武举线结束轻功上限	0	1	1	level	int		TRUE	十二、轻功成长规则	最多不超过 1
+lightness_normal_route_result	lightness_route_result	ending	normal	full_run	普通结局轻功结果	1	2	2	level	int		TRUE	十二、轻功成长规则	普通通关不要求轻功 3-4
+lightness_true_route_result	lightness_route_result	ending	true	full_run	真结局轻功结果	2	2	3	level	int		TRUE	十二、轻功成长规则	轻功 4 是额外优势，不是硬门槛
+lightness_wuzhuangyuan_baseline	lightness_route_result	ending	wuzhuangyuan	wuzhuangyuan_exam	武状元路线轻功基准	2	2	2	level	int		TRUE	十五、武状元路线 5 场战斗设计	轻功 2 可打，3-4 有优势
+lightness_rare_breakthrough_max	lightness_rule	global	rare_encounter	lightness	奇遇下轻功可达上限	3	4	4	level	int		TRUE	十二、轻功成长规则	江湖奇遇 / 师门 / 旧案隐藏 / 武状元考核
+lightness_4_evade_per_battle	lightness_bonus	global	rare_encounter	lightness_4	轻功 4 每战闪避次数	1	1	1	count	int		TRUE	十二、轻功成长规则	建议效果：evade_once_per_battle
+normal_boss_expected_realm_min	boss_rule	ending	normal	normal_boss	普通 Boss 可通武道下限	8	9	10	realm	int		TRUE	十三、Boss 与结局路线 / 十七、路线分流逻辑	第 8 境能通但吃力，第 9 境标准体验
+normal_boss_expected_lightness	boss_rule	ending	normal	normal_boss	普通 Boss 轻功需求	1	2	2	level	int		TRUE	十三、Boss 与结局路线 / 十七、路线分流逻辑	不要求轻功 3-4
+true_boss_expected_realm	boss_rule	ending	true	true_boss_final	真 Boss 武道强度基准	10	10	10	realm	int		TRUE	十三、Boss 与结局路线 / 十七、路线分流逻辑	第 10 境标准挑战
+true_boss_expected_lightness	boss_rule	ending	true	true_boss_final	真 Boss 轻功舒适区	2	3	4	level	int		TRUE	十三、Boss 与结局路线 / 十七、路线分流逻辑	轻功 4 只提供额外优势
+wuzhuangyuan_unlock_martial_realm	route_unlock	ending	wuzhuangyuan	route_unlock	武状元路线武境要求	10	10	10	realm	int		FALSE	十四、武状元路线	大地图后段特殊条件
+wuzhuangyuan_unlock_military_merit	route_unlock	ending	wuzhuangyuan	route_unlock	武状元路线军功要求					enum	high	FALSE	十四、武状元路线	暂定：军功高
+wuzhuangyuan_unlock_elite_battle_count_bonus	route_unlock	ending	wuzhuangyuan	route_unlock	武状元路线推荐精英战数量	4	5	5	battle	int		TRUE	十四、武状元路线	推荐条件：elite_battle_count 4 或以上
+wuzhuangyuan_exam_count	wuzhuangyuan_rule	ending	wuzhuangyuan	wuzhuangyuan_exam	武状元考试场数	5	5	5	battle	int		FALSE	十五、武状元路线 5 场战斗设计	WZ01-WZ05
+wuzhuangyuan_exam_adjustment_min	wuzhuangyuan_rule	ending	wuzhuangyuan	wuzhuangyuan_exam	武状元考试间最低整备次数	1	1	1	node	int		TRUE	十八、战斗与经营混排规则	至少 1 次考试间整备，但不能完全回血重置

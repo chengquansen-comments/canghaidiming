@@ -1,0 +1,2 @@
+probe_script	loader_script	godot_exit_code	probe_ok	manifest_loaded	manifest_valid	runtime_bundle_loaded	loaded_domain_count	loaded_domains	error_count	manifest_first	direct_runtime_read_disallowed	fail_closed	write_api_present	integration_status	blocked_reason	notes
+tools/content_engine/content_engine_loader_probe.gd	scripts/content_engine_runtime_loader.gd	0	true	true	true	true	2	battle_reward,card_pool	0	true	true	true	false	not_integrated		v0.8f probe is headless-only and not integrated into main battle flow.

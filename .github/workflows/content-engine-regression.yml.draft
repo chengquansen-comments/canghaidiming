@@ -1,0 +1,68 @@
+name: Content Engine Regression (Draft)
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_optional_godot_check:
+        description: "Run optional godot headless smoke check job"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+jobs:
+  required_python_regression:
+    name: Required Python Regression
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run content engine regression runner
+        run: python3 tools/content_engine/content_engine_regression_runner.py
+
+      - name: Run content engine regression validator
+        run: python3 tools/content_engine/content_engine_regression_validator.py
+
+      - name: Upload regression reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: content-engine-regression-reports
+          path: |
+            data/design/generated_content_engine_regression_report.tsv
+            data/design/generated_content_engine_regression_report.md
+          if-no-files-found: warn
+
+  optional_godot_headless_check:
+    name: Optional Godot Headless Check
+    runs-on: ubuntu-latest
+    needs: required_python_regression
+    if: ${{ inputs.run_optional_godot_check == 'true' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Godot
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.6.2
+          use-dotnet: false
+          include-templates: false
+
+      - name: Godot headless quit
+        run: godot --headless --path . --quit
+
+      - name: Godot headless MainVisual
+        run: godot --headless --path . --quit scenes/MainVisual.tscn
+
+# NOTE:
+# - This file is a draft by design (`.yml.draft`) and is not auto-enabled as a real Actions workflow.
+# - Before activation, align Godot availability strategy with docs/CONTENT_ENGINE_CI.md.

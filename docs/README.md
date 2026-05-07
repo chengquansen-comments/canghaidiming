@@ -13,7 +13,7 @@
 | [ART_PIPELINE.md](ART_PIPELINE.md) | 活跃 | 美术素材目录、源图映射、资产验收 |
 | [ART_REFERENCE_PROMPTS.md](ART_REFERENCE_PROMPTS.md) | 附录 | 参考图与提示词口径 |
 | [ENGINEERING.md](ENGINEERING.md) | 活跃 | 代码组织、重构优先级、AI 协作、Godot 排障 |
-| [web_refactor_progress.md](web_refactor_progress.md) | 活跃 | Web 化当前状态、验收缺口和已知问题基线 |
+| [web_refactor_progress.md](web_refactor_progress.md) | 活跃 | Web 部署、预算、预览、验收缺口和已知问题基线 |
 
 ## 规则冲突优先级
 

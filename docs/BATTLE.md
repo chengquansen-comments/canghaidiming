@@ -18,6 +18,8 @@
 
 正式剧情战斗的敌我数值与卡组不再以 `enemy_manifest` 为主源。当前主源是 `data/story_battles/*.tsv`，由 `scripts/compile_tables.py` 编译到 `data/story_battles.json` 后运行读取。
 
+招式牌、玩家 / 敌人 / 武器卡组、敌人 archetype 与后续自动平衡验证的目标规范见 [COMBAT_CARD_GRAMMAR_V1.md](COMBAT_CARD_GRAMMAR_V1.md)。该规范是后续迁移目标；若与当前代码冲突，以当前运行代码为准。
+
 ### 规则源优先级
 
 规则冲突时按这个顺序判断：

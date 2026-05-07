@@ -131,15 +131,104 @@ v0.5 建议拆分：
 ### v0.7b runtime export dry-run
 
 - 基于 approval + schema proposal 模拟导出候选和 blocker。
+- 必须同时读取 manifest + validator summary + approval + schema proposal。
+- 输出 `generated_runtime_export_dry_run.tsv` 与 `generated_runtime_export_dry_run.md`。
 - 不写 runtime 文件，只产出可执行计划。
 
-### v0.7c runtime exporter
+### v0.7c manual approval overlay
 
-- runtime exporter 必须读取 manifest / report / validator summary / approval / schema proposal。
-- 只允许导出 validator PASS 且人工批准的 artifact。
+- 改为 manual approval overlay / waiver process（仍在 design layer）。
+- 新增 `runtime_export_approval.tsv` 人工审批表和 overlay 结果表。
+- 允许生成最小可控 `would_export=true` 候选，但不实现 runtime exporter，不写 runtime 文件。
+
+### v0.7d runtime export diff report
+
+- 基于 `generated_runtime_export_approval_overlay.tsv` 生成计划导出差异报告。
+- 只评估 would_export=true 候选与 blocked 记录，不写 runtime 文件。
+- 产出 `generated_runtime_export_diff_report.tsv` 与 `generated_runtime_export_diff_report.md` 用于审查风险。
+
+### v0.8 runtime exporter
+
+- runtime exporter 必须读取 manifest / report / validator summary / approval / schema proposal / overlay 结果。
+- 只允许导出 validator PASS 且人工批准且 waiver 已清理的 artifact。
 - 仍然不直接改战斗核心结算逻辑。
 
-### v0.8 auto battle sampler integration
+### v0.8a runtime exporter scaffold
+
+- 新增 runtime exporter scaffold，默认 no-write preview。
+- 输入 `generated_runtime_export_diff_report.tsv`，仅筛选 allowed planned_create 候选。
+- 产出 `generated_runtime_exporter_plan.tsv` 与 `generated_runtime_exporter_plan.md`。
+- `--write-runtime` 在本阶段禁用，不创建 `data/runtime/content_engine/`。
+
+### v0.8b runtime exporter guarded write mode
+
+- 默认 no-write 仍是安全默认；不带参数运行不得创建 `data/runtime/content_engine/`。
+- 真实写入必须同时提供 `--write-runtime --confirm-runtime-export`。
+- 写入候选严格来自 `generated_runtime_exporter_plan.tsv` 的 allowed planned_create 记录。
+- 仅允许写入白名单 runtime 文件：
+  - `data/runtime/content_engine/card_pool.json`
+  - `data/runtime/content_engine/battle_reward.json`
+- 产出新增 `generated_runtime_exporter_write_result.tsv` 与 `generated_runtime_exporter_write_result.md`。
+- v0.8b 只写 runtime content files，不接入 Godot runtime loader，不修改 Godot 运行时逻辑。
+
+### v0.8c runtime manifest / checksum / rollback report
+
+- 在 v0.8b runtime 写入结果基础上新增 runtime 文件治理层。
+- 产出 `data/runtime/content_engine/runtime_manifest.json`。
+- 产出 `generated_runtime_export_manifest_report.tsv` 与 `generated_runtime_export_manifest_report.md`。
+- 产出 `generated_runtime_export_rollback_report.md`，用于明确回滚步骤与重跑顺序。
+- manifest 仅登记白名单 runtime 文件（`card_pool.json` / `battle_reward.json`），并校验 `sha256` 与 `file_size_bytes`。
+- v0.8c 不接入 Godot loader；loader preflight/read-only loader 放到 v0.8d 或 v0.9 再评估。
+
+### v0.8d Godot loader preflight report（analysis-only）
+
+- 基于 `runtime_manifest.json` + runtime files + manifest report 生成 preflight 报告。
+- 新增 `generated_runtime_loader_preflight_report.tsv` 与 `generated_runtime_loader_preflight_report.md`。
+- 明确 manifest-first / failure mode / fallback source / future touchpoints 建议，但不实现 loader。
+- 不新增任何 `.gd` loader 文件，不修改现有 Godot 运行时逻辑文件。
+
+### v0.8e read-only Godot loader scaffold
+
+- 新增 `scripts/content_engine_runtime_loader.gd` 作为独立只读 scaffold。
+- loader 仅做 manifest-first 校验与只读解析，失败时 fail-closed。
+- 不接入主流程，不替换正式 card/reward 数据源。
+- 输出 `generated_runtime_loader_scaffold_report.tsv` 与 `generated_runtime_loader_scaffold_report.md`。
+- integration_status 保持 `not_integrated`。
+
+
+### v0.8f Godot loader probe / headless-only harness
+
+- 新增 `tools/content_engine/content_engine_loader_probe.gd`（headless-only probe）。
+- 通过 `runtime_loader_godot_probe.py` 调用 Godot 并解析 stdout marker JSON。
+- 产出 `generated_runtime_loader_godot_probe_report.tsv` 与 `generated_runtime_loader_godot_probe_report.md`。
+- 保持 `integration_status=not_integrated`，不接入主流程，不替换正式数据源。
+
+
+### v0.8g negative-case / fixture tests
+
+- 新增 runtime loader negative fixtures（位于 `data/design/`，不污染正式 runtime）。
+- 覆盖 checksum/fingerprint/unknown file/unsafe path/malformed JSON/domain-count mismatch 等异常。
+- 产出 `generated_runtime_loader_negative_fixture_report.tsv` 与 `generated_runtime_loader_negative_fixture_report.md`。
+- 目标是验证 fail-closed，不接入正式 loader。
+
+
+### v0.8h CI-friendly regression runner
+
+- 新增统一回归入口：`content_engine_regression_runner.py`。
+- 将 v0.7b -> v0.8g 验收链路收束为 step 化执行与报告输出。
+- 产出 `generated_content_engine_regression_report.tsv` 与 `generated_content_engine_regression_report.md`。
+- no-write 语义升级为“preview 不改变正式 runtime 文件”，不再要求 runtime 目录必须不存在。
+
+### v0.8i CI / workflow draft
+
+- 新增 CI/workflow draft（文档 + workflow 模板），用于稳定运行 content engine regression。
+- 核心命令固定为：
+  - `python3 tools/content_engine/content_engine_regression_runner.py`
+  - `python3 tools/content_engine/content_engine_regression_validator.py`
+- 允许将 Godot headless 检查作为 optional job（当 CI 环境已安装 Godot 时启用）。
+- v0.8i 不新增 runtime 功能，不接入正式 loader，不替换 card/reward 正式数据源。
+
+### v0.9 auto battle sampler integration
 
 - 接入自动战斗采样。
 - 输出 balance report 并回写设计建议。

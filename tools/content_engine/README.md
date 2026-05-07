@@ -283,3 +283,270 @@ python3 tools/content_engine/runtime_schema_proposal_validator.py \
 ```
 
 v0.7a only defines runtime export schema proposal and policy boundaries. It does not create runtime JSON files, does not implement runtime exporter, and does not modify Godot runtime scripts.
+
+## v0.7b Runtime Export Dry-Run
+
+Generate runtime export dry-run decision table and report:
+
+```bash
+python3 tools/content_engine/runtime_export_dry_run.py \
+  --design-dir data/design \
+  --out data/design/generated_runtime_export_dry_run.tsv \
+  --out-md data/design/generated_runtime_export_dry_run.md
+```
+
+Validate dry-run outputs:
+
+```bash
+python3 tools/content_engine/runtime_export_dry_run_validator.py \
+  --design-dir data/design
+```
+
+v0.7b simulates export decisions from manifest + validator summary + approval + runtime schema proposal. It does not write runtime JSON, does not create `data/runtime/content_engine/`, and does not modify Godot runtime scripts.
+
+## v0.7c Runtime Export Approval Overlay
+
+Prepare manual approval table:
+
+`data/design/runtime_export_approval.tsv`
+
+Generate overlay results:
+
+```bash
+python tools/content_engine/runtime_export_approval_overlay.py \
+  --design-dir data/design \
+  --approval-tsv data/design/runtime_export_approval.tsv \
+  --out data/design/generated_runtime_export_approval_overlay.tsv \
+  --out-md data/design/generated_runtime_export_approval_overlay.md
+```
+
+Validate approval + overlay outputs:
+
+```bash
+python tools/content_engine/runtime_export_approval_validator.py \
+  --design-dir data/design
+```
+
+v0.7c only applies manual approval overlay and waiver gating on top of dry-run inputs. It does not implement runtime exporter, does not write runtime JSON, does not create `data/runtime/content_engine/`, and does not modify Godot runtime scripts.
+
+## v0.7d Runtime Export Diff Report
+
+Generate runtime export diff report from overlay:
+
+```bash
+python3 tools/content_engine/runtime_export_diff_report.py \
+  --design-dir data/design \
+  --overlay data/design/generated_runtime_export_approval_overlay.tsv \
+  --out data/design/generated_runtime_export_diff_report.tsv \
+  --out-md data/design/generated_runtime_export_diff_report.md
+```
+
+Validate diff report outputs:
+
+```bash
+python3 tools/content_engine/runtime_export_diff_report_validator.py \
+  --design-dir data/design
+```
+
+v0.7d only produces design-layer planned export diff records. It does not implement runtime exporter, does not write runtime files, and does not create `data/runtime/content_engine/`.
+
+## v0.8a Runtime Exporter Scaffold (No-Write)
+
+Generate exporter scaffold plan from diff report:
+
+```bash
+python3 tools/content_engine/runtime_exporter.py \
+  --design-dir data/design \
+  --diff-report data/design/generated_runtime_export_diff_report.tsv \
+  --out data/design/generated_runtime_exporter_plan.tsv \
+  --out-md data/design/generated_runtime_exporter_plan.md
+```
+
+Validate exporter scaffold plan:
+
+```bash
+python3 tools/content_engine/runtime_exporter_validator.py \
+  --design-dir data/design
+```
+
+v0.8a keeps exporter in preview-only mode and does not write runtime files. `--write-runtime` is intentionally disabled in this stage.
+
+## v0.8b Runtime Exporter Guarded Write Mode
+
+Generate exporter plan + write-result in default no-write mode:
+
+```bash
+python3 tools/content_engine/runtime_exporter.py \
+  --design-dir data/design \
+  --diff-report data/design/generated_runtime_export_diff_report.tsv \
+  --out data/design/generated_runtime_exporter_plan.tsv \
+  --out-md data/design/generated_runtime_exporter_plan.md \
+  --write-result-out data/design/generated_runtime_exporter_write_result.tsv \
+  --write-result-md data/design/generated_runtime_exporter_write_result.md
+```
+
+Guarded write (requires both flags):
+
+```bash
+python3 tools/content_engine/runtime_exporter.py \
+  --write-runtime \
+  --confirm-runtime-export
+```
+
+Validate no-write outputs:
+
+```bash
+python3 tools/content_engine/runtime_exporter_validator.py \
+  --design-dir data/design
+```
+
+Validate guarded-write outputs:
+
+```bash
+python3 tools/content_engine/runtime_exporter_validator.py \
+  --design-dir data/design \
+  --allow-runtime-files
+```
+
+v0.8b keeps no-write as safe default. Runtime write is enabled only when both `--write-runtime` and `--confirm-runtime-export` are present. Guarded write allowlist is limited to:
+
+- `data/runtime/content_engine/card_pool.json`
+- `data/runtime/content_engine/battle_reward.json`
+
+This stage only writes runtime content files and does not modify Godot loader/runtime logic.
+
+## v0.8c Runtime Manifest / Checksum / Rollback Report
+
+Generate runtime manifest + checksum report + rollback report:
+
+```bash
+python3 tools/content_engine/runtime_export_manifest.py \
+  --write-result data/design/generated_runtime_exporter_write_result.tsv \
+  --out-manifest data/runtime/content_engine/runtime_manifest.json \
+  --out-report data/design/generated_runtime_export_manifest_report.tsv \
+  --out-report-md data/design/generated_runtime_export_manifest_report.md \
+  --out-rollback-md data/design/generated_runtime_export_rollback_report.md
+```
+
+Validate manifest outputs:
+
+```bash
+python3 tools/content_engine/runtime_export_manifest_validator.py
+```
+
+v0.8c only governs runtime content files and adds audit metadata:
+
+- runtime manifest registry (`runtime_manifest.json`)
+- runtime file checksum (`sha256`) and file size tracking
+- rollback operation report
+
+This stage does not connect to Godot loader and does not modify Godot runtime or battle logic.
+
+## v0.8d Godot Loader Preflight Report (Analysis-Only)
+
+Generate loader preflight report from runtime manifest + runtime files:
+
+```bash
+python3 tools/content_engine/runtime_loader_preflight.py \
+  --manifest data/runtime/content_engine/runtime_manifest.json \
+  --manifest-report data/design/generated_runtime_export_manifest_report.tsv \
+  --card-pool data/runtime/content_engine/card_pool.json \
+  --battle-reward data/runtime/content_engine/battle_reward.json \
+  --out data/design/generated_runtime_loader_preflight_report.tsv \
+  --out-md data/design/generated_runtime_loader_preflight_report.md
+```
+
+Validate preflight outputs:
+
+```bash
+python3 tools/content_engine/runtime_loader_preflight_validator.py
+```
+
+v0.8d is preflight-only:
+
+- no Godot loader implementation
+- no `.gd` runtime/loader file changes
+- manifest-first read strategy proposal only
+- failure mode + fallback strategy proposal only
+
+
+## v0.8e Read-Only Godot Loader Scaffold
+
+Run static scaffold probe:
+
+```bash
+python3 tools/content_engine/runtime_loader_scaffold_probe.py
+```
+
+Validate scaffold constraints:
+
+```bash
+python3 tools/content_engine/runtime_loader_scaffold_validator.py
+```
+
+v0.8e only adds an isolated read-only loader scaffold file:
+
+- `scripts/content_engine_runtime_loader.gd`
+- manifest-first entry and whitelist checks
+- fail-closed behavior on any validation error
+- `integration_status=not_integrated` (not wired into battle/main flow)
+
+This stage does not replace existing card/reward data sources.
+
+
+## v0.8f Godot Loader Probe / Headless-Only Harness
+
+Run Godot headless probe and generate design-layer report:
+
+```bash
+python3 tools/content_engine/runtime_loader_godot_probe.py
+```
+
+Validate probe outputs and isolation constraints:
+
+```bash
+python3 tools/content_engine/runtime_loader_godot_probe_validator.py
+```
+
+v0.8f proves that Godot can call the read-only loader scaffold in headless mode.
+It does not integrate loader into battle/main flow and does not replace existing card/reward data sources.
+
+
+## v0.8g Negative-Case / Fixture Tests
+
+Build isolated fixtures under `data/design/runtime_loader_negative_fixtures/`:
+
+```bash
+python3 tools/content_engine/runtime_loader_negative_fixture_builder.py
+```
+
+Run fixture probe and generate report:
+
+```bash
+python3 tools/content_engine/runtime_loader_negative_fixture_probe.py
+```
+
+Validate fixture report and isolation constraints:
+
+```bash
+python3 tools/content_engine/runtime_loader_negative_fixture_validator.py
+```
+
+v0.8g verifies fail-closed behavior across negative runtime bundle cases without touching formal runtime files.
+
+
+## v0.8h CI-Friendly Regression Runner
+
+Run unified regression chain:
+
+```bash
+python3 tools/content_engine/content_engine_regression_runner.py
+```
+
+Validate regression report:
+
+```bash
+python3 tools/content_engine/content_engine_regression_validator.py
+```
+
+v0.8h aggregates v0.7b->v0.8g checks into one CI-friendly entrypoint and reports step-level execution telemetry.

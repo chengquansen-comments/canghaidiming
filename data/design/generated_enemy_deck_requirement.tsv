@@ -1,0 +1,7 @@
+requirement_id	scope	route_type	battle_type	actual_battle_count_min	actual_battle_count_default	actual_battle_count_max	pool_multiplier	required_deck_count_min	required_deck_count_default	required_deck_count_max	recommended_archetype_count	recommended_visual_identity_count	notes
+big_map_normal	big_map_normal	common	normal	10	11	12	2.0	20	22	24	8	10	普通敌人候选池，按约 2 倍体验量准备。
+big_map_elite	big_map_elite	common	elite	3	4	5	2.0	6	8	10	4	6	精英敌人候选池，默认 8 个 deck。
+big_map_total	big_map	common	mixed	14	15	16	2.0	28	30	32	12	14	大地图总候选池，约为实际体验战斗数 2 倍。
+boss_normal	boss_normal	normal	boss	1	1	1	1.0	1	1	1	1	1	Boss 不走 2 倍随机池。
+boss_true	boss_true	true_route	boss	2	2	2	1.0	2	2	2	2	2	真结局两个 Boss deck。
+wuzhuangyuan_exam	wuzhuangyuan_exam	wuzhuangyuan	wuzhuangyuan_exam	5	5	5	1.0	5	5	5	5	3	武状元路线固定考试，不走 2 倍池。
