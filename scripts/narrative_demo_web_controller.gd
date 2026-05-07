@@ -1,4 +1,4 @@
-extends "res://scripts/narrative_demo_safe_controller.gd"
+extends "res://scripts/narrative_demo_ui_focus_tuned_controller.gd"
 
 const WebRuntimeFlags := preload("res://scripts/web_runtime_flags.gd")
 

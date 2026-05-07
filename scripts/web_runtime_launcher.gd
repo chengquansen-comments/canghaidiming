@@ -88,7 +88,7 @@ func _show_main_menu() -> void:
 	_content_box.add_child(title)
 
 	var subtitle := Label.new()
-	subtitle.text = "剧情 MVP 和战斗测试已经分开。先体验压缩叙事，或直接进入当前选角色战斗入口。"
+	subtitle.text = "剧情 MVP 和战斗测试已经分开。先体验正式剧情流程，或直接进入当前选角色战斗入口。"
 	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	subtitle.custom_minimum_size = Vector2(640, 0)
@@ -175,7 +175,7 @@ func _status_text() -> String:
 	var lines: Array[String] = []
 	lines.append("运行环境：%s" % ("Web 浏览器" if OS.has_feature("web") else "本地运行"))
 	lines.append("窗口大小：%d × %d" % [int(viewport_size.x), int(viewport_size.y)])
-	lines.append("剧情入口：压缩版叙事 MVP；战斗入口：当前选角色战斗测试。")
+	lines.append("剧情入口：正式剧情 MVP；战斗入口：当前选角色战斗测试。")
 	return "\n".join(lines)
 
 func _auto_enter_visual_scene_for_smoke() -> void:

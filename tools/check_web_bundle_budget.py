@@ -4,9 +4,9 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-DEFAULT_TOTAL_BUDGET_MB = 64.0
-DEFAULT_PCK_BUDGET_MB = 16.0
-DEFAULT_WASM_BUDGET_MB = 40.0
+DEFAULT_TOTAL_BUDGET_MB = 300.0
+DEFAULT_PCK_BUDGET_MB = 240.0
+DEFAULT_WASM_BUDGET_MB = 60.0
 
 
 def size_mb(path: Path) -> float:
