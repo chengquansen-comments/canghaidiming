@@ -35,3 +35,22 @@ Operation node ratio (`30%-40%`) is now validated from `generated_operation_node
 This table is also the planned input for `operation_node_generator` and `narrative_node_generator`.
 
 For v0.2, `enemy_archetype_generator` should consume both battle-slot and operation-node structures to avoid overproducing combat-only content.
+
+## v0.2 Archetype Generator
+
+Generate deterministic enemy archetype skeletons:
+
+```bash
+python3 tools/content_engine/enemy_archetype_generator.py \
+  --design-dir data/design \
+  --out data/design/generated_enemy_archetype_pool.tsv
+```
+
+Validate generated archetype pool:
+
+```bash
+python3 tools/content_engine/enemy_archetype_validator.py \
+  --design-dir data/design
+```
+
+v0.2 still does not generate concrete decks or card lists. It only produces archetype pool structure for v0.3 deck skeleton work.

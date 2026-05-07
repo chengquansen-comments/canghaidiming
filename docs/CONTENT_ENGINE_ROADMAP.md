@@ -27,11 +27,19 @@ Content Engine 建议按六层推进：
 
 结果是“经营节点占比 30%-40%”从文档约束升级为设计层表约束，可被 builder 生成并被 validator 检查。
 
+## v0.2 本次新增
+
+本阶段新增：
+
+- `data/design/generated_enemy_archetype_pool.tsv`
+
+该输出是敌人类型骨架池，只定义 archetype、战斗定位、复杂度、距离偏好、检查点和建议 deck 变体数量，不生成具体卡组与具体卡牌。
+
 ## 后续阶段边界
 
 ### v0.2 enemy_archetype_generator
 
-- 只生成 `enemy_archetype_pool.tsv`。
+- 只生成 `generated_enemy_archetype_pool.tsv`。
 - 不生成具体卡组。
 - 输入至少读取 battle slot + operation node 两类结构。
 
