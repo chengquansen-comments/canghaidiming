@@ -1,0 +1,16 @@
+{
+  "package_type": "reward_preview",
+  "generated_at": "2026-05-07T12:14:50+00:00",
+  "source_artifact": "generated_battle_reward_plan",
+  "source_row_count": 45,
+  "exported_reward_count": 45,
+  "runtime_ready": false,
+  "output_path": "data/runtime_preview/content_engine/battle_rewards.preview.json",
+  "selected_reward_policy": "legacy",
+  "runtime_allowed": false,
+  "blockers": [
+    "runtime_loader_disabled",
+    "preview_only",
+    "not_runtime_export"
+  ]
+}
