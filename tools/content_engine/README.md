@@ -149,3 +149,22 @@ python3 tools/content_engine/operation_node_validator.py \
 ```
 
 v0.5b only produces design-layer operation nodes; it does not generate narrative text, route gates, or runtime operation data.
+
+## v0.5c Narrative Node Generator
+
+Generate deterministic design-layer narrative node skeleton plan:
+
+```bash
+python3 tools/content_engine/narrative_node_generator.py \
+  --design-dir data/design \
+  --out data/design/generated_narrative_node_plan.tsv
+```
+
+Validate generated narrative node skeleton plan:
+
+```bash
+python3 tools/content_engine/narrative_node_validator.py \
+  --design-dir data/design
+```
+
+v0.5c only produces narrative skeleton structure (keys, tags, flags, roles). It does not write formal narrative body text, route gate tables, runtime narrative data, or any combat runtime logic.

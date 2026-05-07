@@ -81,6 +81,14 @@ v0.5 建议拆分：
 
 本阶段继续保持设计层，不改战斗运行时。
 
+#### v0.5c 当前落地
+
+- 新增输出：`data/design/generated_narrative_node_plan.tsv`
+- 输入来源：operation node / battle reward / route curve / battle slot
+- 仅生成结构化 narrative skeleton，不写正式正文
+- 约束：`should_write_body=false`、`line_budget<=1`、`preview_key/result_key` 分离
+- 输出标签可直接作为 v0.5d route gate 汇总输入
+
 ### v0.6 runtime exporter
 
 - 从 design 表导出运行时数据。
