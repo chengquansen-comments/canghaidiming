@@ -245,3 +245,20 @@ python3 tools/content_engine/content_validator_summary_validator.py \
 ```
 
 v0.6c only orchestrates validators, writes `generated_validator_summary.tsv`, `generated_validator_summary.md`, and `data/design/validator_logs/*.log`, and keeps the workflow fully inside the design layer. It does not rerun generators, does not export runtime data, and does not modify Godot runtime scripts.
+
+
+## v0.6d Content Package Approval Gate
+
+Generate design-layer content package approval table and report:
+
+```bash
+python3 tools/content_engine/content_package_approval_generator.py   --design-dir data/design   --out data/design/generated_content_package_approval.tsv   --out-md data/design/generated_content_package_approval_report.md
+```
+
+Validate approval outputs:
+
+```bash
+python3 tools/content_engine/content_package_approval_validator.py   --design-dir data/design
+```
+
+v0.6d only produces an approval template layer from manifest + validator summary. It does not auto-approve any artifact, does not export runtime data, and does not modify Godot runtime scripts.

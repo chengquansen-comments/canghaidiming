@@ -119,6 +119,7 @@ v0.5 建议拆分：
 ### v0.6d content package approval
 
 - 在 manifest / report / validator summary 基础上做人审批准。
+- 新增 approval table，默认不自动批准任何 artifact。
 - 仅允许被明确批准的 artifact 进入后续 runtime exporter 候选集。
 
 ### v0.7 runtime exporter
