@@ -35,6 +35,16 @@ Content Engine 建议按六层推进：
 
 该输出是敌人类型骨架池，只定义 archetype、战斗定位、复杂度、距离偏好、检查点和建议 deck 变体数量，不生成具体卡组与具体卡牌。
 
+## v0.3 本次新增
+
+本阶段新增：
+
+- `data/design/generated_enemy_deck_skeleton.tsv`
+
+该输出是敌人卡组骨架，只定义 deck skeleton ID、变体定位、卡组规模、卡牌角色计数、武器标签约束、禁用标签、AI 行为提示和奖励压力级别。
+
+v0.3 仍不填具体 `card_id`，不生成正式敌人 deck，不生成正式卡牌，不修改 Godot 战斗运行时，也不接入 LLM API。
+
 ## 后续阶段边界
 
 ### v0.2 enemy_archetype_generator
@@ -47,11 +57,12 @@ Content Engine 建议按六层推进：
 
 - 生成 deck 骨架（slot、role 比例、武器约束）。
 - 不直接填完整卡牌。
+- 输出 `generated_enemy_deck_skeleton.tsv`，作为 v0.4 具体卡池与敌人 deck set 的输入。
 
 ### v0.4 card_pool / enemy_deck_sets
 
 - 生成或筛选具体卡池。
-- 将可用卡牌填充到敌人卡组集合。
+- 根据 deck skeleton 与 `docs/COMBAT_CARD_GRAMMAR_V1.md` 将可用卡牌填充到敌人卡组集合。
 
 ### v0.5 reward / narrative / route gate
 

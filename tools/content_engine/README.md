@@ -54,3 +54,22 @@ python3 tools/content_engine/enemy_archetype_validator.py \
 ```
 
 v0.2 still does not generate concrete decks or card lists. It only produces archetype pool structure for v0.3 deck skeleton work.
+
+## v0.3 Deck Skeleton Generator
+
+Generate deterministic enemy deck skeletons:
+
+```bash
+python3 tools/content_engine/enemy_deck_skeleton_generator.py \
+  --design-dir data/design \
+  --out data/design/generated_enemy_deck_skeleton.tsv
+```
+
+Validate generated deck skeletons:
+
+```bash
+python3 tools/content_engine/enemy_deck_skeleton_validator.py \
+  --design-dir data/design
+```
+
+v0.3 still does not fill concrete `card_id` values, generate formal enemy decks, generate formal cards, modify Godot runtime logic, or call an LLM API. It only produces deck skeleton constraints for v0.4 card pool and enemy deck set generation.
