@@ -97,12 +97,25 @@ v0.5 建议拆分：
 - 处理 true_route 与 wuzhuangyuan 条件并发时的玩家选择 gate
 - 继续保持设计层，不改 Godot 运行时逻辑
 
-### v0.6 runtime exporter
+### v0.6a content package manifest
 
-- 从 design 表导出运行时数据。
+- 新增 `generated_content_package_manifest.tsv`。
+- 统一登记 design-layer artifact、依赖、row count、checksum、validator 状态和 runtime blockers。
+- 继续保持设计层，不导出 runtime data。
+
+### v0.6b content package report
+
+- 基于 manifest 生成 `generated_content_package_report.md`。
+- 汇总数量、依赖、风险、validator 状态和 runtime blockers。
+- 为人工批准和 runtime exporter 做准备。
+
+### v0.7 runtime exporter
+
+- runtime exporter 必须读取 manifest，而不是直接扫 design 表。
+- 只允许导出 validator PASS 且人工批准的 artifact。
 - 仍然不直接改战斗核心结算逻辑。
 
-### v0.7 auto battle sampler integration
+### v0.8 auto battle sampler integration
 
 - 接入自动战斗采样。
 - 输出 balance report 并回写设计建议。

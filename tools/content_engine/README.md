@@ -1,4 +1,4 @@
-# Content Engine v0.1 Tools
+# Content Engine Tools
 
 This directory contains the first numeric planning tools for Content Engine.
 
@@ -187,3 +187,22 @@ python3 tools/content_engine/route_gate_validator.py \
 ```
 
 v0.5d only produces design-layer route gate structure by aggregating battle reward / operation node / narrative node tags and flags. It does not write runtime route gate data and does not modify Godot combat runtime scripts.
+
+## v0.6a Content Package Manifest
+
+Generate design-layer content package manifest:
+
+```bash
+python3 tools/content_engine/content_package_manifest_generator.py \
+  --design-dir data/design \
+  --out data/design/generated_content_package_manifest.tsv
+```
+
+Validate manifest integrity:
+
+```bash
+python3 tools/content_engine/content_package_manifest_validator.py \
+  --design-dir data/design
+```
+
+v0.6a only records design-layer artifacts, dependencies, row counts, checksums, validator status fields, and runtime export blockers. It does not generate runtime data, does not implement a runtime exporter, and does not modify Godot runtime scripts.
