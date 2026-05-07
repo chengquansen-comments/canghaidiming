@@ -1,6 +1,6 @@
 # Content Engine 交付验收执行报告
 
-- run_id=acceptance-20260507T122036Z-eb0e8ac6
+- run_id=acceptance-20260507T123525Z-32fdba1d
 - acceptance_status=PASS
 - blocking_fail_count=0
 
@@ -8,12 +8,12 @@
 
 | step_id | check_id | exit_code | status | duration_ms |
 |---|---|---|---|---|
-| 1 | battle_reward_shadow_freeze_probe | 0 | PASS | 178 |
-| 2 | battle_reward_shadow_freeze_validator | 0 | PASS | 65 |
-| 3 | battle_reward_runtime_test_harness | 0 | PASS | 145 |
-| 4 | battle_reward_runtime_test_harness_validator | 0 | PASS | 58 |
-| 5 | content_engine_regression_runner | 0 | PASS | 5430 |
-| 6 | content_engine_regression_validator | 0 | PASS | 959 |
+| 1 | battle_reward_shadow_freeze_probe | 0 | PASS | 195 |
+| 2 | battle_reward_shadow_freeze_validator | 0 | PASS | 63 |
+| 3 | battle_reward_runtime_test_harness | 0 | PASS | 108 |
+| 4 | battle_reward_runtime_test_harness_validator | 0 | PASS | 54 |
+| 5 | content_engine_regression_runner | 0 | PASS | 5981 |
+| 6 | content_engine_regression_validator | 0 | PASS | 919 |
 
 ## 说明
 

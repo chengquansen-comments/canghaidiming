@@ -12,5 +12,6 @@
     "runtime_loader_disabled",
     "preview_only",
     "not_runtime_export"
-  ]
+  ],
+  "preview_only": true
 }

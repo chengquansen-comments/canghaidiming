@@ -949,5 +949,7 @@
       "can_trigger_wuzhuangyuan_route": false,
       "ending_route": "wuzhuangyuan"
     }
-  ]
+  ],
+  "preview_only": true,
+  "generated_at": "2026-05-07T12:35:25Z"
 }

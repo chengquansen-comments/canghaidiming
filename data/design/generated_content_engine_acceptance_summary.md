@@ -1,6 +1,6 @@
 # Content Engine Acceptance Summary
 
-- run_id=acceptance-20260507T122036Z-eb0e8ac6
+- run_id=acceptance-20260507T123525Z-32fdba1d
 - overall_status=PASS
 - selected_reward: legacy
 - runtime_loader_config: disabled

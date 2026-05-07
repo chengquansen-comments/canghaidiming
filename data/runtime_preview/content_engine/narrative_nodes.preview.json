@@ -1,0 +1,262 @@
+{
+  "package_type": "narrative_nodes_preview",
+  "runtime_ready": false,
+  "preview_only": true,
+  "source_artifact": "generated_narrative_node_plan",
+  "generated_at": "2026-05-07T12:35:25Z",
+  "selected_reward_policy": "legacy",
+  "narrative_nodes": [
+    {
+      "narrative_node_id": "nar_op_op_training_upgrade_01",
+      "source_id": "op_training_upgrade_01",
+      "node_kind": "operation_hook",
+      "narrative_role": "setup",
+      "hook_tags": "master_teaching",
+      "hook_line": "",
+      "trigger_stage": "big_map_early"
+    },
+    {
+      "narrative_node_id": "nar_op_op_camp_rest_01",
+      "source_id": "op_camp_rest_01",
+      "node_kind": "operation_hook",
+      "narrative_role": "setup",
+      "hook_tags": "camp_rest",
+      "hook_line": "",
+      "trigger_stage": "big_map_early"
+    },
+    {
+      "narrative_node_id": "nar_op_op_military_gate_merit_01",
+      "source_id": "op_military_gate_merit_01",
+      "node_kind": "military_gate",
+      "narrative_role": "pressure",
+      "hook_tags": "military_gate",
+      "hook_line": "",
+      "trigger_stage": "big_map_mid"
+    },
+    {
+      "narrative_node_id": "nar_op_op_weapon_service_01",
+      "source_id": "op_weapon_service_01",
+      "node_kind": "operation_hook",
+      "narrative_role": "setup",
+      "hook_tags": "weapon_service",
+      "hook_line": "",
+      "trigger_stage": "big_map_mid"
+    },
+    {
+      "narrative_node_id": "nar_op_op_master_teaching_01",
+      "source_id": "op_master_teaching_01",
+      "node_kind": "operation_hook",
+      "narrative_role": "setup",
+      "hook_tags": "master_teaching",
+      "hook_line": "",
+      "trigger_stage": "big_map_mid"
+    },
+    {
+      "narrative_node_id": "nar_op_op_market_rumor_01",
+      "source_id": "op_market_rumor_01",
+      "node_kind": "operation_hook",
+      "narrative_role": "setup",
+      "hook_tags": "market_rumor",
+      "hook_line": "",
+      "trigger_stage": "big_map_mid"
+    },
+    {
+      "narrative_node_id": "nar_op_op_old_case_clue_01",
+      "source_id": "op_old_case_clue_01",
+      "node_kind": "old_case_clue",
+      "narrative_role": "clue",
+      "hook_tags": "old_case",
+      "hook_line": "",
+      "trigger_stage": "big_map_late"
+    },
+    {
+      "narrative_node_id": "nar_op_op_boss_prepare_01",
+      "source_id": "op_boss_prepare_01",
+      "node_kind": "boss_prepare",
+      "narrative_role": "preparation",
+      "hook_tags": "boss_prepare",
+      "hook_line": "",
+      "trigger_stage": "boss_prepare"
+    },
+    {
+      "narrative_node_id": "nar_op_op_lightness_encounter_01",
+      "source_id": "op_lightness_encounter_01",
+      "node_kind": "lightness_encounter",
+      "narrative_role": "choice",
+      "hook_tags": "lightness_encounter",
+      "hook_line": "",
+      "trigger_stage": "big_map_late"
+    },
+    {
+      "narrative_node_id": "nar_op_op_wuzhuangyuan_offer_01",
+      "source_id": "op_wuzhuangyuan_offer_01",
+      "node_kind": "route_offer",
+      "narrative_role": "route_unlock",
+      "hook_tags": "wuzhuangyuan_offer,military_gate",
+      "hook_line": "",
+      "trigger_stage": "big_map_late"
+    },
+    {
+      "narrative_node_id": "nar_battle_rw_big_map_normal_enemy_corrupt_patrolman_advanced",
+      "source_id": "rw_big_map_normal_enemy_corrupt_patrolman_advanced",
+      "node_kind": "old_case_clue",
+      "narrative_role": "clue",
+      "hook_tags": "old_case",
+      "hook_line": "",
+      "trigger_stage": "big_map"
+    },
+    {
+      "narrative_node_id": "nar_battle_rw_big_map_normal_enemy_corrupt_patrolman_basic",
+      "source_id": "rw_big_map_normal_enemy_corrupt_patrolman_basic",
+      "node_kind": "old_case_clue",
+      "narrative_role": "clue",
+      "hook_tags": "old_case",
+      "hook_line": "",
+      "trigger_stage": "big_map"
+    },
+    {
+      "narrative_node_id": "nar_battle_rw_big_map_elite_enemy_elite_military_officer_elite_basic",
+      "source_id": "rw_big_map_elite_enemy_elite_military_officer_elite_basic",
+      "node_kind": "old_case_clue",
+      "narrative_role": "clue",
+      "hook_tags": "old_case,military_gate,wuzhuangyuan_offer,elite_pressure",
+      "hook_line": "",
+      "trigger_stage": "big_map"
+    },
+    {
+      "narrative_node_id": "nar_battle_rw_big_map_elite_enemy_elite_spear_instructor_elite_advanced",
+      "source_id": "rw_big_map_elite_enemy_elite_spear_instructor_elite_advanced",
+      "node_kind": "battle_hook",
+      "narrative_role": "choice",
+      "hook_tags": "military_gate,wuzhuangyuan_offer,elite_pressure",
+      "hook_line": "",
+      "trigger_stage": "big_map"
+    },
+    {
+      "narrative_node_id": "nar_battle_rw_big_map_elite_enemy_elite_spear_instructor_elite_basic",
+      "source_id": "rw_big_map_elite_enemy_elite_spear_instructor_elite_basic",
+      "node_kind": "battle_hook",
+      "narrative_role": "choice",
+      "hook_tags": "military_gate,wuzhuangyuan_offer,elite_pressure",
+      "hook_line": "",
+      "trigger_stage": "big_map"
+    },
+    {
+      "narrative_node_id": "nar_battle_rw_boss_boss_normal_boss_old_case_officer_phase_1",
+      "source_id": "rw_boss_boss_normal_boss_old_case_officer_phase_1",
+      "node_kind": "old_case_clue",
+      "narrative_role": "clue",
+      "hook_tags": "old_case,military_gate,boss_prepare",
+      "hook_line": "",
+      "trigger_stage": "ending_normal"
+    },
+    {
+      "narrative_node_id": "nar_battle_rw_boss_boss_true_boss_gatekeeper_phase_1",
+      "source_id": "rw_boss_boss_true_boss_gatekeeper_phase_1",
+      "node_kind": "ending_hint",
+      "narrative_role": "ending_bridge",
+      "hook_tags": "old_case,military_gate,lightness_encounter,boss_prepare,true_boss_hint",
+      "hook_line": "",
+      "trigger_stage": "ending_true"
+    },
+    {
+      "narrative_node_id": "nar_battle_rw_boss_boss_true_boss_hidden_commander_phase_1",
+      "source_id": "rw_boss_boss_true_boss_hidden_commander_phase_1",
+      "node_kind": "ending_hint",
+      "narrative_role": "ending_bridge",
+      "hook_tags": "old_case,military_gate,lightness_encounter,boss_prepare,true_boss_hint",
+      "hook_line": "",
+      "trigger_stage": "ending_true"
+    },
+    {
+      "narrative_node_id": "nar_battle_rw_boss_boss_true_boss_hidden_commander_phase_2",
+      "source_id": "rw_boss_boss_true_boss_hidden_commander_phase_2",
+      "node_kind": "ending_hint",
+      "narrative_role": "ending_bridge",
+      "hook_tags": "old_case,military_gate,lightness_encounter,boss_prepare,true_boss_hint",
+      "hook_line": "",
+      "trigger_stage": "ending_true"
+    },
+    {
+      "narrative_node_id": "nar_battle_rw_exam_exam_exam_capital_basic_weapon",
+      "source_id": "rw_exam_exam_exam_capital_basic_weapon",
+      "node_kind": "battle_hook",
+      "narrative_role": "pressure",
+      "hook_tags": "wuzhuangyuan_offer",
+      "hook_line": "",
+      "trigger_stage": "wuzhuangyuan"
+    },
+    {
+      "narrative_node_id": "nar_battle_rw_exam_exam_exam_capital_duel_chain",
+      "source_id": "rw_exam_exam_exam_capital_duel_chain",
+      "node_kind": "battle_hook",
+      "narrative_role": "pressure",
+      "hook_tags": "wuzhuangyuan_offer",
+      "hook_line": "",
+      "trigger_stage": "wuzhuangyuan"
+    },
+    {
+      "narrative_node_id": "nar_battle_rw_exam_exam_exam_capital_footwork",
+      "source_id": "rw_exam_exam_exam_capital_footwork",
+      "node_kind": "battle_hook",
+      "narrative_role": "choice",
+      "hook_tags": "military_gate,lightness_encounter,wuzhuangyuan_offer",
+      "hook_line": "",
+      "trigger_stage": "wuzhuangyuan"
+    },
+    {
+      "narrative_node_id": "nar_battle_rw_exam_exam_exam_capital_mixed_weapon",
+      "source_id": "rw_exam_exam_exam_capital_mixed_weapon",
+      "node_kind": "battle_hook",
+      "narrative_role": "pressure",
+      "hook_tags": "military_gate,wuzhuangyuan_offer",
+      "hook_line": "",
+      "trigger_stage": "wuzhuangyuan"
+    },
+    {
+      "narrative_node_id": "nar_battle_rw_exam_exam_exam_imperial_final_examiner",
+      "source_id": "rw_exam_exam_exam_imperial_final_examiner",
+      "node_kind": "route_offer",
+      "narrative_role": "route_unlock",
+      "hook_tags": "military_gate,lightness_encounter,wuzhuangyuan_offer,route_offer",
+      "hook_line": "",
+      "trigger_stage": "wuzhuangyuan"
+    },
+    {
+      "narrative_node_id": "nar_route_true_hint_01",
+      "source_id": "true_route_hint_01",
+      "node_kind": "ending_hint",
+      "narrative_role": "foreshadow",
+      "hook_tags": "old_case,true_boss_hint",
+      "hook_line": "",
+      "trigger_stage": "true_after_boss_1"
+    },
+    {
+      "narrative_node_id": "nar_route_wuzhuangyuan_hint_01",
+      "source_id": "wuzhuangyuan_offer_hint_01",
+      "node_kind": "route_offer",
+      "narrative_role": "route_unlock",
+      "hook_tags": "wuzhuangyuan_offer,military_gate",
+      "hook_line": "",
+      "trigger_stage": "wuzhuangyuan_before_exam"
+    },
+    {
+      "narrative_node_id": "nar_route_normal_ending_hint_01",
+      "source_id": "normal_ending_hint_01",
+      "node_kind": "ending_hint",
+      "narrative_role": "ending_bridge",
+      "hook_tags": "boss_prepare",
+      "hook_line": "",
+      "trigger_stage": "normal_after_boss"
+    },
+    {
+      "narrative_node_id": "nar_boss_prepare_01",
+      "source_id": "boss_prepare_hint_01",
+      "node_kind": "boss_prepare",
+      "narrative_role": "preparation",
+      "hook_tags": "boss_prepare,elite_pressure",
+      "hook_line": "",
+      "trigger_stage": "elite_after_big_map"
+    }
+  ]
+}

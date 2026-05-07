@@ -1,0 +1,83 @@
+{
+  "package_type": "full_content_preview_manifest",
+  "runtime_ready": false,
+  "preview_only": true,
+  "source_artifact": "full_preview_package_expansion_v1_6",
+  "generated_at": "2026-05-07T12:35:25Z",
+  "selected_reward_policy": "legacy",
+  "content_engine_enabled": false,
+  "domains": [
+    {
+      "domain": "battle_rewards",
+      "path": "data/runtime_preview/content_engine/battle_rewards.preview.json",
+      "count": 45,
+      "runtime_ready": false,
+      "preview_only": true
+    },
+    {
+      "domain": "battle_slots",
+      "path": "data/runtime_preview/content_engine/battle_slots.preview.json",
+      "count": 16,
+      "runtime_ready": false,
+      "preview_only": true
+    },
+    {
+      "domain": "enemy_decks",
+      "path": "data/runtime_preview/content_engine/enemy_decks.preview.json",
+      "count": 39,
+      "runtime_ready": false,
+      "preview_only": true
+    },
+    {
+      "domain": "card_pool",
+      "path": "data/runtime_preview/content_engine/card_pool.preview.json",
+      "count": 72,
+      "runtime_ready": false,
+      "preview_only": true
+    },
+    {
+      "domain": "operation_nodes",
+      "path": "data/runtime_preview/content_engine/operation_nodes.preview.json",
+      "count": 10,
+      "runtime_ready": false,
+      "preview_only": true
+    },
+    {
+      "domain": "narrative_nodes",
+      "path": "data/runtime_preview/content_engine/narrative_nodes.preview.json",
+      "count": 28,
+      "runtime_ready": false,
+      "preview_only": true
+    },
+    {
+      "domain": "route_gates",
+      "path": "data/runtime_preview/content_engine/route_gates.preview.json",
+      "count": 9,
+      "runtime_ready": false,
+      "preview_only": true
+    }
+  ],
+  "blockers": [
+    "runtime_loader_disabled",
+    "preview_only",
+    "not_runtime_export"
+  ],
+  "notes": "复用 reward preview；本阶段仅扩展 full preview package，不写 data/runtime。",
+  "source_reward_manifest": {
+    "package_type": "reward_preview",
+    "generated_at": "2026-05-07T12:14:50+00:00",
+    "source_artifact": "generated_battle_reward_plan",
+    "source_row_count": 45,
+    "exported_reward_count": 45,
+    "runtime_ready": false,
+    "output_path": "data/runtime_preview/content_engine/battle_rewards.preview.json",
+    "selected_reward_policy": "legacy",
+    "runtime_allowed": false,
+    "blockers": [
+      "runtime_loader_disabled",
+      "preview_only",
+      "not_runtime_export"
+    ],
+    "preview_only": true
+  }
+}
