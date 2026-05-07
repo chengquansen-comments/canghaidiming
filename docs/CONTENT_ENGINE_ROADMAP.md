@@ -68,6 +68,8 @@ v0.4 建议拆分为两个子阶段：
 
 v0.4a / v0.4b 都应保持设计层边界，不直接修改运行时战斗代码。
 
+v0.4b 的输出建议为 long-form：`generated_enemy_deck_sets.tsv`（一行一张卡），同时保留 `selection_score` / `selection_reason`，便于 validator 和后续调参。
+
 ### v0.5 reward / narrative / route gate
 
 - 生成奖励规划。

@@ -92,3 +92,22 @@ python3 tools/content_engine/card_pool_validator.py \
 ```
 
 v0.4a still does not generate runtime card data, does not fill enemy deck sets, does not modify `card_data.gd` / `combat_resolver.gd` / `battle_state_machine.gd`, and does not call an LLM API.
+
+## v0.4b Enemy Deck Sets Generator
+
+Generate deterministic design-layer enemy deck sets:
+
+```bash
+python3 tools/content_engine/enemy_deck_sets_generator.py \
+  --design-dir data/design \
+  --out data/design/generated_enemy_deck_sets.tsv
+```
+
+Validate generated enemy deck sets:
+
+```bash
+python3 tools/content_engine/enemy_deck_sets_validator.py \
+  --design-dir data/design
+```
+
+v0.4b still does not write runtime deck data, does not modify runtime combat scripts, and does not call an LLM API.
