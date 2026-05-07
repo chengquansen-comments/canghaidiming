@@ -168,3 +168,22 @@ python3 tools/content_engine/narrative_node_validator.py \
 ```
 
 v0.5c only produces narrative skeleton structure (keys, tags, flags, roles). It does not write formal narrative body text, route gate tables, runtime narrative data, or any combat runtime logic.
+
+## v0.5d Route Gate Generator
+
+Generate deterministic design-layer route gate plan:
+
+```bash
+python3 tools/content_engine/route_gate_generator.py \
+  --design-dir data/design \
+  --out data/design/generated_route_gate_plan.tsv
+```
+
+Validate generated route gate plan:
+
+```bash
+python3 tools/content_engine/route_gate_validator.py \
+  --design-dir data/design
+```
+
+v0.5d only produces design-layer route gate structure by aggregating battle reward / operation node / narrative node tags and flags. It does not write runtime route gate data and does not modify Godot combat runtime scripts.

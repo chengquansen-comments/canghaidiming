@@ -89,6 +89,14 @@ v0.5 建议拆分：
 - 约束：`should_write_body=false`、`line_budget<=1`、`preview_key/result_key` 分离
 - 输出标签可直接作为 v0.5d route gate 汇总输入
 
+#### v0.5d 当前落地
+
+- 新增输出：`data/design/generated_route_gate_plan.tsv`
+- 聚合来源：battle reward / operation node / narrative node
+- 统一生成 normal / true_route / wuzhuangyuan / lightness / boss_prepare 路线门槛
+- 处理 true_route 与 wuzhuangyuan 条件并发时的玩家选择 gate
+- 继续保持设计层，不改 Godot 运行时逻辑
+
 ### v0.6 runtime exporter
 
 - 从 design 表导出运行时数据。
