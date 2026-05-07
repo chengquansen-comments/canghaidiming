@@ -1,7 +1,17 @@
 step_id	step_name	command	exit_code	status	duration_ms	blocked_reason	notes
-1	lite_export_battle_reward	python3 tools/content_engine/content_engine_export.py --domain battle_reward --write	0	PASS	108		none
-2	lite_validate	python3 tools/content_engine/content_engine_validate.py	0	PASS	92		none
-3	lite_godot_probe	python3 tools/content_engine/content_engine_godot_probe.py	0	PASS	786		none
-4	git_diff_check	git diff --check	0	PASS	50		none
-5	godot_headless_quit	godot --headless --path . --quit	0	PASS	324		none
-6	godot_headless_mainvisual	godot --headless --path . --quit scenes/MainVisual.tscn	0	PASS	1106		none
+1	lite_export_battle_reward	python3 tools/content_engine/content_engine_export.py --domain battle_reward --write	0	PASS	296		none
+2	lite_validate	python3 tools/content_engine/content_engine_validate.py	0	PASS	139		none
+3	lite_godot_probe	python3 tools/content_engine/content_engine_godot_probe.py	0	PASS	1053		none
+4	battle_reward_runtime_adapter_scaffold_probe	python3 tools/content_engine/battle_reward_runtime_adapter_scaffold_probe.py	0	PASS	125		none
+5	battle_reward_runtime_adapter_scaffold_validator	python3 tools/content_engine/battle_reward_runtime_adapter_scaffold_validator.py	0	PASS	66		none
+6	battle_reward_shadow_integration_plan_probe	python3 tools/content_engine/battle_reward_shadow_integration_plan_probe.py	0	PASS	113		none
+7	battle_reward_shadow_integration_plan_validator	python3 tools/content_engine/battle_reward_shadow_integration_plan_validator.py	0	PASS	64		none
+8	battle_reward_shadow_runtime_probe	python3 tools/content_engine/battle_reward_shadow_runtime_probe.py	0	PASS	115		none
+9	battle_reward_shadow_runtime_validator	python3 tools/content_engine/battle_reward_shadow_runtime_validator.py	0	PASS	68		none
+10	battle_reward_shadow_freeze_probe	python3 tools/content_engine/battle_reward_shadow_freeze_probe.py	0	PASS	117		none
+11	battle_reward_shadow_freeze_validator	python3 tools/content_engine/battle_reward_shadow_freeze_validator.py	0	PASS	65		none
+12	battle_reward_runtime_test_harness	python3 tools/content_engine/battle_reward_runtime_test_harness.py	0	PASS	106		none
+13	battle_reward_runtime_test_harness_validator	python3 tools/content_engine/battle_reward_runtime_test_harness_validator.py	0	PASS	63		none
+14	git_diff_check	git diff --check	0	PASS	39		none
+15	godot_headless_quit	godot --headless --path . --quit	0	PASS	436		none
+16	godot_headless_mainvisual	godot --headless --path . --quit scenes/MainVisual.tscn	0	PASS	1213		none

@@ -1,7 +1,7 @@
 step_id	phase	step_name	command	exit_code	status	duration_ms	stdout_tail	stderr_tail	required	blocked_reason	notes
-1	compile	py_compile	python3 -m py_compile tools/content_engine/runtime_export_dry_run.py tools/content_engine/runtime_export_dry_run_validator.py tools/content_engine/runtime_export_approval_overlay.py tools/content_engine/runtime_export_approval_validator.py tools/content_engine/runtime_export_diff_report.py tools/content_engine/runtime_export_diff_report_validator.py tools/content_engine/runtime_exporter.py tools/content_engine/runtime_exporter_validator.py tools/content_engine/runtime_export_manifest.py tools/content_engine/runtime_export_manifest_validator.py tools/content_engine/runtime_loader_preflight.py tools/content_engine/runtime_loader_preflight_validator.py tools/content_engine/runtime_loader_scaffold_probe.py tools/content_engine/runtime_loader_scaffold_validator.py tools/content_engine/runtime_loader_godot_probe.py tools/content_engine/runtime_loader_godot_probe_validator.py tools/content_engine/runtime_loader_negative_fixture_builder.py tools/content_engine/runtime_loader_negative_fixture_probe.py tools/content_engine/runtime_loader_negative_fixture_validator.py	0	PASS	93			true	none	none
-2	preview	runtime_export_dry_run	python3 tools/content_engine/runtime_export_dry_run.py	0	PASS	80	Wrote data/design/generated_runtime_export_dry_run.tsv and data/design/generated_runtime_export_dry_run.md with 7 runtime dry-run rows.		true	none	none
-3	preview	runtime_export_dry_run_validator	python3 tools/content_engine/runtime_export_dry_run_validator.py	1	FAIL	75	"PASS: Found data/design/generated_runtime_export_dry_run.tsv
+1	compile	py_compile	python3 -m py_compile tools/content_engine/runtime_export_dry_run.py tools/content_engine/runtime_export_dry_run_validator.py tools/content_engine/runtime_export_approval_overlay.py tools/content_engine/runtime_export_approval_validator.py tools/content_engine/runtime_export_diff_report.py tools/content_engine/runtime_export_diff_report_validator.py tools/content_engine/runtime_exporter.py tools/content_engine/runtime_exporter_validator.py tools/content_engine/runtime_export_manifest.py tools/content_engine/runtime_export_manifest_validator.py tools/content_engine/runtime_loader_preflight.py tools/content_engine/runtime_loader_preflight_validator.py tools/content_engine/runtime_loader_scaffold_probe.py tools/content_engine/runtime_loader_scaffold_validator.py tools/content_engine/runtime_loader_godot_probe.py tools/content_engine/runtime_loader_godot_probe_validator.py tools/content_engine/runtime_loader_negative_fixture_builder.py tools/content_engine/runtime_loader_negative_fixture_probe.py tools/content_engine/runtime_loader_negative_fixture_validator.py tools/content_engine/battle_reward_runtime_adapter_scaffold_probe.py tools/content_engine/battle_reward_runtime_adapter_scaffold_validator.py tools/content_engine/battle_reward_shadow_integration_plan_probe.py tools/content_engine/battle_reward_shadow_integration_plan_validator.py tools/content_engine/battle_reward_shadow_runtime_probe.py tools/content_engine/battle_reward_shadow_runtime_validator.py tools/content_engine/content_engine_acceptance_runner.py tools/content_engine/content_engine_acceptance_validator.py tools/content_engine/battle_reward_shadow_freeze_probe.py tools/content_engine/battle_reward_shadow_freeze_validator.py tools/content_engine/battle_reward_runtime_test_harness.py tools/content_engine/battle_reward_runtime_test_harness_validator.py	0	PASS	135			true	none	none
+2	preview	runtime_export_dry_run	python3 tools/content_engine/runtime_export_dry_run.py	0	PASS	88	Wrote data/design/generated_runtime_export_dry_run.tsv and data/design/generated_runtime_export_dry_run.md with 7 runtime dry-run rows.		true	none	none
+3	preview	runtime_export_dry_run_validator	python3 tools/content_engine/runtime_export_dry_run_validator.py	1	FAIL	88	"PASS: Found data/design/generated_runtime_export_dry_run.tsv
 PASS: Found data/design/generated_runtime_export_dry_run.md
 PASS: All 7 required runtime domains are present.
 PASS: dry_run_id values are unique.
@@ -12,8 +12,8 @@ PASS: Markdown does not claim runtime export implementation.
 PASS: Markdown states runtime files written as 0.
 FAIL: v0.7b must not write runtime JSON files: data/runtime/content_engine/card_pool.json
 RESULT: FAIL"		false	none	none
-4	preview	runtime_export_approval_overlay	python3 tools/content_engine/runtime_export_approval_overlay.py	0	PASS	72	Wrote data/design/generated_runtime_export_approval_overlay.tsv and data/design/generated_runtime_export_approval_overlay.md with 7 overlay rows.		true	none	none
-5	preview	runtime_export_approval_validator	python3 tools/content_engine/runtime_export_approval_validator.py	0	PASS	70	"PASS: Found data/design/runtime_export_approval.tsv
+4	preview	runtime_export_approval_overlay	python3 tools/content_engine/runtime_export_approval_overlay.py	0	PASS	162	Wrote data/design/generated_runtime_export_approval_overlay.tsv and data/design/generated_runtime_export_approval_overlay.md with 7 overlay rows.		true	none	none
+5	preview	runtime_export_approval_validator	python3 tools/content_engine/runtime_export_approval_validator.py	0	PASS	94	"PASS: Found data/design/runtime_export_approval.tsv
 PASS: Found data/design/generated_runtime_export_dry_run.tsv
 PASS: Found data/design/generated_runtime_export_approval_overlay.tsv
 PASS: Found data/design/generated_runtime_export_approval_overlay.md
@@ -22,16 +22,16 @@ PASS: Overlay runtime domains match dry-run domains.
 PASS: Overlay would_export/blocked gating rules validated.
 PASS: Overlay markdown confirms runtime files written: 0
 RESULT: PASS"		true	none	none
-6	preview	runtime_export_diff_report	python3 tools/content_engine/runtime_export_diff_report.py	0	PASS	72	Wrote data/design/generated_runtime_export_diff_report.tsv and data/design/generated_runtime_export_diff_report.md with 7 diff report rows.		true	none	none
-7	preview	runtime_export_diff_report_validator	python3 tools/content_engine/runtime_export_diff_report_validator.py	1	FAIL	70	"PASS: Found data/design/generated_runtime_export_approval_overlay.tsv
+6	preview	runtime_export_diff_report	python3 tools/content_engine/runtime_export_diff_report.py	0	PASS	84	Wrote data/design/generated_runtime_export_diff_report.tsv and data/design/generated_runtime_export_diff_report.md with 7 diff report rows.		true	none	none
+7	preview	runtime_export_diff_report_validator	python3 tools/content_engine/runtime_export_diff_report_validator.py	1	FAIL	77	"PASS: Found data/design/generated_runtime_export_approval_overlay.tsv
 PASS: Found data/design/generated_runtime_export_diff_report.tsv
 PASS: Found data/design/generated_runtime_export_diff_report.md
 PASS: Diff report row invariants validated.
 PASS: Diff markdown confirms runtime files written: 0
 FAIL: data/runtime/content_engine/ must not exist in v0.7d.
 RESULT: FAIL"		false	none	none
-8	preview	runtime_exporter_preview	python3 tools/content_engine/runtime_exporter.py	0	PASS	74	Wrote data/design/generated_runtime_exporter_plan.tsv, data/design/generated_runtime_exporter_plan.md, data/design/generated_runtime_exporter_write_result.tsv, and data/design/generated_runtime_exporter_write_result.md with 7 exporter rows.		true	none	none
-9	preview	runtime_exporter_preview_validator	python3 tools/content_engine/runtime_exporter_validator.py	1	FAIL	74	"PASS: Found data/design/generated_runtime_export_diff_report.tsv
+8	preview	runtime_exporter_preview	python3 tools/content_engine/runtime_exporter.py	0	PASS	89	Wrote data/design/generated_runtime_exporter_plan.tsv, data/design/generated_runtime_exporter_plan.md, data/design/generated_runtime_exporter_write_result.tsv, and data/design/generated_runtime_exporter_write_result.md with 7 exporter rows.		true	none	none
+9	preview	runtime_exporter_preview_validator	python3 tools/content_engine/runtime_exporter_validator.py	1	FAIL	90	"PASS: Found data/design/generated_runtime_export_diff_report.tsv
 PASS: Found data/design/generated_runtime_exporter_plan.tsv
 PASS: Found data/design/generated_runtime_exporter_plan.md
 PASS: Found data/design/generated_runtime_exporter_write_result.tsv
@@ -40,10 +40,81 @@ PASS: Allowed candidate count matches diff planned_create count: 2
 PASS: Current expected allowed candidate count is 2.
 FAIL: data/runtime/content_engine/ must not exist in no-write mode.
 RESULT: FAIL"		false	none	none
-10	preview	preview_formal_runtime_sha_unchanged	<internal-check>	0	PASS	1			true	none	baseline={'card_pool.json': 'd9080e620eec9e1ff5a0161300bb99a38633c35ae71f64d5521b8816dc9dcf5e', 'battle_reward.json': 'ad5c80f1933126ad0e3f66d1be2d3e7c156bffc897aa48943cf82398b29ac463', 'runtime_manifest.json': 'a1550b088e5d230c5c82ee70234df893c0a7ee73f4b75af7594048f7b9c37919', 'runtime_loader_config.json': 'd26d369fe2d9a5c8d6a95fc720e1c3f16f36ea9cca5018e52d6ab04759fdf1fa'} current={'card_pool.json': 'd9080e620eec9e1ff5a0161300bb99a38633c35ae71f64d5521b8816dc9dcf5e', 'battle_reward.json': 'ad5c80f1933126ad0e3f66d1be2d3e7c156bffc897aa48943cf82398b29ac463', 'runtime_manifest.json': 'a1550b088e5d230c5c82ee70234df893c0a7ee73f4b75af7594048f7b9c37919', 'runtime_loader_config.json': 'd26d369fe2d9a5c8d6a95fc720e1c3f16f36ea9cca5018e52d6ab04759fdf1fa'}
+10	preview	preview_formal_runtime_sha_unchanged	<internal-check>	0	PASS	1			true	none	baseline={'card_pool.json': '65ac2ab98062261050c15e880aabcee44ecddd7f59d71642cb196139a8812871', 'battle_reward.json': 'ef2da0e992464b61667100471bdf918640965b0bcb35b7d1b340bb7d662cb67e', 'runtime_manifest.json': 'dff0dfdd263ab71f766e8dac8fd83d2829be2f85e7865402184900168678756a', 'runtime_loader_config.json': 'd26d369fe2d9a5c8d6a95fc720e1c3f16f36ea9cca5018e52d6ab04759fdf1fa'} current={'card_pool.json': '65ac2ab98062261050c15e880aabcee44ecddd7f59d71642cb196139a8812871', 'battle_reward.json': 'ef2da0e992464b61667100471bdf918640965b0bcb35b7d1b340bb7d662cb67e', 'runtime_manifest.json': 'dff0dfdd263ab71f766e8dac8fd83d2829be2f85e7865402184900168678756a', 'runtime_loader_config.json': 'd26d369fe2d9a5c8d6a95fc720e1c3f16f36ea9cca5018e52d6ab04759fdf1fa'}
 11	preview	preview_runtime_dir_allowed_only	<internal-check>	0	PASS	1			true	none	runtime_files=['battle_reward.json', 'card_pool.json', 'runtime_loader_config.json', 'runtime_manifest.json']
-12	guarded_write	runtime_exporter_guarded_write	python3 tools/content_engine/runtime_exporter.py --write-runtime --confirm-runtime-export	0	PASS	77	Wrote data/design/generated_runtime_exporter_plan.tsv, data/design/generated_runtime_exporter_plan.md, data/design/generated_runtime_exporter_write_result.tsv, and data/design/generated_runtime_exporter_write_result.md with 7 exporter rows.		true	none	none
-13	guarded_write	runtime_exporter_guarded_write_validator	python3 tools/content_engine/runtime_exporter_validator.py --allow-runtime-files	1	FAIL	72	"PASS: Found data/design/generated_runtime_export_diff_report.tsv
+12	adapter_scaffold	battle_reward_runtime_adapter_scaffold_probe	python3 tools/content_engine/battle_reward_runtime_adapter_scaffold_probe.py	0	PASS	120	Wrote data/design/generated_battle_reward_runtime_adapter_scaffold_report.tsv and data/design/generated_battle_reward_runtime_adapter_scaffold_report.md.		true	none	none
+13	adapter_scaffold	battle_reward_runtime_adapter_scaffold_validator	python3 tools/content_engine/battle_reward_runtime_adapter_scaffold_validator.py	0	PASS	69	"PASS: runtime 目录白名单校验通过
+PASS: probe Markdown 中文说明校验通过
+RESULT: PASS"		true	none	none
+14	shadow_plan	battle_reward_shadow_integration_plan_probe	python3 tools/content_engine/battle_reward_shadow_integration_plan_probe.py	0	PASS	121	Wrote data/design/generated_battle_reward_shadow_integration_plan_report.tsv and data/design/generated_battle_reward_shadow_integration_plan_report.md.		true	none	none
+15	shadow_plan	battle_reward_shadow_integration_plan_validator	python3 tools/content_engine/battle_reward_shadow_integration_plan_validator.py	0	PASS	68	"PASS: 所有 blocking 项通过
+PASS: shadow probe Markdown 中文说明约束通过
+PASS: shadow 设计文档中文说明约束通过
+PASS: runtime_loader_config_disabled 通过
+PASS: adapter_formal_flow_reference_count=0
+PASS: canonical_controller_adapter_reference_count=3
+PASS: selected_reward_source_design 通过
+PASS: runtime_reward_effective_design 通过
+PASS: formal_data_source_replaced_design 通过
+PASS: combat_flow_touched_design 通过
+PASS: battle_state_touched_design 通过
+PASS: high_risk_files_touched=false
+PASS: runtime_dir_whitelist_status=pass
+PASS: battle_reward_runtime_record_count=45
+PASS: runtime 目录白名单复核通过
+RESULT: PASS"		true	none	none
+16	shadow_runtime	battle_reward_shadow_runtime_probe	python3 tools/content_engine/battle_reward_shadow_runtime_probe.py	0	PASS	105	Wrote data/design/generated_battle_reward_shadow_runtime_report.tsv and data/design/generated_battle_reward_shadow_runtime_report.md.		true	none	none
+17	shadow_runtime	battle_reward_shadow_runtime_validator	python3 tools/content_engine/battle_reward_shadow_runtime_validator.py	0	PASS	63	"PASS: 所有 blocking 项通过
+PASS: shadow runtime probe Markdown 中文说明约束通过
+PASS: shadow runtime 文档中文说明约束通过
+PASS: shadow_integration_present 通过
+PASS: shadow_integration_file=scripts/narrative_demo_canonical_controller.gd
+PASS: shadow_integration_function=_battle_reward_for_source
+PASS: adapter_formal_flow_reference_count=0
+PASS: selected_reward_source=legacy
+PASS: selected_reward_runtime_effective=false
+PASS: runtime_reward_candidate_only 通过
+PASS: formal_data_source_replaced=false
+PASS: runtime_loader_config_disabled 通过
+PASS: battle_state_touched=false
+PASS: combat_result_touched=false
+PASS: high_risk_files_touched=false
+PASS: runtime_dir_whitelist_status=pass
+PASS: battle_reward_runtime_record_count=45
+PASS: shadow_region_dangerous_call_count=0
+PASS: runtime 目录白名单复核通过
+RESULT: PASS"		true	none	none
+18	shadow_freeze	battle_reward_shadow_freeze_probe	python3 tools/content_engine/battle_reward_shadow_freeze_probe.py	0	PASS	99	Wrote data/design/generated_battle_reward_shadow_freeze_report.tsv and data/design/generated_battle_reward_shadow_freeze_report.md.		true	none	none
+19	shadow_freeze	battle_reward_shadow_freeze_validator	python3 tools/content_engine/battle_reward_shadow_freeze_validator.py	0	PASS	64	"PASS: 所有 blocking 项通过
+PASS: freeze probe Markdown 中文说明约束通过
+PASS: freeze 文档中文说明约束通过
+PASS: shadow_freeze_status=pass
+PASS: selected_reward_source=legacy
+PASS: selected_reward_runtime_effective=false
+PASS: runtime_reward_candidate_only=true
+PASS: runtime_loader_config_disabled=true
+PASS: formal_data_source_replaced=false
+PASS: high_risk_files_touched=false
+PASS: runtime_dir_whitelist_status=pass
+PASS: battle_reward_runtime_record_count=45
+RESULT: PASS"		true	none	none
+20	runtime_test_harness	battle_reward_runtime_test_harness	python3 tools/content_engine/battle_reward_runtime_test_harness.py	0	PASS	95	Wrote data/design/generated_battle_reward_runtime_test_harness_report.tsv and data/design/generated_battle_reward_runtime_test_harness_report.md.		true	none	none
+21	runtime_test_harness	battle_reward_runtime_test_harness_validator	python3 tools/content_engine/battle_reward_runtime_test_harness_validator.py	0	PASS	70	"PASS: 所有 blocking 项通过
+PASS: runtime_test_harness_status=pass
+PASS: runtime_test_harness_mode=true
+PASS: runtime_loader_config_still_disabled=true
+PASS: battle_reward_runtime_record_count=45
+PASS: harness_runtime_candidate_readable=true
+PASS: formal_selected_source=legacy
+PASS: formal_runtime_effective=false
+PASS: formal_flow_touched=false
+PASS: runtime_dir_modified=false
+PASS: formal_data_source_replaced=false
+PASS: harness Markdown 中文说明约束通过
+PASS: runtime_test 文档中文说明约束通过
+RESULT: PASS"		true	none	none
+22	guarded_write	runtime_exporter_guarded_write	python3 tools/content_engine/runtime_exporter.py --write-runtime --confirm-runtime-export	0	PASS	94	Wrote data/design/generated_runtime_exporter_plan.tsv, data/design/generated_runtime_exporter_plan.md, data/design/generated_runtime_exporter_write_result.tsv, and data/design/generated_runtime_exporter_write_result.md with 7 exporter rows.		true	none	none
+23	guarded_write	runtime_exporter_guarded_write_validator	python3 tools/content_engine/runtime_exporter_validator.py --allow-runtime-files	1	FAIL	85	"PASS: Found data/design/generated_runtime_export_diff_report.tsv
 PASS: Found data/design/generated_runtime_exporter_plan.tsv
 PASS: Found data/design/generated_runtime_exporter_plan.md
 PASS: Found data/design/generated_runtime_exporter_write_result.tsv
@@ -53,39 +124,42 @@ PASS: Current expected allowed candidate count is 2.
 FAIL: runtime directory contains non-allowlisted files: runtime_loader_config.json, runtime_manifest.json
 FAIL: runtime directory must contain exactly allowlisted files: expected=['battle_reward.json', 'card_pool.json'], actual=['battle_reward.json', 'card_pool.json', 'runtime_loader_config.json', 'runtime_manifest.json']
 RESULT: FAIL"		false	none	none
-14	manifest	runtime_export_manifest	python3 tools/content_engine/runtime_export_manifest.py	0	PASS	80	已写入 data/runtime/content_engine/runtime_manifest.json、data/design/generated_runtime_export_manifest_report.tsv、data/design/generated_runtime_export_manifest_report.md、data/design/generated_runtime_export_rollback_report.md。		true	none	none
-15	manifest	runtime_export_manifest_validator	python3 tools/content_engine/runtime_export_manifest_validator.py	0	PASS	73	"PASS: write_result written count is 2.
+24	manifest	runtime_export_manifest	python3 tools/content_engine/runtime_export_manifest.py	0	PASS	95	已写入 data/runtime/content_engine/runtime_manifest.json、data/design/generated_runtime_export_manifest_report.tsv、data/design/generated_runtime_export_manifest_report.md、data/design/generated_runtime_export_rollback_report.md。		true	none	none
+25	manifest	runtime_export_manifest_validator	python3 tools/content_engine/runtime_export_manifest_validator.py	0	PASS	103	"PASS: write_result written count is 2.
 PASS: write_result failed_validation count is 0.
 PASS: runtime directory contains only allowlisted files (including optional config).
 PASS: manifest lists exactly card_pool.json and battle_reward.json.
 RESULT: PASS"		true	none	none
-16	preflight	runtime_loader_preflight	python3 tools/content_engine/runtime_loader_preflight.py	0	PASS	76	Wrote data/design/generated_runtime_loader_preflight_report.tsv and data/design/generated_runtime_loader_preflight_report.md with 2 preflight rows.		true	none	none
-17	preflight	runtime_loader_preflight_validator	python3 tools/content_engine/runtime_loader_preflight_validator.py	0	PASS	110	"PASS: write_result written count is 2.
+26	preflight	runtime_loader_preflight	python3 tools/content_engine/runtime_loader_preflight.py	0	PASS	104	Wrote data/design/generated_runtime_loader_preflight_report.tsv and data/design/generated_runtime_loader_preflight_report.md with 2 preflight rows.		true	none	none
+27	preflight	runtime_loader_preflight_validator	python3 tools/content_engine/runtime_loader_preflight_validator.py	0	PASS	150	"PASS: write_result written count is 2.
 PASS: write_result failed_validation count is 0.
 PASS: runtime directory contains only allowlisted files (including optional config).
 PASS: manifest lists exactly card_pool.json and battle_reward.json.
 RESULT: PASS"		true	none	none
-18	scaffold	runtime_loader_scaffold_probe	python3 tools/content_engine/runtime_loader_scaffold_probe.py	0	PASS	79	Wrote data/design/generated_runtime_loader_scaffold_report.tsv and data/design/generated_runtime_loader_scaffold_report.md.		true	none	none
-19	scaffold	runtime_loader_scaffold_validator	python3 tools/content_engine/runtime_loader_scaffold_validator.py	0	PASS	187	"PASS: no existing .gd files reference the scaffold loader
+28	scaffold	runtime_loader_scaffold_probe	python3 tools/content_engine/runtime_loader_scaffold_probe.py	0	PASS	100	Wrote data/design/generated_runtime_loader_scaffold_report.tsv and data/design/generated_runtime_loader_scaffold_report.md.		true	none	none
+29	scaffold	runtime_loader_scaffold_validator	python3 tools/content_engine/runtime_loader_scaffold_validator.py	0	PASS	213	"PASS: no existing .gd files reference the scaffold loader
 PASS: runtime dir contains expected allowlisted files
 PASS: runtime_export_manifest_validator check passed
 RESULT: PASS"		true	none	none
-20	probe	runtime_loader_godot_probe	python3 tools/content_engine/runtime_loader_godot_probe.py	0	PASS	386	Wrote data/design/generated_runtime_loader_godot_probe_report.tsv and data/design/generated_runtime_loader_godot_probe_report.md.		true	none	none
-21	probe	runtime_loader_godot_probe_validator	python3 tools/content_engine/runtime_loader_godot_probe_validator.py	0	PASS	327	"PASS: runtime dir keeps expected allowlisted file set
+30	probe	runtime_loader_godot_probe	python3 tools/content_engine/runtime_loader_godot_probe.py	0	PASS	492	Wrote data/design/generated_runtime_loader_godot_probe_report.tsv and data/design/generated_runtime_loader_godot_probe_report.md.		true	none	none
+31	probe	runtime_loader_godot_probe_validator	python3 tools/content_engine/runtime_loader_godot_probe_validator.py	0	PASS	377	"PASS: runtime dir keeps expected allowlisted file set
 PASS: no existing .gd references to loader/probe
 PASS: runtime_export_manifest_validator passed
 PASS: runtime_loader_scaffold_validator passed
 RESULT: PASS"		true	none	none
-22	negative_fixture	runtime_loader_negative_fixture_builder	python3 tools/content_engine/runtime_loader_negative_fixture_builder.py	0	PASS	70	Built 12 fixtures under data/design/runtime_loader_negative_fixtures.		true	none	none
-23	negative_fixture	runtime_loader_negative_fixture_probe	python3 tools/content_engine/runtime_loader_negative_fixture_probe.py	0	PASS	62	Wrote data/design/generated_runtime_loader_negative_fixture_report.tsv and data/design/generated_runtime_loader_negative_fixture_report.md with 12 fixture rows.		true	none	none
-24	negative_fixture	runtime_loader_negative_fixture_validator	python3 tools/content_engine/runtime_loader_negative_fixture_validator.py	0	PASS	520	"PASS: formal runtime sha256 unchanged
+32	negative_fixture	runtime_loader_negative_fixture_builder	python3 tools/content_engine/runtime_loader_negative_fixture_builder.py	0	PASS	72	Built 12 fixtures under data/design/runtime_loader_negative_fixtures.		true	none	none
+33	negative_fixture	runtime_loader_negative_fixture_probe	python3 tools/content_engine/runtime_loader_negative_fixture_probe.py	0	PASS	82	Wrote data/design/generated_runtime_loader_negative_fixture_report.tsv and data/design/generated_runtime_loader_negative_fixture_report.md with 12 fixture rows.		true	none	none
+34	negative_fixture	runtime_loader_negative_fixture_validator	python3 tools/content_engine/runtime_loader_negative_fixture_validator.py	0	PASS	657	"PASS: formal runtime sha256 unchanged
 PASS: runtime dir still has only 3 formal files
 PASS: runtime_export_manifest_validator passed
 PASS: runtime_loader_godot_probe_validator passed
 RESULT: PASS"		true	none	none
-25	hygiene	git_diff_check	git diff --check	0	PASS	41			true	none	none
-26	hygiene	godot_headless_quit	godot --headless --path . --quit	0	PASS	436	Godot Engine v4.6.2.stable.official.71f334935 - https://godotengine.org		true	none	none
-27	hygiene	godot_headless_mainvisual	godot --headless --path . --quit scenes/MainVisual.tscn	0	PASS	1095	"Godot Engine v4.6.2.stable.official.71f334935 - https://godotengine.org
+35	post_restore	restore_battle_reward_runtime	python3 tools/content_engine/content_engine_export.py --domain battle_reward --write	0	PASS	129	"CONTENT_ENGINE_EXPORT_JSON_BEGIN
+{""ok"": true, ""write_mode"": true, ""domain"": ""battle_reward"", ""domains_executed"": [""battle_reward""], ""battle_reward_record_count"": 45, ""expected_battle_reward_record_count"": 45, ""manifest_updated"": true, ""manifest_valid"": true, ""card_pool_unchanged"": true, ""runtime_loader_config_disabled"": true, ""card_pool_status"": ""scaffold_or_unhydrated"", ""card_pool_integration_status"": ""out_of_scope"", ""errors"": [], ""notes"": []}
+CONTENT_ENGINE_EXPORT_JSON_END"		true	none	none
+36	hygiene	git_diff_check	git diff --check	0	PASS	52			true	none	none
+37	hygiene	godot_headless_quit	godot --headless --path . --quit	0	PASS	448	Godot Engine v4.6.2.stable.official.71f334935 - https://godotengine.org		true	none	none
+38	hygiene	godot_headless_mainvisual	godot --headless --path . --quit scenes/MainVisual.tscn	0	PASS	1126	"Godot Engine v4.6.2.stable.official.71f334935 - https://godotengine.org
 
 StoryBattle data validation: OK
 templates=21 decks=26 stats=16 encounters=24
@@ -98,4 +172,4 @@ WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
      at: cleanup (core/object/object.cpp:2641)
 ERROR: 1 resources still in use at exit (run with --verbose for details).
    at: clear (core/io/resource.cpp:810)"	true	none	warning_detected=true; treated as Godot hygiene issue when exit_code=0
-28	hygiene	runtime_dir_allowed_only_end	<internal-check>	0	PASS	1			true	none	runtime_files=['battle_reward.json', 'card_pool.json', 'runtime_loader_config.json', 'runtime_manifest.json']
+39	hygiene	runtime_dir_allowed_only_end	<internal-check>	0	PASS	1			true	none	runtime_files=['battle_reward.json', 'card_pool.json', 'runtime_loader_config.json', 'runtime_manifest.json']

@@ -1,0 +1,19 @@
+check_id	status	expected	actual	detail	severity
+canonical_file_exists	PASS	true	true	canonical controller 文件必须存在	blocking
+shadow_integration_present	PASS	true	true	canonical 中必须存在 adapter 引用	blocking
+shadow_integration_file	PASS	scripts/narrative_demo_canonical_controller.gd	scripts/narrative_demo_canonical_controller.gd	shadow 接入文件必须是 canonical controller	blocking
+shadow_integration_function	PASS	_battle_reward_for_source	_battle_reward_for_source	shadow 接入函数必须为 _battle_reward_for_source	blocking
+shadow_marker_present	PASS	true	true	_battle_reward_for_source 内应包含 shadow-only 标记	blocking
+selected_reward_source	PASS	legacy	legacy	正式返回值必须保持 legacy reward	blocking
+runtime_reward_candidate_only	PASS	true	true	应旁路调用 adapter.resolve_reward	blocking
+shadow_region_dangerous_call_count	PASS	0	0	危险调用=	blocking
+adapter_formal_flow_reference_count	PASS	0_outside_allowlist	0	adapter_ref_files=['scripts/narrative/battle_reward_runtime_adapter.gd', 'scripts/narrative_demo_canonical_controller.gd']	blocking
+canonical_controller_adapter_reference_count	PASS	>=1	3	canonical controller 应存在 adapter 引用	blocking
+runtime_loader_config_disabled	PASS	true	true	runtime_loader_config 必须保持 disabled	blocking
+battle_reward_runtime_record_count	PASS	45	45	runtime battle_reward 记录数必须为 45	blocking
+runtime_dir_whitelist_status	PASS	pass	pass	actual=['battle_reward.json', 'card_pool.json', 'runtime_loader_config.json', 'runtime_manifest.json']	blocking
+high_risk_files_touched	PASS	false	false		blocking
+formal_data_source_replaced	PASS	false	false		blocking
+selected_reward_runtime_effective	PASS	false	false	adapter 需保持 runtime 不生效	blocking
+battle_state_touched	PASS	false	false	adapter 不得触碰 battle_state	blocking
+combat_result_touched	PASS	false	false	adapter 不得触碰 combat_result/flow	blocking

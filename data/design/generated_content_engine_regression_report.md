@@ -1,28 +1,34 @@
 # Content Engine 回归报告
 
 - 总体结果：PASS
-- 步骤总数：28
-- 必需步骤通过：24/24
+- 步骤总数：39
+- 必需步骤通过：35/35
 - 必需步骤失败数：0
 
 ## 阶段汇总
 
+- adapter_scaffold: 2/2 PASS
 - compile: 1/1 PASS
 - guarded_write: 1/2 PASS
 - hygiene: 4/4 PASS
 - manifest: 2/2 PASS
 - negative_fixture: 3/3 PASS
+- post_restore: 1/1 PASS
 - preflight: 2/2 PASS
 - preview: 7/10 PASS
 - probe: 2/2 PASS
+- runtime_test_harness: 2/2 PASS
 - scaffold: 2/2 PASS
+- shadow_freeze: 2/2 PASS
+- shadow_plan: 2/2 PASS
+- shadow_runtime: 2/2 PASS
 
 ## 失败步骤
 
 - 3 runtime_export_dry_run_validator (required=false) exit=1
 - 7 runtime_export_diff_report_validator (required=false) exit=1
 - 9 runtime_exporter_preview_validator (required=false) exit=1
-- 13 runtime_exporter_guarded_write_validator (required=false) exit=1
+- 23 runtime_exporter_guarded_write_validator (required=false) exit=1
 
 ## Runtime 安全性摘要
 

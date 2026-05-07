@@ -1,0 +1,36 @@
+step_id	step_name	command	exit_code	status	duration_ms	severity	detail
+1	content_engine_check	python3 tools/content_engine/content_engine_check.py	0	PASS	4208	blocking	Wrote data/design/generated_content_engine_lite_check_report.tsv and data/design/generated_content_engine_lite_check_report.md. overall=PASS
+2	content_engine_regression_runner	python3 tools/content_engine/content_engine_regression_runner.py	0	PASS	6246	blocking	Wrote data/design/generated_content_engine_regression_report.tsv and data/design/generated_content_engine_regression_report.md with 39 steps. Overall=PASS
+3	content_engine_regression_validator	python3 tools/content_engine/content_engine_regression_validator.py	0	PASS	1082	blocking	"PASS: all required steps passed
+PASS: preview formal runtime sha unchanged PASS
+PASS: adapter scaffold validator step PASS
+PASS: shadow integration plan validator step PASS
+PASS: shadow runtime validator step PASS
+PASS: shadow freeze validator step PASS
+PASS: runtime test harness validator step PASS
+PASS: runtime dir still contains only allowlisted formal files
+PASS: manifest validator passed
+PASS: godot probe validator passed
+PASS: negative fixture validator passed
+PASS: negative fixtures all matched
+PASS: negative fixtures returned_domain_count all 0
+PASS: negative fixtures write_api_present all false
+PASS: no existing .gd references loader/probe
+RESULT: PASS"
+4	git_diff_check	git diff --check	0	PASS	38	blocking	none
+5	godot_headless_quit	godot --headless --path . --quit	0	PASS	432	blocking	Godot Engine v4.6.2.stable.official.71f334935 - https://godotengine.org
+6	godot_headless_mainvisual	godot --headless --path . --quit scenes/MainVisual.tscn	0	NON_BLOCKING_WARNING	1201	non_blocking	"Godot Engine v4.6.2.stable.official.71f334935 - https://godotengine.org
+
+StoryBattle data validation: OK
+templates=21 decks=26 stats=16 encounters=24
+[settlement-mode] reactive
+
+WARNING: 14 RIDs of type ""CanvasItem"" were leaked.
+     at: _free_rids (servers/rendering/renderer_canvas_cull.cpp:2692)
+ERROR: 4 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 14 RID allocations of type 'PN18TextServerAdvanced22ShapedTextDataAdvancedE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2641)
+ERROR: 1 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:810)"

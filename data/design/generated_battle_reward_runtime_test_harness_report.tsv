@@ -1,0 +1,66 @@
+record_type	reward_id	source_id	runtime_candidate_status	legacy_reference_status	harness_selected_source	formal_selected_source	formal_runtime_effective	formal_flow_touched	fallback_required	fallback_reason	detail	status	severity
+detail	rw_prologue_01	prologue_01	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_wuju_weapon_01	wuju_weapon_01	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_wuju_weapon_02	wuju_weapon_02	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_wuju_exam_01	wuju_exam_01	present	unmatched	runtime_candidate	legacy	false	false	true	legacy_reference_unmatched	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_wuju_exam_02	wuju_exam_02	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_wuju_exam_03	wuju_exam_03	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_normal_enemy_coastal_raider_blade_advanced	big_map_normal_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_normal_enemy_coastal_raider_blade_aggressive	big_map_normal_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_normal_enemy_coastal_raider_blade_basic	big_map_normal_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_normal_enemy_coastal_raider_spear_advanced	big_map_normal_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_normal_enemy_coastal_raider_spear_aggressive	big_map_normal_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_normal_enemy_coastal_raider_spear_basic	big_map_normal_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_normal_enemy_corrupt_patrolman_advanced	big_map_normal_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_normal_enemy_corrupt_patrolman_basic	big_map_normal_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_normal_enemy_firearm_runner_advanced	big_map_normal_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_normal_enemy_firearm_runner_aggressive	big_map_normal_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_normal_enemy_firearm_runner_basic	big_map_normal_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_normal_enemy_hungry_garrison_advanced	big_map_normal_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_normal_enemy_hungry_garrison_basic	big_map_normal_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_normal_enemy_militia_spearman_advanced	big_map_normal_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_normal_enemy_militia_spearman_aggressive	big_map_normal_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_normal_enemy_militia_spearman_basic	big_map_normal_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_normal_enemy_scout_footwork_advanced	big_map_normal_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_normal_enemy_scout_footwork_aggressive	big_map_normal_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_normal_enemy_scout_footwork_basic	big_map_normal_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_normal_enemy_shield_blademan_advanced	big_map_normal_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_normal_enemy_shield_blademan_aggressive	big_map_normal_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_normal_enemy_shield_blademan_basic	big_map_normal_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_elite_enemy_elite_blade_counter_elite_advanced	big_map_elite_pool	present	unmatched	runtime_candidate	legacy	false	false	true	legacy_reference_unmatched	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_elite_enemy_elite_blade_counter_elite_basic	big_map_elite_pool	present	unmatched	runtime_candidate	legacy	false	false	true	legacy_reference_unmatched	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_elite_enemy_elite_dual_blade_raider_elite_advanced	big_map_elite_pool	present	unmatched	runtime_candidate	legacy	false	false	true	legacy_reference_unmatched	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_elite_enemy_elite_dual_blade_raider_elite_basic	big_map_elite_pool	present	unmatched	runtime_candidate	legacy	false	false	true	legacy_reference_unmatched	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_elite_enemy_elite_firearm_guard_elite_basic	big_map_elite_pool	present	unmatched	runtime_candidate	legacy	false	false	true	legacy_reference_unmatched	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_elite_enemy_elite_military_officer_elite_basic	big_map_elite_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_elite_enemy_elite_spear_instructor_elite_advanced	big_map_elite_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_big_map_elite_enemy_elite_spear_instructor_elite_basic	big_map_elite_pool	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_boss_boss_normal_boss_old_case_officer_phase_1	normal_boss_01	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_boss_boss_true_boss_gatekeeper_phase_1	true_boss_01	present	matched	runtime_candidate	legacy	false	false	false	none	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_boss_boss_true_boss_hidden_commander_phase_1	true_boss_02	present	unmatched	runtime_candidate	legacy	false	false	true	legacy_reference_unmatched	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_boss_boss_true_boss_hidden_commander_phase_2	true_boss_02	present	unmatched	runtime_candidate	legacy	false	false	true	legacy_reference_unmatched	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_exam_exam_exam_capital_basic_weapon	wz_exam_01	present	unmatched	runtime_candidate	legacy	false	false	true	legacy_reference_unmatched	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_exam_exam_exam_capital_duel_chain	wz_exam_02	present	unmatched	runtime_candidate	legacy	false	false	true	legacy_reference_unmatched	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_exam_exam_exam_capital_footwork	wz_exam_03	present	unmatched	runtime_candidate	legacy	false	false	true	legacy_reference_unmatched	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_exam_exam_exam_capital_mixed_weapon	wz_exam_04	present	unmatched	runtime_candidate	legacy	false	false	true	legacy_reference_unmatched	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+detail	rw_exam_exam_exam_imperial_final_examiner	wz_exam_05	present	unmatched	runtime_candidate	legacy	false	false	true	legacy_reference_unmatched	离线对齐模拟：只验证候选可读与对齐，不进入正式流程。	PASS	blocking
+summary											runtime_test_harness_status	PASS	blocking
+summary_value	runtime_test_harness_status	pass	pass								runtime_test_harness_status=pass	PASS	blocking
+summary											runtime_test_harness_mode	PASS	blocking
+summary_value	runtime_test_harness_mode	true	true								runtime_test_harness_mode=true	PASS	blocking
+summary											runtime_loader_config_still_disabled	PASS	blocking
+summary_value	runtime_loader_config_still_disabled	true	true								runtime_loader_config_still_disabled=true	PASS	blocking
+summary											battle_reward_runtime_record_count	PASS	blocking
+summary_value	battle_reward_runtime_record_count	45	45								battle_reward_runtime_record_count=45	PASS	blocking
+summary											harness_runtime_candidate_readable	PASS	blocking
+summary_value	harness_runtime_candidate_readable	true	true								harness_runtime_candidate_readable=true	PASS	blocking
+summary											formal_selected_source	PASS	blocking
+summary_value	formal_selected_source	legacy	legacy								formal_selected_source=legacy	PASS	blocking
+summary											formal_runtime_effective	PASS	blocking
+summary_value	formal_runtime_effective	false	false								formal_runtime_effective=false	PASS	blocking
+summary											formal_flow_touched	PASS	blocking
+summary_value	formal_flow_touched	false	false								formal_flow_touched=false	PASS	blocking
+summary											runtime_dir_modified	PASS	blocking
+summary_value	runtime_dir_modified	false	false								runtime_dir_modified=false	PASS	blocking
+summary											formal_data_source_replaced	PASS	blocking
+summary_value	formal_data_source_replaced	false	false								formal_data_source_replaced=false	PASS	blocking

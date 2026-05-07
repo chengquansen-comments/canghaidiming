@@ -1,0 +1,17 @@
+check_id	status	expected	actual	detail	severity
+adapter_formal_flow_reference_count	PASS	0	0	adapter_ref_files=['scripts/narrative/battle_reward_runtime_adapter.gd', 'scripts/narrative_demo_canonical_controller.gd']	blocking
+shadow_integration_file	PASS	scripts/narrative_demo_canonical_controller.gd	scripts/narrative_demo_canonical_controller.gd	shadow 接入文件必须固定	blocking
+shadow_integration_function	PASS	_battle_reward_for_source	_battle_reward_for_source	shadow 接入函数必须固定	blocking
+shadow_integration_point_only	PASS	true	true	resolve_inside=1,resolve_outside=0	blocking
+shadow_marker_present	PASS	true	true	函数内必须保留 shadow-only 标记	blocking
+runtime_enabled_formal_logic_absent	PASS	true	true	canonical 不得出现 runtime_enabled 正式生效逻辑	blocking
+selected_reward_source	PASS	legacy	legacy	正式选择结果必须保持 legacy	blocking
+selected_reward_runtime_effective	PASS	false	false	runtime 奖励不得正式生效	blocking
+runtime_reward_candidate_only	PASS	true	true	runtime reward 只能作为 candidate/shadow_compare	blocking
+runtime_loader_config_disabled	PASS	true	true	runtime_loader_config 必须保持 disabled	blocking
+battle_reward_runtime_record_count	PASS	45	45	runtime battle_reward 条数必须为 45	blocking
+formal_data_source_replaced	PASS	false	false		blocking
+high_risk_files_touched	PASS	false	false		blocking
+runtime_dir_whitelist_status	PASS	pass	pass	actual=['data/runtime/content_engine/battle_reward.json', 'data/runtime/content_engine/card_pool.json', 'data/runtime/content_engine/runtime_loader_config.json', 'data/runtime/content_engine/runtime_manifest.json']	blocking
+shadow_region_dangerous_call_count	PASS	0	0	dangerous_calls=	blocking
+shadow_freeze_status	PASS	pass	pass	v1.0c shadow 边界冻结结论	blocking

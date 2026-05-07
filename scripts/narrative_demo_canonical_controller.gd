@@ -7,6 +7,7 @@ const CanonicalEndingRuntime := preload("res://scripts/narrative/canonical_endin
 const CanonicalBattleRewardRuntime := preload("res://scripts/narrative/canonical_battle_reward_runtime.gd")
 const CanonicalMapRuntime := preload("res://scripts/narrative/canonical_map_runtime.gd")
 const CanonicalMapViewRuntime := preload("res://scripts/narrative/canonical_map_view_runtime.gd")
+const BattleRewardRuntimeAdapter := preload("res://scripts/narrative/battle_reward_runtime_adapter.gd")
 
 # Canonical narrative variable names for the MVP runtime.
 # Internal legacy counters are kept as storage for compatibility with older controllers:
@@ -68,6 +69,7 @@ var selected_ending_flag: String = ""
 var rival_gu_bond: int = 0
 var rival_shen_bond: int = 0
 var rival_qi_bond: int = 0
+var _last_battle_reward_shadow_result: Dictionary = {}
 
 func _active_node_ids() -> Array:
 	if has_method("_flow_node_ids"):
@@ -216,14 +218,28 @@ func _battle_reward_for_source(source_index: int) -> Dictionary:
 		var encounter_id := str(node.get("combat", ""))
 		if has_method("_formal_reward_for_encounter"):
 			formal_reward = _formal_reward_for_encounter(encounter_id, str(node.get("type", "")))
-
-	return CanonicalBattleRewardRuntime.reward_from_context_or_node(
+	var legacy_reward := CanonicalBattleRewardRuntime.reward_from_context_or_node(
 		normalized_context_reward,
 		source_index,
 		_active_node_count(),
 		node,
 		formal_reward
 	)
+	# v1.0c shadow only: runtime reward 只旁路对比，不改变正式奖励。
+	var source_id := str(node.get("id", "node_%d" % source_index))
+	var adapter_result: Dictionary = {}
+	var adapter := BattleRewardRuntimeAdapter.new()
+	if adapter != null:
+		adapter_result = adapter.resolve_reward(source_id, legacy_reward, {"source_index": source_index})
+	_record_battle_reward_shadow_result(source_id, adapter_result)
+	return legacy_reward
+
+func _record_battle_reward_shadow_result(source_id: String, adapter_result: Dictionary) -> void:
+	# v1.0c shadow only：仅记录只读调试信息，不影响正式结算流程。
+	_last_battle_reward_shadow_result = {
+		"source_id": source_id,
+		"adapter_result": adapter_result.duplicate(true),
+	}
 
 func _battle_growth_reward_for_source(source_index: int) -> Dictionary:
 	var formal_reward: Dictionary = {}

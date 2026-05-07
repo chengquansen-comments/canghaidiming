@@ -137,7 +137,19 @@ def build_steps() -> list[tuple[str, str, str, bool]]:
         "tools/content_engine/runtime_loader_godot_probe_validator.py "
         "tools/content_engine/runtime_loader_negative_fixture_builder.py "
         "tools/content_engine/runtime_loader_negative_fixture_probe.py "
-        "tools/content_engine/runtime_loader_negative_fixture_validator.py"
+        "tools/content_engine/runtime_loader_negative_fixture_validator.py "
+        "tools/content_engine/battle_reward_runtime_adapter_scaffold_probe.py "
+        "tools/content_engine/battle_reward_runtime_adapter_scaffold_validator.py "
+        "tools/content_engine/battle_reward_shadow_integration_plan_probe.py "
+        "tools/content_engine/battle_reward_shadow_integration_plan_validator.py "
+        "tools/content_engine/battle_reward_shadow_runtime_probe.py "
+        "tools/content_engine/battle_reward_shadow_runtime_validator.py "
+        "tools/content_engine/content_engine_acceptance_runner.py "
+        "tools/content_engine/content_engine_acceptance_validator.py "
+        "tools/content_engine/battle_reward_shadow_freeze_probe.py "
+        "tools/content_engine/battle_reward_shadow_freeze_validator.py "
+        "tools/content_engine/battle_reward_runtime_test_harness.py "
+        "tools/content_engine/battle_reward_runtime_test_harness_validator.py"
     )
 
     return [
@@ -152,6 +164,16 @@ def build_steps() -> list[tuple[str, str, str, bool]]:
         ("preview", "runtime_exporter_preview", "python3 tools/content_engine/runtime_exporter.py", True),
         # legacy exporter validator assumes runtime dir absence in no-write mode.
         ("preview", "runtime_exporter_preview_validator", "python3 tools/content_engine/runtime_exporter_validator.py", False),
+        ("adapter_scaffold", "battle_reward_runtime_adapter_scaffold_probe", "python3 tools/content_engine/battle_reward_runtime_adapter_scaffold_probe.py", True),
+        ("adapter_scaffold", "battle_reward_runtime_adapter_scaffold_validator", "python3 tools/content_engine/battle_reward_runtime_adapter_scaffold_validator.py", True),
+        ("shadow_plan", "battle_reward_shadow_integration_plan_probe", "python3 tools/content_engine/battle_reward_shadow_integration_plan_probe.py", True),
+        ("shadow_plan", "battle_reward_shadow_integration_plan_validator", "python3 tools/content_engine/battle_reward_shadow_integration_plan_validator.py", True),
+        ("shadow_runtime", "battle_reward_shadow_runtime_probe", "python3 tools/content_engine/battle_reward_shadow_runtime_probe.py", True),
+        ("shadow_runtime", "battle_reward_shadow_runtime_validator", "python3 tools/content_engine/battle_reward_shadow_runtime_validator.py", True),
+        ("shadow_freeze", "battle_reward_shadow_freeze_probe", "python3 tools/content_engine/battle_reward_shadow_freeze_probe.py", True),
+        ("shadow_freeze", "battle_reward_shadow_freeze_validator", "python3 tools/content_engine/battle_reward_shadow_freeze_validator.py", True),
+        ("runtime_test_harness", "battle_reward_runtime_test_harness", "python3 tools/content_engine/battle_reward_runtime_test_harness.py", True),
+        ("runtime_test_harness", "battle_reward_runtime_test_harness_validator", "python3 tools/content_engine/battle_reward_runtime_test_harness_validator.py", True),
         ("guarded_write", "runtime_exporter_guarded_write", "python3 tools/content_engine/runtime_exporter.py --write-runtime --confirm-runtime-export", True),
         # legacy guarded-write validator predates runtime_manifest.json and expects only 2 runtime files.
         ("guarded_write", "runtime_exporter_guarded_write_validator", "python3 tools/content_engine/runtime_exporter_validator.py --allow-runtime-files", False),
@@ -166,6 +188,7 @@ def build_steps() -> list[tuple[str, str, str, bool]]:
         ("negative_fixture", "runtime_loader_negative_fixture_builder", "python3 tools/content_engine/runtime_loader_negative_fixture_builder.py", True),
         ("negative_fixture", "runtime_loader_negative_fixture_probe", "python3 tools/content_engine/runtime_loader_negative_fixture_probe.py", True),
         ("negative_fixture", "runtime_loader_negative_fixture_validator", "python3 tools/content_engine/runtime_loader_negative_fixture_validator.py", True),
+        ("post_restore", "restore_battle_reward_runtime", "python3 tools/content_engine/content_engine_export.py --domain battle_reward --write", True),
         ("hygiene", "git_diff_check", "git diff --check", True),
         ("hygiene", "godot_headless_quit", "godot --headless --path . --quit", True),
         ("hygiene", "godot_headless_mainvisual", "godot --headless --path . --quit scenes/MainVisual.tscn", True),

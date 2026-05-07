@@ -144,6 +144,26 @@ def main() -> int:
         report.fail("preview_formal_runtime_sha_unchanged must PASS")
     else:
         report.pass_("preview formal runtime sha unchanged PASS")
+    if not any(r["step_name"] == "battle_reward_runtime_adapter_scaffold_validator" and r["status"] == "PASS" for r in rows):
+        report.fail("battle_reward_runtime_adapter_scaffold_validator must PASS in regression report")
+    else:
+        report.pass_("adapter scaffold validator step PASS")
+    if not any(r["step_name"] == "battle_reward_shadow_integration_plan_validator" and r["status"] == "PASS" for r in rows):
+        report.fail("battle_reward_shadow_integration_plan_validator must PASS in regression report")
+    else:
+        report.pass_("shadow integration plan validator step PASS")
+    if not any(r["step_name"] == "battle_reward_shadow_runtime_validator" and r["status"] == "PASS" for r in rows):
+        report.fail("battle_reward_shadow_runtime_validator must PASS in regression report")
+    else:
+        report.pass_("shadow runtime validator step PASS")
+    if not any(r["step_name"] == "battle_reward_shadow_freeze_validator" and r["status"] == "PASS" for r in rows):
+        report.fail("battle_reward_shadow_freeze_validator must PASS in regression report")
+    else:
+        report.pass_("shadow freeze validator step PASS")
+    if not any(r["step_name"] == "battle_reward_runtime_test_harness_validator" and r["status"] == "PASS" for r in rows):
+        report.fail("battle_reward_runtime_test_harness_validator must PASS in regression report")
+    else:
+        report.pass_("runtime test harness validator step PASS")
 
     names = {p.name for p in RUNTIME_ROOT.iterdir() if p.is_file()} if RUNTIME_ROOT.exists() else set()
     if names != ALLOWED_RUNTIME_FILES:
