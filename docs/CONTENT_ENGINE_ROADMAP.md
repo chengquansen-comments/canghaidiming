@@ -70,12 +70,14 @@ v0.4a / v0.4b 都应保持设计层边界，不直接修改运行时战斗代码
 
 v0.4b 的输出建议为 long-form：`generated_enemy_deck_sets.tsv`（一行一张卡），同时保留 `selection_score` / `selection_reason`，便于 validator 和后续调参。
 
-### v0.5 reward / narrative / route gate
+### v0.5 reward / operation / narrative / route gate
 
 v0.5 建议拆分：
 
 - v0.5a `battle_reward_generator`：先生成战斗奖励规划表。
-- v0.5b `operation_node_generator` / `narrative_node_generator` / `route_gate_generator`：再补经营、叙事与路线门槛。
+- v0.5b `operation_node_generator`：先补经营节点池与代价规则。
+- v0.5c `narrative_node_generator`：生成叙事骨架与 hook 标签。
+- v0.5d `route_gate_generator`：汇总路线门槛与触发条件。
 
 本阶段继续保持设计层，不改战斗运行时。
 

@@ -130,3 +130,22 @@ python3 tools/content_engine/battle_reward_validator.py \
 ```
 
 v0.5a only produces design-layer reward planning; it does not write runtime reward data and does not modify Godot runtime scripts.
+
+## v0.5b Operation Node Generator
+
+Generate deterministic design-layer operation node plan:
+
+```bash
+python3 tools/content_engine/operation_node_generator.py \
+  --design-dir data/design \
+  --out data/design/generated_operation_node_plan.tsv
+```
+
+Validate generated operation node plan:
+
+```bash
+python3 tools/content_engine/operation_node_validator.py \
+  --design-dir data/design
+```
+
+v0.5b only produces design-layer operation nodes; it does not generate narrative text, route gates, or runtime operation data.
