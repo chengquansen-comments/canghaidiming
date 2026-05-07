@@ -1,0 +1,8 @@
+battle_slot_id	domain	test_content_engine_enabled	formal_content_engine_enabled	candidate_available	candidate_id	candidate_count	candidate_source	formal_source	formal_source_unchanged	runtime_loader_config	runtime_write_detected	test_result	notes
+prologue_01	battle_slot	true	false	true	prologue_01	1	content_engine_preview	legacy	true	disabled	false	PASS	白名单槽位 candidate。
+prologue_01	reward	true	false	true	rw_prologue_01	1	content_engine_preview	legacy	true	disabled	false	PASS	白名单奖励 candidate。
+prologue_01	enemy_deck	true	false	false		0	content_engine_preview	legacy	true	disabled	false	PASS	未提供 prologue_01 的直接 deck 绑定。
+prologue_01	card_pool	true	false	true	card_pool_preview	72	content_engine_preview	legacy	true	disabled	false	PASS	72 张候选，仅测试模拟，不进入正式 CardData。
+prologue_01	operation_node	true	false	true	operation_nodes_preview	10	content_engine_preview	legacy	true	disabled	false	PASS	10 个候选，仅测试模拟。
+prologue_01	narrative	true	false	true	narrative_key_hook_preview	28	content_engine_preview	legacy	true	disabled	false	PASS	仅 key/hook，不含正文。
+prologue_01	route_gate	true	false	true	route_gates_preview	9	content_engine_preview	legacy	true	disabled	false	PASS	9 个候选，仅测试模拟。

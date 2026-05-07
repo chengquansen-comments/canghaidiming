@@ -116,6 +116,16 @@ STEPS: tuple[StepDef, ...] = (
         tuple(),
     ),
     StepDef(
+        "full_package_whitelist_test_enable_probe",
+        "python3 tools/content_engine/full_package_whitelist_test_enable_probe.py",
+        (Path("data/design/generated_full_package_whitelist_test_enable_report.tsv"),),
+    ),
+    StepDef(
+        "full_package_whitelist_test_enable_validator",
+        "python3 tools/content_engine/full_package_whitelist_test_enable_validator.py",
+        tuple(),
+    ),
+    StepDef(
         "content_engine_regression_runner",
         "python3 tools/content_engine/content_engine_regression_runner.py",
         (
@@ -281,7 +291,7 @@ def write_step_md(path: Path, run_id: str, rows: list[dict[str, str]]) -> None:
             "",
             "## 说明",
             "",
-            "- 本 runner 顺序执行 shadow freeze、runtime harness、full preview readonly、full package shadow compare、full package candidate path、regression 链路。",
+            "- 本 runner 顺序执行 shadow freeze、runtime harness、full preview readonly、full package shadow compare、full package candidate path、full package whitelist test enable、regression 链路。",
             "- selected_reward 仍为 legacy，runtime reward 仍仅 candidate/shadow_compare。",
             "- 本报告用于 v1.0d-final 的验收稳定性加固，确保不读取半写入文件、不依赖并行时序、无需复跑。",
             "- 所有结论都不改变正式业务流程，不改变玩家实际奖励、不改变成长奖励、不改变结算 UI。",

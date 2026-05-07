@@ -158,6 +158,8 @@ def main() -> int:
         ("full_package_shadow_compare_validator", "python3 tools/content_engine/full_package_shadow_compare_validator.py"),
         ("full_package_candidate_path_probe", "python3 tools/content_engine/full_package_candidate_path_probe.py"),
         ("full_package_candidate_path_validator", "python3 tools/content_engine/full_package_candidate_path_validator.py"),
+        ("full_package_whitelist_test_enable_probe", "python3 tools/content_engine/full_package_whitelist_test_enable_probe.py"),
+        ("full_package_whitelist_test_enable_validator", "python3 tools/content_engine/full_package_whitelist_test_enable_validator.py"),
         ("git_diff_check", "git diff --check"),
         ("godot_headless_quit", "godot --headless --path . --quit"),
         ("godot_headless_mainvisual", "godot --headless --path . --quit scenes/MainVisual.tscn"),
