@@ -1,0 +1,2 @@
+approval_id	artifact_id	approval_scope	approval_status	approved_for_preview	approved_for_runtime	approval_reason	risk_level	notes
+approval_reward_preview_generated_battle_reward_plan	generated_battle_reward_plan	reward_preview	approved	true	false	battle_reward_plan 已通过 validator 且仅进入 preview 候选	high	仅限 preview，不得用于 runtime，不得写 runtime 文件
