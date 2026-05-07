@@ -114,6 +114,7 @@ v0.5 建议拆分：
 - 统一运行所有现有 validators。
 - 将 manifest 中的 `NOT_RUN` 尽量收敛为 `PASS` / `WARN` / `FAIL`。
 - 产出统一的 validator summary，作为人工批准前置条件。
+- 当前先输出独立 summary，不直接回写 validated manifest。
 
 ### v0.6d content package approval
 

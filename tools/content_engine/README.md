@@ -225,3 +225,23 @@ python3 tools/content_engine/content_package_report_validator.py \
 ```
 
 v0.6b only reads `generated_content_package_manifest.tsv` and renders a stable Markdown summary of artifact inventory, dependency links, validator status aggregation, runtime blockers, and review risks. It does not rerun validators, does not generate runtime data, and does not modify Godot runtime scripts.
+
+## v0.6c Validator Orchestration
+
+Run all existing design-layer validators through one entrypoint:
+
+```bash
+python3 tools/content_engine/content_validator_orchestrator.py \
+  --design-dir data/design \
+  --out-tsv data/design/generated_validator_summary.tsv \
+  --out-md data/design/generated_validator_summary.md
+```
+
+Validate validator summary outputs:
+
+```bash
+python3 tools/content_engine/content_validator_summary_validator.py \
+  --design-dir data/design
+```
+
+v0.6c only orchestrates validators, writes `generated_validator_summary.tsv`, `generated_validator_summary.md`, and `data/design/validator_logs/*.log`, and keeps the workflow fully inside the design layer. It does not rerun generators, does not export runtime data, and does not modify Godot runtime scripts.
