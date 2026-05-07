@@ -1,0 +1,4 @@
+requirement_id	scope	route_type	node_type	actual_node_count_min	actual_node_count_default	actual_node_count_max	ratio_min	ratio_default	ratio_max	recommended_subtypes	notes
+big_map_operation_total	big_map	common	operation_total	7	8	10	0.300	0.348	0.400	校场|行营|军门|器械所|师门|市井|旧案|身法奇遇|休整	经营 / 事件 / 修行节点需求，覆盖 30%-40% 占比。
+big_map_combat_total_reference	big_map	common	combat_reference	14	15	16	0.000	0.000	0.000	战斗	大地图战斗节点基线，供混排与节奏校验。
+big_map_total_node_reference	big_map	common	total_node_reference	22	23	26	0.000	0.000	0.000	战斗+经营	大地图总经过节点，来自战斗节点和经营节点汇总。
