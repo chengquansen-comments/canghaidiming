@@ -61,8 +61,12 @@ v0.3 仍不填具体 `card_id`，不生成正式敌人 deck，不生成正式卡
 
 ### v0.4 card_pool / enemy_deck_sets
 
-- 生成或筛选具体卡池。
-- 根据 deck skeleton 与 `docs/COMBAT_CARD_GRAMMAR_V1.md` 将可用卡牌填充到敌人卡组集合。
+v0.4 建议拆分为两个子阶段：
+
+- v0.4a `card_pool_generator`：先生成设计层可用卡池 `generated_card_pool.tsv`。
+- v0.4b `enemy_deck_sets_generator`：再根据 deck skeleton 与 card pool 填充具体敌人 deck set。
+
+v0.4a / v0.4b 都应保持设计层边界，不直接修改运行时战斗代码。
 
 ### v0.5 reward / narrative / route gate
 

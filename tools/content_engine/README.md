@@ -73,3 +73,22 @@ python3 tools/content_engine/enemy_deck_skeleton_validator.py \
 ```
 
 v0.3 still does not fill concrete `card_id` values, generate formal enemy decks, generate formal cards, modify Godot runtime logic, or call an LLM API. It only produces deck skeleton constraints for v0.4 card pool and enemy deck set generation.
+
+## v0.4a Card Pool Generator
+
+Generate deterministic design-layer card pool:
+
+```bash
+python3 tools/content_engine/card_pool_generator.py \
+  --design-dir data/design \
+  --out data/design/generated_card_pool.tsv
+```
+
+Validate generated card pool:
+
+```bash
+python3 tools/content_engine/card_pool_validator.py \
+  --design-dir data/design
+```
+
+v0.4a still does not generate runtime card data, does not fill enemy deck sets, does not modify `card_data.gd` / `combat_resolver.gd` / `battle_state_machine.gd`, and does not call an LLM API.
