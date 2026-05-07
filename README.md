@@ -159,6 +159,24 @@ lite 日常报告输出：
 - `docs/CONTENT_ENGINE.md`
 - `docs/CONTENT_ENGINE_V0_9_LITE.md`
 
+## Battle Reward 受控只读接入试验（readonly integration probe）
+
+该试验用于在 Godot headless 环境下验证 `battle_reward` runtime 与 legacy 设计源的只读对齐，不接入正式奖励逻辑，不替换正式数据源，不参与真实战斗结算。
+
+```bash
+python3 tools/content_engine/battle_reward_readonly_integration_probe.py
+python3 tools/content_engine/battle_reward_readonly_integration_probe_validator.py
+```
+
+报告输出：
+
+- `data/design/generated_battle_reward_readonly_integration_probe_report.tsv`
+- `data/design/generated_battle_reward_readonly_integration_probe_report.md`
+
+说明文档：
+
+- `docs/BATTLE_REWARD_READONLY_INTEGRATION_PROBE.md`
+
 ## 当前主链路
 
 | 方向 | 当前入口 | 说明 |

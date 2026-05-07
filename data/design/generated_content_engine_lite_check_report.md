@@ -18,9 +18,9 @@
 
 | Step | Name | Exit Code | Status | Duration(ms) | Blocked Reason |
 |---|---|---|---|---|---|
-| 1 | lite_export_battle_reward | 0 | PASS | 159 |  |
-| 2 | lite_validate | 0 | PASS | 152 |  |
-| 3 | lite_godot_probe | 0 | PASS | 775 |  |
-| 4 | git_diff_check | 0 | PASS | 52 |  |
-| 5 | godot_headless_quit | 0 | PASS | 423 |  |
+| 1 | lite_export_battle_reward | 0 | PASS | 108 |  |
+| 2 | lite_validate | 0 | PASS | 92 |  |
+| 3 | lite_godot_probe | 0 | PASS | 786 |  |
+| 4 | git_diff_check | 0 | PASS | 50 |  |
+| 5 | godot_headless_quit | 0 | PASS | 324 |  |
 | 6 | godot_headless_mainvisual | 0 | PASS | 1106 |  |

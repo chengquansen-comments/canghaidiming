@@ -272,6 +272,16 @@ v0.5 建议拆分：
 - 高级链路（dry-run/overlay/diff/manifest/preflight/scaffold/probe/negative/regression）保留为 advanced/audit mode，不删除。
 - 当前 `battle_reward` 维持 45 条 design/runtime/Godot 对齐；`card_pool` 继续 out_of_scope，不伪造业务数据。
 
+### battle_reward_readonly_integration_probe（受控只读接入试验）
+
+- 新增独立 headless probe：`battle_reward_readonly_integration_probe.gd`。
+- probe 只读取 `runtime_manifest.json`、`battle_reward.json`、`runtime_loader_config.json` 和 legacy 设计源，不写入任何 runtime/scene/resource。
+- 试验目标是验证 `battle_reward` 在 Godot 环境下的只读对齐，不参与真实战斗结算。
+- `formal_data_source_replaced=false`、`combat_flow_touched=false`、`battle_state_touched=false`。
+- `card_pool` 继续 out_of_scope。
+- 输出 `generated_battle_reward_readonly_integration_probe_report.tsv` 与 `generated_battle_reward_readonly_integration_probe_report.md`。
+- `integration_status=readonly_probe_only`，`runtime_loader_config` 仍保持 `disabled`。
+
 ### v0.9 auto battle sampler integration
 
 - 接入自动战斗采样。

@@ -1,7 +1,7 @@
 step_id	step_name	command	exit_code	status	duration_ms	blocked_reason	notes
-1	lite_export_battle_reward	python3 tools/content_engine/content_engine_export.py --domain battle_reward --write	0	PASS	159		none
-2	lite_validate	python3 tools/content_engine/content_engine_validate.py	0	PASS	152		none
-3	lite_godot_probe	python3 tools/content_engine/content_engine_godot_probe.py	0	PASS	775		none
-4	git_diff_check	git diff --check	0	PASS	52		none
-5	godot_headless_quit	godot --headless --path . --quit	0	PASS	423		none
+1	lite_export_battle_reward	python3 tools/content_engine/content_engine_export.py --domain battle_reward --write	0	PASS	108		none
+2	lite_validate	python3 tools/content_engine/content_engine_validate.py	0	PASS	92		none
+3	lite_godot_probe	python3 tools/content_engine/content_engine_godot_probe.py	0	PASS	786		none
+4	git_diff_check	git diff --check	0	PASS	50		none
+5	godot_headless_quit	godot --headless --path . --quit	0	PASS	324		none
 6	godot_headless_mainvisual	godot --headless --path . --quit scenes/MainVisual.tscn	0	PASS	1106		none
