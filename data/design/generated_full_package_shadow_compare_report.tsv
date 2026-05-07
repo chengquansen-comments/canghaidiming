@@ -1,0 +1,8 @@
+domain	battle_slot_id	legacy_source	candidate_source	candidate_available	candidate_id	formal_source_unchanged	content_engine_enabled	runtime_loader_config	notes
+battle_slot	prologue_01	legacy	content_engine_preview	true	prologue_01	true	false	disabled	prologue_01 candidate 命中。
+reward	prologue_01	legacy	content_engine_preview	true	rw_prologue_01	true	false	disabled	rw_prologue_01 candidate 命中。
+enemy_deck	prologue_01	legacy	content_engine_preview	false		true	false	disabled	preview 中未提供 prologue_01 到 deck_id 的直接绑定，仅记录未绑定。
+card_pool	prologue_01	legacy	content_engine_preview	true	card_pool_72	true	false	disabled	72 张 candidate 可用，但不进入正式 CardData。
+operation_node	prologue_01	legacy	content_engine_preview	true	operation_nodes_10	true	false	disabled	仅记录可用数量，不进入正式地图流程。
+narrative	prologue_01	legacy	content_engine_preview	true	narrative_nodes_28	true	false	disabled	仅 key/hook，不写正式正文。
+route_gate	prologue_01	legacy	content_engine_preview	true	route_gates_9	true	false	disabled	仅记录可用 gate，不进入正式路线逻辑。

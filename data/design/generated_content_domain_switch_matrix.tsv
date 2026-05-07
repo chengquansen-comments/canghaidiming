@@ -1,0 +1,8 @@
+domain	source_mode	enabled_scope	default_mode	content_engine_enabled	notes
+battle_slot	shadow_compare	prologue_01	legacy	false	仅用于 prologue_01 的 shadow compare；不全局启用。
+enemy_deck	shadow_compare	prologue_01	legacy	false	仅用于 prologue_01 的 shadow compare；不全局启用。
+card_pool	shadow_compare	prologue_01	legacy	false	仅用于 prologue_01 的 shadow compare；不全局启用。
+reward	shadow_compare	prologue_01	legacy	false	仅用于 prologue_01 的 shadow compare；不全局启用。
+operation_node	shadow_compare	prologue_01	legacy	false	仅用于 prologue_01 的 shadow compare；不全局启用。
+narrative	shadow_compare	prologue_01	legacy	false	仅用于 prologue_01 的 shadow compare；不全局启用。
+route_gate	shadow_compare	prologue_01	legacy	false	仅用于 prologue_01 的 shadow compare；不全局启用。

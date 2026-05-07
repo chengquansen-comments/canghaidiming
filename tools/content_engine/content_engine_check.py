@@ -154,6 +154,8 @@ def main() -> int:
         ("full_preview_readonly_probe_py", "python3 tools/content_engine/full_preview_readonly_probe.py"),
         ("full_preview_readonly_probe_godot", "godot --headless --path . --script tools/content_engine/full_preview_readonly_probe.gd"),
         ("full_preview_readonly_validator", "python3 tools/content_engine/full_preview_readonly_validator.py"),
+        ("full_package_shadow_compare_probe", "python3 tools/content_engine/full_package_shadow_compare_probe.py"),
+        ("full_package_shadow_compare_validator", "python3 tools/content_engine/full_package_shadow_compare_validator.py"),
         ("git_diff_check", "git diff --check"),
         ("godot_headless_quit", "godot --headless --path . --quit"),
         ("godot_headless_mainvisual", "godot --headless --path . --quit scenes/MainVisual.tscn"),

@@ -22,6 +22,8 @@ REQUIRED_CHECK_IDS = {
     "full_preview_readonly_probe_py",
     "full_preview_readonly_probe_godot",
     "full_preview_readonly_validator",
+    "full_package_shadow_compare_probe",
+    "full_package_shadow_compare_validator",
     "content_engine_regression_runner",
     "content_engine_regression_validator",
 }
