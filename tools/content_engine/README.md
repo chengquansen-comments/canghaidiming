@@ -262,3 +262,24 @@ python3 tools/content_engine/content_package_approval_validator.py   --design-di
 ```
 
 v0.6d only produces an approval template layer from manifest + validator summary. It does not auto-approve any artifact, does not export runtime data, and does not modify Godot runtime scripts.
+
+
+## v0.7a Runtime Schema Proposal
+
+Generate runtime schema proposal from governance tables:
+
+```bash
+python3 tools/content_engine/runtime_schema_proposal_generator.py \
+  --design-dir data/design \
+  --out data/design/generated_runtime_schema_proposal.tsv \
+  --out-md data/design/generated_runtime_schema_proposal.md
+```
+
+Validate runtime schema proposal:
+
+```bash
+python3 tools/content_engine/runtime_schema_proposal_validator.py \
+  --design-dir data/design
+```
+
+v0.7a only defines runtime export schema proposal and policy boundaries. It does not create runtime JSON files, does not implement runtime exporter, and does not modify Godot runtime scripts.

@@ -122,9 +122,20 @@ v0.5 建议拆分：
 - 新增 approval table，默认不自动批准任何 artifact。
 - 仅允许被明确批准的 artifact 进入后续 runtime exporter 候选集。
 
-### v0.7 runtime exporter
+### v0.7a runtime schema proposal
 
-- runtime exporter 必须读取 manifest，而不是直接扫 design 表。
+- 定义 runtime artifact 目标结构、字段映射和导出策略。
+- 输出 schema proposal，不写 runtime data。
+- 当前因无 approved artifact，export_allowed_now 保持 false。
+
+### v0.7b runtime export dry-run
+
+- 基于 approval + schema proposal 模拟导出候选和 blocker。
+- 不写 runtime 文件，只产出可执行计划。
+
+### v0.7c runtime exporter
+
+- runtime exporter 必须读取 manifest / report / validator summary / approval / schema proposal。
 - 只允许导出 validator PASS 且人工批准的 artifact。
 - 仍然不直接改战斗核心结算逻辑。
 
