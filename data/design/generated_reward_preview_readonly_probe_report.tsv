@@ -1,0 +1,6 @@
+check_id	status	expected	actual	notes
+preview_manifest_runtime_ready	PASS	false	false	preview manifest 必须 runtime_ready=false
+preview_manifest_selected_reward_policy	PASS	legacy	legacy	selected_reward_policy 必须 legacy
+preview_reward_count	PASS	45	45	preview reward 数量必须为 45
+selected_reward_source	PASS	legacy	legacy	selected_reward 仍应为 legacy
+runtime_loader_config_disabled	PASS	true	true	runtime_loader_config 应保持 disabled
