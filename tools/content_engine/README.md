@@ -206,3 +206,22 @@ python3 tools/content_engine/content_package_manifest_validator.py \
 ```
 
 v0.6a only records design-layer artifacts, dependencies, row counts, checksums, validator status fields, and runtime export blockers. It does not generate runtime data, does not implement a runtime exporter, and does not modify Godot runtime scripts.
+
+## v0.6b Content Package Report
+
+Generate design-layer content package report from manifest:
+
+```bash
+python3 tools/content_engine/content_package_report_generator.py \
+  --design-dir data/design \
+  --out data/design/generated_content_package_report.md
+```
+
+Validate report integrity:
+
+```bash
+python3 tools/content_engine/content_package_report_validator.py \
+  --design-dir data/design
+```
+
+v0.6b only reads `generated_content_package_manifest.tsv` and renders a stable Markdown summary of artifact inventory, dependency links, validator status aggregation, runtime blockers, and review risks. It does not rerun validators, does not generate runtime data, and does not modify Godot runtime scripts.

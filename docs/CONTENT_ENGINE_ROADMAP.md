@@ -109,6 +109,17 @@ v0.5 建议拆分：
 - 汇总数量、依赖、风险、validator 状态和 runtime blockers。
 - 为人工批准和 runtime exporter 做准备。
 
+### v0.6c validator orchestration
+
+- 统一运行所有现有 validators。
+- 将 manifest 中的 `NOT_RUN` 尽量收敛为 `PASS` / `WARN` / `FAIL`。
+- 产出统一的 validator summary，作为人工批准前置条件。
+
+### v0.6d content package approval
+
+- 在 manifest / report / validator summary 基础上做人审批准。
+- 仅允许被明确批准的 artifact 进入后续 runtime exporter 候选集。
+
 ### v0.7 runtime exporter
 
 - runtime exporter 必须读取 manifest，而不是直接扫 design 表。
