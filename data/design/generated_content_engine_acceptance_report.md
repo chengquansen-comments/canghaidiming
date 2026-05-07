@@ -1,22 +1,23 @@
-# Content Engine 交付验收报告
+# Content Engine 交付验收执行报告
 
+- run_id=acceptance-20260507T122036Z-eb0e8ac6
 - acceptance_status=PASS
 - blocking_fail_count=0
-- non_blocking_warning_count=1
 
 ## 步骤明细
 
-| step_id | step_name | exit_code | status | duration_ms | severity |
-|---|---|---|---|---|---|
-| 1 | content_engine_check | 0 | PASS | 4208 | blocking |
-| 2 | content_engine_regression_runner | 0 | PASS | 6246 | blocking |
-| 3 | content_engine_regression_validator | 0 | PASS | 1082 | blocking |
-| 4 | git_diff_check | 0 | PASS | 38 | blocking |
-| 5 | godot_headless_quit | 0 | PASS | 432 | blocking |
-| 6 | godot_headless_mainvisual | 0 | NON_BLOCKING_WARNING | 1201 | non_blocking |
+| step_id | check_id | exit_code | status | duration_ms |
+|---|---|---|---|---|
+| 1 | battle_reward_shadow_freeze_probe | 0 | PASS | 178 |
+| 2 | battle_reward_shadow_freeze_validator | 0 | PASS | 65 |
+| 3 | battle_reward_runtime_test_harness | 0 | PASS | 145 |
+| 4 | battle_reward_runtime_test_harness_validator | 0 | PASS | 58 |
+| 5 | content_engine_regression_runner | 0 | PASS | 5430 |
+| 6 | content_engine_regression_validator | 0 | PASS | 959 |
 
 ## 说明
 
-- 本报告用于 v1.0d-prep 交付验收，不改变任何正式奖励流程。
-- Godot 在退出码为 0 时出现 RID/ObjectDB/resource leak warning，按 non-blocking hygiene issue 记录。
-- 仅 blocking 失败会使 acceptance_status 失败。
+- 本 runner 顺序执行 shadow freeze、runtime harness、regression 链路。
+- selected_reward 仍为 legacy，runtime reward 仍仅 candidate/shadow_compare。
+- 本报告用于 v1.0d-final 的验收稳定性加固，确保不读取半写入文件、不依赖并行时序、无需复跑。
+- 所有结论都不改变正式业务流程，不改变玩家实际奖励、不改变成长奖励、不改变结算 UI。

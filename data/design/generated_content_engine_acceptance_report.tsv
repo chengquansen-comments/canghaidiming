@@ -1,7 +1,35 @@
-step_id	step_name	command	exit_code	status	duration_ms	severity	detail
-1	content_engine_check	python3 tools/content_engine/content_engine_check.py	0	PASS	4208	blocking	Wrote data/design/generated_content_engine_lite_check_report.tsv and data/design/generated_content_engine_lite_check_report.md. overall=PASS
-2	content_engine_regression_runner	python3 tools/content_engine/content_engine_regression_runner.py	0	PASS	6246	blocking	Wrote data/design/generated_content_engine_regression_report.tsv and data/design/generated_content_engine_regression_report.md with 39 steps. Overall=PASS
-3	content_engine_regression_validator	python3 tools/content_engine/content_engine_regression_validator.py	0	PASS	1082	blocking	"PASS: all required steps passed
+run_id	step_id	check_id	command	exit_code	status	duration_ms	severity	generated_at	detail
+acceptance-20260507T122036Z-eb0e8ac6	1	battle_reward_shadow_freeze_probe	python3 tools/content_engine/battle_reward_shadow_freeze_probe.py	0	PASS	178	blocking	2026-05-07T12:20:36+00:00	Wrote data/design/generated_battle_reward_shadow_freeze_report.tsv and data/design/generated_battle_reward_shadow_freeze_report.md.
+acceptance-20260507T122036Z-eb0e8ac6	2	battle_reward_shadow_freeze_validator	python3 tools/content_engine/battle_reward_shadow_freeze_validator.py	0	PASS	65	blocking	2026-05-07T12:20:37+00:00	"PASS: 所有 blocking 项通过
+PASS: freeze probe Markdown 中文说明约束通过
+PASS: freeze 文档中文说明约束通过
+PASS: shadow_freeze_status=pass
+PASS: selected_reward_source=legacy
+PASS: selected_reward_runtime_effective=false
+PASS: runtime_reward_candidate_only=true
+PASS: runtime_loader_config_disabled=true
+PASS: formal_data_source_replaced=false
+PASS: high_risk_files_touched=false
+PASS: runtime_dir_whitelist_status=pass
+PASS: battle_reward_runtime_record_count=45
+RESULT: PASS"
+acceptance-20260507T122036Z-eb0e8ac6	3	battle_reward_runtime_test_harness	python3 tools/content_engine/battle_reward_runtime_test_harness.py	0	PASS	145	blocking	2026-05-07T12:20:37+00:00	Wrote data/design/generated_battle_reward_runtime_test_harness_report.tsv and data/design/generated_battle_reward_runtime_test_harness_report.md.
+acceptance-20260507T122036Z-eb0e8ac6	4	battle_reward_runtime_test_harness_validator	python3 tools/content_engine/battle_reward_runtime_test_harness_validator.py	0	PASS	58	blocking	2026-05-07T12:20:37+00:00	"PASS: 所有 blocking 项通过
+PASS: runtime_test_harness_status=pass
+PASS: runtime_test_harness_mode=true
+PASS: runtime_loader_config_still_disabled=true
+PASS: battle_reward_runtime_record_count=45
+PASS: harness_runtime_candidate_readable=true
+PASS: formal_selected_source=legacy
+PASS: formal_runtime_effective=false
+PASS: formal_flow_touched=false
+PASS: runtime_dir_modified=false
+PASS: formal_data_source_replaced=false
+PASS: harness Markdown 中文说明约束通过
+PASS: runtime_test 文档中文说明约束通过
+RESULT: PASS"
+acceptance-20260507T122036Z-eb0e8ac6	5	content_engine_regression_runner	python3 tools/content_engine/content_engine_regression_runner.py	0	PASS	5430	blocking	2026-05-07T12:20:42+00:00	Wrote data/design/generated_content_engine_regression_report.tsv and data/design/generated_content_engine_regression_report.md with 39 steps. Overall=PASS
+acceptance-20260507T122036Z-eb0e8ac6	6	content_engine_regression_validator	python3 tools/content_engine/content_engine_regression_validator.py	0	PASS	959	blocking	2026-05-07T12:20:43+00:00	"PASS: all required steps passed
 PASS: preview formal runtime sha unchanged PASS
 PASS: adapter scaffold validator step PASS
 PASS: shadow integration plan validator step PASS
@@ -17,20 +45,3 @@ PASS: negative fixtures returned_domain_count all 0
 PASS: negative fixtures write_api_present all false
 PASS: no existing .gd references loader/probe
 RESULT: PASS"
-4	git_diff_check	git diff --check	0	PASS	38	blocking	none
-5	godot_headless_quit	godot --headless --path . --quit	0	PASS	432	blocking	Godot Engine v4.6.2.stable.official.71f334935 - https://godotengine.org
-6	godot_headless_mainvisual	godot --headless --path . --quit scenes/MainVisual.tscn	0	NON_BLOCKING_WARNING	1201	non_blocking	"Godot Engine v4.6.2.stable.official.71f334935 - https://godotengine.org
-
-StoryBattle data validation: OK
-templates=21 decks=26 stats=16 encounters=24
-[settlement-mode] reactive
-
-WARNING: 14 RIDs of type ""CanvasItem"" were leaked.
-     at: _free_rids (servers/rendering/renderer_canvas_cull.cpp:2692)
-ERROR: 4 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
-ERROR: 14 RID allocations of type 'PN18TextServerAdvanced22ShapedTextDataAdvancedE' were leaked at exit.
-ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
-WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
-     at: cleanup (core/object/object.cpp:2641)
-ERROR: 1 resources still in use at exit (run with --verbose for details).
-   at: clear (core/io/resource.cpp:810)"

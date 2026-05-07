@@ -1,0 +1,5 @@
+mode	mode_allowed	preview_package_exists	preview_reward_count	selected_reward_source	candidate_reward_available	selected_reward_unchanged	runtime_loader_config	runtime_write_detected	notes
+legacy	true	true	45	legacy	true	true	disabled	false	默认 legacy；shadow_compare/content_engine_candidate 仅候选或对比；content_engine_enabled 禁止启用；不写入 selected_reward。
+shadow_compare	true	true	45	legacy	true	true	disabled	false	默认 legacy；shadow_compare/content_engine_candidate 仅候选或对比；content_engine_enabled 禁止启用；不写入 selected_reward。
+content_engine_candidate	true	true	45	legacy	true	true	disabled	false	默认 legacy；shadow_compare/content_engine_candidate 仅候选或对比；content_engine_enabled 禁止启用；不写入 selected_reward。
+content_engine_enabled	false	true	45	legacy	true	true	disabled	false	默认 legacy；shadow_compare/content_engine_candidate 仅候选或对比；content_engine_enabled 禁止启用；不写入 selected_reward。

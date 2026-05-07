@@ -1,0 +1,2 @@
+config_key	config_value	notes
+reward_source_mode	legacy	v1.4 skeleton 默认 legacy；仅允许 probe 读取 candidate，不进入正式奖励流程。
