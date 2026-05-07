@@ -58,6 +58,42 @@ v0.8i 仅新增 CI / workflow draft，不接入正式 loader，不替换正式 c
 - `docs/CONTENT_ENGINE_CI.md`
 - `docs/CONTENT_ENGINE_ROADMAP.md`
 
+## Content Engine Integration Gate（v0.9a）
+
+v0.9a 新增 read-only integration gate，默认 disabled，不接入战斗主流程，不替换正式数据源。
+
+```bash
+python3 tools/content_engine/runtime_integration_gate_probe.py
+python3 tools/content_engine/runtime_integration_gate_validator.py
+```
+
+报告输出：
+
+- `data/design/generated_runtime_integration_gate_report.tsv`
+- `data/design/generated_runtime_integration_gate_report.md`
+
+说明文档：
+
+- `docs/CONTENT_ENGINE_V0_9A.md`
+
+## Content Engine Battle Reward Compare（v0.9b）
+
+v0.9b 新增 `battle_reward` 单 domain read-only compare，仅输出差异报告，不替换正式奖励逻辑。
+
+```bash
+python3 tools/content_engine/runtime_battle_reward_compare.py
+python3 tools/content_engine/runtime_battle_reward_compare_validator.py
+```
+
+报告输出：
+
+- `data/design/generated_runtime_battle_reward_compare_report.tsv`
+- `data/design/generated_runtime_battle_reward_compare_report.md`
+
+说明文档：
+
+- `docs/CONTENT_ENGINE_V0_9B.md`
+
 ## 当前主链路
 
 | 方向 | 当前入口 | 说明 |

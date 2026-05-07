@@ -13,7 +13,7 @@ from pathlib import Path
 from runtime_loader_godot_probe import OUTPUT_FIELDS, OUTPUT_MD, OUTPUT_TSV
 
 
-ALLOWED_RUNTIME_FILES = {"card_pool.json", "battle_reward.json", "runtime_manifest.json"}
+ALLOWED_RUNTIME_FILES = {"card_pool.json", "battle_reward.json", "runtime_manifest.json", "runtime_loader_config.json"}
 FORBIDDEN_HIGH_RISK = {
     "scripts/card_data.gd",
     "scripts/battle_state_machine.gd",
@@ -100,7 +100,7 @@ def check_runtime_dir(runtime_dir: Path, report: ValidationReport) -> None:
     if names != ALLOWED_RUNTIME_FILES:
         report.fail(f"runtime dir file set mismatch: expected={sorted(ALLOWED_RUNTIME_FILES)} actual={sorted(names)}")
     else:
-        report.pass_("runtime dir keeps expected 3-file set")
+        report.pass_("runtime dir keeps expected allowlisted file set")
 
 
 def check_references(report: ValidationReport) -> None:

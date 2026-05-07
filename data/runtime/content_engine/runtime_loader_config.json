@@ -1,0 +1,7 @@
+{
+  "content_engine_runtime_enabled": false,
+  "read_only_probe_enabled": false,
+  "integration_mode": "disabled",
+  "fallback_mode": "existing_data_source",
+  "notes": "v0.9a read-only integration gate default disabled; not integrated into main battle flow."
+}

@@ -18,7 +18,7 @@ REPORT_MD = Path("data/design/generated_runtime_loader_negative_fixture_report.m
 FIXTURE_ROOT = Path("data/design/runtime_loader_negative_fixtures")
 INDEX_FILE = FIXTURE_ROOT / "fixture_manifest.json"
 RUNTIME_ROOT = Path("data/runtime/content_engine")
-ALLOWED_RUNTIME_FILES = {"card_pool.json", "battle_reward.json", "runtime_manifest.json"}
+ALLOWED_RUNTIME_FILES = {"card_pool.json", "battle_reward.json", "runtime_manifest.json", "runtime_loader_config.json"}
 FIELDS = [
     "fixture_name",
     "fixture_path",

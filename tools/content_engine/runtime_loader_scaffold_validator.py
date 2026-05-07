@@ -16,7 +16,7 @@ from runtime_loader_scaffold_probe import OUTPUT_FIELDS, OUTPUT_MD, OUTPUT_TSV
 SCAFFOLD_FILE = Path("scripts/content_engine_runtime_loader.gd")
 FORBIDDEN_WRITE_TOKENS = ["FileAccess.WRITE", "store_string", "store_var", "DirAccess.make_dir_recursive"]
 FORBIDDEN_CALL_TOKENS = ["combat_resolver", "battle_state_machine", "card_data", "MainVisual", "main_visual"]
-ALLOWED_RUNTIME_FILES = {"card_pool.json", "battle_reward.json", "runtime_manifest.json"}
+ALLOWED_RUNTIME_FILES = {"card_pool.json", "battle_reward.json", "runtime_manifest.json", "runtime_loader_config.json"}
 
 
 @dataclass
@@ -130,7 +130,7 @@ def check_runtime_dir(runtime_dir: Path, report: ValidationReport) -> None:
     if names != ALLOWED_RUNTIME_FILES:
         report.fail(f"runtime dir files mismatch: expected={sorted(ALLOWED_RUNTIME_FILES)} actual={sorted(names)}")
     else:
-        report.pass_("runtime dir contains exactly 3 expected files")
+        report.pass_("runtime dir contains expected allowlisted files")
 
 
 def check_scaffold_report(report_rows: list[dict[str, str]], report: ValidationReport) -> None:

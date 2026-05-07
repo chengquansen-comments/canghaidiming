@@ -21,6 +21,7 @@ from runtime_exporter import ALLOWED_RUNTIME_FILENAMES, RUNTIME_DIR, WRITE_RESUL
 
 
 RESTRICTED_PREFIXES = ("scripts/", "scenes/", "data/story_battles/")
+OPTIONAL_RUNTIME_FILES = {"runtime_loader_config.json"}
 
 
 @dataclass
@@ -110,7 +111,7 @@ def validate_runtime_directory(runtime_dir: Path, report: ValidationReport) -> N
         report.fail(f"runtime directory missing: {runtime_dir}")
         return
     names = {entry.name for entry in runtime_dir.iterdir() if entry.is_file()}
-    allowed = set(ALLOWED_RUNTIME_FILENAMES) | {MANIFEST_JSON}
+    allowed = set(ALLOWED_RUNTIME_FILENAMES) | {MANIFEST_JSON} | OPTIONAL_RUNTIME_FILES
     extra = names - allowed
     if extra:
         report.fail("runtime directory has extra files: " + ", ".join(sorted(extra)))
@@ -118,7 +119,7 @@ def validate_runtime_directory(runtime_dir: Path, report: ValidationReport) -> N
     if missing:
         report.fail("runtime directory missing required files: " + ", ".join(sorted(missing)))
     if not extra and not missing:
-        report.pass_("runtime directory contains only allowlisted files + runtime_manifest.json.")
+        report.pass_("runtime directory contains only allowlisted files (including optional config).")
 
 
 def validate_manifest(

@@ -14,7 +14,7 @@ from pathlib import Path
 REPORT_TSV = Path("data/design/generated_content_engine_regression_report.tsv")
 REPORT_MD = Path("data/design/generated_content_engine_regression_report.md")
 RUNTIME_ROOT = Path("data/runtime/content_engine")
-ALLOWED_RUNTIME_FILES = {"card_pool.json", "battle_reward.json", "runtime_manifest.json"}
+ALLOWED_RUNTIME_FILES = {"card_pool.json", "battle_reward.json", "runtime_manifest.json", "runtime_loader_config.json"}
 REQUIRED_FIELDS = [
     "step_id",
     "phase",
@@ -149,7 +149,7 @@ def main() -> int:
     if names != ALLOWED_RUNTIME_FILES:
         report.fail(f"runtime dir file set mismatch: expected={sorted(ALLOWED_RUNTIME_FILES)} actual={sorted(names)}")
     else:
-        report.pass_("runtime dir still contains only 3 formal files")
+        report.pass_("runtime dir still contains only allowlisted formal files")
 
     for script, label in [
         ("tools/content_engine/runtime_export_manifest_validator.py", "manifest validator"),

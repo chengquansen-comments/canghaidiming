@@ -1,0 +1,2 @@
+config_path	gate_script	content_engine_runtime_enabled	read_only_probe_enabled	integration_mode	fallback_mode	gate_status	gate_default_disabled	write_api_present	existing_gd_reference_count	formal_data_source_replaced	runtime_dir_allowed_only	risk_level	blocked_reason	notes
+data/runtime/content_engine/runtime_loader_config.json	scripts/content_engine_runtime_gate.gd	false	false	disabled	existing_data_source	disabled	true	false	0	false	true	low		v0.9a gate scaffold is read-only, default disabled, and not integrated into main battle flow.

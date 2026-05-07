@@ -15,7 +15,7 @@ from pathlib import Path
 REPORT_TSV = Path("data/design/generated_content_engine_regression_report.tsv")
 REPORT_MD = Path("data/design/generated_content_engine_regression_report.md")
 RUNTIME_ROOT = Path("data/runtime/content_engine")
-FORMAL_RUNTIME_FILES = ["card_pool.json", "battle_reward.json", "runtime_manifest.json"]
+FORMAL_RUNTIME_FILES = ["card_pool.json", "battle_reward.json", "runtime_manifest.json", "runtime_loader_config.json"]
 ALLOWED_RUNTIME_FILES = set(FORMAL_RUNTIME_FILES)
 
 FIELDS = [
@@ -52,7 +52,8 @@ def sha256_file(path: Path) -> str:
 def tail_text(text: str, max_lines: int = 20, max_chars: int = 1800) -> str:
     lines = text.splitlines()
     clipped = "\n".join(lines[-max_lines:])
-    return clipped[-max_chars:]
+    normalized = "\n".join(line.rstrip(" \t") for line in clipped.splitlines())
+    return normalized[-max_chars:]
 
 
 def run_command(command: str) -> tuple[int, int, str, str]:
@@ -78,6 +79,8 @@ def append_step(
     notes: str = "",
 ) -> None:
     status = "PASS" if exit_code == 0 else "FAIL"
+    normalized_blocked_reason = blocked_reason if blocked_reason else "none"
+    normalized_notes = notes if notes else "none"
     rows.append(
         {
             "step_id": str(step_id),
@@ -90,8 +93,8 @@ def append_step(
             "stdout_tail": stdout_tail,
             "stderr_tail": stderr_tail,
             "required": "true" if required else "false",
-            "blocked_reason": blocked_reason,
-            "notes": notes,
+            "blocked_reason": normalized_blocked_reason,
+            "notes": normalized_notes,
         }
     )
 

@@ -228,6 +228,21 @@ v0.5 建议拆分：
 - 允许将 Godot headless 检查作为 optional job（当 CI 环境已安装 Godot 时启用）。
 - v0.8i 不新增 runtime 功能，不接入正式 loader，不替换 card/reward 正式数据源。
 
+### v0.9a read-only integration gate
+
+- 新增 `runtime_loader_config.json` 与独立 gate scaffold（`content_engine_runtime_gate.gd`）。
+- gate 默认 `disabled`，只做只读配置/目录/manifest 检查，异常时 fail-closed。
+- 不接入战斗主流程，不替换正式 card/reward 数据源，不修改战斗逻辑文件。
+- 新增 gate probe/validator 与 gate report（TSV/MD）。
+
+### v0.9b battle_reward single-domain read-only compare
+
+- 新增 `runtime_battle_reward_compare.py` 与 validator。
+- compare 输入来自 runtime manifest/config/battle_reward，以及 legacy/design reward source。
+- 仅处理 `battle_reward` 单 domain；`card_pool` 保持 out_of_scope。
+- 输出差异报告供评估，不替换正式奖励逻辑，不接入战斗主流程。
+- legacy source not_found/ambiguous 可记录为非阻塞 compare 结果。
+
 ### v0.9 auto battle sampler integration
 
 - 接入自动战斗采样。

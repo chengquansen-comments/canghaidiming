@@ -32,7 +32,7 @@ OUTPUT_FIELDS = [
 ]
 SCAFFOLD_PATH = Path("scripts/content_engine_runtime_loader.gd")
 MANIFEST_PATH = Path(f"data/runtime/content_engine/{MANIFEST_JSON}")
-ALLOWED_RUNTIME_FILES = {"card_pool.json", "battle_reward.json", MANIFEST_JSON}
+ALLOWED_RUNTIME_FILES = {"card_pool.json", "battle_reward.json", MANIFEST_JSON, "runtime_loader_config.json"}
 WRITE_API_TOKENS = ["FileAccess.WRITE", "store_string", "store_var", "DirAccess.make_dir_recursive"]
 
 
@@ -100,7 +100,7 @@ def main() -> int:
     if not manifest.exists():
         blocked_reasons.append("manifest_missing")
 
-    allowed_runtime_files = "card_pool.json,battle_reward.json"
+    allowed_runtime_files = "card_pool.json,battle_reward.json,runtime_manifest.json,runtime_loader_config.json"
 
     scripts_dir = Path("scripts")
     reference_count = count_existing_gd_references(scaffold.name, scripts_dir)
