@@ -111,3 +111,22 @@ python3 tools/content_engine/enemy_deck_sets_validator.py \
 ```
 
 v0.4b still does not write runtime deck data, does not modify runtime combat scripts, and does not call an LLM API.
+
+## v0.5a Battle Reward Generator
+
+Generate deterministic design-layer battle reward plan:
+
+```bash
+python3 tools/content_engine/battle_reward_generator.py \
+  --design-dir data/design \
+  --out data/design/generated_battle_reward_plan.tsv
+```
+
+Validate generated reward plan:
+
+```bash
+python3 tools/content_engine/battle_reward_validator.py \
+  --design-dir data/design
+```
+
+v0.5a only produces design-layer reward planning; it does not write runtime reward data and does not modify Godot runtime scripts.

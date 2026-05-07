@@ -72,10 +72,12 @@ v0.4b 的输出建议为 long-form：`generated_enemy_deck_sets.tsv`（一行一
 
 ### v0.5 reward / narrative / route gate
 
-- 生成奖励规划。
-- 生成经营节点规划。
-- 生成叙事节点规划。
-- 生成路线门槛规划。
+v0.5 建议拆分：
+
+- v0.5a `battle_reward_generator`：先生成战斗奖励规划表。
+- v0.5b `operation_node_generator` / `narrative_node_generator` / `route_gate_generator`：再补经营、叙事与路线门槛。
+
+本阶段继续保持设计层，不改战斗运行时。
 
 ### v0.6 runtime exporter
 
