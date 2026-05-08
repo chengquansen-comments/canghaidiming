@@ -29,6 +29,83 @@ func build_generated_map_route_candidate(battle_slot_id: String) -> Dictionary:
 		"operation_node": get_operation_nodes_for_battle_slot(battle_slot_id, bundle),
 		"narrative": get_narrative_keys_for_battle_slot(battle_slot_id, bundle),
 		"route_gate": get_route_gates_for_battle_slot(battle_slot_id, bundle),
+		"map_route_runtime_candidate": build_generated_map_route_runtime_candidate(battle_slot_id),
+	}
+
+
+func build_generated_map_route_runtime_candidate(battle_slot_id: String) -> Dictionary:
+	if battle_slot_id == "" or not BRIDGE.new().is_enabled_for_battle_slot(battle_slot_id):
+		return {
+			"battle_slot_id": battle_slot_id,
+			"map_route_candidate_available": false,
+			"battle_slot_candidate_id": "",
+			"operation_node_count": 0,
+			"narrative_key_count": 0,
+			"route_gate_count": 0,
+			"narrative_keys_only": true,
+			"route_gate_writes_formal_flow": false,
+			"fallback_policy": FALLBACK_POLICY,
+			"candidate_source": "legacy",
+			"legacy_fallback_available": true,
+		}
+	var bundle: Dictionary = BRIDGE.new().get_full_content_bundle_for_battle_slot(battle_slot_id)
+	var battle_slot := get_battle_slot_candidate(battle_slot_id, bundle)
+	var operation_nodes := get_operation_node_candidates(battle_slot_id, bundle)
+	var narrative := get_narrative_key_candidates(battle_slot_id, bundle)
+	var route_gates := get_route_gate_candidates(battle_slot_id, bundle)
+	var nv := validate_narrative_keys(narrative)
+	var rv := validate_route_gate_candidates(route_gates)
+	return {
+		"battle_slot_id": battle_slot_id,
+		"map_route_candidate_available": bool(battle_slot.get("candidate_available", false)) and bool(operation_nodes.get("candidate_available", false)) and bool(narrative.get("candidate_available", false)) and bool(route_gates.get("candidate_available", false)),
+		"battle_slot_candidate_id": str(battle_slot.get("candidate_id", "")),
+		"operation_node_count": int(operation_nodes.get("candidate_count", 0)),
+		"narrative_key_count": int(narrative.get("candidate_count", 0)),
+		"route_gate_count": int(route_gates.get("candidate_count", 0)),
+		"narrative_keys_only": bool(nv.get("narrative_keys_only", false)),
+		"route_gate_writes_formal_flow": bool(rv.get("route_gate_writes_formal_flow", true)),
+		"fallback_policy": FALLBACK_POLICY,
+		"candidate_source": "content_engine_candidate",
+		"legacy_fallback_available": true,
+	}
+
+
+func get_battle_slot_candidate(battle_slot_id: String, bridge_bundle: Dictionary = {}) -> Dictionary:
+	return get_battle_slot_for_battle_slot(battle_slot_id, bridge_bundle)
+
+
+func get_operation_node_candidates(battle_slot_id: String, bridge_bundle: Dictionary = {}) -> Dictionary:
+	return get_operation_nodes_for_battle_slot(battle_slot_id, bridge_bundle)
+
+
+func get_narrative_key_candidates(battle_slot_id: String, bridge_bundle: Dictionary = {}) -> Dictionary:
+	return get_narrative_keys_for_battle_slot(battle_slot_id, bridge_bundle)
+
+
+func validate_narrative_keys(candidates: Dictionary) -> Dictionary:
+	var keys := _arr(candidates.get("narrative_keys", []))
+	var keys_only := true
+	for item in keys:
+		if typeof(item) != TYPE_DICTIONARY:
+			keys_only = false
+			break
+		var row: Dictionary = item
+		var hook_tags := str(row.get("hook_tags", ""))
+		if hook_tags.length() > 120:
+			keys_only = false
+			break
+	return {
+		"narrative_keys_only": keys_only and bool(candidates.get("hook_only", false)),
+	}
+
+
+func get_route_gate_candidates(battle_slot_id: String, bridge_bundle: Dictionary = {}) -> Dictionary:
+	return get_route_gates_for_battle_slot(battle_slot_id, bridge_bundle)
+
+
+func validate_route_gate_candidates(candidates: Dictionary) -> Dictionary:
+	return {
+		"route_gate_writes_formal_flow": bool(candidates.get("writes_formal_flow", false)),
 	}
 
 

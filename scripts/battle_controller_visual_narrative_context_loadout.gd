@@ -179,6 +179,7 @@ func _resolve_battle_loadout() -> Dictionary:
 		"generated_battle_domain_candidate": generated_domain,
 		"generated_battle_runtime_loadout_candidate": generated_domain.get("battle_runtime_loadout_candidate", {}),
 		"generated_map_route_domain_candidate": generated_map_route_domain,
+		"generated_map_route_runtime_candidate": generated_map_route_domain.get("map_route_runtime_candidate", {}),
 		"settlement_mode": settlement_mode,
 		"debug_source": "NarrativeBattleContext + StoryBattleLoader + enemy_manifest + battle_scene_manifest"
 	}
@@ -245,6 +246,19 @@ func _resolve_generated_map_route_domain_candidate(source_node_id: String) -> Di
 			"operation_node": {"formal_source": "legacy", "candidate_available": false, "candidate_count": 0},
 			"narrative": {"formal_source": "legacy", "candidate_available": false, "candidate_count": 0, "hook_only": true},
 			"route_gate": {"formal_source": "legacy", "candidate_available": false, "candidate_count": 0, "writes_formal_flow": false},
+			"map_route_runtime_candidate": {
+				"battle_slot_id": source_node_id,
+				"map_route_candidate_available": false,
+				"battle_slot_candidate_id": "",
+				"operation_node_count": 0,
+				"narrative_key_count": 0,
+				"route_gate_count": 0,
+				"narrative_keys_only": true,
+				"route_gate_writes_formal_flow": false,
+				"fallback_policy": "legacy",
+				"candidate_source": "legacy",
+				"legacy_fallback_available": true,
+			},
 			"fallback_policy": "legacy",
 		}
 	var battle_slot: Dictionary = candidate.get("battle_slot", {}) if candidate.get("battle_slot", {}) is Dictionary else {}
@@ -258,5 +272,6 @@ func _resolve_generated_map_route_domain_candidate(source_node_id: String) -> Di
 		"operation_node": operation_node,
 		"narrative": narrative,
 		"route_gate": route_gate,
+		"map_route_runtime_candidate": candidate.get("map_route_runtime_candidate", {}),
 		"fallback_policy": str(candidate.get("fallback_policy", "legacy")),
 	}

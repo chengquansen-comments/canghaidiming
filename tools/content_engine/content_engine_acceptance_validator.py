@@ -46,6 +46,8 @@ REQUIRED_CHECK_IDS = {
     "generated_slice_whitelist_validator",
     "generated_battle_runtime_loadout_probe",
     "generated_battle_runtime_loadout_validator",
+    "generated_map_route_runtime_flow_probe",
+    "generated_map_route_runtime_flow_validator",
     "content_engine_regression_runner",
     "content_engine_regression_validator",
 }

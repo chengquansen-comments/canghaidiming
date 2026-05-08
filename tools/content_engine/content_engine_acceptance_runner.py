@@ -230,6 +230,16 @@ STEPS: tuple[StepDef, ...] = (
         tuple(),
     ),
     StepDef(
+        "generated_map_route_runtime_flow_probe",
+        "godot --headless --path . --script tools/content_engine/generated_map_route_runtime_flow_probe.gd",
+        (Path("data/design/generated_map_route_runtime_flow_report.tsv"),),
+    ),
+    StepDef(
+        "generated_map_route_runtime_flow_validator",
+        "python3 tools/content_engine/generated_map_route_runtime_flow_validator.py",
+        tuple(),
+    ),
+    StepDef(
         "content_engine_regression_runner",
         "python3 tools/content_engine/content_engine_regression_runner.py",
         (

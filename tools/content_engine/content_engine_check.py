@@ -178,6 +178,8 @@ def main() -> int:
         ("generated_slice_whitelist_validator", "python3 tools/content_engine/generated_slice_whitelist_validator.py"),
         ("generated_battle_runtime_loadout_probe", "godot --headless --path . --script tools/content_engine/generated_battle_runtime_loadout_probe.gd"),
         ("generated_battle_runtime_loadout_validator", "python3 tools/content_engine/generated_battle_runtime_loadout_validator.py"),
+        ("generated_map_route_runtime_flow_probe", "godot --headless --path . --script tools/content_engine/generated_map_route_runtime_flow_probe.gd"),
+        ("generated_map_route_runtime_flow_validator", "python3 tools/content_engine/generated_map_route_runtime_flow_validator.py"),
         ("git_diff_check", "git diff --check"),
         ("godot_headless_quit", "godot --headless --path . --quit"),
         ("godot_headless_mainvisual", "godot --headless --path . --quit scenes/MainVisual.tscn"),

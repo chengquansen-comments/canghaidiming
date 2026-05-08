@@ -1,0 +1,14 @@
+battle_slot_id	is_whitelisted	battle_slot_candidate_available	operation_node_count	narrative_key_count	narrative_keys_only	route_gate_count	route_gate_writes_formal_flow	map_route_candidate_available	fallback_policy	legacy_fallback_available	writes_story_data	writes_battle_state	writes_combat_result	notes
+prologue_01	true	true	10	28	true	9	false	true	legacy	true	false	false	false	candidate_source=content_engine_candidate
+wuju_exam_01	true	true	10	28	true	9	false	true	legacy	true	false	false	false	candidate_source=content_engine_candidate
+wuju_exam_02	true	true	10	28	true	9	false	true	legacy	true	false	false	false	candidate_source=content_engine_candidate
+wuju_exam_03	true	true	10	28	true	9	false	true	legacy	true	false	false	false	candidate_source=content_engine_candidate
+wuju_weapon_01	true	true	10	28	true	9	false	true	legacy	true	false	false	false	candidate_source=content_engine_candidate
+wuju_weapon_02	true	true	10	28	true	9	false	true	legacy	true	false	false	false	candidate_source=content_engine_candidate
+wz_exam_01	true	true	10	28	true	9	false	true	legacy	true	false	false	false	candidate_source=content_engine_candidate
+wz_exam_02	true	true	10	28	true	9	false	true	legacy	true	false	false	false	candidate_source=content_engine_candidate
+wz_exam_03	true	true	10	28	true	9	false	true	legacy	true	false	false	false	candidate_source=content_engine_candidate
+wz_exam_04	true	true	10	28	true	9	false	true	legacy	true	false	false	false	candidate_source=content_engine_candidate
+wz_exam_05	true	true	10	28	true	9	false	true	legacy	true	false	false	false	candidate_source=content_engine_candidate
+sample_non_whitelist	false	false	0	0	true	0	false	false	legacy	true	false	false	false	non_whitelist_legacy
+prologue_01	true	true	10	28	true	9	false	true	legacy	true	false	false	false	v2_8_loadout=true;reward_selected_source=content_engine
