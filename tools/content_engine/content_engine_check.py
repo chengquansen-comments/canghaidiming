@@ -164,6 +164,8 @@ def main() -> int:
         ("full_package_runtime_readiness_validator", "python3 tools/content_engine/full_package_runtime_readiness_validator.py"),
         ("full_content_runtime_bridge_contract_generator", "python3 tools/content_engine/full_content_runtime_bridge_contract_generator.py"),
         ("full_content_runtime_bridge_contract_validator", "python3 tools/content_engine/full_content_runtime_bridge_contract_validator.py"),
+        ("generated_content_runtime_bridge_probe", "godot --headless --path . --script tools/content_engine/generated_content_runtime_bridge_probe.gd"),
+        ("generated_content_runtime_bridge_validator", "python3 tools/content_engine/generated_content_runtime_bridge_validator.py"),
         ("git_diff_check", "git diff --check"),
         ("godot_headless_quit", "godot --headless --path . --quit"),
         ("godot_headless_mainvisual", "godot --headless --path . --quit scenes/MainVisual.tscn"),

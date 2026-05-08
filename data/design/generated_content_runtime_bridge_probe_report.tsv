@@ -1,0 +1,21 @@
+check_id	status	expected	actual	notes
+manifest_readable	PASS	true	true	manifest 可读
+bundle_readable	PASS	true	true	prologue_01 bundle 可读
+bundle_validate	PASS	true	true	
+domain_read::battle_slot	PASS	true	true	domain 读取
+domain_read::enemy_deck	PASS	true	true	domain 读取
+domain_read::card_pool	PASS	true	true	domain 读取
+domain_read::reward	PASS	true	true	domain 读取
+domain_read::operation_node	PASS	true	true	domain 读取
+domain_read::narrative	PASS	true	true	domain 读取
+domain_read::route_gate	PASS	true	true	domain 读取
+reward_candidate_id	PASS	rw_prologue_01	rw_prologue_01	reward 候选
+battle_slot_candidate_id	PASS	prologue_01	prologue_01	battle_slot 候选
+enemy_deck_candidate_exists	PASS	true	true	enemy_deck 候选存在
+card_pool_count	PASS	72	72.0	card_pool 数量
+operation_node_count	PASS	10	10.0	operation_node 数量
+narrative_count	PASS	28	28.0	narrative 数量
+route_gate_count	PASS	9	9.0	route_gate 数量
+selected_reward_unchanged	PASS	legacy	legacy	probe 不写 selected_reward
+battle_state_unchanged	PASS	true	true	probe 不写 battle_state
+combat_result_unchanged	PASS	true	true	probe 不写 combat_result
