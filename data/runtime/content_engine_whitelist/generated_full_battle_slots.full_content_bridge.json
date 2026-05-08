@@ -1,0 +1,750 @@
+{
+  "package_type": "full_content_all_preview_battle_slots_bridge",
+  "generated_at": "2026-05-08T01:48:59+00:00",
+  "rollback_policy": "legacy",
+  "global_content_engine_enabled": false,
+  "formal_runtime_enabled": false,
+  "runtime_ready": false,
+  "bridge_only": true,
+  "full_battle_slot_content_enabled": true,
+  "whitelist_battle_slots": [
+    "big_map_elite_pool",
+    "big_map_normal_pool",
+    "normal_boss_01",
+    "prologue_01",
+    "true_boss_01",
+    "true_boss_02",
+    "wuju_exam_01",
+    "wuju_exam_02",
+    "wuju_exam_03",
+    "wuju_weapon_01",
+    "wuju_weapon_02",
+    "wz_exam_01",
+    "wz_exam_02",
+    "wz_exam_03",
+    "wz_exam_04",
+    "wz_exam_05"
+  ],
+  "slots": {
+    "big_map_elite_pool": {
+      "battle_slot_id": "big_map_elite_pool",
+      "rollback_policy": "legacy",
+      "global_content_engine_enabled": false,
+      "formal_runtime_enabled": false,
+      "runtime_ready": false,
+      "bridge_only": true,
+      "domains": {
+        "battle_slot": {
+          "candidate_available": true,
+          "candidate_id": "big_map_elite_pool",
+          "candidate_count": 1
+        },
+        "enemy_deck": {
+          "candidate_available": true,
+          "candidate_id": "boss_normal_boss_old_case_officer_phase_1",
+          "candidate_count": 1
+        },
+        "card_pool": {
+          "candidate_available": true,
+          "candidate_id": "card_pool_preview",
+          "candidate_count": 72
+        },
+        "reward": {
+          "candidate_available": true,
+          "candidate_id": "rw_big_map_elite_enemy_elite_blade_counter_elite_advanced",
+          "candidate_count": 1
+        },
+        "operation_node": {
+          "candidate_available": true,
+          "candidate_id": "operation_nodes_preview",
+          "candidate_count": 10
+        },
+        "narrative": {
+          "candidate_available": true,
+          "candidate_id": "narrative_key_hook_preview",
+          "candidate_count": 28
+        },
+        "route_gate": {
+          "candidate_available": true,
+          "candidate_id": "route_gates_preview",
+          "candidate_count": 9
+        }
+      }
+    },
+    "big_map_normal_pool": {
+      "battle_slot_id": "big_map_normal_pool",
+      "rollback_policy": "legacy",
+      "global_content_engine_enabled": false,
+      "formal_runtime_enabled": false,
+      "runtime_ready": false,
+      "bridge_only": true,
+      "domains": {
+        "battle_slot": {
+          "candidate_available": true,
+          "candidate_id": "big_map_normal_pool",
+          "candidate_count": 1
+        },
+        "enemy_deck": {
+          "candidate_available": true,
+          "candidate_id": "boss_normal_boss_old_case_officer_phase_1",
+          "candidate_count": 1
+        },
+        "card_pool": {
+          "candidate_available": true,
+          "candidate_id": "card_pool_preview",
+          "candidate_count": 72
+        },
+        "reward": {
+          "candidate_available": true,
+          "candidate_id": "rw_big_map_normal_enemy_coastal_raider_blade_advanced",
+          "candidate_count": 1
+        },
+        "operation_node": {
+          "candidate_available": true,
+          "candidate_id": "operation_nodes_preview",
+          "candidate_count": 10
+        },
+        "narrative": {
+          "candidate_available": true,
+          "candidate_id": "narrative_key_hook_preview",
+          "candidate_count": 28
+        },
+        "route_gate": {
+          "candidate_available": true,
+          "candidate_id": "route_gates_preview",
+          "candidate_count": 9
+        }
+      }
+    },
+    "normal_boss_01": {
+      "battle_slot_id": "normal_boss_01",
+      "rollback_policy": "legacy",
+      "global_content_engine_enabled": false,
+      "formal_runtime_enabled": false,
+      "runtime_ready": false,
+      "bridge_only": true,
+      "domains": {
+        "battle_slot": {
+          "candidate_available": true,
+          "candidate_id": "normal_boss_01",
+          "candidate_count": 1
+        },
+        "enemy_deck": {
+          "candidate_available": true,
+          "candidate_id": "boss_normal_boss_old_case_officer_phase_1",
+          "candidate_count": 1
+        },
+        "card_pool": {
+          "candidate_available": true,
+          "candidate_id": "card_pool_preview",
+          "candidate_count": 72
+        },
+        "reward": {
+          "candidate_available": true,
+          "candidate_id": "rw_boss_boss_normal_boss_old_case_officer_phase_1",
+          "candidate_count": 1
+        },
+        "operation_node": {
+          "candidate_available": true,
+          "candidate_id": "operation_nodes_preview",
+          "candidate_count": 10
+        },
+        "narrative": {
+          "candidate_available": true,
+          "candidate_id": "narrative_key_hook_preview",
+          "candidate_count": 28
+        },
+        "route_gate": {
+          "candidate_available": true,
+          "candidate_id": "route_gates_preview",
+          "candidate_count": 9
+        }
+      }
+    },
+    "prologue_01": {
+      "battle_slot_id": "prologue_01",
+      "rollback_policy": "legacy",
+      "global_content_engine_enabled": false,
+      "formal_runtime_enabled": false,
+      "runtime_ready": false,
+      "bridge_only": true,
+      "domains": {
+        "battle_slot": {
+          "candidate_available": true,
+          "candidate_id": "prologue_01",
+          "candidate_count": 1
+        },
+        "enemy_deck": {
+          "candidate_available": true,
+          "candidate_id": "boss_normal_boss_old_case_officer_phase_1",
+          "candidate_count": 1
+        },
+        "card_pool": {
+          "candidate_available": true,
+          "candidate_id": "card_pool_preview",
+          "candidate_count": 72
+        },
+        "reward": {
+          "candidate_available": true,
+          "candidate_id": "rw_prologue_01",
+          "candidate_count": 1
+        },
+        "operation_node": {
+          "candidate_available": true,
+          "candidate_id": "operation_nodes_preview",
+          "candidate_count": 10
+        },
+        "narrative": {
+          "candidate_available": true,
+          "candidate_id": "narrative_key_hook_preview",
+          "candidate_count": 28
+        },
+        "route_gate": {
+          "candidate_available": true,
+          "candidate_id": "route_gates_preview",
+          "candidate_count": 9
+        }
+      }
+    },
+    "true_boss_01": {
+      "battle_slot_id": "true_boss_01",
+      "rollback_policy": "legacy",
+      "global_content_engine_enabled": false,
+      "formal_runtime_enabled": false,
+      "runtime_ready": false,
+      "bridge_only": true,
+      "domains": {
+        "battle_slot": {
+          "candidate_available": true,
+          "candidate_id": "true_boss_01",
+          "candidate_count": 1
+        },
+        "enemy_deck": {
+          "candidate_available": true,
+          "candidate_id": "boss_normal_boss_old_case_officer_phase_1",
+          "candidate_count": 1
+        },
+        "card_pool": {
+          "candidate_available": true,
+          "candidate_id": "card_pool_preview",
+          "candidate_count": 72
+        },
+        "reward": {
+          "candidate_available": true,
+          "candidate_id": "rw_boss_boss_true_boss_gatekeeper_phase_1",
+          "candidate_count": 1
+        },
+        "operation_node": {
+          "candidate_available": true,
+          "candidate_id": "operation_nodes_preview",
+          "candidate_count": 10
+        },
+        "narrative": {
+          "candidate_available": true,
+          "candidate_id": "narrative_key_hook_preview",
+          "candidate_count": 28
+        },
+        "route_gate": {
+          "candidate_available": true,
+          "candidate_id": "route_gates_preview",
+          "candidate_count": 9
+        }
+      }
+    },
+    "true_boss_02": {
+      "battle_slot_id": "true_boss_02",
+      "rollback_policy": "legacy",
+      "global_content_engine_enabled": false,
+      "formal_runtime_enabled": false,
+      "runtime_ready": false,
+      "bridge_only": true,
+      "domains": {
+        "battle_slot": {
+          "candidate_available": true,
+          "candidate_id": "true_boss_02",
+          "candidate_count": 1
+        },
+        "enemy_deck": {
+          "candidate_available": true,
+          "candidate_id": "boss_normal_boss_old_case_officer_phase_1",
+          "candidate_count": 1
+        },
+        "card_pool": {
+          "candidate_available": true,
+          "candidate_id": "card_pool_preview",
+          "candidate_count": 72
+        },
+        "reward": {
+          "candidate_available": true,
+          "candidate_id": "rw_boss_boss_true_boss_hidden_commander_phase_1",
+          "candidate_count": 1
+        },
+        "operation_node": {
+          "candidate_available": true,
+          "candidate_id": "operation_nodes_preview",
+          "candidate_count": 10
+        },
+        "narrative": {
+          "candidate_available": true,
+          "candidate_id": "narrative_key_hook_preview",
+          "candidate_count": 28
+        },
+        "route_gate": {
+          "candidate_available": true,
+          "candidate_id": "route_gates_preview",
+          "candidate_count": 9
+        }
+      }
+    },
+    "wuju_exam_01": {
+      "battle_slot_id": "wuju_exam_01",
+      "rollback_policy": "legacy",
+      "global_content_engine_enabled": false,
+      "formal_runtime_enabled": false,
+      "runtime_ready": false,
+      "bridge_only": true,
+      "domains": {
+        "battle_slot": {
+          "candidate_available": true,
+          "candidate_id": "wuju_exam_01",
+          "candidate_count": 1
+        },
+        "enemy_deck": {
+          "candidate_available": true,
+          "candidate_id": "boss_normal_boss_old_case_officer_phase_1",
+          "candidate_count": 1
+        },
+        "card_pool": {
+          "candidate_available": true,
+          "candidate_id": "card_pool_preview",
+          "candidate_count": 72
+        },
+        "reward": {
+          "candidate_available": true,
+          "candidate_id": "rw_wuju_exam_01",
+          "candidate_count": 1
+        },
+        "operation_node": {
+          "candidate_available": true,
+          "candidate_id": "operation_nodes_preview",
+          "candidate_count": 10
+        },
+        "narrative": {
+          "candidate_available": true,
+          "candidate_id": "narrative_key_hook_preview",
+          "candidate_count": 28
+        },
+        "route_gate": {
+          "candidate_available": true,
+          "candidate_id": "route_gates_preview",
+          "candidate_count": 9
+        }
+      }
+    },
+    "wuju_exam_02": {
+      "battle_slot_id": "wuju_exam_02",
+      "rollback_policy": "legacy",
+      "global_content_engine_enabled": false,
+      "formal_runtime_enabled": false,
+      "runtime_ready": false,
+      "bridge_only": true,
+      "domains": {
+        "battle_slot": {
+          "candidate_available": true,
+          "candidate_id": "wuju_exam_02",
+          "candidate_count": 1
+        },
+        "enemy_deck": {
+          "candidate_available": true,
+          "candidate_id": "boss_normal_boss_old_case_officer_phase_1",
+          "candidate_count": 1
+        },
+        "card_pool": {
+          "candidate_available": true,
+          "candidate_id": "card_pool_preview",
+          "candidate_count": 72
+        },
+        "reward": {
+          "candidate_available": true,
+          "candidate_id": "rw_wuju_exam_02",
+          "candidate_count": 1
+        },
+        "operation_node": {
+          "candidate_available": true,
+          "candidate_id": "operation_nodes_preview",
+          "candidate_count": 10
+        },
+        "narrative": {
+          "candidate_available": true,
+          "candidate_id": "narrative_key_hook_preview",
+          "candidate_count": 28
+        },
+        "route_gate": {
+          "candidate_available": true,
+          "candidate_id": "route_gates_preview",
+          "candidate_count": 9
+        }
+      }
+    },
+    "wuju_exam_03": {
+      "battle_slot_id": "wuju_exam_03",
+      "rollback_policy": "legacy",
+      "global_content_engine_enabled": false,
+      "formal_runtime_enabled": false,
+      "runtime_ready": false,
+      "bridge_only": true,
+      "domains": {
+        "battle_slot": {
+          "candidate_available": true,
+          "candidate_id": "wuju_exam_03",
+          "candidate_count": 1
+        },
+        "enemy_deck": {
+          "candidate_available": true,
+          "candidate_id": "boss_normal_boss_old_case_officer_phase_1",
+          "candidate_count": 1
+        },
+        "card_pool": {
+          "candidate_available": true,
+          "candidate_id": "card_pool_preview",
+          "candidate_count": 72
+        },
+        "reward": {
+          "candidate_available": true,
+          "candidate_id": "rw_wuju_exam_03",
+          "candidate_count": 1
+        },
+        "operation_node": {
+          "candidate_available": true,
+          "candidate_id": "operation_nodes_preview",
+          "candidate_count": 10
+        },
+        "narrative": {
+          "candidate_available": true,
+          "candidate_id": "narrative_key_hook_preview",
+          "candidate_count": 28
+        },
+        "route_gate": {
+          "candidate_available": true,
+          "candidate_id": "route_gates_preview",
+          "candidate_count": 9
+        }
+      }
+    },
+    "wuju_weapon_01": {
+      "battle_slot_id": "wuju_weapon_01",
+      "rollback_policy": "legacy",
+      "global_content_engine_enabled": false,
+      "formal_runtime_enabled": false,
+      "runtime_ready": false,
+      "bridge_only": true,
+      "domains": {
+        "battle_slot": {
+          "candidate_available": true,
+          "candidate_id": "wuju_weapon_01",
+          "candidate_count": 1
+        },
+        "enemy_deck": {
+          "candidate_available": true,
+          "candidate_id": "boss_normal_boss_old_case_officer_phase_1",
+          "candidate_count": 1
+        },
+        "card_pool": {
+          "candidate_available": true,
+          "candidate_id": "card_pool_preview",
+          "candidate_count": 72
+        },
+        "reward": {
+          "candidate_available": true,
+          "candidate_id": "rw_wuju_weapon_01",
+          "candidate_count": 1
+        },
+        "operation_node": {
+          "candidate_available": true,
+          "candidate_id": "operation_nodes_preview",
+          "candidate_count": 10
+        },
+        "narrative": {
+          "candidate_available": true,
+          "candidate_id": "narrative_key_hook_preview",
+          "candidate_count": 28
+        },
+        "route_gate": {
+          "candidate_available": true,
+          "candidate_id": "route_gates_preview",
+          "candidate_count": 9
+        }
+      }
+    },
+    "wuju_weapon_02": {
+      "battle_slot_id": "wuju_weapon_02",
+      "rollback_policy": "legacy",
+      "global_content_engine_enabled": false,
+      "formal_runtime_enabled": false,
+      "runtime_ready": false,
+      "bridge_only": true,
+      "domains": {
+        "battle_slot": {
+          "candidate_available": true,
+          "candidate_id": "wuju_weapon_02",
+          "candidate_count": 1
+        },
+        "enemy_deck": {
+          "candidate_available": true,
+          "candidate_id": "boss_normal_boss_old_case_officer_phase_1",
+          "candidate_count": 1
+        },
+        "card_pool": {
+          "candidate_available": true,
+          "candidate_id": "card_pool_preview",
+          "candidate_count": 72
+        },
+        "reward": {
+          "candidate_available": true,
+          "candidate_id": "rw_wuju_weapon_02",
+          "candidate_count": 1
+        },
+        "operation_node": {
+          "candidate_available": true,
+          "candidate_id": "operation_nodes_preview",
+          "candidate_count": 10
+        },
+        "narrative": {
+          "candidate_available": true,
+          "candidate_id": "narrative_key_hook_preview",
+          "candidate_count": 28
+        },
+        "route_gate": {
+          "candidate_available": true,
+          "candidate_id": "route_gates_preview",
+          "candidate_count": 9
+        }
+      }
+    },
+    "wz_exam_01": {
+      "battle_slot_id": "wz_exam_01",
+      "rollback_policy": "legacy",
+      "global_content_engine_enabled": false,
+      "formal_runtime_enabled": false,
+      "runtime_ready": false,
+      "bridge_only": true,
+      "domains": {
+        "battle_slot": {
+          "candidate_available": true,
+          "candidate_id": "wz_exam_01",
+          "candidate_count": 1
+        },
+        "enemy_deck": {
+          "candidate_available": true,
+          "candidate_id": "boss_normal_boss_old_case_officer_phase_1",
+          "candidate_count": 1
+        },
+        "card_pool": {
+          "candidate_available": true,
+          "candidate_id": "card_pool_preview",
+          "candidate_count": 72
+        },
+        "reward": {
+          "candidate_available": true,
+          "candidate_id": "rw_exam_exam_exam_capital_basic_weapon",
+          "candidate_count": 1
+        },
+        "operation_node": {
+          "candidate_available": true,
+          "candidate_id": "operation_nodes_preview",
+          "candidate_count": 10
+        },
+        "narrative": {
+          "candidate_available": true,
+          "candidate_id": "narrative_key_hook_preview",
+          "candidate_count": 28
+        },
+        "route_gate": {
+          "candidate_available": true,
+          "candidate_id": "route_gates_preview",
+          "candidate_count": 9
+        }
+      }
+    },
+    "wz_exam_02": {
+      "battle_slot_id": "wz_exam_02",
+      "rollback_policy": "legacy",
+      "global_content_engine_enabled": false,
+      "formal_runtime_enabled": false,
+      "runtime_ready": false,
+      "bridge_only": true,
+      "domains": {
+        "battle_slot": {
+          "candidate_available": true,
+          "candidate_id": "wz_exam_02",
+          "candidate_count": 1
+        },
+        "enemy_deck": {
+          "candidate_available": true,
+          "candidate_id": "boss_normal_boss_old_case_officer_phase_1",
+          "candidate_count": 1
+        },
+        "card_pool": {
+          "candidate_available": true,
+          "candidate_id": "card_pool_preview",
+          "candidate_count": 72
+        },
+        "reward": {
+          "candidate_available": true,
+          "candidate_id": "rw_exam_exam_exam_capital_duel_chain",
+          "candidate_count": 1
+        },
+        "operation_node": {
+          "candidate_available": true,
+          "candidate_id": "operation_nodes_preview",
+          "candidate_count": 10
+        },
+        "narrative": {
+          "candidate_available": true,
+          "candidate_id": "narrative_key_hook_preview",
+          "candidate_count": 28
+        },
+        "route_gate": {
+          "candidate_available": true,
+          "candidate_id": "route_gates_preview",
+          "candidate_count": 9
+        }
+      }
+    },
+    "wz_exam_03": {
+      "battle_slot_id": "wz_exam_03",
+      "rollback_policy": "legacy",
+      "global_content_engine_enabled": false,
+      "formal_runtime_enabled": false,
+      "runtime_ready": false,
+      "bridge_only": true,
+      "domains": {
+        "battle_slot": {
+          "candidate_available": true,
+          "candidate_id": "wz_exam_03",
+          "candidate_count": 1
+        },
+        "enemy_deck": {
+          "candidate_available": true,
+          "candidate_id": "boss_normal_boss_old_case_officer_phase_1",
+          "candidate_count": 1
+        },
+        "card_pool": {
+          "candidate_available": true,
+          "candidate_id": "card_pool_preview",
+          "candidate_count": 72
+        },
+        "reward": {
+          "candidate_available": true,
+          "candidate_id": "rw_exam_exam_exam_capital_footwork",
+          "candidate_count": 1
+        },
+        "operation_node": {
+          "candidate_available": true,
+          "candidate_id": "operation_nodes_preview",
+          "candidate_count": 10
+        },
+        "narrative": {
+          "candidate_available": true,
+          "candidate_id": "narrative_key_hook_preview",
+          "candidate_count": 28
+        },
+        "route_gate": {
+          "candidate_available": true,
+          "candidate_id": "route_gates_preview",
+          "candidate_count": 9
+        }
+      }
+    },
+    "wz_exam_04": {
+      "battle_slot_id": "wz_exam_04",
+      "rollback_policy": "legacy",
+      "global_content_engine_enabled": false,
+      "formal_runtime_enabled": false,
+      "runtime_ready": false,
+      "bridge_only": true,
+      "domains": {
+        "battle_slot": {
+          "candidate_available": true,
+          "candidate_id": "wz_exam_04",
+          "candidate_count": 1
+        },
+        "enemy_deck": {
+          "candidate_available": true,
+          "candidate_id": "boss_normal_boss_old_case_officer_phase_1",
+          "candidate_count": 1
+        },
+        "card_pool": {
+          "candidate_available": true,
+          "candidate_id": "card_pool_preview",
+          "candidate_count": 72
+        },
+        "reward": {
+          "candidate_available": true,
+          "candidate_id": "rw_exam_exam_exam_capital_mixed_weapon",
+          "candidate_count": 1
+        },
+        "operation_node": {
+          "candidate_available": true,
+          "candidate_id": "operation_nodes_preview",
+          "candidate_count": 10
+        },
+        "narrative": {
+          "candidate_available": true,
+          "candidate_id": "narrative_key_hook_preview",
+          "candidate_count": 28
+        },
+        "route_gate": {
+          "candidate_available": true,
+          "candidate_id": "route_gates_preview",
+          "candidate_count": 9
+        }
+      }
+    },
+    "wz_exam_05": {
+      "battle_slot_id": "wz_exam_05",
+      "rollback_policy": "legacy",
+      "global_content_engine_enabled": false,
+      "formal_runtime_enabled": false,
+      "runtime_ready": false,
+      "bridge_only": true,
+      "domains": {
+        "battle_slot": {
+          "candidate_available": true,
+          "candidate_id": "wz_exam_05",
+          "candidate_count": 1
+        },
+        "enemy_deck": {
+          "candidate_available": true,
+          "candidate_id": "boss_normal_boss_old_case_officer_phase_1",
+          "candidate_count": 1
+        },
+        "card_pool": {
+          "candidate_available": true,
+          "candidate_id": "card_pool_preview",
+          "candidate_count": 72
+        },
+        "reward": {
+          "candidate_available": true,
+          "candidate_id": "rw_exam_exam_exam_imperial_final_examiner",
+          "candidate_count": 1
+        },
+        "operation_node": {
+          "candidate_available": true,
+          "candidate_id": "operation_nodes_preview",
+          "candidate_count": 10
+        },
+        "narrative": {
+          "candidate_available": true,
+          "candidate_id": "narrative_key_hook_preview",
+          "candidate_count": 28
+        },
+        "route_gate": {
+          "candidate_available": true,
+          "candidate_id": "route_gates_preview",
+          "candidate_count": 9
+        }
+      }
+    }
+  }
+}

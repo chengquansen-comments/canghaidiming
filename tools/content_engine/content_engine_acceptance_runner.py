@@ -220,6 +220,22 @@ STEPS: tuple[StepDef, ...] = (
         tuple(),
     ),
     StepDef(
+        "generated_full_battle_slot_expander",
+        "python3 tools/content_engine/generated_full_battle_slot_expander.py",
+        (
+            Path("data/design/generated_full_battle_slot_whitelist_config.tsv"),
+            Path("data/design/generated_full_battle_slot_binding_map.tsv"),
+            Path("data/design/generated_full_battle_slot_integration_report.tsv"),
+            Path("data/runtime/content_engine_whitelist/generated_full_battle_slots.full_content_bridge.json"),
+            Path("data/runtime/content_engine_whitelist/generated_full_battle_slots_manifest.json"),
+        ),
+    ),
+    StepDef(
+        "generated_full_battle_slot_validator",
+        "python3 tools/content_engine/generated_full_battle_slot_validator.py",
+        tuple(),
+    ),
+    StepDef(
         "generated_battle_runtime_loadout_probe",
         "godot --headless --path . --script tools/content_engine/generated_battle_runtime_loadout_probe.gd",
         (Path("data/design/generated_battle_runtime_loadout_report.tsv"),),
@@ -237,6 +253,16 @@ STEPS: tuple[StepDef, ...] = (
     StepDef(
         "generated_map_route_runtime_flow_validator",
         "python3 tools/content_engine/generated_map_route_runtime_flow_validator.py",
+        tuple(),
+    ),
+    StepDef(
+        "generated_slice_full_integration_acceptance_probe",
+        "godot --headless --path . --script tools/content_engine/generated_slice_full_integration_acceptance_probe.gd",
+        (Path("data/design/generated_slice_full_integration_acceptance_report.tsv"),),
+    ),
+    StepDef(
+        "generated_slice_full_integration_acceptance_validator",
+        "python3 tools/content_engine/generated_slice_full_integration_acceptance_validator.py",
         tuple(),
     ),
     StepDef(

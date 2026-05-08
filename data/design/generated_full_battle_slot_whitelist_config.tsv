@@ -1,0 +1,17 @@
+battle_slot_id	slot_group	whitelist_enabled	generated_content_enabled	rollback_policy	enabled_domains	reward_plan_id	reward_fallback_required	notes
+big_map_elite_pool	big_map	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_big_map_elite_enemy_elite_blade_counter_elite_advanced	false	full preview battle_slot generated enabled
+big_map_normal_pool	big_map	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_big_map_normal_enemy_coastal_raider_blade_advanced	false	full preview battle_slot generated enabled
+normal_boss_01	boss	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_boss_boss_normal_boss_old_case_officer_phase_1	false	full preview battle_slot generated enabled
+prologue_01	prologue	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_prologue_01	false	full preview battle_slot generated enabled
+true_boss_01	boss	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_boss_boss_true_boss_gatekeeper_phase_1	false	full preview battle_slot generated enabled
+true_boss_02	boss	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_boss_boss_true_boss_hidden_commander_phase_1	false	full preview battle_slot generated enabled
+wuju_exam_01	wuju	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_wuju_exam_01	false	full preview battle_slot generated enabled
+wuju_exam_02	wuju	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_wuju_exam_02	false	full preview battle_slot generated enabled
+wuju_exam_03	wuju	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_wuju_exam_03	false	full preview battle_slot generated enabled
+wuju_weapon_01	wuju	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_wuju_weapon_01	false	full preview battle_slot generated enabled
+wuju_weapon_02	wuju	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_wuju_weapon_02	false	full preview battle_slot generated enabled
+wz_exam_01	wuju	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_exam_exam_exam_capital_basic_weapon	false	full preview battle_slot generated enabled
+wz_exam_02	wuju	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_exam_exam_exam_capital_duel_chain	false	full preview battle_slot generated enabled
+wz_exam_03	wuju	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_exam_exam_exam_capital_footwork	false	full preview battle_slot generated enabled
+wz_exam_04	wuju	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_exam_exam_exam_capital_mixed_weapon	false	full preview battle_slot generated enabled
+wz_exam_05	wuju	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_exam_exam_exam_imperial_final_examiner	false	full preview battle_slot generated enabled

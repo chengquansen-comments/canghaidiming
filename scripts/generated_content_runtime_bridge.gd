@@ -3,12 +3,20 @@ class_name GeneratedContentRuntimeBridge
 
 const MANIFEST_PATH := "res://data/runtime/content_engine_whitelist/full_content_bridge_manifest.json"
 const SLICE_MANIFEST_PATH := "res://data/runtime/content_engine_whitelist/generated_slice_manifest.json"
+const FULL_BATTLE_SLOTS_MANIFEST_PATH := "res://data/runtime/content_engine_whitelist/generated_full_battle_slots_manifest.json"
 const BUNDLE_PATH_PATTERN := "res://data/runtime/content_engine_whitelist/%s.full_content_bridge.json"
 const SLICE_BUNDLE_PATH := "res://data/runtime/content_engine_whitelist/generated_slice.full_content_bridge.json"
+const FULL_BATTLE_SLOTS_BUNDLE_PATH := "res://data/runtime/content_engine_whitelist/generated_full_battle_slots.full_content_bridge.json"
 const FALLBACK_POLICY := "legacy"
 
 
 func load_manifest() -> Dictionary:
+	if FileAccess.file_exists(FULL_BATTLE_SLOTS_MANIFEST_PATH):
+		var ff := FileAccess.open(FULL_BATTLE_SLOTS_MANIFEST_PATH, FileAccess.READ)
+		if ff != null:
+			var f_parsed: Variant = JSON.parse_string(ff.get_as_text())
+			if typeof(f_parsed) == TYPE_DICTIONARY:
+				return f_parsed
 	if FileAccess.file_exists(SLICE_MANIFEST_PATH):
 		var sf := FileAccess.open(SLICE_MANIFEST_PATH, FileAccess.READ)
 		if sf != null:
@@ -29,6 +37,18 @@ func load_manifest() -> Dictionary:
 func load_bundle(battle_slot_id: String) -> Dictionary:
 	if battle_slot_id == "":
 		return {}
+	if FileAccess.file_exists(FULL_BATTLE_SLOTS_BUNDLE_PATH):
+		var ff := FileAccess.open(FULL_BATTLE_SLOTS_BUNDLE_PATH, FileAccess.READ)
+		if ff != null:
+			var f_parsed: Variant = JSON.parse_string(ff.get_as_text())
+			if typeof(f_parsed) == TYPE_DICTIONARY:
+				var full_bundle: Dictionary = f_parsed
+				var full_slots: Variant = full_bundle.get("slots", {})
+				if typeof(full_slots) == TYPE_DICTIONARY:
+					var full_map: Dictionary = full_slots
+					var fv: Variant = full_map.get(battle_slot_id, {})
+					if typeof(fv) == TYPE_DICTIONARY:
+						return fv
 	if FileAccess.file_exists(SLICE_BUNDLE_PATH):
 		var sf := FileAccess.open(SLICE_BUNDLE_PATH, FileAccess.READ)
 		if sf != null:

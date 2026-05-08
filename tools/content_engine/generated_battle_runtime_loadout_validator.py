@@ -6,6 +6,8 @@ import subprocess
 from pathlib import Path
 
 REPORT = Path("data/design/generated_battle_runtime_loadout_report.tsv")
+FULL_CFG = Path("data/design/generated_full_battle_slot_whitelist_config.tsv")
+SLICE_CFG = Path("data/design/generated_slice_whitelist_config.tsv")
 FORBIDDEN_PATTERNS = [
     "scripts/combat_resolver.gd",
     "scripts/battle_state_machine.gd",
@@ -39,9 +41,12 @@ def main() -> int:
         return fail("report 不存在或为空")
     rows = read_tsv(REPORT)
 
+    cfg_path = FULL_CFG if FULL_CFG.exists() and FULL_CFG.stat().st_size > 0 else SLICE_CFG
+    cfg_rows = read_tsv(cfg_path)
+    expected = len({r.get("battle_slot_id", "") for r in cfg_rows if r.get("battle_slot_id", "")})
     whitelist_rows = [r for r in rows if r.get("is_whitelisted") == "true" and r.get("enemy_deck_id") != "reward_anchor"]
-    if len(whitelist_rows) != 11:
-        return fail(f"白名单 slot 数量必须 11，当前 {len(whitelist_rows)}")
+    if len(whitelist_rows) != expected:
+        return fail(f"白名单 slot 数量必须 {expected}，当前 {len(whitelist_rows)}")
 
     for r in whitelist_rows:
         slot = r.get("battle_slot_id", "")
@@ -81,7 +86,7 @@ def main() -> int:
     if bad:
         return fail("检测到禁止修改文件: " + ", ".join(bad))
 
-    print("PASS: 白名单 11 slot loadout candidate 全部可用")
+    print(f"PASS: 白名单 {expected} slot loadout candidate 全部可用")
     print("PASS: 每个白名单 slot enemy_deck candidate=true, card_pool_count=72")
     print("PASS: compatible_card_count>0, unsupported_fields 已记录")
     print("PASS: 非白名单仍 legacy fallback")

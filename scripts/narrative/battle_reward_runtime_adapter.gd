@@ -10,6 +10,7 @@ const GENERATED_CONTENT_BRIDGE := preload("res://scripts/generated_content_runti
 const CONFIG_PATH := "res://data/runtime/content_engine/runtime_loader_config.json"
 const RUNTIME_REWARD_PATH := "res://data/runtime/content_engine/battle_reward.json"
 const FORMAL_ENABLE_CONFIG_PATH := "res://data/design/generated_content_formal_enable_config.tsv"
+const FULL_BATTLE_SLOT_WHITELIST_CONFIG_PATH := "res://data/design/generated_full_battle_slot_whitelist_config.tsv"
 const SLICE_WHITELIST_CONFIG_PATH := "res://data/design/generated_slice_whitelist_config.tsv"
 const WHITELIST_BRIDGE_PATH_PATTERN := "res://data/runtime/content_engine_whitelist/%s.full_content_bridge.json"
 
@@ -74,7 +75,7 @@ func resolve_reward(source_id: String, legacy_reward: Dictionary, context: Dicti
 	var formal_enable_ok := (
 		context_generated_enabled
 		and formal_path_enabled
-		and (formal_enable_stage == "v2_3" or formal_enable_stage == "v2_7")
+		and (formal_enable_stage == "v2_3" or formal_enable_stage == "v2_7" or formal_enable_stage == "v3_1")
 		and
 		battle_slot_id == source_id
 		and whitelist_enabled
@@ -126,7 +127,7 @@ func _build_output(
 
 
 func _read_formal_enable_config(battle_slot_id: String) -> Dictionary:
-	for cfg_path in [SLICE_WHITELIST_CONFIG_PATH, FORMAL_ENABLE_CONFIG_PATH]:
+	for cfg_path in [FULL_BATTLE_SLOT_WHITELIST_CONFIG_PATH, SLICE_WHITELIST_CONFIG_PATH, FORMAL_ENABLE_CONFIG_PATH]:
 		if not FileAccess.file_exists(cfg_path):
 			continue
 		var f := FileAccess.open(cfg_path, FileAccess.READ)

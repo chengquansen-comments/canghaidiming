@@ -4,7 +4,8 @@ const MAP_ADAPTER := preload("res://scripts/generated_map_route_domain_adapter.g
 const BATTLE_ADAPTER := preload("res://scripts/generated_battle_domain_adapter.gd")
 const REWARD_ADAPTER := preload("res://scripts/narrative/battle_reward_runtime_adapter.gd")
 const BRIDGE := preload("res://scripts/generated_content_runtime_bridge.gd")
-const CFG_PATH := "res://data/design/generated_slice_whitelist_config.tsv"
+const FULL_CFG_PATH := "res://data/design/generated_full_battle_slot_whitelist_config.tsv"
+const SLICE_CFG_PATH := "res://data/design/generated_slice_whitelist_config.tsv"
 const OUT_PATH := "res://data/design/generated_map_route_runtime_flow_report.tsv"
 const NON_SLOT := "sample_non_whitelist"
 
@@ -89,9 +90,10 @@ func _initialize() -> void:
 
 func _load_slots() -> Array[String]:
 	var out: Array[String] = []
-	if not FileAccess.file_exists(CFG_PATH):
+	var cfg_path := FULL_CFG_PATH if FileAccess.file_exists(FULL_CFG_PATH) else SLICE_CFG_PATH
+	if not FileAccess.file_exists(cfg_path):
 		return out
-	var f := FileAccess.open(CFG_PATH, FileAccess.READ)
+	var f := FileAccess.open(cfg_path, FileAccess.READ)
 	if f == null:
 		return out
 	var lines := f.get_as_text().split("\n")
