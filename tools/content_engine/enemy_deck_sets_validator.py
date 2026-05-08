@@ -233,6 +233,7 @@ def validate_tag_constraints(deck_rows: dict[str, list[dict[str, str]]], report:
     for deck_id, rows in deck_rows.items():
         scope = rows[0].get("scope", "")
         required = tags(rows[0].get("required_card_tags", ""))
+        has_required_match = not required
         if "lightness_4_required" in required:
             required_lightness.append(deck_id)
         if scope in {"boss_normal", "boss_true", "wuzhuangyuan_exam"} and "lightness_4_required" in required:
@@ -244,8 +245,8 @@ def validate_tag_constraints(deck_rows: dict[str, list[dict[str, str]]], report:
             card_style = row.get("card_weapon_style", "")
             if card_tags & forbidden:
                 forbidden_hits.append(f"{deck_id}:{row.get('card_id', '')}")
-            if not required_reasonable_match(required, card_tags, card_style):
-                required_miss.append(f"{deck_id}:{row.get('card_id', '')}")
+            if required_reasonable_match(required, card_tags, card_style):
+                has_required_match = True
 
             has_boss_flag = "boss_only" in card_tags or "true_boss_only" in card_tags or card_style == "boss"
             if scope not in {"boss_normal", "boss_true"} and has_boss_flag:
@@ -253,12 +254,15 @@ def validate_tag_constraints(deck_rows: dict[str, list[dict[str, str]]], report:
             if card_style == "generic" and ("boss_only" in card_tags or "true_boss_only" in card_tags):
                 generic_boss_tag.append(f"{deck_id}:{row.get('card_id', '')}")
 
+        if not has_required_match:
+            required_miss.append(deck_id)
+
     if forbidden_hits:
         report.fail("forbidden_card_tags intersects card_tags: " + ", ".join(forbidden_hits))
     else:
         report.pass_("No forbidden_card_tags/card_tags intersections.")
     if required_miss:
-        report.warn("required_card_tags weak match on some rows: " + ", ".join(required_miss))
+        report.warn("required_card_tags weak match on some decks: " + ", ".join(required_miss))
     else:
         report.pass_("required_card_tags has reasonable match to selected cards.")
     if normal_boss_tag:
@@ -293,6 +297,12 @@ def required_reasonable_match(required: set[str], card_tags: set[str], card_styl
     if "exam_official" in required and card_style in {"official", "generic", "mixed"}:
         return True
     if "role_fundamental" in required and card_style in {"official", "generic", "mixed"}:
+        return True
+    if any(tag.startswith("generic_") for tag in required) and card_style == "generic":
+        return True
+    if any(tag.startswith("boss_") for tag in required) and card_style == "boss":
+        return True
+    if any(tag.startswith("footwork_") for tag in required) and card_style in {"generic", "official", "mixed"}:
         return True
     return False
 

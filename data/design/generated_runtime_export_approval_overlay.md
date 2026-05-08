@@ -11,30 +11,30 @@
 
 | Runtime Domain | Artifact | Would Export | Blocked | Block Reasons |
 |---|---|---|---|---|
-| enemy_deck | enemy_decks.json | false | true | approval_status_not_approved,approved_for_export_not_true,not_manually_approved,validator_status_not_pass,waiver_flags_present,waiver_not_cleared |
-| card_pool | card_pool.json | true | false |  |
 | battle_reward | battle_rewards.json | true | false |  |
-| operation_node | operation_nodes.json | false | true | approval_status_not_approved,approved_for_export_not_true,not_manually_approved |
+| card_pool | card_pool.json | true | false |  |
+| enemy_deck | enemy_decks.json | false | true | approval_status_not_approved,approved_for_export_not_true,not_manually_approved,validator_status_not_pass,waiver_flags_present,waiver_not_cleared |
 | narrative_node | narrative_nodes.json | false | true | approval_status_not_approved,approved_for_export_not_true,not_manually_approved |
-| route_gate | route_gates.json | false | true | approval_status_not_approved,approved_for_export_not_true,not_manually_approved |
+| operation_node | operation_nodes.json | false | true | approval_status_not_approved,approved_for_export_not_true,not_manually_approved |
 | package_manifest | content_package_manifest.json | false | true | approval_status_not_approved,approved_for_export_not_true,not_manually_approved,validator_status_not_pass,waiver_not_cleared |
+| route_gate | route_gates.json | false | true | approval_status_not_approved,approved_for_export_not_true,not_manually_approved |
 
 ## Overlay Candidates
 
 | Runtime Domain | Artifact | Source Artifacts |
 |---|---|---|
-| card_pool | card_pool.json | generated_card_pool |
 | battle_reward | battle_rewards.json | generated_battle_reward_plan |
+| card_pool | card_pool.json | generated_card_pool |
 
 ## Blocked Runtime Artifacts
 
 | Runtime Domain | Artifact | Block Reasons |
 |---|---|---|
 | enemy_deck | enemy_decks.json | approval_status_not_approved,approved_for_export_not_true,not_manually_approved,validator_status_not_pass,waiver_flags_present,waiver_not_cleared |
-| operation_node | operation_nodes.json | approval_status_not_approved,approved_for_export_not_true,not_manually_approved |
 | narrative_node | narrative_nodes.json | approval_status_not_approved,approved_for_export_not_true,not_manually_approved |
-| route_gate | route_gates.json | approval_status_not_approved,approved_for_export_not_true,not_manually_approved |
+| operation_node | operation_nodes.json | approval_status_not_approved,approved_for_export_not_true,not_manually_approved |
 | package_manifest | content_package_manifest.json | approval_status_not_approved,approved_for_export_not_true,not_manually_approved,validator_status_not_pass,waiver_not_cleared |
+| route_gate | route_gates.json | approval_status_not_approved,approved_for_export_not_true,not_manually_approved |
 
 ## Blocking Summary
 

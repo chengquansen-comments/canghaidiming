@@ -1,0 +1,9 @@
+battle_slot_id	domain	generated_enabled	candidate_available	formal_source	candidate_id	candidate_count	rollback_policy	rollback_to_legacy_ok	non_whitelist_legacy_ok	writes_game_state	notes
+prologue_01	battle_slot	true	true	content_engine	prologue_01	1	legacy	true	true	false	battle_slot_candidate_readonly
+prologue_01	enemy_deck	true	true	content_engine	boss_normal_boss_old_case_officer_phase_1	15	legacy	true	true	false	bridge_preview_enemy_deck_candidate
+prologue_01	card_pool	true	true	content_engine_candidate	card_pool_preview	72	legacy	true	true	false	card_pool_candidate_readonly_no_carddata_write
+prologue_01	reward	true	true	content_engine	rw_prologue_01	1	legacy	true	true	false	reward selected_source=content_engine
+prologue_01	operation_node	true	true	content_engine_candidate	operation_nodes_preview	10	legacy	true	true	false	operation_node_candidate_readonly
+prologue_01	narrative	true	true	content_engine_candidate	narrative_key_hook_preview	28	legacy	true	true	false	narrative key/hook only; no body
+prologue_01	route_gate	true	true	content_engine_candidate	route_gates_preview	9	legacy	true	true	false	route_gate candidate only; writes_formal_flow=false
+sample_non_whitelist	non_whitelist_sample	false	false	legacy		0	legacy	true	true	false	non_whitelist must stay legacy

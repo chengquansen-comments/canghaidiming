@@ -9,6 +9,6 @@
   "field_count": 0,
   "records": [],
   "generated_by": "tools/content_engine/runtime_exporter.py",
-  "generated_at": "2026-05-07T11:42:21Z",
+  "generated_at": "2026-05-08T03:59:01Z",
   "notes": "v0.8b writes guarded runtime scaffold content only; business records are not materialized in this stage."
 }

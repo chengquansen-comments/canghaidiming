@@ -15,7 +15,7 @@
 - negative_fixture: 3/3 PASS
 - post_restore: 1/1 PASS
 - preflight: 2/2 PASS
-- preview: 7/10 PASS
+- preview: 8/10 PASS
 - probe: 2/2 PASS
 - runtime_test_harness: 2/2 PASS
 - scaffold: 2/2 PASS
@@ -25,7 +25,6 @@
 
 ## 失败步骤
 
-- 3 runtime_export_dry_run_validator (required=false) exit=1
 - 7 runtime_export_diff_report_validator (required=false) exit=1
 - 9 runtime_exporter_preview_validator (required=false) exit=1
 - 23 runtime_exporter_guarded_write_validator (required=false) exit=1

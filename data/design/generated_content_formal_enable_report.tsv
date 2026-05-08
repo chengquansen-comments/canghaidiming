@@ -1,6 +1,6 @@
 battle_slot_id	domain	generated_content_enabled	candidate_available	candidate_id	formal_use_allowed	formal_selected_source	fallback_policy	legacy_fallback_available	game_state_written	notes
 prologue_01	battle_slot	true	true	prologue_01	true	legacy	legacy	true	false	battle_slot candidate 可读，仅白名单。
-prologue_01	enemy_deck	true	true	enemy_coastal_raider_blade_basic	true	legacy	legacy	true	false	enemy_deck 仅 candidate，不进入 resolver。
+prologue_01	enemy_deck	true	true	boss_normal_boss_old_case_officer_phase_1	true	legacy	legacy	true	false	enemy_deck 仅 candidate，不进入 resolver。
 prologue_01	card_pool	true	true	card_pool_preview	true	legacy	legacy	true	false	card_pool 仅 candidate，不写 CardData。
 prologue_01	reward	true	true	rw_prologue_01	true	content_engine	legacy	true	false	reward 白名单正式来源切换验证。
 prologue_01	operation_node	true	true	operation_nodes_preview	true	legacy	legacy	true	false	operation_node 仅 candidate。

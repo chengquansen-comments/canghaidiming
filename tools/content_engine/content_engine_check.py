@@ -198,6 +198,8 @@ def main() -> int:
         ("generated_playable_loop_validator", "python3 tools/content_engine/generated_playable_loop_validator.py"),
         ("generated_player_visible_entry_probe", "godot --headless --path . --script tools/content_engine/generated_player_visible_entry_probe.gd"),
         ("generated_player_visible_entry_validator", "python3 tools/content_engine/generated_player_visible_entry_validator.py"),
+        ("generated_visible_ui_mount_probe", "godot --headless --path . --script tools/content_engine/generated_visible_ui_mount_probe.gd"),
+        ("generated_visible_ui_mount_validator", "python3 tools/content_engine/generated_visible_ui_mount_validator.py"),
         ("generated_battle_runtime_loadout_probe", "godot --headless --path . --script tools/content_engine/generated_battle_runtime_loadout_probe.gd"),
         ("generated_battle_runtime_loadout_validator", "python3 tools/content_engine/generated_battle_runtime_loadout_validator.py"),
         ("generated_map_route_runtime_flow_probe", "godot --headless --path . --script tools/content_engine/generated_map_route_runtime_flow_probe.gd"),

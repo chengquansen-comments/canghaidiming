@@ -39,8 +39,10 @@ func build_visible_status_payload(loadout: Dictionary) -> Dictionary:
 
 
 func build_visible_status_text(payload: Dictionary) -> String:
-	return "generated_content_enabled=%s\nnode_id=%s\nbattle_slot_id=%s\nenemy_deck_id=%s\ncard_pool_count=%s\nreward_plan_id=%s\nnarrative_key_count=%s\nroute_gate_count=%s\nplayer_input_ready=%s\naction_executed=%s\nfallback_policy=%s" % [
-		str(payload.get("generated_content_enabled", false)).to_lower(),
+	var enabled_text := "ON" if bool(payload.get("generated_content_enabled", false)) else "OFF"
+	var action_text := "ready" if bool(payload.get("player_input_ready", false)) else ("executed" if bool(payload.get("action_executed", false)) else "legacy")
+	return "Generated Content: %s\nNode: %s\nBattle Slot: %s\nEnemy Deck: %s\nCard Pool: %s\nReward: %s\nNarrative Keys: %s\nRoute Gates: %s\nAction/Input: %s\nReward Pending: %s\nFallback: %s" % [
+		enabled_text,
 		str(payload.get("node_id", "")),
 		str(payload.get("battle_slot_id", "")),
 		str(payload.get("enemy_deck_id", "")),
@@ -48,7 +50,7 @@ func build_visible_status_text(payload: Dictionary) -> String:
 		str(payload.get("reward_plan_id", "")),
 		str(payload.get("narrative_key_count", 0)),
 		str(payload.get("route_gate_count", 0)),
-		str(payload.get("player_input_ready", false)).to_lower(),
-		str(payload.get("action_executed", false)).to_lower(),
+		action_text,
+		str(payload.get("reward_pending_available", false)).to_lower(),
 		str(payload.get("fallback_policy", "legacy")),
 	]

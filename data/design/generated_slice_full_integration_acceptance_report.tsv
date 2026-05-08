@@ -1,0 +1,96 @@
+battle_slot_id	is_whitelisted	domain	candidate_available	formal_source	candidate_id	candidate_count	fallback_policy	rollback_to_legacy_ok	non_whitelist_legacy_ok	writes_card_data	writes_story_data	writes_battle_state	writes_combat_result	notes
+prologue_01	true	battle_slot	true	content_engine	prologue_01	1	legacy	true	true	false	false	false	false	battle_slot_candidate
+prologue_01	true	enemy_deck	true	content_engine	boss_normal_boss_old_case_officer_phase_1	15	legacy	true	true	false	false	false	false	enemy_deck_candidate
+prologue_01	true	card_pool	true	content_engine_candidate	card_pool_preview	72	legacy	true	true	false	false	false	false	card_pool_candidate compatible=72 unsupported=ai_usage_hint,break_momentum,budget_delta,budget_target,card_class,combo_tags,damage,deck_role,gain_momentum,guard,implementation_status,is_generic,max_distance,min_distance,momentum_cost,move_condition,notes,power_budget,preferred_distance,self_move_after,source_grammar,tactic_role,target_pull_after,target_push_after,weapon_requirement,weapon_style
+prologue_01	true	reward	true	content_engine	rw_prologue_01	1	legacy	true	true	false	false	false	false	reward selected_source=content_engine
+prologue_01	true	operation_node	true	content_engine_candidate	operation_nodes_preview	10	legacy	true	true	false	false	false	false	operation_node_count=10
+prologue_01	true	narrative	true	content_engine_candidate	narrative_key_hook_preview	28	legacy	true	true	false	false	false	false	narrative_keys_only=true
+prologue_01	true	route_gate	true	content_engine_candidate	route_gates_preview	9	legacy	true	true	false	false	false	false	route_gate_writes_formal_flow=false
+prologue_01	true	integration_anchor	true	content_engine_candidate	anchor	1	legacy	true	true	false	false	false	false	loadout=true map_route=true
+wuju_exam_01	true	battle_slot	true	content_engine	wuju_exam_01	1	legacy	true	true	false	false	false	false	battle_slot_candidate
+wuju_exam_01	true	enemy_deck	true	content_engine	boss_normal_boss_old_case_officer_phase_1	15	legacy	true	true	false	false	false	false	enemy_deck_candidate
+wuju_exam_01	true	card_pool	true	content_engine_candidate	card_pool_preview	72	legacy	true	true	false	false	false	false	card_pool_candidate compatible=72 unsupported=ai_usage_hint,break_momentum,budget_delta,budget_target,card_class,combo_tags,damage,deck_role,gain_momentum,guard,implementation_status,is_generic,max_distance,min_distance,momentum_cost,move_condition,notes,power_budget,preferred_distance,self_move_after,source_grammar,tactic_role,target_pull_after,target_push_after,weapon_requirement,weapon_style
+wuju_exam_01	true	reward	true	content_engine	rw_wuju_exam_01	1	legacy	true	true	false	false	false	false	reward selected_source=content_engine
+wuju_exam_01	true	operation_node	true	content_engine_candidate	operation_nodes_preview	10	legacy	true	true	false	false	false	false	operation_node_count=10
+wuju_exam_01	true	narrative	true	content_engine_candidate	narrative_key_hook_preview	28	legacy	true	true	false	false	false	false	narrative_keys_only=true
+wuju_exam_01	true	route_gate	true	content_engine_candidate	route_gates_preview	9	legacy	true	true	false	false	false	false	route_gate_writes_formal_flow=false
+wuju_exam_01	true	integration_anchor	true	content_engine_candidate	anchor	1	legacy	true	true	false	false	false	false	loadout=true map_route=true
+wuju_exam_02	true	battle_slot	true	content_engine	wuju_exam_02	1	legacy	true	true	false	false	false	false	battle_slot_candidate
+wuju_exam_02	true	enemy_deck	true	content_engine	boss_normal_boss_old_case_officer_phase_1	15	legacy	true	true	false	false	false	false	enemy_deck_candidate
+wuju_exam_02	true	card_pool	true	content_engine_candidate	card_pool_preview	72	legacy	true	true	false	false	false	false	card_pool_candidate compatible=72 unsupported=ai_usage_hint,break_momentum,budget_delta,budget_target,card_class,combo_tags,damage,deck_role,gain_momentum,guard,implementation_status,is_generic,max_distance,min_distance,momentum_cost,move_condition,notes,power_budget,preferred_distance,self_move_after,source_grammar,tactic_role,target_pull_after,target_push_after,weapon_requirement,weapon_style
+wuju_exam_02	true	reward	true	content_engine	rw_wuju_exam_02	1	legacy	true	true	false	false	false	false	reward selected_source=content_engine
+wuju_exam_02	true	operation_node	true	content_engine_candidate	operation_nodes_preview	10	legacy	true	true	false	false	false	false	operation_node_count=10
+wuju_exam_02	true	narrative	true	content_engine_candidate	narrative_key_hook_preview	28	legacy	true	true	false	false	false	false	narrative_keys_only=true
+wuju_exam_02	true	route_gate	true	content_engine_candidate	route_gates_preview	9	legacy	true	true	false	false	false	false	route_gate_writes_formal_flow=false
+wuju_exam_02	true	integration_anchor	true	content_engine_candidate	anchor	1	legacy	true	true	false	false	false	false	loadout=true map_route=true
+wuju_exam_03	true	battle_slot	true	content_engine	wuju_exam_03	1	legacy	true	true	false	false	false	false	battle_slot_candidate
+wuju_exam_03	true	enemy_deck	true	content_engine	boss_normal_boss_old_case_officer_phase_1	15	legacy	true	true	false	false	false	false	enemy_deck_candidate
+wuju_exam_03	true	card_pool	true	content_engine_candidate	card_pool_preview	72	legacy	true	true	false	false	false	false	card_pool_candidate compatible=72 unsupported=ai_usage_hint,break_momentum,budget_delta,budget_target,card_class,combo_tags,damage,deck_role,gain_momentum,guard,implementation_status,is_generic,max_distance,min_distance,momentum_cost,move_condition,notes,power_budget,preferred_distance,self_move_after,source_grammar,tactic_role,target_pull_after,target_push_after,weapon_requirement,weapon_style
+wuju_exam_03	true	reward	true	content_engine	rw_wuju_exam_03	1	legacy	true	true	false	false	false	false	reward selected_source=content_engine
+wuju_exam_03	true	operation_node	true	content_engine_candidate	operation_nodes_preview	10	legacy	true	true	false	false	false	false	operation_node_count=10
+wuju_exam_03	true	narrative	true	content_engine_candidate	narrative_key_hook_preview	28	legacy	true	true	false	false	false	false	narrative_keys_only=true
+wuju_exam_03	true	route_gate	true	content_engine_candidate	route_gates_preview	9	legacy	true	true	false	false	false	false	route_gate_writes_formal_flow=false
+wuju_exam_03	true	integration_anchor	true	content_engine_candidate	anchor	1	legacy	true	true	false	false	false	false	loadout=true map_route=true
+wuju_weapon_01	true	battle_slot	true	content_engine	wuju_weapon_01	1	legacy	true	true	false	false	false	false	battle_slot_candidate
+wuju_weapon_01	true	enemy_deck	true	content_engine	boss_normal_boss_old_case_officer_phase_1	15	legacy	true	true	false	false	false	false	enemy_deck_candidate
+wuju_weapon_01	true	card_pool	true	content_engine_candidate	card_pool_preview	72	legacy	true	true	false	false	false	false	card_pool_candidate compatible=72 unsupported=ai_usage_hint,break_momentum,budget_delta,budget_target,card_class,combo_tags,damage,deck_role,gain_momentum,guard,implementation_status,is_generic,max_distance,min_distance,momentum_cost,move_condition,notes,power_budget,preferred_distance,self_move_after,source_grammar,tactic_role,target_pull_after,target_push_after,weapon_requirement,weapon_style
+wuju_weapon_01	true	reward	true	content_engine	rw_wuju_weapon_01	1	legacy	true	true	false	false	false	false	reward selected_source=content_engine
+wuju_weapon_01	true	operation_node	true	content_engine_candidate	operation_nodes_preview	10	legacy	true	true	false	false	false	false	operation_node_count=10
+wuju_weapon_01	true	narrative	true	content_engine_candidate	narrative_key_hook_preview	28	legacy	true	true	false	false	false	false	narrative_keys_only=true
+wuju_weapon_01	true	route_gate	true	content_engine_candidate	route_gates_preview	9	legacy	true	true	false	false	false	false	route_gate_writes_formal_flow=false
+wuju_weapon_01	true	integration_anchor	true	content_engine_candidate	anchor	1	legacy	true	true	false	false	false	false	loadout=true map_route=true
+wuju_weapon_02	true	battle_slot	true	content_engine	wuju_weapon_02	1	legacy	true	true	false	false	false	false	battle_slot_candidate
+wuju_weapon_02	true	enemy_deck	true	content_engine	boss_normal_boss_old_case_officer_phase_1	15	legacy	true	true	false	false	false	false	enemy_deck_candidate
+wuju_weapon_02	true	card_pool	true	content_engine_candidate	card_pool_preview	72	legacy	true	true	false	false	false	false	card_pool_candidate compatible=72 unsupported=ai_usage_hint,break_momentum,budget_delta,budget_target,card_class,combo_tags,damage,deck_role,gain_momentum,guard,implementation_status,is_generic,max_distance,min_distance,momentum_cost,move_condition,notes,power_budget,preferred_distance,self_move_after,source_grammar,tactic_role,target_pull_after,target_push_after,weapon_requirement,weapon_style
+wuju_weapon_02	true	reward	true	content_engine	rw_wuju_weapon_02	1	legacy	true	true	false	false	false	false	reward selected_source=content_engine
+wuju_weapon_02	true	operation_node	true	content_engine_candidate	operation_nodes_preview	10	legacy	true	true	false	false	false	false	operation_node_count=10
+wuju_weapon_02	true	narrative	true	content_engine_candidate	narrative_key_hook_preview	28	legacy	true	true	false	false	false	false	narrative_keys_only=true
+wuju_weapon_02	true	route_gate	true	content_engine_candidate	route_gates_preview	9	legacy	true	true	false	false	false	false	route_gate_writes_formal_flow=false
+wuju_weapon_02	true	integration_anchor	true	content_engine_candidate	anchor	1	legacy	true	true	false	false	false	false	loadout=true map_route=true
+wz_exam_01	true	battle_slot	true	content_engine	wz_exam_01	1	legacy	true	true	false	false	false	false	battle_slot_candidate
+wz_exam_01	true	enemy_deck	true	content_engine	boss_normal_boss_old_case_officer_phase_1	15	legacy	true	true	false	false	false	false	enemy_deck_candidate
+wz_exam_01	true	card_pool	true	content_engine_candidate	card_pool_preview	72	legacy	true	true	false	false	false	false	card_pool_candidate compatible=72 unsupported=ai_usage_hint,break_momentum,budget_delta,budget_target,card_class,combo_tags,damage,deck_role,gain_momentum,guard,implementation_status,is_generic,max_distance,min_distance,momentum_cost,move_condition,notes,power_budget,preferred_distance,self_move_after,source_grammar,tactic_role,target_pull_after,target_push_after,weapon_requirement,weapon_style
+wz_exam_01	true	reward	true	content_engine	rw_exam_exam_exam_capital_basic_weapon	1	legacy	true	true	false	false	false	false	reward selected_source=content_engine
+wz_exam_01	true	operation_node	true	content_engine_candidate	operation_nodes_preview	10	legacy	true	true	false	false	false	false	operation_node_count=10
+wz_exam_01	true	narrative	true	content_engine_candidate	narrative_key_hook_preview	28	legacy	true	true	false	false	false	false	narrative_keys_only=true
+wz_exam_01	true	route_gate	true	content_engine_candidate	route_gates_preview	9	legacy	true	true	false	false	false	false	route_gate_writes_formal_flow=false
+wz_exam_01	true	integration_anchor	true	content_engine_candidate	anchor	1	legacy	true	true	false	false	false	false	loadout=true map_route=true
+wz_exam_02	true	battle_slot	true	content_engine	wz_exam_02	1	legacy	true	true	false	false	false	false	battle_slot_candidate
+wz_exam_02	true	enemy_deck	true	content_engine	boss_normal_boss_old_case_officer_phase_1	15	legacy	true	true	false	false	false	false	enemy_deck_candidate
+wz_exam_02	true	card_pool	true	content_engine_candidate	card_pool_preview	72	legacy	true	true	false	false	false	false	card_pool_candidate compatible=72 unsupported=ai_usage_hint,break_momentum,budget_delta,budget_target,card_class,combo_tags,damage,deck_role,gain_momentum,guard,implementation_status,is_generic,max_distance,min_distance,momentum_cost,move_condition,notes,power_budget,preferred_distance,self_move_after,source_grammar,tactic_role,target_pull_after,target_push_after,weapon_requirement,weapon_style
+wz_exam_02	true	reward	true	content_engine	rw_exam_exam_exam_capital_duel_chain	1	legacy	true	true	false	false	false	false	reward selected_source=content_engine
+wz_exam_02	true	operation_node	true	content_engine_candidate	operation_nodes_preview	10	legacy	true	true	false	false	false	false	operation_node_count=10
+wz_exam_02	true	narrative	true	content_engine_candidate	narrative_key_hook_preview	28	legacy	true	true	false	false	false	false	narrative_keys_only=true
+wz_exam_02	true	route_gate	true	content_engine_candidate	route_gates_preview	9	legacy	true	true	false	false	false	false	route_gate_writes_formal_flow=false
+wz_exam_02	true	integration_anchor	true	content_engine_candidate	anchor	1	legacy	true	true	false	false	false	false	loadout=true map_route=true
+wz_exam_03	true	battle_slot	true	content_engine	wz_exam_03	1	legacy	true	true	false	false	false	false	battle_slot_candidate
+wz_exam_03	true	enemy_deck	true	content_engine	boss_normal_boss_old_case_officer_phase_1	15	legacy	true	true	false	false	false	false	enemy_deck_candidate
+wz_exam_03	true	card_pool	true	content_engine_candidate	card_pool_preview	72	legacy	true	true	false	false	false	false	card_pool_candidate compatible=72 unsupported=ai_usage_hint,break_momentum,budget_delta,budget_target,card_class,combo_tags,damage,deck_role,gain_momentum,guard,implementation_status,is_generic,max_distance,min_distance,momentum_cost,move_condition,notes,power_budget,preferred_distance,self_move_after,source_grammar,tactic_role,target_pull_after,target_push_after,weapon_requirement,weapon_style
+wz_exam_03	true	reward	true	content_engine	rw_exam_exam_exam_capital_footwork	1	legacy	true	true	false	false	false	false	reward selected_source=content_engine
+wz_exam_03	true	operation_node	true	content_engine_candidate	operation_nodes_preview	10	legacy	true	true	false	false	false	false	operation_node_count=10
+wz_exam_03	true	narrative	true	content_engine_candidate	narrative_key_hook_preview	28	legacy	true	true	false	false	false	false	narrative_keys_only=true
+wz_exam_03	true	route_gate	true	content_engine_candidate	route_gates_preview	9	legacy	true	true	false	false	false	false	route_gate_writes_formal_flow=false
+wz_exam_03	true	integration_anchor	true	content_engine_candidate	anchor	1	legacy	true	true	false	false	false	false	loadout=true map_route=true
+wz_exam_04	true	battle_slot	true	content_engine	wz_exam_04	1	legacy	true	true	false	false	false	false	battle_slot_candidate
+wz_exam_04	true	enemy_deck	true	content_engine	boss_normal_boss_old_case_officer_phase_1	15	legacy	true	true	false	false	false	false	enemy_deck_candidate
+wz_exam_04	true	card_pool	true	content_engine_candidate	card_pool_preview	72	legacy	true	true	false	false	false	false	card_pool_candidate compatible=72 unsupported=ai_usage_hint,break_momentum,budget_delta,budget_target,card_class,combo_tags,damage,deck_role,gain_momentum,guard,implementation_status,is_generic,max_distance,min_distance,momentum_cost,move_condition,notes,power_budget,preferred_distance,self_move_after,source_grammar,tactic_role,target_pull_after,target_push_after,weapon_requirement,weapon_style
+wz_exam_04	true	reward	true	content_engine	rw_exam_exam_exam_capital_mixed_weapon	1	legacy	true	true	false	false	false	false	reward selected_source=content_engine
+wz_exam_04	true	operation_node	true	content_engine_candidate	operation_nodes_preview	10	legacy	true	true	false	false	false	false	operation_node_count=10
+wz_exam_04	true	narrative	true	content_engine_candidate	narrative_key_hook_preview	28	legacy	true	true	false	false	false	false	narrative_keys_only=true
+wz_exam_04	true	route_gate	true	content_engine_candidate	route_gates_preview	9	legacy	true	true	false	false	false	false	route_gate_writes_formal_flow=false
+wz_exam_04	true	integration_anchor	true	content_engine_candidate	anchor	1	legacy	true	true	false	false	false	false	loadout=true map_route=true
+wz_exam_05	true	battle_slot	true	content_engine	wz_exam_05	1	legacy	true	true	false	false	false	false	battle_slot_candidate
+wz_exam_05	true	enemy_deck	true	content_engine	boss_normal_boss_old_case_officer_phase_1	15	legacy	true	true	false	false	false	false	enemy_deck_candidate
+wz_exam_05	true	card_pool	true	content_engine_candidate	card_pool_preview	72	legacy	true	true	false	false	false	false	card_pool_candidate compatible=72 unsupported=ai_usage_hint,break_momentum,budget_delta,budget_target,card_class,combo_tags,damage,deck_role,gain_momentum,guard,implementation_status,is_generic,max_distance,min_distance,momentum_cost,move_condition,notes,power_budget,preferred_distance,self_move_after,source_grammar,tactic_role,target_pull_after,target_push_after,weapon_requirement,weapon_style
+wz_exam_05	true	reward	true	content_engine	rw_exam_exam_exam_imperial_final_examiner	1	legacy	true	true	false	false	false	false	reward selected_source=content_engine
+wz_exam_05	true	operation_node	true	content_engine_candidate	operation_nodes_preview	10	legacy	true	true	false	false	false	false	operation_node_count=10
+wz_exam_05	true	narrative	true	content_engine_candidate	narrative_key_hook_preview	28	legacy	true	true	false	false	false	false	narrative_keys_only=true
+wz_exam_05	true	route_gate	true	content_engine_candidate	route_gates_preview	9	legacy	true	true	false	false	false	false	route_gate_writes_formal_flow=false
+wz_exam_05	true	integration_anchor	true	content_engine_candidate	anchor	1	legacy	true	true	false	false	false	false	loadout=true map_route=true
+sample_non_whitelist	false	battle_slot	false	legacy		0	legacy	true	true	false	false	false	false	non_whitelist_legacy
+sample_non_whitelist	false	enemy_deck	false	legacy		0	legacy	true	true	false	false	false	false	non_whitelist_legacy
+sample_non_whitelist	false	card_pool	false	legacy		0	legacy	true	true	false	false	false	false	non_whitelist_legacy
+sample_non_whitelist	false	reward	false	legacy		0	legacy	true	true	false	false	false	false	non_whitelist_legacy
+sample_non_whitelist	false	operation_node	false	legacy		0	legacy	true	true	false	false	false	false	non_whitelist_legacy
+sample_non_whitelist	false	narrative	false	legacy		0	legacy	true	true	false	false	false	false	non_whitelist_legacy
+sample_non_whitelist	false	route_gate	false	legacy		0	legacy	true	true	false	false	false	false	non_whitelist_legacy

@@ -2,9 +2,9 @@
   "fixture_root": "data/design/runtime_loader_negative_fixtures",
   "formal_runtime_root": "data/runtime/content_engine",
   "formal_runtime_sha256_before": {
-    "card_pool.json": "e2ade9220bd9dca645cdc0ae3c75920dbabbc0f3164985f461f00af0e3d09599",
-    "battle_reward.json": "5a84402309449ff3fc70bb6d442093ce965501aede7ed714fccd79169fb873fb",
-    "runtime_manifest.json": "4f996d3021ab23725b1d11c563807ab5addb7eb347c64f47c32564885926ca3d"
+    "card_pool.json": "7f781cbe494d91d3fe62841eb7c6d8f98d0b6b33d197b0a594cfcf80fe1bcc8e",
+    "battle_reward.json": "852810873fe4d6e61a971d301e5882c8f46aa03b497f5b3b1b89bfec53f6586f",
+    "runtime_manifest.json": "062135bae34ed67d58c2a719da68d435c2d80ef5aff69fcb9518a7f9607d84ef"
   },
   "cases": [
     {

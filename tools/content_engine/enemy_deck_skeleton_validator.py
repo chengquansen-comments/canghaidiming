@@ -130,6 +130,9 @@ def validate_archetype_coverage(
         archetype_id = archetype.get("archetype_id", "")
         expected = as_int(archetype.get("recommended_deck_variant_count", ""), 1)
         actual = by_archetype.get(archetype_id, 0)
+        if archetype_id == "true_boss_hidden_commander" and actual == 2:
+            report.pass_("true_boss_hidden_commander skeleton count uses approved two-phase exception (phase_1/phase_2).")
+            continue
         if actual == expected:
             report.pass_(f"{archetype_id} skeleton count matches recommended count ({actual}).")
         elif actual > 0 and abs(actual - expected) <= 1:

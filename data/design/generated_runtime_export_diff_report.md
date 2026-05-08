@@ -11,20 +11,20 @@
 
 | Runtime Domain | Artifact ID | Would Export | Planned Runtime Path | Export Action | Diff Status |
 |---|---|---|---|---|---|
-| enemy_deck | generated_enemy_deck_sets,generated_card_pool,generated_enemy_deck_skeleton | false | data/runtime/content_engine/enemy_deck.json | blocked | blocked |
-| card_pool | generated_card_pool | true | data/runtime/content_engine/card_pool.json | planned_create | new_runtime_file_planned |
 | battle_reward | generated_battle_reward_plan | true | data/runtime/content_engine/battle_reward.json | planned_create | new_runtime_file_planned |
-| operation_node | generated_operation_node_plan | false | data/runtime/content_engine/operation_node.json | blocked | blocked |
+| card_pool | generated_card_pool | true | data/runtime/content_engine/card_pool.json | planned_create | new_runtime_file_planned |
+| enemy_deck | generated_enemy_deck_sets,generated_card_pool,generated_enemy_deck_skeleton | false | data/runtime/content_engine/enemy_deck.json | blocked | blocked |
 | narrative_node | generated_narrative_node_plan | false | data/runtime/content_engine/narrative_node.json | blocked | blocked |
-| route_gate | generated_route_gate_plan | false | data/runtime/content_engine/route_gate.json | blocked | blocked |
+| operation_node | generated_operation_node_plan | false | data/runtime/content_engine/operation_node.json | blocked | blocked |
 | package_manifest | generated_content_package_manifest,generated_validator_summary,generated_content_package_approval | false | data/runtime/content_engine/package_manifest.json | blocked | blocked |
+| route_gate | generated_route_gate_plan | false | data/runtime/content_engine/route_gate.json | blocked | blocked |
 
 ## Planned Candidates
 
 | Runtime Domain | Artifact ID | Planned Runtime Path |
 |---|---|---|
-| card_pool | generated_card_pool | data/runtime/content_engine/card_pool.json |
 | battle_reward | generated_battle_reward_plan | data/runtime/content_engine/battle_reward.json |
+| card_pool | generated_card_pool | data/runtime/content_engine/card_pool.json |
 
 ## Safety Notes
 

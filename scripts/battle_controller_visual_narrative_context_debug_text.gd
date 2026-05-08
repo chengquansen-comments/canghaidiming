@@ -50,9 +50,16 @@ func _runtime_cards_text() -> String:
 	return "玩家持牌：%s\n敌方持牌：%s" % [_deck_summary(player_deck), _deck_summary(enemy_deck)]
 
 func _enemy_full_config_text() -> String:
+	var generated_status := _generated_visible_status_text()
 	if battle_loadout_error != "":
-		return "BattleLoadout错误：%s\n%s" % [battle_loadout_error, _runtime_cards_text()]
+		return "BattleLoadout错误：%s\n%s\n%s" % [battle_loadout_error, _runtime_cards_text(), generated_status]
 	if not battle_loadout.is_empty():
-		return "%s\n%s" % [_battle_loadout_visible_debug_text(), _runtime_cards_text()]
-	return "%s\n%s" % [NarrativeBattleContext.enemy_config_full_text(), _runtime_cards_text()]
+		return "%s\n%s\n%s" % [_battle_loadout_visible_debug_text(), _runtime_cards_text(), generated_status]
+	return "%s\n%s\n%s" % [NarrativeBattleContext.enemy_config_full_text(), _runtime_cards_text(), generated_status]
 
+
+func _generated_visible_status_text() -> String:
+	var payload: Dictionary = _dict(battle_loadout.get("generated_player_visible_status", {}))
+	if payload.is_empty():
+		return "Generated Content: OFF"
+	return GeneratedContentPlayerVisibleDebugPanel.new().build_visible_status_text(payload)

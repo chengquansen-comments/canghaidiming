@@ -1,0 +1,2 @@
+test_id	battle_slot_id	reward_plan_id	test_mode	candidate_allowed	formal_selected_reward_policy	notes
+v1_5_candidate_test_slot_001	prologue_01	rw_prologue_01	content_engine_candidate	true	legacy	仅用于离线 probe 验证 candidate 可选；正式流程仍 legacy。

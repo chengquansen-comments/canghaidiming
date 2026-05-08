@@ -1,0 +1,2 @@
+test_id	battle_slot_id	reward_plan_id	test_mode	preview_package_exists	candidate_reward_found	candidate_reward_source	formal_selected_reward_source	selected_reward_unchanged	runtime_loader_config	runtime_write_detected	test_result	notes
+v1_5_candidate_test_slot_001	prologue_01	rw_prologue_01	content_engine_candidate	true	true	content_engine_candidate	legacy	true	disabled	false	PASS	仅离线测试指定 battle_slot 的 candidate 可选性；正式流程保持 legacy，不启用 content_engine_enabled。
