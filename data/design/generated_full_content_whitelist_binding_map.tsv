@@ -1,0 +1,8 @@
+battle_slot_id	domain	candidate_available	candidate_id	candidate_count	candidate_source	binding_status	binding_reason	runtime_bridge_allowed	notes
+prologue_01	battle_slot	true	prologue_01	1	runtime_preview.battle_slots	bound	whitelist_battle_slot_candidate	true	白名单槽位绑定。
+prologue_01	enemy_deck	true	enemy_coastal_raider_blade_basic	1	runtime_preview.enemy_decks	bound	whitelist_default_enemy_deck_candidate	true	最低复杂度普通 deck 候选。
+prologue_01	card_pool	true	card_pool_preview	72	runtime_preview.card_pool	bound	whitelist_card_pool_candidate	true	仅候选，不进入 CardData。
+prologue_01	reward	true	rw_prologue_01	1	runtime_preview.battle_rewards	bound	whitelist_reward_candidate	true	白名单奖励绑定。
+prologue_01	operation_node	true	operation_nodes_preview	10	runtime_preview.operation_nodes	bound	whitelist_operation_candidate	true	仅计数，不接正式地图流程。
+prologue_01	narrative	true	narrative_key_hook_preview	28	runtime_preview.narrative_nodes	bound	whitelist_narrative_hook_candidate	true	仅 key/hook，不允许正文。
+prologue_01	route_gate	true	route_gates_preview	9	runtime_preview.route_gates	bound	whitelist_route_gate_candidate	true	仅计数，不接正式路线逻辑。

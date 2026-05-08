@@ -1,0 +1,50 @@
+{
+  "package_type": "full_content_whitelist_bridge",
+  "generated_at": "2026-05-08T00:28:58+00:00",
+  "battle_slot_id": "prologue_01",
+  "global_content_engine_enabled": false,
+  "formal_runtime_enabled": false,
+  "rollback_policy": "legacy",
+  "runtime_ready": false,
+  "bridge_only": true,
+  "domains": {
+    "battle_slot": {
+      "candidate_id": "prologue_01",
+      "candidate_available": true,
+      "candidate_count": 1
+    },
+    "enemy_deck": {
+      "candidate_id": "enemy_coastal_raider_blade_basic",
+      "candidate_available": true,
+      "candidate_count": 1,
+      "binding_reason": "whitelist_default_enemy_deck_candidate"
+    },
+    "card_pool": {
+      "candidate_id": "card_pool_preview",
+      "candidate_available": true,
+      "candidate_count": 72
+    },
+    "reward": {
+      "candidate_id": "rw_prologue_01",
+      "candidate_available": true,
+      "candidate_count": 1
+    },
+    "operation_node": {
+      "candidate_id": "operation_nodes_preview",
+      "candidate_available": true,
+      "candidate_count": 10
+    },
+    "narrative": {
+      "candidate_id": "narrative_key_hook_preview",
+      "candidate_available": true,
+      "candidate_count": 28,
+      "hook_only": true
+    },
+    "route_gate": {
+      "candidate_id": "route_gates_preview",
+      "candidate_available": true,
+      "candidate_count": 9
+    }
+  },
+  "notes": "仅 whitelist bridge bundle；不启用正式 generated content。"
+}

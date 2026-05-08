@@ -139,6 +139,21 @@ STEPS: tuple[StepDef, ...] = (
         tuple(),
     ),
     StepDef(
+        "full_content_runtime_bridge_contract_generator",
+        "python3 tools/content_engine/full_content_runtime_bridge_contract_generator.py",
+        (
+            Path("data/design/generated_full_content_adapter_contract.tsv"),
+            Path("data/design/generated_full_content_whitelist_binding_map.tsv"),
+            Path("data/runtime/content_engine_whitelist/prologue_01.full_content_bridge.json"),
+            Path("data/runtime/content_engine_whitelist/full_content_bridge_manifest.json"),
+        ),
+    ),
+    StepDef(
+        "full_content_runtime_bridge_contract_validator",
+        "python3 tools/content_engine/full_content_runtime_bridge_contract_validator.py",
+        tuple(),
+    ),
+    StepDef(
         "content_engine_regression_runner",
         "python3 tools/content_engine/content_engine_regression_runner.py",
         (
@@ -304,7 +319,7 @@ def write_step_md(path: Path, run_id: str, rows: list[dict[str, str]]) -> None:
             "",
             "## 说明",
             "",
-            "- 本 runner 顺序执行 shadow freeze、runtime harness、full preview readonly、full package shadow compare、full package candidate path、full package whitelist test enable、runtime readiness audit、regression 链路。",
+            "- 本 runner 顺序执行 shadow freeze、runtime harness、full preview readonly、full package shadow compare、full package candidate path、full package whitelist test enable、runtime readiness audit、runtime bridge contract、regression 链路。",
             "- selected_reward 仍为 legacy，runtime reward 仍仅 candidate/shadow_compare。",
             "- 本报告用于 v1.0d-final 的验收稳定性加固，确保不读取半写入文件、不依赖并行时序、无需复跑。",
             "- 所有结论都不改变正式业务流程，不改变玩家实际奖励、不改变成长奖励、不改变结算 UI。",

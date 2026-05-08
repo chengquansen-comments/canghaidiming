@@ -1,0 +1,16 @@
+{
+  "package_type": "full_content_whitelist_bridge_manifest",
+  "generated_at": "2026-05-08T00:28:58+00:00",
+  "whitelist_battle_slots": [
+    "prologue_01"
+  ],
+  "bundle_count": 1,
+  "global_content_engine_enabled": false,
+  "formal_runtime_enabled": false,
+  "rollback_policy": "legacy",
+  "runtime_ready": false,
+  "bridge_only": true,
+  "bundles": [
+    "data/runtime/content_engine_whitelist/prologue_01.full_content_bridge.json"
+  ]
+}
