@@ -4,6 +4,8 @@ extends "res://scripts/battle_controller_visual_narrative_context_player_profile
 const GeneratedBattleDomainAdapter := preload("res://scripts/generated_battle_domain_adapter.gd")
 const GeneratedMapRouteDomainAdapter := preload("res://scripts/generated_map_route_domain_adapter.gd")
 const GeneratedBattleFlowAdapter := preload("res://scripts/generated_battle_flow_adapter.gd")
+const GeneratedNodeRouteFlowAdapter := preload("res://scripts/generated_node_route_flow_adapter.gd")
+const GeneratedPlayerNodeSelectionAdapter := preload("res://scripts/generated_player_node_selection_adapter.gd")
 
 func _story_battle_for_encounter(encounter_id: String) -> Dictionary:
 	var catalog: Dictionary = _story_loader_card_catalog()
@@ -160,6 +162,12 @@ func _resolve_battle_loadout() -> Dictionary:
 	var generated_domain := _resolve_generated_battle_domain_candidate(source_node_id)
 	var generated_map_route_domain := _resolve_generated_map_route_domain_candidate(source_node_id)
 	var generated_battle_flow_payload := _resolve_generated_battle_flow_payload(source_node_id)
+	var generated_node_candidate := _resolve_generated_node_candidate(source_node_id)
+	var generated_node_candidate_pool_count := _resolve_generated_node_candidate_pool_count()
+	var generated_player_node_pool := _resolve_generated_player_node_pool()
+	var generated_player_node_pool_count := generated_player_node_pool.size()
+	var generated_player_node_selection_enabled := generated_player_node_pool_count > 0
+	var selected_generated_node_payload := _resolve_selected_generated_node_payload(source_node_id)
 	if bool(generated_domain.get("apply_enemy_deck", false)):
 		enemy_config["generated_enemy_deck_candidate"] = generated_domain.get("enemy_deck", {})
 		enemy_config["enemy_source"] = str(generated_domain.get("enemy_formal_source", enemy_source))
@@ -183,6 +191,12 @@ func _resolve_battle_loadout() -> Dictionary:
 		"generated_map_route_domain_candidate": generated_map_route_domain,
 		"generated_map_route_runtime_candidate": generated_map_route_domain.get("map_route_runtime_candidate", {}),
 		"generated_battle_flow_payload": generated_battle_flow_payload,
+		"generated_node_candidate": generated_node_candidate,
+		"generated_node_candidate_pool_count": generated_node_candidate_pool_count,
+		"generated_player_node_pool": generated_player_node_pool,
+		"generated_player_node_pool_count": generated_player_node_pool_count,
+		"generated_player_node_selection_enabled": generated_player_node_selection_enabled,
+		"selected_generated_node_payload": selected_generated_node_payload,
 		"settlement_mode": settlement_mode,
 		"debug_source": "NarrativeBattleContext + StoryBattleLoader + enemy_manifest + battle_scene_manifest"
 	}
@@ -286,3 +300,28 @@ func _resolve_generated_battle_flow_payload(source_node_id: String) -> Dictionar
 	if payload.is_empty():
 		return adapter.get_legacy_fallback_payload(source_node_id)
 	return payload
+
+
+func _resolve_generated_node_candidate(source_node_id: String) -> Dictionary:
+	var adapter := GeneratedNodeRouteFlowAdapter.new()
+	var candidate: Dictionary = adapter.build_generated_node_candidate(source_node_id)
+	if candidate.is_empty():
+		return adapter.get_legacy_node_fallback(source_node_id)
+	return candidate
+
+
+func _resolve_generated_node_candidate_pool_count() -> int:
+	var adapter := GeneratedNodeRouteFlowAdapter.new()
+	var pool: Array[Dictionary] = adapter.build_generated_node_candidate_pool()
+	return pool.size()
+
+
+func _resolve_generated_player_node_pool() -> Array[Dictionary]:
+	var adapter := GeneratedPlayerNodeSelectionAdapter.new()
+	return adapter.build_player_visible_generated_node_pool()
+
+
+func _resolve_selected_generated_node_payload(source_node_id: String) -> Dictionary:
+	var adapter := GeneratedPlayerNodeSelectionAdapter.new()
+	var node_id := "generated_node_%s" % source_node_id
+	return adapter.get_battle_flow_payload_for_node(node_id)
