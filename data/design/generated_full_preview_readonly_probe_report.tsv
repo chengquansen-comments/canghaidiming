@@ -10,4 +10,4 @@ domain_path_exists::narrative_nodes	PASS	true	true	data/runtime_preview/content_
 domain_path_exists::route_gates	PASS	true	true	data/runtime_preview/content_engine/route_gates.preview.json
 selected_reward_policy	PASS	legacy	legacy	selected_reward_policy 必须 legacy
 content_engine_enabled	PASS	false	false	content_engine_enabled 必须 false
-generated_at	PASS	iso8601	2026-05-08T04:43:41+00:00	probe 生成时间
+generated_at	PASS	iso8601	2026-05-08T04:57:48+00:00	probe 生成时间
