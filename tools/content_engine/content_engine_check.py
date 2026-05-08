@@ -178,6 +178,8 @@ def main() -> int:
         ("generated_slice_whitelist_validator", "python3 tools/content_engine/generated_slice_whitelist_validator.py"),
         ("generated_full_battle_slot_expander", "python3 tools/content_engine/generated_full_battle_slot_expander.py"),
         ("generated_full_battle_slot_validator", "python3 tools/content_engine/generated_full_battle_slot_validator.py"),
+        ("generated_battle_flow_probe", "godot --headless --path . --script tools/content_engine/generated_battle_flow_probe.gd"),
+        ("generated_battle_flow_validator", "python3 tools/content_engine/generated_battle_flow_validator.py"),
         ("generated_battle_runtime_loadout_probe", "godot --headless --path . --script tools/content_engine/generated_battle_runtime_loadout_probe.gd"),
         ("generated_battle_runtime_loadout_validator", "python3 tools/content_engine/generated_battle_runtime_loadout_validator.py"),
         ("generated_map_route_runtime_flow_probe", "godot --headless --path . --script tools/content_engine/generated_map_route_runtime_flow_probe.gd"),

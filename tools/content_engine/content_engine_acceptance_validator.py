@@ -46,6 +46,8 @@ REQUIRED_CHECK_IDS = {
     "generated_slice_whitelist_validator",
     "generated_full_battle_slot_expander",
     "generated_full_battle_slot_validator",
+    "generated_battle_flow_probe",
+    "generated_battle_flow_validator",
     "generated_battle_runtime_loadout_probe",
     "generated_battle_runtime_loadout_validator",
     "generated_map_route_runtime_flow_probe",

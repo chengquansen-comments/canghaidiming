@@ -3,6 +3,7 @@ extends "res://scripts/battle_controller_visual_narrative_context_player_profile
 # Narrative context loadout layer.
 const GeneratedBattleDomainAdapter := preload("res://scripts/generated_battle_domain_adapter.gd")
 const GeneratedMapRouteDomainAdapter := preload("res://scripts/generated_map_route_domain_adapter.gd")
+const GeneratedBattleFlowAdapter := preload("res://scripts/generated_battle_flow_adapter.gd")
 
 func _story_battle_for_encounter(encounter_id: String) -> Dictionary:
 	var catalog: Dictionary = _story_loader_card_catalog()
@@ -158,6 +159,7 @@ func _resolve_battle_loadout() -> Dictionary:
 	var enemy_source: String = str(enemy_config.get("enemy_source", "enemy_manifest" if not manifest_enemy.is_empty() else "story_battles"))
 	var generated_domain := _resolve_generated_battle_domain_candidate(source_node_id)
 	var generated_map_route_domain := _resolve_generated_map_route_domain_candidate(source_node_id)
+	var generated_battle_flow_payload := _resolve_generated_battle_flow_payload(source_node_id)
 	if bool(generated_domain.get("apply_enemy_deck", false)):
 		enemy_config["generated_enemy_deck_candidate"] = generated_domain.get("enemy_deck", {})
 		enemy_config["enemy_source"] = str(generated_domain.get("enemy_formal_source", enemy_source))
@@ -180,6 +182,7 @@ func _resolve_battle_loadout() -> Dictionary:
 		"generated_battle_runtime_loadout_candidate": generated_domain.get("battle_runtime_loadout_candidate", {}),
 		"generated_map_route_domain_candidate": generated_map_route_domain,
 		"generated_map_route_runtime_candidate": generated_map_route_domain.get("map_route_runtime_candidate", {}),
+		"generated_battle_flow_payload": generated_battle_flow_payload,
 		"settlement_mode": settlement_mode,
 		"debug_source": "NarrativeBattleContext + StoryBattleLoader + enemy_manifest + battle_scene_manifest"
 	}
@@ -275,3 +278,11 @@ func _resolve_generated_map_route_domain_candidate(source_node_id: String) -> Di
 		"map_route_runtime_candidate": candidate.get("map_route_runtime_candidate", {}),
 		"fallback_policy": str(candidate.get("fallback_policy", "legacy")),
 	}
+
+
+func _resolve_generated_battle_flow_payload(source_node_id: String) -> Dictionary:
+	var adapter := GeneratedBattleFlowAdapter.new()
+	var payload: Dictionary = adapter.build_generated_battle_flow_payload(source_node_id)
+	if payload.is_empty():
+		return adapter.get_legacy_fallback_payload(source_node_id)
+	return payload

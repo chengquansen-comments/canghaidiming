@@ -236,6 +236,16 @@ STEPS: tuple[StepDef, ...] = (
         tuple(),
     ),
     StepDef(
+        "generated_battle_flow_probe",
+        "godot --headless --path . --script tools/content_engine/generated_battle_flow_probe.gd",
+        (Path("data/design/generated_battle_flow_report.tsv"),),
+    ),
+    StepDef(
+        "generated_battle_flow_validator",
+        "python3 tools/content_engine/generated_battle_flow_validator.py",
+        tuple(),
+    ),
+    StepDef(
         "generated_battle_runtime_loadout_probe",
         "godot --headless --path . --script tools/content_engine/generated_battle_runtime_loadout_probe.gd",
         (Path("data/design/generated_battle_runtime_loadout_report.tsv"),),
