@@ -170,6 +170,8 @@ def main() -> int:
         ("generated_content_formal_enable_validator", "python3 tools/content_engine/generated_content_formal_enable_validator.py"),
         ("generated_battle_domain_formal_probe", "godot --headless --path . --script tools/content_engine/generated_battle_domain_formal_probe.gd"),
         ("generated_battle_domain_formal_validator", "python3 tools/content_engine/generated_battle_domain_formal_validator.py"),
+        ("generated_map_route_domain_formal_probe", "godot --headless --path . --script tools/content_engine/generated_map_route_domain_formal_probe.gd"),
+        ("generated_map_route_domain_formal_validator", "python3 tools/content_engine/generated_map_route_domain_formal_validator.py"),
         ("git_diff_check", "git diff --check"),
         ("godot_headless_quit", "godot --headless --path . --quit"),
         ("godot_headless_mainvisual", "godot --headless --path . --quit scenes/MainVisual.tscn"),

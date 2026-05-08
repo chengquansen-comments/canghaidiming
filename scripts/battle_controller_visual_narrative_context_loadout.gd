@@ -2,6 +2,7 @@ extends "res://scripts/battle_controller_visual_narrative_context_player_profile
 
 # Narrative context loadout layer.
 const GeneratedBattleDomainAdapter := preload("res://scripts/generated_battle_domain_adapter.gd")
+const GeneratedMapRouteDomainAdapter := preload("res://scripts/generated_map_route_domain_adapter.gd")
 const WHITELIST_BATTLE_SLOT := "prologue_01"
 
 func _story_battle_for_encounter(encounter_id: String) -> Dictionary:
@@ -157,6 +158,7 @@ func _resolve_battle_loadout() -> Dictionary:
 	var enemy_id: String = str(enemy_config.get("id", manifest_context.get("enemy_id", encounter_config.get("opponent_template_id", ""))))
 	var enemy_source: String = str(enemy_config.get("enemy_source", "enemy_manifest" if not manifest_enemy.is_empty() else "story_battles"))
 	var generated_domain := _resolve_generated_battle_domain_candidate(source_node_id)
+	var generated_map_route_domain := _resolve_generated_map_route_domain_candidate(source_node_id)
 	if bool(generated_domain.get("apply_enemy_deck", false)):
 		enemy_config["generated_enemy_deck_candidate"] = generated_domain.get("enemy_deck", {})
 		enemy_config["enemy_source"] = str(generated_domain.get("enemy_formal_source", enemy_source))
@@ -176,6 +178,7 @@ func _resolve_battle_loadout() -> Dictionary:
 		"enemy_id": enemy_id,
 		"enemy_source": enemy_source,
 		"generated_battle_domain_candidate": generated_domain,
+		"generated_map_route_domain_candidate": generated_map_route_domain,
 		"settlement_mode": settlement_mode,
 		"debug_source": "NarrativeBattleContext + StoryBattleLoader + enemy_manifest + battle_scene_manifest"
 	}
@@ -213,5 +216,34 @@ func _resolve_generated_battle_domain_candidate(source_node_id: String) -> Dicti
 		"card_pool": card_pool,
 		"card_pool_count": int(card_pool.get("candidate_count", 0)),
 		"unsupported_fields": card_pool.get("unsupported_fields", []),
+		"fallback_policy": str(candidate.get("fallback_policy", "legacy")),
+	}
+
+
+func _resolve_generated_map_route_domain_candidate(source_node_id: String) -> Dictionary:
+	var adapter := GeneratedMapRouteDomainAdapter.new()
+	var generated_enabled := source_node_id == WHITELIST_BATTLE_SLOT
+	if not generated_enabled:
+		return {
+			"battle_slot_id": source_node_id,
+			"generated_content_enabled": false,
+			"battle_slot": {"formal_source": "legacy", "candidate_available": false, "candidate_count": 0},
+			"operation_node": {"formal_source": "legacy", "candidate_available": false, "candidate_count": 0},
+			"narrative": {"formal_source": "legacy", "candidate_available": false, "candidate_count": 0, "hook_only": true},
+			"route_gate": {"formal_source": "legacy", "candidate_available": false, "candidate_count": 0, "writes_formal_flow": false},
+			"fallback_policy": "legacy",
+		}
+	var candidate: Dictionary = adapter.build_generated_map_route_candidate(source_node_id)
+	var battle_slot: Dictionary = candidate.get("battle_slot", {}) if candidate.get("battle_slot", {}) is Dictionary else {}
+	var operation_node: Dictionary = candidate.get("operation_node", {}) if candidate.get("operation_node", {}) is Dictionary else {}
+	var narrative: Dictionary = candidate.get("narrative", {}) if candidate.get("narrative", {}) is Dictionary else {}
+	var route_gate: Dictionary = candidate.get("route_gate", {}) if candidate.get("route_gate", {}) is Dictionary else {}
+	return {
+		"battle_slot_id": source_node_id,
+		"generated_content_enabled": bool(candidate.get("enabled", false)),
+		"battle_slot": battle_slot,
+		"operation_node": operation_node,
+		"narrative": narrative,
+		"route_gate": route_gate,
 		"fallback_policy": str(candidate.get("fallback_policy", "legacy")),
 	}

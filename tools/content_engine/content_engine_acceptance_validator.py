@@ -38,6 +38,8 @@ REQUIRED_CHECK_IDS = {
     "generated_content_formal_enable_validator",
     "generated_battle_domain_formal_probe",
     "generated_battle_domain_formal_validator",
+    "generated_map_route_domain_formal_probe",
+    "generated_map_route_domain_formal_validator",
     "content_engine_regression_runner",
     "content_engine_regression_validator",
 }
