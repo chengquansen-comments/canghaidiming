@@ -44,6 +44,8 @@ REQUIRED_CHECK_IDS = {
     "generated_full_domain_enable_acceptance_validator",
     "generated_slice_whitelist_expander",
     "generated_slice_whitelist_validator",
+    "generated_battle_runtime_loadout_probe",
+    "generated_battle_runtime_loadout_validator",
     "content_engine_regression_runner",
     "content_engine_regression_validator",
 }

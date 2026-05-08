@@ -27,8 +27,40 @@ func build_generated_battle_domain_candidate(battle_slot_id: String) -> Dictiona
 		"formal_source": "content_engine_candidate",
 		"enemy_deck": enemy_deck,
 		"card_pool": card_pool,
+		"battle_runtime_loadout_candidate": build_generated_battle_runtime_loadout_candidate(battle_slot_id),
 		"fallback_policy": FALLBACK_POLICY,
 		"bridge_bundle": bundle,
+	}
+
+
+func build_generated_battle_runtime_loadout_candidate(battle_slot_id: String) -> Dictionary:
+	if battle_slot_id == "" or not BRIDGE.new().is_enabled_for_battle_slot(battle_slot_id):
+		return {
+			"battle_slot_id": battle_slot_id,
+			"loadout_candidate_available": false,
+			"fallback_policy": FALLBACK_POLICY,
+			"loadout_source": "legacy",
+			"enemy_deck_id": "",
+			"enemy_deck_source": "legacy",
+			"card_pool_count": 0,
+			"compatible_card_count": 0,
+			"unsupported_fields": [],
+			"legacy_fallback_available": true,
+		}
+	var bundle: Dictionary = BRIDGE.new().get_full_content_bundle_for_battle_slot(battle_slot_id)
+	var enemy_deck := get_enemy_deck_for_battle_slot(battle_slot_id, bundle)
+	var card_pool := get_card_pool_for_battle_slot(battle_slot_id, bundle)
+	return {
+		"battle_slot_id": battle_slot_id,
+		"loadout_candidate_available": bool(enemy_deck.get("candidate_available", false)) and bool(card_pool.get("candidate_available", false)),
+		"fallback_policy": FALLBACK_POLICY,
+		"loadout_source": "content_engine_candidate",
+		"enemy_deck_id": str(enemy_deck.get("deck_id", "")),
+		"enemy_deck_source": str(enemy_deck.get("formal_source", "legacy")),
+		"card_pool_count": int(card_pool.get("candidate_count", 0)),
+		"compatible_card_count": int(card_pool.get("compatible_card_count", 0)),
+		"unsupported_fields": card_pool.get("unsupported_fields", []),
+		"legacy_fallback_available": true,
 	}
 
 
@@ -62,6 +94,7 @@ func get_enemy_deck_for_battle_slot(battle_slot_id: String, bridge_bundle: Dicti
 			"deck_id": deck_id,
 			"card_ids": card_ids.duplicate(),
 			"card_count": int(deck.get("card_count", card_ids.size())),
+			"unsupported_fields": [],
 			"fallback_policy": FALLBACK_POLICY,
 			"formal_source": "content_engine",
 			"notes": "bridge_preview_enemy_deck_candidate",
@@ -97,6 +130,7 @@ func get_card_pool_for_battle_slot(battle_slot_id: String, bridge_bundle: Dictio
 		"candidate_count": cards.size(),
 		"cards": cards,
 		"compatible_cards": validation.get("compatible_cards", []),
+		"compatible_card_count": int((validation.get("compatible_cards", []) as Array).size()),
 		"unsupported_fields": validation.get("unsupported_fields", []),
 		"fallback_policy": FALLBACK_POLICY,
 		"formal_source": "content_engine_candidate",

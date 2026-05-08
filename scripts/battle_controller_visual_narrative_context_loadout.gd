@@ -177,6 +177,7 @@ func _resolve_battle_loadout() -> Dictionary:
 		"enemy_id": enemy_id,
 		"enemy_source": enemy_source,
 		"generated_battle_domain_candidate": generated_domain,
+		"generated_battle_runtime_loadout_candidate": generated_domain.get("battle_runtime_loadout_candidate", {}),
 		"generated_map_route_domain_candidate": generated_map_route_domain,
 		"settlement_mode": settlement_mode,
 		"debug_source": "NarrativeBattleContext + StoryBattleLoader + enemy_manifest + battle_scene_manifest"
@@ -201,6 +202,18 @@ func _resolve_generated_battle_domain_candidate(source_node_id: String) -> Dicti
 			"enemy_formal_source": "legacy",
 			"card_pool": {},
 			"card_pool_count": 0,
+			"generated_battle_runtime_loadout_candidate": {
+				"battle_slot_id": source_node_id,
+				"loadout_candidate_available": false,
+				"fallback_policy": "legacy",
+				"loadout_source": "legacy",
+				"enemy_deck_id": "",
+				"enemy_deck_source": "legacy",
+				"card_pool_count": 0,
+				"compatible_card_count": 0,
+				"unsupported_fields": [],
+				"legacy_fallback_available": true,
+			},
 			"unsupported_fields": [],
 			"fallback_policy": "legacy",
 		}
@@ -214,6 +227,7 @@ func _resolve_generated_battle_domain_candidate(source_node_id: String) -> Dicti
 		"enemy_formal_source": str(enemy_deck.get("formal_source", "legacy")),
 		"card_pool": card_pool,
 		"card_pool_count": int(card_pool.get("candidate_count", 0)),
+		"generated_battle_runtime_loadout_candidate": candidate.get("battle_runtime_loadout_candidate", {}),
 		"unsupported_fields": card_pool.get("unsupported_fields", []),
 		"fallback_policy": str(candidate.get("fallback_policy", "legacy")),
 	}

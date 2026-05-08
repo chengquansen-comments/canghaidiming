@@ -176,6 +176,8 @@ def main() -> int:
         ("generated_full_domain_enable_acceptance_validator", "python3 tools/content_engine/generated_full_domain_enable_acceptance_validator.py"),
         ("generated_slice_whitelist_expander", "python3 tools/content_engine/generated_slice_whitelist_expander.py"),
         ("generated_slice_whitelist_validator", "python3 tools/content_engine/generated_slice_whitelist_validator.py"),
+        ("generated_battle_runtime_loadout_probe", "godot --headless --path . --script tools/content_engine/generated_battle_runtime_loadout_probe.gd"),
+        ("generated_battle_runtime_loadout_validator", "python3 tools/content_engine/generated_battle_runtime_loadout_validator.py"),
         ("git_diff_check", "git diff --check"),
         ("godot_headless_quit", "godot --headless --path . --quit"),
         ("godot_headless_mainvisual", "godot --headless --path . --quit scenes/MainVisual.tscn"),
