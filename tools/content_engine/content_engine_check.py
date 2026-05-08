@@ -186,6 +186,8 @@ def main() -> int:
         ("generated_player_node_selection_validator", "python3 tools/content_engine/generated_player_node_selection_validator.py"),
         ("generated_node_battle_entry_probe", "godot --headless --path . --script tools/content_engine/generated_node_battle_entry_probe.gd"),
         ("generated_node_battle_entry_validator", "python3 tools/content_engine/generated_node_battle_entry_validator.py"),
+        ("generated_node_battle_start_probe", "godot --headless --path . --script tools/content_engine/generated_node_battle_start_probe.gd"),
+        ("generated_node_battle_start_validator", "python3 tools/content_engine/generated_node_battle_start_validator.py"),
         ("generated_battle_runtime_loadout_probe", "godot --headless --path . --script tools/content_engine/generated_battle_runtime_loadout_probe.gd"),
         ("generated_battle_runtime_loadout_validator", "python3 tools/content_engine/generated_battle_runtime_loadout_validator.py"),
         ("generated_map_route_runtime_flow_probe", "godot --headless --path . --script tools/content_engine/generated_map_route_runtime_flow_probe.gd"),

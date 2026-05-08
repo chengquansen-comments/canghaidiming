@@ -54,6 +54,8 @@ REQUIRED_CHECK_IDS = {
     "generated_player_node_selection_validator",
     "generated_node_battle_entry_probe",
     "generated_node_battle_entry_validator",
+    "generated_node_battle_start_probe",
+    "generated_node_battle_start_validator",
     "generated_battle_runtime_loadout_probe",
     "generated_battle_runtime_loadout_validator",
     "generated_map_route_runtime_flow_probe",

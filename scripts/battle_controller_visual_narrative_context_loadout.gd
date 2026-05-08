@@ -7,6 +7,7 @@ const GeneratedBattleFlowAdapter := preload("res://scripts/generated_battle_flow
 const GeneratedNodeRouteFlowAdapter := preload("res://scripts/generated_node_route_flow_adapter.gd")
 const GeneratedPlayerNodeSelectionAdapter := preload("res://scripts/generated_player_node_selection_adapter.gd")
 const GeneratedNodeBattleEntryAdapter := preload("res://scripts/generated_node_battle_entry_adapter.gd")
+const GeneratedNodeBattleStartAdapter := preload("res://scripts/generated_node_battle_start_adapter.gd")
 
 func _story_battle_for_encounter(encounter_id: String) -> Dictionary:
 	var catalog: Dictionary = _story_loader_card_catalog()
@@ -172,6 +173,9 @@ func _resolve_battle_loadout() -> Dictionary:
 	var selected_generated_node_id := _resolve_selected_generated_node_id(source_node_id)
 	var generated_battle_entry_payload := _resolve_generated_battle_entry_payload(selected_generated_node_id, source_node_id)
 	var generated_battle_entry_available := bool(generated_battle_entry_payload.get("can_enter_battle", false))
+	var generated_battle_start_payload := _resolve_generated_battle_start_payload(selected_generated_node_id, source_node_id)
+	var generated_battle_start_available := bool(generated_battle_start_payload.get("can_initialize_battle_context", false))
+	var generated_battle_start_source := str(generated_battle_start_payload.get("battle_start_source", "legacy"))
 	if bool(generated_domain.get("apply_enemy_deck", false)):
 		enemy_config["generated_enemy_deck_candidate"] = generated_domain.get("enemy_deck", {})
 		enemy_config["enemy_source"] = str(generated_domain.get("enemy_formal_source", enemy_source))
@@ -204,6 +208,9 @@ func _resolve_battle_loadout() -> Dictionary:
 		"selected_generated_node_id": selected_generated_node_id,
 		"generated_battle_entry_payload": generated_battle_entry_payload,
 		"generated_battle_entry_available": generated_battle_entry_available,
+		"generated_battle_start_payload": generated_battle_start_payload,
+		"generated_battle_start_available": generated_battle_start_available,
+		"generated_battle_start_source": generated_battle_start_source,
 		"settlement_mode": settlement_mode,
 		"debug_source": "NarrativeBattleContext + StoryBattleLoader + enemy_manifest + battle_scene_manifest"
 	}
@@ -344,3 +351,11 @@ func _resolve_generated_battle_entry_payload(selected_node_id: String, source_no
 	if bool(entry.get("can_enter_battle", false)):
 		return entry
 	return adapter.get_legacy_battle_entry_fallback(source_node_id)
+
+
+func _resolve_generated_battle_start_payload(selected_node_id: String, source_node_id: String) -> Dictionary:
+	var adapter := GeneratedNodeBattleStartAdapter.new()
+	var payload: Dictionary = adapter.build_battle_start_payload_from_generated_node(selected_node_id)
+	if bool(payload.get("can_initialize_battle_context", false)):
+		return payload
+	return adapter.get_legacy_battle_start_fallback(source_node_id)
