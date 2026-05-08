@@ -192,6 +192,8 @@ def main() -> int:
         ("generated_playable_battle_entry_validator", "python3 tools/content_engine/generated_playable_battle_entry_validator.py"),
         ("generated_playable_battle_scene_probe", "godot --headless --path . --script tools/content_engine/generated_playable_battle_scene_probe.gd"),
         ("generated_playable_battle_scene_validator", "python3 tools/content_engine/generated_playable_battle_scene_validator.py"),
+        ("generated_minimal_playable_round_probe", "godot --headless --path . --script tools/content_engine/generated_minimal_playable_round_probe.gd"),
+        ("generated_minimal_playable_round_validator", "python3 tools/content_engine/generated_minimal_playable_round_validator.py"),
         ("generated_battle_runtime_loadout_probe", "godot --headless --path . --script tools/content_engine/generated_battle_runtime_loadout_probe.gd"),
         ("generated_battle_runtime_loadout_validator", "python3 tools/content_engine/generated_battle_runtime_loadout_validator.py"),
         ("generated_map_route_runtime_flow_probe", "godot --headless --path . --script tools/content_engine/generated_map_route_runtime_flow_probe.gd"),
