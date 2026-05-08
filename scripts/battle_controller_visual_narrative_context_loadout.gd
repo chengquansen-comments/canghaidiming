@@ -1,6 +1,8 @@
 extends "res://scripts/battle_controller_visual_narrative_context_player_profile.gd"
 
 # Narrative context loadout layer.
+const GeneratedBattleDomainAdapter := preload("res://scripts/generated_battle_domain_adapter.gd")
+const WHITELIST_BATTLE_SLOT := "prologue_01"
 
 func _story_battle_for_encounter(encounter_id: String) -> Dictionary:
 	var catalog: Dictionary = _story_loader_card_catalog()
@@ -154,6 +156,11 @@ func _resolve_battle_loadout() -> Dictionary:
 	var manifest_enemy: Dictionary = _dict(manifest_context.get("enemy", {}))
 	var enemy_id: String = str(enemy_config.get("id", manifest_context.get("enemy_id", encounter_config.get("opponent_template_id", ""))))
 	var enemy_source: String = str(enemy_config.get("enemy_source", "enemy_manifest" if not manifest_enemy.is_empty() else "story_battles"))
+	var generated_domain := _resolve_generated_battle_domain_candidate(source_node_id)
+	if bool(generated_domain.get("apply_enemy_deck", false)):
+		enemy_config["generated_enemy_deck_candidate"] = generated_domain.get("enemy_deck", {})
+		enemy_config["enemy_source"] = str(generated_domain.get("enemy_formal_source", enemy_source))
+		enemy_source = str(enemy_config.get("enemy_source", enemy_source))
 	return {
 		"battle_id": battle_id,
 		"encounter_id": encounter_id,
@@ -168,6 +175,7 @@ func _resolve_battle_loadout() -> Dictionary:
 		"enemy_deck": enemy_config.get("deck", []),
 		"enemy_id": enemy_id,
 		"enemy_source": enemy_source,
+		"generated_battle_domain_candidate": generated_domain,
 		"settlement_mode": settlement_mode,
 		"debug_source": "NarrativeBattleContext + StoryBattleLoader + enemy_manifest + battle_scene_manifest"
 	}
@@ -177,3 +185,33 @@ func _resolve_pending_battle_loadout() -> void:
 		return
 	battle_loadout = _resolve_battle_loadout()
 
+
+func _resolve_generated_battle_domain_candidate(source_node_id: String) -> Dictionary:
+	var adapter := GeneratedBattleDomainAdapter.new()
+	var generated_enabled := source_node_id == WHITELIST_BATTLE_SLOT
+	if not generated_enabled:
+		return {
+			"battle_slot_id": source_node_id,
+			"generated_content_enabled": false,
+			"apply_enemy_deck": false,
+			"enemy_deck": {},
+			"enemy_formal_source": "legacy",
+			"card_pool": {},
+			"card_pool_count": 0,
+			"unsupported_fields": [],
+			"fallback_policy": "legacy",
+		}
+	var candidate: Dictionary = adapter.build_generated_battle_domain_candidate(source_node_id)
+	var enemy_deck: Dictionary = candidate.get("enemy_deck", {}) if candidate.get("enemy_deck", {}) is Dictionary else {}
+	var card_pool: Dictionary = candidate.get("card_pool", {}) if candidate.get("card_pool", {}) is Dictionary else {}
+	return {
+		"battle_slot_id": source_node_id,
+		"generated_content_enabled": bool(candidate.get("enabled", false)),
+		"apply_enemy_deck": bool(enemy_deck.get("candidate_available", false)),
+		"enemy_deck": enemy_deck,
+		"enemy_formal_source": str(enemy_deck.get("formal_source", "legacy")),
+		"card_pool": card_pool,
+		"card_pool_count": int(card_pool.get("candidate_count", 0)),
+		"unsupported_fields": card_pool.get("unsupported_fields", []),
+		"fallback_policy": str(candidate.get("fallback_policy", "legacy")),
+	}

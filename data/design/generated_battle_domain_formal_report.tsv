@@ -1,0 +1,9 @@
+battle_slot_id	domain	generated_content_enabled	candidate_available	candidate_id	candidate_count	formal_source	fallback_policy	unsupported_fields	legacy_fallback_available	game_state_written	notes
+prologue_01	battle_slot	true	true	prologue_01	1	legacy	legacy		true	false	battle_slot 仍走 legacy 流程。
+prologue_01	enemy_deck	true	true	enemy_coastal_raider_blade_basic	9	content_engine	legacy		true	false	enemy_deck 只接 battle setup candidate，不进入 resolver。
+prologue_01	card_pool	true	true	card_pool_preview	72	content_engine_candidate	legacy	ai_usage_hint,break_momentum,budget_delta,budget_target,card_class,combo_tags,damage,deck_role,gain_momentum,guard,implementation_status,is_generic,max_distance,min_distance,momentum_cost,move_condition,notes,power_budget,preferred_distance,self_move_after,source_grammar,tactic_role,target_pull_after,target_push_after,weapon_requirement,weapon_style	true	false	card_pool 执行兼容检查，仅 candidate，不写 CardData。
+prologue_01	reward	true	true	rw_prologue_01	1	content_engine	legacy		true	false	reward 白名单正式来源可切换到 content_engine。
+prologue_01	operation_node	true	true	operation_nodes_preview	10	content_engine_candidate	legacy		true	false	operation_node 仅 candidate。
+prologue_01	narrative	true	true	narrative_key_hook_preview	28	content_engine_candidate	legacy		true	false	narrative 仅 key/hook，不含正文。
+prologue_01	route_gate	true	true	route_gates_preview	9	content_engine_candidate	legacy		true	false	route_gate 仅 candidate，不改变正式分流。
+sample_non_whitelist	reward	false	false		0	legacy	legacy		true	false	非白名单仍 legacy。
