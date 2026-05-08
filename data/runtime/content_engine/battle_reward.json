@@ -1450,6 +1450,6 @@
     }
   ],
   "generated_by": "tools/content_engine/runtime_battle_reward_hydrator.py",
-  "generated_at": "2026-05-08T03:59:03Z",
+  "generated_at": "2026-05-08T04:44:46Z",
   "notes": "v0.9c hydration: battle_reward runtime records are hydrated from generated_battle_reward_plan.tsv."
 }

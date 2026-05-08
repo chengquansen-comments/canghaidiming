@@ -1,6 +1,6 @@
 # Content Engine Acceptance Summary
 
-- run_id=acceptance-20260508T035759Z-bffdf8f8
+- run_id=acceptance-20260508T044341Z-bb1807c0
 - overall_status=PASS
 - selected_reward: legacy
 - runtime_loader_config: disabled
@@ -81,6 +81,8 @@
 | generated_player_visible_entry_validator | PASS | none | true | true |
 | generated_visible_ui_mount_probe | pass | data/design/generated_visible_ui_mount_report.tsv | true | true |
 | generated_visible_ui_mount_validator | PASS | none | true | true |
+| generated_playable_battle_loop_probe | pass | data/design/generated_playable_battle_loop_report.tsv | true | true |
+| generated_playable_battle_loop_validator | PASS | none | true | true |
 | generated_battle_runtime_loadout_probe | pass | data/design/generated_battle_runtime_loadout_report.tsv | true | true |
 | generated_battle_runtime_loadout_validator | PASS | none | true | true |
 | generated_map_route_runtime_flow_probe | pass | data/design/generated_map_route_runtime_flow_report.tsv | true | true |

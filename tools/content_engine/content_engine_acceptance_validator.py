@@ -68,6 +68,8 @@ REQUIRED_CHECK_IDS = {
     "generated_player_visible_entry_validator",
     "generated_visible_ui_mount_probe",
     "generated_visible_ui_mount_validator",
+    "generated_playable_battle_loop_probe",
+    "generated_playable_battle_loop_validator",
     "generated_battle_runtime_loadout_probe",
     "generated_battle_runtime_loadout_validator",
     "generated_map_route_runtime_flow_probe",

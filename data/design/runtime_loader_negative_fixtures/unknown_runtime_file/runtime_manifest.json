@@ -1,7 +1,7 @@
 {
   "manifest_version": "v0.8c",
   "generated_by": "tools/content_engine/runtime_export_manifest.py",
-  "generated_at": "2026-05-08T03:59:01Z",
+  "generated_at": "2026-05-08T04:44:44Z",
   "source_write_result_path": "data/design/generated_runtime_exporter_write_result.tsv",
   "runtime_root": "data/runtime/content_engine",
   "allowed_runtime_files": [
@@ -15,13 +15,13 @@
       "runtime_path": "data/runtime/content_engine/battle_reward.json",
       "file_name": "battle_reward.json",
       "file_size_bytes": 656,
-      "sha256": "852810873fe4d6e61a971d301e5882c8f46aa03b497f5b3b1b89bfec53f6586f",
+      "sha256": "8fb272dcf549dfd7d7eca09d81109b48ddc74602b4ec93d7a137a8ffaeba1c84",
       "schema_fingerprint": "6afc401b075e5da7db58fe9f869e74438451368dbea4c686fcae9222b3985775",
       "content_fingerprint": "cf6ffc4e9ad078df51fc26e5b84746aeae3edd429cff92ceae0f48e79c4059bb",
       "record_count": 0,
       "field_count": 0,
       "export_version": "v0.8b",
-      "generated_at": "2026-05-08T03:59:01Z",
+      "generated_at": "2026-05-08T04:44:44Z",
       "source_design_path": "data/design/generated_battle_reward_plan.tsv"
     },
     {
@@ -30,13 +30,13 @@
       "runtime_path": "data/runtime/content_engine/card_pool.json",
       "file_name": "card_pool.json",
       "file_size_bytes": 634,
-      "sha256": "7f781cbe494d91d3fe62841eb7c6d8f98d0b6b33d197b0a594cfcf80fe1bcc8e",
+      "sha256": "4f1c97176db8cedd1e266ebf61f437b73398b52a8bba0296a9aaf6c1ebd2209e",
       "schema_fingerprint": "4ea30afa86c66582b9f8cd30ef28eae900e3f38648dc9e08885f4856bef351e9",
       "content_fingerprint": "6f6b56c50f7986651f144e85b0ead1dae50d06bc6b5942cfaf9c87f85be99beb",
       "record_count": 0,
       "field_count": 0,
       "export_version": "v0.8b",
-      "generated_at": "2026-05-08T03:59:01Z",
+      "generated_at": "2026-05-08T04:44:44Z",
       "source_design_path": "data/design/generated_card_pool.tsv"
     },
     {
@@ -51,7 +51,7 @@
       "record_count": 0,
       "field_count": 0,
       "export_version": "v0.8b",
-      "generated_at": "2026-05-08T03:59:01Z",
+      "generated_at": "2026-05-08T04:44:44Z",
       "source_design_path": "data/design/unknown.tsv"
     }
   ]

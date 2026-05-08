@@ -1,7 +1,7 @@
 {
   "manifest_version": "v0.8c",
   "generated_by": "tools/content_engine/runtime_battle_reward_hydrator.py",
-  "generated_at": "2026-05-08T03:59:03Z",
+  "generated_at": "2026-05-08T04:44:46Z",
   "source_write_result_path": "data/design/generated_runtime_exporter_write_result.tsv",
   "runtime_root": "data/runtime/content_engine",
   "allowed_runtime_files": [
@@ -15,13 +15,13 @@
       "runtime_path": "data/runtime/content_engine/battle_reward.json",
       "file_name": "battle_reward.json",
       "file_size_bytes": 58192,
-      "sha256": "924e2a6c3e5df7605deb6da6bce1162aa8cb219b43e44db95bd815d16de8fedc",
+      "sha256": "b34a5789e9ae4cf6e1bce8ef913525633a2c97bb4c429f4c956167f7eb2d0a77",
       "schema_fingerprint": "b512649111574888d420e02462e03b57394f4fc31329b1ab48f730a451c038e8",
       "content_fingerprint": "75cf5f5d651876ef4b7a95c51360f7abf2913f454e889044e6a291647ece62f6",
       "record_count": 45,
       "field_count": 30,
       "export_version": "v0.9c",
-      "generated_at": "2026-05-08T03:59:03Z",
+      "generated_at": "2026-05-08T04:44:46Z",
       "source_design_path": "data/design/generated_battle_reward_plan.tsv"
     },
     {
@@ -30,13 +30,13 @@
       "runtime_path": "data/runtime/content_engine/card_pool.json",
       "file_name": "card_pool.json",
       "file_size_bytes": 634,
-      "sha256": "7f781cbe494d91d3fe62841eb7c6d8f98d0b6b33d197b0a594cfcf80fe1bcc8e",
+      "sha256": "4f1c97176db8cedd1e266ebf61f437b73398b52a8bba0296a9aaf6c1ebd2209e",
       "schema_fingerprint": "4ea30afa86c66582b9f8cd30ef28eae900e3f38648dc9e08885f4856bef351e9",
       "content_fingerprint": "6f6b56c50f7986651f144e85b0ead1dae50d06bc6b5942cfaf9c87f85be99beb",
       "record_count": 0,
       "field_count": 0,
       "export_version": "v0.8b",
-      "generated_at": "2026-05-08T03:59:01Z",
+      "generated_at": "2026-05-08T04:44:44Z",
       "source_design_path": "data/design/generated_card_pool.tsv"
     }
   ]
