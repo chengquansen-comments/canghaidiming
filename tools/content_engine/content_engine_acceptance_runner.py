@@ -194,6 +194,32 @@ STEPS: tuple[StepDef, ...] = (
         tuple(),
     ),
     StepDef(
+        "generated_full_domain_enable_acceptance_probe",
+        "godot --headless --path . --script tools/content_engine/generated_full_domain_enable_acceptance_probe.gd",
+        (Path("data/design/generated_full_domain_enable_acceptance_report.tsv"),),
+    ),
+    StepDef(
+        "generated_full_domain_enable_acceptance_validator",
+        "python3 tools/content_engine/generated_full_domain_enable_acceptance_validator.py",
+        tuple(),
+    ),
+    StepDef(
+        "generated_slice_whitelist_expander",
+        "python3 tools/content_engine/generated_slice_whitelist_expander.py",
+        (
+            Path("data/design/generated_slice_whitelist_config.tsv"),
+            Path("data/design/generated_slice_whitelist_binding_map.tsv"),
+            Path("data/design/generated_slice_whitelist_acceptance_report.tsv"),
+            Path("data/runtime/content_engine_whitelist/generated_slice.full_content_bridge.json"),
+            Path("data/runtime/content_engine_whitelist/generated_slice_manifest.json"),
+        ),
+    ),
+    StepDef(
+        "generated_slice_whitelist_validator",
+        "python3 tools/content_engine/generated_slice_whitelist_validator.py",
+        tuple(),
+    ),
+    StepDef(
         "content_engine_regression_runner",
         "python3 tools/content_engine/content_engine_regression_runner.py",
         (

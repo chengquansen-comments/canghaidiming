@@ -4,12 +4,11 @@ class_name GeneratedBattleDomainAdapter
 const BRIDGE := preload("res://scripts/generated_content_runtime_bridge.gd")
 const ENEMY_DECKS_PATH := "res://data/runtime_preview/content_engine/enemy_decks.preview.json"
 const CARD_POOL_PATH := "res://data/runtime_preview/content_engine/card_pool.preview.json"
-const WHITELIST_BATTLE_SLOT := "prologue_01"
 const FALLBACK_POLICY := "legacy"
 
 
 func build_generated_battle_domain_candidate(battle_slot_id: String) -> Dictionary:
-	if battle_slot_id != WHITELIST_BATTLE_SLOT:
+	if battle_slot_id == "" or not BRIDGE.new().is_enabled_for_battle_slot(battle_slot_id):
 		return {
 			"battle_slot_id": battle_slot_id,
 			"enabled": false,
@@ -19,19 +18,7 @@ func build_generated_battle_domain_candidate(battle_slot_id: String) -> Dictiona
 			"fallback_policy": FALLBACK_POLICY,
 		}
 
-	var bridge = BRIDGE.new()
-	if not bridge.is_enabled_for_battle_slot(battle_slot_id):
-		return {
-			"battle_slot_id": battle_slot_id,
-			"enabled": false,
-			"formal_source": "legacy",
-			"enemy_deck": {},
-			"card_pool": {},
-			"fallback_policy": FALLBACK_POLICY,
-			"notes": "bridge_not_enabled",
-		}
-
-	var bundle: Dictionary = bridge.get_full_content_bundle_for_battle_slot(battle_slot_id)
+	var bundle: Dictionary = BRIDGE.new().get_full_content_bundle_for_battle_slot(battle_slot_id)
 	var enemy_deck := get_enemy_deck_for_battle_slot(battle_slot_id, bundle)
 	var card_pool := get_card_pool_for_battle_slot(battle_slot_id, bundle)
 	return {
@@ -46,7 +33,7 @@ func build_generated_battle_domain_candidate(battle_slot_id: String) -> Dictiona
 
 
 func get_enemy_deck_for_battle_slot(battle_slot_id: String, bridge_bundle: Dictionary = {}) -> Dictionary:
-	if battle_slot_id != WHITELIST_BATTLE_SLOT:
+	if battle_slot_id == "" or not BRIDGE.new().is_enabled_for_battle_slot(battle_slot_id):
 		return {"candidate_available": false, "fallback_policy": FALLBACK_POLICY, "notes": "non_whitelist_legacy"}
 	var bundle := bridge_bundle
 	if bundle.is_empty():
@@ -89,7 +76,7 @@ func get_enemy_deck_for_battle_slot(battle_slot_id: String, bridge_bundle: Dicti
 
 
 func get_card_pool_for_battle_slot(battle_slot_id: String, bridge_bundle: Dictionary = {}) -> Dictionary:
-	if battle_slot_id != WHITELIST_BATTLE_SLOT:
+	if battle_slot_id == "" or not BRIDGE.new().is_enabled_for_battle_slot(battle_slot_id):
 		return {"candidate_available": false, "fallback_policy": FALLBACK_POLICY, "notes": "non_whitelist_legacy"}
 	var bundle := bridge_bundle
 	if bundle.is_empty():

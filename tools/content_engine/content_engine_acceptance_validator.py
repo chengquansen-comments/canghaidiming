@@ -40,6 +40,10 @@ REQUIRED_CHECK_IDS = {
     "generated_battle_domain_formal_validator",
     "generated_map_route_domain_formal_probe",
     "generated_map_route_domain_formal_validator",
+    "generated_full_domain_enable_acceptance_probe",
+    "generated_full_domain_enable_acceptance_validator",
+    "generated_slice_whitelist_expander",
+    "generated_slice_whitelist_validator",
     "content_engine_regression_runner",
     "content_engine_regression_validator",
 }

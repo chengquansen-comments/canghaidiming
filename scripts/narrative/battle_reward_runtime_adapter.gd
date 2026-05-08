@@ -6,12 +6,12 @@ const MODE_SHADOW := "shadow"
 const MODE_RUNTIME_TEST := "runtime_test"
 const MODE_RUNTIME_ENABLED := "runtime_enabled"
 
+const GENERATED_CONTENT_BRIDGE := preload("res://scripts/generated_content_runtime_bridge.gd")
 const CONFIG_PATH := "res://data/runtime/content_engine/runtime_loader_config.json"
 const RUNTIME_REWARD_PATH := "res://data/runtime/content_engine/battle_reward.json"
 const FORMAL_ENABLE_CONFIG_PATH := "res://data/design/generated_content_formal_enable_config.tsv"
+const SLICE_WHITELIST_CONFIG_PATH := "res://data/design/generated_slice_whitelist_config.tsv"
 const WHITELIST_BRIDGE_PATH_PATTERN := "res://data/runtime/content_engine_whitelist/%s.full_content_bridge.json"
-const WHITELIST_BATTLE_SLOT := "prologue_01"
-const WHITELIST_REWARD_ID := "rw_prologue_01"
 
 
 func resolve_reward(source_id: String, legacy_reward: Dictionary, context: Dictionary = {}) -> Dictionary:
@@ -74,15 +74,14 @@ func resolve_reward(source_id: String, legacy_reward: Dictionary, context: Dicti
 	var formal_enable_ok := (
 		context_generated_enabled
 		and formal_path_enabled
-		and formal_enable_stage == "v2_3"
+		and (formal_enable_stage == "v2_3" or formal_enable_stage == "v2_7")
 		and
-		battle_slot_id == WHITELIST_BATTLE_SLOT
-		and source_id == WHITELIST_BATTLE_SLOT
+		battle_slot_id == source_id
 		and whitelist_enabled
 		and generated_enabled
 		and fallback_policy == "legacy"
 		and bridge_reward_available
-		and bridge_reward_id == WHITELIST_REWARD_ID
+		and not bridge_reward_id.is_empty()
 	)
 	if formal_enable_ok:
 		selected_source = "content_engine"
@@ -127,31 +126,32 @@ func _build_output(
 
 
 func _read_formal_enable_config(battle_slot_id: String) -> Dictionary:
-	if not FileAccess.file_exists(FORMAL_ENABLE_CONFIG_PATH):
-		return {"whitelist_enabled": false, "generated_content_enabled": false, "rollback_policy": "legacy"}
-	var f := FileAccess.open(FORMAL_ENABLE_CONFIG_PATH, FileAccess.READ)
-	if f == null:
-		return {"whitelist_enabled": false, "generated_content_enabled": false, "rollback_policy": "legacy"}
-	var lines := f.get_as_text().split("\n")
-	if lines.size() <= 1:
-		return {"whitelist_enabled": false, "generated_content_enabled": false, "rollback_policy": "legacy"}
-	var header: PackedStringArray = lines[0].strip_edges().split("\t")
-	var key_index := {}
-	for i in range(header.size()):
-		key_index[header[i]] = i
-	for i in range(1, lines.size()):
-		var line := lines[i].strip_edges()
-		if line == "":
+	for cfg_path in [SLICE_WHITELIST_CONFIG_PATH, FORMAL_ENABLE_CONFIG_PATH]:
+		if not FileAccess.file_exists(cfg_path):
 			continue
-		var cols: PackedStringArray = line.split("\t")
-		var slot := _col(cols, key_index, "battle_slot_id")
-		if slot != battle_slot_id:
+		var f := FileAccess.open(cfg_path, FileAccess.READ)
+		if f == null:
 			continue
-		return {
-			"whitelist_enabled": _col(cols, key_index, "whitelist_enabled").to_lower() == "true",
-			"generated_content_enabled": _col(cols, key_index, "generated_content_enabled").to_lower() == "true",
-			"rollback_policy": _col(cols, key_index, "rollback_policy"),
-		}
+		var lines := f.get_as_text().split("\n")
+		if lines.size() <= 1:
+			continue
+		var header: PackedStringArray = lines[0].strip_edges().split("\t")
+		var key_index := {}
+		for i in range(header.size()):
+			key_index[header[i]] = i
+		for i in range(1, lines.size()):
+			var line := lines[i].strip_edges()
+			if line == "":
+				continue
+			var cols: PackedStringArray = line.split("\t")
+			var slot := _col(cols, key_index, "battle_slot_id")
+			if slot != battle_slot_id:
+				continue
+			return {
+				"whitelist_enabled": _col(cols, key_index, "whitelist_enabled").to_lower() == "true",
+				"generated_content_enabled": _col(cols, key_index, "generated_content_enabled").to_lower() == "true",
+				"rollback_policy": _col(cols, key_index, "rollback_policy"),
+			}
 	return {"whitelist_enabled": false, "generated_content_enabled": false, "rollback_policy": "legacy"}
 
 
@@ -170,6 +170,10 @@ func _bridge_bundle_from_context_or_path(context: Dictionary, battle_slot_id: St
 		var b: Dictionary = ctx_bundle
 		if not b.is_empty():
 			return b
+	var bridge := GENERATED_CONTENT_BRIDGE.new()
+	var bundle := bridge.get_full_content_bundle_for_battle_slot(battle_slot_id)
+	if not bundle.is_empty():
+		return bundle
 	var path := WHITELIST_BRIDGE_PATH_PATTERN % battle_slot_id
 	return _read_json_dict(path).get("payload", {})
 

@@ -6,12 +6,11 @@ const BATTLE_SLOTS_PATH := "res://data/runtime_preview/content_engine/battle_slo
 const OPERATION_NODES_PATH := "res://data/runtime_preview/content_engine/operation_nodes.preview.json"
 const NARRATIVE_NODES_PATH := "res://data/runtime_preview/content_engine/narrative_nodes.preview.json"
 const ROUTE_GATES_PATH := "res://data/runtime_preview/content_engine/route_gates.preview.json"
-const WHITELIST_BATTLE_SLOT := "prologue_01"
 const FALLBACK_POLICY := "legacy"
 
 
 func build_generated_map_route_candidate(battle_slot_id: String) -> Dictionary:
-	if battle_slot_id != WHITELIST_BATTLE_SLOT:
+	if battle_slot_id == "" or not BRIDGE.new().is_enabled_for_battle_slot(battle_slot_id):
 		return {
 			"battle_slot_id": battle_slot_id,
 			"enabled": false,
@@ -21,19 +20,7 @@ func build_generated_map_route_candidate(battle_slot_id: String) -> Dictionary:
 			"narrative": {},
 			"route_gate": {},
 		}
-	var bridge := BRIDGE.new()
-	if not bridge.is_enabled_for_battle_slot(battle_slot_id):
-		return {
-			"battle_slot_id": battle_slot_id,
-			"enabled": false,
-			"fallback_policy": FALLBACK_POLICY,
-			"notes": "bridge_not_enabled",
-			"battle_slot": {},
-			"operation_node": {},
-			"narrative": {},
-			"route_gate": {},
-		}
-	var bundle: Dictionary = bridge.get_full_content_bundle_for_battle_slot(battle_slot_id)
+	var bundle: Dictionary = BRIDGE.new().get_full_content_bundle_for_battle_slot(battle_slot_id)
 	return {
 		"battle_slot_id": battle_slot_id,
 		"enabled": true,
@@ -46,7 +33,7 @@ func build_generated_map_route_candidate(battle_slot_id: String) -> Dictionary:
 
 
 func get_battle_slot_for_battle_slot(battle_slot_id: String, bridge_bundle: Dictionary = {}) -> Dictionary:
-	if battle_slot_id != WHITELIST_BATTLE_SLOT:
+	if battle_slot_id == "" or not BRIDGE.new().is_enabled_for_battle_slot(battle_slot_id):
 		return _legacy_row("battle_slot")
 	var domains := _domains_from_bundle(battle_slot_id, bridge_bundle)
 	var candidate: Dictionary = _dict(domains.get("battle_slot", {}))
@@ -77,7 +64,7 @@ func get_battle_slot_for_battle_slot(battle_slot_id: String, bridge_bundle: Dict
 
 
 func get_operation_nodes_for_battle_slot(battle_slot_id: String, bridge_bundle: Dictionary = {}) -> Dictionary:
-	if battle_slot_id != WHITELIST_BATTLE_SLOT:
+	if battle_slot_id == "" or not BRIDGE.new().is_enabled_for_battle_slot(battle_slot_id):
 		return _legacy_row("operation_node")
 	var domains := _domains_from_bundle(battle_slot_id, bridge_bundle)
 	var candidate: Dictionary = _dict(domains.get("operation_node", {}))
@@ -97,7 +84,7 @@ func get_operation_nodes_for_battle_slot(battle_slot_id: String, bridge_bundle: 
 
 
 func get_narrative_keys_for_battle_slot(battle_slot_id: String, bridge_bundle: Dictionary = {}) -> Dictionary:
-	if battle_slot_id != WHITELIST_BATTLE_SLOT:
+	if battle_slot_id == "" or not BRIDGE.new().is_enabled_for_battle_slot(battle_slot_id):
 		return _legacy_row("narrative")
 	var domains := _domains_from_bundle(battle_slot_id, bridge_bundle)
 	var candidate: Dictionary = _dict(domains.get("narrative", {}))
@@ -130,7 +117,7 @@ func get_narrative_keys_for_battle_slot(battle_slot_id: String, bridge_bundle: D
 
 
 func get_route_gates_for_battle_slot(battle_slot_id: String, bridge_bundle: Dictionary = {}) -> Dictionary:
-	if battle_slot_id != WHITELIST_BATTLE_SLOT:
+	if battle_slot_id == "" or not BRIDGE.new().is_enabled_for_battle_slot(battle_slot_id):
 		return _legacy_row("route_gate")
 	var domains := _domains_from_bundle(battle_slot_id, bridge_bundle)
 	var candidate: Dictionary = _dict(domains.get("route_gate", {}))

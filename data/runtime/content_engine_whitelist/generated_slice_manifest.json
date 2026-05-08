@@ -1,0 +1,25 @@
+{
+  "package_type": "full_content_generated_slice_bridge_manifest",
+  "generated_at": "2026-05-08T01:20:31+00:00",
+  "whitelist_battle_slots": [
+    "prologue_01",
+    "wuju_exam_01",
+    "wuju_exam_02",
+    "wuju_exam_03",
+    "wuju_weapon_01",
+    "wuju_weapon_02",
+    "wz_exam_01",
+    "wz_exam_02",
+    "wz_exam_03",
+    "wz_exam_04",
+    "wz_exam_05"
+  ],
+  "bundle_path": "res://data/runtime/content_engine_whitelist/generated_slice.full_content_bridge.json",
+  "bundle_count": 1,
+  "rollback_policy": "legacy",
+  "global_content_engine_enabled": false,
+  "formal_runtime_enabled": false,
+  "runtime_ready": false,
+  "bridge_only": true,
+  "slice_content_enabled": true
+}

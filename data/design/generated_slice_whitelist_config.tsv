@@ -1,0 +1,12 @@
+battle_slot_id	slice_type	whitelist_enabled	generated_content_enabled	rollback_policy	enabled_domains	reward_plan_id	notes
+prologue_01	prologue	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_prologue_01	generated slice whitelist
+wuju_exam_01	wuju_slice	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_wuju_exam_01	generated slice whitelist
+wuju_exam_02	wuju_slice	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_wuju_exam_02	generated slice whitelist
+wuju_exam_03	wuju_slice	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_wuju_exam_03	generated slice whitelist
+wuju_weapon_01	wuju_slice	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_wuju_weapon_01	generated slice whitelist
+wuju_weapon_02	wuju_slice	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_wuju_weapon_02	generated slice whitelist
+wz_exam_01	wuju_slice	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_exam_exam_exam_capital_basic_weapon	generated slice whitelist
+wz_exam_02	wuju_slice	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_exam_exam_exam_capital_duel_chain	generated slice whitelist
+wz_exam_03	wuju_slice	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_exam_exam_exam_capital_footwork	generated slice whitelist
+wz_exam_04	wuju_slice	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_exam_exam_exam_capital_mixed_weapon	generated slice whitelist
+wz_exam_05	wuju_slice	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	rw_exam_exam_exam_imperial_final_examiner	generated slice whitelist

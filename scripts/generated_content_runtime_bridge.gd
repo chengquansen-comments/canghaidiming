@@ -2,11 +2,19 @@ extends RefCounted
 class_name GeneratedContentRuntimeBridge
 
 const MANIFEST_PATH := "res://data/runtime/content_engine_whitelist/full_content_bridge_manifest.json"
+const SLICE_MANIFEST_PATH := "res://data/runtime/content_engine_whitelist/generated_slice_manifest.json"
 const BUNDLE_PATH_PATTERN := "res://data/runtime/content_engine_whitelist/%s.full_content_bridge.json"
+const SLICE_BUNDLE_PATH := "res://data/runtime/content_engine_whitelist/generated_slice.full_content_bridge.json"
 const FALLBACK_POLICY := "legacy"
 
 
 func load_manifest() -> Dictionary:
+	if FileAccess.file_exists(SLICE_MANIFEST_PATH):
+		var sf := FileAccess.open(SLICE_MANIFEST_PATH, FileAccess.READ)
+		if sf != null:
+			var s_parsed: Variant = JSON.parse_string(sf.get_as_text())
+			if typeof(s_parsed) == TYPE_DICTIONARY:
+				return s_parsed
 	if not FileAccess.file_exists(MANIFEST_PATH):
 		return {}
 	var f := FileAccess.open(MANIFEST_PATH, FileAccess.READ)
@@ -21,6 +29,18 @@ func load_manifest() -> Dictionary:
 func load_bundle(battle_slot_id: String) -> Dictionary:
 	if battle_slot_id == "":
 		return {}
+	if FileAccess.file_exists(SLICE_BUNDLE_PATH):
+		var sf := FileAccess.open(SLICE_BUNDLE_PATH, FileAccess.READ)
+		if sf != null:
+			var s_parsed: Variant = JSON.parse_string(sf.get_as_text())
+			if typeof(s_parsed) == TYPE_DICTIONARY:
+				var slice_bundle: Dictionary = s_parsed
+				var slots: Variant = slice_bundle.get("slots", {})
+				if typeof(slots) == TYPE_DICTIONARY:
+					var slot_map: Dictionary = slots
+					var sv: Variant = slot_map.get(battle_slot_id, {})
+					if typeof(sv) == TYPE_DICTIONARY:
+						return sv
 	var path := BUNDLE_PATH_PATTERN % battle_slot_id
 	if not FileAccess.file_exists(path):
 		return {}
@@ -31,6 +51,28 @@ func load_bundle(battle_slot_id: String) -> Dictionary:
 	if typeof(parsed) != TYPE_DICTIONARY:
 		return {}
 	return parsed
+
+
+func is_enabled_for_battle_slot(battle_slot_id: String) -> bool:
+	if battle_slot_id == "":
+		return false
+	var manifest := load_manifest()
+	if manifest.is_empty():
+		return false
+	var whitelist: Variant = manifest.get("whitelist_battle_slots", [])
+	if typeof(whitelist) != TYPE_ARRAY:
+		return false
+	if not (whitelist as Array).has(battle_slot_id):
+		return false
+	var bundle := load_bundle(battle_slot_id)
+	var validation := validate_bridge_bundle(bundle)
+	return bool(validation.get("ok", false))
+
+
+func get_full_content_bundle_for_battle_slot(battle_slot_id: String) -> Dictionary:
+	if not is_enabled_for_battle_slot(battle_slot_id):
+		return {}
+	return load_bundle(battle_slot_id)
 
 
 func get_domain(bundle: Dictionary, domain: String) -> Dictionary:

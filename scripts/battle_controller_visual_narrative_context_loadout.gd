@@ -3,7 +3,6 @@ extends "res://scripts/battle_controller_visual_narrative_context_player_profile
 # Narrative context loadout layer.
 const GeneratedBattleDomainAdapter := preload("res://scripts/generated_battle_domain_adapter.gd")
 const GeneratedMapRouteDomainAdapter := preload("res://scripts/generated_map_route_domain_adapter.gd")
-const WHITELIST_BATTLE_SLOT := "prologue_01"
 
 func _story_battle_for_encounter(encounter_id: String) -> Dictionary:
 	var catalog: Dictionary = _story_loader_card_catalog()
@@ -191,7 +190,8 @@ func _resolve_pending_battle_loadout() -> void:
 
 func _resolve_generated_battle_domain_candidate(source_node_id: String) -> Dictionary:
 	var adapter := GeneratedBattleDomainAdapter.new()
-	var generated_enabled := source_node_id == WHITELIST_BATTLE_SLOT
+	var candidate: Dictionary = adapter.build_generated_battle_domain_candidate(source_node_id)
+	var generated_enabled := bool(candidate.get("enabled", false))
 	if not generated_enabled:
 		return {
 			"battle_slot_id": source_node_id,
@@ -204,7 +204,6 @@ func _resolve_generated_battle_domain_candidate(source_node_id: String) -> Dicti
 			"unsupported_fields": [],
 			"fallback_policy": "legacy",
 		}
-	var candidate: Dictionary = adapter.build_generated_battle_domain_candidate(source_node_id)
 	var enemy_deck: Dictionary = candidate.get("enemy_deck", {}) if candidate.get("enemy_deck", {}) is Dictionary else {}
 	var card_pool: Dictionary = candidate.get("card_pool", {}) if candidate.get("card_pool", {}) is Dictionary else {}
 	return {
@@ -222,7 +221,8 @@ func _resolve_generated_battle_domain_candidate(source_node_id: String) -> Dicti
 
 func _resolve_generated_map_route_domain_candidate(source_node_id: String) -> Dictionary:
 	var adapter := GeneratedMapRouteDomainAdapter.new()
-	var generated_enabled := source_node_id == WHITELIST_BATTLE_SLOT
+	var candidate: Dictionary = adapter.build_generated_map_route_candidate(source_node_id)
+	var generated_enabled := bool(candidate.get("enabled", false))
 	if not generated_enabled:
 		return {
 			"battle_slot_id": source_node_id,
@@ -233,7 +233,6 @@ func _resolve_generated_map_route_domain_candidate(source_node_id: String) -> Di
 			"route_gate": {"formal_source": "legacy", "candidate_available": false, "candidate_count": 0, "writes_formal_flow": false},
 			"fallback_policy": "legacy",
 		}
-	var candidate: Dictionary = adapter.build_generated_map_route_candidate(source_node_id)
 	var battle_slot: Dictionary = candidate.get("battle_slot", {}) if candidate.get("battle_slot", {}) is Dictionary else {}
 	var operation_node: Dictionary = candidate.get("operation_node", {}) if candidate.get("operation_node", {}) is Dictionary else {}
 	var narrative: Dictionary = candidate.get("narrative", {}) if candidate.get("narrative", {}) is Dictionary else {}
