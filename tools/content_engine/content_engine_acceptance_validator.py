@@ -64,6 +64,8 @@ REQUIRED_CHECK_IDS = {
     "generated_minimal_playable_round_validator",
     "generated_playable_loop_probe",
     "generated_playable_loop_validator",
+    "generated_player_visible_entry_probe",
+    "generated_player_visible_entry_validator",
     "generated_battle_runtime_loadout_probe",
     "generated_battle_runtime_loadout_validator",
     "generated_map_route_runtime_flow_probe",

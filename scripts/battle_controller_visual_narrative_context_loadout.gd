@@ -9,6 +9,7 @@ const GeneratedPlayerNodeSelectionAdapter := preload("res://scripts/generated_pl
 const GeneratedNodeBattleEntryAdapter := preload("res://scripts/generated_node_battle_entry_adapter.gd")
 const GeneratedNodeBattleStartAdapter := preload("res://scripts/generated_node_battle_start_adapter.gd")
 const GeneratedPlayableBattleEntryAdapter := preload("res://scripts/generated_playable_battle_entry_adapter.gd")
+const GeneratedContentPlayerVisibleDebugPanel := preload("res://scripts/generated_content_player_visible_debug_panel.gd")
 
 func _story_battle_for_encounter(encounter_id: String) -> Dictionary:
 	var catalog: Dictionary = _story_loader_card_catalog()
@@ -184,6 +185,17 @@ func _resolve_battle_loadout() -> Dictionary:
 	var generated_reward_plan_id := str(generated_battle_context.get("generated_reward_plan_id", ""))
 	var generated_narrative_keys: Array = generated_battle_context.get("generated_narrative_keys", []) if generated_battle_context.get("generated_narrative_keys", []) is Array else []
 	var generated_route_gates: Array = generated_battle_context.get("generated_route_gates", []) if generated_battle_context.get("generated_route_gates", []) is Array else []
+	var generated_player_visible_status := GeneratedContentPlayerVisibleDebugPanel.new().build_visible_status_payload({
+		"selected_generated_node_id": selected_generated_node_id,
+		"source_node_id": source_node_id,
+		"generated_enemy_deck_id": generated_enemy_deck_id,
+		"generated_card_pool_count": generated_card_pool_count,
+		"generated_reward_plan_id": generated_reward_plan_id,
+		"generated_narrative_keys": generated_narrative_keys,
+		"generated_route_gates": generated_route_gates,
+		"generated_playable_battle_entry": generated_playable_battle_entry,
+	})
+	var generated_player_visible_entry_available := bool(generated_player_visible_status.get("generated_content_enabled", false))
 	if bool(generated_domain.get("apply_enemy_deck", false)):
 		enemy_config["generated_enemy_deck_candidate"] = generated_domain.get("enemy_deck", {})
 		enemy_config["enemy_source"] = str(generated_domain.get("enemy_formal_source", enemy_source))
@@ -226,6 +238,8 @@ func _resolve_battle_loadout() -> Dictionary:
 		"generated_reward_plan_id": generated_reward_plan_id,
 		"generated_narrative_keys": generated_narrative_keys,
 		"generated_route_gates": generated_route_gates,
+		"generated_player_visible_status": generated_player_visible_status,
+		"generated_player_visible_entry_available": generated_player_visible_entry_available,
 		"settlement_mode": settlement_mode,
 		"debug_source": "NarrativeBattleContext + StoryBattleLoader + enemy_manifest + battle_scene_manifest"
 	}
