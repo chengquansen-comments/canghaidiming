@@ -8,6 +8,7 @@ const GeneratedNodeRouteFlowAdapter := preload("res://scripts/generated_node_rou
 const GeneratedPlayerNodeSelectionAdapter := preload("res://scripts/generated_player_node_selection_adapter.gd")
 const GeneratedNodeBattleEntryAdapter := preload("res://scripts/generated_node_battle_entry_adapter.gd")
 const GeneratedNodeBattleStartAdapter := preload("res://scripts/generated_node_battle_start_adapter.gd")
+const GeneratedPlayableBattleEntryAdapter := preload("res://scripts/generated_playable_battle_entry_adapter.gd")
 
 func _story_battle_for_encounter(encounter_id: String) -> Dictionary:
 	var catalog: Dictionary = _story_loader_card_catalog()
@@ -176,6 +177,13 @@ func _resolve_battle_loadout() -> Dictionary:
 	var generated_battle_start_payload := _resolve_generated_battle_start_payload(selected_generated_node_id, source_node_id)
 	var generated_battle_start_available := bool(generated_battle_start_payload.get("can_initialize_battle_context", false))
 	var generated_battle_start_source := str(generated_battle_start_payload.get("battle_start_source", "legacy"))
+	var generated_playable_battle_entry := _resolve_generated_playable_battle_entry(selected_generated_node_id, source_node_id)
+	var generated_battle_context := _resolve_generated_battle_context(generated_playable_battle_entry)
+	var generated_enemy_deck_id := str(generated_battle_context.get("generated_enemy_deck_id", ""))
+	var generated_card_pool_count := int(generated_battle_context.get("generated_card_pool_count", 0))
+	var generated_reward_plan_id := str(generated_battle_context.get("generated_reward_plan_id", ""))
+	var generated_narrative_keys: Array = generated_battle_context.get("generated_narrative_keys", []) if generated_battle_context.get("generated_narrative_keys", []) is Array else []
+	var generated_route_gates: Array = generated_battle_context.get("generated_route_gates", []) if generated_battle_context.get("generated_route_gates", []) is Array else []
 	if bool(generated_domain.get("apply_enemy_deck", false)):
 		enemy_config["generated_enemy_deck_candidate"] = generated_domain.get("enemy_deck", {})
 		enemy_config["enemy_source"] = str(generated_domain.get("enemy_formal_source", enemy_source))
@@ -211,6 +219,13 @@ func _resolve_battle_loadout() -> Dictionary:
 		"generated_battle_start_payload": generated_battle_start_payload,
 		"generated_battle_start_available": generated_battle_start_available,
 		"generated_battle_start_source": generated_battle_start_source,
+		"generated_playable_battle_entry": generated_playable_battle_entry,
+		"generated_battle_context": generated_battle_context,
+		"generated_enemy_deck_id": generated_enemy_deck_id,
+		"generated_card_pool_count": generated_card_pool_count,
+		"generated_reward_plan_id": generated_reward_plan_id,
+		"generated_narrative_keys": generated_narrative_keys,
+		"generated_route_gates": generated_route_gates,
 		"settlement_mode": settlement_mode,
 		"debug_source": "NarrativeBattleContext + StoryBattleLoader + enemy_manifest + battle_scene_manifest"
 	}
@@ -359,3 +374,16 @@ func _resolve_generated_battle_start_payload(selected_node_id: String, source_no
 	if bool(payload.get("can_initialize_battle_context", false)):
 		return payload
 	return adapter.get_legacy_battle_start_fallback(source_node_id)
+
+
+func _resolve_generated_playable_battle_entry(selected_node_id: String, source_node_id: String) -> Dictionary:
+	var adapter := GeneratedPlayableBattleEntryAdapter.new()
+	var entry: Dictionary = adapter.build_playable_battle_entry_from_node(selected_node_id)
+	if bool(entry.get("can_start_playable_battle", false)):
+		return entry
+	return adapter.get_legacy_playable_entry_fallback(source_node_id)
+
+
+func _resolve_generated_battle_context(entry: Dictionary) -> Dictionary:
+	var adapter := GeneratedPlayableBattleEntryAdapter.new()
+	return adapter.apply_generated_entry_to_battle_context(entry, {})
