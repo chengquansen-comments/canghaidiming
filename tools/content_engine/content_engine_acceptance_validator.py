@@ -34,6 +34,8 @@ REQUIRED_CHECK_IDS = {
     "full_content_runtime_bridge_contract_validator",
     "generated_content_runtime_bridge_probe",
     "generated_content_runtime_bridge_validator",
+    "generated_content_formal_enable_probe",
+    "generated_content_formal_enable_validator",
     "content_engine_regression_runner",
     "content_engine_regression_validator",
 }

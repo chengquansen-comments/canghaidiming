@@ -166,6 +166,8 @@ def main() -> int:
         ("full_content_runtime_bridge_contract_validator", "python3 tools/content_engine/full_content_runtime_bridge_contract_validator.py"),
         ("generated_content_runtime_bridge_probe", "godot --headless --path . --script tools/content_engine/generated_content_runtime_bridge_probe.gd"),
         ("generated_content_runtime_bridge_validator", "python3 tools/content_engine/generated_content_runtime_bridge_validator.py"),
+        ("generated_content_formal_enable_probe", "godot --headless --path . --script tools/content_engine/generated_content_formal_enable_probe.gd"),
+        ("generated_content_formal_enable_validator", "python3 tools/content_engine/generated_content_formal_enable_validator.py"),
         ("git_diff_check", "git diff --check"),
         ("godot_headless_quit", "godot --headless --path . --quit"),
         ("godot_headless_mainvisual", "godot --headless --path . --quit scenes/MainVisual.tscn"),

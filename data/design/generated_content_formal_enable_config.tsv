@@ -1,0 +1,2 @@
+battle_slot_id	whitelist_enabled	generated_content_enabled	rollback_policy	enabled_domains	notes
+prologue_01	true	true	legacy	battle_slot,enemy_deck,card_pool,reward,operation_node,narrative,route_gate	v2.3 whitelist formal enable skeleton，仅对白名单 prologue_01 生效。
