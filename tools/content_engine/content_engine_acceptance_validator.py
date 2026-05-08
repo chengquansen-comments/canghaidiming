@@ -28,6 +28,8 @@ REQUIRED_CHECK_IDS = {
     "full_package_candidate_path_validator",
     "full_package_whitelist_test_enable_probe",
     "full_package_whitelist_test_enable_validator",
+    "full_package_runtime_readiness_audit",
+    "full_package_runtime_readiness_validator",
     "content_engine_regression_runner",
     "content_engine_regression_validator",
 }

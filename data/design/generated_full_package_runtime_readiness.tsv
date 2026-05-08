@@ -1,0 +1,8 @@
+domain	preview_available	preview_count	candidate_path_verified	shadow_compare_verified	runtime_schema_ready	runtime_adapter_exists	legacy_fallback_available	formal_enable_ready	required_runtime_adapter	blocker_level	blockers	next_action	notes
+battle_slot	true	16	true	true	true	false	true	false	battle_slot_runtime_loader	high	缺 battle_slot 正式 runtime adapter 与流程挂接。	v2.1 实现 battle_slot runtime loader 与 legacy fallback 桥接。	本次仅 readiness audit，不导出 runtime，不改正式流程。
+enemy_deck	true	39	false	false	true	false	true	false	enemy_deck_runtime_loader	high	未证明 generated enemy_deck 可被正式战斗 enemy loader 使用。	v2.1 建立 enemy_deck runtime adapter 与 deck 绑定规则。	本次仅 readiness audit，不导出 runtime，不改正式流程。
+card_pool	true	72	true	true	true	false	true	false	card_pool_to_card_data_mapper	high	未证明可安全映射 CardData。	v2.1 增加 card_pool->CardData 只读映射与回退策略。	本次仅 readiness audit，不导出 runtime，不改正式流程。
+reward	true	45	true	true	true	true	true	false	battle_reward_runtime_adapter	medium	shadow/candidate 已通，但正式 enable 仍未放开。	v2.1 在白名单下做受控正式接入评估。	本次仅 readiness audit，不导出 runtime，不改正式流程。
+operation_node	true	10	true	true	true	false	true	false	operation_node_runtime_loader	high	缺 operation node 正式流程挂接。	v2.1 设计 operation node adapter 与 legacy fallback。	本次仅 readiness audit，不导出 runtime，不改正式流程。
+narrative	true	28	true	true	true	false	true	false	narrative_runtime_loader	high	当前仅 key/hook，缺正文策略与正式挂接。	v2.1 定义 narrative runtime 字段与安全挂接边界。	本次仅 readiness audit，不导出 runtime，不改正式流程。
+route_gate	true	9	true	true	true	false	true	false	route_gate_runtime_loader	high	缺 route gate 正式路线逻辑挂接。	v2.1 增加 route gate adapter 与 fallback。	本次仅 readiness audit，不导出 runtime，不改正式流程。
