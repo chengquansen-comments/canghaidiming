@@ -16,6 +16,7 @@
 
 ## content packs
 - weapon_followup_v0_1_formal_sequence_pack_001 | mode=profile_root | active=true | export=true
+- snapshot_pack_id_required | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_ai_candidate_pack_001 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_ai_candidate_pack_probe_001 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_ai_candidate_pack_probe_002 | mode=profile_pack_dir | active=false | export=true

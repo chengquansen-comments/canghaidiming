@@ -1,0 +1,75 @@
+{
+  "mechanic_profile_id": "weapon_followup_v0_1",
+  "ai_pack_id": "weapon_followup_ai_candidate_pack_001",
+  "built_from_llm_candidates": true,
+  "deterministic_fill_used": true,
+  "accepted_candidate_count": 4,
+  "rejected_candidate_count": 3,
+  "candidate_import_report_path": "data/aigc_battle/generated/ai_production/import_reports/weapon_followup_v0_1__candidate_import_report.json",
+  "candidate_diff_report_path": "data/aigc_battle/generated/ai_production/diff/weapon_followup_v0_1__candidate_diff.json",
+  "adjusted_or_flagged_encounters": [
+    {
+      "formal_encounter_id": "enc_beach_ambush",
+      "reason": "deterministic_fill_partial_cards"
+    },
+    {
+      "formal_encounter_id": "enc_fishing_village_embers",
+      "reason": "deterministic_fill_deck"
+    },
+    {
+      "formal_encounter_id": "enc_transport_officer",
+      "reason": "deterministic_fill_deck"
+    },
+    {
+      "formal_encounter_id": "enc_mutiny_camp",
+      "reason": "deterministic_fill_deck"
+    },
+    {
+      "formal_encounter_id": "enc_wakou_boss",
+      "reason": "deterministic_fill_deck"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_spear_trial",
+      "reason": "deterministic_fill_deck"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_blade_trial",
+      "reason": "deterministic_fill_deck"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_final_duel",
+      "reason": "deterministic_fill_deck"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_gu_chengyue",
+      "reason": "deterministic_fill_deck"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_shen_zhaoye",
+      "reason": "deterministic_fill_deck"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_qi_heng",
+      "reason": "deterministic_fill_deck"
+    },
+    {
+      "formal_encounter_id": "enc_ch2_reed_ambush",
+      "reason": "deterministic_fill_deck"
+    },
+    {
+      "formal_encounter_id": "enc_ch3_escort_clash",
+      "reason": "deterministic_fill_deck"
+    },
+    {
+      "formal_encounter_id": "enc_ch4_tide_bandits",
+      "reason": "deterministic_fill_deck"
+    },
+    {
+      "formal_encounter_id": "enc_boss_ext_wakou_leader",
+      "reason": "deterministic_fill_deck"
+    }
+  ],
+  "ai_pack_validated": true,
+  "ai_pack_exported": true,
+  "ai_pack_ready_for_review": true
+}

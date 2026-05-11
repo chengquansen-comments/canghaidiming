@@ -1,0 +1,26 @@
+{
+	"battle_loadout_runtime_primitives": [
+		"weapon_followup"
+	],
+	"battle_loadout_weapon_followup_enabled": true,
+	"battle_shows_followup_effect": true,
+	"fallback_loadout_count": 0,
+	"followup_cards_generated": true,
+	"followup_chain_valid": true,
+	"followup_decks_generated": true,
+	"generated_sequence_uses_weapon_followup": true,
+	"godot_loader_reads_followup": true,
+	"last_weapon_followup_applied_fields": [
+		"bonus_momentum"
+	],
+	"last_weapon_followup_bonus_applied": {
+		"bonus_momentum": 2
+	},
+	"last_weapon_followup_enabled": true,
+	"last_weapon_followup_triggered": true,
+	"manifest_exports_followup": true,
+	"probe_pass": true,
+	"profile_declares_weapon_followup": true,
+	"runtime_turn_count": 2,
+	"weapon_followup_trigger_count": 2
+}

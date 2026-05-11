@@ -1,0 +1,51 @@
+{
+  "type": "object",
+  "required": [
+    "candidate_id",
+    "candidate_type",
+    "mechanic_profile_id",
+    "target_sequence_id",
+    "source",
+    "content"
+  ],
+  "properties": {
+    "candidate_id": {
+      "type": "string"
+    },
+    "candidate_type": {
+      "type": "string",
+      "enum": [
+        "card_candidate",
+        "deck_candidate",
+        "reward_candidate",
+        "battle_slot_candidate"
+      ]
+    },
+    "mechanic_profile_id": {
+      "type": "string"
+    },
+    "target_sequence_id": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "content": {
+      "type": "object",
+      "properties": {
+        "followup_group": {
+          "type": "string"
+        },
+        "followup_trigger": {
+          "type": "string"
+        },
+        "followup_bonus": {
+          "type": "object"
+        },
+        "followup_chain_role": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

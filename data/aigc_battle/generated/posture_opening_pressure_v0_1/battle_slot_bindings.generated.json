@@ -22,6 +22,13 @@
       "enemy_start_block_bonus": 2,
       "source": "runtime_primitive_policy"
     },
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 1,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_beach_ambush",
@@ -52,6 +59,13 @@
       "enemy_start_block_bonus": 2,
       "source": "runtime_primitive_policy"
     },
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 1,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_fishing_village_embers",
@@ -82,6 +96,13 @@
       "enemy_start_block_bonus": 2,
       "source": "runtime_primitive_policy"
     },
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 1,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_transport_officer",
@@ -112,6 +133,13 @@
       "enemy_start_block_bonus": 2,
       "source": "runtime_primitive_policy"
     },
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 1,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_mutiny_camp",
@@ -142,6 +170,13 @@
       "enemy_start_block_bonus": 8,
       "source": "runtime_primitive_policy"
     },
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 4,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_wakou_boss",
@@ -172,6 +207,13 @@
       "enemy_start_block_bonus": 4,
       "source": "runtime_primitive_policy"
     },
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 2,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_wuke_spear_trial",
@@ -202,6 +244,13 @@
       "enemy_start_block_bonus": 4,
       "source": "runtime_primitive_policy"
     },
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 2,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_wuke_blade_trial",
@@ -232,6 +281,13 @@
       "enemy_start_block_bonus": 8,
       "source": "runtime_primitive_policy"
     },
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 4,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_wuke_final_duel",
@@ -262,6 +318,13 @@
       "enemy_start_block_bonus": 4,
       "source": "runtime_primitive_policy"
     },
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 2,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_wuke_gu_chengyue",
@@ -292,6 +355,13 @@
       "enemy_start_block_bonus": 4,
       "source": "runtime_primitive_policy"
     },
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 2,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_wuke_shen_zhaoye",
@@ -322,6 +392,13 @@
       "enemy_start_block_bonus": 6,
       "source": "runtime_primitive_policy"
     },
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 3,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_wuke_qi_heng",
@@ -352,6 +429,13 @@
       "enemy_start_block_bonus": 6,
       "source": "runtime_primitive_policy"
     },
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 3,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_ch2_reed_ambush",
@@ -382,6 +466,13 @@
       "enemy_start_block_bonus": 6,
       "source": "runtime_primitive_policy"
     },
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 3,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_ch3_escort_clash",
@@ -412,6 +503,13 @@
       "enemy_start_block_bonus": 6,
       "source": "runtime_primitive_policy"
     },
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 3,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_ch4_tide_bandits",
@@ -442,6 +540,13 @@
       "enemy_start_block_bonus": 8,
       "source": "runtime_primitive_policy"
     },
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 4,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_boss_ext_wakou_leader",

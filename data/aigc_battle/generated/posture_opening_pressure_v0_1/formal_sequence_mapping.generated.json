@@ -18,7 +18,10 @@
     "reward_tier": "basic",
     "runtime_primitives": [
       "opening_pressure"
-    ]
+    ],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -39,7 +42,10 @@
     "reward_tier": "basic",
     "runtime_primitives": [
       "opening_pressure"
-    ]
+    ],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -60,7 +66,10 @@
     "reward_tier": "basic",
     "runtime_primitives": [
       "opening_pressure"
-    ]
+    ],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -81,7 +90,10 @@
     "reward_tier": "basic",
     "runtime_primitives": [
       "opening_pressure"
-    ]
+    ],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -102,7 +114,10 @@
     "reward_tier": "boss",
     "runtime_primitives": [
       "opening_pressure"
-    ]
+    ],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -123,7 +138,10 @@
     "reward_tier": "standard",
     "runtime_primitives": [
       "opening_pressure"
-    ]
+    ],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -144,7 +162,10 @@
     "reward_tier": "standard",
     "runtime_primitives": [
       "opening_pressure"
-    ]
+    ],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -165,7 +186,10 @@
     "reward_tier": "boss",
     "runtime_primitives": [
       "opening_pressure"
-    ]
+    ],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -186,7 +210,10 @@
     "reward_tier": "standard",
     "runtime_primitives": [
       "opening_pressure"
-    ]
+    ],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -207,7 +234,10 @@
     "reward_tier": "standard",
     "runtime_primitives": [
       "opening_pressure"
-    ]
+    ],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -228,7 +258,10 @@
     "reward_tier": "advanced",
     "runtime_primitives": [
       "opening_pressure"
-    ]
+    ],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -249,7 +282,10 @@
     "reward_tier": "advanced",
     "runtime_primitives": [
       "opening_pressure"
-    ]
+    ],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -270,7 +306,10 @@
     "reward_tier": "advanced",
     "runtime_primitives": [
       "opening_pressure"
-    ]
+    ],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -291,7 +330,10 @@
     "reward_tier": "advanced",
     "runtime_primitives": [
       "opening_pressure"
-    ]
+    ],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -312,6 +354,9 @@
     "reward_tier": "boss",
     "runtime_primitives": [
       "opening_pressure"
-    ]
+    ],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   }
 ]

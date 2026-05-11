@@ -1,0 +1,9 @@
+{
+  "source_profile_id": "weapon_followup_v0_1",
+  "source_content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+  "snapshot_content_pack_id": "snapshot_pack_id_required",
+  "snapshot_dir": "data/aigc_battle/generated/weapon_followup_v0_1/packs/snapshot_pack_id_required",
+  "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/snapshot_pack_id_required/runtime_manifest.json",
+  "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/snapshot_pack_id_required/validation_report.json",
+  "snapshot_ready": true
+}

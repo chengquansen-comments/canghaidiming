@@ -10,6 +10,8 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	super._process(_delta)
+	if NarrativeBattleContext.has_request() and not battle_loadout_applied:
+		_load_narrative_battle_once()
 	_update_battle_result_debug()
 
 func _auto_start_narrative_battle_if_needed() -> void:
@@ -181,4 +183,3 @@ func _try_recommended_role_entry(role_id: String) -> bool:
 		_mark_battle_loadout_needs_apply()
 		_load_narrative_battle_once()
 	return called
-

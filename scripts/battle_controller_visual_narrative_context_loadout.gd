@@ -39,6 +39,25 @@ var last_weapon_followup_card_id := ""
 var last_weapon_followup_group := ""
 var last_weapon_followup_trigger := ""
 var last_weapon_followup_error := ""
+var last_clue_pressure_enabled := false
+var last_clue_pressure_applied := false
+var last_clue_pressure_trigger_count := 0
+var last_clue_pressure_tags: Array = []
+var last_clue_pressure_effect := ""
+var last_clue_pressure_value := 0
+var last_clue_pressure_converted_effect := ""
+var last_clue_pressure_error := ""
+var last_clue_pressure_trigger_timing := ""
+var last_martial_realm_7_enabled := false
+var last_player_wujing_cap := 0
+var last_max_required_wujing := 0
+var last_max_closing_form_tier := 0
+var last_dual_weapon_enabled := false
+var last_weapon_loadout: Array = []
+var last_primary_weapon_style := ""
+var last_secondary_weapon_style := ""
+var last_dual_weapon_synergy_count := 0
+var last_martial_realm_error := ""
 var _runtime_generated_card_meta := {}
 var _runtime_last_card_by_side := {}
 var _runtime_turn_count := 0
@@ -96,6 +115,25 @@ func _reset_last_loadout_resolution() -> void:
 	last_weapon_followup_group = ""
 	last_weapon_followup_trigger = ""
 	last_weapon_followup_error = ""
+	last_clue_pressure_enabled = false
+	last_clue_pressure_applied = false
+	last_clue_pressure_trigger_count = 0
+	last_clue_pressure_tags.clear()
+	last_clue_pressure_effect = ""
+	last_clue_pressure_value = 0
+	last_clue_pressure_converted_effect = ""
+	last_clue_pressure_error = ""
+	last_clue_pressure_trigger_timing = ""
+	last_martial_realm_7_enabled = false
+	last_player_wujing_cap = 0
+	last_max_required_wujing = 0
+	last_max_closing_form_tier = 0
+	last_dual_weapon_enabled = false
+	last_weapon_loadout.clear()
+	last_primary_weapon_style = ""
+	last_secondary_weapon_style = ""
+	last_dual_weapon_synergy_count = 0
+	last_martial_realm_error = ""
 	_runtime_generated_card_meta = {}
 	_runtime_last_card_by_side = {}
 	_runtime_turn_count = 0
@@ -332,11 +370,26 @@ func _resolve_battle_loadout() -> Dictionary:
 			"runtime_primitives": generated_loadout.get("runtime_primitives", []) if not generated_loadout.is_empty() else [],
 			"cards": generated_loadout.get("cards", []) if not generated_loadout.is_empty() else [],
 			"weapon_followup": generated_loadout.get("weapon_followup", {}) if not generated_loadout.is_empty() else {},
+			"clue_pressure": generated_loadout.get("clue_pressure", {}) if not generated_loadout.is_empty() else {},
 			"followup_chain_count": int(generated_loadout.get("followup_chain_count", 0)) if not generated_loadout.is_empty() else 0,
 			"followup_card_count": int(generated_loadout.get("followup_card_count", 0)) if not generated_loadout.is_empty() else 0,
 			"followup_density": float(generated_loadout.get("followup_density", 0.0)) if not generated_loadout.is_empty() else 0.0,
 			"followup_groups": generated_loadout.get("followup_groups", []) if not generated_loadout.is_empty() else [],
 			"opening_pressure": generated_loadout.get("opening_pressure", {}) if not generated_loadout.is_empty() else {},
+			"player_wujing_cap": int(generated_loadout.get("player_wujing_cap", 0)) if not generated_loadout.is_empty() else 0,
+			"max_enemy_wujing": int(generated_loadout.get("max_enemy_wujing", 0)) if not generated_loadout.is_empty() else 0,
+			"weapon_loadout": generated_loadout.get("weapon_loadout", []) if not generated_loadout.is_empty() else [],
+			"dual_weapon_enabled": bool(generated_loadout.get("dual_weapon_enabled", false)) if not generated_loadout.is_empty() else false,
+			"primary_weapon_style": str(generated_loadout.get("primary_weapon_style", "")) if not generated_loadout.is_empty() else "",
+			"secondary_weapon_style": str(generated_loadout.get("secondary_weapon_style", "")) if not generated_loadout.is_empty() else "",
+			"primary_weapon_ratio": float(generated_loadout.get("primary_weapon_ratio", 0.0)) if not generated_loadout.is_empty() else 0.0,
+			"secondary_weapon_ratio": float(generated_loadout.get("secondary_weapon_ratio", 0.0)) if not generated_loadout.is_empty() else 0.0,
+			"generic_ratio": float(generated_loadout.get("generic_ratio", 0.0)) if not generated_loadout.is_empty() else 0.0,
+			"max_required_wujing": int(generated_loadout.get("max_required_wujing", 0)) if not generated_loadout.is_empty() else 0,
+			"max_closing_form_tier": int(generated_loadout.get("max_closing_form_tier", 0)) if not generated_loadout.is_empty() else 0,
+			"dual_weapon_synergy_count": int(generated_loadout.get("dual_weapon_synergy_count", 0)) if not generated_loadout.is_empty() else 0,
+			"martial_realm_stage": str(generated_loadout.get("martial_realm_stage", "")) if not generated_loadout.is_empty() else "",
+			"realm_pressure_level": str(generated_loadout.get("realm_pressure_level", "")) if not generated_loadout.is_empty() else "",
 			"settlement_mode": settlement_mode,
 			"debug_source": "NarrativeBattleContext + StoryBattleLoader + enemy_manifest + battle_scene_manifest + active_manifest"
 		}

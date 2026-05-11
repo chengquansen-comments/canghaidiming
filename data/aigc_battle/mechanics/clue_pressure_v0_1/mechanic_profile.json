@@ -1,0 +1,89 @@
+{
+  "mechanic_profile_id": "clue_pressure_v0_1",
+  "display_name": "线索破防机制",
+  "version": "0.1.0",
+  "runtime_support_level": "godot_formal_sequence_v1",
+  "resources": [
+    "hp",
+    "posture",
+    "block"
+  ],
+  "card_types": [
+    "attack",
+    "defense",
+    "skill"
+  ],
+  "weapon_styles": [
+    "generic",
+    "spearman",
+    "blademaster"
+  ],
+  "allowed_design_effects": [
+    "damage",
+    "gain_block",
+    "gain_momentum",
+    "break_momentum"
+  ],
+  "allowed_runtime_effects": [
+    "damage",
+    "gain_block",
+    "gain_momentum",
+    "break_momentum"
+  ],
+  "card_constraints": {
+    "min_cost": 0,
+    "max_cost": 2,
+    "min_power_score": 2,
+    "max_power_score": 9
+  },
+  "deck_constraints": {
+    "min_deck_size": 6,
+    "max_deck_size": 8,
+    "max_same_card": 2
+  },
+  "power_model": {
+    "damage_weight": 1.0,
+    "block_weight": 1.0,
+    "gain_momentum_weight": 0.8,
+    "break_momentum_weight": 0.8,
+    "difficulty_tiers": [
+      "normal",
+      "elite",
+      "boss"
+    ]
+  },
+  "runtime_primitives": [
+    "clue_pressure"
+  ],
+  "runtime_primitive_constraints": {
+    "clue_pressure": {
+      "max_pressure_reduction_per_battle": 4,
+      "allowed_clue_tags": [
+        "old_case",
+        "firearm_trace",
+        "military_order",
+        "coastal_smuggling",
+        "witness_statement",
+        "sealed_document"
+      ],
+      "allowed_pressure_effects": [
+        "reduce_enemy_momentum",
+        "reduce_enemy_guard",
+        "expose_enemy_weakness",
+        "reduce_next_enemy_attack"
+      ],
+      "allowed_trigger_timings": [
+        "battle_start",
+        "first_player_action",
+        "enemy_pressure_phase"
+      ],
+      "max_clue_pressure_triggers_per_battle": 2
+    }
+  },
+  "card_eligibility_rules": {
+    "technique_requires_player_realm": true,
+    "forbid_required_wujing_above_player_cap": true,
+    "forbid_closing_form_above_player_cap": true,
+    "missing_realm_metadata_policy": "fail"
+  }
+}

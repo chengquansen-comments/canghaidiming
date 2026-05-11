@@ -1,0 +1,14 @@
+- release_gate_ready: true
+- review_status_ready: true
+- pack_freeze_ready: true
+- release_candidate_ready: true
+- release_manifest_exported: true
+- release_report_ready: true
+- release_candidate_activation_ready: true
+- rollback_ready: true
+- archived_pack_readonly: true
+- release_candidate_compare_ready: true
+- suggested_git_commands_ready: true
+- active_profile_not_corrupted: true
+- probe_pass: true
+- ai_pack_id: weapon_followup_ai_candidate_pack_probe_002

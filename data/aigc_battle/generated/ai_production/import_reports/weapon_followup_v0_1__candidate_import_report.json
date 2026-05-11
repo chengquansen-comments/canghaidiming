@@ -1,0 +1,28 @@
+{
+  "mechanic_profile_id": "weapon_followup_v0_1",
+  "input_candidate_count": 7,
+  "accepted_candidate_count": 4,
+  "rejected_candidate_count": 3,
+  "accepted_by_type": {
+    "card_candidate": 1,
+    "deck_candidate": 1,
+    "reward_candidate": 1,
+    "battle_slot_candidate": 1
+  },
+  "rejected_by_type": {
+    "card_candidate": 3
+  },
+  "rejection_reasons": {
+    "unsupported_runtime_effect": 1,
+    "invalid_required_wujing": 1,
+    "invalid_followup_trigger": 1,
+    "followup_bonus_momentum_out_of_range": 1
+  },
+  "unsupported_effect_count": 1,
+  "realm_invalid_count": 1,
+  "followup_invalid_count": 2,
+  "deck_ref_invalid_count": 0,
+  "ready_for_ai_pack_build": true,
+  "accepted_candidates_path": "data/aigc_battle/llm_candidates/weapon_followup_v0_1/accepted_candidates.jsonl",
+  "rejected_candidates_path": "data/aigc_battle/llm_candidates/weapon_followup_v0_1/rejected_candidates.jsonl"
+}

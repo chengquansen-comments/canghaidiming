@@ -16,7 +16,7 @@ RUNTIME_EFFECT_SUPPORT = {
     "godot_formal_sequence_v1": {"damage", "gain_block", "gain_momentum", "break_momentum"},
 }
 RUNTIME_PRIMITIVE_SUPPORT = {
-    "godot_formal_sequence_v1": {"opening_pressure"},
+    "godot_formal_sequence_v1": {"opening_pressure", "weapon_followup", "clue_pressure", "martial_realm_7", "dual_weapon"},
 }
 
 
@@ -43,7 +43,7 @@ def main(argv: list[str]) -> int:
     errors: list[str] = []
     warnings: list[str] = []
     profile_id_expected = str(mechanic_profile["mechanic_profile_id"])
-    content_pack_id_expected = str(content_recipe["content_pack_id"])
+    content_pack_id_expected = str(content_pack_summary.get("content_pack_id", content_recipe["content_pack_id"]))
     allowed_runtime_effects = set(str(item) for item in mechanic_profile.get("allowed_runtime_effects", []))
     allowed_design_effects = set(str(item) for item in mechanic_profile.get("allowed_design_effects", []))
     runtime_support_level = str(mechanic_profile.get("runtime_support_level", ""))
@@ -84,9 +84,58 @@ def main(argv: list[str]) -> int:
     unsupported_runtime_effect_whitelist = sorted(allowed_runtime_effects - runtime_supported_effects)
     runtime_primitives_supported = all(item in runtime_supported_primitives for item in declared_runtime_primitives)
     opening_pressure_declared = "opening_pressure" in declared_runtime_primitives
+    weapon_followup_declared = "weapon_followup" in declared_runtime_primitives
+    clue_pressure_declared = "clue_pressure" in declared_runtime_primitives
+    martial_realm_7_declared = "martial_realm_7" in declared_runtime_primitives
+    dual_weapon_declared = "dual_weapon" in declared_runtime_primitives
     opening_pressure_slots_count = 0
     opening_pressure_all_slots_covered = True
     opening_pressure_values_in_range = True
+    weapon_followup_cards_present = not weapon_followup_declared
+    weapon_followup_decks_present = not weapon_followup_declared
+    weapon_followup_all_slots_covered = True
+    weapon_followup_chain_valid = True
+    weapon_followup_values_in_range = True
+    weapon_followup_curve_ready = bool(balance_summary.get("weapon_followup_curve_ready", not weapon_followup_declared))
+    weapon_followup_runtime_export_allowed = not weapon_followup_declared
+    weapon_followup_playable = not weapon_followup_declared
+    clue_pressure_all_slots_covered = True
+    clue_pressure_tags_valid = True
+    clue_pressure_effects_valid = True
+    clue_pressure_values_in_range = True
+    clue_pressure_curve_ready = not clue_pressure_declared
+    clue_pressure_runtime_export_allowed = not clue_pressure_declared
+    max_wujing_is_7 = (not martial_realm_7_declared) or int(mechanic_profile.get("max_wujing", 0)) == 7
+    max_closing_form_tier_is_7 = (not martial_realm_7_declared) or int(mechanic_profile.get("max_closing_form_tier", 0)) == 7
+    all_cards_have_required_wujing = True
+    all_cards_have_closing_form_tier = True
+    all_cards_required_wujing_in_range = True
+    all_cards_closing_form_tier_in_range = True
+    all_slots_have_player_wujing_cap = True
+    all_decks_have_weapon_loadout = True
+    dual_weapon_slots_present = not dual_weapon_declared
+    dual_weapon_ratio_valid = True
+    boss_slots_dual_weapon_enabled = True
+    boss_slots_wujing_cap_7 = True
+    no_card_closing_form_above_player_wujing_in_deck = True
+    seven_realm_cards_only_in_wujing_7_slots = True
+    weapon_loadout_card_compatibility_valid = True
+    dual_weapon_generic_ratio_valid = True
+    martial_realm_curve_ready = not martial_realm_7_declared
+    dual_weapon_runtime_export_allowed = not dual_weapon_declared
+    martial_realm_7_playable = not martial_realm_7_declared
+    dual_weapon_playable = not dual_weapon_declared
+    dual_weapon_slot_count = 0
+    dual_weapon_deck_count = 0
+    seven_realm_card_count = 0
+    invalid_weapon_loadout_card_count = 0
+    clue_pressure_slot_count = 0
+    clue_pressure_tier_values: dict[str, list[int]] = {"early": [], "mid": [], "late": [], "boss": []}
+    martial_cap_by_tier: dict[str, list[int]] = {"early": [], "mid": [], "late": [], "boss": []}
+    allowed_clue_tags = set(str(item) for item in runtime_primitive_constraints.get("clue_pressure", {}).get("allowed_clue_tags", []))
+    allowed_clue_effects = set(str(item) for item in runtime_primitive_constraints.get("clue_pressure", {}).get("allowed_pressure_effects", []))
+    allowed_clue_timings = set(str(item) for item in runtime_primitive_constraints.get("clue_pressure", {}).get("allowed_trigger_timings", []))
+    allowed_weapon_loadouts = {tuple(str(part) for part in item) for item in mechanic_profile.get("allowed_weapon_loadouts", []) if isinstance(item, list)}
     card_eligibility_rules_declared = bool(eligibility_rules)
     player_wujing_cap_present = True
     card_realm_metadata_present = True
@@ -136,6 +185,43 @@ def main(argv: list[str]) -> int:
         if is_realm_gated_card(card):
             if "required_wujing" not in card or "closing_form_tier" not in card:
                 card_realm_metadata_present = False
+        if martial_realm_7_declared:
+            if "required_wujing" not in card:
+                all_cards_have_required_wujing = False
+                errors.append(f"card {card_id} missing required_wujing")
+            if "closing_form_tier" not in card:
+                all_cards_have_closing_form_tier = False
+                errors.append(f"card {card_id} missing closing_form_tier")
+            required_wujing = int(card.get("required_wujing", 0))
+            closing_form_tier = int(card.get("closing_form_tier", 0))
+            if not 1 <= required_wujing <= 7:
+                all_cards_required_wujing_in_range = False
+                errors.append(f"card {card_id} required_wujing out of range: {required_wujing}")
+            if not 1 <= closing_form_tier <= 7:
+                all_cards_closing_form_tier_in_range = False
+                errors.append(f"card {card_id} closing_form_tier out of range: {closing_form_tier}")
+            if required_wujing >= 7 or closing_form_tier >= 7:
+                seven_realm_card_count += 1
+        if weapon_followup_declared and str(card.get("followup_group", "")).strip():
+            weapon_followup_cards_present = True
+            trigger = str(card.get("followup_trigger", ""))
+            if trigger and trigger not in set(str(item) for item in runtime_primitive_constraints.get("weapon_followup", {}).get("allowed_triggers", [])):
+                errors.append(f"card {card_id} has invalid followup_trigger: {trigger}")
+                weapon_followup_values_in_range = False
+            bonus = card.get("followup_bonus", {})
+            if not isinstance(bonus, dict):
+                errors.append(f"card {card_id} followup_bonus is invalid")
+                weapon_followup_values_in_range = False
+            else:
+                if int(bonus.get("bonus_damage", 0)) > int(runtime_primitive_constraints.get("weapon_followup", {}).get("max_bonus_damage", 0)):
+                    errors.append(f"card {card_id} bonus_damage exceeds constraint")
+                    weapon_followup_values_in_range = False
+                if int(bonus.get("bonus_momentum", 0)) > int(runtime_primitive_constraints.get("weapon_followup", {}).get("max_bonus_momentum", 0)):
+                    errors.append(f"card {card_id} bonus_momentum exceeds constraint")
+                    weapon_followup_values_in_range = False
+                if int(bonus.get("bonus_block", 0)) > int(runtime_primitive_constraints.get("weapon_followup", {}).get("max_bonus_block", 0)):
+                    errors.append(f"card {card_id} bonus_block exceeds constraint")
+                    weapon_followup_values_in_range = False
 
     min_deck_size = int(deck_constraints.get("min_deck_size", 0))
     max_deck_size = int(deck_constraints.get("max_deck_size", 999))
@@ -162,6 +248,64 @@ def main(argv: list[str]) -> int:
             all_decks_within_power_range = False
         if not bool(deck.get("power_range_pass", False)):
             all_decks_within_power_range = False
+        if martial_realm_7_declared:
+            if "weapon_loadout" not in deck or not list(deck.get("weapon_loadout", [])):
+                all_decks_have_weapon_loadout = False
+                errors.append(f"deck {deck_id} missing weapon_loadout")
+            if bool(deck.get("dual_weapon_enabled", False)):
+                dual_weapon_deck_count += 1
+            weapon_loadout = tuple(str(item) for item in deck.get("weapon_loadout", []))
+            if dual_weapon_declared and allowed_weapon_loadouts and weapon_loadout not in allowed_weapon_loadouts:
+                weapon_loadout_card_compatibility_valid = False
+                errors.append(f"deck {deck_id} has invalid weapon_loadout: {list(weapon_loadout)}")
+            primary_style = str(deck.get("primary_weapon_style", ""))
+            secondary_style = str(deck.get("secondary_weapon_style", ""))
+            generic_ratio = float(deck.get("generic_ratio", 0.0))
+            if dual_weapon_declared and generic_ratio > float(runtime_primitive_constraints.get("dual_weapon", {}).get("max_generic_ratio", 1.0)):
+                dual_weapon_generic_ratio_valid = False
+                errors.append(f"deck {deck_id} generic_ratio exceeds constraint: {generic_ratio}")
+            if bool(deck.get("dual_weapon_enabled", False)):
+                if float(deck.get("primary_weapon_ratio", 0.0)) < float(runtime_primitive_constraints.get("dual_weapon", {}).get("min_primary_weapon_ratio", 0.0)):
+                    dual_weapon_ratio_valid = False
+                    errors.append(f"deck {deck_id} primary_weapon_ratio below constraint")
+                if float(deck.get("secondary_weapon_ratio", 0.0)) < float(runtime_primitive_constraints.get("dual_weapon", {}).get("min_secondary_weapon_ratio", 0.0)):
+                    dual_weapon_ratio_valid = False
+                    errors.append(f"deck {deck_id} secondary_weapon_ratio below constraint")
+                dual_weapon_slots_present = True
+            for card_id in card_ids:
+                card = card_by_id.get(card_id, {})
+                style = str(card.get("weapon_style", ""))
+                if style == "generic":
+                    continue
+                if style not in weapon_loadout:
+                    invalid_weapon_loadout_card_count += 1
+                    weapon_loadout_card_compatibility_valid = False
+                    errors.append(f"deck {deck_id} card {card_id} incompatible with weapon_loadout")
+                if primary_style and style == primary_style:
+                    continue
+                if secondary_style and style == secondary_style:
+                    continue
+        if weapon_followup_declared:
+            followup_cards = [card_by_id.get(card_id, {}) for card_id in card_ids if bool(card_by_id.get(card_id, {}).get("followup_group"))]
+            if followup_cards:
+                weapon_followup_decks_present = True
+                roles = {str(card.get("followup_chain_role", "")) for card in followup_cards}
+                if not ({"opener", "standalone"} & roles):
+                    errors.append(f"deck {deck_id} followup chain missing opener/standalone")
+                    weapon_followup_chain_valid = False
+                if roles and roles.issubset({"linker", "finisher"}):
+                    errors.append(f"deck {deck_id} followup chain has no valid starting card")
+                    weapon_followup_chain_valid = False
+                if len([card for card in followup_cards if str(card.get("followup_trigger", "")) == "same_weapon_previous_card" and str(card.get("followup_chain_role", "")) in {"linker", "finisher"}]) > int(runtime_primitive_constraints.get("weapon_followup", {}).get("max_followup_links_per_deck", 999)):
+                    errors.append(f"deck {deck_id} followup links exceed constraint")
+                    weapon_followup_values_in_range = False
+                for card in followup_cards:
+                    trigger = str(card.get("followup_trigger", ""))
+                    if trigger == "same_weapon_previous_card":
+                        style = str(card.get("weapon_style", ""))
+                        if style and not any(str(card_by_id.get(other_id, {}).get("weapon_style", "")) == style and other_id != str(card.get("card_id", "")) for other_id in card_ids):
+                            errors.append(f"deck {deck_id} followup card {card.get('card_id', '')} lacks same-weapon predecessor")
+                            weapon_followup_chain_valid = False
 
     for slot in battle_slots:
         deck_id = str(slot.get("deck_id", ""))
@@ -176,7 +320,11 @@ def main(argv: list[str]) -> int:
                 errors.append(f"battle slot missing field: {field}")
                 if field == "player_wujing_cap":
                     player_wujing_cap_present = False
+                    all_slots_have_player_wujing_cap = False
         slot_runtime_primitives = [str(item) for item in slot.get("runtime_primitives", [])]
+        tier = str(slot.get("encounter_tier", ""))
+        if martial_realm_7_declared and player_wujing_cap is not None and tier in martial_cap_by_tier:
+            martial_cap_by_tier[tier].append(int(player_wujing_cap))
         if "opening_pressure" in slot_runtime_primitives:
             if not opening_pressure_declared:
                 errors.append("battle slot declares opening_pressure but mechanic profile does not")
@@ -200,6 +348,70 @@ def main(argv: list[str]) -> int:
         elif opening_pressure_declared:
             opening_pressure_all_slots_covered = False
             errors.append(f"battle slot {slot.get('battle_slot_id', '')} missing opening_pressure")
+        if "weapon_followup" in slot_runtime_primitives:
+            if not weapon_followup_declared:
+                errors.append("battle slot declares weapon_followup but mechanic profile does not")
+                weapon_followup_values_in_range = False
+            followup_payload = slot.get("weapon_followup", {})
+            if not isinstance(followup_payload, dict) or not bool(followup_payload.get("enabled", False)):
+                errors.append(f"battle slot {slot.get('battle_slot_id', '')} missing weapon_followup payload")
+                weapon_followup_all_slots_covered = False
+                weapon_followup_chain_valid = False
+            else:
+                weapon_followup_all_slots_covered = weapon_followup_all_slots_covered and True
+        elif weapon_followup_declared:
+            weapon_followup_all_slots_covered = False
+            errors.append(f"battle slot {slot.get('battle_slot_id', '')} missing weapon_followup")
+        if "clue_pressure" in slot_runtime_primitives:
+            clue_pressure_slot_count += 1
+            clue_pressure_payload = slot.get("clue_pressure", {})
+            if not clue_pressure_declared:
+                errors.append("battle slot declares clue_pressure but mechanic profile does not")
+                clue_pressure_effects_valid = False
+            if not isinstance(clue_pressure_payload, dict) or not bool(clue_pressure_payload.get("enabled", False)):
+                clue_pressure_all_slots_covered = False
+                clue_pressure_values_in_range = False
+                errors.append(f"battle slot {slot.get('battle_slot_id', '')} missing clue_pressure payload")
+            else:
+                clue_pressure_all_slots_covered = clue_pressure_all_slots_covered and True
+                tags = [str(item) for item in clue_pressure_payload.get("clue_tags", [])]
+                effect = str(clue_pressure_payload.get("pressure_effect", ""))
+                value = int(clue_pressure_payload.get("pressure_value", 0))
+                timing = str(clue_pressure_payload.get("trigger_timing", ""))
+                if allowed_clue_tags and any(tag not in allowed_clue_tags for tag in tags):
+                    clue_pressure_tags_valid = False
+                    errors.append(f"battle slot {slot.get('battle_slot_id', '')} has invalid clue tag")
+                else:
+                    clue_pressure_tags_valid = clue_pressure_tags_valid and True
+                if allowed_clue_effects and effect not in allowed_clue_effects:
+                    clue_pressure_effects_valid = False
+                    errors.append(f"battle slot {slot.get('battle_slot_id', '')} has invalid clue pressure effect")
+                else:
+                    clue_pressure_effects_valid = clue_pressure_effects_valid and True
+                if allowed_clue_timings and timing not in allowed_clue_timings:
+                    clue_pressure_values_in_range = False
+                    errors.append(f"battle slot {slot.get('battle_slot_id', '')} has invalid clue timing")
+                max_reduction = int(runtime_primitive_constraints.get("clue_pressure", {}).get("max_pressure_reduction_per_battle", 999))
+                if value < 0 or value > max_reduction:
+                    clue_pressure_values_in_range = False
+                    errors.append(f"battle slot {slot.get('battle_slot_id', '')} clue pressure value out of range: {value}")
+                if tier in clue_pressure_tier_values:
+                    clue_pressure_tier_values[tier].append(value)
+        elif clue_pressure_declared:
+            clue_pressure_all_slots_covered = False
+            clue_pressure_values_in_range = False
+            errors.append(f"battle slot {slot.get('battle_slot_id', '')} missing clue_pressure")
+        if martial_realm_7_declared:
+            if player_wujing_cap is None:
+                all_slots_have_player_wujing_cap = False
+            if bool(slot.get("dual_weapon_enabled", False)):
+                dual_weapon_slot_count += 1
+            if dual_weapon_declared and tier == "boss" and not bool(slot.get("dual_weapon_enabled", False)):
+                boss_slots_dual_weapon_enabled = False
+                errors.append(f"boss slot {slot.get('battle_slot_id', '')} is not dual_weapon_enabled")
+            if tier == "boss" and int(slot.get("player_wujing_cap", 0)) != 7:
+                boss_slots_wujing_cap_7 = False
+                errors.append(f"boss slot {slot.get('battle_slot_id', '')} player_wujing_cap is not 7")
         deck = deck_by_id.get(deck_id, {})
         for card_id in deck.get("card_ids", []):
             card = card_by_id.get(str(card_id), {})
@@ -221,12 +433,18 @@ def main(argv: list[str]) -> int:
             closing_form_tier = int(card.get("closing_form_tier", 1))
             if required_wujing > int(player_wujing_cap) or closing_form_tier > int(player_wujing_cap):
                 invalid_realm_card_count += 1
+                closing_form_invalid = closing_form_tier > int(player_wujing_cap)
                 reason = "required_wujing_above_player_cap" if required_wujing > int(player_wujing_cap) else "closing_form_tier_above_player_cap"
                 ref = build_realm_ref(slot, deck, card, reason)
                 invalid_realm_card_refs.append(ref)
                 errors.append(f"card {card.get('card_id', '')} exceeds player_wujing_cap in deck {deck_id}")
                 deck_card_realm_eligibility_valid = False
                 no_card_above_player_wujing_in_deck = False
+                if closing_form_invalid:
+                    no_card_closing_form_above_player_wujing_in_deck = False
+            if martial_realm_7_declared and int(card.get("required_wujing", 1)) >= 7 and int(player_wujing_cap) < 7:
+                seven_realm_cards_only_in_wujing_7_slots = False
+                errors.append(f"seven realm card {card.get('card_id', '')} appears below wujing 7 in deck {deck_id}")
 
     for reward in rewards:
         if not str(reward.get("reward_plan_id", "")).strip():
@@ -270,6 +488,27 @@ def main(argv: list[str]) -> int:
     valid_candidate_exportable = llm_candidate_import_detected and llm_candidate_import_ready
     llm_full_sequence_coverage_complete = llm_candidate_import_detected and full_sequence_coverage_complete
     opening_pressure_curve_ready = bool(balance_summary.get("opening_pressure_curve_ready", not opening_pressure_declared))
+    if weapon_followup_declared and not weapon_followup_curve_ready:
+        errors.append("weapon_followup curve not ready")
+    if clue_pressure_declared:
+        clue_pressure_curve_ready = (
+            clue_pressure_slot_count == total_count
+            and all(clue_pressure_tier_values[tier] for tier in ["early", "mid", "late", "boss"])
+            and average_ints(clue_pressure_tier_values["early"]) <= average_ints(clue_pressure_tier_values["mid"]) <= average_ints(clue_pressure_tier_values["late"]) <= average_ints(clue_pressure_tier_values["boss"])
+        )
+        if not clue_pressure_curve_ready:
+            errors.append("clue_pressure curve not ready")
+    if martial_realm_7_declared:
+        martial_realm_curve_ready = (
+            all(martial_cap_by_tier[tier] for tier in ["early", "mid", "late", "boss"])
+            and max(martial_cap_by_tier["early"]) <= min(martial_cap_by_tier["mid"]) <= min(martial_cap_by_tier["late"]) <= min(martial_cap_by_tier["boss"])
+        )
+        if not martial_realm_curve_ready:
+            errors.append("martial realm curve not ready")
+    if dual_weapon_declared:
+        dual_weapon_ratio_valid = dual_weapon_ratio_valid and dual_weapon_slot_count >= max(1, int(total_count * 0.3))
+        if not dual_weapon_ratio_valid:
+            errors.append("dual_weapon ratio is below minimum threshold")
     runtime_primitive_export_allowed = runtime_primitives_supported and (
         (not opening_pressure_declared)
         or (
@@ -279,6 +518,57 @@ def main(argv: list[str]) -> int:
             and opening_pressure_slots_count == total_count
         )
     )
+    if weapon_followup_declared:
+        weapon_followup_runtime_export_allowed = (
+            runtime_primitives_supported
+            and weapon_followup_cards_present
+            and weapon_followup_decks_present
+            and weapon_followup_all_slots_covered
+            and weapon_followup_chain_valid
+            and weapon_followup_values_in_range
+            and weapon_followup_curve_ready
+        )
+        runtime_primitive_export_allowed = runtime_primitive_export_allowed and weapon_followup_runtime_export_allowed
+        weapon_followup_playable = weapon_followup_runtime_export_allowed
+    if clue_pressure_declared:
+        clue_pressure_runtime_export_allowed = (
+            runtime_primitives_supported
+            and clue_pressure_all_slots_covered
+            and clue_pressure_tags_valid
+            and clue_pressure_effects_valid
+            and clue_pressure_values_in_range
+            and clue_pressure_curve_ready
+            and clue_pressure_slot_count == total_count
+        )
+        runtime_primitive_export_allowed = runtime_primitive_export_allowed and clue_pressure_runtime_export_allowed
+    if martial_realm_7_declared:
+        martial_realm_7_playable = (
+            runtime_primitives_supported
+            and max_wujing_is_7
+            and max_closing_form_tier_is_7
+            and all_cards_have_required_wujing
+            and all_cards_have_closing_form_tier
+            and all_cards_required_wujing_in_range
+            and all_cards_closing_form_tier_in_range
+            and all_slots_have_player_wujing_cap
+            and no_card_above_player_wujing_in_deck
+            and no_card_closing_form_above_player_wujing_in_deck
+            and seven_realm_cards_only_in_wujing_7_slots
+            and martial_realm_curve_ready
+        )
+        runtime_primitive_export_allowed = runtime_primitive_export_allowed and martial_realm_7_playable
+    if dual_weapon_declared:
+        dual_weapon_playable = (
+            runtime_primitives_supported
+            and all_decks_have_weapon_loadout
+            and dual_weapon_slots_present
+            and dual_weapon_ratio_valid
+            and boss_slots_dual_weapon_enabled
+            and weapon_loadout_card_compatibility_valid
+            and dual_weapon_generic_ratio_valid
+        )
+        dual_weapon_runtime_export_allowed = dual_weapon_playable
+        runtime_primitive_export_allowed = runtime_primitive_export_allowed and dual_weapon_runtime_export_allowed
     runtime_primitive_playable = runtime_primitive_export_allowed
     runtime_export_allowed = (
         rebuild_policy_compatible
@@ -307,6 +597,18 @@ def main(argv: list[str]) -> int:
     rebuild_uses_snapshot = bool(content_pack_summary.get("rebuild_uses_snapshot", False))
     snapshot_source_path = str(content_pack_summary.get("snapshot_source_path", ""))
     flagged_deck_count = int(content_pack_summary.get("flagged_deck_count", 0))
+    built_from_llm_candidates = bool(content_pack_summary.get("built_from_llm_candidates", False) or content_pack_summary.get("llm_candidate_source", False))
+    accepted_candidate_count = int(content_pack_summary.get("accepted_candidate_count", 0))
+    rejected_candidate_count = int(content_pack_summary.get("rejected_candidate_count", 0))
+    deterministic_fill_used = bool(content_pack_summary.get("deterministic_fill_used", False))
+    candidate_source_trace_ready = bool(content_pack_summary.get("candidate_source_trace_ready", False) or (content_pack_summary.get("candidate_import_report_path") and content_pack_summary.get("candidate_diff_report_path")))
+    ai_pack_ready_for_review = built_from_llm_candidates and candidate_source_trace_ready
+    rebuild_uses_real_telemetry = bool(content_pack_summary.get("rebuild_uses_real_telemetry", False))
+    real_telemetry_snapshot_path = str(content_pack_summary.get("real_telemetry_snapshot_path", ""))
+    real_telemetry_rebuild_valid = (not rebuild_uses_real_telemetry) or bool(real_telemetry_snapshot_path)
+    if rebuild_uses_real_telemetry and not real_telemetry_rebuild_valid:
+        errors.append("real telemetry rebuild metadata missing")
+        ready_for_runtime_export = False
     snapshot_rebuild_valid = (
         (not rebuild_uses_snapshot)
         or (
@@ -347,6 +649,14 @@ def main(argv: list[str]) -> int:
         errors.append("runtime primitives are not supported by runtime_support_level")
     if opening_pressure_declared and not opening_pressure_curve_ready:
         errors.append("opening_pressure curve not ready")
+    if weapon_followup_declared and not weapon_followup_cards_present:
+        errors.append("weapon_followup cards are missing")
+    if weapon_followup_declared and not weapon_followup_decks_present:
+        errors.append("weapon_followup decks are missing")
+    if martial_realm_7_declared and not max_wujing_is_7:
+        errors.append("max_wujing is not 7")
+    if martial_realm_7_declared and not max_closing_form_tier_is_7:
+        errors.append("max_closing_form_tier is not 7")
 
     report = {
         "mechanic_profile_valid": mechanic_profile_valid,
@@ -373,6 +683,50 @@ def main(argv: list[str]) -> int:
         "opening_pressure_all_slots_covered": opening_pressure_all_slots_covered,
         "opening_pressure_values_in_range": opening_pressure_values_in_range,
         "opening_pressure_curve_ready": opening_pressure_curve_ready,
+        "weapon_followup_declared": weapon_followup_declared,
+        "weapon_followup_cards_present": weapon_followup_cards_present,
+        "weapon_followup_decks_present": weapon_followup_decks_present,
+        "weapon_followup_all_slots_covered": weapon_followup_all_slots_covered,
+        "weapon_followup_chain_valid": weapon_followup_chain_valid,
+        "weapon_followup_values_in_range": weapon_followup_values_in_range,
+        "weapon_followup_curve_ready": weapon_followup_curve_ready,
+        "weapon_followup_runtime_export_allowed": weapon_followup_runtime_export_allowed,
+        "weapon_followup_playable": weapon_followup_playable,
+        "clue_pressure_declared": clue_pressure_declared,
+        "clue_pressure_all_slots_covered": clue_pressure_all_slots_covered,
+        "clue_pressure_tags_valid": clue_pressure_tags_valid,
+        "clue_pressure_effects_valid": clue_pressure_effects_valid,
+        "clue_pressure_values_in_range": clue_pressure_values_in_range,
+        "clue_pressure_curve_ready": clue_pressure_curve_ready,
+        "clue_pressure_runtime_export_allowed": clue_pressure_runtime_export_allowed,
+        "martial_realm_7_declared": martial_realm_7_declared,
+        "dual_weapon_declared": dual_weapon_declared,
+        "max_wujing_is_7": max_wujing_is_7,
+        "max_closing_form_tier_is_7": max_closing_form_tier_is_7,
+        "all_cards_have_required_wujing": all_cards_have_required_wujing,
+        "all_cards_have_closing_form_tier": all_cards_have_closing_form_tier,
+        "all_cards_required_wujing_in_range": all_cards_required_wujing_in_range,
+        "all_cards_closing_form_tier_in_range": all_cards_closing_form_tier_in_range,
+        "all_slots_have_player_wujing_cap": all_slots_have_player_wujing_cap,
+        "all_decks_have_weapon_loadout": all_decks_have_weapon_loadout,
+        "dual_weapon_slots_present": dual_weapon_slots_present,
+        "dual_weapon_ratio_valid": dual_weapon_ratio_valid,
+        "boss_slots_dual_weapon_enabled": boss_slots_dual_weapon_enabled,
+        "boss_slots_wujing_cap_7": boss_slots_wujing_cap_7,
+        "no_card_closing_form_above_player_wujing_in_deck": no_card_closing_form_above_player_wujing_in_deck,
+        "seven_realm_cards_only_in_wujing_7_slots": seven_realm_cards_only_in_wujing_7_slots,
+        "weapon_loadout_card_compatibility_valid": weapon_loadout_card_compatibility_valid,
+        "dual_weapon_generic_ratio_valid": dual_weapon_generic_ratio_valid,
+        "martial_realm_curve_ready": martial_realm_curve_ready,
+        "dual_weapon_runtime_export_allowed": dual_weapon_runtime_export_allowed,
+        "max_wujing": int(mechanic_profile.get("max_wujing", 0)),
+        "max_closing_form_tier": int(mechanic_profile.get("max_closing_form_tier", 0)),
+        "dual_weapon_slot_count": dual_weapon_slot_count,
+        "dual_weapon_deck_count": dual_weapon_deck_count,
+        "seven_realm_card_count": seven_realm_card_count,
+        "invalid_weapon_loadout_card_count": invalid_weapon_loadout_card_count,
+        "martial_realm_7_playable": martial_realm_7_playable,
+        "dual_weapon_playable": dual_weapon_playable,
         "runtime_primitive_export_allowed": runtime_primitive_export_allowed,
         "runtime_primitive_playable": runtime_primitive_playable,
         "unsupported_design_effects_blocked": unsupported_design_effects_blocked,
@@ -397,6 +751,15 @@ def main(argv: list[str]) -> int:
         "rebuild_uses_snapshot": rebuild_uses_snapshot,
         "snapshot_source_path": snapshot_source_path,
         "snapshot_rebuild_valid": snapshot_rebuild_valid,
+        "built_from_llm_candidates": built_from_llm_candidates,
+        "accepted_candidate_count": accepted_candidate_count,
+        "rejected_candidate_count": rejected_candidate_count,
+        "deterministic_fill_used": deterministic_fill_used,
+        "candidate_source_trace_ready": bool(candidate_source_trace_ready),
+        "ai_pack_ready_for_review": bool(ai_pack_ready_for_review),
+        "rebuild_uses_real_telemetry": rebuild_uses_real_telemetry,
+        "real_telemetry_snapshot_path": real_telemetry_snapshot_path,
+        "real_telemetry_rebuild_valid": real_telemetry_rebuild_valid,
         "flagged_deck_count": flagged_deck_count,
         "ready_for_runtime_export": ready_for_runtime_export,
         "errors": errors,
@@ -428,6 +791,9 @@ def write_markdown_report(path: Path, report: dict[str, Any]) -> None:
         f"- not_runtime_playable: {str(report['not_runtime_playable']).lower()}",
         f"- runtime_export_allowed: {str(report['runtime_export_allowed']).lower()}",
         f"- ready_for_runtime_export: {str(report['ready_for_runtime_export']).lower()}",
+        f"- weapon_followup_declared: {str(report.get('weapon_followup_declared', False)).lower()}",
+        f"- weapon_followup_chain_valid: {str(report.get('weapon_followup_chain_valid', True)).lower()}",
+        f"- weapon_followup_runtime_export_allowed: {str(report.get('weapon_followup_runtime_export_allowed', True)).lower()}",
         "",
         "## 错误",
     ]
@@ -442,6 +808,12 @@ def write_markdown_report(path: Path, report: dict[str, Any]) -> None:
     else:
         lines.append("- 无")
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def average_ints(values: list[int]) -> float:
+    if not values:
+        return 0.0
+    return sum(values) / float(len(values))
 
 
 def is_realm_gated_card(card: dict[str, Any]) -> bool:

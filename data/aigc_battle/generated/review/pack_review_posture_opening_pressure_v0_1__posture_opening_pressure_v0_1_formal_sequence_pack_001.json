@@ -9458,33 +9458,33 @@
   "candidate_diff_summary": {},
   "candidate_rejection_summary": {},
   "ai_pack_ready_for_review": false,
-  "release_status": "draft",
-  "frozen": false,
+  "release_status": "accepted",
+  "frozen": true,
   "release_candidate": false,
   "active_release": false,
   "archived": false,
   "rollback_available": false,
   "suggested_git_commands": {
-    "suggested_git_commit_command": "",
-    "suggested_git_tag_command": ""
+    "suggested_git_commit_command": "git commit -am \"release: posture_opening_pressure_v0_1__posture_opening_pressure_v0_1_formal_sequence_pack_001\"",
+    "suggested_git_tag_command": "git tag aigc-release/posture_opening_pressure_v0_1__posture_opening_pressure_v0_1_formal_sequence_pack_001"
   },
   "active_history_summary": {
-    "switch_count": 9,
+    "switch_count": 10,
     "latest_switch": {
-      "timestamp": "2026-05-11T06:46:26.455731Z",
+      "timestamp": "2026-05-11T07:03:53.946511Z",
       "previous_profile_id": "weapon_followup_v0_1",
       "previous_content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
       "previous_runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/runtime_manifest.json",
       "next_profile_id": "posture_opening_pressure_v0_1",
       "next_content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
       "next_runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/runtime_manifest.json",
-      "switch_source": "release_channel_fallback",
+      "switch_source": "dashboard_api",
       "dry_run": false
     }
   },
   "factory_log_summary": {
-    "log_count": 3,
-    "latest_log_path": "data/aigc_battle/generated/factory_logs/20260511T033223Z_snapshot_posture_opening_pressure_v0_1_posture_opening_pressure_p1_probe_snapshot_002.json",
+    "log_count": 4,
+    "latest_log_path": "data/aigc_battle/generated/factory_logs/20260511T070242Z_snapshot_posture_opening_pressure_v0_1_snapshot_pack_id_required.json",
     "latest_status": "ok"
   },
   "all_risks": [

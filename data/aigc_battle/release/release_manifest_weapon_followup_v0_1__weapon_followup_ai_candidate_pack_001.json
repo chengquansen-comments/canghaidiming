@@ -1,0 +1,23 @@
+{
+  "mechanic_profile_id": "weapon_followup_v0_1",
+  "content_pack_id": "weapon_followup_ai_candidate_pack_001",
+  "release_status": "accepted",
+  "frozen": true,
+  "frozen_at": "2026-05-11T06:14:02.682682+00:00",
+  "activated_at": "2026-05-11T06:14:02.688617+00:00",
+  "archived_at": "2026-05-11T06:14:02.693312+00:00",
+  "review_status": "accepted",
+  "release_candidate_id": "weapon_followup_v0_1__weapon_followup_ai_candidate_pack_001",
+  "previous_active_profile_id": "posture_opening_pressure_v0_1",
+  "previous_active_content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+  "rollback_available": false,
+  "review_notes_path": "data/aigc_battle/review_notes/weapon_followup_v0_1__weapon_followup_ai_candidate_pack_001.json",
+  "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_ai_candidate_pack_001/runtime_manifest.json",
+  "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_ai_candidate_pack_001/validation_report.json",
+  "review_report_path": "data/aigc_battle/generated/review/review_report_weapon_followup_v0_1__weapon_followup_ai_candidate_pack_001.md",
+  "release_report_path": "data/aigc_battle/release/release_report_weapon_followup_v0_1__weapon_followup_ai_candidate_pack_001.md",
+  "suggested_git_commit_command": "git commit -am \"release: weapon_followup_v0_1__weapon_followup_ai_candidate_pack_001\"",
+  "suggested_git_tag_command": "git tag aigc-release/weapon_followup_v0_1__weapon_followup_ai_candidate_pack_001",
+  "created_at": "2026-05-11T06:14:02.682636+00:00",
+  "updated_at": "2026-05-11T06:14:48.232164+00:00"
+}

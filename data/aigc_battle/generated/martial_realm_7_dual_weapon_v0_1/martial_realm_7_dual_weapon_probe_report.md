@@ -1,0 +1,31 @@
+# Martial Realm 7 Dual Weapon Probe
+
+- martial_realm_7_declared: `True`
+- dual_weapon_declared: `True`
+- max_wujing_is_7: `True`
+- max_closing_form_tier_is_7: `True`
+- full_sequence_coverage_complete: `True`
+- all_cards_have_required_wujing: `True`
+- all_cards_have_closing_form_tier: `True`
+- no_card_above_player_wujing_in_deck: `True`
+- no_card_closing_form_above_player_wujing_in_deck: `True`
+- seven_realm_cards_only_in_wujing_7_slots: `True`
+- dual_weapon_slots_present: `True`
+- dual_weapon_ratio_valid: `True`
+- boss_slots_dual_weapon_enabled: `True`
+- boss_slots_wujing_cap_7: `True`
+- weapon_loadout_card_compatibility_valid: `True`
+- runtime_manifest_exports_martial_realm_7: `True`
+- runtime_manifest_exports_dual_weapon: `True`
+- godot_loader_reads_martial_realm_7: `True`
+- godot_loader_reads_dual_weapon: `True`
+- battle_observes_wujing_7_and_dual_weapon: `True`
+- fallback_loadout_count: `0`
+- reward_coverage_complete: `True`
+- sequence_balance_pass: `True`
+- review_workspace_ready: `True`
+- release_candidate_ready: `True`
+- dual_weapon_slot_count: `8`
+- dual_weapon_deck_count: `8`
+- seven_realm_card_count: `10`
+- probe_pass: `True`

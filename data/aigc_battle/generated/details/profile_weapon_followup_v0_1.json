@@ -2,7 +2,7 @@
   "mechanic_profile_id": "weapon_followup_v0_1",
   "display_name": "武器追击机制",
   "version": "0.1.0",
-  "content_pack_count": 5,
+  "content_pack_count": 6,
   "active_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
   "resources": [
     "hp",
@@ -167,8 +167,8 @@
   "replacement_mode": "full_sequence",
   "content_recipe_id": "weapon_followup_formal_sequence_recipe",
   "validation_gate_summary": {
-    "ready_packs": 5,
-    "total_packs": 5,
+    "ready_packs": 6,
+    "total_packs": 6,
     "active_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001"
   },
   "profile_pack_list": [
@@ -176,6 +176,16 @@
       "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
       "pack_storage_mode": "profile_root",
       "is_active_pack": true,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "snapshot_pack_id_required",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
       "ready_for_runtime_export": true,
       "sequence_balance_pass": true,
       "runtime_primitives": [

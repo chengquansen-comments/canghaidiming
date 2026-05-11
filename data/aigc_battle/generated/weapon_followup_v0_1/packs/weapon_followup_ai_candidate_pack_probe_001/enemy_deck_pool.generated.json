@@ -1,0 +1,617 @@
+[
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_ai_candidate_pack_probe_001",
+    "deck_id": "weapon_followup_v0_1_deck_001",
+    "enemy_role": "spearman",
+    "difficulty_tier": "normal",
+    "sequence_position": 1,
+    "encounter_tier": "early",
+    "encounter_kind": "normal",
+    "player_wujing_cap": 1,
+    "target_power_min": 20,
+    "target_power_max": 30,
+    "card_ids": [
+      "weapon_followup_probe_card_001",
+      "weapon_followup_v0_1_spearman_early_strike",
+      "weapon_followup_v0_1_spearman_early_guard",
+      "weapon_followup_v0_1_spearman_early_pressure",
+      "weapon_followup_v0_1_spearman_early_focus",
+      "weapon_followup_v0_1_spearman_early_finisher"
+    ],
+    "deck_power_score": 25.2,
+    "power_range_pass": true,
+    "realm_eligibility_checked": true,
+    "invalid_realm_card_count": 0,
+    "tags": [
+      "early",
+      "llm_candidate_import",
+      "normal",
+      "spearman"
+    ],
+    "followup_chain_count": 3,
+    "followup_card_count": 4,
+    "followup_density": 0.5,
+    "followup_groups": [
+      "probe_chain"
+    ],
+    "followup_chain_valid": true,
+    "source": "llm_candidate_import",
+    "fill_strategy": "llm_candidate_import"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_ai_candidate_pack_probe_001",
+    "deck_id": "weapon_followup_v0_1_deck_002",
+    "enemy_role": "blademaster",
+    "difficulty_tier": "normal",
+    "sequence_position": 2,
+    "encounter_tier": "early",
+    "encounter_kind": "normal",
+    "player_wujing_cap": 1,
+    "target_power_min": 20,
+    "target_power_max": 30,
+    "card_ids": [
+      "weapon_followup_v0_1_blademaster_early_strike",
+      "weapon_followup_v0_1_blademaster_early_guard",
+      "weapon_followup_v0_1_blademaster_early_focus",
+      "weapon_followup_v0_1_blademaster_early_strike",
+      "weapon_followup_v0_1_blademaster_early_guard",
+      "weapon_followup_v0_1_blademaster_early_pressure"
+    ],
+    "deck_power_score": 22.8,
+    "power_range_pass": true,
+    "realm_eligibility_checked": true,
+    "invalid_realm_card_count": 0,
+    "tags": [
+      "blademaster",
+      "early",
+      "llm_candidate_import",
+      "normal"
+    ],
+    "followup_chain_count": 1,
+    "followup_card_count": 3,
+    "followup_density": 0.5,
+    "followup_groups": [
+      "blademaster_early_chain"
+    ],
+    "followup_chain_valid": true,
+    "source": "llm_candidate_import",
+    "fill_strategy": "deterministic_fill_from_current_pack"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_ai_candidate_pack_probe_001",
+    "deck_id": "weapon_followup_v0_1_deck_003",
+    "enemy_role": "blademaster",
+    "difficulty_tier": "elite",
+    "sequence_position": 3,
+    "encounter_tier": "early",
+    "encounter_kind": "elite",
+    "player_wujing_cap": 1,
+    "target_power_min": 23,
+    "target_power_max": 35,
+    "card_ids": [
+      "weapon_followup_v0_1_blademaster_early_strike",
+      "weapon_followup_v0_1_blademaster_early_pressure",
+      "weapon_followup_v0_1_blademaster_early_guard",
+      "weapon_followup_v0_1_blademaster_early_strike",
+      "weapon_followup_v0_1_blademaster_early_focus",
+      "weapon_followup_v0_1_blademaster_early_finisher",
+      "weapon_followup_v0_1_blademaster_early_pressure"
+    ],
+    "deck_power_score": 27.6,
+    "power_range_pass": true,
+    "realm_eligibility_checked": true,
+    "invalid_realm_card_count": 0,
+    "tags": [
+      "blademaster",
+      "early",
+      "elite",
+      "llm_candidate_import"
+    ],
+    "followup_chain_count": 3,
+    "followup_card_count": 5,
+    "followup_density": 0.71,
+    "followup_groups": [
+      "blademaster_early_chain"
+    ],
+    "followup_chain_valid": true,
+    "source": "llm_candidate_import",
+    "fill_strategy": "deterministic_fill_from_current_pack"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_ai_candidate_pack_probe_001",
+    "deck_id": "weapon_followup_v0_1_deck_004",
+    "enemy_role": "spearman",
+    "difficulty_tier": "elite",
+    "sequence_position": 4,
+    "encounter_tier": "early",
+    "encounter_kind": "elite",
+    "player_wujing_cap": 1,
+    "target_power_min": 23,
+    "target_power_max": 35,
+    "card_ids": [
+      "weapon_followup_v0_1_spearman_early_strike",
+      "weapon_followup_v0_1_spearman_early_pressure",
+      "weapon_followup_v0_1_spearman_early_guard",
+      "weapon_followup_v0_1_spearman_early_strike",
+      "weapon_followup_v0_1_spearman_early_focus",
+      "weapon_followup_v0_1_spearman_early_finisher",
+      "weapon_followup_v0_1_spearman_early_pressure"
+    ],
+    "deck_power_score": 27.6,
+    "power_range_pass": true,
+    "realm_eligibility_checked": true,
+    "invalid_realm_card_count": 0,
+    "tags": [
+      "early",
+      "elite",
+      "llm_candidate_import",
+      "spearman"
+    ],
+    "followup_chain_count": 3,
+    "followup_card_count": 5,
+    "followup_density": 0.71,
+    "followup_groups": [
+      "spearman_early_chain"
+    ],
+    "followup_chain_valid": true,
+    "source": "llm_candidate_import",
+    "fill_strategy": "deterministic_fill_from_current_pack"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_ai_candidate_pack_probe_001",
+    "deck_id": "weapon_followup_v0_1_deck_005",
+    "enemy_role": "blademaster",
+    "difficulty_tier": "boss",
+    "sequence_position": 5,
+    "encounter_tier": "boss",
+    "encounter_kind": "boss",
+    "player_wujing_cap": 4,
+    "target_power_min": 52,
+    "target_power_max": 62,
+    "card_ids": [
+      "weapon_followup_v0_1_blademaster_boss_strike",
+      "weapon_followup_v0_1_blademaster_boss_pressure",
+      "weapon_followup_v0_1_blademaster_boss_strike",
+      "weapon_followup_v0_1_blademaster_boss_finisher",
+      "weapon_followup_v0_1_blademaster_boss_guard",
+      "weapon_followup_v0_1_blademaster_boss_pressure",
+      "weapon_followup_v0_1_blademaster_boss_focus",
+      "weapon_followup_v0_1_blademaster_boss_finisher"
+    ],
+    "deck_power_score": 54.6,
+    "power_range_pass": true,
+    "realm_eligibility_checked": true,
+    "invalid_realm_card_count": 0,
+    "tags": [
+      "blademaster",
+      "boss",
+      "llm_candidate_import"
+    ],
+    "followup_chain_count": 4,
+    "followup_card_count": 6,
+    "followup_density": 0.75,
+    "followup_groups": [
+      "blademaster_boss_chain"
+    ],
+    "followup_chain_valid": true,
+    "source": "llm_candidate_import",
+    "fill_strategy": "deterministic_fill_from_current_pack"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_ai_candidate_pack_probe_001",
+    "deck_id": "weapon_followup_v0_1_deck_006",
+    "enemy_role": "spearman",
+    "difficulty_tier": "elite",
+    "sequence_position": 6,
+    "encounter_tier": "mid",
+    "encounter_kind": "elite",
+    "player_wujing_cap": 2,
+    "target_power_min": 31,
+    "target_power_max": 43,
+    "card_ids": [
+      "weapon_followup_v0_1_spearman_mid_strike",
+      "weapon_followup_v0_1_spearman_mid_pressure",
+      "weapon_followup_v0_1_spearman_mid_strike",
+      "weapon_followup_v0_1_spearman_mid_guard",
+      "weapon_followup_v0_1_spearman_mid_focus",
+      "weapon_followup_v0_1_spearman_mid_finisher",
+      "weapon_followup_v0_1_spearman_mid_pressure"
+    ],
+    "deck_power_score": 33.2,
+    "power_range_pass": true,
+    "realm_eligibility_checked": true,
+    "invalid_realm_card_count": 0,
+    "tags": [
+      "elite",
+      "llm_candidate_import",
+      "mid",
+      "spearman"
+    ],
+    "followup_chain_count": 3,
+    "followup_card_count": 5,
+    "followup_density": 0.71,
+    "followup_groups": [
+      "spearman_mid_chain"
+    ],
+    "followup_chain_valid": true,
+    "source": "llm_candidate_import",
+    "fill_strategy": "deterministic_fill_from_current_pack"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_ai_candidate_pack_probe_001",
+    "deck_id": "weapon_followup_v0_1_deck_007",
+    "enemy_role": "blademaster",
+    "difficulty_tier": "elite",
+    "sequence_position": 7,
+    "encounter_tier": "mid",
+    "encounter_kind": "elite",
+    "player_wujing_cap": 2,
+    "target_power_min": 31,
+    "target_power_max": 43,
+    "card_ids": [
+      "weapon_followup_v0_1_blademaster_mid_strike",
+      "weapon_followup_v0_1_blademaster_mid_pressure",
+      "weapon_followup_v0_1_blademaster_mid_strike",
+      "weapon_followup_v0_1_blademaster_mid_guard",
+      "weapon_followup_v0_1_blademaster_mid_focus",
+      "weapon_followup_v0_1_blademaster_mid_finisher",
+      "weapon_followup_v0_1_blademaster_mid_pressure"
+    ],
+    "deck_power_score": 33.2,
+    "power_range_pass": true,
+    "realm_eligibility_checked": true,
+    "invalid_realm_card_count": 0,
+    "tags": [
+      "blademaster",
+      "elite",
+      "llm_candidate_import",
+      "mid"
+    ],
+    "followup_chain_count": 3,
+    "followup_card_count": 5,
+    "followup_density": 0.71,
+    "followup_groups": [
+      "blademaster_mid_chain"
+    ],
+    "followup_chain_valid": true,
+    "source": "llm_candidate_import",
+    "fill_strategy": "deterministic_fill_from_current_pack"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_ai_candidate_pack_probe_001",
+    "deck_id": "weapon_followup_v0_1_deck_008",
+    "enemy_role": "blademaster",
+    "difficulty_tier": "boss",
+    "sequence_position": 8,
+    "encounter_tier": "boss",
+    "encounter_kind": "boss",
+    "player_wujing_cap": 4,
+    "target_power_min": 52,
+    "target_power_max": 62,
+    "card_ids": [
+      "weapon_followup_v0_1_blademaster_boss_strike",
+      "weapon_followup_v0_1_blademaster_boss_pressure",
+      "weapon_followup_v0_1_blademaster_boss_strike",
+      "weapon_followup_v0_1_blademaster_boss_finisher",
+      "weapon_followup_v0_1_blademaster_boss_guard",
+      "weapon_followup_v0_1_blademaster_boss_pressure",
+      "weapon_followup_v0_1_blademaster_boss_focus",
+      "weapon_followup_v0_1_blademaster_boss_finisher"
+    ],
+    "deck_power_score": 54.6,
+    "power_range_pass": true,
+    "realm_eligibility_checked": true,
+    "invalid_realm_card_count": 0,
+    "tags": [
+      "blademaster",
+      "boss",
+      "llm_candidate_import"
+    ],
+    "followup_chain_count": 4,
+    "followup_card_count": 6,
+    "followup_density": 0.75,
+    "followup_groups": [
+      "blademaster_boss_chain"
+    ],
+    "followup_chain_valid": true,
+    "source": "llm_candidate_import",
+    "fill_strategy": "deterministic_fill_from_current_pack"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_ai_candidate_pack_probe_001",
+    "deck_id": "weapon_followup_v0_1_deck_009",
+    "enemy_role": "blademaster",
+    "difficulty_tier": "elite",
+    "sequence_position": 9,
+    "encounter_tier": "mid",
+    "encounter_kind": "elite",
+    "player_wujing_cap": 2,
+    "target_power_min": 31,
+    "target_power_max": 43,
+    "card_ids": [
+      "weapon_followup_v0_1_blademaster_mid_strike",
+      "weapon_followup_v0_1_blademaster_mid_pressure",
+      "weapon_followup_v0_1_blademaster_mid_strike",
+      "weapon_followup_v0_1_blademaster_mid_guard",
+      "weapon_followup_v0_1_blademaster_mid_focus",
+      "weapon_followup_v0_1_blademaster_mid_finisher",
+      "weapon_followup_v0_1_blademaster_mid_pressure"
+    ],
+    "deck_power_score": 33.2,
+    "power_range_pass": true,
+    "realm_eligibility_checked": true,
+    "invalid_realm_card_count": 0,
+    "tags": [
+      "blademaster",
+      "elite",
+      "llm_candidate_import",
+      "mid"
+    ],
+    "followup_chain_count": 3,
+    "followup_card_count": 5,
+    "followup_density": 0.71,
+    "followup_groups": [
+      "blademaster_mid_chain"
+    ],
+    "followup_chain_valid": true,
+    "source": "llm_candidate_import",
+    "fill_strategy": "deterministic_fill_from_current_pack"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_ai_candidate_pack_probe_001",
+    "deck_id": "weapon_followup_v0_1_deck_010",
+    "enemy_role": "spearman",
+    "difficulty_tier": "elite",
+    "sequence_position": 10,
+    "encounter_tier": "mid",
+    "encounter_kind": "elite",
+    "player_wujing_cap": 2,
+    "target_power_min": 31,
+    "target_power_max": 43,
+    "card_ids": [
+      "weapon_followup_v0_1_spearman_mid_strike",
+      "weapon_followup_v0_1_spearman_mid_pressure",
+      "weapon_followup_v0_1_spearman_mid_strike",
+      "weapon_followup_v0_1_spearman_mid_guard",
+      "weapon_followup_v0_1_spearman_mid_focus",
+      "weapon_followup_v0_1_spearman_mid_finisher",
+      "weapon_followup_v0_1_spearman_mid_pressure"
+    ],
+    "deck_power_score": 33.2,
+    "power_range_pass": true,
+    "realm_eligibility_checked": true,
+    "invalid_realm_card_count": 0,
+    "tags": [
+      "elite",
+      "llm_candidate_import",
+      "mid",
+      "spearman"
+    ],
+    "followup_chain_count": 3,
+    "followup_card_count": 5,
+    "followup_density": 0.71,
+    "followup_groups": [
+      "spearman_mid_chain"
+    ],
+    "followup_chain_valid": true,
+    "source": "llm_candidate_import",
+    "fill_strategy": "deterministic_fill_from_current_pack"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_ai_candidate_pack_probe_001",
+    "deck_id": "weapon_followup_v0_1_deck_011",
+    "enemy_role": "spearman",
+    "difficulty_tier": "elite",
+    "sequence_position": 11,
+    "encounter_tier": "late",
+    "encounter_kind": "elite",
+    "player_wujing_cap": 3,
+    "target_power_min": 43,
+    "target_power_max": 55,
+    "card_ids": [
+      "weapon_followup_v0_1_spearman_late_strike",
+      "weapon_followup_v0_1_spearman_late_pressure",
+      "weapon_followup_v0_1_spearman_late_strike",
+      "weapon_followup_v0_1_spearman_late_finisher",
+      "weapon_followup_v0_1_spearman_late_guard",
+      "weapon_followup_v0_1_spearman_late_pressure",
+      "weapon_followup_v0_1_spearman_late_focus",
+      "weapon_followup_v0_1_spearman_late_finisher"
+    ],
+    "deck_power_score": 50.8,
+    "power_range_pass": true,
+    "realm_eligibility_checked": true,
+    "invalid_realm_card_count": 0,
+    "tags": [
+      "elite",
+      "late",
+      "llm_candidate_import",
+      "spearman"
+    ],
+    "followup_chain_count": 4,
+    "followup_card_count": 6,
+    "followup_density": 0.75,
+    "followup_groups": [
+      "spearman_late_chain"
+    ],
+    "followup_chain_valid": true,
+    "source": "llm_candidate_import",
+    "fill_strategy": "deterministic_fill_from_current_pack"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_ai_candidate_pack_probe_001",
+    "deck_id": "weapon_followup_v0_1_deck_012",
+    "enemy_role": "spearman",
+    "difficulty_tier": "normal",
+    "sequence_position": 12,
+    "encounter_tier": "late",
+    "encounter_kind": "normal",
+    "player_wujing_cap": 3,
+    "target_power_min": 40,
+    "target_power_max": 50,
+    "card_ids": [
+      "weapon_followup_v0_1_spearman_late_strike",
+      "weapon_followup_v0_1_spearman_late_pressure",
+      "weapon_followup_v0_1_spearman_late_strike",
+      "weapon_followup_v0_1_spearman_late_finisher",
+      "weapon_followup_v0_1_spearman_late_guard",
+      "weapon_followup_v0_1_spearman_late_pressure",
+      "weapon_followup_v0_1_spearman_late_focus"
+    ],
+    "deck_power_score": 43.2,
+    "power_range_pass": true,
+    "realm_eligibility_checked": true,
+    "invalid_realm_card_count": 0,
+    "tags": [
+      "late",
+      "llm_candidate_import",
+      "normal",
+      "spearman"
+    ],
+    "followup_chain_count": 3,
+    "followup_card_count": 5,
+    "followup_density": 0.71,
+    "followup_groups": [
+      "spearman_late_chain"
+    ],
+    "followup_chain_valid": true,
+    "source": "llm_candidate_import",
+    "fill_strategy": "deterministic_fill_from_current_pack"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_ai_candidate_pack_probe_001",
+    "deck_id": "weapon_followup_v0_1_deck_013",
+    "enemy_role": "blademaster",
+    "difficulty_tier": "elite",
+    "sequence_position": 13,
+    "encounter_tier": "late",
+    "encounter_kind": "elite",
+    "player_wujing_cap": 3,
+    "target_power_min": 43,
+    "target_power_max": 55,
+    "card_ids": [
+      "weapon_followup_v0_1_blademaster_late_strike",
+      "weapon_followup_v0_1_blademaster_late_pressure",
+      "weapon_followup_v0_1_blademaster_late_strike",
+      "weapon_followup_v0_1_blademaster_late_finisher",
+      "weapon_followup_v0_1_blademaster_late_guard",
+      "weapon_followup_v0_1_blademaster_late_pressure",
+      "weapon_followup_v0_1_blademaster_late_focus",
+      "weapon_followup_v0_1_blademaster_late_finisher"
+    ],
+    "deck_power_score": 50.8,
+    "power_range_pass": true,
+    "realm_eligibility_checked": true,
+    "invalid_realm_card_count": 0,
+    "tags": [
+      "blademaster",
+      "elite",
+      "late",
+      "llm_candidate_import"
+    ],
+    "followup_chain_count": 4,
+    "followup_card_count": 6,
+    "followup_density": 0.75,
+    "followup_groups": [
+      "blademaster_late_chain"
+    ],
+    "followup_chain_valid": true,
+    "source": "llm_candidate_import",
+    "fill_strategy": "deterministic_fill_from_current_pack"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_ai_candidate_pack_probe_001",
+    "deck_id": "weapon_followup_v0_1_deck_014",
+    "enemy_role": "blademaster",
+    "difficulty_tier": "normal",
+    "sequence_position": 14,
+    "encounter_tier": "late",
+    "encounter_kind": "normal",
+    "player_wujing_cap": 3,
+    "target_power_min": 40,
+    "target_power_max": 50,
+    "card_ids": [
+      "weapon_followup_v0_1_blademaster_late_strike",
+      "weapon_followup_v0_1_blademaster_late_pressure",
+      "weapon_followup_v0_1_blademaster_late_strike",
+      "weapon_followup_v0_1_blademaster_late_finisher",
+      "weapon_followup_v0_1_blademaster_late_guard",
+      "weapon_followup_v0_1_blademaster_late_pressure",
+      "weapon_followup_v0_1_blademaster_late_focus"
+    ],
+    "deck_power_score": 43.2,
+    "power_range_pass": true,
+    "realm_eligibility_checked": true,
+    "invalid_realm_card_count": 0,
+    "tags": [
+      "blademaster",
+      "late",
+      "llm_candidate_import",
+      "normal"
+    ],
+    "followup_chain_count": 3,
+    "followup_card_count": 5,
+    "followup_density": 0.71,
+    "followup_groups": [
+      "blademaster_late_chain"
+    ],
+    "followup_chain_valid": true,
+    "source": "llm_candidate_import",
+    "fill_strategy": "deterministic_fill_from_current_pack"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_ai_candidate_pack_probe_001",
+    "deck_id": "weapon_followup_v0_1_deck_015",
+    "enemy_role": "blademaster",
+    "difficulty_tier": "boss",
+    "sequence_position": 15,
+    "encounter_tier": "boss",
+    "encounter_kind": "boss",
+    "player_wujing_cap": 4,
+    "target_power_min": 52,
+    "target_power_max": 62,
+    "card_ids": [
+      "weapon_followup_v0_1_blademaster_boss_strike",
+      "weapon_followup_v0_1_blademaster_boss_pressure",
+      "weapon_followup_v0_1_blademaster_boss_strike",
+      "weapon_followup_v0_1_blademaster_boss_finisher",
+      "weapon_followup_v0_1_blademaster_boss_guard",
+      "weapon_followup_v0_1_blademaster_boss_pressure",
+      "weapon_followup_v0_1_blademaster_boss_focus",
+      "weapon_followup_v0_1_blademaster_boss_finisher"
+    ],
+    "deck_power_score": 54.6,
+    "power_range_pass": true,
+    "realm_eligibility_checked": true,
+    "invalid_realm_card_count": 0,
+    "tags": [
+      "blademaster",
+      "boss",
+      "llm_candidate_import"
+    ],
+    "followup_chain_count": 4,
+    "followup_card_count": 6,
+    "followup_density": 0.75,
+    "followup_groups": [
+      "blademaster_boss_chain"
+    ],
+    "followup_chain_valid": true,
+    "source": "llm_candidate_import",
+    "fill_strategy": "deterministic_fill_from_current_pack"
+  }
+]

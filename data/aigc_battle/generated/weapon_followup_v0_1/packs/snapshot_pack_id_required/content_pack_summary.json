@@ -1,0 +1,32 @@
+{
+  "mechanic_profile_id": "weapon_followup_v0_1",
+  "content_pack_id": "snapshot_pack_id_required",
+  "target_sequence_id": "formal_sequence_mvp_v1",
+  "formal_encounter_total_count": 15,
+  "generated_battle_slot_count": 15,
+  "generated_deck_count": 15,
+  "generated_card_count": 40,
+  "generated_reward_count": 15,
+  "replacement_mode": "full_sequence",
+  "runtime_primitives_used": [
+    "weapon_followup"
+  ],
+  "opening_pressure_slot_count": 0,
+  "weapon_followup_card_count": 40,
+  "weapon_followup_deck_count": 15,
+  "weapon_followup_slot_count": 15,
+  "weapon_followup_chain_count": 76,
+  "realm_eligibility_rule_enabled": true,
+  "deck_card_realm_eligibility_valid": true,
+  "invalid_realm_card_count": 0,
+  "rebuild_uses_snapshot": false,
+  "snapshot_source_path": "",
+  "flagged_deck_count": 0,
+  "flagged_deck_ids": [],
+  "rebuild_uses_real_telemetry": true,
+  "real_telemetry_snapshot_path": "data/aigc_battle/generated/weapon_followup_v0_1/real_telemetry_snapshot.json",
+  "telemetry_rebuild_adjustments": [],
+  "adjusted_or_flagged_encounters": [],
+  "original_content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+  "snapshot_content_pack_id": "snapshot_pack_id_required"
+}

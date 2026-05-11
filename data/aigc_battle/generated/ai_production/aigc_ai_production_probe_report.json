@@ -1,0 +1,14 @@
+{
+  "llm_prompt_export_ready": true,
+  "llm_candidate_import_ready": true,
+  "invalid_llm_candidate_rejected": true,
+  "valid_llm_candidate_accepted": true,
+  "candidate_diff_ready": true,
+  "valid_llm_pack_generated": true,
+  "ai_pack_validated": true,
+  "ai_pack_exported": true,
+  "review_workspace_shows_llm_source": true,
+  "safe_switch_llm_pack_ready": true,
+  "probe_pass": true,
+  "ai_pack_id": "weapon_followup_ai_candidate_pack_probe_002"
+}

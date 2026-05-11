@@ -528,13 +528,46 @@ func _append_generated_telemetry_event(result_key: String) -> void:
 		"target_power_max": int(battle_loadout.get("target_power_max", 0)),
 		"runtime_primitives": (battle_loadout.get("runtime_primitives", []) as Array).duplicate(),
 		"opening_pressure": _dict(battle_loadout.get("opening_pressure", {})),
+		"clue_pressure": _dict(battle_loadout.get("clue_pressure", {})),
 		"battle_result": result_key,
 		"win": result_key == "win",
-		"turn_count": -1,
+		"turn_count": _runtime_turn_count,
+		"round_count": maxi(0, state_machine.round_index - 1) if state_machine != null else _runtime_turn_count,
+		"cards_played_count": _runtime_cards_played_count,
+		"enemy_cards_played_count": _runtime_enemy_cards_played_count,
+		"player_cards_played": _runtime_player_card_ids_played.duplicate(),
+		"enemy_cards_played": _runtime_enemy_card_ids_played.duplicate(),
+		"damage_dealt": _runtime_damage_dealt,
+		"damage_taken": _runtime_damage_taken,
+		"block_gained": _runtime_block_gained,
+		"momentum_gained": _runtime_momentum_gained,
+		"momentum_broken": _runtime_momentum_broken,
+		"player_hp_start": _runtime_player_hp_start,
 		"player_hp_end": player.hp if player != null else -1,
+		"enemy_hp_start": _runtime_enemy_hp_start,
 		"enemy_hp_end": enemy.hp if enemy != null else -1,
 		"reward_claimed": last_generated_reward_claimed,
 		"return_flow_completed": last_formal_progression_continues,
+		"weapon_followup_enabled": last_weapon_followup_enabled,
+		"weapon_followup_triggered": last_weapon_followup_triggered,
+		"weapon_followup_trigger_count": last_weapon_followup_trigger_count,
+		"weapon_followup_bonus_total": last_weapon_followup_bonus_applied,
+		"clue_pressure_enabled": last_clue_pressure_enabled,
+		"clue_pressure_applied": last_clue_pressure_applied,
+		"clue_pressure_trigger_count": last_clue_pressure_trigger_count,
+		"clue_pressure_tags": last_clue_pressure_tags.duplicate(),
+		"clue_pressure_effect": last_clue_pressure_effect,
+		"clue_pressure_value": last_clue_pressure_value,
+		"clue_pressure_converted_effect": last_clue_pressure_converted_effect,
+		"player_wujing_cap": last_player_wujing_cap,
+		"max_required_wujing": last_max_required_wujing,
+		"max_closing_form_tier": last_max_closing_form_tier,
+		"dual_weapon_enabled": last_dual_weapon_enabled,
+		"weapon_loadout": last_weapon_loadout.duplicate(),
+		"primary_weapon_style": last_primary_weapon_style,
+		"secondary_weapon_style": last_secondary_weapon_style,
+		"dual_weapon_synergy_count": last_dual_weapon_synergy_count,
+		"telemetry_detail_level": "partial" if _runtime_turn_count > 0 else "minimal",
 		"telemetry_source": "battle_controller_visual_story_return",
 	}
 	file.store_line(JSON.stringify(event))
@@ -543,6 +576,118 @@ func _append_generated_telemetry_event(result_key: String) -> void:
 	last_telemetry_event_profile_id = str(event.get("mechanic_profile_id", ""))
 	last_telemetry_event_battle_slot_id = str(event.get("generated_battle_slot_id", ""))
 	last_telemetry_event_deck_id = str(event.get("generated_deck_id", ""))
+
+
+func _on_intent_resolved(actor: Fighter, target: Fighter, intent: IntentData, feedback: Dictionary) -> void:
+	super._on_intent_resolved(actor, target, intent, feedback)
+	if actor == null or target == null or intent == null or intent.actual_card == null:
+		return
+	_runtime_turn_count += 1
+	var is_player_actor := actor == player
+	if is_player_actor:
+		_runtime_cards_played_count += 1
+		_runtime_player_card_ids_played.append(str(intent.actual_card.id))
+		_runtime_damage_dealt += int(feedback.get("hp_damage", 0))
+		_runtime_block_gained += maxi(intent.actual_card.guard, 0)
+		_runtime_momentum_gained += maxi(intent.actual_card.gain_momentum, 0)
+		_runtime_momentum_broken += maxi(intent.actual_card.break_momentum, 0)
+	else:
+		_runtime_enemy_cards_played_count += 1
+		_runtime_enemy_card_ids_played.append(str(intent.actual_card.id))
+		_runtime_damage_taken += int(feedback.get("hp_damage", 0))
+	var side := "player" if is_player_actor else "enemy"
+	_apply_pending_clue_pressure_runtime(side)
+	_apply_weapon_followup_runtime(actor, target, intent.actual_card, side, feedback)
+
+
+func _apply_pending_clue_pressure_runtime(side: String) -> void:
+	if not last_clue_pressure_enabled or last_clue_pressure_applied:
+		return
+	if side == "player" and last_clue_pressure_trigger_timing == "first_player_action":
+		_apply_clue_pressure_runtime_effect()
+	elif side == "enemy" and last_clue_pressure_trigger_timing == "enemy_pressure_phase":
+		_apply_clue_pressure_runtime_effect()
+	if last_clue_pressure_applied and log_label != null:
+		log_label.append_text("\n[color=#c8f7a6]线索破防触发：%s｜值=%d[/color]" % [last_clue_pressure_effect, last_clue_pressure_value])
+
+
+func _apply_weapon_followup_runtime(actor: Fighter, target: Fighter, card: CardData, side: String, feedback: Dictionary) -> void:
+	if not last_weapon_followup_enabled:
+		var loadout_followup: Dictionary = _dict(battle_loadout.get("weapon_followup", {}))
+		if bool(loadout_followup.get("enabled", false)):
+			last_weapon_followup_enabled = true
+			last_weapon_followup_expected_chain_count = int(loadout_followup.get("expected_chain_count", 0))
+			last_weapon_followup_primary_weapon_style = str(loadout_followup.get("primary_weapon_style", ""))
+			last_weapon_followup_pressure_level = str(loadout_followup.get("pressure_level", ""))
+			for card_variant in battle_loadout.get("cards", []):
+				if not (card_variant is Dictionary):
+					continue
+				var card_meta: Dictionary = card_variant
+				var card_meta_id := str(card_meta.get("card_id", card_meta.get("id", "")))
+				if card_meta_id.is_empty():
+					continue
+				_runtime_generated_card_meta[card_meta_id] = card_meta.duplicate(true)
+	if not last_weapon_followup_enabled:
+		return
+	if card == null:
+		return
+	var card_id := str(card.id)
+	var meta: Dictionary = _dict(_runtime_generated_card_meta.get(card_id, {}))
+	if meta.is_empty():
+		_runtime_last_card_by_side[side] = {
+			"card_id": card_id,
+			"weapon_style": str(card.weapon_style),
+			"tags": card.tags.duplicate(),
+		}
+		return
+	var trigger := str(meta.get("followup_trigger", ""))
+	var previous_meta: Dictionary = _dict(_runtime_last_card_by_side.get(side, {}))
+	var triggered := false
+	if trigger == "same_weapon_previous_card":
+		triggered = str(previous_meta.get("weapon_style", "")) == str(meta.get("weapon_style", ""))
+	elif trigger == "":
+		triggered = false
+	if triggered:
+		var bonus: Dictionary = _dict(meta.get("followup_bonus", {}))
+		var applied_fields: Array = []
+		var applied_bonus := {}
+		var bonus_damage := int(bonus.get("bonus_damage", 0))
+		var bonus_momentum := int(bonus.get("bonus_momentum", 0))
+		var bonus_block := int(bonus.get("bonus_block", 0))
+		if bonus_damage > 0 and bool(feedback.get("connected", true)):
+			target.hp = maxi(target.hp - bonus_damage, 0)
+			applied_fields.append("bonus_damage")
+			applied_bonus["bonus_damage"] = bonus_damage
+			if actor == player:
+				_runtime_damage_dealt += bonus_damage
+			else:
+				_runtime_damage_taken += bonus_damage
+		if bonus_momentum > 0:
+			actor.recover_momentum(bonus_momentum)
+			applied_fields.append("bonus_momentum")
+			applied_bonus["bonus_momentum"] = bonus_momentum
+			_runtime_momentum_gained += bonus_momentum
+		if bonus_block > 0:
+			actor.add_guard(bonus_block)
+			applied_fields.append("bonus_block")
+			applied_bonus["bonus_block"] = bonus_block
+			_runtime_block_gained += bonus_block
+		if not applied_fields.is_empty():
+			last_weapon_followup_triggered = true
+			last_weapon_followup_trigger_count += 1
+			last_weapon_followup_bonus_applied = applied_bonus
+			last_weapon_followup_applied_fields = applied_fields
+			last_weapon_followup_card_id = card_id
+			last_weapon_followup_group = str(meta.get("followup_group", ""))
+			last_weapon_followup_trigger = trigger
+			if log_label != null:
+				log_label.append_text("\n[color=#8fd3ff]武器追击触发：%s｜%s[/color]" % [card.display_name, ",".join(applied_fields)])
+			_refresh_ui()
+	_runtime_last_card_by_side[side] = {
+		"card_id": card_id,
+		"weapon_style": str(meta.get("weapon_style", card.weapon_style)),
+		"tags": (meta.get("tags", []) as Array).duplicate(),
+	}
 
 
 func _on_battle_result_confirm_pressed() -> void:

@@ -1,0 +1,21 @@
+{
+  "mechanic_profile_id": "weapon_followup_v0_1",
+  "content_pack_id": "weapon_followup_ai_candidate_pack_probe_002",
+  "target_sequence_id": "formal_sequence_mvp_v1",
+  "formal_encounter_total_count": 15,
+  "generated_battle_slot_count": 15,
+  "generated_deck_count": 15,
+  "generated_card_count": 41,
+  "generated_reward_count": 15,
+  "replacement_mode": "full_sequence",
+  "content_source": "llm_candidate_import",
+  "llm_candidate_source": true,
+  "candidate_import_report_path": "data/aigc_battle/generated/ai_production/import_reports/weapon_followup_v0_1__candidate_import_report.json",
+  "candidate_diff_report_path": "data/aigc_battle/generated/ai_production/diff/weapon_followup_v0_1__candidate_diff.json",
+  "accepted_candidate_count": 4,
+  "rejected_candidate_count": 3,
+  "deterministic_fill_used": true,
+  "candidate_source_trace_ready": true,
+  "ai_pack_ready_for_review": true,
+  "built_from_llm_candidates": true
+}

@@ -18,6 +18,34 @@
     "opening_pressure_all_slots_covered": true,
     "opening_pressure_values_in_range": true,
     "opening_pressure_curve_ready": true,
+    "weapon_followup_declared": false,
+    "weapon_followup_cards_present": true,
+    "weapon_followup_decks_present": true,
+    "weapon_followup_all_slots_covered": true,
+    "weapon_followup_chain_valid": true,
+    "weapon_followup_values_in_range": true,
+    "weapon_followup_curve_ready": true,
+    "weapon_followup_runtime_export_allowed": true,
+    "clue_pressure_declared": false,
+    "clue_pressure_all_slots_covered": true,
+    "clue_pressure_tags_valid": true,
+    "clue_pressure_effects_valid": true,
+    "clue_pressure_values_in_range": true,
+    "clue_pressure_curve_ready": true,
+    "clue_pressure_runtime_export_allowed": true,
+    "martial_realm_7_declared": false,
+    "dual_weapon_declared": false,
+    "max_wujing": 0,
+    "max_closing_form_tier": 0,
+    "max_wujing_is_7": true,
+    "max_closing_form_tier_is_7": true,
+    "dual_weapon_slot_count": 0,
+    "dual_weapon_deck_count": 0,
+    "seven_realm_card_count": 0,
+    "invalid_weapon_loadout_card_count": 0,
+    "martial_realm_7_playable": true,
+    "dual_weapon_playable": true,
+    "dual_weapon_runtime_export_allowed": true,
     "runtime_primitive_playable": true
   },
   "balance_summary": {
@@ -205,6 +233,9 @@
     "rebuild_uses_snapshot": false,
     "snapshot_source_path": "",
     "adjusted_or_flagged_encounters": [],
+    "rebuild_uses_real_telemetry": false,
+    "real_telemetry_snapshot_path": "",
+    "telemetry_rebuild_adjustments": [],
     "snapshot_rebuild_pass": true
   },
   "sequence_balance_pass": true,
@@ -244,7 +275,11 @@
       "difficulty_tier": "early",
       "required_wujing": 1,
       "closing_form_tier": 1,
-      "power_score": 5.0
+      "power_score": 5.0,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -278,7 +313,11 @@
       "difficulty_tier": "early",
       "required_wujing": 1,
       "closing_form_tier": 1,
-      "power_score": 4.0
+      "power_score": 4.0,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -313,7 +352,11 @@
       "difficulty_tier": "early",
       "required_wujing": 1,
       "closing_form_tier": 1,
-      "power_score": 2.4
+      "power_score": 2.4,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -348,7 +391,11 @@
       "difficulty_tier": "early",
       "required_wujing": 1,
       "closing_form_tier": 1,
-      "power_score": 2.4
+      "power_score": 2.4,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -392,7 +439,11 @@
       "difficulty_tier": "early",
       "required_wujing": 1,
       "closing_form_tier": 1,
-      "power_score": 6.4
+      "power_score": 6.4,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -427,7 +478,11 @@
       "difficulty_tier": "mid",
       "required_wujing": 2,
       "closing_form_tier": 2,
-      "power_score": 6.0
+      "power_score": 6.0,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -461,7 +516,11 @@
       "difficulty_tier": "mid",
       "required_wujing": 1,
       "closing_form_tier": 1,
-      "power_score": 5.0
+      "power_score": 5.0,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -496,7 +555,11 @@
       "difficulty_tier": "mid",
       "required_wujing": 2,
       "closing_form_tier": 2,
-      "power_score": 3.2
+      "power_score": 3.2,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -531,7 +594,11 @@
       "difficulty_tier": "mid",
       "required_wujing": 2,
       "closing_form_tier": 2,
-      "power_score": 2.4
+      "power_score": 2.4,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -575,7 +642,11 @@
       "difficulty_tier": "mid",
       "required_wujing": 2,
       "closing_form_tier": 2,
-      "power_score": 7.4
+      "power_score": 7.4,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -610,7 +681,11 @@
       "difficulty_tier": "late",
       "required_wujing": 3,
       "closing_form_tier": 3,
-      "power_score": 8.0
+      "power_score": 8.0,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -644,7 +719,11 @@
       "difficulty_tier": "late",
       "required_wujing": 1,
       "closing_form_tier": 1,
-      "power_score": 6.0
+      "power_score": 6.0,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -680,7 +759,11 @@
       "difficulty_tier": "late",
       "required_wujing": 3,
       "closing_form_tier": 3,
-      "power_score": 5.6
+      "power_score": 5.6,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -715,7 +798,11 @@
       "difficulty_tier": "late",
       "required_wujing": 3,
       "closing_form_tier": 3,
-      "power_score": 2.4
+      "power_score": 2.4,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -755,7 +842,11 @@
       "difficulty_tier": "late",
       "required_wujing": 3,
       "closing_form_tier": 3,
-      "power_score": 7.6
+      "power_score": 7.6,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -791,7 +882,11 @@
       "difficulty_tier": "boss",
       "required_wujing": 4,
       "closing_form_tier": 4,
-      "power_score": 8.0
+      "power_score": 8.0,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -826,7 +921,11 @@
       "difficulty_tier": "boss",
       "required_wujing": 1,
       "closing_form_tier": 1,
-      "power_score": 7.0
+      "power_score": 7.0,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -862,7 +961,11 @@
       "difficulty_tier": "boss",
       "required_wujing": 4,
       "closing_form_tier": 4,
-      "power_score": 6.4
+      "power_score": 6.4,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -898,7 +1001,11 @@
       "difficulty_tier": "boss",
       "required_wujing": 4,
       "closing_form_tier": 4,
-      "power_score": 3.2
+      "power_score": 3.2,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -939,7 +1046,11 @@
       "difficulty_tier": "boss",
       "required_wujing": 4,
       "closing_form_tier": 4,
-      "power_score": 7.8
+      "power_score": 7.8,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -974,7 +1085,11 @@
       "difficulty_tier": "early",
       "required_wujing": 1,
       "closing_form_tier": 1,
-      "power_score": 5.0
+      "power_score": 5.0,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1008,7 +1123,11 @@
       "difficulty_tier": "early",
       "required_wujing": 1,
       "closing_form_tier": 1,
-      "power_score": 4.0
+      "power_score": 4.0,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1043,7 +1162,11 @@
       "difficulty_tier": "early",
       "required_wujing": 1,
       "closing_form_tier": 1,
-      "power_score": 2.4
+      "power_score": 2.4,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1078,7 +1201,11 @@
       "difficulty_tier": "early",
       "required_wujing": 1,
       "closing_form_tier": 1,
-      "power_score": 2.4
+      "power_score": 2.4,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1122,7 +1249,11 @@
       "difficulty_tier": "early",
       "required_wujing": 1,
       "closing_form_tier": 1,
-      "power_score": 6.4
+      "power_score": 6.4,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1157,7 +1288,11 @@
       "difficulty_tier": "mid",
       "required_wujing": 2,
       "closing_form_tier": 2,
-      "power_score": 6.0
+      "power_score": 6.0,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1191,7 +1326,11 @@
       "difficulty_tier": "mid",
       "required_wujing": 1,
       "closing_form_tier": 1,
-      "power_score": 5.0
+      "power_score": 5.0,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1226,7 +1365,11 @@
       "difficulty_tier": "mid",
       "required_wujing": 2,
       "closing_form_tier": 2,
-      "power_score": 3.2
+      "power_score": 3.2,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1261,7 +1404,11 @@
       "difficulty_tier": "mid",
       "required_wujing": 2,
       "closing_form_tier": 2,
-      "power_score": 2.4
+      "power_score": 2.4,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1305,7 +1452,11 @@
       "difficulty_tier": "mid",
       "required_wujing": 2,
       "closing_form_tier": 2,
-      "power_score": 7.4
+      "power_score": 7.4,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1340,7 +1491,11 @@
       "difficulty_tier": "late",
       "required_wujing": 3,
       "closing_form_tier": 3,
-      "power_score": 8.0
+      "power_score": 8.0,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1374,7 +1529,11 @@
       "difficulty_tier": "late",
       "required_wujing": 1,
       "closing_form_tier": 1,
-      "power_score": 6.0
+      "power_score": 6.0,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1410,7 +1569,11 @@
       "difficulty_tier": "late",
       "required_wujing": 3,
       "closing_form_tier": 3,
-      "power_score": 5.6
+      "power_score": 5.6,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1445,7 +1608,11 @@
       "difficulty_tier": "late",
       "required_wujing": 3,
       "closing_form_tier": 3,
-      "power_score": 2.4
+      "power_score": 2.4,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1485,7 +1652,11 @@
       "difficulty_tier": "late",
       "required_wujing": 3,
       "closing_form_tier": 3,
-      "power_score": 7.6
+      "power_score": 7.6,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1521,7 +1692,11 @@
       "difficulty_tier": "boss",
       "required_wujing": 4,
       "closing_form_tier": 4,
-      "power_score": 8.0
+      "power_score": 8.0,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1556,7 +1731,11 @@
       "difficulty_tier": "boss",
       "required_wujing": 1,
       "closing_form_tier": 1,
-      "power_score": 7.0
+      "power_score": 7.0,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1592,7 +1771,11 @@
       "difficulty_tier": "boss",
       "required_wujing": 4,
       "closing_form_tier": 4,
-      "power_score": 6.4
+      "power_score": 6.4,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1628,7 +1811,11 @@
       "difficulty_tier": "boss",
       "required_wujing": 4,
       "closing_form_tier": 4,
-      "power_score": 3.2
+      "power_score": 3.2,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1669,7 +1856,11 @@
       "difficulty_tier": "boss",
       "required_wujing": 4,
       "closing_form_tier": 4,
-      "power_score": 7.8
+      "power_score": 7.8,
+      "followup_group": "",
+      "followup_trigger": "",
+      "followup_bonus": {},
+      "followup_chain_role": "standalone"
     }
   ],
   "enemy_decks": [
@@ -1701,7 +1892,22 @@
         "early",
         "normal",
         "spearman"
-      ]
+      ],
+      "followup_chain_count": 0,
+      "followup_card_count": 0,
+      "followup_density": 0.0,
+      "followup_groups": [],
+      "followup_chain_valid": false,
+      "weapon_loadout": [],
+      "primary_weapon_style": "",
+      "secondary_weapon_style": "",
+      "dual_weapon_enabled": false,
+      "primary_weapon_ratio": 0.0,
+      "secondary_weapon_ratio": 0.0,
+      "generic_ratio": 0.0,
+      "max_required_wujing": 0,
+      "max_closing_form_tier": 0,
+      "dual_weapon_synergy_count": 0
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1731,7 +1937,22 @@
         "early",
         "normal",
         "blademaster"
-      ]
+      ],
+      "followup_chain_count": 0,
+      "followup_card_count": 0,
+      "followup_density": 0.0,
+      "followup_groups": [],
+      "followup_chain_valid": false,
+      "weapon_loadout": [],
+      "primary_weapon_style": "",
+      "secondary_weapon_style": "",
+      "dual_weapon_enabled": false,
+      "primary_weapon_ratio": 0.0,
+      "secondary_weapon_ratio": 0.0,
+      "generic_ratio": 0.0,
+      "max_required_wujing": 0,
+      "max_closing_form_tier": 0,
+      "dual_weapon_synergy_count": 0
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1762,7 +1983,22 @@
         "early",
         "elite",
         "blademaster"
-      ]
+      ],
+      "followup_chain_count": 0,
+      "followup_card_count": 0,
+      "followup_density": 0.0,
+      "followup_groups": [],
+      "followup_chain_valid": false,
+      "weapon_loadout": [],
+      "primary_weapon_style": "",
+      "secondary_weapon_style": "",
+      "dual_weapon_enabled": false,
+      "primary_weapon_ratio": 0.0,
+      "secondary_weapon_ratio": 0.0,
+      "generic_ratio": 0.0,
+      "max_required_wujing": 0,
+      "max_closing_form_tier": 0,
+      "dual_weapon_synergy_count": 0
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1793,7 +2029,22 @@
         "early",
         "elite",
         "spearman"
-      ]
+      ],
+      "followup_chain_count": 0,
+      "followup_card_count": 0,
+      "followup_density": 0.0,
+      "followup_groups": [],
+      "followup_chain_valid": false,
+      "weapon_loadout": [],
+      "primary_weapon_style": "",
+      "secondary_weapon_style": "",
+      "dual_weapon_enabled": false,
+      "primary_weapon_ratio": 0.0,
+      "secondary_weapon_ratio": 0.0,
+      "generic_ratio": 0.0,
+      "max_required_wujing": 0,
+      "max_closing_form_tier": 0,
+      "dual_weapon_synergy_count": 0
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1825,7 +2076,22 @@
         "boss",
         "boss",
         "blademaster"
-      ]
+      ],
+      "followup_chain_count": 0,
+      "followup_card_count": 0,
+      "followup_density": 0.0,
+      "followup_groups": [],
+      "followup_chain_valid": false,
+      "weapon_loadout": [],
+      "primary_weapon_style": "",
+      "secondary_weapon_style": "",
+      "dual_weapon_enabled": false,
+      "primary_weapon_ratio": 0.0,
+      "secondary_weapon_ratio": 0.0,
+      "generic_ratio": 0.0,
+      "max_required_wujing": 0,
+      "max_closing_form_tier": 0,
+      "dual_weapon_synergy_count": 0
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1856,7 +2122,22 @@
         "mid",
         "elite",
         "spearman"
-      ]
+      ],
+      "followup_chain_count": 0,
+      "followup_card_count": 0,
+      "followup_density": 0.0,
+      "followup_groups": [],
+      "followup_chain_valid": false,
+      "weapon_loadout": [],
+      "primary_weapon_style": "",
+      "secondary_weapon_style": "",
+      "dual_weapon_enabled": false,
+      "primary_weapon_ratio": 0.0,
+      "secondary_weapon_ratio": 0.0,
+      "generic_ratio": 0.0,
+      "max_required_wujing": 0,
+      "max_closing_form_tier": 0,
+      "dual_weapon_synergy_count": 0
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1887,7 +2168,22 @@
         "mid",
         "elite",
         "blademaster"
-      ]
+      ],
+      "followup_chain_count": 0,
+      "followup_card_count": 0,
+      "followup_density": 0.0,
+      "followup_groups": [],
+      "followup_chain_valid": false,
+      "weapon_loadout": [],
+      "primary_weapon_style": "",
+      "secondary_weapon_style": "",
+      "dual_weapon_enabled": false,
+      "primary_weapon_ratio": 0.0,
+      "secondary_weapon_ratio": 0.0,
+      "generic_ratio": 0.0,
+      "max_required_wujing": 0,
+      "max_closing_form_tier": 0,
+      "dual_weapon_synergy_count": 0
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1919,7 +2215,22 @@
         "boss",
         "boss",
         "blademaster"
-      ]
+      ],
+      "followup_chain_count": 0,
+      "followup_card_count": 0,
+      "followup_density": 0.0,
+      "followup_groups": [],
+      "followup_chain_valid": false,
+      "weapon_loadout": [],
+      "primary_weapon_style": "",
+      "secondary_weapon_style": "",
+      "dual_weapon_enabled": false,
+      "primary_weapon_ratio": 0.0,
+      "secondary_weapon_ratio": 0.0,
+      "generic_ratio": 0.0,
+      "max_required_wujing": 0,
+      "max_closing_form_tier": 0,
+      "dual_weapon_synergy_count": 0
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1950,7 +2261,22 @@
         "mid",
         "elite",
         "blademaster"
-      ]
+      ],
+      "followup_chain_count": 0,
+      "followup_card_count": 0,
+      "followup_density": 0.0,
+      "followup_groups": [],
+      "followup_chain_valid": false,
+      "weapon_loadout": [],
+      "primary_weapon_style": "",
+      "secondary_weapon_style": "",
+      "dual_weapon_enabled": false,
+      "primary_weapon_ratio": 0.0,
+      "secondary_weapon_ratio": 0.0,
+      "generic_ratio": 0.0,
+      "max_required_wujing": 0,
+      "max_closing_form_tier": 0,
+      "dual_weapon_synergy_count": 0
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -1981,7 +2307,22 @@
         "mid",
         "elite",
         "spearman"
-      ]
+      ],
+      "followup_chain_count": 0,
+      "followup_card_count": 0,
+      "followup_density": 0.0,
+      "followup_groups": [],
+      "followup_chain_valid": false,
+      "weapon_loadout": [],
+      "primary_weapon_style": "",
+      "secondary_weapon_style": "",
+      "dual_weapon_enabled": false,
+      "primary_weapon_ratio": 0.0,
+      "secondary_weapon_ratio": 0.0,
+      "generic_ratio": 0.0,
+      "max_required_wujing": 0,
+      "max_closing_form_tier": 0,
+      "dual_weapon_synergy_count": 0
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -2013,7 +2354,22 @@
         "late",
         "elite",
         "spearman"
-      ]
+      ],
+      "followup_chain_count": 0,
+      "followup_card_count": 0,
+      "followup_density": 0.0,
+      "followup_groups": [],
+      "followup_chain_valid": false,
+      "weapon_loadout": [],
+      "primary_weapon_style": "",
+      "secondary_weapon_style": "",
+      "dual_weapon_enabled": false,
+      "primary_weapon_ratio": 0.0,
+      "secondary_weapon_ratio": 0.0,
+      "generic_ratio": 0.0,
+      "max_required_wujing": 0,
+      "max_closing_form_tier": 0,
+      "dual_weapon_synergy_count": 0
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -2044,7 +2400,22 @@
         "late",
         "normal",
         "spearman"
-      ]
+      ],
+      "followup_chain_count": 0,
+      "followup_card_count": 0,
+      "followup_density": 0.0,
+      "followup_groups": [],
+      "followup_chain_valid": false,
+      "weapon_loadout": [],
+      "primary_weapon_style": "",
+      "secondary_weapon_style": "",
+      "dual_weapon_enabled": false,
+      "primary_weapon_ratio": 0.0,
+      "secondary_weapon_ratio": 0.0,
+      "generic_ratio": 0.0,
+      "max_required_wujing": 0,
+      "max_closing_form_tier": 0,
+      "dual_weapon_synergy_count": 0
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -2076,7 +2447,22 @@
         "late",
         "elite",
         "blademaster"
-      ]
+      ],
+      "followup_chain_count": 0,
+      "followup_card_count": 0,
+      "followup_density": 0.0,
+      "followup_groups": [],
+      "followup_chain_valid": false,
+      "weapon_loadout": [],
+      "primary_weapon_style": "",
+      "secondary_weapon_style": "",
+      "dual_weapon_enabled": false,
+      "primary_weapon_ratio": 0.0,
+      "secondary_weapon_ratio": 0.0,
+      "generic_ratio": 0.0,
+      "max_required_wujing": 0,
+      "max_closing_form_tier": 0,
+      "dual_weapon_synergy_count": 0
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -2107,7 +2493,22 @@
         "late",
         "normal",
         "blademaster"
-      ]
+      ],
+      "followup_chain_count": 0,
+      "followup_card_count": 0,
+      "followup_density": 0.0,
+      "followup_groups": [],
+      "followup_chain_valid": false,
+      "weapon_loadout": [],
+      "primary_weapon_style": "",
+      "secondary_weapon_style": "",
+      "dual_weapon_enabled": false,
+      "primary_weapon_ratio": 0.0,
+      "secondary_weapon_ratio": 0.0,
+      "generic_ratio": 0.0,
+      "max_required_wujing": 0,
+      "max_closing_form_tier": 0,
+      "dual_weapon_synergy_count": 0
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -2139,7 +2540,22 @@
         "boss",
         "boss",
         "blademaster"
-      ]
+      ],
+      "followup_chain_count": 0,
+      "followup_card_count": 0,
+      "followup_density": 0.0,
+      "followup_groups": [],
+      "followup_chain_valid": false,
+      "weapon_loadout": [],
+      "primary_weapon_style": "",
+      "secondary_weapon_style": "",
+      "dual_weapon_enabled": false,
+      "primary_weapon_ratio": 0.0,
+      "secondary_weapon_ratio": 0.0,
+      "generic_ratio": 0.0,
+      "max_required_wujing": 0,
+      "max_closing_form_tier": 0,
+      "dual_weapon_synergy_count": 0
     }
   ],
   "battle_slots": [
@@ -2160,6 +2576,13 @@
       "reward_plan_id": "posture_basic_v0_1_reward_001",
       "runtime_primitives": [],
       "opening_pressure": {},
+      "weapon_followup": {},
+      "clue_pressure": {},
+      "max_enemy_wujing": 1,
+      "weapon_loadout": [],
+      "dual_weapon_enabled": false,
+      "martial_realm_stage": "",
+      "realm_pressure_level": "",
       "source": {
         "target_sequence_id": "formal_sequence_mvp_v1",
         "formal_encounter_id": "enc_beach_ambush",
@@ -2184,6 +2607,13 @@
       "reward_plan_id": "posture_basic_v0_1_reward_002",
       "runtime_primitives": [],
       "opening_pressure": {},
+      "weapon_followup": {},
+      "clue_pressure": {},
+      "max_enemy_wujing": 1,
+      "weapon_loadout": [],
+      "dual_weapon_enabled": false,
+      "martial_realm_stage": "",
+      "realm_pressure_level": "",
       "source": {
         "target_sequence_id": "formal_sequence_mvp_v1",
         "formal_encounter_id": "enc_fishing_village_embers",
@@ -2208,6 +2638,13 @@
       "reward_plan_id": "posture_basic_v0_1_reward_003",
       "runtime_primitives": [],
       "opening_pressure": {},
+      "weapon_followup": {},
+      "clue_pressure": {},
+      "max_enemy_wujing": 1,
+      "weapon_loadout": [],
+      "dual_weapon_enabled": false,
+      "martial_realm_stage": "",
+      "realm_pressure_level": "",
       "source": {
         "target_sequence_id": "formal_sequence_mvp_v1",
         "formal_encounter_id": "enc_transport_officer",
@@ -2232,6 +2669,13 @@
       "reward_plan_id": "posture_basic_v0_1_reward_004",
       "runtime_primitives": [],
       "opening_pressure": {},
+      "weapon_followup": {},
+      "clue_pressure": {},
+      "max_enemy_wujing": 1,
+      "weapon_loadout": [],
+      "dual_weapon_enabled": false,
+      "martial_realm_stage": "",
+      "realm_pressure_level": "",
       "source": {
         "target_sequence_id": "formal_sequence_mvp_v1",
         "formal_encounter_id": "enc_mutiny_camp",
@@ -2256,6 +2700,13 @@
       "reward_plan_id": "posture_basic_v0_1_reward_005",
       "runtime_primitives": [],
       "opening_pressure": {},
+      "weapon_followup": {},
+      "clue_pressure": {},
+      "max_enemy_wujing": 4,
+      "weapon_loadout": [],
+      "dual_weapon_enabled": false,
+      "martial_realm_stage": "",
+      "realm_pressure_level": "",
       "source": {
         "target_sequence_id": "formal_sequence_mvp_v1",
         "formal_encounter_id": "enc_wakou_boss",
@@ -2280,6 +2731,13 @@
       "reward_plan_id": "posture_basic_v0_1_reward_006",
       "runtime_primitives": [],
       "opening_pressure": {},
+      "weapon_followup": {},
+      "clue_pressure": {},
+      "max_enemy_wujing": 2,
+      "weapon_loadout": [],
+      "dual_weapon_enabled": false,
+      "martial_realm_stage": "",
+      "realm_pressure_level": "",
       "source": {
         "target_sequence_id": "formal_sequence_mvp_v1",
         "formal_encounter_id": "enc_wuke_spear_trial",
@@ -2304,6 +2762,13 @@
       "reward_plan_id": "posture_basic_v0_1_reward_007",
       "runtime_primitives": [],
       "opening_pressure": {},
+      "weapon_followup": {},
+      "clue_pressure": {},
+      "max_enemy_wujing": 2,
+      "weapon_loadout": [],
+      "dual_weapon_enabled": false,
+      "martial_realm_stage": "",
+      "realm_pressure_level": "",
       "source": {
         "target_sequence_id": "formal_sequence_mvp_v1",
         "formal_encounter_id": "enc_wuke_blade_trial",
@@ -2328,6 +2793,13 @@
       "reward_plan_id": "posture_basic_v0_1_reward_008",
       "runtime_primitives": [],
       "opening_pressure": {},
+      "weapon_followup": {},
+      "clue_pressure": {},
+      "max_enemy_wujing": 4,
+      "weapon_loadout": [],
+      "dual_weapon_enabled": false,
+      "martial_realm_stage": "",
+      "realm_pressure_level": "",
       "source": {
         "target_sequence_id": "formal_sequence_mvp_v1",
         "formal_encounter_id": "enc_wuke_final_duel",
@@ -2352,6 +2824,13 @@
       "reward_plan_id": "posture_basic_v0_1_reward_009",
       "runtime_primitives": [],
       "opening_pressure": {},
+      "weapon_followup": {},
+      "clue_pressure": {},
+      "max_enemy_wujing": 2,
+      "weapon_loadout": [],
+      "dual_weapon_enabled": false,
+      "martial_realm_stage": "",
+      "realm_pressure_level": "",
       "source": {
         "target_sequence_id": "formal_sequence_mvp_v1",
         "formal_encounter_id": "enc_wuke_gu_chengyue",
@@ -2376,6 +2855,13 @@
       "reward_plan_id": "posture_basic_v0_1_reward_010",
       "runtime_primitives": [],
       "opening_pressure": {},
+      "weapon_followup": {},
+      "clue_pressure": {},
+      "max_enemy_wujing": 2,
+      "weapon_loadout": [],
+      "dual_weapon_enabled": false,
+      "martial_realm_stage": "",
+      "realm_pressure_level": "",
       "source": {
         "target_sequence_id": "formal_sequence_mvp_v1",
         "formal_encounter_id": "enc_wuke_shen_zhaoye",
@@ -2400,6 +2886,13 @@
       "reward_plan_id": "posture_basic_v0_1_reward_011",
       "runtime_primitives": [],
       "opening_pressure": {},
+      "weapon_followup": {},
+      "clue_pressure": {},
+      "max_enemy_wujing": 3,
+      "weapon_loadout": [],
+      "dual_weapon_enabled": false,
+      "martial_realm_stage": "",
+      "realm_pressure_level": "",
       "source": {
         "target_sequence_id": "formal_sequence_mvp_v1",
         "formal_encounter_id": "enc_wuke_qi_heng",
@@ -2424,6 +2917,13 @@
       "reward_plan_id": "posture_basic_v0_1_reward_012",
       "runtime_primitives": [],
       "opening_pressure": {},
+      "weapon_followup": {},
+      "clue_pressure": {},
+      "max_enemy_wujing": 3,
+      "weapon_loadout": [],
+      "dual_weapon_enabled": false,
+      "martial_realm_stage": "",
+      "realm_pressure_level": "",
       "source": {
         "target_sequence_id": "formal_sequence_mvp_v1",
         "formal_encounter_id": "enc_ch2_reed_ambush",
@@ -2448,6 +2948,13 @@
       "reward_plan_id": "posture_basic_v0_1_reward_013",
       "runtime_primitives": [],
       "opening_pressure": {},
+      "weapon_followup": {},
+      "clue_pressure": {},
+      "max_enemy_wujing": 3,
+      "weapon_loadout": [],
+      "dual_weapon_enabled": false,
+      "martial_realm_stage": "",
+      "realm_pressure_level": "",
       "source": {
         "target_sequence_id": "formal_sequence_mvp_v1",
         "formal_encounter_id": "enc_ch3_escort_clash",
@@ -2472,6 +2979,13 @@
       "reward_plan_id": "posture_basic_v0_1_reward_014",
       "runtime_primitives": [],
       "opening_pressure": {},
+      "weapon_followup": {},
+      "clue_pressure": {},
+      "max_enemy_wujing": 3,
+      "weapon_loadout": [],
+      "dual_weapon_enabled": false,
+      "martial_realm_stage": "",
+      "realm_pressure_level": "",
       "source": {
         "target_sequence_id": "formal_sequence_mvp_v1",
         "formal_encounter_id": "enc_ch4_tide_bandits",
@@ -2496,6 +3010,13 @@
       "reward_plan_id": "posture_basic_v0_1_reward_015",
       "runtime_primitives": [],
       "opening_pressure": {},
+      "weapon_followup": {},
+      "clue_pressure": {},
+      "max_enemy_wujing": 4,
+      "weapon_loadout": [],
+      "dual_weapon_enabled": false,
+      "martial_realm_stage": "",
+      "realm_pressure_level": "",
       "source": {
         "target_sequence_id": "formal_sequence_mvp_v1",
         "formal_encounter_id": "enc_boss_ext_wakou_leader",
@@ -2853,7 +3374,10 @@
       "target_power_min": 20,
       "target_power_max": 30,
       "reward_tier": "basic",
-      "runtime_primitives": []
+      "runtime_primitives": [],
+      "weapon_followup_enabled": false,
+      "clue_pressure_enabled": false,
+      "dual_weapon_enabled": false
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -2872,7 +3396,10 @@
       "target_power_min": 20,
       "target_power_max": 30,
       "reward_tier": "basic",
-      "runtime_primitives": []
+      "runtime_primitives": [],
+      "weapon_followup_enabled": false,
+      "clue_pressure_enabled": false,
+      "dual_weapon_enabled": false
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -2891,7 +3418,10 @@
       "target_power_min": 23,
       "target_power_max": 35,
       "reward_tier": "basic",
-      "runtime_primitives": []
+      "runtime_primitives": [],
+      "weapon_followup_enabled": false,
+      "clue_pressure_enabled": false,
+      "dual_weapon_enabled": false
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -2910,7 +3440,10 @@
       "target_power_min": 23,
       "target_power_max": 35,
       "reward_tier": "basic",
-      "runtime_primitives": []
+      "runtime_primitives": [],
+      "weapon_followup_enabled": false,
+      "clue_pressure_enabled": false,
+      "dual_weapon_enabled": false
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -2929,7 +3462,10 @@
       "target_power_min": 52,
       "target_power_max": 62,
       "reward_tier": "boss",
-      "runtime_primitives": []
+      "runtime_primitives": [],
+      "weapon_followup_enabled": false,
+      "clue_pressure_enabled": false,
+      "dual_weapon_enabled": false
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -2948,7 +3484,10 @@
       "target_power_min": 31,
       "target_power_max": 43,
       "reward_tier": "standard",
-      "runtime_primitives": []
+      "runtime_primitives": [],
+      "weapon_followup_enabled": false,
+      "clue_pressure_enabled": false,
+      "dual_weapon_enabled": false
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -2967,7 +3506,10 @@
       "target_power_min": 31,
       "target_power_max": 43,
       "reward_tier": "standard",
-      "runtime_primitives": []
+      "runtime_primitives": [],
+      "weapon_followup_enabled": false,
+      "clue_pressure_enabled": false,
+      "dual_weapon_enabled": false
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -2986,7 +3528,10 @@
       "target_power_min": 52,
       "target_power_max": 62,
       "reward_tier": "boss",
-      "runtime_primitives": []
+      "runtime_primitives": [],
+      "weapon_followup_enabled": false,
+      "clue_pressure_enabled": false,
+      "dual_weapon_enabled": false
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -3005,7 +3550,10 @@
       "target_power_min": 31,
       "target_power_max": 43,
       "reward_tier": "standard",
-      "runtime_primitives": []
+      "runtime_primitives": [],
+      "weapon_followup_enabled": false,
+      "clue_pressure_enabled": false,
+      "dual_weapon_enabled": false
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -3024,7 +3572,10 @@
       "target_power_min": 31,
       "target_power_max": 43,
       "reward_tier": "standard",
-      "runtime_primitives": []
+      "runtime_primitives": [],
+      "weapon_followup_enabled": false,
+      "clue_pressure_enabled": false,
+      "dual_weapon_enabled": false
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -3043,7 +3594,10 @@
       "target_power_min": 43,
       "target_power_max": 55,
       "reward_tier": "advanced",
-      "runtime_primitives": []
+      "runtime_primitives": [],
+      "weapon_followup_enabled": false,
+      "clue_pressure_enabled": false,
+      "dual_weapon_enabled": false
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -3062,7 +3616,10 @@
       "target_power_min": 40,
       "target_power_max": 50,
       "reward_tier": "advanced",
-      "runtime_primitives": []
+      "runtime_primitives": [],
+      "weapon_followup_enabled": false,
+      "clue_pressure_enabled": false,
+      "dual_weapon_enabled": false
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -3081,7 +3638,10 @@
       "target_power_min": 43,
       "target_power_max": 55,
       "reward_tier": "advanced",
-      "runtime_primitives": []
+      "runtime_primitives": [],
+      "weapon_followup_enabled": false,
+      "clue_pressure_enabled": false,
+      "dual_weapon_enabled": false
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -3100,7 +3660,10 @@
       "target_power_min": 40,
       "target_power_max": 50,
       "reward_tier": "advanced",
-      "runtime_primitives": []
+      "runtime_primitives": [],
+      "weapon_followup_enabled": false,
+      "clue_pressure_enabled": false,
+      "dual_weapon_enabled": false
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -3119,7 +3682,10 @@
       "target_power_min": 52,
       "target_power_max": 62,
       "reward_tier": "boss",
-      "runtime_primitives": []
+      "runtime_primitives": [],
+      "weapon_followup_enabled": false,
+      "clue_pressure_enabled": false,
+      "dual_weapon_enabled": false
     }
   ]
 }

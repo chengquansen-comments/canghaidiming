@@ -100,26 +100,43 @@ func _apply_runtime_primitives(loadout: Dictionary) -> void:
 	last_weapon_followup_group = ""
 	last_weapon_followup_trigger = ""
 	last_weapon_followup_error = ""
+	last_clue_pressure_enabled = false
+	last_clue_pressure_applied = false
+	last_clue_pressure_trigger_count = 0
+	last_clue_pressure_tags.clear()
+	last_clue_pressure_effect = ""
+	last_clue_pressure_value = 0
+	last_clue_pressure_converted_effect = ""
+	last_clue_pressure_error = ""
+	last_clue_pressure_trigger_timing = ""
+	last_martial_realm_7_enabled = false
+	last_player_wujing_cap = 0
+	last_max_required_wujing = 0
+	last_max_closing_form_tier = 0
+	last_dual_weapon_enabled = false
+	last_weapon_loadout.clear()
+	last_primary_weapon_style = ""
+	last_secondary_weapon_style = ""
+	last_dual_weapon_synergy_count = 0
+	last_martial_realm_error = ""
 	_runtime_generated_card_meta = {}
 	if enemy == null:
 		return
-	if not last_runtime_primitives.has("opening_pressure"):
-		return
-	var opening_pressure: Dictionary = _dict(loadout.get("opening_pressure", {}))
-	if opening_pressure.is_empty():
-		return
-	last_opening_pressure_source = str(opening_pressure.get("source", "runtime_manifest"))
-	last_opening_pressure_enemy_momentum_bonus = int(opening_pressure.get("enemy_start_momentum_bonus", 0))
-	last_opening_pressure_enemy_block_bonus = int(opening_pressure.get("enemy_start_block_bonus", 0))
-	if last_opening_pressure_enemy_momentum_bonus > 0:
-		var next_momentum := clampi(enemy.data.starting_momentum + last_opening_pressure_enemy_momentum_bonus, 0, enemy.data.max_momentum)
-		enemy.data.starting_momentum = next_momentum
-		enemy.momentum = next_momentum
-		last_opening_pressure_applied_fields.append("enemy_start_momentum_bonus")
-	if last_opening_pressure_enemy_block_bonus > 0:
-		enemy.add_guard(last_opening_pressure_enemy_block_bonus)
-		last_opening_pressure_applied_fields.append("enemy_start_block_bonus")
-	last_opening_pressure_applied = not last_opening_pressure_applied_fields.is_empty()
+	if last_runtime_primitives.has("opening_pressure"):
+		var opening_pressure: Dictionary = _dict(loadout.get("opening_pressure", {}))
+		if not opening_pressure.is_empty():
+			last_opening_pressure_source = str(opening_pressure.get("source", "runtime_manifest"))
+			last_opening_pressure_enemy_momentum_bonus = int(opening_pressure.get("enemy_start_momentum_bonus", 0))
+			last_opening_pressure_enemy_block_bonus = int(opening_pressure.get("enemy_start_block_bonus", 0))
+			if last_opening_pressure_enemy_momentum_bonus > 0:
+				var next_momentum := clampi(enemy.data.starting_momentum + last_opening_pressure_enemy_momentum_bonus, 0, enemy.data.max_momentum)
+				enemy.data.starting_momentum = next_momentum
+				enemy.momentum = next_momentum
+				last_opening_pressure_applied_fields.append("enemy_start_momentum_bonus")
+			if last_opening_pressure_enemy_block_bonus > 0:
+				enemy.add_guard(last_opening_pressure_enemy_block_bonus)
+				last_opening_pressure_applied_fields.append("enemy_start_block_bonus")
+			last_opening_pressure_applied = not last_opening_pressure_applied_fields.is_empty()
 	if last_runtime_primitives.has("weapon_followup"):
 		var weapon_followup: Dictionary = _dict(loadout.get("weapon_followup", {}))
 		last_weapon_followup_enabled = bool(weapon_followup.get("enabled", false))
@@ -140,7 +157,61 @@ func _apply_runtime_primitives(loadout: Dictionary) -> void:
 				"followup_chain_role": str(card.get("followup_chain_role", "standalone")),
 				"weapon_style": str(card.get("weapon_style", "")),
 				"tags": (card.get("tags", []) as Array).duplicate(),
+				"required_wujing": int(card.get("required_wujing", 0)),
+				"closing_form_tier": int(card.get("closing_form_tier", 0)),
+				"dual_weapon_synergy_tag": str(card.get("dual_weapon_synergy_tag", "")),
 			}
+	if last_runtime_primitives.has("clue_pressure"):
+		var clue_pressure: Dictionary = _dict(loadout.get("clue_pressure", {}))
+		last_clue_pressure_enabled = bool(clue_pressure.get("enabled", false))
+		last_clue_pressure_tags = (clue_pressure.get("clue_tags", []) as Array).duplicate()
+		last_clue_pressure_effect = str(clue_pressure.get("pressure_effect", ""))
+		last_clue_pressure_value = int(clue_pressure.get("pressure_value", 0))
+		last_clue_pressure_trigger_timing = str(clue_pressure.get("trigger_timing", "battle_start"))
+		if last_clue_pressure_enabled and last_clue_pressure_trigger_timing == "battle_start":
+			_apply_clue_pressure_runtime_effect()
+	if last_runtime_primitives.has("martial_realm_7") or last_runtime_primitives.has("dual_weapon"):
+		last_martial_realm_7_enabled = last_runtime_primitives.has("martial_realm_7")
+		last_player_wujing_cap = int(loadout.get("player_wujing_cap", 0))
+		last_max_required_wujing = int(loadout.get("max_required_wujing", 0))
+		last_max_closing_form_tier = int(loadout.get("max_closing_form_tier", 0))
+		last_dual_weapon_enabled = bool(loadout.get("dual_weapon_enabled", false))
+		last_weapon_loadout = (loadout.get("weapon_loadout", []) as Array).duplicate()
+		last_primary_weapon_style = str(loadout.get("primary_weapon_style", ""))
+		last_secondary_weapon_style = str(loadout.get("secondary_weapon_style", ""))
+		last_dual_weapon_synergy_count = int(loadout.get("dual_weapon_synergy_count", 0))
+		if last_martial_realm_7_enabled and (last_player_wujing_cap <= 0 or last_max_required_wujing <= 0):
+			last_martial_realm_error = "martial_realm_metadata_missing"
+
+
+func _apply_clue_pressure_runtime_effect() -> void:
+	if enemy == null or not last_clue_pressure_enabled or last_clue_pressure_applied:
+		return
+	var applied := false
+	if last_clue_pressure_effect == "reduce_enemy_momentum":
+		var reduced_momentum := maxi(enemy.momentum - last_clue_pressure_value, 0)
+		if reduced_momentum != enemy.momentum:
+			enemy.momentum = reduced_momentum
+			enemy.data.starting_momentum = reduced_momentum
+		applied = true
+	elif last_clue_pressure_effect == "reduce_enemy_guard":
+		enemy.guard_points = maxi(enemy.guard_points - last_clue_pressure_value, 0)
+		applied = true
+	elif last_clue_pressure_effect == "expose_enemy_weakness":
+		last_clue_pressure_converted_effect = "expose_enemy_weakness"
+		applied = true
+	elif last_clue_pressure_effect == "reduce_next_enemy_attack":
+		last_clue_pressure_converted_effect = "reduce_enemy_momentum"
+		var converted_momentum := maxi(enemy.momentum - last_clue_pressure_value, 0)
+		if converted_momentum != enemy.momentum:
+			enemy.momentum = converted_momentum
+			enemy.data.starting_momentum = converted_momentum
+		applied = true
+	else:
+		last_clue_pressure_error = "unknown_clue_pressure_effect"
+	if applied:
+		last_clue_pressure_applied = true
+		last_clue_pressure_trigger_count += 1
 
 func _apply_battle_loadout_once(loadout: Dictionary) -> void:
 	if battle_loadout_applied:

@@ -1,0 +1,14 @@
+{
+  "all_formal_battles_use_generated_loadout": true,
+  "fallback_loadout_count": 0,
+  "formal_encounter_total_count": 15,
+  "formal_sequence_mapping_loaded": true,
+  "generated_cards_available": true,
+  "generated_decks_applied": true,
+  "generated_loadout_count": 15,
+  "generated_rewards_available": true,
+  "godot_active_manifest_loaded": true,
+  "player_can_progress_through_generated_sequence": true,
+  "original_content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+  "snapshot_content_pack_id": "snapshot_pack_id_required"
+}

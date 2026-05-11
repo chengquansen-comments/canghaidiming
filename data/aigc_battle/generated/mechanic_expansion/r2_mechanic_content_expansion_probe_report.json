@@ -1,0 +1,19 @@
+{
+  "mechanic_profile_count": 7,
+  "real_mechanic_profile_count": 7,
+  "clue_pressure_ready": true,
+  "martial_realm_7_dual_weapon_ready": true,
+  "each_mechanic_full_sequence_coverage": true,
+  "each_mechanic_has_distinct_cards": true,
+  "each_mechanic_has_distinct_decks": true,
+  "each_mechanic_runtime_observable": true,
+  "each_mechanic_reviewable_in_console": true,
+  "max_wujing_7_ready": true,
+  "dual_weapon_ready": true,
+  "clue_pressure_runtime_ready": true,
+  "mechanic_compare_ready": true,
+  "current_release_unchanged": true,
+  "active_profile_matches_current_release": true,
+  "old_profiles_regression_pass": true,
+  "probe_pass": true
+}

@@ -1,0 +1,264 @@
+{
+  "mechanic_profile_id": "posture_opening_pressure_v0_1",
+  "content_pack_id": "snapshot_pack_id_required",
+  "target_sequence_id": "formal_sequence_mvp_v1",
+  "snapshot_path": "/Users/happy/Documents/Codex/canghaidiming/data/aigc_battle/generated/posture_opening_pressure_v0_1/sequence_balance_snapshot.json",
+  "telemetry_event_count": 15,
+  "formal_encounter_total_count": 15,
+  "encounters_with_telemetry_count": 15,
+  "missing_telemetry_encounters": [],
+  "deck_result_summary": [
+    {
+      "formal_encounter_id": "enc_beach_ambush",
+      "sequence_position": 1,
+      "encounter_tier": "early",
+      "encounter_kind": "normal",
+      "target_power_min": 20,
+      "target_power_max": 30,
+      "deck_power_score": 22.8,
+      "reward_tier": "basic"
+    },
+    {
+      "formal_encounter_id": "enc_fishing_village_embers",
+      "sequence_position": 2,
+      "encounter_tier": "early",
+      "encounter_kind": "normal",
+      "target_power_min": 20,
+      "target_power_max": 30,
+      "deck_power_score": 22.8,
+      "reward_tier": "basic"
+    },
+    {
+      "formal_encounter_id": "enc_transport_officer",
+      "sequence_position": 3,
+      "encounter_tier": "early",
+      "encounter_kind": "elite",
+      "target_power_min": 23,
+      "target_power_max": 35,
+      "deck_power_score": 27.6,
+      "reward_tier": "basic"
+    },
+    {
+      "formal_encounter_id": "enc_mutiny_camp",
+      "sequence_position": 4,
+      "encounter_tier": "early",
+      "encounter_kind": "elite",
+      "target_power_min": 23,
+      "target_power_max": 35,
+      "deck_power_score": 27.6,
+      "reward_tier": "basic"
+    },
+    {
+      "formal_encounter_id": "enc_wakou_boss",
+      "sequence_position": 5,
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "target_power_min": 52,
+      "target_power_max": 62,
+      "deck_power_score": 53.8,
+      "reward_tier": "boss"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_spear_trial",
+      "sequence_position": 6,
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "target_power_min": 31,
+      "target_power_max": 43,
+      "deck_power_score": 33.2,
+      "reward_tier": "standard"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_blade_trial",
+      "sequence_position": 7,
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "target_power_min": 31,
+      "target_power_max": 43,
+      "deck_power_score": 33.2,
+      "reward_tier": "standard"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_final_duel",
+      "sequence_position": 8,
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "target_power_min": 52,
+      "target_power_max": 62,
+      "deck_power_score": 53.8,
+      "reward_tier": "boss"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_gu_chengyue",
+      "sequence_position": 9,
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "target_power_min": 31,
+      "target_power_max": 43,
+      "deck_power_score": 33.2,
+      "reward_tier": "standard"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_shen_zhaoye",
+      "sequence_position": 10,
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "target_power_min": 31,
+      "target_power_max": 43,
+      "deck_power_score": 33.2,
+      "reward_tier": "standard"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_qi_heng",
+      "sequence_position": 11,
+      "encounter_tier": "late",
+      "encounter_kind": "elite",
+      "target_power_min": 43,
+      "target_power_max": 55,
+      "deck_power_score": 49.2,
+      "reward_tier": "advanced"
+    },
+    {
+      "formal_encounter_id": "enc_ch2_reed_ambush",
+      "sequence_position": 12,
+      "encounter_tier": "late",
+      "encounter_kind": "normal",
+      "target_power_min": 40,
+      "target_power_max": 50,
+      "deck_power_score": 43.2,
+      "reward_tier": "advanced"
+    },
+    {
+      "formal_encounter_id": "enc_ch3_escort_clash",
+      "sequence_position": 13,
+      "encounter_tier": "late",
+      "encounter_kind": "elite",
+      "target_power_min": 43,
+      "target_power_max": 55,
+      "deck_power_score": 49.2,
+      "reward_tier": "advanced"
+    },
+    {
+      "formal_encounter_id": "enc_ch4_tide_bandits",
+      "sequence_position": 14,
+      "encounter_tier": "late",
+      "encounter_kind": "normal",
+      "target_power_min": 40,
+      "target_power_max": 50,
+      "deck_power_score": 43.2,
+      "reward_tier": "advanced"
+    },
+    {
+      "formal_encounter_id": "enc_boss_ext_wakou_leader",
+      "sequence_position": 15,
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "target_power_min": 52,
+      "target_power_max": 62,
+      "deck_power_score": 53.8,
+      "reward_tier": "boss"
+    }
+  ],
+  "abnormal_decks": [],
+  "weak_decks": [],
+  "overpowered_decks": [],
+  "reward_claim_summary": {
+    "claimed": 15,
+    "unclaimed": 0
+  },
+  "sequence_rebuild_recommendations": [
+    {
+      "formal_encounter_id": "enc_beach_ambush",
+      "deck_id": "posture_opening_pressure_v0_1_deck_001",
+      "action": "flag_only",
+      "reason": "telemetry_insufficient"
+    },
+    {
+      "formal_encounter_id": "enc_fishing_village_embers",
+      "deck_id": "posture_opening_pressure_v0_1_deck_002",
+      "action": "flag_only",
+      "reason": "telemetry_insufficient"
+    },
+    {
+      "formal_encounter_id": "enc_transport_officer",
+      "deck_id": "posture_opening_pressure_v0_1_deck_003",
+      "action": "flag_only",
+      "reason": "telemetry_insufficient"
+    },
+    {
+      "formal_encounter_id": "enc_mutiny_camp",
+      "deck_id": "posture_opening_pressure_v0_1_deck_004",
+      "action": "flag_only",
+      "reason": "telemetry_insufficient"
+    },
+    {
+      "formal_encounter_id": "enc_wakou_boss",
+      "deck_id": "posture_opening_pressure_v0_1_deck_005",
+      "action": "flag_only",
+      "reason": "telemetry_insufficient"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_spear_trial",
+      "deck_id": "posture_opening_pressure_v0_1_deck_006",
+      "action": "flag_only",
+      "reason": "telemetry_insufficient"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_blade_trial",
+      "deck_id": "posture_opening_pressure_v0_1_deck_007",
+      "action": "flag_only",
+      "reason": "telemetry_insufficient"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_final_duel",
+      "deck_id": "posture_opening_pressure_v0_1_deck_008",
+      "action": "flag_only",
+      "reason": "telemetry_insufficient"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_gu_chengyue",
+      "deck_id": "posture_opening_pressure_v0_1_deck_009",
+      "action": "flag_only",
+      "reason": "telemetry_insufficient"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_shen_zhaoye",
+      "deck_id": "posture_opening_pressure_v0_1_deck_010",
+      "action": "flag_only",
+      "reason": "telemetry_insufficient"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_qi_heng",
+      "deck_id": "posture_opening_pressure_v0_1_deck_011",
+      "action": "flag_only",
+      "reason": "telemetry_insufficient"
+    },
+    {
+      "formal_encounter_id": "enc_ch2_reed_ambush",
+      "deck_id": "posture_opening_pressure_v0_1_deck_012",
+      "action": "flag_only",
+      "reason": "telemetry_insufficient"
+    },
+    {
+      "formal_encounter_id": "enc_ch3_escort_clash",
+      "deck_id": "posture_opening_pressure_v0_1_deck_013",
+      "action": "flag_only",
+      "reason": "telemetry_insufficient"
+    },
+    {
+      "formal_encounter_id": "enc_ch4_tide_bandits",
+      "deck_id": "posture_opening_pressure_v0_1_deck_014",
+      "action": "flag_only",
+      "reason": "telemetry_insufficient"
+    },
+    {
+      "formal_encounter_id": "enc_boss_ext_wakou_leader",
+      "deck_id": "posture_opening_pressure_v0_1_deck_015",
+      "action": "flag_only",
+      "reason": "telemetry_insufficient"
+    }
+  ],
+  "snapshot_ready": true,
+  "original_content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+  "snapshot_content_pack_id": "snapshot_pack_id_required"
+}

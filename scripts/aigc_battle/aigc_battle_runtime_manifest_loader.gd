@@ -121,6 +121,19 @@ static func get_weapon_followup(formal_encounter_id: String, formal_battle_id: S
 	return {}
 
 
+static func get_clue_pressure(formal_encounter_id: String, formal_battle_id: String = "") -> Dictionary:
+	if not _loaded and not load_active_manifest():
+		return {}
+	var loadout := get_generated_loadout(formal_encounter_id, formal_battle_id)
+	if loadout.is_empty():
+		return {}
+	var clue_pressure = loadout.get("clue_pressure", {})
+	if clue_pressure is Dictionary:
+		return (clue_pressure as Dictionary).duplicate(true)
+	_last_error = "clue_pressure missing for: %s|%s" % [formal_encounter_id, formal_battle_id]
+	return {}
+
+
 static func get_generated_loadout(formal_encounter_id: String, formal_battle_id: String = "") -> Dictionary:
 	if not _loaded and not load_active_manifest():
 		return {}
@@ -156,10 +169,25 @@ static func get_generated_loadout(formal_encounter_id: String, formal_battle_id:
 		"runtime_primitives": (slot.get("runtime_primitives", []) as Array).duplicate(),
 		"opening_pressure": (slot.get("opening_pressure", {}) as Dictionary).duplicate(true),
 		"weapon_followup": (slot.get("weapon_followup", {}) as Dictionary).duplicate(true),
+		"clue_pressure": (slot.get("clue_pressure", {}) as Dictionary).duplicate(true),
 		"followup_chain_count": int(deck.get("followup_chain_count", 0)),
 		"followup_card_count": int(deck.get("followup_card_count", 0)),
 		"followup_density": float(deck.get("followup_density", 0.0)),
 		"followup_groups": (deck.get("followup_groups", []) as Array).duplicate(),
+		"player_wujing_cap": int(slot.get("player_wujing_cap", 0)),
+		"max_enemy_wujing": int(slot.get("max_enemy_wujing", 0)),
+		"weapon_loadout": (slot.get("weapon_loadout", deck.get("weapon_loadout", [])) as Array).duplicate(),
+		"dual_weapon_enabled": bool(slot.get("dual_weapon_enabled", deck.get("dual_weapon_enabled", false))),
+		"primary_weapon_style": str(deck.get("primary_weapon_style", "")),
+		"secondary_weapon_style": str(deck.get("secondary_weapon_style", "")),
+		"primary_weapon_ratio": float(deck.get("primary_weapon_ratio", 0.0)),
+		"secondary_weapon_ratio": float(deck.get("secondary_weapon_ratio", 0.0)),
+		"generic_ratio": float(deck.get("generic_ratio", 0.0)),
+		"max_required_wujing": int(deck.get("max_required_wujing", 0)),
+		"max_closing_form_tier": int(deck.get("max_closing_form_tier", 0)),
+		"dual_weapon_synergy_count": int(deck.get("dual_weapon_synergy_count", 0)),
+		"martial_realm_stage": str(slot.get("martial_realm_stage", "")),
+		"realm_pressure_level": str(slot.get("realm_pressure_level", "")),
 		"card_ids": (deck.get("card_ids", []) as Array).duplicate(),
 		"cards": cards,
 		"reward_source": "generated_manifest",

@@ -19,3 +19,4 @@
 - posture_opening_pressure_p1_probe_snapshot_001 | mode=profile_pack_dir | active=false | export=true
 - posture_opening_pressure_p1_probe_snapshot_002 | mode=profile_pack_dir | active=false | export=true
 - posture_opening_pressure_snapshot_001 | mode=profile_pack_dir | active=false | export=true
+- snapshot_pack_id_required | mode=profile_pack_dir | active=false | export=true

@@ -1,0 +1,52 @@
+{
+  "timestamp": "2026-05-11T07:02:50.052404+00:00",
+  "action": "refresh_review",
+  "profile_id": "global",
+  "pack_id": "",
+  "status": "ok",
+  "steps": [
+    {
+      "type": "command",
+      "cmd": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "/Users/happy/Documents/Codex/canghaidiming/tools/aigc_battle/build_aigc_content_index.py"
+      ],
+      "returncode": 0,
+      "stdout": "built aigc content index\n",
+      "stderr": ""
+    },
+    {
+      "type": "command",
+      "cmd": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "/Users/happy/Documents/Codex/canghaidiming/tools/aigc_battle/build_aigc_detail_views.py"
+      ],
+      "returncode": 0,
+      "stdout": "built aigc detail views: profiles=7 packs=13\n",
+      "stderr": ""
+    },
+    {
+      "type": "command",
+      "cmd": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "/Users/happy/Documents/Codex/canghaidiming/tools/aigc_battle/build_aigc_content_index.py"
+      ],
+      "returncode": 0,
+      "stdout": "built aigc content index\n",
+      "stderr": ""
+    },
+    {
+      "type": "command",
+      "cmd": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "/Users/happy/Documents/Codex/canghaidiming/tools/aigc_battle/build_aigc_review_workspace.py"
+      ],
+      "returncode": 0,
+      "stdout": "built aigc review workspace: packs=13\n",
+      "stderr": ""
+    }
+  ],
+  "result": {
+    "review_workspace_path": "data/aigc_battle/generated/review/aigc_review_workspace.json"
+  }
+}

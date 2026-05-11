@@ -32,7 +32,11 @@
     "difficulty_tier": "early",
     "required_wujing": 1,
     "closing_form_tier": 1,
-    "power_score": 5.0
+    "power_score": 5.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -66,7 +70,11 @@
     "difficulty_tier": "early",
     "required_wujing": 1,
     "closing_form_tier": 1,
-    "power_score": 4.0
+    "power_score": 4.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -101,7 +109,11 @@
     "difficulty_tier": "early",
     "required_wujing": 1,
     "closing_form_tier": 1,
-    "power_score": 2.4
+    "power_score": 2.4,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -136,7 +148,11 @@
     "difficulty_tier": "early",
     "required_wujing": 1,
     "closing_form_tier": 1,
-    "power_score": 2.4
+    "power_score": 2.4,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -180,7 +196,11 @@
     "difficulty_tier": "early",
     "required_wujing": 1,
     "closing_form_tier": 1,
-    "power_score": 6.4
+    "power_score": 6.4,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -215,7 +235,11 @@
     "difficulty_tier": "mid",
     "required_wujing": 2,
     "closing_form_tier": 2,
-    "power_score": 6.0
+    "power_score": 6.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -249,7 +273,11 @@
     "difficulty_tier": "mid",
     "required_wujing": 1,
     "closing_form_tier": 1,
-    "power_score": 5.0
+    "power_score": 5.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -284,7 +312,11 @@
     "difficulty_tier": "mid",
     "required_wujing": 2,
     "closing_form_tier": 2,
-    "power_score": 3.2
+    "power_score": 3.2,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -319,7 +351,11 @@
     "difficulty_tier": "mid",
     "required_wujing": 2,
     "closing_form_tier": 2,
-    "power_score": 2.4
+    "power_score": 2.4,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -363,7 +399,11 @@
     "difficulty_tier": "mid",
     "required_wujing": 2,
     "closing_form_tier": 2,
-    "power_score": 7.4
+    "power_score": 7.4,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -398,7 +438,11 @@
     "difficulty_tier": "late",
     "required_wujing": 3,
     "closing_form_tier": 3,
-    "power_score": 8.0
+    "power_score": 8.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -432,7 +476,11 @@
     "difficulty_tier": "late",
     "required_wujing": 1,
     "closing_form_tier": 1,
-    "power_score": 6.0
+    "power_score": 6.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -468,7 +516,11 @@
     "difficulty_tier": "late",
     "required_wujing": 3,
     "closing_form_tier": 3,
-    "power_score": 5.6
+    "power_score": 5.6,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -503,7 +555,11 @@
     "difficulty_tier": "late",
     "required_wujing": 3,
     "closing_form_tier": 3,
-    "power_score": 2.4
+    "power_score": 2.4,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -543,7 +599,11 @@
     "difficulty_tier": "late",
     "required_wujing": 3,
     "closing_form_tier": 3,
-    "power_score": 7.6
+    "power_score": 7.6,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -579,7 +639,11 @@
     "difficulty_tier": "boss",
     "required_wujing": 4,
     "closing_form_tier": 4,
-    "power_score": 8.0
+    "power_score": 8.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -614,7 +678,11 @@
     "difficulty_tier": "boss",
     "required_wujing": 1,
     "closing_form_tier": 1,
-    "power_score": 7.0
+    "power_score": 7.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -650,7 +718,11 @@
     "difficulty_tier": "boss",
     "required_wujing": 4,
     "closing_form_tier": 4,
-    "power_score": 6.4
+    "power_score": 6.4,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -686,7 +758,11 @@
     "difficulty_tier": "boss",
     "required_wujing": 4,
     "closing_form_tier": 4,
-    "power_score": 3.2
+    "power_score": 3.2,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -727,7 +803,11 @@
     "difficulty_tier": "boss",
     "required_wujing": 4,
     "closing_form_tier": 4,
-    "power_score": 7.8
+    "power_score": 7.8,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -762,7 +842,11 @@
     "difficulty_tier": "early",
     "required_wujing": 1,
     "closing_form_tier": 1,
-    "power_score": 5.0
+    "power_score": 5.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -796,7 +880,11 @@
     "difficulty_tier": "early",
     "required_wujing": 1,
     "closing_form_tier": 1,
-    "power_score": 4.0
+    "power_score": 4.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -831,7 +919,11 @@
     "difficulty_tier": "early",
     "required_wujing": 1,
     "closing_form_tier": 1,
-    "power_score": 2.4
+    "power_score": 2.4,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -866,7 +958,11 @@
     "difficulty_tier": "early",
     "required_wujing": 1,
     "closing_form_tier": 1,
-    "power_score": 2.4
+    "power_score": 2.4,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -910,7 +1006,11 @@
     "difficulty_tier": "early",
     "required_wujing": 1,
     "closing_form_tier": 1,
-    "power_score": 6.4
+    "power_score": 6.4,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -945,7 +1045,11 @@
     "difficulty_tier": "mid",
     "required_wujing": 2,
     "closing_form_tier": 2,
-    "power_score": 6.0
+    "power_score": 6.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -979,7 +1083,11 @@
     "difficulty_tier": "mid",
     "required_wujing": 1,
     "closing_form_tier": 1,
-    "power_score": 5.0
+    "power_score": 5.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -1014,7 +1122,11 @@
     "difficulty_tier": "mid",
     "required_wujing": 2,
     "closing_form_tier": 2,
-    "power_score": 3.2
+    "power_score": 3.2,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -1049,7 +1161,11 @@
     "difficulty_tier": "mid",
     "required_wujing": 2,
     "closing_form_tier": 2,
-    "power_score": 2.4
+    "power_score": 2.4,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -1093,7 +1209,11 @@
     "difficulty_tier": "mid",
     "required_wujing": 2,
     "closing_form_tier": 2,
-    "power_score": 7.4
+    "power_score": 7.4,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -1128,7 +1248,11 @@
     "difficulty_tier": "late",
     "required_wujing": 3,
     "closing_form_tier": 3,
-    "power_score": 8.0
+    "power_score": 8.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -1162,7 +1286,11 @@
     "difficulty_tier": "late",
     "required_wujing": 1,
     "closing_form_tier": 1,
-    "power_score": 6.0
+    "power_score": 6.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -1198,7 +1326,11 @@
     "difficulty_tier": "late",
     "required_wujing": 3,
     "closing_form_tier": 3,
-    "power_score": 5.6
+    "power_score": 5.6,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -1233,7 +1365,11 @@
     "difficulty_tier": "late",
     "required_wujing": 3,
     "closing_form_tier": 3,
-    "power_score": 2.4
+    "power_score": 2.4,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -1273,7 +1409,11 @@
     "difficulty_tier": "late",
     "required_wujing": 3,
     "closing_form_tier": 3,
-    "power_score": 7.6
+    "power_score": 7.6,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -1309,7 +1449,11 @@
     "difficulty_tier": "boss",
     "required_wujing": 4,
     "closing_form_tier": 4,
-    "power_score": 8.0
+    "power_score": 8.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -1344,7 +1488,11 @@
     "difficulty_tier": "boss",
     "required_wujing": 1,
     "closing_form_tier": 1,
-    "power_score": 7.0
+    "power_score": 7.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -1380,7 +1528,11 @@
     "difficulty_tier": "boss",
     "required_wujing": 4,
     "closing_form_tier": 4,
-    "power_score": 6.4
+    "power_score": 6.4,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -1416,7 +1568,11 @@
     "difficulty_tier": "boss",
     "required_wujing": 4,
     "closing_form_tier": 4,
-    "power_score": 3.2
+    "power_score": 3.2,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -1457,6 +1613,10 @@
     "difficulty_tier": "boss",
     "required_wujing": 4,
     "closing_form_tier": 4,
-    "power_score": 7.8
+    "power_score": 7.8,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   }
 ]

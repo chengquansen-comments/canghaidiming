@@ -170,3 +170,17 @@ v2 目标是 `full sequence reward / progression closure`：
 - `set-current` / `set-candidate` / `set-fallback` / `activate-current` / `rollback-to-fallback` / smoke / probe 都必须串行执行，禁止并行。
 - R1 推荐 `current_release = weapon_followup_v0_1 / weapon_followup_v0_1_formal_sequence_pack_001`。
 - R1 推荐 `fallback_release = posture_opening_pressure_v0_1 / posture_opening_pressure_v0_1_formal_sequence_pack_001`。
+
+## R2
+- R2 是 Mechanic Content Expansion。
+- R2 新增 `clue_pressure_v0_1`：线索破防；新增 `martial_realm_7_dual_weapon_v0_1`：七境双武器。
+- `clue_pressure_v0_1` 不是完整嘴遁 UI，而是可生成、可校验、可导出、可 runtime observable 的最小线索破防 primitive。
+- `martial_realm_7_dual_weapon_v0_1` 不是简单数值扩展，而是七境曲线、双武器 deck、主副武器比例和高境卡合法性一起进 validator gate。
+- 两套新机制都必须生成 full sequence 15 场正式内容包，并通过 validate / export / review / probe。
+- 两套新机制都必须 runtime observable；Godot 正式流程至少要暴露 clue pressure / wujing cap / dual weapon loadout 的 last_* 字段。
+- 两套新机制只进入 release candidate，不自动替换 current release。
+- current release 保持 `weapon_followup_v0_1 / weapon_followup_v0_1_formal_sequence_pack_001`。
+- fallback release 保持 `posture_opening_pressure_v0_1 / posture_opening_pressure_v0_1_formal_sequence_pack_001`。
+- 控制台和 review 需要能看到 mechanic compare matrix。
+- R2 不做 `firearm_pressure` / `command_pressure`。
+- build / validate / export / candidate / smoke / probe / compare matrix 都必须串行执行，禁止并行。

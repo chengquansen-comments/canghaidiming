@@ -14,12 +14,20 @@
     "reward_tier": "basic",
     "deck_id": "posture_llm_candidate_v0_1_deck_001",
     "reward_plan_id": "posture_llm_candidate_v0_1_reward_001",
+    "runtime_primitives": [],
+    "opening_pressure": {},
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 1,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_beach_ambush",
       "formal_battle_id": "first_act_beach_ambush",
-      "node_id": "beach_ambush",
-      "content_source": "llm_candidate_import"
+      "node_id": "beach_ambush"
     }
   },
   {
@@ -37,12 +45,20 @@
     "reward_tier": "basic",
     "deck_id": "posture_llm_candidate_v0_1_deck_002",
     "reward_plan_id": "posture_llm_candidate_v0_1_reward_002",
+    "runtime_primitives": [],
+    "opening_pressure": {},
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 1,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_fishing_village_embers",
       "formal_battle_id": "first_act_fishing_village_embers",
-      "node_id": "fishing_village_embers",
-      "content_source": "llm_candidate_import"
+      "node_id": "fishing_village_embers"
     }
   },
   {
@@ -60,12 +76,20 @@
     "reward_tier": "basic",
     "deck_id": "posture_llm_candidate_v0_1_deck_003",
     "reward_plan_id": "posture_llm_candidate_v0_1_reward_003",
+    "runtime_primitives": [],
+    "opening_pressure": {},
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 1,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_transport_officer",
       "formal_battle_id": "first_act_transport_officer",
-      "node_id": "transport_officer",
-      "content_source": "llm_candidate_import"
+      "node_id": "transport_officer"
     }
   },
   {
@@ -83,12 +107,20 @@
     "reward_tier": "basic",
     "deck_id": "posture_llm_candidate_v0_1_deck_004",
     "reward_plan_id": "posture_llm_candidate_v0_1_reward_004",
+    "runtime_primitives": [],
+    "opening_pressure": {},
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 1,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_mutiny_camp",
       "formal_battle_id": "first_act_mutiny_camp",
-      "node_id": "mutiny_camp",
-      "content_source": "llm_candidate_import"
+      "node_id": "mutiny_camp"
     }
   },
   {
@@ -106,12 +138,20 @@
     "reward_tier": "boss",
     "deck_id": "posture_llm_candidate_v0_1_deck_005",
     "reward_plan_id": "posture_llm_candidate_v0_1_reward_005",
+    "runtime_primitives": [],
+    "opening_pressure": {},
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 4,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_wakou_boss",
       "formal_battle_id": "first_act_wakou_boss",
-      "node_id": "wakou_boss",
-      "content_source": "llm_candidate_import"
+      "node_id": "wakou_boss"
     }
   },
   {
@@ -129,12 +169,20 @@
     "reward_tier": "standard",
     "deck_id": "posture_llm_candidate_v0_1_deck_006",
     "reward_plan_id": "posture_llm_candidate_v0_1_reward_006",
+    "runtime_primitives": [],
+    "opening_pressure": {},
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 2,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_wuke_spear_trial",
       "formal_battle_id": "wuke_spear_trial",
-      "node_id": "wuke_spear_trial",
-      "content_source": "llm_candidate_import"
+      "node_id": "wuke_spear_trial"
     }
   },
   {
@@ -152,12 +200,20 @@
     "reward_tier": "standard",
     "deck_id": "posture_llm_candidate_v0_1_deck_007",
     "reward_plan_id": "posture_llm_candidate_v0_1_reward_007",
+    "runtime_primitives": [],
+    "opening_pressure": {},
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 2,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_wuke_blade_trial",
       "formal_battle_id": "wuke_blade_trial",
-      "node_id": "wuke_blade_trial",
-      "content_source": "llm_candidate_import"
+      "node_id": "wuke_blade_trial"
     }
   },
   {
@@ -175,12 +231,20 @@
     "reward_tier": "boss",
     "deck_id": "posture_llm_candidate_v0_1_deck_008",
     "reward_plan_id": "posture_llm_candidate_v0_1_reward_008",
+    "runtime_primitives": [],
+    "opening_pressure": {},
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 4,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_wuke_final_duel",
       "formal_battle_id": "wuke_final_duel",
-      "node_id": "wuke_final_duel",
-      "content_source": "llm_candidate_import"
+      "node_id": "wuke_final_duel"
     }
   },
   {
@@ -198,12 +262,20 @@
     "reward_tier": "standard",
     "deck_id": "posture_llm_candidate_v0_1_deck_009",
     "reward_plan_id": "posture_llm_candidate_v0_1_reward_009",
+    "runtime_primitives": [],
+    "opening_pressure": {},
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 2,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_wuke_gu_chengyue",
       "formal_battle_id": "wuke_gu_chengyue",
-      "node_id": "wuke_elim_gu_chengyue_battle",
-      "content_source": "llm_candidate_import"
+      "node_id": "wuke_elim_gu_chengyue_battle"
     }
   },
   {
@@ -221,12 +293,20 @@
     "reward_tier": "standard",
     "deck_id": "posture_llm_candidate_v0_1_deck_010",
     "reward_plan_id": "posture_llm_candidate_v0_1_reward_010",
+    "runtime_primitives": [],
+    "opening_pressure": {},
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 2,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_wuke_shen_zhaoye",
       "formal_battle_id": "wuke_shen_zhaoye",
-      "node_id": "wuke_elim_shen_zhaoye_battle",
-      "content_source": "llm_candidate_import"
+      "node_id": "wuke_elim_shen_zhaoye_battle"
     }
   },
   {
@@ -244,12 +324,20 @@
     "reward_tier": "advanced",
     "deck_id": "posture_llm_candidate_v0_1_deck_011",
     "reward_plan_id": "posture_llm_candidate_v0_1_reward_011",
+    "runtime_primitives": [],
+    "opening_pressure": {},
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 3,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_wuke_qi_heng",
       "formal_battle_id": "wuke_qi_heng",
-      "node_id": "wuke_elim_qi_heng_battle",
-      "content_source": "llm_candidate_import"
+      "node_id": "wuke_elim_qi_heng_battle"
     }
   },
   {
@@ -267,12 +355,20 @@
     "reward_tier": "advanced",
     "deck_id": "posture_llm_candidate_v0_1_deck_012",
     "reward_plan_id": "posture_llm_candidate_v0_1_reward_012",
+    "runtime_primitives": [],
+    "opening_pressure": {},
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 3,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_ch2_reed_ambush",
       "formal_battle_id": "chapter2_reed_ambush",
-      "node_id": "ch2_reed_ambush_battle",
-      "content_source": "llm_candidate_import"
+      "node_id": "ch2_reed_ambush_battle"
     }
   },
   {
@@ -290,12 +386,20 @@
     "reward_tier": "advanced",
     "deck_id": "posture_llm_candidate_v0_1_deck_013",
     "reward_plan_id": "posture_llm_candidate_v0_1_reward_013",
+    "runtime_primitives": [],
+    "opening_pressure": {},
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 3,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_ch3_escort_clash",
       "formal_battle_id": "chapter3_escort_clash",
-      "node_id": "ch3_escort_clash_battle",
-      "content_source": "llm_candidate_import"
+      "node_id": "ch3_escort_clash_battle"
     }
   },
   {
@@ -313,12 +417,20 @@
     "reward_tier": "advanced",
     "deck_id": "posture_llm_candidate_v0_1_deck_014",
     "reward_plan_id": "posture_llm_candidate_v0_1_reward_014",
+    "runtime_primitives": [],
+    "opening_pressure": {},
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 3,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_ch4_tide_bandits",
       "formal_battle_id": "chapter4_tide_bandits",
-      "node_id": "ch4_tide_bandits_battle",
-      "content_source": "llm_candidate_import"
+      "node_id": "ch4_tide_bandits_battle"
     }
   },
   {
@@ -336,12 +448,20 @@
     "reward_tier": "boss",
     "deck_id": "posture_llm_candidate_v0_1_deck_015",
     "reward_plan_id": "posture_llm_candidate_v0_1_reward_015",
+    "runtime_primitives": [],
+    "opening_pressure": {},
+    "weapon_followup": {},
+    "clue_pressure": {},
+    "max_enemy_wujing": 4,
+    "weapon_loadout": [],
+    "dual_weapon_enabled": false,
+    "martial_realm_stage": "",
+    "realm_pressure_level": "",
     "source": {
       "target_sequence_id": "formal_sequence_mvp_v1",
       "formal_encounter_id": "enc_boss_ext_wakou_leader",
       "formal_battle_id": "boss_ext_wakou_leader",
-      "node_id": "boss_ext_wakou_leader_battle",
-      "content_source": "llm_candidate_import"
+      "node_id": "boss_ext_wakou_leader_battle"
     }
   }
 ]

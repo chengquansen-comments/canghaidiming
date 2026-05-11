@@ -26,11 +26,23 @@
     "tags": [
       "early",
       "normal",
-      "spearman",
-      "llm_candidate_import"
+      "spearman"
     ],
-    "source": "llm_candidate_import",
-    "fill_strategy": "candidate_deck_import"
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
@@ -59,11 +71,23 @@
     "tags": [
       "early",
       "normal",
-      "blademaster",
-      "llm_candidate_import"
+      "blademaster"
     ],
-    "source": "llm_candidate_import",
-    "fill_strategy": "candidate_deck_import"
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
@@ -93,11 +117,23 @@
     "tags": [
       "early",
       "elite",
-      "blademaster",
-      "llm_candidate_import"
+      "blademaster"
     ],
-    "source": "llm_candidate_import",
-    "fill_strategy": "candidate_deck_import"
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
@@ -127,11 +163,23 @@
     "tags": [
       "early",
       "elite",
-      "spearman",
-      "llm_candidate_import"
+      "spearman"
     ],
-    "source": "llm_candidate_import",
-    "fill_strategy": "candidate_deck_import"
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
@@ -162,11 +210,23 @@
     "tags": [
       "boss",
       "boss",
-      "blademaster",
-      "llm_candidate_import"
+      "blademaster"
     ],
-    "source": "llm_candidate_import",
-    "fill_strategy": "candidate_deck_import"
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
@@ -196,11 +256,23 @@
     "tags": [
       "mid",
       "elite",
-      "spearman",
-      "llm_candidate_import"
+      "spearman"
     ],
-    "source": "llm_candidate_import",
-    "fill_strategy": "candidate_deck_import"
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
@@ -230,11 +302,23 @@
     "tags": [
       "mid",
       "elite",
-      "blademaster",
-      "llm_candidate_import"
+      "blademaster"
     ],
-    "source": "llm_candidate_import",
-    "fill_strategy": "candidate_deck_import"
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
@@ -265,11 +349,23 @@
     "tags": [
       "boss",
       "boss",
-      "blademaster",
-      "llm_candidate_import"
+      "blademaster"
     ],
-    "source": "llm_candidate_import",
-    "fill_strategy": "candidate_deck_import"
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
@@ -299,11 +395,23 @@
     "tags": [
       "mid",
       "elite",
-      "blademaster",
-      "llm_candidate_import"
+      "blademaster"
     ],
-    "source": "llm_candidate_import",
-    "fill_strategy": "deterministic_fill_from_valid_candidates"
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
@@ -333,11 +441,23 @@
     "tags": [
       "mid",
       "elite",
-      "spearman",
-      "llm_candidate_import"
+      "spearman"
     ],
-    "source": "llm_candidate_import",
-    "fill_strategy": "deterministic_fill_from_valid_candidates"
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
@@ -368,11 +488,23 @@
     "tags": [
       "late",
       "elite",
-      "spearman",
-      "llm_candidate_import"
+      "spearman"
     ],
-    "source": "llm_candidate_import",
-    "fill_strategy": "deterministic_fill_from_valid_candidates"
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
@@ -402,11 +534,23 @@
     "tags": [
       "late",
       "normal",
-      "spearman",
-      "llm_candidate_import"
+      "spearman"
     ],
-    "source": "llm_candidate_import",
-    "fill_strategy": "deterministic_fill_from_valid_candidates"
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
@@ -437,11 +581,23 @@
     "tags": [
       "late",
       "elite",
-      "blademaster",
-      "llm_candidate_import"
+      "blademaster"
     ],
-    "source": "llm_candidate_import",
-    "fill_strategy": "deterministic_fill_from_valid_candidates"
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
@@ -471,11 +627,23 @@
     "tags": [
       "late",
       "normal",
-      "blademaster",
-      "llm_candidate_import"
+      "blademaster"
     ],
-    "source": "llm_candidate_import",
-    "fill_strategy": "deterministic_fill_from_valid_candidates"
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
@@ -506,10 +674,22 @@
     "tags": [
       "boss",
       "boss",
-      "blademaster",
-      "llm_candidate_import"
+      "blademaster"
     ],
-    "source": "llm_candidate_import",
-    "fill_strategy": "deterministic_fill_from_valid_candidates"
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   }
 ]

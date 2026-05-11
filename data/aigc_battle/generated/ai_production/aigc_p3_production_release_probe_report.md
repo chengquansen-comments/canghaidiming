@@ -1,0 +1,15 @@
+- ai_production_ready: true
+- llm_prompt_export_ready: true
+- llm_candidate_import_ready: true
+- invalid_llm_candidate_rejected: true
+- valid_llm_pack_generated: true
+- review_workspace_shows_llm_source: true
+- release_operations_ready: true
+- release_gate_ready: true
+- pack_freeze_ready: true
+- release_manifest_exported: true
+- rollback_ready: true
+- archived_pack_readonly: true
+- dashboard_ai_release_api_ready: true
+- active_profile_not_corrupted: true
+- probe_pass: true

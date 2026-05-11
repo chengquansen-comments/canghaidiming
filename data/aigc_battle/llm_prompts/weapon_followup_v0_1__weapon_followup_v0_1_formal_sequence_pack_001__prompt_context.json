@@ -1,0 +1,197 @@
+{
+  "profile_id": "weapon_followup_v0_1",
+  "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+  "generated_at": "2026-05-11T06:16:59.772388+00:00",
+  "source_pack_review_path": "data/aigc_battle/generated/review/pack_review_weapon_followup_v0_1__weapon_followup_v0_1_formal_sequence_pack_001.json",
+  "source_real_telemetry_snapshot_path": "data/aigc_battle/generated/weapon_followup_v0_1/real_telemetry_snapshot.json",
+  "risk_summary": {
+    "risk_count": 41,
+    "fail_count": 0,
+    "warning_count": 26,
+    "info_count": 15,
+    "risks_by_type": {
+      "unused_card_count_present": 1,
+      "missing_report": 4,
+      "required_wujing_close_to_cap": 15,
+      "runtime_primitive_present": 15,
+      "unused_card": 5,
+      "snapshot_missing": 1
+    },
+    "risks_by_encounter": {
+      "enc_beach_ambush": 2,
+      "enc_fishing_village_embers": 2,
+      "enc_transport_officer": 2,
+      "enc_mutiny_camp": 2,
+      "enc_wakou_boss": 2,
+      "enc_wuke_spear_trial": 2,
+      "enc_wuke_blade_trial": 2,
+      "enc_wuke_final_duel": 2,
+      "enc_wuke_gu_chengyue": 2,
+      "enc_wuke_shen_zhaoye": 2,
+      "enc_wuke_qi_heng": 2,
+      "enc_ch2_reed_ambush": 2,
+      "enc_ch3_escort_clash": 2,
+      "enc_ch4_tide_bandits": 2,
+      "enc_boss_ext_wakou_leader": 2
+    },
+    "risks_by_card": {
+      "weapon_followup_v0_1_spearman_boss_strike": 1,
+      "weapon_followup_v0_1_spearman_boss_guard": 1,
+      "weapon_followup_v0_1_spearman_boss_pressure": 1,
+      "weapon_followup_v0_1_spearman_boss_focus": 1,
+      "weapon_followup_v0_1_spearman_boss_finisher": 1
+    },
+    "risks_by_deck": {
+      "weapon_followup_v0_1_deck_001": 2,
+      "weapon_followup_v0_1_deck_002": 2,
+      "weapon_followup_v0_1_deck_003": 2,
+      "weapon_followup_v0_1_deck_004": 2,
+      "weapon_followup_v0_1_deck_005": 2,
+      "weapon_followup_v0_1_deck_006": 2,
+      "weapon_followup_v0_1_deck_007": 2,
+      "weapon_followup_v0_1_deck_008": 2,
+      "weapon_followup_v0_1_deck_009": 2,
+      "weapon_followup_v0_1_deck_010": 2,
+      "weapon_followup_v0_1_deck_011": 2,
+      "weapon_followup_v0_1_deck_012": 2,
+      "weapon_followup_v0_1_deck_013": 2,
+      "weapon_followup_v0_1_deck_014": 2,
+      "weapon_followup_v0_1_deck_015": 2
+    },
+    "top_risks": [
+      {
+        "severity": "warning",
+        "risk_type": "missing_report",
+        "message": "缺少审核依赖报告：telemetry_probe_report.json",
+        "profile_id": "weapon_followup_v0_1",
+        "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+        "formal_encounter_id": "",
+        "deck_id": "",
+        "card_id": "",
+        "suggested_action": "needs_rebuild"
+      },
+      {
+        "severity": "warning",
+        "risk_type": "missing_report",
+        "message": "缺少审核依赖报告：sequence_balance_snapshot.json",
+        "profile_id": "weapon_followup_v0_1",
+        "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+        "formal_encounter_id": "",
+        "deck_id": "",
+        "card_id": "",
+        "suggested_action": "needs_rebuild"
+      },
+      {
+        "severity": "warning",
+        "risk_type": "missing_report",
+        "message": "缺少审核依赖报告：runtime_primitive_probe_report.json",
+        "profile_id": "weapon_followup_v0_1",
+        "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+        "formal_encounter_id": "",
+        "deck_id": "",
+        "card_id": "",
+        "suggested_action": "needs_rebuild"
+      },
+      {
+        "severity": "warning",
+        "risk_type": "missing_report",
+        "message": "缺少审核依赖报告：rebuild_from_snapshot_probe_report.json",
+        "profile_id": "weapon_followup_v0_1",
+        "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+        "formal_encounter_id": "",
+        "deck_id": "",
+        "card_id": "",
+        "suggested_action": "needs_rebuild"
+      },
+      {
+        "severity": "warning",
+        "risk_type": "required_wujing_close_to_cap",
+        "message": "卡牌武境要求接近玩家上限。",
+        "profile_id": "weapon_followup_v0_1",
+        "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+        "formal_encounter_id": "enc_beach_ambush",
+        "deck_id": "weapon_followup_v0_1_deck_001",
+        "card_id": "",
+        "suggested_action": "needs_balance_adjustment"
+      },
+      {
+        "severity": "warning",
+        "risk_type": "required_wujing_close_to_cap",
+        "message": "卡牌武境要求接近玩家上限。",
+        "profile_id": "weapon_followup_v0_1",
+        "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+        "formal_encounter_id": "enc_boss_ext_wakou_leader",
+        "deck_id": "weapon_followup_v0_1_deck_015",
+        "card_id": "",
+        "suggested_action": "needs_balance_adjustment"
+      },
+      {
+        "severity": "warning",
+        "risk_type": "required_wujing_close_to_cap",
+        "message": "卡牌武境要求接近玩家上限。",
+        "profile_id": "weapon_followup_v0_1",
+        "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+        "formal_encounter_id": "enc_ch2_reed_ambush",
+        "deck_id": "weapon_followup_v0_1_deck_012",
+        "card_id": "",
+        "suggested_action": "needs_balance_adjustment"
+      },
+      {
+        "severity": "warning",
+        "risk_type": "required_wujing_close_to_cap",
+        "message": "卡牌武境要求接近玩家上限。",
+        "profile_id": "weapon_followup_v0_1",
+        "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+        "formal_encounter_id": "enc_ch3_escort_clash",
+        "deck_id": "weapon_followup_v0_1_deck_013",
+        "card_id": "",
+        "suggested_action": "needs_balance_adjustment"
+      },
+      {
+        "severity": "warning",
+        "risk_type": "required_wujing_close_to_cap",
+        "message": "卡牌武境要求接近玩家上限。",
+        "profile_id": "weapon_followup_v0_1",
+        "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+        "formal_encounter_id": "enc_ch4_tide_bandits",
+        "deck_id": "weapon_followup_v0_1_deck_014",
+        "card_id": "",
+        "suggested_action": "needs_balance_adjustment"
+      },
+      {
+        "severity": "warning",
+        "risk_type": "required_wujing_close_to_cap",
+        "message": "卡牌武境要求接近玩家上限。",
+        "profile_id": "weapon_followup_v0_1",
+        "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+        "formal_encounter_id": "enc_fishing_village_embers",
+        "deck_id": "weapon_followup_v0_1_deck_002",
+        "card_id": "",
+        "suggested_action": "needs_balance_adjustment"
+      },
+      {
+        "severity": "warning",
+        "risk_type": "required_wujing_close_to_cap",
+        "message": "卡牌武境要求接近玩家上限。",
+        "profile_id": "weapon_followup_v0_1",
+        "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+        "formal_encounter_id": "enc_mutiny_camp",
+        "deck_id": "weapon_followup_v0_1_deck_004",
+        "card_id": "",
+        "suggested_action": "needs_balance_adjustment"
+      },
+      {
+        "severity": "warning",
+        "risk_type": "required_wujing_close_to_cap",
+        "message": "卡牌武境要求接近玩家上限。",
+        "profile_id": "weapon_followup_v0_1",
+        "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+        "formal_encounter_id": "enc_transport_officer",
+        "deck_id": "weapon_followup_v0_1_deck_003",
+        "card_id": "",
+        "suggested_action": "needs_balance_adjustment"
+      }
+    ]
+  },
+  "candidate_schema_path": "data/aigc_battle/llm_prompts/weapon_followup_v0_1__weapon_followup_v0_1_formal_sequence_pack_001__candidate_schema.json"
+}

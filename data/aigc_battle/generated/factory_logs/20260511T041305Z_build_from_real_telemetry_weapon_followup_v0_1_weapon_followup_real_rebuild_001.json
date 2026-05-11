@@ -1,0 +1,97 @@
+{
+  "timestamp": "2026-05-11T04:13:05.053122+00:00",
+  "action": "build_from_real_telemetry",
+  "profile_id": "weapon_followup_v0_1",
+  "pack_id": "weapon_followup_real_rebuild_001",
+  "status": "ok",
+  "steps": [
+    {
+      "type": "command",
+      "cmd": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "/Users/happy/Documents/Codex/canghaidiming/tools/aigc_battle/build_content_for_profile.py",
+        "weapon_followup_v0_1",
+        "--use-real-telemetry-snapshot",
+        "/Users/happy/Documents/Codex/canghaidiming/data/aigc_battle/generated/weapon_followup_v0_1/real_telemetry_snapshot.json"
+      ],
+      "returncode": 0,
+      "stdout": "built full sequence content pack: weapon_followup_v0_1\n",
+      "stderr": ""
+    },
+    {
+      "type": "command",
+      "cmd": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "/Users/happy/Documents/Codex/canghaidiming/tools/aigc_battle/validate_content_pack.py",
+        "weapon_followup_v0_1"
+      ],
+      "returncode": 0,
+      "stdout": "validated content pack: weapon_followup_v0_1\n",
+      "stderr": ""
+    },
+    {
+      "type": "command",
+      "cmd": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "/Users/happy/Documents/Codex/canghaidiming/tools/aigc_battle/export_runtime_manifest.py",
+        "weapon_followup_v0_1"
+      ],
+      "returncode": 0,
+      "stdout": "exported runtime manifest: weapon_followup_v0_1\n",
+      "stderr": ""
+    },
+    {
+      "type": "command",
+      "cmd": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "/Users/happy/Documents/Codex/canghaidiming/tools/aigc_battle/build_aigc_content_index.py"
+      ],
+      "returncode": 0,
+      "stdout": "built aigc content index\n",
+      "stderr": ""
+    },
+    {
+      "type": "command",
+      "cmd": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "/Users/happy/Documents/Codex/canghaidiming/tools/aigc_battle/build_aigc_detail_views.py"
+      ],
+      "returncode": 0,
+      "stdout": "built aigc detail views: profiles=5 packs=9\n",
+      "stderr": ""
+    },
+    {
+      "type": "command",
+      "cmd": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "/Users/happy/Documents/Codex/canghaidiming/tools/aigc_battle/build_aigc_content_index.py"
+      ],
+      "returncode": 0,
+      "stdout": "built aigc content index\n",
+      "stderr": ""
+    },
+    {
+      "type": "command",
+      "cmd": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "/Users/happy/Documents/Codex/canghaidiming/tools/aigc_battle/build_aigc_review_workspace.py"
+      ],
+      "returncode": 0,
+      "stdout": "built aigc review workspace: packs=9\n",
+      "stderr": ""
+    }
+  ],
+  "result": {
+    "real_telemetry_snapshot_path": "data/aigc_battle/generated/weapon_followup_v0_1/real_telemetry_snapshot.json",
+    "snapshot_summary": {
+      "source_profile_id": "weapon_followup_v0_1",
+      "source_content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+      "snapshot_content_pack_id": "weapon_followup_real_rebuild_001",
+      "snapshot_dir": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_real_rebuild_001",
+      "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_real_rebuild_001/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_real_rebuild_001/validation_report.json",
+      "snapshot_ready": true
+    },
+    "rebuild_uses_real_telemetry": true
+  }
+}

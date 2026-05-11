@@ -1,0 +1,192 @@
+{
+  "content_recipe_id": "clue_pressure_v0_1_formal_sequence_recipe",
+  "mechanic_profile_id": "clue_pressure_v0_1",
+  "content_pack_id": "clue_pressure_v0_1_formal_sequence_pack_001",
+  "target_sequence_id": "formal_sequence_mvp_v1",
+  "replacement_mode": "full_sequence",
+  "battle_scope": "current_formal_battle_sequence",
+  "formal_sequence_source": {
+    "primary": "tables/narrative_mvp_nodes.tsv",
+    "supplemental": [
+      "data/story_battles/story_encounters.tsv",
+      "data/story_battles.json"
+    ]
+  },
+  "deck_generation_policy": {
+    "deck_source": "generated_card_pool",
+    "per_formal_encounter_unique_battle_slot": true,
+    "difficulty_signal_order": [
+      "boss_keyword",
+      "elite_keyword",
+      "sequence_position"
+    ]
+  },
+  "card_generation_policy": {
+    "weapon_split": [
+      "spearman",
+      "blademaster"
+    ],
+    "tier_split": [
+      "early",
+      "mid",
+      "late",
+      "boss"
+    ],
+    "runtime_effects_only": true,
+    "card_multiplier": 2
+  },
+  "reward_generation_policy": {
+    "per_battle_slot_reward": true,
+    "reward_types": [
+      "card_pick",
+      "resource"
+    ]
+  },
+  "balance_policy": {
+    "sequence_tiers": [
+      {
+        "tier": "early",
+        "position_min": 1,
+        "position_max_ratio": 0.34,
+        "deck_power_min": 20,
+        "deck_power_max": 30,
+        "reward_tier": "basic"
+      },
+      {
+        "tier": "mid",
+        "position_min_ratio": 0.34,
+        "position_max_ratio": 0.67,
+        "deck_power_min": 28,
+        "deck_power_max": 38,
+        "reward_tier": "standard"
+      },
+      {
+        "tier": "late",
+        "position_min_ratio": 0.67,
+        "position_max_ratio": 0.95,
+        "deck_power_min": 40,
+        "deck_power_max": 50,
+        "reward_tier": "advanced"
+      },
+      {
+        "tier": "boss",
+        "deck_power_min": 52,
+        "deck_power_max": 62,
+        "reward_tier": "boss"
+      }
+    ],
+    "enemy_role_curve": {
+      "early": [
+        "spearman",
+        "blademaster"
+      ],
+      "mid": [
+        "blademaster",
+        "spearman"
+      ],
+      "late": [
+        "spearman",
+        "blademaster"
+      ],
+      "boss": [
+        "spearman",
+        "blademaster"
+      ]
+    },
+    "boss_keywords": [
+      "boss",
+      "wakou_leader",
+      "final"
+    ],
+    "elite_keywords": [
+      "trial",
+      "duel",
+      "officer",
+      "escort",
+      "transport",
+      "mutiny",
+      "gu_chengyue",
+      "shen_zhaoye",
+      "qi_heng"
+    ],
+    "elite_power_bonus_min": 3,
+    "elite_power_bonus_max": 5,
+    "min_late_avg_power_over_early": 20
+  },
+  "runtime_primitive_policy": {
+    "primitive_id": "clue_pressure",
+    "sequence_tier_scaling": {
+      "early": {
+        "required_clue_count": 1,
+        "pressure_value": 1,
+        "pressure_effects": [
+          "reduce_enemy_momentum",
+          "expose_enemy_weakness"
+        ],
+        "trigger_timing": "battle_start"
+      },
+      "mid": {
+        "required_clue_count": 1,
+        "pressure_value": 2,
+        "pressure_effects": [
+          "reduce_enemy_momentum",
+          "reduce_enemy_guard",
+          "expose_enemy_weakness"
+        ],
+        "trigger_timing": "first_player_action"
+      },
+      "late": {
+        "required_clue_count": 2,
+        "pressure_value": 3,
+        "pressure_effects": [
+          "reduce_enemy_guard",
+          "expose_enemy_weakness",
+          "reduce_next_enemy_attack"
+        ],
+        "trigger_timing": "enemy_pressure_phase"
+      },
+      "boss": {
+        "required_clue_count": 2,
+        "pressure_value": 4,
+        "pressure_effects": [
+          "reduce_enemy_guard",
+          "reduce_next_enemy_attack",
+          "expose_enemy_weakness"
+        ],
+        "trigger_timing": "battle_start"
+      }
+    },
+    "clue_tag_rotation": {
+      "early": [
+        "witness_statement",
+        "coastal_smuggling",
+        "old_case"
+      ],
+      "mid": [
+        "old_case",
+        "sealed_document",
+        "military_order"
+      ],
+      "late": [
+        "coastal_smuggling",
+        "firearm_trace",
+        "sealed_document"
+      ],
+      "boss": [
+        "old_case",
+        "military_order",
+        "sealed_document",
+        "firearm_trace"
+      ]
+    }
+  },
+  "player_progression_policy": {
+    "default_player_wujing_cap": 1,
+    "tier_wujing_cap": {
+      "early": 1,
+      "mid": 2,
+      "late": 3,
+      "boss": 4
+    }
+  }
+}

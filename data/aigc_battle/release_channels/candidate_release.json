@@ -1,9 +1,9 @@
 {
   "channel": "candidate",
-  "mechanic_profile_id": "",
-  "content_pack_id": "",
-  "runtime_manifest_path": "",
-  "release_status": "pending",
-  "candidate_created_at": "",
+  "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+  "content_pack_id": "martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001",
+  "runtime_manifest_path": "data/aigc_battle/generated/martial_realm_7_dual_weapon_v0_1/runtime_manifest.json",
+  "release_status": "release_candidate",
+  "candidate_created_at": "2026-05-11T07:20:27.087450+00:00",
   "smoke_test_required": true
 }

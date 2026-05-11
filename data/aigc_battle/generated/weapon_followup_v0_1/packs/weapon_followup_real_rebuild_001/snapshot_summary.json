@@ -1,0 +1,9 @@
+{
+  "source_profile_id": "weapon_followup_v0_1",
+  "source_content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+  "snapshot_content_pack_id": "weapon_followup_real_rebuild_001",
+  "snapshot_dir": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_real_rebuild_001",
+  "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_real_rebuild_001/runtime_manifest.json",
+  "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_real_rebuild_001/validation_report.json",
+  "snapshot_ready": true
+}

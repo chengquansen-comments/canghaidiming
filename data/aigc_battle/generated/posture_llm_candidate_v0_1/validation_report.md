@@ -8,6 +8,9 @@
 - not_runtime_playable: false
 - runtime_export_allowed: true
 - ready_for_runtime_export: true
+- weapon_followup_declared: false
+- weapon_followup_chain_valid: true
+- weapon_followup_runtime_export_allowed: true
 
 ## 错误
 - 无

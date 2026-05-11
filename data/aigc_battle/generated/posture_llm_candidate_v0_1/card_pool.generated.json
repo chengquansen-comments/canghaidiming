@@ -4,7 +4,6 @@
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_spearman_early_strike",
     "id": "posture_llm_candidate_v0_1_spearman_early_strike",
-    "candidate_id": "spearman_early_strike",
     "name": "中平刺",
     "card_type": "attack",
     "weapon_style": "spearman",
@@ -28,21 +27,22 @@
       "spearman",
       "attack",
       "measured",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "early",
     "required_wujing": 1,
     "closing_form_tier": 1,
     "power_score": 5.0,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_spearman_early_guard",
     "id": "posture_llm_candidate_v0_1_spearman_early_guard",
-    "candidate_id": "spearman_early_guard",
     "name": "圆架守",
     "card_type": "defense",
     "weapon_style": "spearman",
@@ -65,21 +65,22 @@
       "early",
       "spearman",
       "defense",
-      "anchor",
-      "llm_candidate_import"
+      "anchor"
     ],
     "difficulty_tier": "early",
     "required_wujing": 1,
     "closing_form_tier": 1,
     "power_score": 4.0,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_spearman_early_pressure",
     "id": "posture_llm_candidate_v0_1_spearman_early_pressure",
-    "candidate_id": "spearman_early_pressure",
     "name": "压杆逼势",
     "card_type": "skill",
     "weapon_style": "spearman",
@@ -103,21 +104,22 @@
       "spearman",
       "skill",
       "pressure",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "early",
     "required_wujing": 1,
     "closing_form_tier": 1,
     "power_score": 2.4,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_spearman_early_focus",
     "id": "posture_llm_candidate_v0_1_spearman_early_focus",
-    "candidate_id": "spearman_early_focus",
     "name": "压线整势",
     "card_type": "skill",
     "weapon_style": "spearman",
@@ -141,21 +143,22 @@
       "spearman",
       "skill",
       "setup",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "early",
     "required_wujing": 1,
     "closing_form_tier": 1,
     "power_score": 2.4,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_spearman_early_finisher",
     "id": "posture_llm_candidate_v0_1_spearman_early_finisher",
-    "candidate_id": "spearman_early_finisher",
     "name": "穿线追刺",
     "card_type": "attack",
     "weapon_style": "spearman",
@@ -188,21 +191,22 @@
       "attack",
       "high_pressure",
       "technique",
-      "closing_form",
-      "llm_candidate_import"
+      "closing_form"
     ],
     "difficulty_tier": "early",
     "required_wujing": 1,
     "closing_form_tier": 1,
     "power_score": 6.4,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_spearman_mid_strike",
     "id": "posture_llm_candidate_v0_1_spearman_mid_strike",
-    "candidate_id": "spearman_mid_strike",
     "name": "穿线枪",
     "card_type": "attack",
     "weapon_style": "spearman",
@@ -226,21 +230,22 @@
       "spearman",
       "attack",
       "measured",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "mid",
     "required_wujing": 2,
     "closing_form_tier": 2,
     "power_score": 6.0,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_spearman_mid_guard",
     "id": "posture_llm_candidate_v0_1_spearman_mid_guard",
-    "candidate_id": "spearman_mid_guard",
     "name": "回枪固守",
     "card_type": "defense",
     "weapon_style": "spearman",
@@ -263,21 +268,22 @@
       "mid",
       "spearman",
       "defense",
-      "anchor",
-      "llm_candidate_import"
+      "anchor"
     ],
     "difficulty_tier": "mid",
     "required_wujing": 1,
     "closing_form_tier": 1,
     "power_score": 5.0,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_spearman_mid_pressure",
     "id": "posture_llm_candidate_v0_1_spearman_mid_pressure",
-    "candidate_id": "spearman_mid_pressure",
     "name": "封线破势",
     "card_type": "skill",
     "weapon_style": "spearman",
@@ -301,21 +307,22 @@
       "spearman",
       "skill",
       "pressure",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "mid",
     "required_wujing": 2,
     "closing_form_tier": 2,
     "power_score": 3.2,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_spearman_mid_focus",
     "id": "posture_llm_candidate_v0_1_spearman_mid_focus",
-    "candidate_id": "spearman_mid_focus",
     "name": "稳步蓄势",
     "card_type": "skill",
     "weapon_style": "spearman",
@@ -339,21 +346,22 @@
       "spearman",
       "skill",
       "setup",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "mid",
     "required_wujing": 2,
     "closing_form_tier": 2,
     "power_score": 2.4,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_spearman_mid_finisher",
     "id": "posture_llm_candidate_v0_1_spearman_mid_finisher",
-    "candidate_id": "spearman_mid_finisher",
     "name": "抢线突穿",
     "card_type": "attack",
     "weapon_style": "spearman",
@@ -386,21 +394,22 @@
       "attack",
       "high_pressure",
       "technique",
-      "closing_form",
-      "llm_candidate_import"
+      "closing_form"
     ],
     "difficulty_tier": "mid",
     "required_wujing": 2,
     "closing_form_tier": 2,
     "power_score": 7.4,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_spearman_late_strike",
     "id": "posture_llm_candidate_v0_1_spearman_late_strike",
-    "candidate_id": "spearman_late_strike",
     "name": "贯潮枪",
     "card_type": "attack",
     "weapon_style": "spearman",
@@ -424,21 +433,22 @@
       "spearman",
       "attack",
       "high_pressure",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "late",
     "required_wujing": 3,
     "closing_form_tier": 3,
     "power_score": 8.0,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_spearman_late_guard",
     "id": "posture_llm_candidate_v0_1_spearman_late_guard",
-    "candidate_id": "spearman_late_guard",
     "name": "沉肩守线",
     "card_type": "defense",
     "weapon_style": "spearman",
@@ -461,21 +471,22 @@
       "late",
       "spearman",
       "defense",
-      "anchor",
-      "llm_candidate_import"
+      "anchor"
     ],
     "difficulty_tier": "late",
     "required_wujing": 1,
     "closing_form_tier": 1,
     "power_score": 6.0,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_spearman_late_pressure",
     "id": "posture_llm_candidate_v0_1_spearman_late_pressure",
-    "candidate_id": "spearman_late_pressure",
     "name": "压营断势",
     "card_type": "skill",
     "weapon_style": "spearman",
@@ -500,21 +511,22 @@
       "skill",
       "pressure",
       "high_pressure",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "late",
     "required_wujing": 3,
     "closing_form_tier": 3,
     "power_score": 5.6,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_spearman_late_focus",
     "id": "posture_llm_candidate_v0_1_spearman_late_focus",
-    "candidate_id": "spearman_late_focus",
     "name": "逼线聚势",
     "card_type": "skill",
     "weapon_style": "spearman",
@@ -538,21 +550,22 @@
       "spearman",
       "skill",
       "setup",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "late",
     "required_wujing": 3,
     "closing_form_tier": 3,
     "power_score": 2.4,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_spearman_late_finisher",
     "id": "posture_llm_candidate_v0_1_spearman_late_finisher",
-    "candidate_id": "spearman_late_finisher",
     "name": "潮头追命",
     "card_type": "attack",
     "weapon_style": "spearman",
@@ -581,21 +594,22 @@
       "attack",
       "high_pressure",
       "technique",
-      "closing_form",
-      "llm_candidate_import"
+      "closing_form"
     ],
     "difficulty_tier": "late",
     "required_wujing": 3,
     "closing_form_tier": 3,
     "power_score": 7.6,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_spearman_boss_strike",
     "id": "posture_llm_candidate_v0_1_spearman_boss_strike",
-    "candidate_id": "spearman_boss_strike",
     "name": "断潮重枪",
     "card_type": "attack",
     "weapon_style": "spearman",
@@ -620,21 +634,22 @@
       "attack",
       "boss_tag",
       "high_pressure",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "boss",
     "required_wujing": 4,
     "closing_form_tier": 4,
     "power_score": 8.0,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_spearman_boss_guard",
     "id": "posture_llm_candidate_v0_1_spearman_boss_guard",
-    "candidate_id": "spearman_boss_guard",
     "name": "大架封线",
     "card_type": "defense",
     "weapon_style": "spearman",
@@ -658,21 +673,22 @@
       "spearman",
       "defense",
       "boss_tag",
-      "anchor",
-      "llm_candidate_import"
+      "anchor"
     ],
     "difficulty_tier": "boss",
     "required_wujing": 1,
     "closing_form_tier": 1,
     "power_score": 7.0,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_spearman_boss_pressure",
     "id": "posture_llm_candidate_v0_1_spearman_boss_pressure",
-    "candidate_id": "spearman_boss_pressure",
     "name": "锁营夺势",
     "card_type": "skill",
     "weapon_style": "spearman",
@@ -697,21 +713,22 @@
       "skill",
       "boss_tag",
       "high_pressure",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "boss",
     "required_wujing": 4,
     "closing_form_tier": 4,
     "power_score": 6.4,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_spearman_boss_focus",
     "id": "posture_llm_candidate_v0_1_spearman_boss_focus",
-    "candidate_id": "spearman_boss_focus",
     "name": "裂阵聚势",
     "card_type": "skill",
     "weapon_style": "spearman",
@@ -736,21 +753,22 @@
       "skill",
       "boss_tag",
       "setup",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "boss",
     "required_wujing": 4,
     "closing_form_tier": 4,
     "power_score": 3.2,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_spearman_boss_finisher",
     "id": "posture_llm_candidate_v0_1_spearman_boss_finisher",
-    "candidate_id": "spearman_boss_finisher",
     "name": "贯心落潮",
     "card_type": "attack",
     "weapon_style": "spearman",
@@ -780,21 +798,22 @@
       "boss_tag",
       "high_pressure",
       "technique",
-      "closing_form",
-      "llm_candidate_import"
+      "closing_form"
     ],
     "difficulty_tier": "boss",
     "required_wujing": 4,
     "closing_form_tier": 4,
     "power_score": 7.8,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_blademaster_early_strike",
     "id": "posture_llm_candidate_v0_1_blademaster_early_strike",
-    "candidate_id": "blademaster_early_strike",
     "name": "贴步快斩",
     "card_type": "attack",
     "weapon_style": "blademaster",
@@ -818,21 +837,22 @@
       "blademaster",
       "attack",
       "measured",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "early",
     "required_wujing": 1,
     "closing_form_tier": 1,
     "power_score": 5.0,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_blademaster_early_guard",
     "id": "posture_llm_candidate_v0_1_blademaster_early_guard",
-    "candidate_id": "blademaster_early_guard",
     "name": "藏锋格",
     "card_type": "defense",
     "weapon_style": "blademaster",
@@ -855,21 +875,22 @@
       "early",
       "blademaster",
       "defense",
-      "anchor",
-      "llm_candidate_import"
+      "anchor"
     ],
     "difficulty_tier": "early",
     "required_wujing": 1,
     "closing_form_tier": 1,
     "power_score": 4.0,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_blademaster_early_pressure",
     "id": "posture_llm_candidate_v0_1_blademaster_early_pressure",
-    "candidate_id": "blademaster_early_pressure",
     "name": "逼身断势",
     "card_type": "skill",
     "weapon_style": "blademaster",
@@ -893,21 +914,22 @@
       "blademaster",
       "skill",
       "pressure",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "early",
     "required_wujing": 1,
     "closing_form_tier": 1,
     "power_score": 2.4,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_blademaster_early_focus",
     "id": "posture_llm_candidate_v0_1_blademaster_early_focus",
-    "candidate_id": "blademaster_early_focus",
     "name": "短促换气",
     "card_type": "skill",
     "weapon_style": "blademaster",
@@ -931,21 +953,22 @@
       "blademaster",
       "skill",
       "setup",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "early",
     "required_wujing": 1,
     "closing_form_tier": 1,
     "power_score": 2.4,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_blademaster_early_finisher",
     "id": "posture_llm_candidate_v0_1_blademaster_early_finisher",
-    "candidate_id": "blademaster_early_finisher",
     "name": "贴身追斩",
     "card_type": "attack",
     "weapon_style": "blademaster",
@@ -978,21 +1001,22 @@
       "attack",
       "high_pressure",
       "technique",
-      "closing_form",
-      "llm_candidate_import"
+      "closing_form"
     ],
     "difficulty_tier": "early",
     "required_wujing": 1,
     "closing_form_tier": 1,
     "power_score": 6.4,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_blademaster_mid_strike",
     "id": "posture_llm_candidate_v0_1_blademaster_mid_strike",
-    "candidate_id": "blademaster_mid_strike",
     "name": "追影斩",
     "card_type": "attack",
     "weapon_style": "blademaster",
@@ -1016,21 +1040,22 @@
       "blademaster",
       "attack",
       "measured",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "mid",
     "required_wujing": 2,
     "closing_form_tier": 2,
     "power_score": 6.0,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_blademaster_mid_guard",
     "id": "posture_llm_candidate_v0_1_blademaster_mid_guard",
-    "candidate_id": "blademaster_mid_guard",
     "name": "折腕收锋",
     "card_type": "defense",
     "weapon_style": "blademaster",
@@ -1053,21 +1078,22 @@
       "mid",
       "blademaster",
       "defense",
-      "anchor",
-      "llm_candidate_import"
+      "anchor"
     ],
     "difficulty_tier": "mid",
     "required_wujing": 1,
     "closing_form_tier": 1,
     "power_score": 5.0,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_blademaster_mid_pressure",
     "id": "posture_llm_candidate_v0_1_blademaster_mid_pressure",
-    "candidate_id": "blademaster_mid_pressure",
     "name": "贴身压势",
     "card_type": "skill",
     "weapon_style": "blademaster",
@@ -1091,21 +1117,22 @@
       "blademaster",
       "skill",
       "pressure",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "mid",
     "required_wujing": 2,
     "closing_form_tier": 2,
     "power_score": 3.2,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_blademaster_mid_focus",
     "id": "posture_llm_candidate_v0_1_blademaster_mid_focus",
-    "candidate_id": "blademaster_mid_focus",
     "name": "步内聚势",
     "card_type": "skill",
     "weapon_style": "blademaster",
@@ -1129,21 +1156,22 @@
       "blademaster",
       "skill",
       "setup",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "mid",
     "required_wujing": 2,
     "closing_form_tier": 2,
     "power_score": 2.4,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_blademaster_mid_finisher",
     "id": "posture_llm_candidate_v0_1_blademaster_mid_finisher",
-    "candidate_id": "blademaster_mid_finisher",
     "name": "欺身落刃",
     "card_type": "attack",
     "weapon_style": "blademaster",
@@ -1176,21 +1204,22 @@
       "attack",
       "high_pressure",
       "technique",
-      "closing_form",
-      "llm_candidate_import"
+      "closing_form"
     ],
     "difficulty_tier": "mid",
     "required_wujing": 2,
     "closing_form_tier": 2,
     "power_score": 7.4,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_blademaster_late_strike",
     "id": "posture_llm_candidate_v0_1_blademaster_late_strike",
-    "candidate_id": "blademaster_late_strike",
     "name": "断潮重斩",
     "card_type": "attack",
     "weapon_style": "blademaster",
@@ -1214,21 +1243,22 @@
       "blademaster",
       "attack",
       "high_pressure",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "late",
     "required_wujing": 3,
     "closing_form_tier": 3,
     "power_score": 8.0,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_blademaster_late_guard",
     "id": "posture_llm_candidate_v0_1_blademaster_late_guard",
-    "candidate_id": "blademaster_late_guard",
     "name": "沉锋稳架",
     "card_type": "defense",
     "weapon_style": "blademaster",
@@ -1251,21 +1281,22 @@
       "late",
       "blademaster",
       "defense",
-      "anchor",
-      "llm_candidate_import"
+      "anchor"
     ],
     "difficulty_tier": "late",
     "required_wujing": 1,
     "closing_form_tier": 1,
     "power_score": 6.0,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_blademaster_late_pressure",
     "id": "posture_llm_candidate_v0_1_blademaster_late_pressure",
-    "candidate_id": "blademaster_late_pressure",
     "name": "逼命压锋",
     "card_type": "skill",
     "weapon_style": "blademaster",
@@ -1290,21 +1321,22 @@
       "skill",
       "pressure",
       "high_pressure",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "late",
     "required_wujing": 3,
     "closing_form_tier": 3,
     "power_score": 5.6,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_blademaster_late_focus",
     "id": "posture_llm_candidate_v0_1_blademaster_late_focus",
-    "candidate_id": "blademaster_late_focus",
     "name": "近身蓄势",
     "card_type": "skill",
     "weapon_style": "blademaster",
@@ -1328,21 +1360,22 @@
       "blademaster",
       "skill",
       "setup",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "late",
     "required_wujing": 3,
     "closing_form_tier": 3,
     "power_score": 2.4,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_blademaster_late_finisher",
     "id": "posture_llm_candidate_v0_1_blademaster_late_finisher",
-    "candidate_id": "blademaster_late_finisher",
     "name": "断潮夺命",
     "card_type": "attack",
     "weapon_style": "blademaster",
@@ -1371,21 +1404,22 @@
       "attack",
       "high_pressure",
       "technique",
-      "closing_form",
-      "llm_candidate_import"
+      "closing_form"
     ],
     "difficulty_tier": "late",
     "required_wujing": 3,
     "closing_form_tier": 3,
     "power_score": 7.6,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_blademaster_boss_strike",
     "id": "posture_llm_candidate_v0_1_blademaster_boss_strike",
-    "candidate_id": "blademaster_boss_strike",
     "name": "裂波断首",
     "card_type": "attack",
     "weapon_style": "blademaster",
@@ -1410,21 +1444,22 @@
       "attack",
       "boss_tag",
       "high_pressure",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "boss",
     "required_wujing": 4,
     "closing_form_tier": 4,
     "power_score": 8.0,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_blademaster_boss_guard",
     "id": "posture_llm_candidate_v0_1_blademaster_boss_guard",
-    "candidate_id": "blademaster_boss_guard",
     "name": "沉锋锁门",
     "card_type": "defense",
     "weapon_style": "blademaster",
@@ -1448,21 +1483,22 @@
       "blademaster",
       "defense",
       "boss_tag",
-      "anchor",
-      "llm_candidate_import"
+      "anchor"
     ],
     "difficulty_tier": "boss",
     "required_wujing": 1,
     "closing_form_tier": 1,
     "power_score": 7.0,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_blademaster_boss_pressure",
     "id": "posture_llm_candidate_v0_1_blademaster_boss_pressure",
-    "candidate_id": "blademaster_boss_pressure",
     "name": "逼宫断势",
     "card_type": "skill",
     "weapon_style": "blademaster",
@@ -1487,21 +1523,22 @@
       "skill",
       "boss_tag",
       "high_pressure",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "boss",
     "required_wujing": 4,
     "closing_form_tier": 4,
     "power_score": 6.4,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_blademaster_boss_focus",
     "id": "posture_llm_candidate_v0_1_blademaster_boss_focus",
-    "candidate_id": "blademaster_boss_focus",
     "name": "血潮聚锋",
     "card_type": "skill",
     "weapon_style": "blademaster",
@@ -1526,21 +1563,22 @@
       "skill",
       "boss_tag",
       "setup",
-      "technique",
-      "llm_candidate_import"
+      "technique"
     ],
     "difficulty_tier": "boss",
     "required_wujing": 4,
     "closing_form_tier": 4,
     "power_score": 3.2,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   },
   {
     "mechanic_profile_id": "posture_llm_candidate_v0_1",
     "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
     "card_id": "posture_llm_candidate_v0_1_blademaster_boss_finisher",
     "id": "posture_llm_candidate_v0_1_blademaster_boss_finisher",
-    "candidate_id": "blademaster_boss_finisher",
     "name": "追潮绝斩",
     "card_type": "attack",
     "weapon_style": "blademaster",
@@ -1570,13 +1608,15 @@
       "boss_tag",
       "high_pressure",
       "technique",
-      "closing_form",
-      "llm_candidate_import"
+      "closing_form"
     ],
     "difficulty_tier": "boss",
     "required_wujing": 4,
     "closing_form_tier": 4,
     "power_score": 7.8,
-    "source": "llm_candidate_import"
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
   }
 ]

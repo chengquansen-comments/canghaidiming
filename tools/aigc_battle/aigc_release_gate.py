@@ -146,6 +146,7 @@ def mark_release_candidate(profile_id: str, content_pack_id: str) -> dict[str, A
         raise SystemExit('mark release candidate blocked: pack is not frozen')
     manifest['release_status'] = 'release_candidate'
     manifest['release_candidate_id'] = f'{profile_id}__{content_pack_id}'
+    manifest['playable_mechanic_candidate'] = bool(manifest.get('ready_for_runtime_export', False))
     manifest['updated_at'] = now_iso()
     write_json(release_manifest_path(profile_id, content_pack_id), manifest)
     return manifest
@@ -286,6 +287,12 @@ def build_release_manifest(profile_id: str, content_pack_id: str) -> dict[str, A
         'full_sequence_coverage_complete': bool(detail.get('validation_summary', {}).get('full_sequence_coverage_complete', False)),
         'runtime_export_allowed': bool(detail.get('validation_summary', {}).get('runtime_export_allowed', False)),
         'sequence_balance_pass': bool(detail.get('validation_summary', {}).get('sequence_balance_pass', False)),
+        'mechanic_difference_summary': build_mechanic_difference_summary(detail),
+        'runtime_primitive_summary': detail.get('runtime_primitive_summary', {}),
+        'max_wujing': int(detail.get('runtime_primitive_summary', {}).get('max_wujing', 0) or detail.get('validation_summary', {}).get('max_wujing', 0) or 0),
+        'dual_weapon_enabled': 'dual_weapon' in detail.get('runtime_primitive_summary', {}).get('runtime_primitives', []) or bool(detail.get('runtime_primitive_summary', {}).get('dual_weapon_declared', False)),
+        'clue_pressure_enabled': 'clue_pressure' in detail.get('runtime_primitive_summary', {}).get('runtime_primitives', []) or bool(detail.get('runtime_primitive_summary', {}).get('clue_pressure_declared', False)),
+        'playable_mechanic_candidate': bool(detail.get('validation_summary', {}).get('ready_for_runtime_export', False)),
     }
 
 
@@ -304,6 +311,19 @@ def compare_release_candidates() -> dict[str, Any]:
                 'rollback_available': manifest.get('rollback_available', False),
             })
     return {'release_candidates': rows, 'compare_ready': True}
+
+
+def build_mechanic_difference_summary(detail: dict[str, Any]) -> dict[str, Any]:
+    runtime_summary = detail.get('runtime_primitive_summary', {})
+    card_summary = detail.get('card_pool_summary', {})
+    return {
+        'runtime_primitives': runtime_summary.get('runtime_primitives', []),
+        'clue_pressure_enabled': bool(runtime_summary.get('clue_pressure_declared', False)),
+        'dual_weapon_enabled': bool(runtime_summary.get('dual_weapon_declared', False)),
+        'max_wujing': int(runtime_summary.get('max_wujing', 0) or 0),
+        'weapon_style_counts': card_summary.get('weapon_style_counts', {}),
+        'realm_requirement_counts': card_summary.get('realm_requirement_counts', {}),
+    }
 
 
 def suggest_git_commands(profile_id: str, content_pack_id: str) -> dict[str, Any]:

@@ -1,0 +1,18 @@
+{
+  "clue_pressure_declared": true,
+  "full_sequence_coverage_complete": true,
+  "clue_pressure_all_slots_covered": true,
+  "clue_pressure_tags_valid": true,
+  "clue_pressure_effects_valid": true,
+  "clue_pressure_values_in_range": true,
+  "runtime_manifest_exports_clue_pressure": true,
+  "godot_loader_reads_clue_pressure": true,
+  "battle_applies_clue_pressure_effect": true,
+  "clue_pressure_trigger_count": 15,
+  "fallback_loadout_count": 0,
+  "reward_coverage_complete": true,
+  "sequence_balance_pass": true,
+  "review_workspace_ready": true,
+  "release_candidate_ready": true,
+  "probe_pass": true
+}

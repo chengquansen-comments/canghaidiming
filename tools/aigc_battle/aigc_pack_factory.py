@@ -55,6 +55,27 @@ def main(argv: list[str]) -> int:
     bfl.add_argument('--pack-id', required=True)
     bfl.add_argument('--force', action='store_true')
 
+    bfrt = sub.add_parser('build-from-real-telemetry')
+    bfrt.add_argument('--profile', required=True)
+    bfrt.add_argument('--pack-id', required=True)
+    bfrt.add_argument('--force', action='store_true')
+
+    exp_prompt = sub.add_parser('export-llm-prompt')
+    exp_prompt.add_argument('--profile', required=True)
+    exp_prompt.add_argument('--pack', required=True)
+
+    imp_candidates = sub.add_parser('import-llm-candidates')
+    imp_candidates.add_argument('--profile', required=True)
+    imp_candidates.add_argument('--input', required=True)
+
+    diff_candidates = sub.add_parser('diff-llm-candidates')
+    diff_candidates.add_argument('--profile', required=True)
+    diff_candidates.add_argument('--pack', required=True)
+
+    build_ai = sub.add_parser('build-ai-pack')
+    build_ai.add_argument('--profile', required=True)
+    build_ai.add_argument('--pack-id', required=True)
+
     val = sub.add_parser('validate')
     val.add_argument('--profile', required=True)
     val.add_argument('--pack')
@@ -76,6 +97,16 @@ def main(argv: list[str]) -> int:
         result = run_action('build_from_telemetry', args.profile, args.pack_id, lambda log: build_from_telemetry(args.profile, args.pack_id, args.force, log))
     elif args.command == 'build-from-llm':
         result = run_action('build_from_llm', args.profile, args.pack_id, lambda log: build_from_llm(args.profile, args.pack_id, args.force, log))
+    elif args.command == 'build-from-real-telemetry':
+        result = run_action('build_from_real_telemetry', args.profile, args.pack_id, lambda log: build_from_real_telemetry(args.profile, args.pack_id, args.force, log))
+    elif args.command == 'export-llm-prompt':
+        result = run_action('export_llm_prompt', args.profile, args.pack, lambda log: export_llm_prompt(args.profile, args.pack, log))
+    elif args.command == 'import-llm-candidates':
+        result = run_action('import_llm_candidates', args.profile, '', lambda log: import_llm_candidates(args.profile, args.input, log))
+    elif args.command == 'diff-llm-candidates':
+        result = run_action('diff_llm_candidates', args.profile, args.pack, lambda log: diff_llm_candidates(args.profile, args.pack, log))
+    elif args.command == 'build-ai-pack':
+        result = run_action('build_ai_pack', args.profile, args.pack_id, lambda log: build_ai_pack(args.profile, args.pack_id, log))
     elif args.command == 'validate':
         result = run_action('validate', args.profile, args.pack or '', lambda log: validate_pack(args.profile, args.pack, log))
     elif args.command == 'export':
@@ -157,6 +188,44 @@ def build_from_llm(profile_id: str, pack_id: str, force: bool, log: dict[str, An
     summary = snapshot_lib.snapshot_content_pack(profile_id, pack_id, force=force)
     refresh_review(log)
     return summary
+
+
+def build_from_real_telemetry(profile_id: str, pack_id: str, force: bool, log: dict[str, Any]) -> dict[str, Any]:
+    ensure_pack_write_allowed(profile_id, pack_id, force)
+    snapshot_path = switch_lib.resolve_generated_dir(profile_id) / 'real_telemetry_snapshot.json'
+    if not snapshot_path.exists():
+        raise SystemExit('real telemetry snapshot not found')
+    run_step(log, [sys.executable, str(TOOLS_DIR / 'build_content_for_profile.py'), profile_id, '--use-real-telemetry-snapshot', str(snapshot_path)])
+    run_step(log, [sys.executable, str(TOOLS_DIR / 'validate_content_pack.py'), profile_id])
+    run_step(log, [sys.executable, str(TOOLS_DIR / 'export_runtime_manifest.py'), profile_id])
+    summary = snapshot_lib.snapshot_content_pack(profile_id, pack_id, force=force)
+    refresh_review(log)
+    return {
+        'real_telemetry_snapshot_path': to_relative(snapshot_path),
+        'snapshot_summary': summary,
+        'rebuild_uses_real_telemetry': True,
+    }
+
+
+def export_llm_prompt(profile_id: str, content_pack_id: str, log: dict[str, Any]) -> dict[str, Any]:
+    run_step(log, [sys.executable, str(TOOLS_DIR / 'export_llm_generation_prompt.py'), '--profile', profile_id, '--pack', content_pack_id])
+    return {'prompt_exported': True}
+
+
+def import_llm_candidates(profile_id: str, input_path: str, log: dict[str, Any]) -> dict[str, Any]:
+    run_step(log, [sys.executable, str(TOOLS_DIR / 'import_llm_production_candidates.py'), '--profile', profile_id, '--input', input_path])
+    return {'candidate_imported': True}
+
+
+def diff_llm_candidates(profile_id: str, content_pack_id: str, log: dict[str, Any]) -> dict[str, Any]:
+    run_step(log, [sys.executable, str(TOOLS_DIR / 'diff_llm_candidates.py'), '--profile', profile_id, '--pack', content_pack_id])
+    return {'candidate_diff_ready': True}
+
+
+def build_ai_pack(profile_id: str, pack_id: str, log: dict[str, Any]) -> dict[str, Any]:
+    ensure_pack_write_allowed(profile_id, pack_id, False)
+    run_step(log, [sys.executable, str(TOOLS_DIR / 'build_ai_content_pack.py'), '--profile', profile_id, '--pack-id', pack_id])
+    return {'ai_pack_built': True, 'pack_id': pack_id}
 
 
 def validate_pack(profile_id: str, pack_id: str | None, log: dict[str, Any]) -> dict[str, Any]:

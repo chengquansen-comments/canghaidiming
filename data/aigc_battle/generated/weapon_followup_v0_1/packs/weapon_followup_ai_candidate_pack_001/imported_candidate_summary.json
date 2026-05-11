@@ -1,0 +1,9 @@
+{
+  "import_ready_for_validation": true,
+  "accepted_card_candidate_ids": [
+    "probe_card_valid_001"
+  ],
+  "rejected_card_candidate_count": 3,
+  "rejected_deck_candidate_count": 0,
+  "rejected_card_candidate_ids": []
+}

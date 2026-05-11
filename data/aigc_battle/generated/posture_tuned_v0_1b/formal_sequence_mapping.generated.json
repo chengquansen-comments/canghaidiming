@@ -16,7 +16,10 @@
     "target_power_min": 22,
     "target_power_max": 30,
     "reward_tier": "basic",
-    "runtime_primitives": []
+    "runtime_primitives": [],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_tuned_v0_1b",
@@ -35,7 +38,10 @@
     "target_power_min": 22,
     "target_power_max": 30,
     "reward_tier": "basic",
-    "runtime_primitives": []
+    "runtime_primitives": [],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_tuned_v0_1b",
@@ -54,7 +60,10 @@
     "target_power_min": 25,
     "target_power_max": 35,
     "reward_tier": "basic",
-    "runtime_primitives": []
+    "runtime_primitives": [],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_tuned_v0_1b",
@@ -73,7 +82,10 @@
     "target_power_min": 25,
     "target_power_max": 35,
     "reward_tier": "basic",
-    "runtime_primitives": []
+    "runtime_primitives": [],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_tuned_v0_1b",
@@ -92,7 +104,10 @@
     "target_power_min": 56,
     "target_power_max": 66,
     "reward_tier": "boss",
-    "runtime_primitives": []
+    "runtime_primitives": [],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_tuned_v0_1b",
@@ -111,7 +126,10 @@
     "target_power_min": 35,
     "target_power_max": 45,
     "reward_tier": "standard_plus",
-    "runtime_primitives": []
+    "runtime_primitives": [],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_tuned_v0_1b",
@@ -130,7 +148,10 @@
     "target_power_min": 35,
     "target_power_max": 45,
     "reward_tier": "standard_plus",
-    "runtime_primitives": []
+    "runtime_primitives": [],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_tuned_v0_1b",
@@ -149,7 +170,10 @@
     "target_power_min": 56,
     "target_power_max": 66,
     "reward_tier": "boss",
-    "runtime_primitives": []
+    "runtime_primitives": [],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_tuned_v0_1b",
@@ -168,7 +192,10 @@
     "target_power_min": 35,
     "target_power_max": 45,
     "reward_tier": "standard_plus",
-    "runtime_primitives": []
+    "runtime_primitives": [],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_tuned_v0_1b",
@@ -187,7 +214,10 @@
     "target_power_min": 35,
     "target_power_max": 45,
     "reward_tier": "standard_plus",
-    "runtime_primitives": []
+    "runtime_primitives": [],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_tuned_v0_1b",
@@ -206,7 +236,10 @@
     "target_power_min": 47,
     "target_power_max": 59,
     "reward_tier": "advanced_plus",
-    "runtime_primitives": []
+    "runtime_primitives": [],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_tuned_v0_1b",
@@ -225,7 +258,10 @@
     "target_power_min": 44,
     "target_power_max": 54,
     "reward_tier": "advanced_plus",
-    "runtime_primitives": []
+    "runtime_primitives": [],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_tuned_v0_1b",
@@ -244,7 +280,10 @@
     "target_power_min": 47,
     "target_power_max": 59,
     "reward_tier": "advanced_plus",
-    "runtime_primitives": []
+    "runtime_primitives": [],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_tuned_v0_1b",
@@ -263,7 +302,10 @@
     "target_power_min": 44,
     "target_power_max": 54,
     "reward_tier": "advanced_plus",
-    "runtime_primitives": []
+    "runtime_primitives": [],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   },
   {
     "mechanic_profile_id": "posture_tuned_v0_1b",
@@ -282,6 +324,9 @@
     "target_power_min": 56,
     "target_power_max": 66,
     "reward_tier": "boss",
-    "runtime_primitives": []
+    "runtime_primitives": [],
+    "weapon_followup_enabled": false,
+    "clue_pressure_enabled": false,
+    "dual_weapon_enabled": false
   }
 ]

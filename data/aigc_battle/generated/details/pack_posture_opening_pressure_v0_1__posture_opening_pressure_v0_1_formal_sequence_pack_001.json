@@ -218,6 +218,9 @@
     "rebuild_uses_snapshot": false,
     "snapshot_source_path": "",
     "adjusted_or_flagged_encounters": [],
+    "rebuild_uses_real_telemetry": false,
+    "real_telemetry_snapshot_path": "",
+    "telemetry_rebuild_adjustments": [],
     "snapshot_rebuild_pass": true
   },
   "telemetry_summary": {

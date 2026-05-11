@@ -1,0 +1,49 @@
+{
+  "mechanic_profile_id": "weapon_followup_v0_1",
+  "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+  "new_card_count": 1,
+  "changed_card_count": 0,
+  "removed_card_count": 0,
+  "new_deck_count": 0,
+  "changed_deck_count": 1,
+  "new_reward_count": 0,
+  "changed_reward_count": 1,
+  "power_delta_summary": {
+    "changed_deck_count": 1,
+    "avg_delta": 2.2,
+    "max_increase": 2.2,
+    "max_decrease": 2.2,
+    "rows": [
+      {
+        "deck_id": "weapon_followup_v0_1_deck_001",
+        "before": 22.8,
+        "after": 25.0
+      }
+    ]
+  },
+  "weapon_style_delta": {
+    "spearman": 1
+  },
+  "card_type_delta": {
+    "attack": 1
+  },
+  "effect_type_delta": {
+    "damage": 1,
+    "gain_momentum": 1
+  },
+  "realm_requirement_delta": {
+    "w2_c1": 1
+  },
+  "followup_chain_delta": {
+    "new_followup_cards": 1,
+    "new_followup_decks": 1
+  },
+  "risk_delta_prediction": {
+    "predicted_warning_flags": [
+      "deck_balance_shift_expected",
+      "slot_binding_shift_expected"
+    ],
+    "risk_count": 2
+  },
+  "candidate_diff_ready": true
+}

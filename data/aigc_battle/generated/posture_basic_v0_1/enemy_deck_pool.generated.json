@@ -27,7 +27,22 @@
       "early",
       "normal",
       "spearman"
-    ]
+    ],
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_basic_v0_1",
@@ -57,7 +72,22 @@
       "early",
       "normal",
       "blademaster"
-    ]
+    ],
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_basic_v0_1",
@@ -88,7 +118,22 @@
       "early",
       "elite",
       "blademaster"
-    ]
+    ],
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_basic_v0_1",
@@ -119,7 +164,22 @@
       "early",
       "elite",
       "spearman"
-    ]
+    ],
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_basic_v0_1",
@@ -151,7 +211,22 @@
       "boss",
       "boss",
       "blademaster"
-    ]
+    ],
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_basic_v0_1",
@@ -182,7 +257,22 @@
       "mid",
       "elite",
       "spearman"
-    ]
+    ],
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_basic_v0_1",
@@ -213,7 +303,22 @@
       "mid",
       "elite",
       "blademaster"
-    ]
+    ],
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_basic_v0_1",
@@ -245,7 +350,22 @@
       "boss",
       "boss",
       "blademaster"
-    ]
+    ],
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_basic_v0_1",
@@ -276,7 +396,22 @@
       "mid",
       "elite",
       "blademaster"
-    ]
+    ],
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_basic_v0_1",
@@ -307,7 +442,22 @@
       "mid",
       "elite",
       "spearman"
-    ]
+    ],
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_basic_v0_1",
@@ -339,7 +489,22 @@
       "late",
       "elite",
       "spearman"
-    ]
+    ],
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_basic_v0_1",
@@ -370,7 +535,22 @@
       "late",
       "normal",
       "spearman"
-    ]
+    ],
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_basic_v0_1",
@@ -402,7 +582,22 @@
       "late",
       "elite",
       "blademaster"
-    ]
+    ],
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_basic_v0_1",
@@ -433,7 +628,22 @@
       "late",
       "normal",
       "blademaster"
-    ]
+    ],
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   },
   {
     "mechanic_profile_id": "posture_basic_v0_1",
@@ -465,6 +675,21 @@
       "boss",
       "boss",
       "blademaster"
-    ]
+    ],
+    "followup_chain_count": 0,
+    "followup_card_count": 0,
+    "followup_density": 0.0,
+    "followup_groups": [],
+    "followup_chain_valid": false,
+    "weapon_loadout": [],
+    "primary_weapon_style": "",
+    "secondary_weapon_style": "",
+    "dual_weapon_enabled": false,
+    "primary_weapon_ratio": 0.0,
+    "secondary_weapon_ratio": 0.0,
+    "generic_ratio": 0.0,
+    "max_required_wujing": 0,
+    "max_closing_form_tier": 0,
+    "dual_weapon_synergy_count": 0
   }
 ]

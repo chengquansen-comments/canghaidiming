@@ -7,7 +7,6 @@
     "reward_tier": "basic",
     "sequence_position": 1,
     "encounter_tier": "early",
-    "player_wujing_cap": 1,
     "reward_items": [
       {
         "item_id": "basic_reward_card_001",
@@ -16,8 +15,7 @@
     ],
     "source": {
       "formal_encounter_id": "enc_beach_ambush",
-      "formal_battle_id": "first_act_beach_ambush",
-      "content_source": "llm_candidate_import"
+      "formal_battle_id": "first_act_beach_ambush"
     }
   },
   {
@@ -28,7 +26,6 @@
     "reward_tier": "basic",
     "sequence_position": 2,
     "encounter_tier": "early",
-    "player_wujing_cap": 1,
     "reward_items": [
       {
         "item_id": "basic_reward_card_002",
@@ -37,8 +34,7 @@
     ],
     "source": {
       "formal_encounter_id": "enc_fishing_village_embers",
-      "formal_battle_id": "first_act_fishing_village_embers",
-      "content_source": "llm_candidate_import"
+      "formal_battle_id": "first_act_fishing_village_embers"
     }
   },
   {
@@ -49,7 +45,6 @@
     "reward_tier": "basic",
     "sequence_position": 3,
     "encounter_tier": "early",
-    "player_wujing_cap": 1,
     "reward_items": [
       {
         "item_id": "basic_reward_card_003",
@@ -58,8 +53,7 @@
     ],
     "source": {
       "formal_encounter_id": "enc_transport_officer",
-      "formal_battle_id": "first_act_transport_officer",
-      "content_source": "llm_candidate_import"
+      "formal_battle_id": "first_act_transport_officer"
     }
   },
   {
@@ -70,7 +64,6 @@
     "reward_tier": "basic",
     "sequence_position": 4,
     "encounter_tier": "early",
-    "player_wujing_cap": 1,
     "reward_items": [
       {
         "item_id": "basic_reward_card_004",
@@ -79,8 +72,7 @@
     ],
     "source": {
       "formal_encounter_id": "enc_mutiny_camp",
-      "formal_battle_id": "first_act_mutiny_camp",
-      "content_source": "llm_candidate_import"
+      "formal_battle_id": "first_act_mutiny_camp"
     }
   },
   {
@@ -91,7 +83,6 @@
     "reward_tier": "boss",
     "sequence_position": 5,
     "encounter_tier": "boss",
-    "player_wujing_cap": 4,
     "reward_items": [
       {
         "item_id": "boss_reward_token",
@@ -104,8 +95,7 @@
     ],
     "source": {
       "formal_encounter_id": "enc_wakou_boss",
-      "formal_battle_id": "first_act_wakou_boss",
-      "content_source": "llm_candidate_import"
+      "formal_battle_id": "first_act_wakou_boss"
     }
   },
   {
@@ -116,7 +106,6 @@
     "reward_tier": "standard",
     "sequence_position": 6,
     "encounter_tier": "mid",
-    "player_wujing_cap": 2,
     "reward_items": [
       {
         "item_id": "standard_reward_card_006",
@@ -129,8 +118,7 @@
     ],
     "source": {
       "formal_encounter_id": "enc_wuke_spear_trial",
-      "formal_battle_id": "wuke_spear_trial",
-      "content_source": "llm_candidate_import"
+      "formal_battle_id": "wuke_spear_trial"
     }
   },
   {
@@ -141,7 +129,6 @@
     "reward_tier": "standard",
     "sequence_position": 7,
     "encounter_tier": "mid",
-    "player_wujing_cap": 2,
     "reward_items": [
       {
         "item_id": "standard_reward_card_007",
@@ -154,8 +141,7 @@
     ],
     "source": {
       "formal_encounter_id": "enc_wuke_blade_trial",
-      "formal_battle_id": "wuke_blade_trial",
-      "content_source": "llm_candidate_import"
+      "formal_battle_id": "wuke_blade_trial"
     }
   },
   {
@@ -166,7 +152,6 @@
     "reward_tier": "boss",
     "sequence_position": 8,
     "encounter_tier": "boss",
-    "player_wujing_cap": 4,
     "reward_items": [
       {
         "item_id": "boss_reward_token",
@@ -179,8 +164,7 @@
     ],
     "source": {
       "formal_encounter_id": "enc_wuke_final_duel",
-      "formal_battle_id": "wuke_final_duel",
-      "content_source": "llm_candidate_import"
+      "formal_battle_id": "wuke_final_duel"
     }
   },
   {
@@ -191,7 +175,6 @@
     "reward_tier": "standard",
     "sequence_position": 9,
     "encounter_tier": "mid",
-    "player_wujing_cap": 2,
     "reward_items": [
       {
         "item_id": "standard_reward_card_009",
@@ -204,8 +187,7 @@
     ],
     "source": {
       "formal_encounter_id": "enc_wuke_gu_chengyue",
-      "formal_battle_id": "wuke_gu_chengyue",
-      "content_source": "llm_candidate_import"
+      "formal_battle_id": "wuke_gu_chengyue"
     }
   },
   {
@@ -216,7 +198,6 @@
     "reward_tier": "standard",
     "sequence_position": 10,
     "encounter_tier": "mid",
-    "player_wujing_cap": 2,
     "reward_items": [
       {
         "item_id": "standard_reward_card_010",
@@ -229,8 +210,7 @@
     ],
     "source": {
       "formal_encounter_id": "enc_wuke_shen_zhaoye",
-      "formal_battle_id": "wuke_shen_zhaoye",
-      "content_source": "llm_candidate_import"
+      "formal_battle_id": "wuke_shen_zhaoye"
     }
   },
   {
@@ -241,7 +221,6 @@
     "reward_tier": "advanced",
     "sequence_position": 11,
     "encounter_tier": "late",
-    "player_wujing_cap": 3,
     "reward_items": [
       {
         "item_id": "advanced_reward_card_011",
@@ -254,8 +233,7 @@
     ],
     "source": {
       "formal_encounter_id": "enc_wuke_qi_heng",
-      "formal_battle_id": "wuke_qi_heng",
-      "content_source": "llm_candidate_import"
+      "formal_battle_id": "wuke_qi_heng"
     }
   },
   {
@@ -266,7 +244,6 @@
     "reward_tier": "advanced",
     "sequence_position": 12,
     "encounter_tier": "late",
-    "player_wujing_cap": 3,
     "reward_items": [
       {
         "item_id": "advanced_reward_card_012",
@@ -279,8 +256,7 @@
     ],
     "source": {
       "formal_encounter_id": "enc_ch2_reed_ambush",
-      "formal_battle_id": "chapter2_reed_ambush",
-      "content_source": "llm_candidate_import"
+      "formal_battle_id": "chapter2_reed_ambush"
     }
   },
   {
@@ -291,7 +267,6 @@
     "reward_tier": "advanced",
     "sequence_position": 13,
     "encounter_tier": "late",
-    "player_wujing_cap": 3,
     "reward_items": [
       {
         "item_id": "advanced_reward_card_013",
@@ -304,8 +279,7 @@
     ],
     "source": {
       "formal_encounter_id": "enc_ch3_escort_clash",
-      "formal_battle_id": "chapter3_escort_clash",
-      "content_source": "llm_candidate_import"
+      "formal_battle_id": "chapter3_escort_clash"
     }
   },
   {
@@ -316,7 +290,6 @@
     "reward_tier": "advanced",
     "sequence_position": 14,
     "encounter_tier": "late",
-    "player_wujing_cap": 3,
     "reward_items": [
       {
         "item_id": "advanced_reward_card_014",
@@ -329,8 +302,7 @@
     ],
     "source": {
       "formal_encounter_id": "enc_ch4_tide_bandits",
-      "formal_battle_id": "chapter4_tide_bandits",
-      "content_source": "llm_candidate_import"
+      "formal_battle_id": "chapter4_tide_bandits"
     }
   },
   {
@@ -341,7 +313,6 @@
     "reward_tier": "boss",
     "sequence_position": 15,
     "encounter_tier": "boss",
-    "player_wujing_cap": 4,
     "reward_items": [
       {
         "item_id": "boss_reward_token",
@@ -354,8 +325,7 @@
     ],
     "source": {
       "formal_encounter_id": "enc_boss_ext_wakou_leader",
-      "formal_battle_id": "boss_ext_wakou_leader",
-      "content_source": "llm_candidate_import"
+      "formal_battle_id": "boss_ext_wakou_leader"
     }
   }
 ]

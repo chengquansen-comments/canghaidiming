@@ -209,7 +209,14 @@
     "sequence_balance_curve_ready": true,
     "sequence_balance_pass": true,
     "no_elite_detected": false,
-    "no_boss_detected": false
+    "no_boss_detected": false,
+    "rebuild_uses_snapshot": false,
+    "snapshot_source_path": "",
+    "adjusted_or_flagged_encounters": [],
+    "rebuild_uses_real_telemetry": false,
+    "real_telemetry_snapshot_path": "",
+    "telemetry_rebuild_adjustments": [],
+    "snapshot_rebuild_pass": true
   },
   "telemetry_summary": {
     "telemetry_event_count": 0
@@ -230,6 +237,26 @@
     "weapon_followup_values_in_range": true,
     "weapon_followup_curve_ready": true,
     "weapon_followup_runtime_export_allowed": true,
+    "clue_pressure_declared": false,
+    "clue_pressure_all_slots_covered": true,
+    "clue_pressure_tags_valid": true,
+    "clue_pressure_effects_valid": true,
+    "clue_pressure_values_in_range": true,
+    "clue_pressure_curve_ready": true,
+    "clue_pressure_runtime_export_allowed": true,
+    "martial_realm_7_declared": false,
+    "dual_weapon_declared": false,
+    "max_wujing": 0,
+    "max_closing_form_tier": 0,
+    "max_wujing_is_7": true,
+    "max_closing_form_tier_is_7": true,
+    "dual_weapon_slot_count": 0,
+    "dual_weapon_deck_count": 0,
+    "seven_realm_card_count": 0,
+    "invalid_weapon_loadout_card_count": 0,
+    "martial_realm_7_playable": true,
+    "dual_weapon_playable": true,
+    "dual_weapon_runtime_export_allowed": true,
     "runtime_primitive_playable": true
   },
   "ai_source_trace": {
@@ -311,8 +338,7 @@
         "spearman",
         "attack",
         "measured",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "early",
       "power_score": 5.0,
@@ -345,8 +371,7 @@
         "early",
         "spearman",
         "defense",
-        "anchor",
-        "llm_candidate_import"
+        "anchor"
       ],
       "difficulty_tier": "early",
       "power_score": 4.0,
@@ -380,8 +405,7 @@
         "spearman",
         "skill",
         "pressure",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "early",
       "power_score": 2.4,
@@ -415,8 +439,7 @@
         "spearman",
         "skill",
         "setup",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "early",
       "power_score": 2.4,
@@ -459,8 +482,7 @@
         "attack",
         "high_pressure",
         "technique",
-        "closing_form",
-        "llm_candidate_import"
+        "closing_form"
       ],
       "difficulty_tier": "early",
       "power_score": 6.4,
@@ -492,8 +514,7 @@
         "spearman",
         "attack",
         "measured",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "mid",
       "power_score": 6.0,
@@ -526,8 +547,7 @@
         "mid",
         "spearman",
         "defense",
-        "anchor",
-        "llm_candidate_import"
+        "anchor"
       ],
       "difficulty_tier": "mid",
       "power_score": 5.0,
@@ -561,8 +581,7 @@
         "spearman",
         "skill",
         "pressure",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "mid",
       "power_score": 3.2,
@@ -596,8 +615,7 @@
         "spearman",
         "skill",
         "setup",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "mid",
       "power_score": 2.4,
@@ -640,8 +658,7 @@
         "attack",
         "high_pressure",
         "technique",
-        "closing_form",
-        "llm_candidate_import"
+        "closing_form"
       ],
       "difficulty_tier": "mid",
       "power_score": 7.4,
@@ -675,8 +692,7 @@
         "spearman",
         "attack",
         "high_pressure",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "late",
       "power_score": 8.0,
@@ -709,8 +725,7 @@
         "late",
         "spearman",
         "defense",
-        "anchor",
-        "llm_candidate_import"
+        "anchor"
       ],
       "difficulty_tier": "late",
       "power_score": 6.0,
@@ -745,8 +760,7 @@
         "skill",
         "pressure",
         "high_pressure",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "late",
       "power_score": 5.6,
@@ -780,8 +794,7 @@
         "spearman",
         "skill",
         "setup",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "late",
       "power_score": 2.4,
@@ -820,8 +833,7 @@
         "attack",
         "high_pressure",
         "technique",
-        "closing_form",
-        "llm_candidate_import"
+        "closing_form"
       ],
       "difficulty_tier": "late",
       "power_score": 7.6,
@@ -856,8 +868,7 @@
         "attack",
         "boss_tag",
         "high_pressure",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "boss",
       "power_score": 8.0,
@@ -885,8 +896,7 @@
         "spearman",
         "defense",
         "boss_tag",
-        "anchor",
-        "llm_candidate_import"
+        "anchor"
       ],
       "difficulty_tier": "boss",
       "power_score": 7.0,
@@ -915,8 +925,7 @@
         "skill",
         "boss_tag",
         "high_pressure",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "boss",
       "power_score": 6.4,
@@ -945,8 +954,7 @@
         "skill",
         "boss_tag",
         "setup",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "boss",
       "power_score": 3.2,
@@ -980,8 +988,7 @@
         "boss_tag",
         "high_pressure",
         "technique",
-        "closing_form",
-        "llm_candidate_import"
+        "closing_form"
       ],
       "difficulty_tier": "boss",
       "power_score": 7.8,
@@ -1009,8 +1016,7 @@
         "blademaster",
         "attack",
         "measured",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "early",
       "power_score": 5.0,
@@ -1043,8 +1049,7 @@
         "early",
         "blademaster",
         "defense",
-        "anchor",
-        "llm_candidate_import"
+        "anchor"
       ],
       "difficulty_tier": "early",
       "power_score": 4.0,
@@ -1078,8 +1083,7 @@
         "blademaster",
         "skill",
         "pressure",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "early",
       "power_score": 2.4,
@@ -1113,8 +1117,7 @@
         "blademaster",
         "skill",
         "setup",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "early",
       "power_score": 2.4,
@@ -1157,8 +1160,7 @@
         "attack",
         "high_pressure",
         "technique",
-        "closing_form",
-        "llm_candidate_import"
+        "closing_form"
       ],
       "difficulty_tier": "early",
       "power_score": 6.4,
@@ -1190,8 +1192,7 @@
         "blademaster",
         "attack",
         "measured",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "mid",
       "power_score": 6.0,
@@ -1224,8 +1225,7 @@
         "mid",
         "blademaster",
         "defense",
-        "anchor",
-        "llm_candidate_import"
+        "anchor"
       ],
       "difficulty_tier": "mid",
       "power_score": 5.0,
@@ -1259,8 +1259,7 @@
         "blademaster",
         "skill",
         "pressure",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "mid",
       "power_score": 3.2,
@@ -1294,8 +1293,7 @@
         "blademaster",
         "skill",
         "setup",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "mid",
       "power_score": 2.4,
@@ -1338,8 +1336,7 @@
         "attack",
         "high_pressure",
         "technique",
-        "closing_form",
-        "llm_candidate_import"
+        "closing_form"
       ],
       "difficulty_tier": "mid",
       "power_score": 7.4,
@@ -1373,8 +1370,7 @@
         "blademaster",
         "attack",
         "high_pressure",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "late",
       "power_score": 8.0,
@@ -1407,8 +1403,7 @@
         "late",
         "blademaster",
         "defense",
-        "anchor",
-        "llm_candidate_import"
+        "anchor"
       ],
       "difficulty_tier": "late",
       "power_score": 6.0,
@@ -1443,8 +1438,7 @@
         "skill",
         "pressure",
         "high_pressure",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "late",
       "power_score": 5.6,
@@ -1478,8 +1472,7 @@
         "blademaster",
         "skill",
         "setup",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "late",
       "power_score": 2.4,
@@ -1518,8 +1511,7 @@
         "attack",
         "high_pressure",
         "technique",
-        "closing_form",
-        "llm_candidate_import"
+        "closing_form"
       ],
       "difficulty_tier": "late",
       "power_score": 7.6,
@@ -1554,8 +1546,7 @@
         "attack",
         "boss_tag",
         "high_pressure",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "boss",
       "power_score": 8.0,
@@ -1591,8 +1582,7 @@
         "blademaster",
         "defense",
         "boss_tag",
-        "anchor",
-        "llm_candidate_import"
+        "anchor"
       ],
       "difficulty_tier": "boss",
       "power_score": 7.0,
@@ -1629,8 +1619,7 @@
         "skill",
         "boss_tag",
         "high_pressure",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "boss",
       "power_score": 6.4,
@@ -1667,8 +1656,7 @@
         "skill",
         "boss_tag",
         "setup",
-        "technique",
-        "llm_candidate_import"
+        "technique"
       ],
       "difficulty_tier": "boss",
       "power_score": 3.2,
@@ -1710,8 +1698,7 @@
         "boss_tag",
         "high_pressure",
         "technique",
-        "closing_form",
-        "llm_candidate_import"
+        "closing_form"
       ],
       "difficulty_tier": "boss",
       "power_score": 7.8,
@@ -2217,7 +2204,7 @@
       "power_range_pass": true,
       "reward_tier": "basic",
       "runtime_primitives": [],
-      "opening_pressure": null,
+      "opening_pressure": {},
       "deck_summary": {
         "deck_id": "posture_llm_candidate_v0_1_deck_001",
         "enemy_role": "spearman",
@@ -2227,8 +2214,7 @@
         "tags": [
           "early",
           "normal",
-          "spearman",
-          "llm_candidate_import"
+          "spearman"
         ],
         "player_wujing_cap": 1,
         "realm_eligibility_checked": true,
@@ -2263,8 +2249,7 @@
             "spearman",
             "attack",
             "measured",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "early",
           "power_score": 5.0,
@@ -2289,8 +2274,7 @@
             "spearman",
             "attack",
             "measured",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "early",
           "power_score": 5.0,
@@ -2315,8 +2299,7 @@
             "spearman",
             "skill",
             "pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "early",
           "power_score": 2.4,
@@ -2340,8 +2323,7 @@
             "early",
             "spearman",
             "defense",
-            "anchor",
-            "llm_candidate_import"
+            "anchor"
           ],
           "difficulty_tier": "early",
           "power_score": 4.0,
@@ -2365,8 +2347,7 @@
             "early",
             "spearman",
             "defense",
-            "anchor",
-            "llm_candidate_import"
+            "anchor"
           ],
           "difficulty_tier": "early",
           "power_score": 4.0,
@@ -2391,8 +2372,7 @@
             "spearman",
             "skill",
             "setup",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "early",
           "power_score": 2.4,
@@ -2420,7 +2400,7 @@
       "power_range_pass": true,
       "reward_tier": "basic",
       "runtime_primitives": [],
-      "opening_pressure": null,
+      "opening_pressure": {},
       "deck_summary": {
         "deck_id": "posture_llm_candidate_v0_1_deck_002",
         "enemy_role": "blademaster",
@@ -2430,8 +2410,7 @@
         "tags": [
           "early",
           "normal",
-          "blademaster",
-          "llm_candidate_import"
+          "blademaster"
         ],
         "player_wujing_cap": 1,
         "realm_eligibility_checked": true,
@@ -2466,8 +2445,7 @@
             "blademaster",
             "attack",
             "measured",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "early",
           "power_score": 5.0,
@@ -2492,8 +2470,7 @@
             "blademaster",
             "attack",
             "measured",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "early",
           "power_score": 5.0,
@@ -2518,8 +2495,7 @@
             "blademaster",
             "skill",
             "pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "early",
           "power_score": 2.4,
@@ -2543,8 +2519,7 @@
             "early",
             "blademaster",
             "defense",
-            "anchor",
-            "llm_candidate_import"
+            "anchor"
           ],
           "difficulty_tier": "early",
           "power_score": 4.0,
@@ -2568,8 +2543,7 @@
             "early",
             "blademaster",
             "defense",
-            "anchor",
-            "llm_candidate_import"
+            "anchor"
           ],
           "difficulty_tier": "early",
           "power_score": 4.0,
@@ -2594,8 +2568,7 @@
             "blademaster",
             "skill",
             "setup",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "early",
           "power_score": 2.4,
@@ -2623,7 +2596,7 @@
       "power_range_pass": true,
       "reward_tier": "basic",
       "runtime_primitives": [],
-      "opening_pressure": null,
+      "opening_pressure": {},
       "deck_summary": {
         "deck_id": "posture_llm_candidate_v0_1_deck_003",
         "enemy_role": "blademaster",
@@ -2633,8 +2606,7 @@
         "tags": [
           "early",
           "elite",
-          "blademaster",
-          "llm_candidate_import"
+          "blademaster"
         ],
         "player_wujing_cap": 1,
         "realm_eligibility_checked": true,
@@ -2669,8 +2641,7 @@
             "blademaster",
             "attack",
             "measured",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "early",
           "power_score": 5.0,
@@ -2695,8 +2666,7 @@
             "blademaster",
             "attack",
             "measured",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "early",
           "power_score": 5.0,
@@ -2721,8 +2691,7 @@
             "blademaster",
             "skill",
             "pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "early",
           "power_score": 2.4,
@@ -2747,8 +2716,7 @@
             "blademaster",
             "skill",
             "pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "early",
           "power_score": 2.4,
@@ -2772,8 +2740,7 @@
             "early",
             "blademaster",
             "defense",
-            "anchor",
-            "llm_candidate_import"
+            "anchor"
           ],
           "difficulty_tier": "early",
           "power_score": 4.0,
@@ -2798,8 +2765,7 @@
             "blademaster",
             "skill",
             "setup",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "early",
           "power_score": 2.4,
@@ -2833,8 +2799,7 @@
             "attack",
             "high_pressure",
             "technique",
-            "closing_form",
-            "llm_candidate_import"
+            "closing_form"
           ],
           "difficulty_tier": "early",
           "power_score": 6.4,
@@ -2862,7 +2827,7 @@
       "power_range_pass": true,
       "reward_tier": "basic",
       "runtime_primitives": [],
-      "opening_pressure": null,
+      "opening_pressure": {},
       "deck_summary": {
         "deck_id": "posture_llm_candidate_v0_1_deck_004",
         "enemy_role": "spearman",
@@ -2872,8 +2837,7 @@
         "tags": [
           "early",
           "elite",
-          "spearman",
-          "llm_candidate_import"
+          "spearman"
         ],
         "player_wujing_cap": 1,
         "realm_eligibility_checked": true,
@@ -2908,8 +2872,7 @@
             "spearman",
             "attack",
             "measured",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "early",
           "power_score": 5.0,
@@ -2934,8 +2897,7 @@
             "spearman",
             "attack",
             "measured",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "early",
           "power_score": 5.0,
@@ -2960,8 +2922,7 @@
             "spearman",
             "skill",
             "pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "early",
           "power_score": 2.4,
@@ -2986,8 +2947,7 @@
             "spearman",
             "skill",
             "pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "early",
           "power_score": 2.4,
@@ -3011,8 +2971,7 @@
             "early",
             "spearman",
             "defense",
-            "anchor",
-            "llm_candidate_import"
+            "anchor"
           ],
           "difficulty_tier": "early",
           "power_score": 4.0,
@@ -3037,8 +2996,7 @@
             "spearman",
             "skill",
             "setup",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "early",
           "power_score": 2.4,
@@ -3072,8 +3030,7 @@
             "attack",
             "high_pressure",
             "technique",
-            "closing_form",
-            "llm_candidate_import"
+            "closing_form"
           ],
           "difficulty_tier": "early",
           "power_score": 6.4,
@@ -3101,7 +3058,7 @@
       "power_range_pass": true,
       "reward_tier": "boss",
       "runtime_primitives": [],
-      "opening_pressure": null,
+      "opening_pressure": {},
       "deck_summary": {
         "deck_id": "posture_llm_candidate_v0_1_deck_005",
         "enemy_role": "blademaster",
@@ -3111,8 +3068,7 @@
         "tags": [
           "boss",
           "boss",
-          "blademaster",
-          "llm_candidate_import"
+          "blademaster"
         ],
         "player_wujing_cap": 4,
         "realm_eligibility_checked": true,
@@ -3152,8 +3108,7 @@
             "attack",
             "boss_tag",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "boss",
           "power_score": 8.0,
@@ -3179,8 +3134,7 @@
             "attack",
             "boss_tag",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "boss",
           "power_score": 8.0,
@@ -3206,8 +3160,7 @@
             "skill",
             "boss_tag",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "boss",
           "power_score": 6.4,
@@ -3233,8 +3186,7 @@
             "skill",
             "boss_tag",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "boss",
           "power_score": 6.4,
@@ -3259,8 +3211,7 @@
             "blademaster",
             "defense",
             "boss_tag",
-            "anchor",
-            "llm_candidate_import"
+            "anchor"
           ],
           "difficulty_tier": "boss",
           "power_score": 7.0,
@@ -3285,8 +3236,7 @@
             "blademaster",
             "defense",
             "boss_tag",
-            "anchor",
-            "llm_candidate_import"
+            "anchor"
           ],
           "difficulty_tier": "boss",
           "power_score": 7.0,
@@ -3312,8 +3262,7 @@
             "skill",
             "boss_tag",
             "setup",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "boss",
           "power_score": 3.2,
@@ -3344,8 +3293,7 @@
             "boss_tag",
             "high_pressure",
             "technique",
-            "closing_form",
-            "llm_candidate_import"
+            "closing_form"
           ],
           "difficulty_tier": "boss",
           "power_score": 7.8,
@@ -3373,7 +3321,7 @@
       "power_range_pass": true,
       "reward_tier": "standard",
       "runtime_primitives": [],
-      "opening_pressure": null,
+      "opening_pressure": {},
       "deck_summary": {
         "deck_id": "posture_llm_candidate_v0_1_deck_006",
         "enemy_role": "spearman",
@@ -3383,8 +3331,7 @@
         "tags": [
           "mid",
           "elite",
-          "spearman",
-          "llm_candidate_import"
+          "spearman"
         ],
         "player_wujing_cap": 2,
         "realm_eligibility_checked": true,
@@ -3423,8 +3370,7 @@
             "spearman",
             "attack",
             "measured",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "mid",
           "power_score": 6.0,
@@ -3449,8 +3395,7 @@
             "spearman",
             "attack",
             "measured",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "mid",
           "power_score": 6.0,
@@ -3475,8 +3420,7 @@
             "spearman",
             "skill",
             "pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "mid",
           "power_score": 3.2,
@@ -3501,8 +3445,7 @@
             "spearman",
             "skill",
             "pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "mid",
           "power_score": 3.2,
@@ -3526,8 +3469,7 @@
             "mid",
             "spearman",
             "defense",
-            "anchor",
-            "llm_candidate_import"
+            "anchor"
           ],
           "difficulty_tier": "mid",
           "power_score": 5.0,
@@ -3552,8 +3494,7 @@
             "spearman",
             "skill",
             "setup",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "mid",
           "power_score": 2.4,
@@ -3587,8 +3528,7 @@
             "attack",
             "high_pressure",
             "technique",
-            "closing_form",
-            "llm_candidate_import"
+            "closing_form"
           ],
           "difficulty_tier": "mid",
           "power_score": 7.4,
@@ -3616,7 +3556,7 @@
       "power_range_pass": true,
       "reward_tier": "standard",
       "runtime_primitives": [],
-      "opening_pressure": null,
+      "opening_pressure": {},
       "deck_summary": {
         "deck_id": "posture_llm_candidate_v0_1_deck_007",
         "enemy_role": "blademaster",
@@ -3626,8 +3566,7 @@
         "tags": [
           "mid",
           "elite",
-          "blademaster",
-          "llm_candidate_import"
+          "blademaster"
         ],
         "player_wujing_cap": 2,
         "realm_eligibility_checked": true,
@@ -3666,8 +3605,7 @@
             "blademaster",
             "attack",
             "measured",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "mid",
           "power_score": 6.0,
@@ -3692,8 +3630,7 @@
             "blademaster",
             "attack",
             "measured",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "mid",
           "power_score": 6.0,
@@ -3718,8 +3655,7 @@
             "blademaster",
             "skill",
             "pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "mid",
           "power_score": 3.2,
@@ -3744,8 +3680,7 @@
             "blademaster",
             "skill",
             "pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "mid",
           "power_score": 3.2,
@@ -3769,8 +3704,7 @@
             "mid",
             "blademaster",
             "defense",
-            "anchor",
-            "llm_candidate_import"
+            "anchor"
           ],
           "difficulty_tier": "mid",
           "power_score": 5.0,
@@ -3795,8 +3729,7 @@
             "blademaster",
             "skill",
             "setup",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "mid",
           "power_score": 2.4,
@@ -3830,8 +3763,7 @@
             "attack",
             "high_pressure",
             "technique",
-            "closing_form",
-            "llm_candidate_import"
+            "closing_form"
           ],
           "difficulty_tier": "mid",
           "power_score": 7.4,
@@ -3859,7 +3791,7 @@
       "power_range_pass": true,
       "reward_tier": "boss",
       "runtime_primitives": [],
-      "opening_pressure": null,
+      "opening_pressure": {},
       "deck_summary": {
         "deck_id": "posture_llm_candidate_v0_1_deck_008",
         "enemy_role": "blademaster",
@@ -3869,8 +3801,7 @@
         "tags": [
           "boss",
           "boss",
-          "blademaster",
-          "llm_candidate_import"
+          "blademaster"
         ],
         "player_wujing_cap": 4,
         "realm_eligibility_checked": true,
@@ -3910,8 +3841,7 @@
             "attack",
             "boss_tag",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "boss",
           "power_score": 8.0,
@@ -3937,8 +3867,7 @@
             "attack",
             "boss_tag",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "boss",
           "power_score": 8.0,
@@ -3964,8 +3893,7 @@
             "skill",
             "boss_tag",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "boss",
           "power_score": 6.4,
@@ -3991,8 +3919,7 @@
             "skill",
             "boss_tag",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "boss",
           "power_score": 6.4,
@@ -4017,8 +3944,7 @@
             "blademaster",
             "defense",
             "boss_tag",
-            "anchor",
-            "llm_candidate_import"
+            "anchor"
           ],
           "difficulty_tier": "boss",
           "power_score": 7.0,
@@ -4043,8 +3969,7 @@
             "blademaster",
             "defense",
             "boss_tag",
-            "anchor",
-            "llm_candidate_import"
+            "anchor"
           ],
           "difficulty_tier": "boss",
           "power_score": 7.0,
@@ -4070,8 +3995,7 @@
             "skill",
             "boss_tag",
             "setup",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "boss",
           "power_score": 3.2,
@@ -4102,8 +4026,7 @@
             "boss_tag",
             "high_pressure",
             "technique",
-            "closing_form",
-            "llm_candidate_import"
+            "closing_form"
           ],
           "difficulty_tier": "boss",
           "power_score": 7.8,
@@ -4131,7 +4054,7 @@
       "power_range_pass": true,
       "reward_tier": "standard",
       "runtime_primitives": [],
-      "opening_pressure": null,
+      "opening_pressure": {},
       "deck_summary": {
         "deck_id": "posture_llm_candidate_v0_1_deck_009",
         "enemy_role": "blademaster",
@@ -4141,8 +4064,7 @@
         "tags": [
           "mid",
           "elite",
-          "blademaster",
-          "llm_candidate_import"
+          "blademaster"
         ],
         "player_wujing_cap": 2,
         "realm_eligibility_checked": true,
@@ -4181,8 +4103,7 @@
             "blademaster",
             "attack",
             "measured",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "mid",
           "power_score": 6.0,
@@ -4207,8 +4128,7 @@
             "blademaster",
             "attack",
             "measured",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "mid",
           "power_score": 6.0,
@@ -4233,8 +4153,7 @@
             "blademaster",
             "skill",
             "pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "mid",
           "power_score": 3.2,
@@ -4259,8 +4178,7 @@
             "blademaster",
             "skill",
             "pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "mid",
           "power_score": 3.2,
@@ -4284,8 +4202,7 @@
             "mid",
             "blademaster",
             "defense",
-            "anchor",
-            "llm_candidate_import"
+            "anchor"
           ],
           "difficulty_tier": "mid",
           "power_score": 5.0,
@@ -4310,8 +4227,7 @@
             "blademaster",
             "skill",
             "setup",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "mid",
           "power_score": 2.4,
@@ -4345,8 +4261,7 @@
             "attack",
             "high_pressure",
             "technique",
-            "closing_form",
-            "llm_candidate_import"
+            "closing_form"
           ],
           "difficulty_tier": "mid",
           "power_score": 7.4,
@@ -4374,7 +4289,7 @@
       "power_range_pass": true,
       "reward_tier": "standard",
       "runtime_primitives": [],
-      "opening_pressure": null,
+      "opening_pressure": {},
       "deck_summary": {
         "deck_id": "posture_llm_candidate_v0_1_deck_010",
         "enemy_role": "spearman",
@@ -4384,8 +4299,7 @@
         "tags": [
           "mid",
           "elite",
-          "spearman",
-          "llm_candidate_import"
+          "spearman"
         ],
         "player_wujing_cap": 2,
         "realm_eligibility_checked": true,
@@ -4424,8 +4338,7 @@
             "spearman",
             "attack",
             "measured",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "mid",
           "power_score": 6.0,
@@ -4450,8 +4363,7 @@
             "spearman",
             "attack",
             "measured",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "mid",
           "power_score": 6.0,
@@ -4476,8 +4388,7 @@
             "spearman",
             "skill",
             "pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "mid",
           "power_score": 3.2,
@@ -4502,8 +4413,7 @@
             "spearman",
             "skill",
             "pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "mid",
           "power_score": 3.2,
@@ -4527,8 +4437,7 @@
             "mid",
             "spearman",
             "defense",
-            "anchor",
-            "llm_candidate_import"
+            "anchor"
           ],
           "difficulty_tier": "mid",
           "power_score": 5.0,
@@ -4553,8 +4462,7 @@
             "spearman",
             "skill",
             "setup",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "mid",
           "power_score": 2.4,
@@ -4588,8 +4496,7 @@
             "attack",
             "high_pressure",
             "technique",
-            "closing_form",
-            "llm_candidate_import"
+            "closing_form"
           ],
           "difficulty_tier": "mid",
           "power_score": 7.4,
@@ -4617,7 +4524,7 @@
       "power_range_pass": true,
       "reward_tier": "advanced",
       "runtime_primitives": [],
-      "opening_pressure": null,
+      "opening_pressure": {},
       "deck_summary": {
         "deck_id": "posture_llm_candidate_v0_1_deck_011",
         "enemy_role": "spearman",
@@ -4627,8 +4534,7 @@
         "tags": [
           "late",
           "elite",
-          "spearman",
-          "llm_candidate_import"
+          "spearman"
         ],
         "player_wujing_cap": 3,
         "realm_eligibility_checked": true,
@@ -4667,8 +4573,7 @@
             "spearman",
             "attack",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "late",
           "power_score": 8.0,
@@ -4693,8 +4598,7 @@
             "spearman",
             "attack",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "late",
           "power_score": 8.0,
@@ -4720,8 +4624,7 @@
             "skill",
             "pressure",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "late",
           "power_score": 5.6,
@@ -4747,8 +4650,7 @@
             "skill",
             "pressure",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "late",
           "power_score": 5.6,
@@ -4772,8 +4674,7 @@
             "late",
             "spearman",
             "defense",
-            "anchor",
-            "llm_candidate_import"
+            "anchor"
           ],
           "difficulty_tier": "late",
           "power_score": 6.0,
@@ -4797,8 +4698,7 @@
             "late",
             "spearman",
             "defense",
-            "anchor",
-            "llm_candidate_import"
+            "anchor"
           ],
           "difficulty_tier": "late",
           "power_score": 6.0,
@@ -4823,8 +4723,7 @@
             "spearman",
             "skill",
             "setup",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "late",
           "power_score": 2.4,
@@ -4854,8 +4753,7 @@
             "attack",
             "high_pressure",
             "technique",
-            "closing_form",
-            "llm_candidate_import"
+            "closing_form"
           ],
           "difficulty_tier": "late",
           "power_score": 7.6,
@@ -4883,7 +4781,7 @@
       "power_range_pass": true,
       "reward_tier": "advanced",
       "runtime_primitives": [],
-      "opening_pressure": null,
+      "opening_pressure": {},
       "deck_summary": {
         "deck_id": "posture_llm_candidate_v0_1_deck_012",
         "enemy_role": "spearman",
@@ -4893,8 +4791,7 @@
         "tags": [
           "late",
           "normal",
-          "spearman",
-          "llm_candidate_import"
+          "spearman"
         ],
         "player_wujing_cap": 3,
         "realm_eligibility_checked": true,
@@ -4933,8 +4830,7 @@
             "spearman",
             "attack",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "late",
           "power_score": 8.0,
@@ -4959,8 +4855,7 @@
             "spearman",
             "attack",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "late",
           "power_score": 8.0,
@@ -4986,8 +4881,7 @@
             "skill",
             "pressure",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "late",
           "power_score": 5.6,
@@ -5013,8 +4907,7 @@
             "skill",
             "pressure",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "late",
           "power_score": 5.6,
@@ -5038,8 +4931,7 @@
             "late",
             "spearman",
             "defense",
-            "anchor",
-            "llm_candidate_import"
+            "anchor"
           ],
           "difficulty_tier": "late",
           "power_score": 6.0,
@@ -5064,8 +4956,7 @@
             "spearman",
             "skill",
             "setup",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "late",
           "power_score": 2.4,
@@ -5095,8 +4986,7 @@
             "attack",
             "high_pressure",
             "technique",
-            "closing_form",
-            "llm_candidate_import"
+            "closing_form"
           ],
           "difficulty_tier": "late",
           "power_score": 7.6,
@@ -5124,7 +5014,7 @@
       "power_range_pass": true,
       "reward_tier": "advanced",
       "runtime_primitives": [],
-      "opening_pressure": null,
+      "opening_pressure": {},
       "deck_summary": {
         "deck_id": "posture_llm_candidate_v0_1_deck_013",
         "enemy_role": "blademaster",
@@ -5134,8 +5024,7 @@
         "tags": [
           "late",
           "elite",
-          "blademaster",
-          "llm_candidate_import"
+          "blademaster"
         ],
         "player_wujing_cap": 3,
         "realm_eligibility_checked": true,
@@ -5174,8 +5063,7 @@
             "blademaster",
             "attack",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "late",
           "power_score": 8.0,
@@ -5200,8 +5088,7 @@
             "blademaster",
             "attack",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "late",
           "power_score": 8.0,
@@ -5227,8 +5114,7 @@
             "skill",
             "pressure",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "late",
           "power_score": 5.6,
@@ -5254,8 +5140,7 @@
             "skill",
             "pressure",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "late",
           "power_score": 5.6,
@@ -5279,8 +5164,7 @@
             "late",
             "blademaster",
             "defense",
-            "anchor",
-            "llm_candidate_import"
+            "anchor"
           ],
           "difficulty_tier": "late",
           "power_score": 6.0,
@@ -5304,8 +5188,7 @@
             "late",
             "blademaster",
             "defense",
-            "anchor",
-            "llm_candidate_import"
+            "anchor"
           ],
           "difficulty_tier": "late",
           "power_score": 6.0,
@@ -5330,8 +5213,7 @@
             "blademaster",
             "skill",
             "setup",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "late",
           "power_score": 2.4,
@@ -5361,8 +5243,7 @@
             "attack",
             "high_pressure",
             "technique",
-            "closing_form",
-            "llm_candidate_import"
+            "closing_form"
           ],
           "difficulty_tier": "late",
           "power_score": 7.6,
@@ -5390,7 +5271,7 @@
       "power_range_pass": true,
       "reward_tier": "advanced",
       "runtime_primitives": [],
-      "opening_pressure": null,
+      "opening_pressure": {},
       "deck_summary": {
         "deck_id": "posture_llm_candidate_v0_1_deck_014",
         "enemy_role": "blademaster",
@@ -5400,8 +5281,7 @@
         "tags": [
           "late",
           "normal",
-          "blademaster",
-          "llm_candidate_import"
+          "blademaster"
         ],
         "player_wujing_cap": 3,
         "realm_eligibility_checked": true,
@@ -5440,8 +5320,7 @@
             "blademaster",
             "attack",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "late",
           "power_score": 8.0,
@@ -5466,8 +5345,7 @@
             "blademaster",
             "attack",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "late",
           "power_score": 8.0,
@@ -5493,8 +5371,7 @@
             "skill",
             "pressure",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "late",
           "power_score": 5.6,
@@ -5520,8 +5397,7 @@
             "skill",
             "pressure",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "late",
           "power_score": 5.6,
@@ -5545,8 +5421,7 @@
             "late",
             "blademaster",
             "defense",
-            "anchor",
-            "llm_candidate_import"
+            "anchor"
           ],
           "difficulty_tier": "late",
           "power_score": 6.0,
@@ -5571,8 +5446,7 @@
             "blademaster",
             "skill",
             "setup",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "late",
           "power_score": 2.4,
@@ -5602,8 +5476,7 @@
             "attack",
             "high_pressure",
             "technique",
-            "closing_form",
-            "llm_candidate_import"
+            "closing_form"
           ],
           "difficulty_tier": "late",
           "power_score": 7.6,
@@ -5631,7 +5504,7 @@
       "power_range_pass": true,
       "reward_tier": "boss",
       "runtime_primitives": [],
-      "opening_pressure": null,
+      "opening_pressure": {},
       "deck_summary": {
         "deck_id": "posture_llm_candidate_v0_1_deck_015",
         "enemy_role": "blademaster",
@@ -5641,8 +5514,7 @@
         "tags": [
           "boss",
           "boss",
-          "blademaster",
-          "llm_candidate_import"
+          "blademaster"
         ],
         "player_wujing_cap": 4,
         "realm_eligibility_checked": true,
@@ -5682,8 +5554,7 @@
             "attack",
             "boss_tag",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "boss",
           "power_score": 8.0,
@@ -5709,8 +5580,7 @@
             "attack",
             "boss_tag",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "boss",
           "power_score": 8.0,
@@ -5736,8 +5606,7 @@
             "skill",
             "boss_tag",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "boss",
           "power_score": 6.4,
@@ -5763,8 +5632,7 @@
             "skill",
             "boss_tag",
             "high_pressure",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "boss",
           "power_score": 6.4,
@@ -5789,8 +5657,7 @@
             "blademaster",
             "defense",
             "boss_tag",
-            "anchor",
-            "llm_candidate_import"
+            "anchor"
           ],
           "difficulty_tier": "boss",
           "power_score": 7.0,
@@ -5815,8 +5682,7 @@
             "blademaster",
             "defense",
             "boss_tag",
-            "anchor",
-            "llm_candidate_import"
+            "anchor"
           ],
           "difficulty_tier": "boss",
           "power_score": 7.0,
@@ -5842,8 +5708,7 @@
             "skill",
             "boss_tag",
             "setup",
-            "technique",
-            "llm_candidate_import"
+            "technique"
           ],
           "difficulty_tier": "boss",
           "power_score": 3.2,
@@ -5874,8 +5739,7 @@
             "boss_tag",
             "high_pressure",
             "technique",
-            "closing_form",
-            "llm_candidate_import"
+            "closing_form"
           ],
           "difficulty_tier": "boss",
           "power_score": 7.8,

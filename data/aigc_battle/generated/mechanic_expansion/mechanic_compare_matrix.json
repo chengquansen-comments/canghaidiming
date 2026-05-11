@@ -1,0 +1,167 @@
+{
+  "generated_at": "2026-05-11T07:19:03.055096+00:00",
+  "real_mechanic_profile_count": 7,
+  "runtime_primitive_types": [
+    "clue_pressure",
+    "dual_weapon",
+    "martial_realm_7",
+    "opening_pressure",
+    "weapon_followup"
+  ],
+  "distinct_mechanic_count": 5,
+  "mechanic_density_by_pack": {
+    "clue_pressure_v0_1::clue_pressure_v0_1_formal_sequence_pack_001": 1,
+    "martial_realm_7_dual_weapon_v0_1::martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001": 2,
+    "posture_basic_v0_1::posture_basic_v0_1_formal_sequence_pack_001": 0,
+    "posture_llm_candidate_v0_1::posture_llm_candidate_v0_1_formal_sequence_pack_001": 0,
+    "posture_opening_pressure_v0_1::posture_opening_pressure_v0_1_formal_sequence_pack_001": 1,
+    "posture_tuned_v0_1b::posture_tuned_v0_1b_formal_sequence_pack_001": 0,
+    "weapon_followup_v0_1::weapon_followup_v0_1_formal_sequence_pack_001": 1
+  },
+  "mechanic_runtime_observable": {
+    "clue_pressure_v0_1::clue_pressure_v0_1_formal_sequence_pack_001": true,
+    "martial_realm_7_dual_weapon_v0_1::martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001": true,
+    "posture_basic_v0_1::posture_basic_v0_1_formal_sequence_pack_001": true,
+    "posture_llm_candidate_v0_1::posture_llm_candidate_v0_1_formal_sequence_pack_001": true,
+    "posture_opening_pressure_v0_1::posture_opening_pressure_v0_1_formal_sequence_pack_001": true,
+    "posture_tuned_v0_1b::posture_tuned_v0_1b_formal_sequence_pack_001": true,
+    "weapon_followup_v0_1::weapon_followup_v0_1_formal_sequence_pack_001": true
+  },
+  "max_wujing_by_pack": {
+    "clue_pressure_v0_1::clue_pressure_v0_1_formal_sequence_pack_001": 0,
+    "martial_realm_7_dual_weapon_v0_1::martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001": 7,
+    "posture_basic_v0_1::posture_basic_v0_1_formal_sequence_pack_001": 0,
+    "posture_llm_candidate_v0_1::posture_llm_candidate_v0_1_formal_sequence_pack_001": 0,
+    "posture_opening_pressure_v0_1::posture_opening_pressure_v0_1_formal_sequence_pack_001": 0,
+    "posture_tuned_v0_1b::posture_tuned_v0_1b_formal_sequence_pack_001": 0,
+    "weapon_followup_v0_1::weapon_followup_v0_1_formal_sequence_pack_001": 0
+  },
+  "dual_weapon_enabled_by_pack": {
+    "clue_pressure_v0_1::clue_pressure_v0_1_formal_sequence_pack_001": false,
+    "martial_realm_7_dual_weapon_v0_1::martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001": true,
+    "posture_basic_v0_1::posture_basic_v0_1_formal_sequence_pack_001": false,
+    "posture_llm_candidate_v0_1::posture_llm_candidate_v0_1_formal_sequence_pack_001": false,
+    "posture_opening_pressure_v0_1::posture_opening_pressure_v0_1_formal_sequence_pack_001": false,
+    "posture_tuned_v0_1b::posture_tuned_v0_1b_formal_sequence_pack_001": false,
+    "weapon_followup_v0_1::weapon_followup_v0_1_formal_sequence_pack_001": false
+  },
+  "clue_pressure_enabled_by_pack": {
+    "clue_pressure_v0_1::clue_pressure_v0_1_formal_sequence_pack_001": true,
+    "martial_realm_7_dual_weapon_v0_1::martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001": false,
+    "posture_basic_v0_1::posture_basic_v0_1_formal_sequence_pack_001": false,
+    "posture_llm_candidate_v0_1::posture_llm_candidate_v0_1_formal_sequence_pack_001": false,
+    "posture_opening_pressure_v0_1::posture_opening_pressure_v0_1_formal_sequence_pack_001": false,
+    "posture_tuned_v0_1b::posture_tuned_v0_1b_formal_sequence_pack_001": false,
+    "weapon_followup_v0_1::weapon_followup_v0_1_formal_sequence_pack_001": false
+  },
+  "mechanism_overlap_warning": true,
+  "packs": [
+    {
+      "mechanic_profile_id": "clue_pressure_v0_1",
+      "content_pack_id": "clue_pressure_v0_1_formal_sequence_pack_001",
+      "runtime_primitive_types": [
+        "clue_pressure"
+      ],
+      "mechanic_runtime_observable": true,
+      "max_wujing": 0,
+      "dual_weapon_enabled": false,
+      "clue_pressure_enabled": true,
+      "mechanic_density": 1,
+      "weapon_loadout_counts": {},
+      "clue_pressure_density_by_tier": {
+        "boss": 1.0,
+        "early": 1.0,
+        "late": 1.0,
+        "mid": 1.0
+      }
+    },
+    {
+      "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+      "content_pack_id": "martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001",
+      "runtime_primitive_types": [
+        "martial_realm_7",
+        "dual_weapon"
+      ],
+      "mechanic_runtime_observable": true,
+      "max_wujing": 7,
+      "dual_weapon_enabled": true,
+      "clue_pressure_enabled": false,
+      "mechanic_density": 2,
+      "weapon_loadout_counts": {
+        "spearman": 3,
+        "blademaster": 3,
+        "spearman+blademaster": 9
+      },
+      "clue_pressure_density_by_tier": {
+        "boss": 0.0,
+        "early": 0.0,
+        "late": 0.0,
+        "mid": 0.0
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_basic_v0_1",
+      "content_pack_id": "posture_basic_v0_1_formal_sequence_pack_001",
+      "runtime_primitive_types": [],
+      "mechanic_runtime_observable": true,
+      "max_wujing": 0,
+      "dual_weapon_enabled": false,
+      "clue_pressure_enabled": false,
+      "mechanic_density": 0,
+      "weapon_loadout_counts": {},
+      "clue_pressure_density_by_tier": {}
+    },
+    {
+      "mechanic_profile_id": "posture_llm_candidate_v0_1",
+      "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
+      "runtime_primitive_types": [],
+      "mechanic_runtime_observable": true,
+      "max_wujing": 0,
+      "dual_weapon_enabled": false,
+      "clue_pressure_enabled": false,
+      "mechanic_density": 0,
+      "weapon_loadout_counts": {},
+      "clue_pressure_density_by_tier": {}
+    },
+    {
+      "mechanic_profile_id": "posture_opening_pressure_v0_1",
+      "content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+      "runtime_primitive_types": [
+        "opening_pressure"
+      ],
+      "mechanic_runtime_observable": true,
+      "max_wujing": 0,
+      "dual_weapon_enabled": false,
+      "clue_pressure_enabled": false,
+      "mechanic_density": 1,
+      "weapon_loadout_counts": {},
+      "clue_pressure_density_by_tier": {}
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "runtime_primitive_types": [],
+      "mechanic_runtime_observable": true,
+      "max_wujing": 0,
+      "dual_weapon_enabled": false,
+      "clue_pressure_enabled": false,
+      "mechanic_density": 0,
+      "weapon_loadout_counts": {},
+      "clue_pressure_density_by_tier": {}
+    },
+    {
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+      "runtime_primitive_types": [
+        "weapon_followup"
+      ],
+      "mechanic_runtime_observable": true,
+      "max_wujing": 0,
+      "dual_weapon_enabled": false,
+      "clue_pressure_enabled": false,
+      "mechanic_density": 1,
+      "weapon_loadout_counts": {},
+      "clue_pressure_density_by_tier": {}
+    }
+  ]
+}

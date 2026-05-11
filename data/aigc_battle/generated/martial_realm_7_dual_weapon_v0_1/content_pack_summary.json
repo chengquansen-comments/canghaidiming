@@ -1,0 +1,77 @@
+{
+  "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+  "content_pack_id": "martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001",
+  "target_sequence_id": "formal_sequence_mvp_v1",
+  "formal_encounter_total_count": 15,
+  "generated_battle_slot_count": 15,
+  "generated_deck_count": 15,
+  "generated_card_count": 70,
+  "generated_reward_count": 15,
+  "replacement_mode": "full_sequence",
+  "runtime_primitives_used": [
+    "martial_realm_7",
+    "dual_weapon"
+  ],
+  "opening_pressure_slot_count": 0,
+  "weapon_followup_card_count": 0,
+  "weapon_followup_deck_count": 0,
+  "weapon_followup_slot_count": 0,
+  "weapon_followup_chain_count": 0,
+  "realm_eligibility_rule_enabled": true,
+  "deck_card_realm_eligibility_valid": true,
+  "invalid_realm_card_count": 0,
+  "clue_pressure_slot_count": 0,
+  "clue_pressure_trigger_count": 0,
+  "clue_pressure_effect_counts": {},
+  "clue_tag_counts": {},
+  "clue_pressure_density_by_tier": {
+    "boss": 0.0,
+    "early": 0.0,
+    "late": 0.0,
+    "mid": 0.0
+  },
+  "max_wujing": 7,
+  "max_closing_form_tier": 7,
+  "card_count_by_wujing": {
+    "1": 10,
+    "2": 10,
+    "3": 10,
+    "4": 10,
+    "5": 10,
+    "6": 10,
+    "7": 10
+  },
+  "card_count_by_closing_form_tier": {
+    "1": 10,
+    "2": 10,
+    "3": 10,
+    "4": 10,
+    "5": 10,
+    "6": 10,
+    "7": 10
+  },
+  "dual_weapon_slot_count": 8,
+  "dual_weapon_deck_count": 8,
+  "dual_weapon_ratio": 0.53,
+  "weapon_loadout_counts": {
+    "spearman": 3,
+    "blademaster": 3,
+    "spearman+blademaster": 9
+  },
+  "realm_stage_counts": {
+    "realm_1_2": 4,
+    "realm_7": 3,
+    "realm_3_4": 4,
+    "realm_5_6": 4
+  },
+  "seven_realm_card_count": 10,
+  "dual_weapon_synergy_count": 77,
+  "rebuild_uses_snapshot": false,
+  "snapshot_source_path": "",
+  "flagged_deck_count": 0,
+  "flagged_deck_ids": [],
+  "rebuild_uses_real_telemetry": false,
+  "real_telemetry_snapshot_path": "",
+  "telemetry_rebuild_adjustments": [],
+  "adjusted_or_flagged_encounters": []
+}

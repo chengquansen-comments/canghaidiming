@@ -1,0 +1,94 @@
+{
+  "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+  "display_name": "七境双武器机制",
+  "version": "0.1.0",
+  "runtime_support_level": "godot_formal_sequence_v1",
+  "resources": [
+    "hp",
+    "posture",
+    "block"
+  ],
+  "card_types": [
+    "attack",
+    "defense",
+    "skill"
+  ],
+  "weapon_styles": [
+    "spearman",
+    "blademaster",
+    "generic"
+  ],
+  "allowed_design_effects": [
+    "damage",
+    "gain_block",
+    "gain_momentum",
+    "break_momentum"
+  ],
+  "allowed_runtime_effects": [
+    "damage",
+    "gain_block",
+    "gain_momentum",
+    "break_momentum"
+  ],
+  "card_constraints": {
+    "min_cost": 0,
+    "max_cost": 2,
+    "min_power_score": 2,
+    "max_power_score": 12
+  },
+  "deck_constraints": {
+    "min_deck_size": 6,
+    "max_deck_size": 8,
+    "max_same_card": 2
+  },
+  "power_model": {
+    "damage_weight": 1.0,
+    "block_weight": 1.0,
+    "gain_momentum_weight": 0.8,
+    "break_momentum_weight": 0.8,
+    "difficulty_tiers": [
+      "normal",
+      "elite",
+      "boss"
+    ]
+  },
+  "runtime_primitives": [
+    "martial_realm_7",
+    "dual_weapon"
+  ],
+  "max_wujing": 7,
+  "max_closing_form_tier": 7,
+  "dual_weapon_enabled": true,
+  "allowed_weapon_loadouts": [
+    [
+      "spearman"
+    ],
+    [
+      "blademaster"
+    ],
+    [
+      "spearman",
+      "blademaster"
+    ]
+  ],
+  "runtime_primitive_constraints": {
+    "martial_realm_7": {
+      "max_wujing": 7,
+      "max_closing_form_tier": 7
+    },
+    "dual_weapon": {
+      "max_weapon_styles_per_deck": 2,
+      "min_primary_weapon_ratio": 0.45,
+      "min_secondary_weapon_ratio": 0.2,
+      "generic_cards_allowed": true,
+      "max_generic_ratio": 0.35
+    }
+  },
+  "card_eligibility_rules": {
+    "technique_requires_player_realm": true,
+    "forbid_required_wujing_above_player_cap": true,
+    "forbid_closing_form_above_player_cap": true,
+    "dual_weapon_cards_require_matching_loadout": true,
+    "missing_realm_metadata_policy": "fail"
+  }
+}

@@ -37,6 +37,20 @@ def main(argv: list[str]) -> int:
         raise SystemExit("runtime export blocked: opening_pressure does not cover all slots")
     if not validation_report.get("opening_pressure_values_in_range", True):
         raise SystemExit("runtime export blocked: opening_pressure values are out of range")
+    if not validation_report.get("weapon_followup_runtime_export_allowed", True):
+        raise SystemExit("runtime export blocked: weapon_followup export is not allowed")
+    if not validation_report.get("weapon_followup_chain_valid", True):
+        raise SystemExit("runtime export blocked: weapon_followup chain is invalid")
+    if not validation_report.get("weapon_followup_values_in_range", True):
+        raise SystemExit("runtime export blocked: weapon_followup values are out of range")
+    if not validation_report.get("clue_pressure_runtime_export_allowed", True):
+        raise SystemExit("runtime export blocked: clue_pressure export is not allowed")
+    if not validation_report.get("martial_realm_7_playable", True):
+        raise SystemExit("runtime export blocked: martial_realm_7 is not playable")
+    if not validation_report.get("dual_weapon_playable", True):
+        raise SystemExit("runtime export blocked: dual_weapon is not playable")
+    if not validation_report.get("dual_weapon_runtime_export_allowed", True):
+        raise SystemExit("runtime export blocked: dual_weapon export is not allowed")
     if not validation_report.get("unsupported_design_effects_blocked", False):
         raise SystemExit("runtime export blocked: unsupported design effects detected")
     if not validation_report.get("full_sequence_coverage_complete", False):
@@ -63,6 +77,7 @@ def main(argv: list[str]) -> int:
     rewards = read_json(generated_dir / "rewards.generated.json")
     mappings = read_json(generated_dir / "formal_sequence_mapping.generated.json")
     balance_summary = read_json(generated_dir / "sequence_balance_summary.json")
+    content_pack_summary = read_json(generated_dir / "content_pack_summary.json") if (generated_dir / "content_pack_summary.json").exists() else {}
     imported_candidate_summary_path = generated_dir / "imported_candidate_summary.json"
     imported_candidate_summary = read_json(imported_candidate_summary_path) if imported_candidate_summary_path.exists() else None
     runtime_primitives = [str(item) for item in mechanic_profile.get("runtime_primitives", [])]
@@ -75,7 +90,7 @@ def main(argv: list[str]) -> int:
     manifest = {
         "manifest_version": 1,
         "mechanic_profile_id": mechanic_profile["mechanic_profile_id"],
-        "content_pack_id": content_recipe["content_pack_id"],
+        "content_pack_id": str(content_pack_summary.get("content_pack_id", content_recipe["content_pack_id"])),
         "target_sequence_id": content_recipe["target_sequence_id"],
         "replacement_mode": "full_sequence",
         "runtime_supported_effects": mechanic_profile["allowed_runtime_effects"],
@@ -87,6 +102,34 @@ def main(argv: list[str]) -> int:
             "opening_pressure_all_slots_covered": validation_report.get("opening_pressure_all_slots_covered", True),
             "opening_pressure_values_in_range": validation_report.get("opening_pressure_values_in_range", True),
             "opening_pressure_curve_ready": validation_report.get("opening_pressure_curve_ready", True),
+            "weapon_followup_declared": validation_report.get("weapon_followup_declared", False),
+            "weapon_followup_cards_present": validation_report.get("weapon_followup_cards_present", True),
+            "weapon_followup_decks_present": validation_report.get("weapon_followup_decks_present", True),
+            "weapon_followup_all_slots_covered": validation_report.get("weapon_followup_all_slots_covered", True),
+            "weapon_followup_chain_valid": validation_report.get("weapon_followup_chain_valid", True),
+            "weapon_followup_values_in_range": validation_report.get("weapon_followup_values_in_range", True),
+            "weapon_followup_curve_ready": validation_report.get("weapon_followup_curve_ready", True),
+            "weapon_followup_runtime_export_allowed": validation_report.get("weapon_followup_runtime_export_allowed", True),
+            "clue_pressure_declared": validation_report.get("clue_pressure_declared", False),
+            "clue_pressure_all_slots_covered": validation_report.get("clue_pressure_all_slots_covered", True),
+            "clue_pressure_tags_valid": validation_report.get("clue_pressure_tags_valid", True),
+            "clue_pressure_effects_valid": validation_report.get("clue_pressure_effects_valid", True),
+            "clue_pressure_values_in_range": validation_report.get("clue_pressure_values_in_range", True),
+            "clue_pressure_curve_ready": validation_report.get("clue_pressure_curve_ready", True),
+            "clue_pressure_runtime_export_allowed": validation_report.get("clue_pressure_runtime_export_allowed", True),
+            "martial_realm_7_declared": validation_report.get("martial_realm_7_declared", False),
+            "dual_weapon_declared": validation_report.get("dual_weapon_declared", False),
+            "max_wujing": validation_report.get("max_wujing", 0),
+            "max_closing_form_tier": validation_report.get("max_closing_form_tier", 0),
+            "max_wujing_is_7": validation_report.get("max_wujing_is_7", True),
+            "max_closing_form_tier_is_7": validation_report.get("max_closing_form_tier_is_7", True),
+            "dual_weapon_slot_count": validation_report.get("dual_weapon_slot_count", 0),
+            "dual_weapon_deck_count": validation_report.get("dual_weapon_deck_count", 0),
+            "seven_realm_card_count": validation_report.get("seven_realm_card_count", 0),
+            "invalid_weapon_loadout_card_count": validation_report.get("invalid_weapon_loadout_card_count", 0),
+            "martial_realm_7_playable": validation_report.get("martial_realm_7_playable", True),
+            "dual_weapon_playable": validation_report.get("dual_weapon_playable", True),
+            "dual_weapon_runtime_export_allowed": validation_report.get("dual_weapon_runtime_export_allowed", True),
             "runtime_primitive_playable": validation_report.get("runtime_primitive_playable", True),
         },
         "balance_summary": balance_summary,
