@@ -192,6 +192,7 @@ def append_active_history(previous_active: dict[str, Any], next_active: dict[str
 
 
 def resolve_generated_dir(profile_id: str, pack_id: str | None = None) -> Path:
+    pack_id = normalize_pack_id(profile_id, pack_id)
     if pack_id:
         return GENERATED_DIR / profile_id / "packs" / pack_id
     return GENERATED_DIR / profile_id

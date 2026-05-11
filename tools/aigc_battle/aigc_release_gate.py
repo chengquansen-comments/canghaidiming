@@ -14,6 +14,7 @@ if str(ROOT) not in sys.path:
 
 from tools.aigc_battle import build_aigc_detail_views as detail_lib
 from tools.aigc_battle import build_aigc_review_workspace as review_lib
+from tools.aigc_battle import load_sequence_template as template_lib
 from tools.aigc_battle import switch_active_profile as switch_lib
 
 RELEASE_DIR = ROOT / 'data' / 'aigc_battle' / 'release'
@@ -23,6 +24,7 @@ DETAILS_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'details'
 RELEASE_SMOKE_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'release_smoke'
 BALANCE_RELEASE_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'balance_release'
 RUNTIME_DIR = ROOT / 'data' / 'aigc_battle' / 'runtime'
+PACK_RESOLVER_PATH = ROOT / 'data' / 'aigc_battle' / 'pack_resolver.json'
 
 DEFAULT_CURRENT_PROFILE_ID = 'weapon_followup_v0_1'
 DEFAULT_CURRENT_PACK_ID = 'weapon_followup_v0_1_formal_sequence_pack_001'
@@ -266,10 +268,24 @@ def build_release_manifest(profile_id: str, content_pack_id: str) -> dict[str, A
     is_active = active_profile_matches(profile_id, content_pack_id)
     suggestions = build_git_suggestions(profile_id, content_pack_id)
     pack_summary = detail.get('content_pack_summary', {}) if isinstance(detail.get('content_pack_summary', {}), dict) else {}
+    sequence_template_id = str(
+        pack_summary.get('sequence_template_id')
+        or detail.get('sequence_template_id', '')
+        or template_lib.infer_sequence_template_id(pack_summary, {})
+    )
+    build_variant = template_lib.resolve_build_variant(
+        pack_summary.get('build_variant') or detail.get('build_variant', ''),
+        profile_id,
+        content_pack_id,
+    )
+    pack_identity = template_lib.build_pack_identity(sequence_template_id, profile_id, build_variant, content_pack_id)
     balance_report = load_balance_release_evaluation_report(profile_id, content_pack_id)
     return {
         'mechanic_profile_id': profile_id,
         'content_pack_id': content_pack_id,
+        'sequence_template_id': sequence_template_id,
+        'build_variant': build_variant,
+        'pack_identity': pack_identity,
         'release_status': 'active' if is_active else 'draft',
         'frozen': False,
         'frozen_at': '',
@@ -357,6 +373,7 @@ def set_release_channel(channel: str, profile_id: str, content_pack_id: str) -> 
     if channel == 'current':
         ensure_balance_release_gate(profile_id, content_pack_id)
     validated = validate_release_pack(profile_id, content_pack_id, allow_archived=(channel == 'fallback'))
+    ensure_pack_resolver_entry(channel, validated)
     previous = read_release_channel(channel)
     payload = build_release_channel_payload(channel, validated)
     if channel == 'current':
@@ -475,6 +492,9 @@ def ensure_default_release_channels() -> None:
             'channel': 'candidate',
             'mechanic_profile_id': '',
             'content_pack_id': '',
+            'sequence_template_id': '',
+            'build_variant': '',
+            'pack_identity': {},
             'runtime_manifest_path': '',
             'release_status': 'pending',
             'candidate_created_at': '',
@@ -489,12 +509,26 @@ def validate_release_pack(profile_id: str, content_pack_id: str, allow_archived:
     detail = load_pack_detail(profile_id, content_pack_id)
     validation = detail.get('validation_summary', {})
     runtime_manifest = read_json(ROOT / str(switch_summary['runtime_manifest_path']))
+    sequence_template_id = str(
+        runtime_manifest.get('sequence_template_id')
+        or validation.get('sequence_template_id')
+        or detail.get('sequence_template_id', '')
+        or template_lib.infer_sequence_template_id({}, runtime_manifest)
+    )
+    build_variant = template_lib.resolve_build_variant(
+        runtime_manifest.get('build_variant') or validation.get('build_variant') or detail.get('build_variant', ''),
+        profile_id,
+        content_pack_id,
+    )
+    pack_identity = template_lib.build_pack_identity(sequence_template_id, profile_id, build_variant, content_pack_id)
     runtime_primitives = [str(item) for item in runtime_manifest.get('runtime_primitives', [])]
     checks = [
         ('ready_for_runtime_export', bool(validation.get('ready_for_runtime_export', False))),
         ('full_sequence_coverage_complete', bool(validation.get('full_sequence_coverage_complete', False))),
         ('runtime_export_allowed', bool(validation.get('runtime_export_allowed', False))),
         ('sequence_balance_pass', bool(validation.get('sequence_balance_pass', False))),
+        ('sequence_template_runtime_export_allowed', bool(validation.get('sequence_template_runtime_export_allowed', True))),
+        ('template_mechanic_pack_binding_valid', bool(validation.get('template_mechanic_pack_binding_valid', True))),
     ]
     if 'deck_card_realm_eligibility_valid' in validation:
         checks.append(('deck_card_realm_eligibility_valid', bool(validation.get('deck_card_realm_eligibility_valid', False))))
@@ -516,6 +550,9 @@ def validate_release_pack(profile_id: str, content_pack_id: str, allow_archived:
     return {
         'mechanic_profile_id': profile_id,
         'content_pack_id': content_pack_id,
+        'sequence_template_id': sequence_template_id,
+        'build_variant': build_variant,
+        'pack_identity': pack_identity,
         'runtime_manifest_path': str(switch_summary.get('runtime_manifest_path', '')),
         'validation_report_path': str(switch_summary.get('validation_report_path', '')),
         'release_status': str(release_manifest.get('release_status', 'draft')),
@@ -534,6 +571,9 @@ def build_release_channel_payload(channel: str, validated: dict[str, Any]) -> di
         'channel': channel,
         'mechanic_profile_id': validated['mechanic_profile_id'],
         'content_pack_id': validated['content_pack_id'],
+        'sequence_template_id': validated.get('sequence_template_id', ''),
+        'build_variant': validated.get('build_variant', ''),
+        'pack_identity': validated.get('pack_identity', {}),
         'runtime_manifest_path': validated['runtime_manifest_path'],
         'release_status': validated['release_status'],
     }
@@ -603,6 +643,22 @@ def load_balance_release_evaluation_report(profile_id: str, content_pack_id: str
     if str(payload.get('source_profile_id', profile_id)) != profile_id:
         return {'report_path': '', 'playable_balance_gate_pass': False}
     return {'report_path': to_relative(path), **payload}
+
+
+def ensure_pack_resolver_entry(channel: str, validated: dict[str, Any]) -> None:
+    if not PACK_RESOLVER_PATH.exists():
+        return
+    resolver = read_json(PACK_RESOLVER_PATH)
+    entries = resolver.get('entries', [])
+    target = next((
+        entry for entry in entries
+        if str(entry.get('mechanic_profile_id', '')) == str(validated.get('mechanic_profile_id', ''))
+        and str(entry.get('content_pack_id', '')) == str(validated.get('content_pack_id', ''))
+    ), None)
+    if not target:
+        raise SystemExit('release channel blocked: missing pack resolver entry')
+    if not bool(target.get('resolver_entry_valid', False)):
+        raise SystemExit('release channel blocked: invalid pack resolver entry')
 
 
 def read_active_profile() -> dict[str, Any]:

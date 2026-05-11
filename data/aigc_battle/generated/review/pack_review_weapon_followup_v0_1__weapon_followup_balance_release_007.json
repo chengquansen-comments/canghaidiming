@@ -2,6 +2,16 @@
   "pack_identity": {
     "mechanic_profile_id": "weapon_followup_v0_1",
     "content_pack_id": "weapon_followup_balance_release_007",
+    "sequence_template_id": "formal_sequence_15_v1",
+    "build_variant": "balance_release_007",
+    "pack_identity": {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "balance_release_007",
+      "content_pack_id": "weapon_followup_balance_release_007"
+    },
+    "stage_counts": {},
+    "template_mechanic_pack_binding_valid": true,
     "is_active_pack": true,
     "pack_storage_mode": "profile_pack_dir",
     "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_007/runtime_manifest.json",
@@ -8042,6 +8052,7 @@
   "evaluation_summary": {
     "evaluated": true,
     "evaluation_event_count": 45,
+    "sequence_template_id": "formal_sequence_15_v1",
     "telemetry_detail_level_summary": {
       "real": 45
     },
@@ -8050,6 +8061,7 @@
     "avg_player_hp_end": 24.9556,
     "avg_damage_taken": 12.6444,
     "runtime_primitive_trigger_rate": 1.0,
+    "stage_metrics": {},
     "mechanism_underused_candidates": [],
     "too_easy_candidates": [
       {
@@ -8340,9 +8352,9 @@
     "suggested_git_tag_command": "git tag aigc-release/weapon_followup_v0_1__weapon_followup_balance_release_007"
   },
   "active_history_summary": {
-    "switch_count": 2,
+    "switch_count": 7,
     "latest_switch": {
-      "timestamp": "2026-05-11T10:25:56.365818Z",
+      "timestamp": "2026-05-11T12:29:43.249458Z",
       "previous_profile_id": "weapon_followup_v0_1",
       "previous_content_pack_id": "weapon_followup_balance_release_007",
       "previous_runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_007/runtime_manifest.json",

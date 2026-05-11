@@ -2,6 +2,8 @@
 
 - pack_storage_mode: profile_pack_dir
 - is_active_pack: false
+- sequence_template_id: -
+- build_variant: balance_release_006
 - formal_encounter_total_count: 15
 - card_count: 40
 - deck_count: 15
@@ -11,11 +13,13 @@
 ## 包总体状态
 - ready_for_runtime_export: true
 - sequence_balance_pass: true
+- template_mechanic_pack_binding_valid: none
 - deck_card_realm_eligibility_valid: true
 - evaluation_event_count: 45
 - win_rate: 0.8222
 - avg_turn_count: 3.7111
 - rebuild_recommendation_count: 27
+- stage_metrics: {}
 
 ## Balance Release
 - balance_release: true
@@ -32,22 +36,22 @@
 - high_power_card_ids: weapon_followup_v0_1_blademaster_boss_strike, weapon_followup_v0_1_blademaster_late_strike, weapon_followup_v0_1_spearman_boss_strike, weapon_followup_v0_1_spearman_late_strike, weapon_followup_v0_1_blademaster_boss_finisher
 - most_used_card_ids: weapon_followup_v0_1_blademaster_early_focus, weapon_followup_v0_1_blademaster_early_pressure, weapon_followup_v0_1_blademaster_early_strike, weapon_followup_v0_1_spearman_early_focus, weapon_followup_v0_1_spearman_early_pressure
 
-## 15 场战斗明细表
-- #1 enc_beach_ambush -> slot=weapon_followup_v0_1_slot_001 deck=weapon_followup_v0_1_deck_001 reward=weapon_followup_v0_1_reward_001 wujing_cap=1 runtime_primitives=weapon_followup
-- #2 enc_fishing_village_embers -> slot=weapon_followup_v0_1_slot_002 deck=weapon_followup_v0_1_deck_002 reward=weapon_followup_v0_1_reward_002 wujing_cap=1 runtime_primitives=weapon_followup
-- #3 enc_transport_officer -> slot=weapon_followup_v0_1_slot_003 deck=weapon_followup_v0_1_deck_003 reward=weapon_followup_v0_1_reward_003 wujing_cap=1 runtime_primitives=weapon_followup
-- #4 enc_mutiny_camp -> slot=weapon_followup_v0_1_slot_004 deck=weapon_followup_v0_1_deck_004 reward=weapon_followup_v0_1_reward_004 wujing_cap=1 runtime_primitives=weapon_followup
-- #5 enc_wakou_boss -> slot=weapon_followup_v0_1_slot_005 deck=weapon_followup_v0_1_deck_005 reward=weapon_followup_v0_1_reward_005 wujing_cap=4 runtime_primitives=weapon_followup
-- #6 enc_wuke_spear_trial -> slot=weapon_followup_v0_1_slot_006 deck=weapon_followup_v0_1_deck_006 reward=weapon_followup_v0_1_reward_006 wujing_cap=2 runtime_primitives=weapon_followup
-- #7 enc_wuke_blade_trial -> slot=weapon_followup_v0_1_slot_007 deck=weapon_followup_v0_1_deck_007 reward=weapon_followup_v0_1_reward_007 wujing_cap=2 runtime_primitives=weapon_followup
-- #8 enc_wuke_final_duel -> slot=weapon_followup_v0_1_slot_008 deck=weapon_followup_v0_1_deck_008 reward=weapon_followup_v0_1_reward_008 wujing_cap=4 runtime_primitives=weapon_followup
-- #9 enc_wuke_gu_chengyue -> slot=weapon_followup_v0_1_slot_009 deck=weapon_followup_v0_1_deck_009 reward=weapon_followup_v0_1_reward_009 wujing_cap=2 runtime_primitives=weapon_followup
-- #10 enc_wuke_shen_zhaoye -> slot=weapon_followup_v0_1_slot_010 deck=weapon_followup_v0_1_deck_010 reward=weapon_followup_v0_1_reward_010 wujing_cap=2 runtime_primitives=weapon_followup
-- #11 enc_wuke_qi_heng -> slot=weapon_followup_v0_1_slot_011 deck=weapon_followup_v0_1_deck_011 reward=weapon_followup_v0_1_reward_011 wujing_cap=3 runtime_primitives=weapon_followup
-- #12 enc_ch2_reed_ambush -> slot=weapon_followup_v0_1_slot_012 deck=weapon_followup_v0_1_deck_012 reward=weapon_followup_v0_1_reward_012 wujing_cap=3 runtime_primitives=weapon_followup
-- #13 enc_ch3_escort_clash -> slot=weapon_followup_v0_1_slot_013 deck=weapon_followup_v0_1_deck_013 reward=weapon_followup_v0_1_reward_013 wujing_cap=3 runtime_primitives=weapon_followup
-- #14 enc_ch4_tide_bandits -> slot=weapon_followup_v0_1_slot_014 deck=weapon_followup_v0_1_deck_014 reward=weapon_followup_v0_1_reward_014 wujing_cap=3 runtime_primitives=weapon_followup
-- #15 enc_boss_ext_wakou_leader -> slot=weapon_followup_v0_1_slot_015 deck=weapon_followup_v0_1_deck_015 reward=weapon_followup_v0_1_reward_015 wujing_cap=4 runtime_primitives=weapon_followup
+## Sequence Detail
+- #1 stage= enc_beach_ambush -> slot=weapon_followup_v0_1_slot_001 deck=weapon_followup_v0_1_deck_001 reward=weapon_followup_v0_1_reward_001 wujing_cap=1 runtime_primitives=weapon_followup
+- #2 stage= enc_fishing_village_embers -> slot=weapon_followup_v0_1_slot_002 deck=weapon_followup_v0_1_deck_002 reward=weapon_followup_v0_1_reward_002 wujing_cap=1 runtime_primitives=weapon_followup
+- #3 stage= enc_transport_officer -> slot=weapon_followup_v0_1_slot_003 deck=weapon_followup_v0_1_deck_003 reward=weapon_followup_v0_1_reward_003 wujing_cap=1 runtime_primitives=weapon_followup
+- #4 stage= enc_mutiny_camp -> slot=weapon_followup_v0_1_slot_004 deck=weapon_followup_v0_1_deck_004 reward=weapon_followup_v0_1_reward_004 wujing_cap=1 runtime_primitives=weapon_followup
+- #5 stage= enc_wakou_boss -> slot=weapon_followup_v0_1_slot_005 deck=weapon_followup_v0_1_deck_005 reward=weapon_followup_v0_1_reward_005 wujing_cap=4 runtime_primitives=weapon_followup
+- #6 stage= enc_wuke_spear_trial -> slot=weapon_followup_v0_1_slot_006 deck=weapon_followup_v0_1_deck_006 reward=weapon_followup_v0_1_reward_006 wujing_cap=2 runtime_primitives=weapon_followup
+- #7 stage= enc_wuke_blade_trial -> slot=weapon_followup_v0_1_slot_007 deck=weapon_followup_v0_1_deck_007 reward=weapon_followup_v0_1_reward_007 wujing_cap=2 runtime_primitives=weapon_followup
+- #8 stage= enc_wuke_final_duel -> slot=weapon_followup_v0_1_slot_008 deck=weapon_followup_v0_1_deck_008 reward=weapon_followup_v0_1_reward_008 wujing_cap=4 runtime_primitives=weapon_followup
+- #9 stage= enc_wuke_gu_chengyue -> slot=weapon_followup_v0_1_slot_009 deck=weapon_followup_v0_1_deck_009 reward=weapon_followup_v0_1_reward_009 wujing_cap=2 runtime_primitives=weapon_followup
+- #10 stage= enc_wuke_shen_zhaoye -> slot=weapon_followup_v0_1_slot_010 deck=weapon_followup_v0_1_deck_010 reward=weapon_followup_v0_1_reward_010 wujing_cap=2 runtime_primitives=weapon_followup
+- #11 stage= enc_wuke_qi_heng -> slot=weapon_followup_v0_1_slot_011 deck=weapon_followup_v0_1_deck_011 reward=weapon_followup_v0_1_reward_011 wujing_cap=3 runtime_primitives=weapon_followup
+- #12 stage= enc_ch2_reed_ambush -> slot=weapon_followup_v0_1_slot_012 deck=weapon_followup_v0_1_deck_012 reward=weapon_followup_v0_1_reward_012 wujing_cap=3 runtime_primitives=weapon_followup
+- #13 stage= enc_ch3_escort_clash -> slot=weapon_followup_v0_1_slot_013 deck=weapon_followup_v0_1_deck_013 reward=weapon_followup_v0_1_reward_013 wujing_cap=3 runtime_primitives=weapon_followup
+- #14 stage= enc_ch4_tide_bandits -> slot=weapon_followup_v0_1_slot_014 deck=weapon_followup_v0_1_deck_014 reward=weapon_followup_v0_1_reward_014 wujing_cap=3 runtime_primitives=weapon_followup
+- #15 stage= enc_boss_ext_wakou_leader -> slot=weapon_followup_v0_1_slot_015 deck=weapon_followup_v0_1_deck_015 reward=weapon_followup_v0_1_reward_015 wujing_cap=4 runtime_primitives=weapon_followup
 
 ## missing_reports
 - telemetry_probe_report.json

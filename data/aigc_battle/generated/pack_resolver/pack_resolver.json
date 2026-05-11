@@ -1,0 +1,546 @@
+{
+  "resolver_id": "pack_resolver_v1",
+  "generated_at": "2026-05-11T12:29:40.981236+00:00",
+  "entries": [
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "clue_pressure_v0_1",
+      "build_variant": "baseline_001",
+      "content_pack_id": "clue_pressure_v0_1_formal_sequence_pack_001",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/clue_pressure_v0_1/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/clue_pressure_v0_1/validation_report.json",
+      "release_status": "release_candidate",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "clue_pressure_v0_1",
+        "build_variant": "baseline_001",
+        "content_pack_id": "clue_pressure_v0_1_formal_sequence_pack_001"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+      "build_variant": "baseline_001",
+      "content_pack_id": "martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001",
+      "channel": "candidate",
+      "runtime_manifest_path": "data/aigc_battle/generated/martial_realm_7_dual_weapon_v0_1/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/martial_realm_7_dual_weapon_v0_1/validation_report.json",
+      "release_status": "release_candidate",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+        "build_variant": "baseline_001",
+        "content_pack_id": "martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "posture_basic_v0_1",
+      "build_variant": "baseline_001",
+      "content_pack_id": "posture_basic_v0_1_formal_sequence_pack_001",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/posture_basic_v0_1/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/posture_basic_v0_1/validation_report.json",
+      "release_status": "draft",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "posture_basic_v0_1",
+        "build_variant": "baseline_001",
+        "content_pack_id": "posture_basic_v0_1_formal_sequence_pack_001"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "posture_llm_candidate_v0_1",
+      "build_variant": "baseline_001",
+      "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/posture_llm_candidate_v0_1/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/posture_llm_candidate_v0_1/validation_report.json",
+      "release_status": "draft",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "posture_llm_candidate_v0_1",
+        "build_variant": "baseline_001",
+        "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "posture_opening_pressure_v0_1",
+      "build_variant": "baseline_001",
+      "content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+      "channel": "fallback",
+      "runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/validation_report.json",
+      "release_status": "accepted",
+      "active": false,
+      "fallback": true,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "posture_opening_pressure_v0_1",
+        "build_variant": "baseline_001",
+        "content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "posture_opening_pressure_v0_1",
+      "build_variant": "baseline_001",
+      "content_pack_id": "posture_opening_pressure_p1_probe_snapshot_001",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_001/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_001/validation_report.json",
+      "release_status": "archived",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "posture_opening_pressure_v0_1",
+        "build_variant": "baseline_001",
+        "content_pack_id": "posture_opening_pressure_p1_probe_snapshot_001"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "posture_opening_pressure_v0_1",
+      "build_variant": "baseline_001",
+      "content_pack_id": "posture_opening_pressure_p1_probe_snapshot_002",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_002/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_002/validation_report.json",
+      "release_status": "archived",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "posture_opening_pressure_v0_1",
+        "build_variant": "baseline_001",
+        "content_pack_id": "posture_opening_pressure_p1_probe_snapshot_002"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "posture_opening_pressure_v0_1",
+      "build_variant": "baseline_001",
+      "content_pack_id": "posture_opening_pressure_snapshot_001",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_snapshot_001/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_snapshot_001/validation_report.json",
+      "release_status": "draft",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "posture_opening_pressure_v0_1",
+        "build_variant": "baseline_001",
+        "content_pack_id": "posture_opening_pressure_snapshot_001"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "posture_opening_pressure_v0_1",
+      "build_variant": "baseline_001",
+      "content_pack_id": "snapshot_pack_id_required",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/snapshot_pack_id_required/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/snapshot_pack_id_required/validation_report.json",
+      "release_status": "draft",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "posture_opening_pressure_v0_1",
+        "build_variant": "baseline_001",
+        "content_pack_id": "snapshot_pack_id_required"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "build_variant": "baseline_001",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/posture_tuned_v0_1b/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/posture_tuned_v0_1b/validation_report.json",
+      "release_status": "draft",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "posture_tuned_v0_1b",
+        "build_variant": "baseline_001",
+        "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "baseline_001",
+      "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/validation_report.json",
+      "release_status": "accepted",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "weapon_followup_v0_1",
+        "build_variant": "baseline_001",
+        "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "baseline_001",
+      "content_pack_id": "snapshot_pack_id_required",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/snapshot_pack_id_required/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/snapshot_pack_id_required/validation_report.json",
+      "release_status": "draft",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "weapon_followup_v0_1",
+        "build_variant": "baseline_001",
+        "content_pack_id": "snapshot_pack_id_required"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "baseline_001",
+      "content_pack_id": "weapon_followup_ai_candidate_pack_001",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_ai_candidate_pack_001/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_ai_candidate_pack_001/validation_report.json",
+      "release_status": "accepted",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "weapon_followup_v0_1",
+        "build_variant": "baseline_001",
+        "content_pack_id": "weapon_followup_ai_candidate_pack_001"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "baseline_001",
+      "content_pack_id": "weapon_followup_ai_candidate_pack_probe_001",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_ai_candidate_pack_probe_001/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_ai_candidate_pack_probe_001/validation_report.json",
+      "release_status": "draft",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "weapon_followup_v0_1",
+        "build_variant": "baseline_001",
+        "content_pack_id": "weapon_followup_ai_candidate_pack_probe_001"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "baseline_001",
+      "content_pack_id": "weapon_followup_ai_candidate_pack_probe_002",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_ai_candidate_pack_probe_002/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_ai_candidate_pack_probe_002/validation_report.json",
+      "release_status": "accepted",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "weapon_followup_v0_1",
+        "build_variant": "baseline_001",
+        "content_pack_id": "weapon_followup_ai_candidate_pack_probe_002"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "balance_release_001",
+      "content_pack_id": "weapon_followup_balance_release_001",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_001/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_001/validation_report.json",
+      "release_status": "reviewing",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "weapon_followup_v0_1",
+        "build_variant": "balance_release_001",
+        "content_pack_id": "weapon_followup_balance_release_001"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "balance_release_002",
+      "content_pack_id": "weapon_followup_balance_release_002",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_002/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_002/validation_report.json",
+      "release_status": "reviewing",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "weapon_followup_v0_1",
+        "build_variant": "balance_release_002",
+        "content_pack_id": "weapon_followup_balance_release_002"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "balance_release_003",
+      "content_pack_id": "weapon_followup_balance_release_003",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_003/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_003/validation_report.json",
+      "release_status": "reviewing",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "weapon_followup_v0_1",
+        "build_variant": "balance_release_003",
+        "content_pack_id": "weapon_followup_balance_release_003"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "balance_release_004",
+      "content_pack_id": "weapon_followup_balance_release_004",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_004/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_004/validation_report.json",
+      "release_status": "reviewing",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "weapon_followup_v0_1",
+        "build_variant": "balance_release_004",
+        "content_pack_id": "weapon_followup_balance_release_004"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "balance_release_005",
+      "content_pack_id": "weapon_followup_balance_release_005",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_005/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_005/validation_report.json",
+      "release_status": "reviewing",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "weapon_followup_v0_1",
+        "build_variant": "balance_release_005",
+        "content_pack_id": "weapon_followup_balance_release_005"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "balance_release_006",
+      "content_pack_id": "weapon_followup_balance_release_006",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_006/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_006/validation_report.json",
+      "release_status": "reviewing",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "weapon_followup_v0_1",
+        "build_variant": "balance_release_006",
+        "content_pack_id": "weapon_followup_balance_release_006"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "balance_release_007",
+      "content_pack_id": "weapon_followup_balance_release_007",
+      "channel": "current",
+      "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_007/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_007/validation_report.json",
+      "release_status": "active",
+      "active": true,
+      "fallback": false,
+      "source_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "weapon_followup_v0_1",
+        "build_variant": "balance_release_007",
+        "content_pack_id": "weapon_followup_balance_release_007"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "eval_rebuild_001",
+      "content_pack_id": "weapon_followup_eval_rebuild_001",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_eval_rebuild_001/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_eval_rebuild_001/validation_report.json",
+      "release_status": "reviewing",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "weapon_followup_v0_1",
+        "build_variant": "eval_rebuild_001",
+        "content_pack_id": "weapon_followup_eval_rebuild_001"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "eval_rebuild_002",
+      "content_pack_id": "weapon_followup_eval_rebuild_002",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_eval_rebuild_002/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_eval_rebuild_002/validation_report.json",
+      "release_status": "reviewing",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "weapon_followup_v0_1",
+        "build_variant": "eval_rebuild_002",
+        "content_pack_id": "weapon_followup_eval_rebuild_002"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "eval_rebuild_003",
+      "content_pack_id": "weapon_followup_eval_rebuild_003",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_eval_rebuild_003/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_eval_rebuild_003/validation_report.json",
+      "release_status": "reviewing",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "weapon_followup_v0_1",
+        "build_variant": "eval_rebuild_003",
+        "content_pack_id": "weapon_followup_eval_rebuild_003"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "real_rebuild_001",
+      "content_pack_id": "weapon_followup_real_rebuild_001",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_real_rebuild_001/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_real_rebuild_001/validation_report.json",
+      "release_status": "draft",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_15_v1",
+        "mechanic_profile_id": "weapon_followup_v0_1",
+        "build_variant": "real_rebuild_001",
+        "content_pack_id": "weapon_followup_real_rebuild_001"
+      }
+    },
+    {
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "baseline_001",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__baseline_001",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__baseline_001/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__baseline_001/validation_report.json",
+      "release_status": "draft",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_12_fast_v1",
+        "mechanic_profile_id": "weapon_followup_v0_1",
+        "build_variant": "baseline_001",
+        "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__baseline_001"
+      }
+    }
+  ]
+}

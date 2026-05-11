@@ -51,6 +51,7 @@ def build_recommendations(profile_id: str, pack_id: str | None) -> dict[str, Any
     content_pack_id = str(runtime_manifest.get("content_pack_id", pack_id or ""))
     snapshot = read_json(snapshot_lib.snapshot_json_path(profile_id, content_pack_id))
     validation_report = read_json(generated_dir / "validation_report.json")
+    sequence_template_id = str(snapshot.get("sequence_template_id") or runtime_manifest.get("sequence_template_id", ""))
     recommendations: list[dict[str, Any]] = []
     action_counts: Counter[str] = Counter()
 
@@ -108,6 +109,7 @@ def build_recommendations(profile_id: str, pack_id: str | None) -> dict[str, Any
         "generated_at": now_iso(),
         "mechanic_profile_id": profile_id,
         "content_pack_id": content_pack_id,
+        "sequence_template_id": sequence_template_id,
         "validation_ready": bool(validation_report.get("ready_for_runtime_export", False)),
         "recommendation_count": len(recommendations),
         "safe_to_auto_apply_count": sum(1 for row in recommendations if row.get("safe_to_auto_apply")),
@@ -129,12 +131,16 @@ def recommendation(
     safe: bool,
     delta: dict[str, Any],
 ) -> dict[str, Any]:
+    stage = str(item.get("stage", ""))
     return {
         "recommendation_id": build_id(profile_id, content_pack_id, action_type, item.get("generated_battle_slot_id", "")),
         "severity": severity,
         "action_type": action_type,
         "mechanic_profile_id": profile_id,
         "content_pack_id": content_pack_id,
+        "sequence_template_id": str(item.get("sequence_template_id", "")),
+        "stage": stage,
+        "stage_level_action": stage_level_action(action_type, stage),
         "formal_encounter_id": str(item.get("formal_encounter_id", "")),
         "generated_deck_id": str(item.get("generated_deck_id", "")),
         "card_id": str(item.get("card_id", "")),
@@ -164,6 +170,7 @@ def build_summary(payloads: list[dict[str, Any]]) -> dict[str, Any]:
             {
                 "mechanic_profile_id": payload.get("mechanic_profile_id", ""),
                 "content_pack_id": payload.get("content_pack_id", ""),
+                "sequence_template_id": payload.get("sequence_template_id", ""),
                 "recommendation_count": payload.get("recommendation_count", 0),
                 "safe_to_auto_apply_count": payload.get("safe_to_auto_apply_count", 0),
                 "requires_designer_review_count": payload.get("requires_designer_review_count", 0),
@@ -192,6 +199,7 @@ def build_markdown(payload: dict[str, Any]) -> str:
         "",
         f"- mechanic_profile_id: `{payload.get('mechanic_profile_id', '')}`",
         f"- content_pack_id: `{payload.get('content_pack_id', '')}`",
+        f"- sequence_template_id: `{payload.get('sequence_template_id', '')}`",
         f"- recommendation_count: `{payload.get('recommendation_count', 0)}`",
         f"- safe_to_auto_apply_count: `{payload.get('safe_to_auto_apply_count', 0)}`",
         f"- requires_designer_review_count: `{payload.get('requires_designer_review_count', 0)}`",
@@ -201,7 +209,8 @@ def build_markdown(payload: dict[str, Any]) -> str:
     for row in payload.get("recommendations", []):
         lines.append(
             f"- `{row.get('action_type', '')}` | severity={row.get('severity', '')} | "
-            f"encounter={row.get('formal_encounter_id', '') or '-'} | card={row.get('card_id', '') or '-'} | "
+            f"stage={row.get('stage', '') or '-'} | encounter={row.get('formal_encounter_id', '') or '-'} | "
+            f"card={row.get('card_id', '') or '-'} | "
             f"safe={row.get('safe_to_auto_apply', False)}"
         )
     return "\n".join(lines) + "\n"
@@ -223,6 +232,18 @@ def build_summary_markdown(summary: dict[str, Any]) -> str:
             f"{row.get('requires_designer_review_count', 0)} |"
         )
     return "\n".join(lines) + "\n"
+
+
+def stage_level_action(action_type: str, stage: str) -> str:
+    if action_type in {"reduce_deck_power", "increase_deck_power"}:
+        return "lower_stage_power" if action_type == "reduce_deck_power" else "increase_stage_mechanic_density"
+    if action_type == "adjust_reward_tier":
+        return "raise_stage_reward"
+    if action_type in {"improve_clue_pressure_trigger", "improve_dual_weapon_mix", "improve_followup_chain"}:
+        return "increase_stage_mechanic_density"
+    if action_type == "reduce_mechanic_density":
+        return "reduce_stage_mechanic_density"
+    return ""
 
 
 def read_json(path: Path) -> Any:

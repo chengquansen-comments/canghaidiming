@@ -13,6 +13,7 @@ if str(ROOT) not in sys.path:
 
 from tools.aigc_battle import switch_active_profile as switch_lib
 from tools.aigc_battle import aigc_release_gate as release_lib
+from tools.aigc_battle import load_sequence_template as template_lib
 
 MECHANICS_DIR = ROOT / 'data' / 'aigc_battle' / 'mechanics'
 GENERATED_ROOT = ROOT / 'data' / 'aigc_battle' / 'generated'
@@ -114,6 +115,27 @@ def build_pack_entry(profile_id: str, pack_id: str | None, active_profile_id: st
     primitive_probe = try_read_json(generated_dir / 'runtime_primitive_probe_report.json') or {}
     reward_probe = try_read_json(generated_dir / 'full_sequence_reward_probe_report.json') or {}
     content_pack_id = str(runtime_manifest.get('content_pack_id') or validation_report.get('content_pack_id') or pack_id or '')
+    sequence_template_id = str(
+        content_pack_summary.get('sequence_template_id')
+        or validation_report.get('sequence_template_id')
+        or runtime_manifest.get('sequence_template_id')
+        or template_lib.infer_sequence_template_id(content_pack_summary, runtime_manifest)
+    )
+    build_variant = template_lib.resolve_build_variant(
+        content_pack_summary.get('build_variant') or validation_report.get('build_variant') or runtime_manifest.get('build_variant'),
+        profile_id,
+        content_pack_id,
+    )
+    total_encounter_count = int(
+        content_pack_summary.get('total_encounter_count')
+        or runtime_manifest.get('total_encounter_count')
+        or validation_report.get('formal_encounter_total_count')
+        or len(runtime_manifest.get('battle_slots', []))
+        or 0
+    )
+    pack_identity = template_lib.build_pack_identity(sequence_template_id, profile_id, build_variant, content_pack_id)
+    stage_counts = content_pack_summary.get('stage_counts') or runtime_manifest.get('stage_counts') or validation_report.get('stage_counts') or {}
+    binding_valid = bool(validation_report.get('template_mechanic_pack_binding_valid', True))
     evaluation_report = try_read_json(EVALUATION_REPORTS_DIR / f'{profile_id}__{content_pack_id}__evaluation_report.json') or {}
     evaluation_snapshot = try_read_json(EVALUATION_SNAPSHOT_DIR / f'{profile_id}__{content_pack_id}__evaluation_snapshot.json') or {}
     rebuild_recommendations = try_read_json(REBUILD_RECOMMEND_DIR / f'{profile_id}__{content_pack_id}__rebuild_recommendations.json') or {}
@@ -142,6 +164,12 @@ def build_pack_entry(profile_id: str, pack_id: str | None, active_profile_id: st
         'generated_dir': to_relative(generated_dir),
         'runtime_manifest_path': to_relative(runtime_manifest_path) if runtime_manifest_path.exists() else '',
         'validation_report_path': to_relative(generated_dir / 'validation_report.json') if (generated_dir / 'validation_report.json').exists() else '',
+        'sequence_template_id': sequence_template_id,
+        'build_variant': build_variant,
+        'total_encounter_count': total_encounter_count,
+        'stage_counts': stage_counts,
+        'pack_identity': pack_identity,
+        'template_mechanic_pack_binding_valid': binding_valid,
         'is_current_release': profile_id == str(current_release.get('mechanic_profile_id', '')) and content_pack_id == str(current_release.get('content_pack_id', '')),
         'is_candidate_release': profile_id == str(candidate_release.get('mechanic_profile_id', '')) and content_pack_id == str(candidate_release.get('content_pack_id', '')),
         'is_fallback_release': profile_id == str(fallback_release.get('mechanic_profile_id', '')) and content_pack_id == str(fallback_release.get('content_pack_id', '')),

@@ -1,9 +1,18 @@
 {
   "mechanic_profile_id": "clue_pressure_v0_1",
   "content_pack_id": "clue_pressure_v0_1_formal_sequence_pack_001",
+  "sequence_template_id": "formal_sequence_15_v1",
+  "build_variant": "baseline_001",
+  "pack_identity": {
+    "sequence_template_id": "formal_sequence_15_v1",
+    "mechanic_profile_id": "clue_pressure_v0_1",
+    "build_variant": "baseline_001",
+    "content_pack_id": "clue_pressure_v0_1_formal_sequence_pack_001"
+  },
   "pack_storage_mode": "profile_root",
   "runtime_manifest_path": "data/aigc_battle/generated/clue_pressure_v0_1/runtime_manifest.json",
   "is_active_pack": false,
+  "stage_counts": {},
   "release_channel_membership": {
     "is_current_release": false,
     "is_candidate_release": false,
@@ -23,6 +32,12 @@
     "full_sequence_coverage_complete": true,
     "runtime_export_allowed": true,
     "sequence_balance_pass": true,
+    "sequence_template_id_present": true,
+    "pack_identity_complete": true,
+    "pack_matches_sequence_template": true,
+    "pack_matches_mechanic_profile": true,
+    "template_mechanic_pack_binding_valid": true,
+    "sequence_template_runtime_export_allowed": true,
     "deck_card_realm_eligibility_valid": true,
     "no_card_above_player_wujing_in_deck": true,
     "invalid_realm_card_count": 0,
@@ -6817,7 +6832,10 @@
   "orphan_cards": [],
   "sequence_detail": [
     {
+      "sequence_template_id": "formal_sequence_15_v1",
       "sequence_position": 1,
+      "stage": "",
+      "stage_index": null,
       "formal_encounter_id": "enc_beach_ambush",
       "formal_battle_id": "first_act_beach_ambush",
       "node_id": "beach_ambush",
@@ -6833,6 +6851,7 @@
       "deck_power_score": 22.8,
       "power_range_pass": true,
       "reward_tier": "basic",
+      "mechanic_density_target": null,
       "runtime_primitives": [
         "clue_pressure"
       ],
@@ -7015,7 +7034,10 @@
       ]
     },
     {
+      "sequence_template_id": "formal_sequence_15_v1",
       "sequence_position": 2,
+      "stage": "",
+      "stage_index": null,
       "formal_encounter_id": "enc_fishing_village_embers",
       "formal_battle_id": "first_act_fishing_village_embers",
       "node_id": "fishing_village_embers",
@@ -7031,6 +7053,7 @@
       "deck_power_score": 22.8,
       "power_range_pass": true,
       "reward_tier": "basic",
+      "mechanic_density_target": null,
       "runtime_primitives": [
         "clue_pressure"
       ],
@@ -7213,7 +7236,10 @@
       ]
     },
     {
+      "sequence_template_id": "formal_sequence_15_v1",
       "sequence_position": 3,
+      "stage": "",
+      "stage_index": null,
       "formal_encounter_id": "enc_transport_officer",
       "formal_battle_id": "first_act_transport_officer",
       "node_id": "transport_officer",
@@ -7229,6 +7255,7 @@
       "deck_power_score": 27.6,
       "power_range_pass": true,
       "reward_tier": "basic",
+      "mechanic_density_target": null,
       "runtime_primitives": [
         "clue_pressure"
       ],
@@ -7446,7 +7473,10 @@
       ]
     },
     {
+      "sequence_template_id": "formal_sequence_15_v1",
       "sequence_position": 4,
+      "stage": "",
+      "stage_index": null,
       "formal_encounter_id": "enc_mutiny_camp",
       "formal_battle_id": "first_act_mutiny_camp",
       "node_id": "mutiny_camp",
@@ -7462,6 +7492,7 @@
       "deck_power_score": 27.6,
       "power_range_pass": true,
       "reward_tier": "basic",
+      "mechanic_density_target": null,
       "runtime_primitives": [
         "clue_pressure"
       ],
@@ -7679,7 +7710,10 @@
       ]
     },
     {
+      "sequence_template_id": "formal_sequence_15_v1",
       "sequence_position": 5,
+      "stage": "",
+      "stage_index": null,
       "formal_encounter_id": "enc_wakou_boss",
       "formal_battle_id": "first_act_wakou_boss",
       "node_id": "wakou_boss",
@@ -7695,6 +7729,7 @@
       "deck_power_score": 53.8,
       "power_range_pass": true,
       "reward_tier": "boss",
+      "mechanic_density_target": null,
       "runtime_primitives": [
         "clue_pressure"
       ],
@@ -7944,7 +7979,10 @@
       ]
     },
     {
+      "sequence_template_id": "formal_sequence_15_v1",
       "sequence_position": 6,
+      "stage": "",
+      "stage_index": null,
       "formal_encounter_id": "enc_wuke_spear_trial",
       "formal_battle_id": "wuke_spear_trial",
       "node_id": "wuke_spear_trial",
@@ -7960,6 +7998,7 @@
       "deck_power_score": 33.2,
       "power_range_pass": true,
       "reward_tier": "standard",
+      "mechanic_density_target": null,
       "runtime_primitives": [
         "clue_pressure"
       ],
@@ -8181,7 +8220,10 @@
       ]
     },
     {
+      "sequence_template_id": "formal_sequence_15_v1",
       "sequence_position": 7,
+      "stage": "",
+      "stage_index": null,
       "formal_encounter_id": "enc_wuke_blade_trial",
       "formal_battle_id": "wuke_blade_trial",
       "node_id": "wuke_blade_trial",
@@ -8197,6 +8239,7 @@
       "deck_power_score": 33.2,
       "power_range_pass": true,
       "reward_tier": "standard",
+      "mechanic_density_target": null,
       "runtime_primitives": [
         "clue_pressure"
       ],
@@ -8418,7 +8461,10 @@
       ]
     },
     {
+      "sequence_template_id": "formal_sequence_15_v1",
       "sequence_position": 8,
+      "stage": "",
+      "stage_index": null,
       "formal_encounter_id": "enc_wuke_final_duel",
       "formal_battle_id": "wuke_final_duel",
       "node_id": "wuke_final_duel",
@@ -8434,6 +8480,7 @@
       "deck_power_score": 53.8,
       "power_range_pass": true,
       "reward_tier": "boss",
+      "mechanic_density_target": null,
       "runtime_primitives": [
         "clue_pressure"
       ],
@@ -8683,7 +8730,10 @@
       ]
     },
     {
+      "sequence_template_id": "formal_sequence_15_v1",
       "sequence_position": 9,
+      "stage": "",
+      "stage_index": null,
       "formal_encounter_id": "enc_wuke_gu_chengyue",
       "formal_battle_id": "wuke_gu_chengyue",
       "node_id": "wuke_elim_gu_chengyue_battle",
@@ -8699,6 +8749,7 @@
       "deck_power_score": 33.2,
       "power_range_pass": true,
       "reward_tier": "standard",
+      "mechanic_density_target": null,
       "runtime_primitives": [
         "clue_pressure"
       ],
@@ -8920,7 +8971,10 @@
       ]
     },
     {
+      "sequence_template_id": "formal_sequence_15_v1",
       "sequence_position": 10,
+      "stage": "",
+      "stage_index": null,
       "formal_encounter_id": "enc_wuke_shen_zhaoye",
       "formal_battle_id": "wuke_shen_zhaoye",
       "node_id": "wuke_elim_shen_zhaoye_battle",
@@ -8936,6 +8990,7 @@
       "deck_power_score": 33.2,
       "power_range_pass": true,
       "reward_tier": "standard",
+      "mechanic_density_target": null,
       "runtime_primitives": [
         "clue_pressure"
       ],
@@ -9157,7 +9212,10 @@
       ]
     },
     {
+      "sequence_template_id": "formal_sequence_15_v1",
       "sequence_position": 11,
+      "stage": "",
+      "stage_index": null,
       "formal_encounter_id": "enc_wuke_qi_heng",
       "formal_battle_id": "wuke_qi_heng",
       "node_id": "wuke_elim_qi_heng_battle",
@@ -9173,6 +9231,7 @@
       "deck_power_score": 49.2,
       "power_range_pass": true,
       "reward_tier": "advanced",
+      "mechanic_density_target": null,
       "runtime_primitives": [
         "clue_pressure"
       ],
@@ -9416,7 +9475,10 @@
       ]
     },
     {
+      "sequence_template_id": "formal_sequence_15_v1",
       "sequence_position": 12,
+      "stage": "",
+      "stage_index": null,
       "formal_encounter_id": "enc_ch2_reed_ambush",
       "formal_battle_id": "chapter2_reed_ambush",
       "node_id": "ch2_reed_ambush_battle",
@@ -9432,6 +9494,7 @@
       "deck_power_score": 43.2,
       "power_range_pass": true,
       "reward_tier": "advanced",
+      "mechanic_density_target": null,
       "runtime_primitives": [
         "clue_pressure"
       ],
@@ -9651,7 +9714,10 @@
       ]
     },
     {
+      "sequence_template_id": "formal_sequence_15_v1",
       "sequence_position": 13,
+      "stage": "",
+      "stage_index": null,
       "formal_encounter_id": "enc_ch3_escort_clash",
       "formal_battle_id": "chapter3_escort_clash",
       "node_id": "ch3_escort_clash_battle",
@@ -9667,6 +9733,7 @@
       "deck_power_score": 49.2,
       "power_range_pass": true,
       "reward_tier": "advanced",
+      "mechanic_density_target": null,
       "runtime_primitives": [
         "clue_pressure"
       ],
@@ -9910,7 +9977,10 @@
       ]
     },
     {
+      "sequence_template_id": "formal_sequence_15_v1",
       "sequence_position": 14,
+      "stage": "",
+      "stage_index": null,
       "formal_encounter_id": "enc_ch4_tide_bandits",
       "formal_battle_id": "chapter4_tide_bandits",
       "node_id": "ch4_tide_bandits_battle",
@@ -9926,6 +9996,7 @@
       "deck_power_score": 43.2,
       "power_range_pass": true,
       "reward_tier": "advanced",
+      "mechanic_density_target": null,
       "runtime_primitives": [
         "clue_pressure"
       ],
@@ -10145,7 +10216,10 @@
       ]
     },
     {
+      "sequence_template_id": "formal_sequence_15_v1",
       "sequence_position": 15,
+      "stage": "",
+      "stage_index": null,
       "formal_encounter_id": "enc_boss_ext_wakou_leader",
       "formal_battle_id": "boss_ext_wakou_leader",
       "node_id": "boss_ext_wakou_leader_battle",
@@ -10161,6 +10235,7 @@
       "deck_power_score": 53.8,
       "power_range_pass": true,
       "reward_tier": "boss",
+      "mechanic_density_target": null,
       "runtime_primitives": [
         "clue_pressure"
       ],
@@ -10420,5 +10495,6 @@
   "latest_rebuild_recommendation_path": "data/aigc_battle/evaluation/rebuild_recommendations/clue_pressure_v0_1__clue_pressure_v0_1_formal_sequence_pack_001__rebuild_recommendations.json",
   "original_content_pack_id": null,
   "snapshot_content_pack_id": null,
-  "balance_release_summary": {}
+  "balance_release_summary": {},
+  "template_mechanic_pack_binding_valid": true
 }

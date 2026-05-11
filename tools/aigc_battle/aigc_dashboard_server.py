@@ -19,6 +19,7 @@ from tools.aigc_battle import aigc_release_gate as release_lib
 from tools.aigc_battle import build_aigc_content_index as index_lib
 from tools.aigc_battle import build_aigc_detail_views as detail_lib
 from tools.aigc_battle import build_aigc_review_workspace as review_lib
+from tools.aigc_battle import load_sequence_template as template_lib
 from tools.aigc_battle import switch_active_profile as switch_lib
 
 DEFAULT_HOST = '127.0.0.1'
@@ -31,6 +32,8 @@ EVALUATION_GENERATED_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'evalua
 EVALUATION_SNAPSHOT_DIR = ROOT / 'data' / 'aigc_battle' / 'evaluation' / 'snapshots'
 REBUILD_RECOMMEND_DIR = ROOT / 'data' / 'aigc_battle' / 'evaluation' / 'rebuild_recommendations'
 BALANCE_RELEASE_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'balance_release'
+SEQUENCE_TEMPLATE_DIR = ROOT / 'data' / 'aigc_battle' / 'sequence_templates'
+PACK_RESOLVER_PATH = ROOT / 'data' / 'aigc_battle' / 'pack_resolver.json'
 
 
 def main(argv: list[str]) -> int:
@@ -122,6 +125,15 @@ class DashboardHandler(BaseHTTPRequestHandler):
             return
         if parsed.path == '/api/evaluation/rebuild-recommendations':
             self.handle_evaluation_rebuild_recommendations(parsed.query)
+            return
+        if parsed.path == '/api/sequence-templates':
+            self.respond_json(load_sequence_templates())
+            return
+        if parsed.path == '/api/sequence-template':
+            self.handle_sequence_template(parsed.query)
+            return
+        if parsed.path == '/api/pack-resolver':
+            self.respond_json(load_pack_resolver())
             return
         if parsed.path == '/api/balance-release/report':
             self.respond_json(load_balance_release_build_report())
@@ -382,6 +394,17 @@ class DashboardHandler(BaseHTTPRequestHandler):
             return
         self.respond_json(payload)
 
+    def handle_sequence_template(self, query: str) -> None:
+        try:
+            params = self.safe_query_params(query, {'sequence_template_id'})
+            sequence_template_id = params.get('sequence_template_id', '')
+            switch_lib.ensure_safe_id(sequence_template_id, 'sequence_template_id')
+            payload = template_lib.load_sequence_template(sequence_template_id)
+        except SystemExit as exc:
+            self.respond_json({'ok': False, 'error': str(exc)}, status=HTTPStatus.BAD_REQUEST)
+            return
+        self.respond_json(payload)
+
     def handle_llm_prompt(self, query: str) -> None:
         try:
             from tools.aigc_battle import export_llm_generation_prompt as prompt_lib
@@ -636,6 +659,28 @@ def load_balance_release_evaluation_report() -> dict[str, Any]:
     if path.exists():
         return read_required_json(path) or {'ok': False, 'error': 'balance release evaluation report unreadable'}
     return {'ok': False, 'error': 'balance release evaluation report not found'}
+
+
+def load_sequence_templates() -> dict[str, Any]:
+    templates = []
+    for path in sorted(SEQUENCE_TEMPLATE_DIR.glob('*.json')):
+        payload = read_required_json(path)
+        if not payload:
+            continue
+        templates.append({
+            'sequence_template_id': payload.get('sequence_template_id', path.stem),
+            'target_sequence_id': payload.get('target_sequence_id', ''),
+            'total_encounter_count': payload.get('total_encounter_count', 0),
+            'stage_counts': payload.get('stage_counts', {}),
+            'path': to_relative(path),
+        })
+    return {'templates': templates, 'template_count': len(templates)}
+
+
+def load_pack_resolver() -> dict[str, Any]:
+    if PACK_RESOLVER_PATH.exists():
+        return read_required_json(PACK_RESOLVER_PATH) or {'ok': False, 'error': 'pack resolver unreadable'}
+    return {'ok': False, 'error': 'pack resolver not found'}
 
 
 def build_console_html() -> str:

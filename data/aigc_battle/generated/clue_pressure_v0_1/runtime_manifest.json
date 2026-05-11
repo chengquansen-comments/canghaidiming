@@ -1,9 +1,25 @@
 {
   "manifest_version": 1,
   "mechanic_profile_id": "clue_pressure_v0_1",
+  "sequence_template_id": "formal_sequence_15_v1",
+  "sequence_template_version": 1,
+  "build_variant": "baseline_001",
   "content_pack_id": "clue_pressure_v0_1_formal_sequence_pack_001",
+  "pack_identity": {
+    "sequence_template_id": "formal_sequence_15_v1",
+    "mechanic_profile_id": "clue_pressure_v0_1",
+    "build_variant": "baseline_001",
+    "content_pack_id": "clue_pressure_v0_1_formal_sequence_pack_001"
+  },
   "target_sequence_id": "formal_sequence_mvp_v1",
   "replacement_mode": "full_sequence",
+  "sequence_template_summary": {
+    "sequence_template_id": "formal_sequence_15_v1",
+    "target_sequence_id": "formal_sequence_mvp_v1",
+    "total_encounter_count": 15
+  },
+  "stage_counts": {},
+  "total_encounter_count": 15,
   "runtime_supported_effects": [
     "damage",
     "gain_block",
@@ -4360,7 +4376,10 @@
         "formal_encounter_id": "enc_beach_ambush",
         "formal_battle_id": "first_act_beach_ambush",
         "node_id": "beach_ambush"
-      }
+      },
+      "sequence_template_id": "formal_sequence_15_v1",
+      "stage": "",
+      "mechanic_density_target": 0.0
     },
     {
       "mechanic_profile_id": "clue_pressure_v0_1",
@@ -4405,7 +4424,10 @@
         "formal_encounter_id": "enc_fishing_village_embers",
         "formal_battle_id": "first_act_fishing_village_embers",
         "node_id": "fishing_village_embers"
-      }
+      },
+      "sequence_template_id": "formal_sequence_15_v1",
+      "stage": "",
+      "mechanic_density_target": 0.0
     },
     {
       "mechanic_profile_id": "clue_pressure_v0_1",
@@ -4450,7 +4472,10 @@
         "formal_encounter_id": "enc_transport_officer",
         "formal_battle_id": "first_act_transport_officer",
         "node_id": "transport_officer"
-      }
+      },
+      "sequence_template_id": "formal_sequence_15_v1",
+      "stage": "",
+      "mechanic_density_target": 0.0
     },
     {
       "mechanic_profile_id": "clue_pressure_v0_1",
@@ -4495,7 +4520,10 @@
         "formal_encounter_id": "enc_mutiny_camp",
         "formal_battle_id": "first_act_mutiny_camp",
         "node_id": "mutiny_camp"
-      }
+      },
+      "sequence_template_id": "formal_sequence_15_v1",
+      "stage": "",
+      "mechanic_density_target": 0.0
     },
     {
       "mechanic_profile_id": "clue_pressure_v0_1",
@@ -4541,7 +4569,10 @@
         "formal_encounter_id": "enc_wakou_boss",
         "formal_battle_id": "first_act_wakou_boss",
         "node_id": "wakou_boss"
-      }
+      },
+      "sequence_template_id": "formal_sequence_15_v1",
+      "stage": "",
+      "mechanic_density_target": 0.0
     },
     {
       "mechanic_profile_id": "clue_pressure_v0_1",
@@ -4586,7 +4617,10 @@
         "formal_encounter_id": "enc_wuke_spear_trial",
         "formal_battle_id": "wuke_spear_trial",
         "node_id": "wuke_spear_trial"
-      }
+      },
+      "sequence_template_id": "formal_sequence_15_v1",
+      "stage": "",
+      "mechanic_density_target": 0.0
     },
     {
       "mechanic_profile_id": "clue_pressure_v0_1",
@@ -4631,7 +4665,10 @@
         "formal_encounter_id": "enc_wuke_blade_trial",
         "formal_battle_id": "wuke_blade_trial",
         "node_id": "wuke_blade_trial"
-      }
+      },
+      "sequence_template_id": "formal_sequence_15_v1",
+      "stage": "",
+      "mechanic_density_target": 0.0
     },
     {
       "mechanic_profile_id": "clue_pressure_v0_1",
@@ -4677,7 +4714,10 @@
         "formal_encounter_id": "enc_wuke_final_duel",
         "formal_battle_id": "wuke_final_duel",
         "node_id": "wuke_final_duel"
-      }
+      },
+      "sequence_template_id": "formal_sequence_15_v1",
+      "stage": "",
+      "mechanic_density_target": 0.0
     },
     {
       "mechanic_profile_id": "clue_pressure_v0_1",
@@ -4722,7 +4762,10 @@
         "formal_encounter_id": "enc_wuke_gu_chengyue",
         "formal_battle_id": "wuke_gu_chengyue",
         "node_id": "wuke_elim_gu_chengyue_battle"
-      }
+      },
+      "sequence_template_id": "formal_sequence_15_v1",
+      "stage": "",
+      "mechanic_density_target": 0.0
     },
     {
       "mechanic_profile_id": "clue_pressure_v0_1",
@@ -4767,7 +4810,10 @@
         "formal_encounter_id": "enc_wuke_shen_zhaoye",
         "formal_battle_id": "wuke_shen_zhaoye",
         "node_id": "wuke_elim_shen_zhaoye_battle"
-      }
+      },
+      "sequence_template_id": "formal_sequence_15_v1",
+      "stage": "",
+      "mechanic_density_target": 0.0
     },
     {
       "mechanic_profile_id": "clue_pressure_v0_1",
@@ -4813,7 +4859,10 @@
         "formal_encounter_id": "enc_wuke_qi_heng",
         "formal_battle_id": "wuke_qi_heng",
         "node_id": "wuke_elim_qi_heng_battle"
-      }
+      },
+      "sequence_template_id": "formal_sequence_15_v1",
+      "stage": "",
+      "mechanic_density_target": 0.0
     },
     {
       "mechanic_profile_id": "clue_pressure_v0_1",
@@ -4859,7 +4908,10 @@
         "formal_encounter_id": "enc_ch2_reed_ambush",
         "formal_battle_id": "chapter2_reed_ambush",
         "node_id": "ch2_reed_ambush_battle"
-      }
+      },
+      "sequence_template_id": "formal_sequence_15_v1",
+      "stage": "",
+      "mechanic_density_target": 0.0
     },
     {
       "mechanic_profile_id": "clue_pressure_v0_1",
@@ -4905,7 +4957,10 @@
         "formal_encounter_id": "enc_ch3_escort_clash",
         "formal_battle_id": "chapter3_escort_clash",
         "node_id": "ch3_escort_clash_battle"
-      }
+      },
+      "sequence_template_id": "formal_sequence_15_v1",
+      "stage": "",
+      "mechanic_density_target": 0.0
     },
     {
       "mechanic_profile_id": "clue_pressure_v0_1",
@@ -4951,7 +5006,10 @@
         "formal_encounter_id": "enc_ch4_tide_bandits",
         "formal_battle_id": "chapter4_tide_bandits",
         "node_id": "ch4_tide_bandits_battle"
-      }
+      },
+      "sequence_template_id": "formal_sequence_15_v1",
+      "stage": "",
+      "mechanic_density_target": 0.0
     },
     {
       "mechanic_profile_id": "clue_pressure_v0_1",
@@ -4997,7 +5055,10 @@
         "formal_encounter_id": "enc_boss_ext_wakou_leader",
         "formal_battle_id": "boss_ext_wakou_leader",
         "node_id": "boss_ext_wakou_leader_battle"
-      }
+      },
+      "sequence_template_id": "formal_sequence_15_v1",
+      "stage": "",
+      "mechanic_density_target": 0.0
     }
   ],
   "rewards": [

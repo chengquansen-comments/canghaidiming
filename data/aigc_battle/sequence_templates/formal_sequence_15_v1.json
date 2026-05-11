@@ -1,0 +1,183 @@
+{
+  "sequence_template_id": "formal_sequence_15_v1",
+  "sequence_template_version": 1,
+  "target_sequence_id": "formal_sequence_mvp_v1",
+  "total_encounter_count": 15,
+  "stage_order": [
+    "early",
+    "mid",
+    "late",
+    "boss"
+  ],
+  "stage_counts": {
+    "early": 4,
+    "mid": 4,
+    "late": 4,
+    "boss": 3
+  },
+  "stages": {
+    "early": {
+      "sequence_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "allowed_encounter_kinds": [
+        "normal",
+        "elite"
+      ],
+      "preferred_encounter_kind_counts": {
+        "normal": 3,
+        "elite": 1
+      },
+      "player_wujing_cap_range": [
+        1,
+        2
+      ],
+      "deck_power_range": [
+        18,
+        28
+      ],
+      "reward_tiers": [
+        "early"
+      ],
+      "mechanic_density_range": [
+        0.3,
+        0.5
+      ],
+      "difficulty_label": "opening_ramp"
+    },
+    "mid": {
+      "sequence_positions": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "allowed_encounter_kinds": [
+        "normal",
+        "elite"
+      ],
+      "preferred_encounter_kind_counts": {
+        "normal": 2,
+        "elite": 2
+      },
+      "player_wujing_cap_range": [
+        3,
+        4
+      ],
+      "deck_power_range": [
+        26,
+        38
+      ],
+      "reward_tiers": [
+        "mid"
+      ],
+      "mechanic_density_range": [
+        0.45,
+        0.65
+      ],
+      "difficulty_label": "stabilized_pressure"
+    },
+    "late": {
+      "sequence_positions": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "allowed_encounter_kinds": [
+        "elite",
+        "boss"
+      ],
+      "preferred_encounter_kind_counts": {
+        "elite": 3,
+        "boss": 1
+      },
+      "player_wujing_cap_range": [
+        5,
+        6
+      ],
+      "deck_power_range": [
+        36,
+        50
+      ],
+      "reward_tiers": [
+        "late"
+      ],
+      "mechanic_density_range": [
+        0.55,
+        0.75
+      ],
+      "difficulty_label": "high_pressure"
+    },
+    "boss": {
+      "sequence_positions": [
+        13,
+        14,
+        15
+      ],
+      "allowed_encounter_kinds": [
+        "boss"
+      ],
+      "preferred_encounter_kind_counts": {
+        "boss": 3
+      },
+      "player_wujing_cap_range": [
+        7,
+        7
+      ],
+      "deck_power_range": [
+        46,
+        62
+      ],
+      "reward_tiers": [
+        "boss"
+      ],
+      "mechanic_density_range": [
+        0.65,
+        0.85
+      ],
+      "difficulty_label": "boss_gauntlet"
+    }
+  },
+  "difficulty_curve": {
+    "must_be_monotonic_by_stage": true,
+    "elite_stronger_than_normal": true,
+    "boss_stronger_than_elite": true
+  },
+  "reward_curve": {
+    "reward_tier_should_match_encounter_tier": true,
+    "boss_reward_required": true
+  },
+  "realm_curve": {
+    "max_wujing": 7,
+    "stage_wujing_caps": {
+      "early": [
+        1,
+        2
+      ],
+      "mid": [
+        3,
+        4
+      ],
+      "late": [
+        5,
+        6
+      ],
+      "boss": [
+        7,
+        7
+      ]
+    }
+  },
+  "mechanic_curve": {
+    "stage_density_targets": {
+      "early": 0.4,
+      "mid": 0.55,
+      "late": 0.65,
+      "boss": 0.75
+    }
+  }
+}

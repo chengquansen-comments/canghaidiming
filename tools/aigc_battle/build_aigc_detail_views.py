@@ -13,6 +13,7 @@ if str(ROOT) not in sys.path:
 
 from tools.aigc_battle import build_aigc_content_index as index_lib
 from tools.aigc_battle import aigc_release_gate as release_lib
+from tools.aigc_battle import load_sequence_template as template_lib
 from tools.aigc_battle import switch_active_profile as switch_lib
 
 GENERATED_ROOT = ROOT / 'data' / 'aigc_battle' / 'generated'
@@ -253,7 +254,10 @@ def build_pack_detail(profile_id: str, pack_entry: dict[str, Any]) -> None:
                 'realm_eligible_for_slot': required <= player_cap and closing <= player_cap,
             })
         sequence_detail.append({
+            'sequence_template_id': mapping_item.get('sequence_template_id', slot.get('sequence_template_id', runtime_manifest.get('sequence_template_id', ''))),
             'sequence_position': mapping_item.get('sequence_position'),
+            'stage': mapping_item.get('stage', slot.get('stage', '')),
+            'stage_index': mapping_item.get('stage_index', slot.get('stage_index')),
             'formal_encounter_id': formal_encounter_id,
             'formal_battle_id': mapping_item.get('formal_battle_id', ''),
             'node_id': inventory_item.get('node_id', ''),
@@ -269,6 +273,7 @@ def build_pack_detail(profile_id: str, pack_entry: dict[str, Any]) -> None:
             'deck_power_score': deck.get('deck_power_score'),
             'power_range_pass': deck.get('power_range_pass'),
             'reward_tier': mapping_item.get('reward_tier', slot.get('reward_tier', reward.get('reward_tier', ''))),
+            'mechanic_density_target': mapping_item.get('mechanic_density_target', slot.get('mechanic_density_target')),
             'runtime_primitives': slot.get('runtime_primitives', []),
             'opening_pressure': slot.get('opening_pressure'),
             'deck_summary': {
@@ -347,9 +352,18 @@ def build_pack_detail(profile_id: str, pack_entry: dict[str, Any]) -> None:
     detail = {
         'mechanic_profile_id': profile_id,
         'content_pack_id': content_pack_id,
+        'sequence_template_id': str(content_pack_summary.get('sequence_template_id', runtime_manifest.get('sequence_template_id', validation_report.get('sequence_template_id', '')))),
+        'build_variant': template_lib.resolve_build_variant(content_pack_summary.get('build_variant', runtime_manifest.get('build_variant', validation_report.get('build_variant', ''))), profile_id, content_pack_id),
+        'pack_identity': template_lib.build_pack_identity(
+            str(content_pack_summary.get('sequence_template_id', runtime_manifest.get('sequence_template_id', validation_report.get('sequence_template_id', '')))),
+            profile_id,
+            template_lib.resolve_build_variant(content_pack_summary.get('build_variant', runtime_manifest.get('build_variant', validation_report.get('build_variant', ''))), profile_id, content_pack_id),
+            content_pack_id,
+        ),
         'pack_storage_mode': pack_entry.get('pack_storage_mode', ''),
         'runtime_manifest_path': pack_entry.get('runtime_manifest_path', ''),
         'is_active_pack': pack_entry.get('is_active_pack', False),
+        'stage_counts': content_pack_summary.get('stage_counts', runtime_manifest.get('stage_counts', {})),
         'release_channel_membership': {
             'is_current_release': profile_id == str(current_release.get('mechanic_profile_id', '')) and content_pack_id == str(current_release.get('content_pack_id', '')),
             'is_candidate_release': profile_id == str(candidate_release.get('mechanic_profile_id', '')) and content_pack_id == str(candidate_release.get('content_pack_id', '')),
@@ -369,6 +383,12 @@ def build_pack_detail(profile_id: str, pack_entry: dict[str, Any]) -> None:
             'full_sequence_coverage_complete': validation_report.get('full_sequence_coverage_complete'),
             'runtime_export_allowed': validation_report.get('runtime_export_allowed'),
             'sequence_balance_pass': validation_report.get('sequence_balance_pass'),
+            'sequence_template_id_present': validation_report.get('sequence_template_id_present'),
+            'pack_identity_complete': validation_report.get('pack_identity_complete'),
+            'pack_matches_sequence_template': validation_report.get('pack_matches_sequence_template'),
+            'pack_matches_mechanic_profile': validation_report.get('pack_matches_mechanic_profile'),
+            'template_mechanic_pack_binding_valid': validation_report.get('template_mechanic_pack_binding_valid'),
+            'sequence_template_runtime_export_allowed': validation_report.get('sequence_template_runtime_export_allowed'),
             'deck_card_realm_eligibility_valid': validation_report.get('deck_card_realm_eligibility_valid'),
             'no_card_above_player_wujing_in_deck': validation_report.get('no_card_above_player_wujing_in_deck'),
             'invalid_realm_card_count': validation_report.get('invalid_realm_card_count'),
@@ -419,6 +439,7 @@ def build_pack_detail(profile_id: str, pack_entry: dict[str, Any]) -> None:
         'original_content_pack_id': snapshot_summary.get('source_content_pack_id') or content_pack_summary.get('original_content_pack_id'),
         'snapshot_content_pack_id': snapshot_summary.get('snapshot_content_pack_id') or content_pack_summary.get('snapshot_content_pack_id'),
         'balance_release_summary': balance_release_summary,
+        'template_mechanic_pack_binding_valid': bool(validation_report.get('template_mechanic_pack_binding_valid', True)),
     }
     json_path = detail_pack_json_path(profile_id, content_pack_id)
     md_path = detail_pack_md_path(profile_id, content_pack_id)
@@ -461,6 +482,8 @@ def build_pack_markdown(detail: dict[str, Any]) -> str:
         '',
         f"- pack_storage_mode: {detail.get('pack_storage_mode', '')}",
         f"- is_active_pack: {str(detail.get('is_active_pack', False)).lower()}",
+        f"- sequence_template_id: {detail.get('sequence_template_id', '') or '-'}",
+        f"- build_variant: {detail.get('build_variant', '') or '-'}",
         f"- formal_encounter_total_count: {detail.get('formal_encounter_total_count', 0)}",
         f"- card_count: {detail.get('card_count', 0)}",
         f"- deck_count: {detail.get('deck_count', 0)}",
@@ -470,11 +493,13 @@ def build_pack_markdown(detail: dict[str, Any]) -> str:
         '## 包总体状态',
         f"- ready_for_runtime_export: {str(detail.get('validation_summary', {}).get('ready_for_runtime_export', False)).lower()}",
         f"- sequence_balance_pass: {str(detail.get('validation_summary', {}).get('sequence_balance_pass', False)).lower()}",
+        f"- template_mechanic_pack_binding_valid: {str(detail.get('validation_summary', {}).get('template_mechanic_pack_binding_valid', False)).lower()}",
         f"- deck_card_realm_eligibility_valid: {str(detail.get('validation_summary', {}).get('deck_card_realm_eligibility_valid', False)).lower()}",
         f"- evaluation_event_count: {detail.get('evaluation_summary', {}).get('evaluation_event_count', 0)}",
         f"- win_rate: {detail.get('evaluation_summary', {}).get('pack_metrics', {}).get('win_rate', 0)}",
         f"- avg_turn_count: {detail.get('evaluation_summary', {}).get('pack_metrics', {}).get('avg_turn_count', 0)}",
         f"- rebuild_recommendation_count: {detail.get('evaluation_summary', {}).get('rebuild_recommendation_count', detail.get('rebuild_recommendation_summary', {}).get('recommendation_count', 0))}",
+        f"- stage_metrics: {detail.get('evaluation_summary', {}).get('stage_metrics', {})}",
     '',
         '## Balance Release',
         f"- balance_release: {str(detail.get('balance_release_summary', {}).get('balance_release', False)).lower()}",
@@ -491,10 +516,10 @@ def build_pack_markdown(detail: dict[str, Any]) -> str:
         f"- high_power_card_ids: {', '.join(detail.get('card_pool_summary', {}).get('high_power_card_ids', [])) or '-'}",
         f"- most_used_card_ids: {', '.join(detail.get('card_pool_summary', {}).get('most_used_card_ids', [])) or '-'}",
         '',
-        '## 15 场战斗明细表',
+        '## Sequence Detail',
     ]
     for seq in detail.get('sequence_detail', []):
-        lines.append(f"- #{seq.get('sequence_position')} {seq.get('formal_encounter_id')} -> slot={seq.get('generated_battle_slot_id')} deck={seq.get('generated_deck_id')} reward={seq.get('reward_plan_id')} wujing_cap={seq.get('player_wujing_cap')} runtime_primitives={','.join(seq.get('runtime_primitives', [])) or '-'}")
+        lines.append(f"- #{seq.get('sequence_position')} stage={seq.get('stage')} {seq.get('formal_encounter_id')} -> slot={seq.get('generated_battle_slot_id')} deck={seq.get('generated_deck_id')} reward={seq.get('reward_plan_id')} wujing_cap={seq.get('player_wujing_cap')} runtime_primitives={','.join(seq.get('runtime_primitives', [])) or '-'}")
     if detail.get('missing_reports'):
         lines.extend(['', '## missing_reports'])
         for report in detail['missing_reports']:

@@ -2,6 +2,16 @@
   "pack_identity": {
     "mechanic_profile_id": "weapon_followup_v0_1",
     "content_pack_id": "weapon_followup_ai_candidate_pack_probe_002",
+    "sequence_template_id": "",
+    "build_variant": "baseline_001",
+    "pack_identity": {
+      "sequence_template_id": "",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "baseline_001",
+      "content_pack_id": "weapon_followup_ai_candidate_pack_probe_002"
+    },
+    "stage_counts": {},
+    "template_mechanic_pack_binding_valid": true,
     "is_active_pack": false,
     "pack_storage_mode": "profile_pack_dir",
     "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_ai_candidate_pack_probe_002/runtime_manifest.json",
@@ -9250,12 +9260,14 @@
   "evaluation_summary": {
     "evaluated": false,
     "evaluation_event_count": 0,
+    "sequence_template_id": "",
     "telemetry_detail_level_summary": {},
     "win_rate": 0.0,
     "avg_turn_count": 0.0,
     "avg_player_hp_end": 0.0,
     "avg_damage_taken": 0.0,
     "runtime_primitive_trigger_rate": 0.0,
+    "stage_metrics": {},
     "mechanism_underused_candidates": [],
     "too_easy_candidates": [],
     "too_hard_candidates": [],

@@ -1,0 +1,14 @@
+{
+  "sequence_template_loaded": true,
+  "sequence_template_id_valid": true,
+  "total_encounter_count_valid": true,
+  "stage_count_sum_matches_total": true,
+  "stage_positions_complete": true,
+  "no_duplicate_sequence_positions": true,
+  "encounter_kind_counts_valid": true,
+  "difficulty_curve_valid": true,
+  "reward_curve_valid": true,
+  "realm_curve_valid": true,
+  "mechanic_density_curve_valid": true,
+  "sequence_template_valid": true
+}

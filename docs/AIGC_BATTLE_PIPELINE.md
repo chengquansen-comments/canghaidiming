@@ -209,3 +209,14 @@ v2 目标是 `full sequence reward / progression closure`：
 - previous current release 必须可 rollback；如果 balanced current smoke 失败，必须回滚到 previous current 或 fallback。
 - dashboard / review workspace / compare matrix 需要显示 `balance_release`、`source_pack_id`、`source_vs_balanced_delta`、`playable_balance_gate_pass` 与 balance release API。
 - R4 的 build / validate / export / evaluate / release / smoke / rollback / probe 全部必须串行执行，禁止并行。
+
+## R5
+- R5 是 Sequence Template + Mechanic Pack Binding Contract。
+- content pack 的来源契约必须显式化为 `sequence_template_id + mechanic_profile_id + build_variant = content_pack_id`。
+- sequence template 负责定义战斗数量、阶段分布、遭遇类型、目标 power、奖励曲线、武境曲线与 mechanic density 曲线；mechanic profile 只负责玩法机制内容。
+- 默认正式模板是 `formal_sequence_15_v1`，必须兼容现有 current release；验证模板 `formal_sequence_12_fast_v1` 用于证明 encounter count 与 stage pacing 可配置，但不自动切 current。
+- build / validate / export / evaluation / review / release channel 都必须带上 `sequence_template_id`、`build_variant` 与 `pack_identity` 字段。
+- `pack_resolver.json` 负责把 current / candidate / fallback / review / archived channel 与 pack identity 绑定起来。
+- current release 继续保持 `weapon_followup_v0_1 / weapon_followup_balance_release_007`，只补齐 `sequence_template_id=formal_sequence_15_v1` 与 `build_variant=balance_release_007` 的契约信息。
+- formal12fast 生成的 `weapon_followup_v0_1__formal_sequence_12_fast_v1__baseline_001` 只作为 candidate/review pack 验证模板可调，不自动替换 current。
+- R5 的 validate / plan / build / export / evaluation / resolver / probe 全部必须串行执行，禁止并行。

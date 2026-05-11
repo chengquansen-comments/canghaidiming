@@ -2,6 +2,16 @@
   "pack_identity": {
     "mechanic_profile_id": "posture_tuned_v0_1b",
     "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+    "sequence_template_id": "",
+    "build_variant": "baseline_001",
+    "pack_identity": {
+      "sequence_template_id": "",
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "build_variant": "baseline_001",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001"
+    },
+    "stage_counts": {},
+    "template_mechanic_pack_binding_valid": true,
     "is_active_pack": false,
     "pack_storage_mode": "profile_root",
     "runtime_manifest_path": "data/aigc_battle/generated/posture_tuned_v0_1b/runtime_manifest.json",
@@ -9121,12 +9131,14 @@
   "evaluation_summary": {
     "evaluated": false,
     "evaluation_event_count": 0,
+    "sequence_template_id": "",
     "telemetry_detail_level_summary": {},
     "win_rate": 0.0,
     "avg_turn_count": 0.0,
     "avg_player_hp_end": 0.0,
     "avg_damage_taken": 0.0,
     "runtime_primitive_trigger_rate": 0.0,
+    "stage_metrics": {},
     "mechanism_underused_candidates": [],
     "too_easy_candidates": [],
     "too_hard_candidates": [],

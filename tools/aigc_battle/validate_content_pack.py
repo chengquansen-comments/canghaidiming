@@ -10,6 +10,13 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from tools.aigc_battle import load_sequence_template as template_lib
+from tools.aigc_battle import build_sequence_template_plan as template_plan_lib
+from tools.aigc_battle import switch_active_profile as switch_lib
+
 MECHANICS_DIR = ROOT / "data" / "aigc_battle" / "mechanics"
 GENERATED_DIR = ROOT / "data" / "aigc_battle" / "generated"
 RUNTIME_EFFECT_SUPPORT = {
@@ -32,9 +39,9 @@ def main(argv: list[str]) -> int:
     if args.generated_dir:
         generated_dir = Path(args.generated_dir)
     elif args.pack_id:
-        generated_dir = GENERATED_DIR / profile_id / "packs" / args.pack_id
+        generated_dir = switch_lib.resolve_generated_dir(profile_id, args.pack_id)
     else:
-        generated_dir = GENERATED_DIR / profile_id
+        generated_dir = switch_lib.resolve_generated_dir(profile_id)
     inventory = read_json(generated_dir / "formal_sequence_inventory.generated.json")
     card_pool = read_json(generated_dir / "card_pool.generated.json")
     deck_pool = read_json(generated_dir / "enemy_deck_pool.generated.json")
@@ -43,6 +50,14 @@ def main(argv: list[str]) -> int:
     mappings = read_json(generated_dir / "formal_sequence_mapping.generated.json")
     balance_summary = read_json(generated_dir / "sequence_balance_summary.json")
     content_pack_summary = read_json(generated_dir / "content_pack_summary.json")
+    sequence_template_id = template_lib.infer_sequence_template_id(content_pack_summary)
+    sequence_template = template_lib.load_sequence_template(sequence_template_id)
+    stage_plan = template_plan_lib.build_sequence_template_plan(sequence_template_id)
+    build_variant = template_lib.resolve_build_variant(
+        content_pack_summary.get("build_variant", ""),
+        profile_id,
+        str(content_pack_summary.get("content_pack_id", content_recipe["content_pack_id"])),
+    )
     imported_candidate_summary_path = generated_dir / "imported_candidate_summary.json"
     imported_candidate_summary = read_json(imported_candidate_summary_path) if imported_candidate_summary_path.exists() else None
 
@@ -84,6 +99,25 @@ def main(argv: list[str]) -> int:
     coverage_count = len(inventory_set.intersection(mapping_by_encounter))
     total_count = len(inventory_set)
     full_sequence_coverage_complete = coverage_count == total_count and total_count > 0
+    stage_counts_expected = {str(k): int(v) for k, v in sequence_template.get("stage_counts", {}).items()}
+    actual_stage_counts = dict(Counter(str(item.get("stage", "")) for item in inventory))
+    template_kind_counts = Counter(str(item.get("encounter_kind", "")) for item in stage_plan)
+    actual_kind_counts = Counter(str(item.get("encounter_kind", "")) for item in inventory)
+    sequence_template_id_present = bool(sequence_template_id)
+    mechanic_profile_id_present = bool(profile_id_expected)
+    build_variant_present = bool(build_variant)
+    pack_identity_complete = sequence_template_id_present and mechanic_profile_id_present and build_variant_present and bool(content_pack_id_expected)
+    sequence_template_loaded = True
+    legacy_template_compat = "__" not in content_pack_id_expected and not bool(content_pack_summary.get("sequence_template_id"))
+    pack_matches_sequence_template = str(content_pack_summary.get("sequence_template_id", sequence_template_id)) == sequence_template_id
+    pack_matches_mechanic_profile = str(content_pack_summary.get("mechanic_profile_id", profile_id_expected) or profile_id_expected) == profile_id_expected
+    formal_encounter_count_matches_template = total_count == int(sequence_template.get("total_encounter_count", total_count))
+    stage_assignment_complete = formal_encounter_count_matches_template if legacy_template_compat else all(str(item.get("stage", "")).strip() for item in inventory) and actual_stage_counts == stage_counts_expected
+    encounter_kind_count_matches_template = True if legacy_template_compat else dict(actual_kind_counts) == dict(template_kind_counts)
+    difficulty_curve_matches_template = True
+    reward_curve_matches_template = True
+    realm_curve_matches_template = True
+    mechanic_density_matches_template = True
 
     unsupported_card_effects: list[str] = []
     unsupported_design_effects = sorted(allowed_design_effects - allowed_runtime_effects)
@@ -164,6 +198,9 @@ def main(argv: list[str]) -> int:
             errors.append(f"mapping references missing reward: {reward_id}")
         if "sequence_position" not in mapping:
             errors.append("mapping missing sequence_position")
+        if str(mapping.get("sequence_template_id", sequence_template_id)) != sequence_template_id:
+            pack_matches_sequence_template = False
+            errors.append("mapping sequence_template_id mismatch")
 
     mapped_slot_ids = {str(item.get("generated_battle_slot_id", "")) for item in mappings}
     orphan_slots = sorted(slot_ids.difference(mapped_slot_ids))
@@ -327,6 +364,33 @@ def main(argv: list[str]) -> int:
                 if field == "player_wujing_cap":
                     player_wujing_cap_present = False
                     all_slots_have_player_wujing_cap = False
+        if not legacy_template_compat and str(slot.get("sequence_template_id", sequence_template_id)) != sequence_template_id:
+            pack_matches_sequence_template = False
+            errors.append(f"battle slot {slot.get('battle_slot_id', '')} sequence_template_id mismatch")
+        position = int(slot.get("sequence_position", 0) or 0)
+        plan_item = next((item for item in stage_plan if int(item.get("sequence_position", 0)) == position), None)
+        if not plan_item:
+            stage_assignment_complete = False
+            errors.append(f"battle slot {slot.get('battle_slot_id', '')} missing template stage plan entry")
+        elif not legacy_template_compat:
+            if str(slot.get("stage", "")) != str(plan_item.get("stage", "")):
+                stage_assignment_complete = False
+                errors.append(f"battle slot {slot.get('battle_slot_id', '')} stage mismatch")
+            if str(slot.get("encounter_kind", "")) != str(plan_item.get("encounter_kind", "")):
+                encounter_kind_count_matches_template = False
+                errors.append(f"battle slot {slot.get('battle_slot_id', '')} encounter_kind mismatch")
+            if int(slot.get("player_wujing_cap", 0) or 0) != int(plan_item.get("player_wujing_cap", 0) or 0):
+                realm_curve_matches_template = False
+                errors.append(f"battle slot {slot.get('battle_slot_id', '')} player_wujing_cap mismatch")
+            if int(slot.get("target_power_min", 0) or 0) < int(plan_item.get("target_power_min", 0) or 0):
+                difficulty_curve_matches_template = False
+                errors.append(f"battle slot {slot.get('battle_slot_id', '')} target_power_min below template")
+            if str(slot.get("reward_tier", "")) != str(plan_item.get("reward_tier", "")):
+                reward_curve_matches_template = False
+                errors.append(f"battle slot {slot.get('battle_slot_id', '')} reward_tier mismatch")
+            if abs(float(slot.get("mechanic_density_target", 0.0) or 0.0) - float(plan_item.get("mechanic_density_target", 0.0) or 0.0)) > 0.001:
+                mechanic_density_matches_template = False
+                errors.append(f"battle slot {slot.get('battle_slot_id', '')} mechanic_density_target mismatch")
         slot_runtime_primitives = [str(item) for item in slot.get("runtime_primitives", [])]
         tier = str(slot.get("encounter_tier", ""))
         if martial_realm_7_declared and player_wujing_cap is not None and tier in martial_cap_by_tier:
@@ -480,6 +544,10 @@ def main(argv: list[str]) -> int:
         errors.append("boss decks are not stronger than elite or late decks")
     if float(balance_summary.get("late_avg_power_over_early", 0)) <= 0:
         errors.append("late average power does not exceed early average power")
+    difficulty_curve_matches_template = difficulty_curve_matches_template and formal_encounter_count_matches_template
+    reward_curve_matches_template = reward_curve_matches_template and formal_encounter_count_matches_template
+    realm_curve_matches_template = realm_curve_matches_template and formal_encounter_count_matches_template
+    mechanic_density_matches_template = mechanic_density_matches_template and formal_encounter_count_matches_template
 
     runtime_effects_supported = not unsupported_card_effects and not unsupported_runtime_effect_whitelist
     unsupported_design_effects_blocked = not unsupported_design_effects
@@ -630,6 +698,17 @@ def main(argv: list[str]) -> int:
         errors.append("card realm metadata is missing")
     runtime_export_allowed = (
         runtime_export_allowed
+        and sequence_template_loaded
+        and pack_identity_complete
+        and pack_matches_sequence_template
+        and pack_matches_mechanic_profile
+        and formal_encounter_count_matches_template
+        and stage_assignment_complete
+        and encounter_kind_count_matches_template
+        and difficulty_curve_matches_template
+        and reward_curve_matches_template
+        and realm_curve_matches_template
+        and mechanic_density_matches_template
         and card_eligibility_rules_declared
         and player_wujing_cap_present
         and card_realm_metadata_present
@@ -663,8 +742,37 @@ def main(argv: list[str]) -> int:
         errors.append("max_wujing is not 7")
     if martial_realm_7_declared and not max_closing_form_tier_is_7:
         errors.append("max_closing_form_tier is not 7")
+    template_mechanic_pack_binding_valid = (
+        sequence_template_id_present
+        and mechanic_profile_id_present
+        and build_variant_present
+        and pack_identity_complete
+        and sequence_template_loaded
+        and pack_matches_sequence_template
+        and pack_matches_mechanic_profile
+    )
+    sequence_template_runtime_export_allowed = template_mechanic_pack_binding_valid and formal_encounter_count_matches_template and stage_assignment_complete and encounter_kind_count_matches_template and difficulty_curve_matches_template and reward_curve_matches_template and realm_curve_matches_template and mechanic_density_matches_template
 
     report = {
+        "sequence_template_id": sequence_template_id,
+        "build_variant": build_variant,
+        "pack_identity": template_lib.build_pack_identity(sequence_template_id, profile_id_expected, build_variant, content_pack_id_expected),
+        "sequence_template_id_present": sequence_template_id_present,
+        "mechanic_profile_id_present": mechanic_profile_id_present,
+        "build_variant_present": build_variant_present,
+        "pack_identity_complete": pack_identity_complete,
+        "sequence_template_loaded": sequence_template_loaded,
+        "pack_matches_sequence_template": pack_matches_sequence_template,
+        "pack_matches_mechanic_profile": pack_matches_mechanic_profile,
+        "formal_encounter_count_matches_template": formal_encounter_count_matches_template,
+        "stage_assignment_complete": stage_assignment_complete,
+        "encounter_kind_count_matches_template": encounter_kind_count_matches_template,
+        "difficulty_curve_matches_template": difficulty_curve_matches_template,
+        "reward_curve_matches_template": reward_curve_matches_template,
+        "realm_curve_matches_template": realm_curve_matches_template,
+        "mechanic_density_matches_template": mechanic_density_matches_template,
+        "template_mechanic_pack_binding_valid": template_mechanic_pack_binding_valid,
+        "sequence_template_runtime_export_allowed": sequence_template_runtime_export_allowed,
         "mechanic_profile_valid": mechanic_profile_valid,
         "content_recipe_valid": content_recipe_valid,
         "formal_sequence_inventory_valid": formal_sequence_inventory_valid,

@@ -1,0 +1,11 @@
+{
+  "current_release_has_sequence_template_id": true,
+  "current_release_pack_identity_complete": true,
+  "fallback_release_has_sequence_template_id": true,
+  "pack_resolver_exists": true,
+  "resolver_contains_current": true,
+  "resolver_contains_fallback": true,
+  "resolver_contains_formal12fast_candidate": true,
+  "template_mechanic_pack_binding_valid": true,
+  "probe_pass": true
+}

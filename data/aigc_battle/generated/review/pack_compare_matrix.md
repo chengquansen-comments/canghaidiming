@@ -1,9 +1,9 @@
 # Pack 对比矩阵
 
-- pack_count: `26`
+- pack_count: `27`
 - strongest_pack_by_avg_power: `martial_realm_7_dual_weapon_v0_1::martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001`
 - most_risky_pack: `weapon_followup_v0_1::weapon_followup_ai_candidate_pack_001`
-- healthiest_pack: `posture_opening_pressure_v0_1::posture_opening_pressure_v0_1_formal_sequence_pack_001`
+- healthiest_pack: `weapon_followup_v0_1::weapon_followup_v0_1__formal_sequence_12_fast_v1__baseline_001`
 - weakest_pack_by_avg_power: `weapon_followup_v0_1::weapon_followup_balance_release_006`
 
 | Active | Profile | Pack | Health | Score | Avg Power | Eval | Win | Avg Turn | Trigger | Actionability | Rebuild | Balance Release | Win Delta | Runtime Primitives |
@@ -34,3 +34,4 @@
 |  | `weapon_followup_v0_1` | `weapon_followup_eval_rebuild_002` | `warning` | 39 | 38.48 | 0 | 0.0 | 0.0 | 0.0 | 0 |  |  | 0.0 | `weapon_followup` |
 |  | `weapon_followup_v0_1` | `weapon_followup_eval_rebuild_003` | `warning` | 39 | 38.48 | 0 | 0.0 | 0.0 | 0.0 | 0 |  |  | 0.0 | `weapon_followup` |
 |  | `weapon_followup_v0_1` | `weapon_followup_real_rebuild_001` | `warning` | 45 | 39.03 | 0 | 0.0 | 0.0 | 0.0 | 0 |  |  | 0.0 | `weapon_followup` |
+|  | `weapon_followup_v0_1` | `weapon_followup_v0_1__formal_sequence_12_fast_v1__baseline_001` | `warning` | 61 | 40.48 | 12 | 0.5 | 9.0833 | 1.0 | 0 |  |  | 0.0 | `weapon_followup` |

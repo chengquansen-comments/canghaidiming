@@ -9,6 +9,12 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from tools.aigc_battle import load_sequence_template as template_lib
+from tools.aigc_battle import switch_active_profile as switch_lib
+
 MECHANICS_DIR = ROOT / "data" / "aigc_battle" / "mechanics"
 GENERATED_DIR = ROOT / "data" / "aigc_battle" / "generated"
 
@@ -23,9 +29,9 @@ def main(argv: list[str]) -> int:
     if args.generated_dir:
         generated_dir = Path(args.generated_dir)
     elif args.pack_id:
-        generated_dir = GENERATED_DIR / profile_id / "packs" / args.pack_id
+        generated_dir = switch_lib.resolve_generated_dir(profile_id, args.pack_id)
     else:
-        generated_dir = GENERATED_DIR / profile_id
+        generated_dir = switch_lib.resolve_generated_dir(profile_id)
     mechanic_profile = read_json(MECHANICS_DIR / profile_id / "mechanic_profile.json")
     content_recipe = read_json(MECHANICS_DIR / profile_id / "content_recipe.json")
     validation_report = read_json(generated_dir / "validation_report.json")
@@ -65,6 +71,12 @@ def main(argv: list[str]) -> int:
         raise SystemExit("runtime export blocked: sequence balance pass is false")
     if not validation_report.get("ready_for_runtime_export", False):
         raise SystemExit("runtime export blocked: validation report not ready")
+    if not validation_report.get("sequence_template_runtime_export_allowed", True):
+        raise SystemExit("runtime export blocked: sequence template export is not allowed")
+    if not validation_report.get("pack_matches_sequence_template", True):
+        raise SystemExit("runtime export blocked: pack does not match sequence template")
+    if not validation_report.get("pack_matches_mechanic_profile", True):
+        raise SystemExit("runtime export blocked: pack does not match mechanic profile")
     if not validation_report.get("deck_card_realm_eligibility_valid", False):
         raise SystemExit("runtime export blocked: deck card realm eligibility is invalid")
     if not validation_report.get("no_card_above_player_wujing_in_deck", False):
@@ -84,6 +96,13 @@ def main(argv: list[str]) -> int:
     mappings = read_json(generated_dir / "formal_sequence_mapping.generated.json")
     balance_summary = read_json(generated_dir / "sequence_balance_summary.json")
     content_pack_summary = read_json(generated_dir / "content_pack_summary.json") if (generated_dir / "content_pack_summary.json").exists() else {}
+    sequence_template_id = template_lib.infer_sequence_template_id(content_pack_summary)
+    sequence_template = template_lib.load_sequence_template(sequence_template_id)
+    build_variant = template_lib.resolve_build_variant(
+        content_pack_summary.get("build_variant", ""),
+        profile_id,
+        str(content_pack_summary.get("content_pack_id", content_recipe["content_pack_id"])),
+    )
     imported_candidate_summary_path = generated_dir / "imported_candidate_summary.json"
     imported_candidate_summary = read_json(imported_candidate_summary_path) if imported_candidate_summary_path.exists() else None
     runtime_primitives = [str(item) for item in mechanic_profile.get("runtime_primitives", [])]
@@ -96,9 +115,20 @@ def main(argv: list[str]) -> int:
     manifest = {
         "manifest_version": 1,
         "mechanic_profile_id": mechanic_profile["mechanic_profile_id"],
+        "sequence_template_id": sequence_template_id,
+        "sequence_template_version": int(sequence_template.get("sequence_template_version", 1) or 1),
+        "build_variant": build_variant,
         "content_pack_id": str(content_pack_summary.get("content_pack_id", content_recipe["content_pack_id"])),
+        "pack_identity": template_lib.build_pack_identity(sequence_template_id, str(mechanic_profile["mechanic_profile_id"]), build_variant, str(content_pack_summary.get("content_pack_id", content_recipe["content_pack_id"]))),
         "target_sequence_id": content_recipe["target_sequence_id"],
         "replacement_mode": "full_sequence",
+        "sequence_template_summary": {
+            "sequence_template_id": sequence_template_id,
+            "target_sequence_id": str(sequence_template.get("target_sequence_id", "")),
+            "total_encounter_count": int(sequence_template.get("total_encounter_count", 0) or 0),
+        },
+        "stage_counts": content_pack_summary.get("stage_counts", {}),
+        "total_encounter_count": int(content_pack_summary.get("total_encounter_count", len(inventory)) or len(inventory)),
         "runtime_supported_effects": mechanic_profile["allowed_runtime_effects"],
         "runtime_primitives": runtime_primitives,
         "runtime_primitive_summary": {
@@ -148,6 +178,10 @@ def main(argv: list[str]) -> int:
         "rewards": rewards,
         "formal_sequence_mapping": mappings,
     }
+    for slot in manifest["battle_slots"]:
+        slot.setdefault("sequence_template_id", sequence_template_id)
+        slot.setdefault("stage", "")
+        slot.setdefault("mechanic_density_target", 0.0)
     write_json(generated_dir / "runtime_manifest.json", manifest)
     print(f"exported runtime manifest: {profile_id}")
     return 0

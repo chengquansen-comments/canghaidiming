@@ -2,6 +2,16 @@
   "pack_identity": {
     "mechanic_profile_id": "weapon_followup_v0_1",
     "content_pack_id": "weapon_followup_balance_release_004",
+    "sequence_template_id": "",
+    "build_variant": "balance_release_004",
+    "pack_identity": {
+      "sequence_template_id": "",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "balance_release_004",
+      "content_pack_id": "weapon_followup_balance_release_004"
+    },
+    "stage_counts": {},
+    "template_mechanic_pack_binding_valid": true,
     "is_active_pack": false,
     "pack_storage_mode": "profile_pack_dir",
     "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_004/runtime_manifest.json",
@@ -8042,6 +8052,7 @@
   "evaluation_summary": {
     "evaluated": true,
     "evaluation_event_count": 45,
+    "sequence_template_id": "",
     "telemetry_detail_level_summary": {
       "real": 45
     },
@@ -8050,6 +8061,7 @@
     "avg_player_hp_end": 22.3333,
     "avg_damage_taken": 15.2667,
     "runtime_primitive_trigger_rate": 1.0,
+    "stage_metrics": {},
     "mechanism_underused_candidates": [],
     "too_easy_candidates": [],
     "too_hard_candidates": [

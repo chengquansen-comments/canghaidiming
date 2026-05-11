@@ -156,6 +156,9 @@ def build_pack_review(index_payload: dict[str, Any], profile_id: str, pack_entry
             'pack_identity': {
                 'mechanic_profile_id': profile_id,
                 'content_pack_id': content_pack_id,
+                'sequence_template_id': '',
+                'build_variant': '',
+                'pack_identity': {},
                 'is_active_pack': bool(pack_entry.get('is_active_pack', False)),
                 'pack_storage_mode': pack_entry.get('pack_storage_mode', ''),
                 'runtime_manifest_path': pack_entry.get('runtime_manifest_path', ''),
@@ -417,6 +420,11 @@ def build_pack_review(index_payload: dict[str, Any], profile_id: str, pack_entry
         'pack_identity': {
             'mechanic_profile_id': profile_id,
             'content_pack_id': content_pack_id,
+            'sequence_template_id': str(detail.get('sequence_template_id', '')),
+            'build_variant': str(detail.get('build_variant', '')),
+            'pack_identity': detail.get('pack_identity', {}),
+            'stage_counts': detail.get('stage_counts', {}),
+            'template_mechanic_pack_binding_valid': bool(detail.get('template_mechanic_pack_binding_valid', False)),
             'is_active_pack': bool(pack_entry.get('is_active_pack', False)),
             'pack_storage_mode': str(detail.get('pack_storage_mode', pack_entry.get('pack_storage_mode', ''))),
             'runtime_manifest_path': str(detail.get('runtime_manifest_path', '')),
@@ -441,12 +449,14 @@ def build_pack_review(index_payload: dict[str, Any], profile_id: str, pack_entry
         'evaluation_summary': {
             'evaluated': bool(evaluation),
             'evaluation_event_count': int(evaluation.get('evaluation_event_count', 0) or 0),
+            'sequence_template_id': str(detail.get('sequence_template_id', '')),
             'telemetry_detail_level_summary': evaluation.get('telemetry_detail_level_summary', {}),
             'win_rate': float(evaluation.get('pack_metrics', {}).get('win_rate', 0) or 0),
             'avg_turn_count': float(evaluation.get('pack_metrics', {}).get('avg_turn_count', 0) or 0),
             'avg_player_hp_end': float(evaluation.get('pack_metrics', {}).get('avg_player_hp_end', 0) or 0),
             'avg_damage_taken': float(evaluation.get('pack_metrics', {}).get('avg_damage_taken', 0) or 0),
             'runtime_primitive_trigger_rate': float(evaluation.get('mechanic_metrics', {}).get('runtime_primitive_trigger_rate', evaluation.get('pack_metrics', {}).get('runtime_primitive_trigger_rate', 0) or 0) or 0),
+            'stage_metrics': evaluation.get('stage_metrics', {}),
             'mechanism_underused_candidates': evaluation.get('mechanism_underused_candidates', []),
             'too_easy_candidates': evaluation.get('too_easy_candidates', []),
             'too_hard_candidates': evaluation.get('too_hard_candidates', []),
@@ -661,6 +671,10 @@ def build_compare_row(pack_review: dict[str, Any]) -> dict[str, Any]:
     return {
         'mechanic_profile_id': pack_review['pack_identity']['mechanic_profile_id'],
         'content_pack_id': pack_review['pack_identity']['content_pack_id'],
+        'sequence_template_id': str(pack_review['pack_identity'].get('sequence_template_id', '')),
+        'build_variant': str(pack_review['pack_identity'].get('build_variant', '')),
+        'stage_counts': pack_review['pack_identity'].get('stage_counts', {}),
+        'template_mechanic_pack_binding_valid': bool(pack_review['pack_identity'].get('template_mechanic_pack_binding_valid', False)),
         'is_active': bool(pack_review['pack_identity']['is_active_pack']),
         'health_status': pack_review['health_summary']['health_status'],
         'health_score': pack_review['health_summary']['health_score'],
@@ -672,6 +686,7 @@ def build_compare_row(pack_review: dict[str, Any]) -> dict[str, Any]:
         'reward_count': len(pack_review.get('reward_review_table', [])),
         'sequence_balance_pass': bool(pack_review['health_summary']['sequence_balance_pass']),
         'average_deck_power': round(avg([row.get('deck_power_score', 0) for row in encounter_rows]), 2),
+        'max_wujing': max([int(row.get('player_wujing_cap', 0) or 0) for row in encounter_rows] or [0]),
         'early_avg_power': round(avg(power_by_tier.get('early', [])), 2),
         'mid_avg_power': round(avg(power_by_tier.get('mid', [])), 2),
         'late_avg_power': round(avg(power_by_tier.get('late', [])), 2),
@@ -696,6 +711,7 @@ def build_compare_row(pack_review: dict[str, Any]) -> dict[str, Any]:
         'avg_turn_count': float(evaluation_summary.get('avg_turn_count', 0) or 0),
         'avg_player_hp_end': float(evaluation_summary.get('avg_player_hp_end', 0) or 0),
         'mechanic_trigger_rate': float(evaluation_summary.get('runtime_primitive_trigger_rate', 0) or 0),
+        'stage_metrics': evaluation_summary.get('stage_metrics', {}),
         'actionability_score': int(evaluation_summary.get('actionability_score', 0) or 0),
         'needs_rebuild': bool(evaluation_summary.get('needs_rebuild', False)),
         'is_balance_release': bool(balance_summary.get('balance_release', False)),
@@ -720,6 +736,38 @@ def build_compare_matrix(index_payload: dict[str, Any], rows: list[dict[str, Any
     return {
         'generated_at': datetime.now(timezone.utc).isoformat(),
         'pack_count': len(rows),
+        'real_mechanic_profile_count': len({row['mechanic_profile_id'] for row in rows}),
+        'runtime_primitive_types': sorted({primitive for row in rows for primitive in row.get('runtime_primitives', [])}),
+        'distinct_mechanic_count': len({row['mechanic_profile_id'] for row in rows}),
+        'mechanic_density_by_pack': {
+            f"{row['mechanic_profile_id']}::{row['content_pack_id']}": round(avg([
+                float(value)
+                for value in (
+                    row.get('stage_metrics', {}).get('early_stage_event_count'),
+                    row.get('stage_metrics', {}).get('mid_stage_event_count'),
+                    row.get('stage_metrics', {}).get('late_stage_event_count'),
+                    row.get('stage_metrics', {}).get('boss_stage_event_count'),
+                )
+                if value is not None
+            ]), 2)
+            for row in rows
+        },
+        'mechanic_runtime_observable': {
+            f"{row['mechanic_profile_id']}::{row['content_pack_id']}": bool(row.get('evaluated', False) and row.get('evaluation_event_count', 0) > 0)
+            for row in rows
+        },
+        'max_wujing_by_pack': {
+            f"{row['mechanic_profile_id']}::{row['content_pack_id']}": int(row.get('max_wujing', 0) or 0)
+            for row in rows
+        },
+        'dual_weapon_enabled_by_pack': {
+            f"{row['mechanic_profile_id']}::{row['content_pack_id']}": 'dual_weapon' in row.get('runtime_primitives', [])
+            for row in rows
+        },
+        'clue_pressure_enabled_by_pack': {
+            f"{row['mechanic_profile_id']}::{row['content_pack_id']}": 'clue_pressure' in row.get('runtime_primitives', [])
+            for row in rows
+        },
         'packs': rows,
         'strongest_pack_by_avg_power': pack_ref(strongest),
         'most_risky_pack': pack_ref(risky),

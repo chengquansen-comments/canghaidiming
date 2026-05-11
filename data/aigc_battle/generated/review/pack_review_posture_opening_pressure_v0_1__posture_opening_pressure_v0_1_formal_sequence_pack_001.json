@@ -2,6 +2,16 @@
   "pack_identity": {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",
     "content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+    "sequence_template_id": "formal_sequence_15_v1",
+    "build_variant": "baseline_001",
+    "pack_identity": {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "mechanic_profile_id": "posture_opening_pressure_v0_1",
+      "build_variant": "baseline_001",
+      "content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001"
+    },
+    "stage_counts": {},
+    "template_mechanic_pack_binding_valid": true,
     "is_active_pack": false,
     "pack_storage_mode": "profile_root",
     "runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/runtime_manifest.json",
@@ -9434,6 +9444,7 @@
   "evaluation_summary": {
     "evaluated": true,
     "evaluation_event_count": 90,
+    "sequence_template_id": "formal_sequence_15_v1",
     "telemetry_detail_level_summary": {
       "real": 90
     },
@@ -9442,6 +9453,7 @@
     "avg_player_hp_end": 0.8667,
     "avg_damage_taken": 36.7333,
     "runtime_primitive_trigger_rate": 0.0,
+    "stage_metrics": {},
     "mechanism_underused_candidates": [],
     "too_easy_candidates": [],
     "too_hard_candidates": [

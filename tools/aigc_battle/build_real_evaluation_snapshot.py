@@ -64,6 +64,7 @@ def build_snapshot(profile_id: str, pack_id: str | None) -> dict[str, Any]:
 
     encounter_metrics: dict[str, dict[str, Any]] = {}
     by_encounter: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    by_stage: dict[str, list[dict[str, Any]]] = defaultdict(list)
     card_counter: Counter[str] = Counter()
     dead_cards: Counter[str] = Counter()
     overused_cards: Counter[str] = Counter()
@@ -73,6 +74,7 @@ def build_snapshot(profile_id: str, pack_id: str | None) -> dict[str, Any]:
     for event in events:
         encounter_id = str(event.get("formal_encounter_id", ""))
         by_encounter[encounter_id].append(event)
+        by_stage[str(event.get("stage", ""))].append(event)
         card_counter.update({str(card_id): 1 for card_id in event.get("player_card_ids_played", []) + event.get("enemy_card_ids_played", [])})
         dead_cards.update({str(card_id): 1 for card_id in event.get("dead_card_ids", [])})
         overused_cards.update({str(card_id): 1 for card_id in event.get("overused_card_ids", [])})
@@ -106,6 +108,7 @@ def build_snapshot(profile_id: str, pack_id: str | None) -> dict[str, Any]:
             mechanism_underused_candidates.append(candidate_stub(mapping, aggregate, "mechanism_underused"))
 
     pack_metrics = detail_report.get("pack_metrics", eval_lib.aggregate_events_for_scope(events, None, None, None, None))
+    stage_metrics = build_stage_metrics(by_stage)
     mechanic_metrics = {
         "runtime_primitive_trigger_rate": pack_metrics.get("runtime_primitive_trigger_rate", 0),
         "weapon_followup_trigger_rate": pack_metrics.get("weapon_followup_trigger_rate", 0),
@@ -151,6 +154,7 @@ def build_snapshot(profile_id: str, pack_id: str | None) -> dict[str, Any]:
         "mechanic_profile_id": profile_id,
         "content_pack_id": content_pack_id,
         "evaluation_event_count": len(events),
+        "sequence_template_id": str(runtime_manifest.get("sequence_template_id", "")),
         "telemetry_detail_level_summary": telemetry_summary,
         "formal_encounter_coverage": {
             "expected": len(mappings),
@@ -159,6 +163,7 @@ def build_snapshot(profile_id: str, pack_id: str | None) -> dict[str, Any]:
         },
         "encounter_metrics": encounter_metrics,
         "pack_metrics": pack_metrics,
+        "stage_metrics": stage_metrics,
         "mechanic_metrics": mechanic_metrics,
         "card_metrics": card_metrics,
         "deck_metrics": deck_metrics,
@@ -201,6 +206,7 @@ def build_snapshot_summary(snapshots: list[dict[str, Any]]) -> dict[str, Any]:
                 "mechanic_profile_id": item.get("mechanic_profile_id", ""),
                 "content_pack_id": item.get("content_pack_id", ""),
                 "evaluation_event_count": item.get("evaluation_event_count", 0),
+                "sequence_template_id": item.get("sequence_template_id", ""),
                 "win_rate": item.get("pack_metrics", {}).get("win_rate", 0),
                 "avg_turn_count": item.get("pack_metrics", {}).get("avg_turn_count", 0),
                 "actionability_score": item.get("actionability_score", 0),
@@ -223,11 +229,13 @@ def snapshot_md_path(profile_id: str, content_pack_id: str) -> Path:
 
 def build_snapshot_markdown(snapshot: dict[str, Any]) -> str:
     pack = snapshot.get("pack_metrics", {})
+    stage_metrics = snapshot.get("stage_metrics", {})
     lines = [
         "# Evaluation Snapshot",
         "",
         f"- mechanic_profile_id: `{snapshot.get('mechanic_profile_id', '')}`",
         f"- content_pack_id: `{snapshot.get('content_pack_id', '')}`",
+        f"- sequence_template_id: `{snapshot.get('sequence_template_id', '')}`",
         f"- evaluation_event_count: `{snapshot.get('evaluation_event_count', 0)}`",
         f"- win_rate: `{pack.get('win_rate', 0)}`",
         f"- avg_turn_count: `{pack.get('avg_turn_count', 0)}`",
@@ -235,6 +243,8 @@ def build_snapshot_markdown(snapshot: dict[str, Any]) -> str:
         f"- runtime_primitive_trigger_rate: `{snapshot.get('mechanic_metrics', {}).get('runtime_primitive_trigger_rate', 0)}`",
         f"- rebuild_recommendation_count: `{snapshot.get('rebuild_recommendation_count', 0)}`",
         f"- actionability_score: `{snapshot.get('actionability_score', 0)}`",
+        f"- early_win_rate: `{stage_metrics.get('early_win_rate', 0)}`",
+        f"- boss_win_rate: `{stage_metrics.get('boss_win_rate', 0)}`",
         "",
         "## Candidates",
         f"- too_easy: `{len(snapshot.get('too_easy_candidates', []))}`",
@@ -245,6 +255,20 @@ def build_snapshot_markdown(snapshot: dict[str, Any]) -> str:
         f"- card_dead: `{len(snapshot.get('card_dead_candidates', []))}`",
     ]
     return "\n".join(lines) + "\n"
+
+
+def build_stage_metrics(by_stage: dict[str, list[dict[str, Any]]]) -> dict[str, Any]:
+    stage_metrics: dict[str, Any] = {}
+    for stage in ["early", "mid", "late", "boss"]:
+        events = by_stage.get(stage, [])
+        aggregate = eval_lib.aggregate_events_for_scope(events, None, None, None, None) if events else {}
+        stage_metrics[f"{stage}_win_rate"] = aggregate.get("win_rate", 0)
+        stage_metrics[f"{stage}_avg_turn_count"] = aggregate.get("avg_turn_count", 0)
+        stage_metrics[f"{stage}_stage_event_count"] = len(events)
+        stage_metrics[f"{stage}_stage_too_hard_count"] = sum(1 for event in events if not event.get("win", False) or int(event.get("player_hp_end", 0) or 0) <= 8)
+        stage_metrics[f"{stage}_stage_too_long_count"] = sum(1 for event in events if int(event.get("turn_count", 0) or 0) >= 6)
+        stage_metrics[f"{stage}_stage_reward_mismatch_count"] = sum(1 for event in events if bool(event.get("reward_mismatch_flag", False)))
+    return stage_metrics
 
 
 def build_summary_markdown(summary: dict[str, Any]) -> str:

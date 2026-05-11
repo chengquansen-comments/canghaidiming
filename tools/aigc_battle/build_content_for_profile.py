@@ -11,6 +11,12 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from tools.aigc_battle import build_sequence_template_plan as template_plan_lib
+from tools.aigc_battle import load_sequence_template as template_lib
+
 MECHANICS_DIR = ROOT / "data" / "aigc_battle" / "mechanics"
 GENERATED_DIR = ROOT / "data" / "aigc_battle" / "generated"
 NARRATIVE_NODES_PATH = ROOT / "tables" / "narrative_mvp_nodes.tsv"
@@ -86,27 +92,40 @@ def main(argv: list[str]) -> int:
     parser.add_argument("profile_id")
     parser.add_argument("--use-snapshot", dest="snapshot_path", default="")
     parser.add_argument("--use-real-telemetry-snapshot", dest="real_telemetry_snapshot_path", default="")
+    parser.add_argument("--sequence-template", dest="sequence_template_id", default=template_lib.DEFAULT_SEQUENCE_TEMPLATE_ID)
+    parser.add_argument("--build-variant", dest="build_variant", default="")
+    parser.add_argument("--pack-id", dest="pack_id", default="")
     args = parser.parse_args(argv[1:])
     profile_id = args.profile_id
     mechanic_profile = read_json(MECHANICS_DIR / profile_id / "mechanic_profile.json")
     content_recipe = read_json(MECHANICS_DIR / profile_id / "content_recipe.json")
+    sequence_template = template_lib.load_sequence_template(args.sequence_template_id)
+    stage_plan = template_plan_lib.build_sequence_template_plan(args.sequence_template_id)
     story_encounters = index_rows(read_tsv(STORY_ENCOUNTERS_PATH), "encounter_id")
-    inventory = build_formal_sequence_inventory(content_recipe, story_encounters)
+    inventory = build_formal_sequence_inventory(content_recipe, story_encounters, sequence_template)
     if not inventory:
         raise SystemExit("formal sequence inventory is empty")
     snapshot = read_json(Path(args.snapshot_path)) if args.snapshot_path else None
     real_telemetry_snapshot = read_json(Path(args.real_telemetry_snapshot_path)) if args.real_telemetry_snapshot_path else None
 
-    output_dir = GENERATED_DIR / profile_id
+    build_variant = str(args.build_variant or "").strip()
+    use_pack_contract = bool(args.pack_id or args.sequence_template_id != template_lib.DEFAULT_SEQUENCE_TEMPLATE_ID or build_variant)
+    if use_pack_contract:
+        build_variant = build_variant or "baseline_001"
+        content_pack_id = str(args.pack_id or f"{profile_id}__{args.sequence_template_id}__{build_variant}")
+        output_dir = GENERATED_DIR / profile_id / "packs" / content_pack_id
+    else:
+        content_pack_id = str(content_recipe["content_pack_id"])
+        build_variant = template_lib.infer_build_variant(profile_id, content_pack_id)
+        output_dir = GENERATED_DIR / profile_id
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    content_pack_id = str(content_recipe["content_pack_id"])
     balance_policy = content_recipe["balance_policy"]
     runtime_primitives = [str(item) for item in mechanic_profile.get("runtime_primitives", [])]
     clue_pressure_enabled = "clue_pressure" in runtime_primitives
     martial_realm_enabled = "martial_realm_7" in runtime_primitives
     dual_weapon_enabled = "dual_weapon" in runtime_primitives
-    inventory = annotate_inventory_balance(inventory, story_encounters, balance_policy, content_recipe)
+    inventory = annotate_inventory_balance(inventory, story_encounters, balance_policy, content_recipe, stage_plan, args.sequence_template_id)
     inventory, snapshot_metadata = apply_snapshot_rebuild_flags(inventory, snapshot)
     inventory, telemetry_rebuild_metadata = apply_real_telemetry_rebuild_flags(inventory, real_telemetry_snapshot, content_recipe)
     write_json(output_dir / "formal_sequence_inventory.generated.json", inventory)
@@ -156,6 +175,9 @@ def main(argv: list[str]) -> int:
                 "sequence_position": entry["sequence_position"],
                 "encounter_tier": entry["encounter_tier"],
                 "encounter_kind": entry["encounter_kind"],
+                "stage": entry["stage"],
+                "sequence_template_id": args.sequence_template_id,
+                "build_variant": build_variant,
                 "player_wujing_cap": player_wujing_cap,
                 "target_power_min": target_power_min,
                 "target_power_max": target_power_max,
@@ -208,10 +230,14 @@ def main(argv: list[str]) -> int:
                 "sequence_position": entry["sequence_position"],
                 "encounter_tier": entry["encounter_tier"],
                 "encounter_kind": entry["encounter_kind"],
+                "stage": entry["stage"],
+                "sequence_template_id": args.sequence_template_id,
+                "build_variant": build_variant,
                 "player_wujing_cap": player_wujing_cap,
                 "target_power_min": target_power_min,
                 "target_power_max": target_power_max,
                 "reward_tier": entry["reward_tier"],
+                "mechanic_density_target": float(entry.get("mechanic_density_target", 0.0)),
                 "deck_id": deck_id,
                 "reward_plan_id": reward_plan_id,
                 "runtime_primitives": list(runtime_primitives),
@@ -242,13 +268,18 @@ def main(argv: list[str]) -> int:
                 "generated_deck_id": deck_id,
                 "reward_plan_id": reward_plan_id,
                 "replacement_mode": "full_sequence",
+                "sequence_template_id": args.sequence_template_id,
+                "build_variant": build_variant,
                 "sequence_position": entry["sequence_position"],
+                "stage": entry["stage"],
+                "stage_index": entry["stage_index"],
                 "encounter_tier": entry["encounter_tier"],
                 "encounter_kind": entry["encounter_kind"],
                 "player_wujing_cap": player_wujing_cap,
                 "target_power_min": target_power_min,
                 "target_power_max": target_power_max,
                 "reward_tier": entry["reward_tier"],
+                "mechanic_density_target": float(entry.get("mechanic_density_target", 0.0)),
                 "runtime_primitives": list(runtime_primitives),
                 "weapon_followup_enabled": bool(weapon_followup.get("enabled", False)),
                 "clue_pressure_enabled": bool(clue_pressure.get("enabled", False)),
@@ -267,6 +298,8 @@ def main(argv: list[str]) -> int:
     )
     summary = {
         "mechanic_profile_id": profile_id,
+        "sequence_template_id": args.sequence_template_id,
+        "build_variant": build_variant,
         "content_pack_id": content_pack_id,
         "target_sequence_id": content_recipe["target_sequence_id"],
         "formal_encounter_total_count": len(inventory),
@@ -275,6 +308,8 @@ def main(argv: list[str]) -> int:
         "generated_card_count": len(card_pool),
         "generated_reward_count": len(rewards),
         "replacement_mode": "full_sequence",
+        "total_encounter_count": len(inventory),
+        "stage_counts": dict(Counter(str(item.get("stage", "")) for item in inventory)),
         "runtime_primitives_used": runtime_primitives,
         "opening_pressure_slot_count": sum(1 for slot in battle_slots if _dict(slot.get("opening_pressure", {}))),
         "weapon_followup_card_count": sum(1 for card in card_pool if bool(card.get("followup_group"))),
@@ -308,6 +343,7 @@ def main(argv: list[str]) -> int:
         "real_telemetry_snapshot_path": telemetry_rebuild_metadata["real_telemetry_snapshot_path"],
         "telemetry_rebuild_adjustments": telemetry_rebuild_metadata["telemetry_rebuild_adjustments"],
         "adjusted_or_flagged_encounters": telemetry_rebuild_metadata["adjusted_or_flagged_encounters"],
+        "pack_identity": template_lib.build_pack_identity(args.sequence_template_id, profile_id, build_variant, content_pack_id),
     }
     balance_summary["rebuild_uses_snapshot"] = snapshot_metadata["rebuild_uses_snapshot"]
     balance_summary["snapshot_source_path"] = snapshot_metadata["snapshot_source_path"]
@@ -320,6 +356,10 @@ def main(argv: list[str]) -> int:
         not snapshot_metadata["rebuild_uses_snapshot"]
         or bool(balance_summary.get("sequence_balance_pass", False))
     )
+    balance_summary["sequence_template_id"] = args.sequence_template_id
+    balance_summary["build_variant"] = build_variant
+    balance_summary["stage_counts"] = dict(Counter(str(item.get("stage", "")) for item in inventory))
+    balance_summary["total_encounter_count"] = len(inventory)
 
     write_json(output_dir / "card_pool.generated.json", card_pool)
     write_json(output_dir / "enemy_deck_pool.generated.json", deck_pool)
@@ -538,6 +578,7 @@ def index_rows(rows: list[dict[str, str]], key: str) -> dict[str, dict[str, str]
 def build_formal_sequence_inventory(
     content_recipe: dict[str, Any],
     story_encounters: dict[str, dict[str, str]],
+    sequence_template: dict[str, Any],
 ) -> list[dict[str, Any]]:
     rows = read_tsv(NARRATIVE_NODES_PATH)
     target_sequence_id = str(content_recipe["target_sequence_id"])
@@ -555,7 +596,7 @@ def build_formal_sequence_inventory(
             seen.add(encounter_id)
             inventory.append(
                 {
-                    "target_sequence_id": target_sequence_id,
+                    "target_sequence_id": str(sequence_template.get("target_sequence_id", target_sequence_id)),
                     "formal_encounter_id": encounter_id,
                     "formal_battle_id": str(combat.get("battle_id", "")).strip(),
                     "source_file": "tables/narrative_mvp_nodes.tsv",
@@ -566,7 +607,8 @@ def build_formal_sequence_inventory(
                 }
             )
     inventory.sort(key=lambda item: (int(item["source_order"]), str(item["formal_encounter_id"])))
-    return inventory
+    total_count = int(sequence_template.get("total_encounter_count", len(inventory)) or len(inventory))
+    return inventory[:total_count]
 
 
 def iter_formal_combat_entries(row: dict[str, str]) -> list[tuple[str, dict[str, Any]]]:
@@ -596,23 +638,30 @@ def annotate_inventory_balance(
     story_encounters: dict[str, dict[str, str]],
     balance_policy: dict[str, Any],
     content_recipe: dict[str, Any],
+    stage_plan: list[dict[str, Any]],
+    sequence_template_id: str,
 ) -> list[dict[str, Any]]:
     total = len(inventory)
-    progression_policy = _dict(content_recipe.get("player_progression_policy", {}))
+    plan_by_position = {int(item["sequence_position"]): item for item in stage_plan}
     for index, item in enumerate(inventory, start=1):
         encounter = story_encounters[str(item["formal_encounter_id"])]
-        kind = infer_encounter_kind(item, encounter, balance_policy)
-        tier = infer_encounter_tier(index, total, kind, balance_policy)
-        target_min, target_max = resolve_target_power_range(tier, kind, balance_policy)
-        reward_tier = resolve_reward_tier(tier, balance_policy)
+        plan = plan_by_position[index]
+        kind = str(plan["encounter_kind"])
+        tier = "boss" if plan["stage"] == "boss" else ("late" if plan["stage"] == "late" else ("mid" if plan["stage"] == "mid" else "early"))
+        item["sequence_template_id"] = sequence_template_id
         item["sequence_position"] = index
         item["sequence_count"] = total
+        item["stage"] = str(plan["stage"])
+        item["stage_index"] = int(plan["stage_index"])
+        item["difficulty_label"] = str(plan["difficulty_label"])
         item["encounter_kind"] = kind
         item["encounter_tier"] = tier
-        item["target_power_min"] = target_min
-        item["target_power_max"] = target_max
-        item["reward_tier"] = reward_tier
-        item["player_wujing_cap"] = resolve_player_wujing_cap(tier, progression_policy)
+        item["target_power_min"] = int(plan["target_power_min"])
+        item["target_power_max"] = int(plan["target_power_max"])
+        item["reward_tier"] = str(plan["reward_tier"])
+        item["player_wujing_cap"] = int(plan["player_wujing_cap"])
+        item["mechanic_density_target"] = float(plan["mechanic_density_target"])
+        item["encounter_label"] = str(encounter.get("display_name", encounter.get("encounter_id", "")))
     return inventory
 
 

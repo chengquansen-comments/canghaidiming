@@ -9,5 +9,5 @@
 - sequence_balance_pass: `True`
 - weapon_followup_runtime_ready: `True`
 - rollback_to_fallback_ready: `True`
-- rollback_to_previous_current_ready: `True`
-- smoke_pass: `True`
+- rollback_to_previous_current_ready: `False`
+- smoke_pass: `False`

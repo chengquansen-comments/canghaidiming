@@ -1,0 +1,11 @@
+{
+  "formal_sequence_15_v1_valid": true,
+  "formal_sequence_12_fast_v1_valid": true,
+  "stage_plan_generated": true,
+  "stage_count_sum_matches_total": true,
+  "difficulty_curve_valid": true,
+  "reward_curve_valid": true,
+  "realm_curve_valid": true,
+  "mechanic_density_curve_valid": true,
+  "probe_pass": true
+}

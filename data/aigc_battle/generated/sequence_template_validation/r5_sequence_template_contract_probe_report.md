@@ -1,0 +1,23 @@
+# R5 Sequence Template Contract Probe
+
+- sequence_template_contract_ready: `True`
+- formal_sequence_15_template_ready: `True`
+- formal_sequence_12_fast_template_ready: `True`
+- stage_plan_ready: `True`
+- pack_identity_contract_ready: `True`
+- pack_resolver_ready: `True`
+- formal15_current_release_binding_ready: `True`
+- formal12fast_candidate_pack_generated: `True`
+- formal12fast_candidate_pack_validated: `True`
+- formal12fast_candidate_pack_exported: `True`
+- formal12fast_encounter_count: `12`
+- template_mechanic_pack_binding_valid: `True`
+- validator_template_gates_ready: `True`
+- export_template_fields_ready: `True`
+- evaluation_template_stage_metrics_ready: `True`
+- dashboard_template_summary_ready: `True`
+- release_channel_template_binding_ready: `True`
+- current_release_unchanged: `True`
+- active_profile_matches_current_release: `True`
+- old_profiles_regression_pass: `True`
+- probe_pass: `True`
