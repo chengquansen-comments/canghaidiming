@@ -254,6 +254,8 @@
     "weapon_followup_runtime_export_allowed": true,
     "runtime_primitive_playable": true
   },
+  "evaluation_summary": {},
+  "rebuild_recommendation_summary": {},
   "ai_source_trace": {
     "llm_candidate_source": false,
     "accepted_candidate_count": 0,
@@ -5811,6 +5813,8 @@
     "runtime_primitive_probe_report.json",
     "rebuild_from_snapshot_probe_report.json"
   ],
+  "latest_evaluation_snapshot_path": "",
+  "latest_rebuild_recommendation_path": "",
   "original_content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
   "snapshot_content_pack_id": "snapshot_pack_id_required"
 }

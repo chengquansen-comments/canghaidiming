@@ -9439,6 +9439,26 @@
     },
     "missing_reports": []
   },
+  "evaluation_summary": {
+    "evaluated": false,
+    "evaluation_event_count": 0,
+    "telemetry_detail_level_summary": {},
+    "win_rate": 0.0,
+    "avg_turn_count": 0.0,
+    "avg_player_hp_end": 0.0,
+    "avg_damage_taken": 0.0,
+    "runtime_primitive_trigger_rate": 0.0,
+    "mechanism_underused_candidates": [],
+    "too_easy_candidates": [],
+    "too_hard_candidates": [],
+    "too_long_candidates": [],
+    "reward_mismatch_candidates": [],
+    "rebuild_recommendation_count": 0,
+    "actionability_score": 0,
+    "latest_evaluation_snapshot_path": "",
+    "latest_rebuild_recommendation_path": "",
+    "needs_rebuild": false
+  },
   "review_report_path": "data/aigc_battle/generated/review/review_report_posture_opening_pressure_v0_1__snapshot_pack_id_required.md",
   "review_notes_summary": {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",

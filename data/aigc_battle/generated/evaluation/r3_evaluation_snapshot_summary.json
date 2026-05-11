@@ -1,0 +1,50 @@
+{
+  "generated_at": "2026-05-11T09:52:04.332436+00:00",
+  "pack_count": 4,
+  "packs": [
+    {
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+      "evaluation_event_count": 105,
+      "win_rate": 0.0667,
+      "avg_turn_count": 8.9667,
+      "actionability_score": 100,
+      "rebuild_recommendation_count": 51,
+      "snapshot_ready": true,
+      "real_metrics_ready": true
+    },
+    {
+      "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+      "content_pack_id": "martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001",
+      "evaluation_event_count": 90,
+      "win_rate": 0.1333,
+      "avg_turn_count": 10.1333,
+      "actionability_score": 100,
+      "rebuild_recommendation_count": 50,
+      "snapshot_ready": true,
+      "real_metrics_ready": true
+    },
+    {
+      "mechanic_profile_id": "clue_pressure_v0_1",
+      "content_pack_id": "clue_pressure_v0_1_formal_sequence_pack_001",
+      "evaluation_event_count": 90,
+      "win_rate": 0.0667,
+      "avg_turn_count": 10.6667,
+      "actionability_score": 100,
+      "rebuild_recommendation_count": 48,
+      "snapshot_ready": true,
+      "real_metrics_ready": true
+    },
+    {
+      "mechanic_profile_id": "posture_opening_pressure_v0_1",
+      "content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+      "evaluation_event_count": 90,
+      "win_rate": 0.2,
+      "avg_turn_count": 10.6667,
+      "actionability_score": 100,
+      "rebuild_recommendation_count": 50,
+      "snapshot_ready": true,
+      "real_metrics_ready": true
+    }
+  ]
+}

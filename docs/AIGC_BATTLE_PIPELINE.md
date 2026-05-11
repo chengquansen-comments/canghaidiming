@@ -184,3 +184,17 @@ v2 目标是 `full sequence reward / progression closure`：
 - 控制台和 review 需要能看到 mechanic compare matrix。
 - R2 不做 `firearm_pressure` / `command_pressure`。
 - build / validate / export / candidate / smoke / probe / compare matrix 都必须串行执行，禁止并行。
+
+## R3
+- R3 是 Real Evaluation Loop。
+- R3 不再满足于 partial telemetry / probe pass，而是要求基于 deterministic headless evaluation 形成可审、可比较、可重建的评估闭环。
+- `aigc_headless_evaluation_runner.py` 负责 multi-pack evaluation，默认覆盖 `current release`、`candidate`、`clue_pressure`、`fallback`，并写入统一 `evaluation event schema` JSONL。
+- `source=headless_eval`、`result_source=deterministic_headless`、`telemetry_detail_level` 都必须真实标记；不允许 fake real。
+- R3 支持 `turn_count` / `hp_delta` / `card usage` / `runtime primitive trigger` / `win_rate` / `avg_turn_count` / `reward_claim_rate` 等 pack 与 encounter 级指标。
+- `build_real_evaluation_snapshot.py` 负责把 event、runtime manifest、reward、compare matrix 汇总成 Balance Snapshot 2.0。
+- `build_rebuild_recommendations.py` 负责把 snapshot 转成可执行 recommendation；高风险项必须 `requires_designer_review=true`。
+- `aigc_build_from_evaluation_snapshot.py` 只应用 `safe_to_auto_apply=true` 的 recommendation，生成新的 reviewing pack，不自动切 current。
+- current release、candidate release、fallback release 与 active_profile 都不能被 evaluation / rebuild 自动改写。
+- dashboard / review workspace / compare matrix 需要显示 evaluation summary、actionability score、needs_rebuild 与 rebuild recommendation 信息。
+- evaluation 不等于 release gate，但必须为 release / rebuild 决策提供依据。
+- eval / snapshot / recommendation / rebuild / probe / regression 都必须串行执行，禁止并行。

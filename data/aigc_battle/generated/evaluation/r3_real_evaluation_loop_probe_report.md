@@ -1,0 +1,27 @@
+# R3 Real Evaluation Loop Probe
+
+- real_evaluation_loop_ready: `True`
+- evaluated_pack_count: `4`
+- evaluated_encounter_count: `60`
+- evaluation_event_count: `120`
+- telemetry_detail_level: `real`
+- natural_or_deterministic_headless_eval_ready: `True`
+- turn_count_recorded: `True`
+- hp_delta_recorded: `True`
+- card_usage_recorded: `True`
+- mechanic_trigger_rate_ready: `True`
+- encounter_win_rate_ready: `True`
+- avg_turn_count_ready: `True`
+- avg_hp_delta_ready: `True`
+- balance_snapshot_actionable: `True`
+- rebuild_recommendations_actionable: `True`
+- build_from_evaluation_snapshot_ready: `True`
+- rebuilt_pack_validated: `True`
+- rebuilt_pack_exported: `True`
+- rebuilt_pack_review_ready: `True`
+- evaluation_dashboard_ready: `True`
+- current_release_unchanged: `True`
+- active_profile_matches_current_release: `True`
+- old_profiles_regression_pass: `True`
+- rebuilt_pack_id: `weapon_followup_eval_rebuild_003`
+- probe_pass: `True`

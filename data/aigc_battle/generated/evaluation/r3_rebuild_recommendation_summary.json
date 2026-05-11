@@ -1,0 +1,59 @@
+{
+  "generated_at": "2026-05-11T09:52:04.409810+00:00",
+  "pack_count": 4,
+  "packs": [
+    {
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+      "recommendation_count": 47,
+      "safe_to_auto_apply_count": 39,
+      "requires_designer_review_count": 8,
+      "action_type_counts": {
+        "reduce_deck_power": 15,
+        "increase_deck_power": 15,
+        "adjust_reward_tier": 8,
+        "replace_dead_card": 1,
+        "reduce_overused_card": 8
+      }
+    },
+    {
+      "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+      "content_pack_id": "martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001",
+      "recommendation_count": 46,
+      "safe_to_auto_apply_count": 38,
+      "requires_designer_review_count": 8,
+      "action_type_counts": {
+        "reduce_deck_power": 15,
+        "increase_deck_power": 15,
+        "adjust_reward_tier": 8,
+        "reduce_overused_card": 8
+      }
+    },
+    {
+      "mechanic_profile_id": "clue_pressure_v0_1",
+      "content_pack_id": "clue_pressure_v0_1_formal_sequence_pack_001",
+      "recommendation_count": 44,
+      "safe_to_auto_apply_count": 36,
+      "requires_designer_review_count": 8,
+      "action_type_counts": {
+        "reduce_deck_power": 13,
+        "increase_deck_power": 15,
+        "adjust_reward_tier": 8,
+        "reduce_overused_card": 8
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_opening_pressure_v0_1",
+      "content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+      "recommendation_count": 46,
+      "safe_to_auto_apply_count": 38,
+      "requires_designer_review_count": 8,
+      "action_type_counts": {
+        "reduce_deck_power": 15,
+        "increase_deck_power": 15,
+        "adjust_reward_tier": 8,
+        "reduce_overused_card": 8
+      }
+    }
+  ]
+}

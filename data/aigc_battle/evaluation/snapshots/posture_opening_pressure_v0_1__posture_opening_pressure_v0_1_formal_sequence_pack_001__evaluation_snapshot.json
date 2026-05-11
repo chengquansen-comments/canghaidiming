@@ -1,0 +1,2051 @@
+{
+  "generated_at": "2026-05-11T09:52:04.330235+00:00",
+  "snapshot_path": "data/aigc_battle/evaluation/snapshots/posture_opening_pressure_v0_1__posture_opening_pressure_v0_1_formal_sequence_pack_001__evaluation_snapshot.json",
+  "mechanic_profile_id": "posture_opening_pressure_v0_1",
+  "content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+  "evaluation_event_count": 90,
+  "telemetry_detail_level_summary": {
+    "real": 90
+  },
+  "formal_encounter_coverage": {
+    "expected": 15,
+    "covered": 15,
+    "coverage_complete": true
+  },
+  "encounter_metrics": {
+    "enc_beach_ambush": {
+      "sample_count": 6,
+      "win_rate": 0.5,
+      "avg_turn_count": 12.0,
+      "avg_player_hp_end": 4.0,
+      "avg_enemy_hp_end": 10.0,
+      "avg_damage_taken": 28.0,
+      "avg_damage_dealt": 29.0,
+      "avg_cards_played": 12.0,
+      "avg_enemy_cards_played": 11.5,
+      "avg_hp_delta": -28.0,
+      "runtime_primitive_trigger_rate": 0.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 0.0,
+      "reward_claim_rate": 0.5,
+      "telemetry_detail_level_summary": {
+        "real": 6
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 3,
+      "too_long_count": 6,
+      "burst_damage_count": 6,
+      "reward_mismatch_count": 0,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 0.0,
+      "formal_encounter_id": "enc_beach_ambush",
+      "formal_battle_id": "first_act_beach_ambush",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_001",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_001",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_001",
+      "encounter_tier": "early",
+      "encounter_kind": "normal",
+      "sequence_position": 1,
+      "runtime_primitives": [
+        "opening_pressure"
+      ],
+      "player_wujing_cap": 1,
+      "deck_power_score": 0.0,
+      "reward_tier": "basic"
+    },
+    "enc_fishing_village_embers": {
+      "sample_count": 6,
+      "win_rate": 0.5,
+      "avg_turn_count": 12.0,
+      "avg_player_hp_end": 4.0,
+      "avg_enemy_hp_end": 10.0,
+      "avg_damage_taken": 28.0,
+      "avg_damage_dealt": 29.0,
+      "avg_cards_played": 12.0,
+      "avg_enemy_cards_played": 11.5,
+      "avg_hp_delta": -28.0,
+      "runtime_primitive_trigger_rate": 0.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 0.0,
+      "reward_claim_rate": 0.5,
+      "telemetry_detail_level_summary": {
+        "real": 6
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 3,
+      "too_long_count": 6,
+      "burst_damage_count": 6,
+      "reward_mismatch_count": 0,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 0.0,
+      "formal_encounter_id": "enc_fishing_village_embers",
+      "formal_battle_id": "first_act_fishing_village_embers",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_002",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_002",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_002",
+      "encounter_tier": "early",
+      "encounter_kind": "normal",
+      "sequence_position": 2,
+      "runtime_primitives": [
+        "opening_pressure"
+      ],
+      "player_wujing_cap": 1,
+      "deck_power_score": 0.0,
+      "reward_tier": "basic"
+    },
+    "enc_transport_officer": {
+      "sample_count": 6,
+      "win_rate": 0.0,
+      "avg_turn_count": 9.5,
+      "avg_player_hp_end": 0.0,
+      "avg_enemy_hp_end": 33.0,
+      "avg_damage_taken": 32.0,
+      "avg_damage_dealt": 14.0,
+      "avg_cards_played": 9.5,
+      "avg_enemy_cards_played": 9.5,
+      "avg_hp_delta": -32.0,
+      "runtime_primitive_trigger_rate": 0.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 0.0,
+      "reward_claim_rate": 0.0,
+      "telemetry_detail_level_summary": {
+        "real": 6
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 6,
+      "too_long_count": 6,
+      "burst_damage_count": 6,
+      "reward_mismatch_count": 0,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 0.0,
+      "formal_encounter_id": "enc_transport_officer",
+      "formal_battle_id": "first_act_transport_officer",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_003",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_003",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_003",
+      "encounter_tier": "early",
+      "encounter_kind": "elite",
+      "sequence_position": 3,
+      "runtime_primitives": [
+        "opening_pressure"
+      ],
+      "player_wujing_cap": 1,
+      "deck_power_score": 0.0,
+      "reward_tier": "basic"
+    },
+    "enc_mutiny_camp": {
+      "sample_count": 6,
+      "win_rate": 0.0,
+      "avg_turn_count": 9.5,
+      "avg_player_hp_end": 0.0,
+      "avg_enemy_hp_end": 33.0,
+      "avg_damage_taken": 32.0,
+      "avg_damage_dealt": 14.0,
+      "avg_cards_played": 9.5,
+      "avg_enemy_cards_played": 9.5,
+      "avg_hp_delta": -32.0,
+      "runtime_primitive_trigger_rate": 0.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 0.0,
+      "reward_claim_rate": 0.0,
+      "telemetry_detail_level_summary": {
+        "real": 6
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 6,
+      "too_long_count": 6,
+      "burst_damage_count": 6,
+      "reward_mismatch_count": 0,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 0.0,
+      "formal_encounter_id": "enc_mutiny_camp",
+      "formal_battle_id": "first_act_mutiny_camp",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_004",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_004",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_004",
+      "encounter_tier": "early",
+      "encounter_kind": "elite",
+      "sequence_position": 4,
+      "runtime_primitives": [
+        "opening_pressure"
+      ],
+      "player_wujing_cap": 1,
+      "deck_power_score": 0.0,
+      "reward_tier": "basic"
+    },
+    "enc_wakou_boss": {
+      "sample_count": 6,
+      "win_rate": 0.0,
+      "avg_turn_count": 10.0,
+      "avg_player_hp_end": 0.0,
+      "avg_enemy_hp_end": 18.0,
+      "avg_damage_taken": 44.0,
+      "avg_damage_dealt": 73.0,
+      "avg_cards_played": 10.0,
+      "avg_enemy_cards_played": 10.0,
+      "avg_hp_delta": -44.0,
+      "runtime_primitive_trigger_rate": 0.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 0.0,
+      "reward_claim_rate": 0.0,
+      "telemetry_detail_level_summary": {
+        "real": 6
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 6,
+      "too_long_count": 6,
+      "burst_damage_count": 6,
+      "reward_mismatch_count": 0,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 0.0,
+      "formal_encounter_id": "enc_wakou_boss",
+      "formal_battle_id": "first_act_wakou_boss",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_005",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_005",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_005",
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "sequence_position": 5,
+      "runtime_primitives": [
+        "opening_pressure"
+      ],
+      "player_wujing_cap": 4,
+      "deck_power_score": 0.0,
+      "reward_tier": "boss"
+    },
+    "enc_wuke_spear_trial": {
+      "sample_count": 6,
+      "win_rate": 0.5,
+      "avg_turn_count": 11.0,
+      "avg_player_hp_end": 0.5,
+      "avg_enemy_hp_end": 2.0,
+      "avg_damage_taken": 35.5,
+      "avg_damage_dealt": 54.0,
+      "avg_cards_played": 11.0,
+      "avg_enemy_cards_played": 10.5,
+      "avg_hp_delta": -35.5,
+      "runtime_primitive_trigger_rate": 0.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 0.0,
+      "reward_claim_rate": 0.5,
+      "telemetry_detail_level_summary": {
+        "real": 6
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 6,
+      "too_long_count": 6,
+      "burst_damage_count": 6,
+      "reward_mismatch_count": 6,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 0.0,
+      "formal_encounter_id": "enc_wuke_spear_trial",
+      "formal_battle_id": "wuke_spear_trial",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_006",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_006",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_006",
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "sequence_position": 6,
+      "runtime_primitives": [
+        "opening_pressure"
+      ],
+      "player_wujing_cap": 2,
+      "deck_power_score": 0.0,
+      "reward_tier": "standard"
+    },
+    "enc_wuke_blade_trial": {
+      "sample_count": 6,
+      "win_rate": 0.5,
+      "avg_turn_count": 11.0,
+      "avg_player_hp_end": 0.5,
+      "avg_enemy_hp_end": 2.0,
+      "avg_damage_taken": 35.5,
+      "avg_damage_dealt": 54.0,
+      "avg_cards_played": 11.0,
+      "avg_enemy_cards_played": 10.5,
+      "avg_hp_delta": -35.5,
+      "runtime_primitive_trigger_rate": 0.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 0.0,
+      "reward_claim_rate": 0.5,
+      "telemetry_detail_level_summary": {
+        "real": 6
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 6,
+      "too_long_count": 6,
+      "burst_damage_count": 6,
+      "reward_mismatch_count": 6,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 0.0,
+      "formal_encounter_id": "enc_wuke_blade_trial",
+      "formal_battle_id": "wuke_blade_trial",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_007",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_007",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_007",
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "sequence_position": 7,
+      "runtime_primitives": [
+        "opening_pressure"
+      ],
+      "player_wujing_cap": 2,
+      "deck_power_score": 0.0,
+      "reward_tier": "standard"
+    },
+    "enc_wuke_final_duel": {
+      "sample_count": 6,
+      "win_rate": 0.0,
+      "avg_turn_count": 10.0,
+      "avg_player_hp_end": 0.0,
+      "avg_enemy_hp_end": 18.0,
+      "avg_damage_taken": 44.0,
+      "avg_damage_dealt": 73.0,
+      "avg_cards_played": 10.0,
+      "avg_enemy_cards_played": 10.0,
+      "avg_hp_delta": -44.0,
+      "runtime_primitive_trigger_rate": 0.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 0.0,
+      "reward_claim_rate": 0.0,
+      "telemetry_detail_level_summary": {
+        "real": 6
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 6,
+      "too_long_count": 6,
+      "burst_damage_count": 6,
+      "reward_mismatch_count": 0,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 0.0,
+      "formal_encounter_id": "enc_wuke_final_duel",
+      "formal_battle_id": "wuke_final_duel",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_008",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_008",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_008",
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "sequence_position": 8,
+      "runtime_primitives": [
+        "opening_pressure"
+      ],
+      "player_wujing_cap": 4,
+      "deck_power_score": 0.0,
+      "reward_tier": "boss"
+    },
+    "enc_wuke_gu_chengyue": {
+      "sample_count": 6,
+      "win_rate": 0.5,
+      "avg_turn_count": 11.0,
+      "avg_player_hp_end": 0.5,
+      "avg_enemy_hp_end": 2.0,
+      "avg_damage_taken": 35.5,
+      "avg_damage_dealt": 54.0,
+      "avg_cards_played": 11.0,
+      "avg_enemy_cards_played": 10.5,
+      "avg_hp_delta": -35.5,
+      "runtime_primitive_trigger_rate": 0.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 0.0,
+      "reward_claim_rate": 0.5,
+      "telemetry_detail_level_summary": {
+        "real": 6
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 6,
+      "too_long_count": 6,
+      "burst_damage_count": 6,
+      "reward_mismatch_count": 6,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 0.0,
+      "formal_encounter_id": "enc_wuke_gu_chengyue",
+      "formal_battle_id": "wuke_gu_chengyue",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_009",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_009",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_009",
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "sequence_position": 9,
+      "runtime_primitives": [
+        "opening_pressure"
+      ],
+      "player_wujing_cap": 2,
+      "deck_power_score": 0.0,
+      "reward_tier": "standard"
+    },
+    "enc_wuke_shen_zhaoye": {
+      "sample_count": 6,
+      "win_rate": 0.5,
+      "avg_turn_count": 11.0,
+      "avg_player_hp_end": 0.5,
+      "avg_enemy_hp_end": 2.0,
+      "avg_damage_taken": 35.5,
+      "avg_damage_dealt": 54.0,
+      "avg_cards_played": 11.0,
+      "avg_enemy_cards_played": 10.5,
+      "avg_hp_delta": -35.5,
+      "runtime_primitive_trigger_rate": 0.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 0.0,
+      "reward_claim_rate": 0.5,
+      "telemetry_detail_level_summary": {
+        "real": 6
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 6,
+      "too_long_count": 6,
+      "burst_damage_count": 6,
+      "reward_mismatch_count": 6,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 0.0,
+      "formal_encounter_id": "enc_wuke_shen_zhaoye",
+      "formal_battle_id": "wuke_shen_zhaoye",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_010",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_010",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_010",
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "sequence_position": 10,
+      "runtime_primitives": [
+        "opening_pressure"
+      ],
+      "player_wujing_cap": 2,
+      "deck_power_score": 0.0,
+      "reward_tier": "standard"
+    },
+    "enc_wuke_qi_heng": {
+      "sample_count": 6,
+      "win_rate": 0.0,
+      "avg_turn_count": 11.0,
+      "avg_player_hp_end": 1.0,
+      "avg_enemy_hp_end": 19.5,
+      "avg_damage_taken": 39.0,
+      "avg_damage_dealt": 64.5,
+      "avg_cards_played": 11.0,
+      "avg_enemy_cards_played": 11.0,
+      "avg_hp_delta": -39.0,
+      "runtime_primitive_trigger_rate": 0.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 0.0,
+      "reward_claim_rate": 0.0,
+      "telemetry_detail_level_summary": {
+        "real": 6
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 6,
+      "too_long_count": 6,
+      "burst_damage_count": 6,
+      "reward_mismatch_count": 6,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 0.0,
+      "formal_encounter_id": "enc_wuke_qi_heng",
+      "formal_battle_id": "wuke_qi_heng",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_011",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_011",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_011",
+      "encounter_tier": "late",
+      "encounter_kind": "elite",
+      "sequence_position": 11,
+      "runtime_primitives": [
+        "opening_pressure"
+      ],
+      "player_wujing_cap": 3,
+      "deck_power_score": 0.0,
+      "reward_tier": "advanced"
+    },
+    "enc_ch2_reed_ambush": {
+      "sample_count": 6,
+      "win_rate": 0.0,
+      "avg_turn_count": 10.5,
+      "avg_player_hp_end": 0.5,
+      "avg_enemy_hp_end": 12.5,
+      "avg_damage_taken": 39.5,
+      "avg_damage_dealt": 60.5,
+      "avg_cards_played": 10.5,
+      "avg_enemy_cards_played": 10.5,
+      "avg_hp_delta": -39.5,
+      "runtime_primitive_trigger_rate": 0.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 0.0,
+      "reward_claim_rate": 0.0,
+      "telemetry_detail_level_summary": {
+        "real": 6
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 6,
+      "too_long_count": 6,
+      "burst_damage_count": 6,
+      "reward_mismatch_count": 6,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 0.0,
+      "formal_encounter_id": "enc_ch2_reed_ambush",
+      "formal_battle_id": "chapter2_reed_ambush",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_012",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_012",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_012",
+      "encounter_tier": "late",
+      "encounter_kind": "normal",
+      "sequence_position": 12,
+      "runtime_primitives": [
+        "opening_pressure"
+      ],
+      "player_wujing_cap": 3,
+      "deck_power_score": 0.0,
+      "reward_tier": "advanced"
+    },
+    "enc_ch3_escort_clash": {
+      "sample_count": 6,
+      "win_rate": 0.0,
+      "avg_turn_count": 11.0,
+      "avg_player_hp_end": 1.0,
+      "avg_enemy_hp_end": 19.5,
+      "avg_damage_taken": 39.0,
+      "avg_damage_dealt": 64.5,
+      "avg_cards_played": 11.0,
+      "avg_enemy_cards_played": 11.0,
+      "avg_hp_delta": -39.0,
+      "runtime_primitive_trigger_rate": 0.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 0.0,
+      "reward_claim_rate": 0.0,
+      "telemetry_detail_level_summary": {
+        "real": 6
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 6,
+      "too_long_count": 6,
+      "burst_damage_count": 6,
+      "reward_mismatch_count": 6,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 0.0,
+      "formal_encounter_id": "enc_ch3_escort_clash",
+      "formal_battle_id": "chapter3_escort_clash",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_013",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_013",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_013",
+      "encounter_tier": "late",
+      "encounter_kind": "elite",
+      "sequence_position": 13,
+      "runtime_primitives": [
+        "opening_pressure"
+      ],
+      "player_wujing_cap": 3,
+      "deck_power_score": 0.0,
+      "reward_tier": "advanced"
+    },
+    "enc_ch4_tide_bandits": {
+      "sample_count": 6,
+      "win_rate": 0.0,
+      "avg_turn_count": 10.5,
+      "avg_player_hp_end": 0.5,
+      "avg_enemy_hp_end": 12.5,
+      "avg_damage_taken": 39.5,
+      "avg_damage_dealt": 60.5,
+      "avg_cards_played": 10.5,
+      "avg_enemy_cards_played": 10.5,
+      "avg_hp_delta": -39.5,
+      "runtime_primitive_trigger_rate": 0.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 0.0,
+      "reward_claim_rate": 0.0,
+      "telemetry_detail_level_summary": {
+        "real": 6
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 6,
+      "too_long_count": 6,
+      "burst_damage_count": 6,
+      "reward_mismatch_count": 6,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 0.0,
+      "formal_encounter_id": "enc_ch4_tide_bandits",
+      "formal_battle_id": "chapter4_tide_bandits",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_014",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_014",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_014",
+      "encounter_tier": "late",
+      "encounter_kind": "normal",
+      "sequence_position": 14,
+      "runtime_primitives": [
+        "opening_pressure"
+      ],
+      "player_wujing_cap": 3,
+      "deck_power_score": 0.0,
+      "reward_tier": "advanced"
+    },
+    "enc_boss_ext_wakou_leader": {
+      "sample_count": 6,
+      "win_rate": 0.0,
+      "avg_turn_count": 10.0,
+      "avg_player_hp_end": 0.0,
+      "avg_enemy_hp_end": 18.0,
+      "avg_damage_taken": 44.0,
+      "avg_damage_dealt": 73.0,
+      "avg_cards_played": 10.0,
+      "avg_enemy_cards_played": 10.0,
+      "avg_hp_delta": -44.0,
+      "runtime_primitive_trigger_rate": 0.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 0.0,
+      "reward_claim_rate": 0.0,
+      "telemetry_detail_level_summary": {
+        "real": 6
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 6,
+      "too_long_count": 6,
+      "burst_damage_count": 6,
+      "reward_mismatch_count": 0,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 0.0,
+      "formal_encounter_id": "enc_boss_ext_wakou_leader",
+      "formal_battle_id": "boss_ext_wakou_leader",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_015",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_015",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_015",
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "sequence_position": 15,
+      "runtime_primitives": [
+        "opening_pressure"
+      ],
+      "player_wujing_cap": 4,
+      "deck_power_score": 0.0,
+      "reward_tier": "boss"
+    }
+  },
+  "pack_metrics": {
+    "sample_count": 30,
+    "win_rate": 0.2,
+    "avg_turn_count": 10.6667,
+    "avg_player_hp_end": 0.8667,
+    "avg_enemy_hp_end": 14.1333,
+    "avg_damage_taken": 36.7333,
+    "avg_damage_dealt": 51.4,
+    "avg_cards_played": 10.6667,
+    "avg_enemy_cards_played": 10.4667,
+    "avg_hp_delta": -36.7333,
+    "runtime_primitive_trigger_rate": 0.0,
+    "weapon_followup_trigger_rate": 0.0,
+    "clue_pressure_trigger_rate": 0.0,
+    "dual_weapon_usage_rate": 0.0,
+    "reward_claim_rate": 0.2,
+    "telemetry_detail_level_summary": {
+      "real": 30
+    },
+    "mechanism_underused_count": 0,
+    "too_easy_count": 0,
+    "too_hard_count": 28,
+    "too_long_count": 30,
+    "burst_damage_count": 30,
+    "reward_mismatch_count": 16,
+    "card_dead_count": 0,
+    "runtime_primitive_enabled_rate": 0.0
+  },
+  "mechanic_metrics": {
+    "runtime_primitive_trigger_rate": 0.0,
+    "weapon_followup_trigger_rate": 0.0,
+    "clue_pressure_trigger_rate": 0.0,
+    "dual_weapon_usage_rate": 0.0
+  },
+  "card_metrics": {
+    "used_card_count": 38,
+    "card_usage_counts": {
+      "posture_opening_pressure_v0_1_spearman_early_finisher": 72,
+      "posture_opening_pressure_v0_1_blademaster_early_finisher": 63,
+      "posture_opening_pressure_v0_1_blademaster_boss_guard": 54,
+      "posture_opening_pressure_v0_1_blademaster_mid_finisher": 51,
+      "posture_opening_pressure_v0_1_blademaster_early_strike": 48,
+      "posture_opening_pressure_v0_1_spearman_early_strike": 48,
+      "posture_opening_pressure_v0_1_spearman_mid_finisher": 48,
+      "posture_opening_pressure_v0_1_spearman_late_strike": 42,
+      "posture_opening_pressure_v0_1_blademaster_late_finisher": 42,
+      "posture_opening_pressure_v0_1_spearman_late_finisher": 42,
+      "posture_opening_pressure_v0_1_blademaster_late_guard": 36,
+      "posture_opening_pressure_v0_1_spearman_late_guard": 36,
+      "posture_opening_pressure_v0_1_blademaster_late_strike": 36,
+      "posture_opening_pressure_v0_1_blademaster_mid_strike": 36,
+      "posture_opening_pressure_v0_1_spearman_boss_guard": 24,
+      "posture_opening_pressure_v0_1_blademaster_mid_guard": 24,
+      "posture_opening_pressure_v0_1_spearman_mid_strike": 24,
+      "posture_opening_pressure_v0_1_blademaster_boss_strike": 18,
+      "posture_opening_pressure_v0_1_spearman_boss_strike": 18,
+      "posture_opening_pressure_v0_1_blademaster_boss_finisher": 18,
+      "posture_opening_pressure_v0_1_spearman_boss_finisher": 18,
+      "posture_opening_pressure_v0_1_blademaster_boss_pressure": 18,
+      "posture_opening_pressure_v0_1_blademaster_boss_focus": 18,
+      "posture_opening_pressure_v0_1_spearman_early_guard": 12,
+      "posture_opening_pressure_v0_1_spearman_early_focus": 12,
+      "posture_opening_pressure_v0_1_spearman_early_pressure": 12,
+      "posture_opening_pressure_v0_1_blademaster_early_guard": 12,
+      "posture_opening_pressure_v0_1_blademaster_early_focus": 12,
+      "posture_opening_pressure_v0_1_blademaster_early_pressure": 12,
+      "posture_opening_pressure_v0_1_spearman_mid_guard": 12,
+      "posture_opening_pressure_v0_1_spearman_mid_pressure": 12,
+      "posture_opening_pressure_v0_1_spearman_mid_focus": 12,
+      "posture_opening_pressure_v0_1_blademaster_mid_pressure": 12,
+      "posture_opening_pressure_v0_1_blademaster_mid_focus": 12,
+      "posture_opening_pressure_v0_1_spearman_late_pressure": 12,
+      "posture_opening_pressure_v0_1_spearman_late_focus": 12,
+      "posture_opening_pressure_v0_1_blademaster_late_pressure": 12,
+      "posture_opening_pressure_v0_1_blademaster_late_focus": 12
+    },
+    "card_overused_candidates": [
+      {
+        "card_id": "posture_opening_pressure_v0_1_spearman_mid_finisher",
+        "event_count": 30
+      },
+      {
+        "card_id": "posture_opening_pressure_v0_1_spearman_early_finisher",
+        "event_count": 27
+      },
+      {
+        "card_id": "posture_opening_pressure_v0_1_blademaster_late_strike",
+        "event_count": 27
+      },
+      {
+        "card_id": "posture_opening_pressure_v0_1_blademaster_early_finisher",
+        "event_count": 24
+      },
+      {
+        "card_id": "posture_opening_pressure_v0_1_blademaster_boss_guard",
+        "event_count": 24
+      },
+      {
+        "card_id": "posture_opening_pressure_v0_1_spearman_late_strike",
+        "event_count": 24
+      },
+      {
+        "card_id": "posture_opening_pressure_v0_1_blademaster_mid_finisher",
+        "event_count": 24
+      },
+      {
+        "card_id": "posture_opening_pressure_v0_1_blademaster_early_strike",
+        "event_count": 21
+      },
+      {
+        "card_id": "posture_opening_pressure_v0_1_spearman_early_strike",
+        "event_count": 18
+      },
+      {
+        "card_id": "posture_opening_pressure_v0_1_blademaster_boss_finisher",
+        "event_count": 18
+      },
+      {
+        "card_id": "posture_opening_pressure_v0_1_blademaster_boss_pressure",
+        "event_count": 18
+      },
+      {
+        "card_id": "posture_opening_pressure_v0_1_blademaster_boss_strike",
+        "event_count": 18
+      }
+    ],
+    "card_dead_candidates": []
+  },
+  "deck_metrics": {
+    "deck_underperform_candidates": [
+      {
+        "formal_encounter_id": "enc_beach_ambush",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_001",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_001",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_001",
+        "reason": "deck_underperform",
+        "evidence": {
+          "win_rate": 0.5,
+          "avg_turn_count": 12.0,
+          "avg_player_hp_end": 4.0,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_fishing_village_embers",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_002",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_002",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_002",
+        "reason": "deck_underperform",
+        "evidence": {
+          "win_rate": 0.5,
+          "avg_turn_count": 12.0,
+          "avg_player_hp_end": 4.0,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_transport_officer",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_003",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_003",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_003",
+        "reason": "deck_underperform",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 9.5,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_mutiny_camp",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_004",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_004",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_004",
+        "reason": "deck_underperform",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 9.5,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_wakou_boss",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_005",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_005",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_005",
+        "reason": "deck_underperform",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 10.0,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_wuke_spear_trial",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_006",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_006",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_006",
+        "reason": "deck_underperform",
+        "evidence": {
+          "win_rate": 0.5,
+          "avg_turn_count": 11.0,
+          "avg_player_hp_end": 0.5,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_wuke_blade_trial",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_007",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_007",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_007",
+        "reason": "deck_underperform",
+        "evidence": {
+          "win_rate": 0.5,
+          "avg_turn_count": 11.0,
+          "avg_player_hp_end": 0.5,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_wuke_final_duel",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_008",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_008",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_008",
+        "reason": "deck_underperform",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 10.0,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_wuke_gu_chengyue",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_009",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_009",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_009",
+        "reason": "deck_underperform",
+        "evidence": {
+          "win_rate": 0.5,
+          "avg_turn_count": 11.0,
+          "avg_player_hp_end": 0.5,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_wuke_shen_zhaoye",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_010",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_010",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_010",
+        "reason": "deck_underperform",
+        "evidence": {
+          "win_rate": 0.5,
+          "avg_turn_count": 11.0,
+          "avg_player_hp_end": 0.5,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_wuke_qi_heng",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_011",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_011",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_011",
+        "reason": "deck_underperform",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 11.0,
+          "avg_player_hp_end": 1.0,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_ch2_reed_ambush",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_012",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_012",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_012",
+        "reason": "deck_underperform",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 10.5,
+          "avg_player_hp_end": 0.5,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_ch3_escort_clash",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_013",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_013",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_013",
+        "reason": "deck_underperform",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 11.0,
+          "avg_player_hp_end": 1.0,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_ch4_tide_bandits",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_014",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_014",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_014",
+        "reason": "deck_underperform",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 10.5,
+          "avg_player_hp_end": 0.5,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_boss_ext_wakou_leader",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_015",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_015",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_015",
+        "reason": "deck_underperform",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 10.0,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      }
+    ]
+  },
+  "reward_metrics": {
+    "reward_claim_rate": 0.2,
+    "reward_mismatch_candidates": [
+      {
+        "formal_encounter_id": "enc_wuke_spear_trial",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_006",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_006",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_006",
+        "reason": "reward_mismatch",
+        "evidence": {
+          "win_rate": 0.5,
+          "avg_turn_count": 11.0,
+          "avg_player_hp_end": 0.5,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_wuke_blade_trial",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_007",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_007",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_007",
+        "reason": "reward_mismatch",
+        "evidence": {
+          "win_rate": 0.5,
+          "avg_turn_count": 11.0,
+          "avg_player_hp_end": 0.5,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_wuke_gu_chengyue",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_009",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_009",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_009",
+        "reason": "reward_mismatch",
+        "evidence": {
+          "win_rate": 0.5,
+          "avg_turn_count": 11.0,
+          "avg_player_hp_end": 0.5,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_wuke_shen_zhaoye",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_010",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_010",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_010",
+        "reason": "reward_mismatch",
+        "evidence": {
+          "win_rate": 0.5,
+          "avg_turn_count": 11.0,
+          "avg_player_hp_end": 0.5,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_wuke_qi_heng",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_011",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_011",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_011",
+        "reason": "reward_mismatch",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 11.0,
+          "avg_player_hp_end": 1.0,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_ch2_reed_ambush",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_012",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_012",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_012",
+        "reason": "reward_mismatch",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 10.5,
+          "avg_player_hp_end": 0.5,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_ch3_escort_clash",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_013",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_013",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_013",
+        "reason": "reward_mismatch",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 11.0,
+          "avg_player_hp_end": 1.0,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_ch4_tide_bandits",
+        "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_014",
+        "generated_deck_id": "posture_opening_pressure_v0_1_deck_014",
+        "reward_plan_id": "posture_opening_pressure_v0_1_reward_014",
+        "reason": "reward_mismatch",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 10.5,
+          "avg_player_hp_end": 0.5,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      }
+    ]
+  },
+  "too_easy_candidates": [],
+  "too_hard_candidates": [
+    {
+      "formal_encounter_id": "enc_beach_ambush",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_001",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_001",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_001",
+      "reason": "too_hard",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 12.0,
+        "avg_player_hp_end": 4.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_fishing_village_embers",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_002",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_002",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_002",
+      "reason": "too_hard",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 12.0,
+        "avg_player_hp_end": 4.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_transport_officer",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_003",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_003",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_003",
+      "reason": "too_hard",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.5,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_mutiny_camp",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_004",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_004",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_004",
+      "reason": "too_hard",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.5,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wakou_boss",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_005",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_005",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_005",
+      "reason": "too_hard",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 10.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_spear_trial",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_006",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_006",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_006",
+      "reason": "too_hard",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_blade_trial",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_007",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_007",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_007",
+      "reason": "too_hard",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_final_duel",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_008",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_008",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_008",
+      "reason": "too_hard",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 10.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_gu_chengyue",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_009",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_009",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_009",
+      "reason": "too_hard",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_shen_zhaoye",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_010",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_010",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_010",
+      "reason": "too_hard",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_qi_heng",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_011",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_011",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_011",
+      "reason": "too_hard",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 1.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_ch2_reed_ambush",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_012",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_012",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_012",
+      "reason": "too_hard",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 10.5,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_ch3_escort_clash",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_013",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_013",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_013",
+      "reason": "too_hard",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 1.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_ch4_tide_bandits",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_014",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_014",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_014",
+      "reason": "too_hard",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 10.5,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_boss_ext_wakou_leader",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_015",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_015",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_015",
+      "reason": "too_hard",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 10.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    }
+  ],
+  "too_long_candidates": [
+    {
+      "formal_encounter_id": "enc_beach_ambush",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_001",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_001",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_001",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 12.0,
+        "avg_player_hp_end": 4.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_fishing_village_embers",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_002",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_002",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_002",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 12.0,
+        "avg_player_hp_end": 4.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_transport_officer",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_003",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_003",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_003",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.5,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_mutiny_camp",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_004",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_004",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_004",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.5,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wakou_boss",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_005",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_005",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_005",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 10.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_spear_trial",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_006",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_006",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_006",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_blade_trial",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_007",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_007",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_007",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_final_duel",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_008",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_008",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_008",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 10.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_gu_chengyue",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_009",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_009",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_009",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_shen_zhaoye",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_010",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_010",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_010",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_qi_heng",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_011",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_011",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_011",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 1.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_ch2_reed_ambush",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_012",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_012",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_012",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 10.5,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_ch3_escort_clash",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_013",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_013",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_013",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 1.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_ch4_tide_bandits",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_014",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_014",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_014",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 10.5,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_boss_ext_wakou_leader",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_015",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_015",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_015",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 10.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    }
+  ],
+  "burst_damage_candidates": [
+    {
+      "formal_encounter_id": "enc_beach_ambush",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_001",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_001",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_001",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 12.0,
+        "avg_player_hp_end": 4.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_fishing_village_embers",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_002",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_002",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_002",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 12.0,
+        "avg_player_hp_end": 4.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_transport_officer",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_003",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_003",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_003",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.5,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_mutiny_camp",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_004",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_004",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_004",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.5,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wakou_boss",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_005",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_005",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_005",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 10.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_spear_trial",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_006",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_006",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_006",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_blade_trial",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_007",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_007",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_007",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_final_duel",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_008",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_008",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_008",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 10.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_gu_chengyue",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_009",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_009",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_009",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_shen_zhaoye",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_010",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_010",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_010",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_qi_heng",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_011",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_011",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_011",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 1.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_ch2_reed_ambush",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_012",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_012",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_012",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 10.5,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_ch3_escort_clash",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_013",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_013",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_013",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 1.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_ch4_tide_bandits",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_014",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_014",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_014",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 10.5,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_boss_ext_wakou_leader",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_015",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_015",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_015",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 10.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    }
+  ],
+  "reward_mismatch_candidates": [
+    {
+      "formal_encounter_id": "enc_wuke_spear_trial",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_006",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_006",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_006",
+      "reason": "reward_mismatch",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_blade_trial",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_007",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_007",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_007",
+      "reason": "reward_mismatch",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_gu_chengyue",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_009",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_009",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_009",
+      "reason": "reward_mismatch",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_shen_zhaoye",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_010",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_010",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_010",
+      "reason": "reward_mismatch",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_qi_heng",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_011",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_011",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_011",
+      "reason": "reward_mismatch",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 1.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_ch2_reed_ambush",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_012",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_012",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_012",
+      "reason": "reward_mismatch",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 10.5,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_ch3_escort_clash",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_013",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_013",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_013",
+      "reason": "reward_mismatch",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 1.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_ch4_tide_bandits",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_014",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_014",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_014",
+      "reason": "reward_mismatch",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 10.5,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    }
+  ],
+  "mechanism_underused_candidates": [],
+  "card_overused_candidates": [
+    {
+      "card_id": "posture_opening_pressure_v0_1_spearman_mid_finisher",
+      "event_count": 30
+    },
+    {
+      "card_id": "posture_opening_pressure_v0_1_spearman_early_finisher",
+      "event_count": 27
+    },
+    {
+      "card_id": "posture_opening_pressure_v0_1_blademaster_late_strike",
+      "event_count": 27
+    },
+    {
+      "card_id": "posture_opening_pressure_v0_1_blademaster_early_finisher",
+      "event_count": 24
+    },
+    {
+      "card_id": "posture_opening_pressure_v0_1_blademaster_boss_guard",
+      "event_count": 24
+    },
+    {
+      "card_id": "posture_opening_pressure_v0_1_spearman_late_strike",
+      "event_count": 24
+    },
+    {
+      "card_id": "posture_opening_pressure_v0_1_blademaster_mid_finisher",
+      "event_count": 24
+    },
+    {
+      "card_id": "posture_opening_pressure_v0_1_blademaster_early_strike",
+      "event_count": 21
+    },
+    {
+      "card_id": "posture_opening_pressure_v0_1_spearman_early_strike",
+      "event_count": 18
+    },
+    {
+      "card_id": "posture_opening_pressure_v0_1_blademaster_boss_finisher",
+      "event_count": 18
+    },
+    {
+      "card_id": "posture_opening_pressure_v0_1_blademaster_boss_pressure",
+      "event_count": 18
+    },
+    {
+      "card_id": "posture_opening_pressure_v0_1_blademaster_boss_strike",
+      "event_count": 18
+    }
+  ],
+  "card_dead_candidates": [],
+  "deck_underperform_candidates": [
+    {
+      "formal_encounter_id": "enc_beach_ambush",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_001",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_001",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_001",
+      "reason": "deck_underperform",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 12.0,
+        "avg_player_hp_end": 4.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_fishing_village_embers",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_002",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_002",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_002",
+      "reason": "deck_underperform",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 12.0,
+        "avg_player_hp_end": 4.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_transport_officer",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_003",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_003",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_003",
+      "reason": "deck_underperform",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.5,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_mutiny_camp",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_004",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_004",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_004",
+      "reason": "deck_underperform",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.5,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wakou_boss",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_005",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_005",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_005",
+      "reason": "deck_underperform",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 10.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_spear_trial",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_006",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_006",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_006",
+      "reason": "deck_underperform",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_blade_trial",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_007",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_007",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_007",
+      "reason": "deck_underperform",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_final_duel",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_008",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_008",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_008",
+      "reason": "deck_underperform",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 10.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_gu_chengyue",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_009",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_009",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_009",
+      "reason": "deck_underperform",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_shen_zhaoye",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_010",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_010",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_010",
+      "reason": "deck_underperform",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_qi_heng",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_011",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_011",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_011",
+      "reason": "deck_underperform",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 1.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_ch2_reed_ambush",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_012",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_012",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_012",
+      "reason": "deck_underperform",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 10.5,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_ch3_escort_clash",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_013",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_013",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_013",
+      "reason": "deck_underperform",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 1.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_ch4_tide_bandits",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_014",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_014",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_014",
+      "reason": "deck_underperform",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 10.5,
+        "avg_player_hp_end": 0.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_boss_ext_wakou_leader",
+      "generated_battle_slot_id": "posture_opening_pressure_v0_1_slot_015",
+      "generated_deck_id": "posture_opening_pressure_v0_1_deck_015",
+      "reward_plan_id": "posture_opening_pressure_v0_1_reward_015",
+      "reason": "deck_underperform",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 10.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    }
+  ],
+  "rebuild_recommendation_count": 50,
+  "snapshot_ready": true,
+  "real_metrics_ready": true,
+  "actionability_score": 100,
+  "source_runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/runtime_manifest.json",
+  "source_balance_summary_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/sequence_balance_summary.json",
+  "sequence_balance_pass": true,
+  "mechanic_compare_row": {
+    "mechanic_profile_id": "posture_opening_pressure_v0_1",
+    "content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+    "runtime_primitive_types": [
+      "opening_pressure"
+    ],
+    "mechanic_runtime_observable": true,
+    "max_wujing": 0,
+    "dual_weapon_enabled": false,
+    "clue_pressure_enabled": false,
+    "mechanic_density": 1,
+    "weapon_loadout_counts": {},
+    "clue_pressure_density_by_tier": {}
+  }
+}

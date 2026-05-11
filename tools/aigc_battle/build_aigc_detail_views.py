@@ -19,6 +19,9 @@ GENERATED_ROOT = ROOT / 'data' / 'aigc_battle' / 'generated'
 DETAILS_DIR = GENERATED_ROOT / 'details'
 MECHANICS_DIR = ROOT / 'data' / 'aigc_battle' / 'mechanics'
 PROFILE_DIFF_PATH = GENERATED_ROOT / 'profile_diff_report.json'
+EVALUATION_REPORTS_DIR = GENERATED_ROOT / 'evaluation' / 'reports'
+EVALUATION_SNAPSHOT_DIR = ROOT / 'data' / 'aigc_battle' / 'evaluation' / 'snapshots'
+REBUILD_RECOMMEND_DIR = ROOT / 'data' / 'aigc_battle' / 'evaluation' / 'rebuild_recommendations'
 
 
 def main() -> int:
@@ -119,6 +122,9 @@ def build_pack_detail(profile_id: str, pack_entry: dict[str, Any]) -> None:
     rebuild_probe = try_read_json(generated_dir / 'rebuild_from_snapshot_probe_report.json') or {}
     content_pack_summary = try_read_json(generated_dir / 'content_pack_summary.json') or {}
     snapshot_summary = try_read_json(generated_dir / 'snapshot_summary.json') or {}
+    evaluation_report = try_read_json(EVALUATION_REPORTS_DIR / f'{profile_id}__{content_pack_id}__evaluation_report.json') or {}
+    evaluation_snapshot = try_read_json(EVALUATION_SNAPSHOT_DIR / f'{profile_id}__{content_pack_id}__evaluation_snapshot.json') or {}
+    rebuild_recommendations = try_read_json(REBUILD_RECOMMEND_DIR / f'{profile_id}__{content_pack_id}__rebuild_recommendations.json') or {}
     release_channels = release_lib.show_channels()
     current_release = release_channels.get('current_release', {})
     candidate_release = release_channels.get('candidate_release', {})
@@ -321,6 +327,8 @@ def build_pack_detail(profile_id: str, pack_entry: dict[str, Any]) -> None:
         'telemetry_summary': telemetry_probe or {'telemetry_event_count': snapshot.get('telemetry_event_count', 0)},
         'snapshot_summary': snapshot or snapshot_summary,
         'runtime_primitive_summary': primitive_probe or runtime_manifest.get('runtime_primitive_summary', {}),
+        'evaluation_summary': evaluation_snapshot or evaluation_report,
+        'rebuild_recommendation_summary': rebuild_recommendations,
         'ai_source_trace': {
             'llm_candidate_source': bool(content_pack_summary.get('llm_candidate_source', False)),
             'accepted_candidate_count': int(content_pack_summary.get('accepted_candidate_count', 0)),
@@ -355,6 +363,8 @@ def build_pack_detail(profile_id: str, pack_entry: dict[str, Any]) -> None:
         'orphan_cards': orphan_cards,
         'sequence_detail': sequence_detail,
         'missing_reports': missing_reports,
+        'latest_evaluation_snapshot_path': to_relative(EVALUATION_SNAPSHOT_DIR / f'{profile_id}__{content_pack_id}__evaluation_snapshot.json') if evaluation_snapshot else '',
+        'latest_rebuild_recommendation_path': to_relative(REBUILD_RECOMMEND_DIR / f'{profile_id}__{content_pack_id}__rebuild_recommendations.json') if rebuild_recommendations else '',
         'original_content_pack_id': snapshot_summary.get('source_content_pack_id') or content_pack_summary.get('original_content_pack_id'),
         'snapshot_content_pack_id': snapshot_summary.get('snapshot_content_pack_id') or content_pack_summary.get('snapshot_content_pack_id'),
     }
@@ -409,6 +419,10 @@ def build_pack_markdown(detail: dict[str, Any]) -> str:
         f"- ready_for_runtime_export: {str(detail.get('validation_summary', {}).get('ready_for_runtime_export', False)).lower()}",
         f"- sequence_balance_pass: {str(detail.get('validation_summary', {}).get('sequence_balance_pass', False)).lower()}",
         f"- deck_card_realm_eligibility_valid: {str(detail.get('validation_summary', {}).get('deck_card_realm_eligibility_valid', False)).lower()}",
+        f"- evaluation_event_count: {detail.get('evaluation_summary', {}).get('evaluation_event_count', 0)}",
+        f"- win_rate: {detail.get('evaluation_summary', {}).get('pack_metrics', {}).get('win_rate', 0)}",
+        f"- avg_turn_count: {detail.get('evaluation_summary', {}).get('pack_metrics', {}).get('avg_turn_count', 0)}",
+        f"- rebuild_recommendation_count: {detail.get('evaluation_summary', {}).get('rebuild_recommendation_count', detail.get('rebuild_recommendation_summary', {}).get('recommendation_count', 0))}",
         '',
         '## 整体卡池',
         f"- used_card_count: {detail.get('card_pool_summary', {}).get('used_card_count', 0)}",
@@ -434,6 +448,10 @@ def detail_pack_json_path(profile_id: str, content_pack_id: str) -> Path:
 
 def detail_pack_md_path(profile_id: str, content_pack_id: str) -> Path:
     return DETAILS_DIR / f'pack_{profile_id}__{content_pack_id}.md'
+
+
+def to_relative(path: Path) -> str:
+    return path.relative_to(ROOT).as_posix()
 
 
 def try_read_json(path: Path) -> Any:

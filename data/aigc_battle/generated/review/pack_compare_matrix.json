@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-11T07:20:33.348817+00:00",
-  "pack_count": 16,
+  "generated_at": "2026-05-11T09:52:27.238045+00:00",
+  "pack_count": 19,
   "packs": [
     {
       "mechanic_profile_id": "clue_pressure_v0_1",
@@ -35,7 +35,15 @@
       "deterministic_fill_used": false,
       "risk_count": 81,
       "fail_count": 0,
-      "warning_count": 66
+      "warning_count": 66,
+      "evaluated": true,
+      "evaluation_event_count": 90,
+      "win_rate": 0.0667,
+      "avg_turn_count": 10.6667,
+      "avg_player_hp_end": 2.2667,
+      "mechanic_trigger_rate": 1.0,
+      "actionability_score": 100,
+      "needs_rebuild": true
     },
     {
       "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
@@ -71,7 +79,15 @@
       "deterministic_fill_used": false,
       "risk_count": 69,
       "fail_count": 0,
-      "warning_count": 54
+      "warning_count": 54,
+      "evaluated": true,
+      "evaluation_event_count": 90,
+      "win_rate": 0.1333,
+      "avg_turn_count": 10.1333,
+      "avg_player_hp_end": 2.2333,
+      "mechanic_trigger_rate": 0.5333,
+      "actionability_score": 100,
+      "needs_rebuild": true
     },
     {
       "mechanic_profile_id": "posture_basic_v0_1",
@@ -104,7 +120,15 @@
       "deterministic_fill_used": false,
       "risk_count": 26,
       "fail_count": 0,
-      "warning_count": 26
+      "warning_count": 26,
+      "evaluated": false,
+      "evaluation_event_count": 0,
+      "win_rate": 0.0,
+      "avg_turn_count": 0.0,
+      "avg_player_hp_end": 0.0,
+      "mechanic_trigger_rate": 0.0,
+      "actionability_score": 0,
+      "needs_rebuild": false
     },
     {
       "mechanic_profile_id": "posture_llm_candidate_v0_1",
@@ -137,7 +161,15 @@
       "deterministic_fill_used": false,
       "risk_count": 27,
       "fail_count": 0,
-      "warning_count": 26
+      "warning_count": 26,
+      "evaluated": false,
+      "evaluation_event_count": 0,
+      "win_rate": 0.0,
+      "avg_turn_count": 0.0,
+      "avg_player_hp_end": 0.0,
+      "mechanic_trigger_rate": 0.0,
+      "actionability_score": 0,
+      "needs_rebuild": false
     },
     {
       "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -172,7 +204,15 @@
       "deterministic_fill_used": false,
       "risk_count": 37,
       "fail_count": 0,
-      "warning_count": 21
+      "warning_count": 21,
+      "evaluated": true,
+      "evaluation_event_count": 90,
+      "win_rate": 0.2,
+      "avg_turn_count": 10.6667,
+      "avg_player_hp_end": 0.8667,
+      "mechanic_trigger_rate": 0.0,
+      "actionability_score": 100,
+      "needs_rebuild": true
     },
     {
       "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -207,7 +247,15 @@
       "deterministic_fill_used": false,
       "risk_count": 38,
       "fail_count": 0,
-      "warning_count": 21
+      "warning_count": 21,
+      "evaluated": false,
+      "evaluation_event_count": 0,
+      "win_rate": 0.0,
+      "avg_turn_count": 0.0,
+      "avg_player_hp_end": 0.0,
+      "mechanic_trigger_rate": 0.0,
+      "actionability_score": 0,
+      "needs_rebuild": false
     },
     {
       "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -242,7 +290,15 @@
       "deterministic_fill_used": false,
       "risk_count": 38,
       "fail_count": 0,
-      "warning_count": 21
+      "warning_count": 21,
+      "evaluated": false,
+      "evaluation_event_count": 0,
+      "win_rate": 0.0,
+      "avg_turn_count": 0.0,
+      "avg_player_hp_end": 0.0,
+      "mechanic_trigger_rate": 0.0,
+      "actionability_score": 0,
+      "needs_rebuild": false
     },
     {
       "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -277,7 +333,15 @@
       "deterministic_fill_used": false,
       "risk_count": 38,
       "fail_count": 0,
-      "warning_count": 21
+      "warning_count": 21,
+      "evaluated": false,
+      "evaluation_event_count": 0,
+      "win_rate": 0.0,
+      "avg_turn_count": 0.0,
+      "avg_player_hp_end": 0.0,
+      "mechanic_trigger_rate": 0.0,
+      "actionability_score": 0,
+      "needs_rebuild": false
     },
     {
       "mechanic_profile_id": "posture_opening_pressure_v0_1",
@@ -312,7 +376,15 @@
       "deterministic_fill_used": false,
       "risk_count": 38,
       "fail_count": 0,
-      "warning_count": 21
+      "warning_count": 21,
+      "evaluated": false,
+      "evaluation_event_count": 0,
+      "win_rate": 0.0,
+      "avg_turn_count": 0.0,
+      "avg_player_hp_end": 0.0,
+      "mechanic_trigger_rate": 0.0,
+      "actionability_score": 0,
+      "needs_rebuild": false
     },
     {
       "mechanic_profile_id": "posture_tuned_v0_1b",
@@ -345,7 +417,15 @@
       "deterministic_fill_used": false,
       "risk_count": 37,
       "fail_count": 0,
-      "warning_count": 37
+      "warning_count": 37,
+      "evaluated": false,
+      "evaluation_event_count": 0,
+      "win_rate": 0.0,
+      "avg_turn_count": 0.0,
+      "avg_player_hp_end": 0.0,
+      "mechanic_trigger_rate": 0.0,
+      "actionability_score": 0,
+      "needs_rebuild": false
     },
     {
       "mechanic_profile_id": "weapon_followup_v0_1",
@@ -380,7 +460,15 @@
       "deterministic_fill_used": false,
       "risk_count": 41,
       "fail_count": 0,
-      "warning_count": 26
+      "warning_count": 26,
+      "evaluated": true,
+      "evaluation_event_count": 105,
+      "win_rate": 0.0667,
+      "avg_turn_count": 8.9667,
+      "avg_player_hp_end": 0.0667,
+      "mechanic_trigger_rate": 1.0,
+      "actionability_score": 100,
+      "needs_rebuild": true
     },
     {
       "mechanic_profile_id": "weapon_followup_v0_1",
@@ -415,7 +503,15 @@
       "deterministic_fill_used": false,
       "risk_count": 41,
       "fail_count": 0,
-      "warning_count": 25
+      "warning_count": 25,
+      "evaluated": false,
+      "evaluation_event_count": 0,
+      "win_rate": 0.0,
+      "avg_turn_count": 0.0,
+      "avg_player_hp_end": 0.0,
+      "mechanic_trigger_rate": 0.0,
+      "actionability_score": 0,
+      "needs_rebuild": false
     },
     {
       "mechanic_profile_id": "weapon_followup_v0_1",
@@ -450,7 +546,15 @@
       "deterministic_fill_used": true,
       "risk_count": 46,
       "fail_count": 2,
-      "warning_count": 28
+      "warning_count": 28,
+      "evaluated": false,
+      "evaluation_event_count": 0,
+      "win_rate": 0.0,
+      "avg_turn_count": 0.0,
+      "avg_player_hp_end": 0.0,
+      "mechanic_trigger_rate": 0.0,
+      "actionability_score": 0,
+      "needs_rebuild": false
     },
     {
       "mechanic_profile_id": "weapon_followup_v0_1",
@@ -485,7 +589,15 @@
       "deterministic_fill_used": true,
       "risk_count": 46,
       "fail_count": 2,
-      "warning_count": 28
+      "warning_count": 28,
+      "evaluated": false,
+      "evaluation_event_count": 0,
+      "win_rate": 0.0,
+      "avg_turn_count": 0.0,
+      "avg_player_hp_end": 0.0,
+      "mechanic_trigger_rate": 0.0,
+      "actionability_score": 0,
+      "needs_rebuild": false
     },
     {
       "mechanic_profile_id": "weapon_followup_v0_1",
@@ -520,7 +632,144 @@
       "deterministic_fill_used": true,
       "risk_count": 46,
       "fail_count": 2,
-      "warning_count": 28
+      "warning_count": 28,
+      "evaluated": false,
+      "evaluation_event_count": 0,
+      "win_rate": 0.0,
+      "avg_turn_count": 0.0,
+      "avg_player_hp_end": 0.0,
+      "mechanic_trigger_rate": 0.0,
+      "actionability_score": 0,
+      "needs_rebuild": false
+    },
+    {
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_eval_rebuild_001",
+      "is_active": false,
+      "health_status": "warning",
+      "health_score": 41,
+      "formal_encounter_total_count": 15,
+      "card_count": 40,
+      "used_card_count": 35,
+      "unused_card_count": 5,
+      "deck_count": 15,
+      "reward_count": 15,
+      "sequence_balance_pass": true,
+      "average_deck_power": 38.43,
+      "early_avg_power": 25.9,
+      "mid_avg_power": 32.6,
+      "late_avg_power": 46.25,
+      "boss_avg_power": 52.47,
+      "runtime_primitives": [
+        "weapon_followup"
+      ],
+      "opening_pressure_applied_count": 0,
+      "telemetry_event_count": 0,
+      "snapshot_ready": false,
+      "review_status": "pending",
+      "release_status": "reviewing",
+      "frozen": false,
+      "release_candidate": false,
+      "archived": false,
+      "llm_candidate_source": false,
+      "deterministic_fill_used": false,
+      "risk_count": 42,
+      "fail_count": 0,
+      "warning_count": 27,
+      "evaluated": false,
+      "evaluation_event_count": 0,
+      "win_rate": 0.0,
+      "avg_turn_count": 0.0,
+      "avg_player_hp_end": 0.0,
+      "mechanic_trigger_rate": 0.0,
+      "actionability_score": 0,
+      "needs_rebuild": false
+    },
+    {
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_eval_rebuild_002",
+      "is_active": false,
+      "health_status": "warning",
+      "health_score": 39,
+      "formal_encounter_total_count": 15,
+      "card_count": 40,
+      "used_card_count": 35,
+      "unused_card_count": 5,
+      "deck_count": 15,
+      "reward_count": 15,
+      "sequence_balance_pass": true,
+      "average_deck_power": 38.48,
+      "early_avg_power": 25.9,
+      "mid_avg_power": 33.2,
+      "late_avg_power": 45.85,
+      "boss_avg_power": 52.47,
+      "runtime_primitives": [
+        "weapon_followup"
+      ],
+      "opening_pressure_applied_count": 0,
+      "telemetry_event_count": 0,
+      "snapshot_ready": false,
+      "review_status": "pending",
+      "release_status": "reviewing",
+      "frozen": false,
+      "release_candidate": false,
+      "archived": false,
+      "llm_candidate_source": false,
+      "deterministic_fill_used": false,
+      "risk_count": 43,
+      "fail_count": 0,
+      "warning_count": 28,
+      "evaluated": false,
+      "evaluation_event_count": 0,
+      "win_rate": 0.0,
+      "avg_turn_count": 0.0,
+      "avg_player_hp_end": 0.0,
+      "mechanic_trigger_rate": 0.0,
+      "actionability_score": 0,
+      "needs_rebuild": false
+    },
+    {
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_eval_rebuild_003",
+      "is_active": false,
+      "health_status": "warning",
+      "health_score": 39,
+      "formal_encounter_total_count": 15,
+      "card_count": 40,
+      "used_card_count": 35,
+      "unused_card_count": 5,
+      "deck_count": 15,
+      "reward_count": 15,
+      "sequence_balance_pass": true,
+      "average_deck_power": 38.48,
+      "early_avg_power": 25.9,
+      "mid_avg_power": 33.2,
+      "late_avg_power": 45.85,
+      "boss_avg_power": 52.47,
+      "runtime_primitives": [
+        "weapon_followup"
+      ],
+      "opening_pressure_applied_count": 0,
+      "telemetry_event_count": 0,
+      "snapshot_ready": false,
+      "review_status": "pending",
+      "release_status": "reviewing",
+      "frozen": false,
+      "release_candidate": false,
+      "archived": false,
+      "llm_candidate_source": false,
+      "deterministic_fill_used": false,
+      "risk_count": 43,
+      "fail_count": 0,
+      "warning_count": 28,
+      "evaluated": false,
+      "evaluation_event_count": 0,
+      "win_rate": 0.0,
+      "avg_turn_count": 0.0,
+      "avg_player_hp_end": 0.0,
+      "mechanic_trigger_rate": 0.0,
+      "actionability_score": 0,
+      "needs_rebuild": false
     },
     {
       "mechanic_profile_id": "weapon_followup_v0_1",
@@ -555,7 +804,15 @@
       "deterministic_fill_used": false,
       "risk_count": 41,
       "fail_count": 0,
-      "warning_count": 25
+      "warning_count": 25,
+      "evaluated": false,
+      "evaluation_event_count": 0,
+      "win_rate": 0.0,
+      "avg_turn_count": 0.0,
+      "avg_player_hp_end": 0.0,
+      "mechanic_trigger_rate": 0.0,
+      "actionability_score": 0,
+      "needs_rebuild": false
     }
   ],
   "strongest_pack_by_avg_power": "martial_realm_7_dual_weapon_v0_1::martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001",
@@ -574,6 +831,9 @@
     "weapon_followup_v0_1::weapon_followup_ai_candidate_pack_001",
     "weapon_followup_v0_1::weapon_followup_ai_candidate_pack_probe_001",
     "weapon_followup_v0_1::weapon_followup_ai_candidate_pack_probe_002",
+    "weapon_followup_v0_1::weapon_followup_eval_rebuild_001",
+    "weapon_followup_v0_1::weapon_followup_eval_rebuild_002",
+    "weapon_followup_v0_1::weapon_followup_eval_rebuild_003",
     "weapon_followup_v0_1::weapon_followup_real_rebuild_001"
   ],
   "packs_with_llm_candidate_source": [
@@ -583,5 +843,5 @@
     "weapon_followup_v0_1::weapon_followup_ai_candidate_pack_probe_002"
   ],
   "healthiest_pack": "posture_opening_pressure_v0_1::posture_opening_pressure_v0_1_formal_sequence_pack_001",
-  "weakest_pack_by_avg_power": "clue_pressure_v0_1::clue_pressure_v0_1_formal_sequence_pack_001"
+  "weakest_pack_by_avg_power": "weapon_followup_v0_1::weapon_followup_eval_rebuild_001"
 }

@@ -27,6 +27,9 @@ DETAILS_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'details'
 REVIEW_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'review'
 REVIEW_NOTES_DIR = ROOT / 'data' / 'aigc_battle' / 'review_notes'
 RUNTIME_DIR = ROOT / 'data' / 'aigc_battle' / 'runtime'
+EVALUATION_GENERATED_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'evaluation'
+EVALUATION_SNAPSHOT_DIR = ROOT / 'data' / 'aigc_battle' / 'evaluation' / 'snapshots'
+REBUILD_RECOMMEND_DIR = ROOT / 'data' / 'aigc_battle' / 'evaluation' / 'rebuild_recommendations'
 
 
 def main(argv: list[str]) -> int:
@@ -110,6 +113,15 @@ class DashboardHandler(BaseHTTPRequestHandler):
         if parsed.path == '/api/release/smoke-report':
             self.respond_json(load_release_smoke_report())
             return
+        if parsed.path == '/api/evaluation/summary':
+            self.respond_json(load_evaluation_summary())
+            return
+        if parsed.path == '/api/evaluation/pack-snapshot':
+            self.handle_evaluation_pack_snapshot(parsed.query)
+            return
+        if parsed.path == '/api/evaluation/rebuild-recommendations':
+            self.handle_evaluation_rebuild_recommendations(parsed.query)
+            return
         self.respond_json({'ok': False, 'error': 'not found'}, status=HTTPStatus.NOT_FOUND)
 
     def do_POST(self) -> None:
@@ -183,6 +195,12 @@ class DashboardHandler(BaseHTTPRequestHandler):
                 profile_id = safe_payload_id(payload, 'profile_id')
                 pack_id = safe_payload_id(payload, 'pack_id')
                 self.respond_json(factory_lib.run_action('build_ai_pack', profile_id, pack_id, lambda log: factory_lib.build_ai_pack(profile_id, pack_id, log)))
+                return
+            if parsed.path == '/api/factory/build-from-evaluation-snapshot':
+                profile_id = safe_payload_id(payload, 'profile_id')
+                content_pack_id = safe_payload_id(payload, 'content_pack_id' if 'content_pack_id' in payload else 'pack')
+                new_pack_id = safe_payload_id(payload, 'new_pack_id')
+                self.respond_json(factory_lib.run_action('build_from_evaluation_snapshot', profile_id, new_pack_id, lambda log: factory_lib.build_from_evaluation_snapshot(profile_id, content_pack_id, new_pack_id, log)))
                 return
             if parsed.path == '/api/release/freeze-pack':
                 profile_id, pack_id = require_pack_payload(payload)
@@ -314,6 +332,38 @@ class DashboardHandler(BaseHTTPRequestHandler):
             payload = read_required_json(path)
             if payload is None:
                 raise SystemExit('real telemetry snapshot not found')
+        except SystemExit as exc:
+            self.respond_json({'ok': False, 'error': str(exc)}, status=HTTPStatus.BAD_REQUEST)
+            return
+        self.respond_json(payload)
+
+    def handle_evaluation_pack_snapshot(self, query: str) -> None:
+        try:
+            params = self.safe_query_params(query, {'profile_id', 'content_pack_id'})
+            profile_id = params.get('profile_id', '')
+            content_pack_id = params.get('content_pack_id', '') or resolve_root_pack_content_pack_id(profile_id)
+            switch_lib.ensure_safe_id(profile_id, 'profile_id')
+            switch_lib.ensure_safe_id(content_pack_id, 'content_pack_id')
+            path = EVALUATION_SNAPSHOT_DIR / f'{profile_id}__{content_pack_id}__evaluation_snapshot.json'
+            payload = read_required_json(path)
+            if payload is None:
+                raise SystemExit('evaluation snapshot not found')
+        except SystemExit as exc:
+            self.respond_json({'ok': False, 'error': str(exc)}, status=HTTPStatus.BAD_REQUEST)
+            return
+        self.respond_json(payload)
+
+    def handle_evaluation_rebuild_recommendations(self, query: str) -> None:
+        try:
+            params = self.safe_query_params(query, {'profile_id', 'content_pack_id'})
+            profile_id = params.get('profile_id', '')
+            content_pack_id = params.get('content_pack_id', '') or resolve_root_pack_content_pack_id(profile_id)
+            switch_lib.ensure_safe_id(profile_id, 'profile_id')
+            switch_lib.ensure_safe_id(content_pack_id, 'content_pack_id')
+            path = REBUILD_RECOMMEND_DIR / f'{profile_id}__{content_pack_id}__rebuild_recommendations.json'
+            payload = read_required_json(path)
+            if payload is None:
+                raise SystemExit('rebuild recommendations not found')
         except SystemExit as exc:
             self.respond_json({'ok': False, 'error': str(exc)}, status=HTTPStatus.BAD_REQUEST)
             return
@@ -551,6 +601,16 @@ def load_release_smoke_report() -> dict[str, Any]:
     return {'ok': False, 'error': 'smoke report not found'}
 
 
+def load_evaluation_summary() -> dict[str, Any]:
+    preferred = EVALUATION_GENERATED_DIR / 'r3_evaluation_snapshot_summary.json'
+    if preferred.exists():
+        return read_required_json(preferred) or {'ok': False, 'error': 'evaluation summary unreadable'}
+    fallback = EVALUATION_GENERATED_DIR / 'r3_default_pack_set_evaluation_summary.json'
+    if fallback.exists():
+        return read_required_json(fallback) or {'ok': False, 'error': 'evaluation summary unreadable'}
+    return {'ok': False, 'error': 'evaluation summary not found'}
+
+
 def build_console_html() -> str:
     return """<!doctype html>
 <html lang="zh-CN">
@@ -599,7 +659,7 @@ summary { cursor:pointer; font-weight:600; } @media (max-width: 960px) { .dual {
 <section id="actions" class="panel"></section>
 </main>
 <script>
-const state = { workspace:null, compare:null, activeReview:null, notes:null, release:null, report:'', channels:null, smoke:null };
+const state = { workspace:null, compare:null, activeReview:null, notes:null, release:null, report:'', channels:null, smoke:null, evaluationSummary:null, evaluationSnapshot:null, rebuildRecommendations:null };
 const tabs = [['overview','总览'],['compare','Pack 对比'],['review','审核'],['encounters','战斗链路'],['pool','卡池卡组'],['rewards','奖励'],['actions','生产动作']];
 const $ = (id) => document.getElementById(id);
 const esc = (v) => String(v ?? '').replace(/[&<>"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -612,6 +672,7 @@ async function bootstrap() {
   state.compare = await api('/api/compare-matrix');
   state.channels = await api('/api/release/channels');
   state.smoke = await api('/api/release/smoke-report').catch(() => ({ ok:false, error:'smoke report not found' }));
+  state.evaluationSummary = await api('/api/evaluation/summary').catch(() => ({ ok:false, error:'evaluation summary not found' }));
   await focusPack(state.workspace.active_profile_id, state.workspace.active_content_pack_id);
 }
 async function focusPack(profileId, contentPackId) {
@@ -620,6 +681,8 @@ async function focusPack(profileId, contentPackId) {
   state.notes = await api('/api/review-notes?' + qs.toString());
   state.release = await api('/api/release/status?' + qs.toString());
   state.report = (await api('/api/review-report?' + qs.toString())).content || '';
+  state.evaluationSnapshot = await api('/api/evaluation/pack-snapshot?' + qs.toString()).catch(() => ({ ok:false, error:'evaluation snapshot not found' }));
+  state.rebuildRecommendations = await api('/api/evaluation/rebuild-recommendations?' + qs.toString()).catch(() => ({ ok:false, error:'rebuild recommendations not found' }));
   renderAll();
 }
 function currentPackKey() { return `${state.activeReview?.pack_identity?.mechanic_profile_id || ''}::${state.activeReview?.pack_identity?.content_pack_id || ''}`; }
@@ -661,9 +724,9 @@ function renderHeader() {
 }
 function bindPackButtons(root) { root.querySelectorAll('[data-pack]').forEach((b) => b.onclick = async () => { const [profileId, contentPackId] = b.dataset.pack.split('::'); await focusPack(profileId, contentPackId); }); }
 function renderOverview() {
-  const review = state.activeReview; const health = review.health_summary || {}; const notes = state.notes || {}; const release = state.release || {}; const channels = state.channels || {}; const smoke = state.smoke || {};
+  const review = state.activeReview; const health = review.health_summary || {}; const notes = state.notes || {}; const release = state.release || {}; const channels = state.channels || {}; const smoke = state.smoke || {}; const evalSummary = state.evaluationSummary || {}; const packEval = state.evaluationSnapshot || {};
   const current = channels.current_release || {}; const candidate = channels.candidate_release || {}; const fallback = channels.fallback_release || {}; const runtime = channels.active_runtime || {};
-  $('overview').innerHTML = `<div class="band"><h2>总览</h2><div class="stats"><div class="card"><div class="muted">Health</div><strong>${health.health_score || 0}</strong></div><div class="card"><div class="muted">Review Status</div><strong>${esc(notes.review_status || '-')}</strong></div><div class="card"><div class="muted">Release Status</div><strong>${esc(release.release_status || '-')}</strong></div><div class="card"><div class="muted">Reviewer</div><strong>${esc(notes.reviewer || '-')}</strong></div></div><div class="cards" style="margin-top:12px;"><div class="card"><div class="muted">Current Release</div><div class="mono">${esc(current.mechanic_profile_id || '-')}</div><div class="mono">${esc(current.content_pack_id || '-')}</div><div>formal_entry_enabled: ${esc(String(current.formal_entry_enabled ?? false))}</div><div>smoke_test_status: ${esc(current.smoke_test_status || '-')}</div><div class="muted">${esc(current.last_smoke_report_path || '-')}</div></div><div class="card"><div class="muted">Candidate Release</div><div class="mono">${esc(candidate.mechanic_profile_id || '-')}</div><div class="mono">${esc(candidate.content_pack_id || '-')}</div><div>smoke_test_required: ${esc(String(candidate.smoke_test_required ?? false))}</div></div><div class="card"><div class="muted">Fallback Release</div><div class="mono">${esc(fallback.mechanic_profile_id || '-')}</div><div class="mono">${esc(fallback.content_pack_id || '-')}</div><div>rollback_ready: ${esc(String(channels.rollback_to_fallback_ready ?? false))}</div></div><div class="card"><div class="muted">Active Runtime</div><div class="mono">${esc(runtime.active_profile_id || '-')}</div><div class="mono">${esc(runtime.active_content_pack_id || '-')}</div><div>matches_current_release: ${esc(String(runtime.matches_current_release ?? false))}</div><div class="${runtime.active_profile_drift_from_current_release ? 'fail' : 'ok'}">active_profile_drift_from_current_release: ${esc(String(runtime.active_profile_drift_from_current_release ?? false))}</div></div></div><div class="toolbar"><button onclick="bootstrap()">Refresh Index</button><button onclick="doFactory('/api/factory/refresh-review', {})">Rebuild Review Workspace</button><button onclick="doSwitch(true)">Dry Run Switch</button><button class="primary" onclick="doSwitch(false)">Enable Pack</button><button onclick="doRollback()">Rollback</button><button onclick="snapshotPrompt()">Snapshot Pack</button><button onclick="doRelease('/api/release/freeze-pack')">Freeze Pack</button><button onclick="doRelease('/api/release/mark-release-candidate')">Mark Release Candidate</button><button onclick="doReleaseChannel('/api/release/set-current', { profile_id: state.activeReview.pack_identity.mechanic_profile_id, content_pack_id: state.activeReview.pack_identity.content_pack_id })">Set Current</button><button onclick="doReleaseChannel('/api/release/set-candidate', { profile_id: state.activeReview.pack_identity.mechanic_profile_id, content_pack_id: state.activeReview.pack_identity.content_pack_id })">Set Candidate</button><button onclick="doReleaseChannel('/api/release/set-fallback', { profile_id: state.activeReview.pack_identity.mechanic_profile_id, content_pack_id: state.activeReview.pack_identity.content_pack_id })">Set Fallback</button><button class="primary" onclick="doReleaseChannel('/api/release/activate-current')">Activate Current</button><button onclick="doReleaseChannel('/api/release/rollback-to-fallback')">Rollback to Fallback</button></div><div class="card" style="margin-top:12px;"><div class="muted">Smoke Report</div><div>smoke_pass: ${esc(String(smoke.smoke_pass ?? false))}</div><div>player_formal_entry_uses_ai_pack: ${esc(String(smoke.player_formal_entry_uses_ai_pack ?? false))}</div><div>fallback_loadout_count: ${esc(String(smoke.fallback_loadout_count ?? '-'))}</div></div></div>`;
+  $('overview').innerHTML = `<div class="band"><h2>总览</h2><div class="stats"><div class="card"><div class="muted">Health</div><strong>${health.health_score || 0}</strong></div><div class="card"><div class="muted">Review Status</div><strong>${esc(notes.review_status || '-')}</strong></div><div class="card"><div class="muted">Release Status</div><strong>${esc(release.release_status || '-')}</strong></div><div class="card"><div class="muted">Reviewer</div><strong>${esc(notes.reviewer || '-')}</strong></div></div><div class="cards" style="margin-top:12px;"><div class="card"><div class="muted">Current Release</div><div class="mono">${esc(current.mechanic_profile_id || '-')}</div><div class="mono">${esc(current.content_pack_id || '-')}</div><div>formal_entry_enabled: ${esc(String(current.formal_entry_enabled ?? false))}</div><div>smoke_test_status: ${esc(current.smoke_test_status || '-')}</div><div class="muted">${esc(current.last_smoke_report_path || '-')}</div></div><div class="card"><div class="muted">Candidate Release</div><div class="mono">${esc(candidate.mechanic_profile_id || '-')}</div><div class="mono">${esc(candidate.content_pack_id || '-')}</div><div>smoke_test_required: ${esc(String(candidate.smoke_test_required ?? false))}</div></div><div class="card"><div class="muted">Fallback Release</div><div class="mono">${esc(fallback.mechanic_profile_id || '-')}</div><div class="mono">${esc(fallback.content_pack_id || '-')}</div><div>rollback_ready: ${esc(String(channels.rollback_to_fallback_ready ?? false))}</div></div><div class="card"><div class="muted">Active Runtime</div><div class="mono">${esc(runtime.active_profile_id || '-')}</div><div class="mono">${esc(runtime.active_content_pack_id || '-')}</div><div>matches_current_release: ${esc(String(runtime.matches_current_release ?? false))}</div><div class="${runtime.active_profile_drift_from_current_release ? 'fail' : 'ok'}">active_profile_drift_from_current_release: ${esc(String(runtime.active_profile_drift_from_current_release ?? false))}</div></div><div class="card"><div class="muted">Evaluation Board</div><div>evaluated_pack_count: ${esc(String(evalSummary.pack_count ?? evalSummary.evaluated_pack_count ?? '-'))}</div><div>pack_event_count: ${esc(String(packEval.evaluation_event_count ?? '-'))}</div><div>win_rate: ${esc(String(packEval.pack_metrics?.win_rate ?? '-'))}</div><div>avg_turn_count: ${esc(String(packEval.pack_metrics?.avg_turn_count ?? '-'))}</div></div></div><div class="toolbar"><button onclick="bootstrap()">Refresh Index</button><button onclick="doFactory('/api/factory/refresh-review', {})">Rebuild Review Workspace</button><button onclick="doSwitch(true)">Dry Run Switch</button><button class="primary" onclick="doSwitch(false)">Enable Pack</button><button onclick="doRollback()">Rollback</button><button onclick="snapshotPrompt()">Snapshot Pack</button><button onclick="doRelease('/api/release/freeze-pack')">Freeze Pack</button><button onclick="doRelease('/api/release/mark-release-candidate')">Mark Release Candidate</button><button onclick="doReleaseChannel('/api/release/set-current', { profile_id: state.activeReview.pack_identity.mechanic_profile_id, content_pack_id: state.activeReview.pack_identity.content_pack_id })">Set Current</button><button onclick="doReleaseChannel('/api/release/set-candidate', { profile_id: state.activeReview.pack_identity.mechanic_profile_id, content_pack_id: state.activeReview.pack_identity.content_pack_id })">Set Candidate</button><button onclick="doReleaseChannel('/api/release/set-fallback', { profile_id: state.activeReview.pack_identity.mechanic_profile_id, content_pack_id: state.activeReview.pack_identity.content_pack_id })">Set Fallback</button><button class="primary" onclick="doReleaseChannel('/api/release/activate-current')">Activate Current</button><button onclick="doReleaseChannel('/api/release/rollback-to-fallback')">Rollback to Fallback</button></div><div class="card" style="margin-top:12px;"><div class="muted">Smoke Report</div><div>smoke_pass: ${esc(String(smoke.smoke_pass ?? false))}</div><div>player_formal_entry_uses_ai_pack: ${esc(String(smoke.player_formal_entry_uses_ai_pack ?? false))}</div><div>fallback_loadout_count: ${esc(String(smoke.fallback_loadout_count ?? '-'))}</div></div></div>`;
 }
 function renderCompare() {
   const q = ($('compare-q')?.value || '').toLowerCase(); const sort = $('compare-sort')?.value || 'health_score';
@@ -690,13 +753,14 @@ function renderRewards() {
   $('rewards').innerHTML = `<div class="band"><h2>奖励</h2><div class="table"><table><thead><tr><th>Reward</th><th>Type</th><th>Tier</th><th>Items</th><th>Matched Encounter</th><th>Risk</th></tr></thead><tbody>${rows.map((row) => `<tr><td class="mono">${esc(row.reward_plan_id)}</td><td>${esc(row.reward_type)}</td><td>${esc(row.reward_tier)}</td><td>${esc(row.reward_items_text)}</td><td>${esc(join(row.matched_encounter_tier))}</td><td>${esc(join(row.risk_flags))}</td></tr>`).join('')}</tbody></table></div></div>`;
 }
 function renderActions() {
-  $('actions').innerHTML = `<div class="band"><h2>生产动作</h2><div class="toolbar"><input id="action-pack-id" placeholder="新 pack_id / snapshot_id"><input id="action-snapshot" placeholder="approved snapshot path"><button onclick="buildRoot()">Build Root Pack</button><button onclick="snapshotPrompt()">Snapshot Current Pack</button><button onclick="buildFromSnapshotPrompt()">Build From Snapshot</button><button onclick="buildFromTelemetryPrompt()">Build From Telemetry Snapshot</button><button onclick="buildFromLlmPrompt()">Build From LLM Candidates</button><button onclick="factoryValidate()">Validate Pack</button><button onclick="factoryExport()">Export Manifest</button><button onclick="doSwitch(false)">Safe Switch</button><button onclick="doRollback()">Rollback</button><button onclick="doRelease('/api/release/freeze-pack')">Freeze Pack</button><button onclick="doRelease('/api/release/mark-release-candidate')">Mark Release Candidate</button><button onclick="doRelease('/api/release/archive-pack')">Archive Pack</button><button onclick="doReleaseChannel('/api/release/activate-current')">Activate Current</button><button onclick="doReleaseChannel('/api/release/rollback-to-fallback')">Rollback to Fallback</button><button onclick="alert('/api/release/channels\\n/api/release/set-current\\n/api/release/set-candidate\\n/api/release/set-fallback\\n/api/release/activate-current\\n/api/release/rollback-to-fallback\\n/api/release/smoke-report')">Release Channel API</button></div></div>`;
+  $('actions').innerHTML = `<div class="band"><h2>生产动作</h2><div class="toolbar"><input id="action-pack-id" placeholder="新 pack_id / snapshot_id"><input id="action-snapshot" placeholder="approved snapshot path"><button onclick="buildRoot()">Build Root Pack</button><button onclick="snapshotPrompt()">Snapshot Current Pack</button><button onclick="buildFromSnapshotPrompt()">Build From Snapshot</button><button onclick="buildFromTelemetryPrompt()">Build From Telemetry Snapshot</button><button onclick="buildFromLlmPrompt()">Build From LLM Candidates</button><button onclick="buildFromEvaluationPrompt()">Build From Evaluation Snapshot</button><button onclick="factoryValidate()">Validate Pack</button><button onclick="factoryExport()">Export Manifest</button><button onclick="doSwitch(false)">Safe Switch</button><button onclick="doRollback()">Rollback</button><button onclick="doRelease('/api/release/freeze-pack')">Freeze Pack</button><button onclick="doRelease('/api/release/mark-release-candidate')">Mark Release Candidate</button><button onclick="doRelease('/api/release/archive-pack')">Archive Pack</button><button onclick="doReleaseChannel('/api/release/activate-current')">Activate Current</button><button onclick="doReleaseChannel('/api/release/rollback-to-fallback')">Rollback to Fallback</button><button onclick="alert('/api/evaluation/summary\\n/api/evaluation/pack-snapshot\\n/api/evaluation/rebuild-recommendations\\n/api/factory/build-from-evaluation-snapshot')">Evaluation API</button></div><div class="card" style="margin-top:12px;"><div class="muted">Rebuild Recommendations</div><div>recommendation_count: ${esc(String(state.rebuildRecommendations?.recommendation_count ?? '-'))}</div><div>safe_to_auto_apply_count: ${esc(String(state.rebuildRecommendations?.safe_to_auto_apply_count ?? '-'))}</div><div>requires_designer_review_count: ${esc(String(state.rebuildRecommendations?.requires_designer_review_count ?? '-'))}</div></div></div>`;
 }
 async function buildRoot() { await doFactory('/api/factory/build-pack', { profile_id: state.activeReview.pack_identity.mechanic_profile_id }); }
 async function snapshotPrompt() { const packId = $('action-pack-id')?.value || 'snapshot_pack_id_required'; await doFactory('/api/factory/snapshot-pack', { profile_id: state.activeReview.pack_identity.mechanic_profile_id, pack_id: packId }); }
 async function buildFromSnapshotPrompt() { const packId = $('action-pack-id')?.value || 'rebuild_pack_id_required'; const snapshotPath = $('action-snapshot')?.value || ''; await doFactory('/api/factory/build-from-snapshot', { profile_id: state.activeReview.pack_identity.mechanic_profile_id, pack_id: packId, snapshot_path: snapshotPath }); }
 async function buildFromTelemetryPrompt() { const packId = $('action-pack-id')?.value || 'telemetry_pack_id_required'; await doFactory('/api/factory/build-from-telemetry', { profile_id: state.activeReview.pack_identity.mechanic_profile_id, pack_id: packId }); }
 async function buildFromLlmPrompt() { const packId = $('action-pack-id')?.value || 'llm_pack_id_required'; await doFactory('/api/factory/build-from-llm', { profile_id: state.activeReview.pack_identity.mechanic_profile_id, pack_id: packId }); }
+async function buildFromEvaluationPrompt() { const packId = $('action-pack-id')?.value || 'evaluation_rebuild_pack_id_required'; await doFactory('/api/factory/build-from-evaluation-snapshot', { profile_id: state.activeReview.pack_identity.mechanic_profile_id, content_pack_id: state.activeReview.pack_identity.content_pack_id, new_pack_id: packId }); }
 async function factoryValidate() { await doFactory('/api/factory/validate-pack', { profile_id: state.activeReview.pack_identity.mechanic_profile_id, content_pack_id: state.activeReview.pack_identity.pack_storage_mode === 'profile_pack_dir' ? state.activeReview.pack_identity.content_pack_id : '' }); }
 async function factoryExport() { await doFactory('/api/factory/export-pack', { profile_id: state.activeReview.pack_identity.mechanic_profile_id, content_pack_id: state.activeReview.pack_identity.pack_storage_mode === 'profile_pack_dir' ? state.activeReview.pack_identity.content_pack_id : '' }); }
 function renderAll() { renderHeader(); renderOverview(); renderCompare(); renderReview(); renderEncounters(); renderPool(); renderRewards(); renderActions(); }

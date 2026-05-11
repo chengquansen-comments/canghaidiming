@@ -1,0 +1,53 @@
+# Rebuild Recommendations
+
+- mechanic_profile_id: `clue_pressure_v0_1`
+- content_pack_id: `clue_pressure_v0_1_formal_sequence_pack_001`
+- recommendation_count: `44`
+- safe_to_auto_apply_count: `36`
+- requires_designer_review_count: `8`
+
+## Recommendations
+- `reduce_deck_power` | severity=medium | encounter=enc_transport_officer | card=- | safe=True
+- `reduce_deck_power` | severity=medium | encounter=enc_mutiny_camp | card=- | safe=True
+- `reduce_deck_power` | severity=medium | encounter=enc_wakou_boss | card=- | safe=True
+- `reduce_deck_power` | severity=medium | encounter=enc_wuke_spear_trial | card=- | safe=True
+- `reduce_deck_power` | severity=medium | encounter=enc_wuke_blade_trial | card=- | safe=True
+- `reduce_deck_power` | severity=medium | encounter=enc_wuke_final_duel | card=- | safe=True
+- `reduce_deck_power` | severity=medium | encounter=enc_wuke_gu_chengyue | card=- | safe=True
+- `reduce_deck_power` | severity=medium | encounter=enc_wuke_shen_zhaoye | card=- | safe=True
+- `reduce_deck_power` | severity=medium | encounter=enc_wuke_qi_heng | card=- | safe=True
+- `reduce_deck_power` | severity=medium | encounter=enc_ch2_reed_ambush | card=- | safe=True
+- `reduce_deck_power` | severity=medium | encounter=enc_ch3_escort_clash | card=- | safe=True
+- `reduce_deck_power` | severity=medium | encounter=enc_ch4_tide_bandits | card=- | safe=True
+- `reduce_deck_power` | severity=medium | encounter=enc_boss_ext_wakou_leader | card=- | safe=True
+- `increase_deck_power` | severity=medium | encounter=enc_beach_ambush | card=- | safe=True
+- `increase_deck_power` | severity=medium | encounter=enc_fishing_village_embers | card=- | safe=True
+- `increase_deck_power` | severity=medium | encounter=enc_transport_officer | card=- | safe=True
+- `increase_deck_power` | severity=medium | encounter=enc_mutiny_camp | card=- | safe=True
+- `increase_deck_power` | severity=medium | encounter=enc_wakou_boss | card=- | safe=True
+- `increase_deck_power` | severity=medium | encounter=enc_wuke_spear_trial | card=- | safe=True
+- `increase_deck_power` | severity=medium | encounter=enc_wuke_blade_trial | card=- | safe=True
+- `increase_deck_power` | severity=medium | encounter=enc_wuke_final_duel | card=- | safe=True
+- `increase_deck_power` | severity=medium | encounter=enc_wuke_gu_chengyue | card=- | safe=True
+- `increase_deck_power` | severity=medium | encounter=enc_wuke_shen_zhaoye | card=- | safe=True
+- `increase_deck_power` | severity=medium | encounter=enc_wuke_qi_heng | card=- | safe=True
+- `increase_deck_power` | severity=medium | encounter=enc_ch2_reed_ambush | card=- | safe=True
+- `increase_deck_power` | severity=medium | encounter=enc_ch3_escort_clash | card=- | safe=True
+- `increase_deck_power` | severity=medium | encounter=enc_ch4_tide_bandits | card=- | safe=True
+- `increase_deck_power` | severity=medium | encounter=enc_boss_ext_wakou_leader | card=- | safe=True
+- `adjust_reward_tier` | severity=high | encounter=enc_wuke_spear_trial | card=- | safe=False
+- `adjust_reward_tier` | severity=high | encounter=enc_wuke_blade_trial | card=- | safe=False
+- `adjust_reward_tier` | severity=high | encounter=enc_wuke_gu_chengyue | card=- | safe=False
+- `adjust_reward_tier` | severity=high | encounter=enc_wuke_shen_zhaoye | card=- | safe=False
+- `adjust_reward_tier` | severity=high | encounter=enc_wuke_qi_heng | card=- | safe=False
+- `adjust_reward_tier` | severity=high | encounter=enc_ch2_reed_ambush | card=- | safe=False
+- `adjust_reward_tier` | severity=high | encounter=enc_ch3_escort_clash | card=- | safe=False
+- `adjust_reward_tier` | severity=high | encounter=enc_ch4_tide_bandits | card=- | safe=False
+- `reduce_overused_card` | severity=medium | encounter=- | card=clue_pressure_v0_1_blademaster_boss_guard_variant_2 | safe=True
+- `reduce_overused_card` | severity=medium | encounter=- | card=clue_pressure_v0_1_spearman_boss_guard_variant_2 | safe=True
+- `reduce_overused_card` | severity=medium | encounter=- | card=clue_pressure_v0_1_blademaster_late_guard_variant_2 | safe=True
+- `reduce_overused_card` | severity=medium | encounter=- | card=clue_pressure_v0_1_spearman_late_guard_variant_2 | safe=True
+- `reduce_overused_card` | severity=medium | encounter=- | card=clue_pressure_v0_1_blademaster_boss_guard | safe=True
+- `reduce_overused_card` | severity=medium | encounter=- | card=clue_pressure_v0_1_blademaster_boss_pressure | safe=True
+- `reduce_overused_card` | severity=medium | encounter=- | card=clue_pressure_v0_1_blademaster_boss_strike | safe=True
+- `reduce_overused_card` | severity=medium | encounter=- | card=clue_pressure_v0_1_blademaster_late_strike_variant_2 | safe=True

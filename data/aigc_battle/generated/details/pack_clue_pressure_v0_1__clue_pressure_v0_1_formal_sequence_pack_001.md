@@ -12,6 +12,10 @@
 - ready_for_runtime_export: true
 - sequence_balance_pass: true
 - deck_card_realm_eligibility_valid: true
+- evaluation_event_count: 90
+- win_rate: 0.0667
+- avg_turn_count: 10.6667
+- rebuild_recommendation_count: 48
 
 ## 整体卡池
 - used_card_count: 35

@@ -32,6 +32,9 @@ PACK_REPORT_NAMES = [
     'full_sequence_reward_probe_report.json',
     'snapshot_summary.json',
 ]
+EVALUATION_REPORTS_DIR = GENERATED_ROOT / 'evaluation' / 'reports'
+EVALUATION_SNAPSHOT_DIR = ROOT / 'data' / 'aigc_battle' / 'evaluation' / 'snapshots'
+REBUILD_RECOMMEND_DIR = ROOT / 'data' / 'aigc_battle' / 'evaluation' / 'rebuild_recommendations'
 
 
 def main() -> int:
@@ -109,6 +112,9 @@ def build_pack_entry(profile_id: str, pack_id: str | None, active_profile_id: st
     primitive_probe = try_read_json(generated_dir / 'runtime_primitive_probe_report.json') or {}
     reward_probe = try_read_json(generated_dir / 'full_sequence_reward_probe_report.json') or {}
     content_pack_id = str(runtime_manifest.get('content_pack_id') or validation_report.get('content_pack_id') or pack_id or '')
+    evaluation_report = try_read_json(EVALUATION_REPORTS_DIR / f'{profile_id}__{content_pack_id}__evaluation_report.json') or {}
+    evaluation_snapshot = try_read_json(EVALUATION_SNAPSHOT_DIR / f'{profile_id}__{content_pack_id}__evaluation_snapshot.json') or {}
+    rebuild_recommendations = try_read_json(REBUILD_RECOMMEND_DIR / f'{profile_id}__{content_pack_id}__rebuild_recommendations.json') or {}
     release_channels = release_lib.show_channels()
     current_release = release_channels.get('current_release', {})
     candidate_release = release_channels.get('candidate_release', {})
@@ -173,6 +179,17 @@ def build_pack_entry(profile_id: str, pack_id: str | None, active_profile_id: st
             'encounters_with_telemetry_count': int(snapshot.get('encounters_with_telemetry_count', 0) or 0),
             'snapshot_ready': bool(snapshot.get('snapshot_ready', False)),
         },
+        'evaluation_report_path': to_relative(EVALUATION_REPORTS_DIR / f'{profile_id}__{content_pack_id}__evaluation_report.json') if evaluation_report else '',
+        'evaluation_snapshot_path': to_relative(EVALUATION_SNAPSHOT_DIR / f'{profile_id}__{content_pack_id}__evaluation_snapshot.json') if evaluation_snapshot else '',
+        'rebuild_recommendations_path': to_relative(REBUILD_RECOMMEND_DIR / f'{profile_id}__{content_pack_id}__rebuild_recommendations.json') if rebuild_recommendations else '',
+        'evaluation_event_count': int(evaluation_report.get('evaluation_event_count', evaluation_snapshot.get('evaluation_event_count', 0) or 0)),
+        'evaluated': bool(evaluation_report or evaluation_snapshot),
+        'win_rate': float(evaluation_snapshot.get('pack_metrics', {}).get('win_rate', evaluation_report.get('pack_metrics', {}).get('win_rate', 0)) or 0),
+        'avg_turn_count': float(evaluation_snapshot.get('pack_metrics', {}).get('avg_turn_count', evaluation_report.get('pack_metrics', {}).get('avg_turn_count', 0)) or 0),
+        'avg_player_hp_end': float(evaluation_snapshot.get('pack_metrics', {}).get('avg_player_hp_end', evaluation_report.get('pack_metrics', {}).get('avg_player_hp_end', 0)) or 0),
+        'mechanic_trigger_rate': float(evaluation_snapshot.get('mechanic_metrics', {}).get('runtime_primitive_trigger_rate', evaluation_report.get('pack_metrics', {}).get('runtime_primitive_trigger_rate', 0)) or 0),
+        'actionability_score': int(evaluation_snapshot.get('actionability_score', 0) or 0),
+        'needs_rebuild': bool(int(evaluation_snapshot.get('rebuild_recommendation_count', rebuild_recommendations.get('recommendation_count', 0) or 0)) > 0),
     }
 
 

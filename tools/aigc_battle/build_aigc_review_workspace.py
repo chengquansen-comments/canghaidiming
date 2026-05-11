@@ -74,6 +74,14 @@ def main() -> int:
                 'pack_review_md_path': to_relative(review_md_path),
                 'review_report_md_path': to_relative(report_md_path),
                 'missing_detail': bool(pack_review.get('missing_detail', False)),
+                'evaluated': bool(pack_review.get('evaluation_summary', {}).get('evaluated', False)),
+                'evaluation_event_count': int(pack_review.get('evaluation_summary', {}).get('evaluation_event_count', 0)),
+                'win_rate': float(pack_review.get('evaluation_summary', {}).get('win_rate', 0)),
+                'avg_turn_count': float(pack_review.get('evaluation_summary', {}).get('avg_turn_count', 0)),
+                'avg_player_hp_end': float(pack_review.get('evaluation_summary', {}).get('avg_player_hp_end', 0)),
+                'mechanic_trigger_rate': float(pack_review.get('evaluation_summary', {}).get('runtime_primitive_trigger_rate', 0)),
+                'actionability_score': int(pack_review.get('evaluation_summary', {}).get('actionability_score', 0)),
+                'needs_rebuild': bool(pack_review.get('evaluation_summary', {}).get('needs_rebuild', False)),
             })
             compare_rows.append(build_compare_row(pack_review))
             all_risks.extend(pack_review['all_risks'])
@@ -172,6 +180,8 @@ def build_pack_review(index_payload: dict[str, Any], profile_id: str, pack_entry
     telemetry = detail.get('telemetry_summary', {})
     snapshot = detail.get('snapshot_summary', {})
     runtime_primitive_summary = detail.get('runtime_primitive_summary', {})
+    evaluation = detail.get('evaluation_summary', {}) if isinstance(detail.get('evaluation_summary', {}), dict) else {}
+    rebuild_recommendation_summary = detail.get('rebuild_recommendation_summary', {}) if isinstance(detail.get('rebuild_recommendation_summary', {}), dict) else {}
     cards = detail.get('card_pool_detail', [])
     sequences = detail.get('sequence_detail', [])
 
@@ -427,6 +437,26 @@ def build_pack_review(index_payload: dict[str, Any], profile_id: str, pack_entry
             'runtime_primitive_summary': runtime_primitive_summary,
             'missing_reports': detail.get('missing_reports', []),
         },
+        'evaluation_summary': {
+            'evaluated': bool(evaluation),
+            'evaluation_event_count': int(evaluation.get('evaluation_event_count', 0) or 0),
+            'telemetry_detail_level_summary': evaluation.get('telemetry_detail_level_summary', {}),
+            'win_rate': float(evaluation.get('pack_metrics', {}).get('win_rate', 0) or 0),
+            'avg_turn_count': float(evaluation.get('pack_metrics', {}).get('avg_turn_count', 0) or 0),
+            'avg_player_hp_end': float(evaluation.get('pack_metrics', {}).get('avg_player_hp_end', 0) or 0),
+            'avg_damage_taken': float(evaluation.get('pack_metrics', {}).get('avg_damage_taken', 0) or 0),
+            'runtime_primitive_trigger_rate': float(evaluation.get('mechanic_metrics', {}).get('runtime_primitive_trigger_rate', evaluation.get('pack_metrics', {}).get('runtime_primitive_trigger_rate', 0) or 0) or 0),
+            'mechanism_underused_candidates': evaluation.get('mechanism_underused_candidates', []),
+            'too_easy_candidates': evaluation.get('too_easy_candidates', []),
+            'too_hard_candidates': evaluation.get('too_hard_candidates', []),
+            'too_long_candidates': evaluation.get('too_long_candidates', []),
+            'reward_mismatch_candidates': evaluation.get('reward_mismatch_candidates', []),
+            'rebuild_recommendation_count': int(evaluation.get('rebuild_recommendation_count', rebuild_recommendation_summary.get('recommendation_count', 0) or 0)),
+            'actionability_score': int(evaluation.get('actionability_score', 0) or 0),
+            'latest_evaluation_snapshot_path': detail.get('latest_evaluation_snapshot_path', ''),
+            'latest_rebuild_recommendation_path': detail.get('latest_rebuild_recommendation_path', ''),
+            'needs_rebuild': bool(int(evaluation.get('rebuild_recommendation_count', rebuild_recommendation_summary.get('recommendation_count', 0) or 0)) > 0),
+        },
         'review_report_path': to_relative(review_report_md_path(profile_id, content_pack_id)),
         'review_notes_summary': review_notes,
         'review_status': review_notes.get('review_status', 'pending'),
@@ -622,6 +652,7 @@ def build_compare_row(pack_review: dict[str, Any]) -> dict[str, Any]:
     card_rows = pack_review.get('card_pool_review_table', [])
     telemetry_summary = pack_review.get('telemetry_snapshot_status', {}).get('telemetry_summary', {})
     snapshot_summary = pack_review.get('telemetry_snapshot_status', {}).get('snapshot_summary', {})
+    evaluation_summary = pack_review.get('evaluation_summary', {})
     runtime_primitives = sorted({primitive for row in encounter_rows for primitive in row.get('runtime_primitives', [])})
     return {
         'mechanic_profile_id': pack_review['pack_identity']['mechanic_profile_id'],
@@ -655,6 +686,14 @@ def build_compare_row(pack_review: dict[str, Any]) -> dict[str, Any]:
         'risk_count': pack_review['risk_summary']['risk_count'],
         'fail_count': pack_review['risk_summary']['fail_count'],
         'warning_count': pack_review['risk_summary']['warning_count'],
+        'evaluated': bool(evaluation_summary.get('evaluated', False)),
+        'evaluation_event_count': int(evaluation_summary.get('evaluation_event_count', 0) or 0),
+        'win_rate': float(evaluation_summary.get('win_rate', 0) or 0),
+        'avg_turn_count': float(evaluation_summary.get('avg_turn_count', 0) or 0),
+        'avg_player_hp_end': float(evaluation_summary.get('avg_player_hp_end', 0) or 0),
+        'mechanic_trigger_rate': float(evaluation_summary.get('runtime_primitive_trigger_rate', 0) or 0),
+        'actionability_score': int(evaluation_summary.get('actionability_score', 0) or 0),
+        'needs_rebuild': bool(evaluation_summary.get('needs_rebuild', False)),
     }
 
 
@@ -897,12 +936,12 @@ def build_compare_matrix_markdown(compare_matrix: dict[str, Any]) -> str:
         f"- healthiest_pack: `{compare_matrix['healthiest_pack']}`",
         f"- weakest_pack_by_avg_power: `{compare_matrix['weakest_pack_by_avg_power']}`",
         '',
-        '| Active | Profile | Pack | Health | Score | Avg Power | Risk | Unused | Runtime Primitives |',
-        '| --- | --- | --- | --- | ---: | ---: | ---: | ---: | --- |',
+        '| Active | Profile | Pack | Health | Score | Avg Power | Eval | Win | Avg Turn | Trigger | Actionability | Rebuild | Runtime Primitives |',
+        '| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |',
     ]
     for row in compare_matrix.get('packs', []):
         lines.append(
-            f"| {'YES' if row['is_active'] else ''} | `{row['mechanic_profile_id']}` | `{row['content_pack_id']}` | `{row['health_status']}` | {row['health_score']} | {row['average_deck_power']} | {row['risk_count']} | {row['unused_card_count']} | `{','.join(row['runtime_primitives']) or '-'}` |"
+            f"| {'YES' if row['is_active'] else ''} | `{row['mechanic_profile_id']}` | `{row['content_pack_id']}` | `{row['health_status']}` | {row['health_score']} | {row['average_deck_power']} | {row.get('evaluation_event_count', 0)} | {row.get('win_rate', 0)} | {row.get('avg_turn_count', 0)} | {row.get('mechanic_trigger_rate', 0)} | {row.get('actionability_score', 0)} | {'YES' if row.get('needs_rebuild') else ''} | `{','.join(row['runtime_primitives']) or '-'}` |"
         )
     return '\n'.join(lines) + '\n'
 

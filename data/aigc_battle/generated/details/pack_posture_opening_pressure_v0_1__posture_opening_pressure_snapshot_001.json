@@ -532,6 +532,8 @@
     "original_content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
     "snapshot_content_pack_id": "posture_opening_pressure_snapshot_001"
   },
+  "evaluation_summary": {},
+  "rebuild_recommendation_summary": {},
   "ai_source_trace": {
     "llm_candidate_source": false,
     "accepted_candidate_count": 0,
@@ -6114,6 +6116,8 @@
     }
   ],
   "missing_reports": [],
+  "latest_evaluation_snapshot_path": "",
+  "latest_rebuild_recommendation_path": "",
   "original_content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
   "snapshot_content_pack_id": "posture_opening_pressure_snapshot_001"
 }

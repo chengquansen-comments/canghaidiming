@@ -60,6 +60,11 @@ def main(argv: list[str]) -> int:
     bfrt.add_argument('--pack-id', required=True)
     bfrt.add_argument('--force', action='store_true')
 
+    bfe = sub.add_parser('build-from-evaluation-snapshot')
+    bfe.add_argument('--profile', required=True)
+    bfe.add_argument('--pack', required=True)
+    bfe.add_argument('--new-pack-id', required=True)
+
     exp_prompt = sub.add_parser('export-llm-prompt')
     exp_prompt.add_argument('--profile', required=True)
     exp_prompt.add_argument('--pack', required=True)
@@ -99,6 +104,8 @@ def main(argv: list[str]) -> int:
         result = run_action('build_from_llm', args.profile, args.pack_id, lambda log: build_from_llm(args.profile, args.pack_id, args.force, log))
     elif args.command == 'build-from-real-telemetry':
         result = run_action('build_from_real_telemetry', args.profile, args.pack_id, lambda log: build_from_real_telemetry(args.profile, args.pack_id, args.force, log))
+    elif args.command == 'build-from-evaluation-snapshot':
+        result = run_action('build_from_evaluation_snapshot', args.profile, args.new_pack_id, lambda log: build_from_evaluation_snapshot(args.profile, args.pack, args.new_pack_id, log))
     elif args.command == 'export-llm-prompt':
         result = run_action('export_llm_prompt', args.profile, args.pack, lambda log: export_llm_prompt(args.profile, args.pack, log))
     elif args.command == 'import-llm-candidates':
@@ -204,6 +211,32 @@ def build_from_real_telemetry(profile_id: str, pack_id: str, force: bool, log: d
         'real_telemetry_snapshot_path': to_relative(snapshot_path),
         'snapshot_summary': summary,
         'rebuild_uses_real_telemetry': True,
+    }
+
+
+def build_from_evaluation_snapshot(profile_id: str, content_pack_id: str, new_pack_id: str, log: dict[str, Any]) -> dict[str, Any]:
+    ensure_pack_write_allowed(profile_id, new_pack_id, force=False)
+    run_step(
+        log,
+        [
+            sys.executable,
+            str(TOOLS_DIR / 'aigc_build_from_evaluation_snapshot.py'),
+            '--profile',
+            profile_id,
+            '--pack',
+            content_pack_id,
+            '--new-pack-id',
+            new_pack_id,
+        ],
+    )
+    refresh_review(log)
+    generated_dir = switch_lib.resolve_generated_dir(profile_id, new_pack_id)
+    return {
+        'profile_id': profile_id,
+        'source_content_pack_id': content_pack_id,
+        'new_pack_id': new_pack_id,
+        'generated_dir': to_relative(generated_dir),
+        'rebuild_uses_real_evaluation': True,
     }
 
 

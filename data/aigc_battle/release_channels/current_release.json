@@ -6,7 +6,7 @@
   "release_status": "active",
   "release_manifest_path": "data/aigc_battle/release/release_manifest_weapon_followup_v0_1__weapon_followup_v0_1_formal_sequence_pack_001.json",
   "review_report_path": "data/aigc_battle/generated/review/review_report_weapon_followup_v0_1__weapon_followup_v0_1_formal_sequence_pack_001.md",
-  "activated_at": "2026-05-11T07:19:05.231857+00:00",
+  "activated_at": "2026-05-11T09:52:07.727438+00:00",
   "formal_entry_enabled": true,
   "fallback_enabled": true,
   "fallback_profile_id": "posture_opening_pressure_v0_1",

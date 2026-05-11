@@ -20,4 +20,7 @@
 - weapon_followup_ai_candidate_pack_001 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_ai_candidate_pack_probe_001 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_ai_candidate_pack_probe_002 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_eval_rebuild_001 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_eval_rebuild_002 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_eval_rebuild_003 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_real_rebuild_001 | mode=profile_pack_dir | active=false | export=true

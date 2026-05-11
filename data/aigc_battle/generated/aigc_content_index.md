@@ -6,7 +6,7 @@
 - Current Release: `weapon_followup_v0_1` / `weapon_followup_v0_1_formal_sequence_pack_001`
 - active_profile_drift_from_current_release: `False`
 - profile 数量: `7`
-- content pack 数量: `16`
+- content pack 数量: `19`
 
 | Active | Profile | Pack | Mode | Encounters | Cards | Decks | Rewards | Export | Balance | Runtime Export | Primitive | Detail |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | --- | --- | --- | --- | --- |
@@ -25,6 +25,9 @@
 |  | `weapon_followup_v0_1` | `weapon_followup_ai_candidate_pack_001` | `profile_pack_dir` | 15 | 41 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
 |  | `weapon_followup_v0_1` | `weapon_followup_ai_candidate_pack_probe_001` | `profile_pack_dir` | 15 | 41 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
 |  | `weapon_followup_v0_1` | `weapon_followup_ai_candidate_pack_probe_002` | `profile_pack_dir` | 15 | 41 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
+|  | `weapon_followup_v0_1` | `weapon_followup_eval_rebuild_001` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
+|  | `weapon_followup_v0_1` | `weapon_followup_eval_rebuild_002` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
+|  | `weapon_followup_v0_1` | `weapon_followup_eval_rebuild_003` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
 |  | `weapon_followup_v0_1` | `weapon_followup_real_rebuild_001` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
 
 ## 控制台命令

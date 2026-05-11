@@ -1,0 +1,13 @@
+{
+  "evaluation_dashboard_ready": true,
+  "evaluation_summary_ready": true,
+  "pack_snapshot_api_ready": true,
+  "rebuild_recommendations_api_ready": true,
+  "review_workspace_evaluation_ready": true,
+  "compare_matrix_evaluation_ready": true,
+  "build_from_evaluation_snapshot_ready": true,
+  "invalid_request_rejected": true,
+  "current_release_unchanged": true,
+  "active_profile_matches_current_release": true,
+  "probe_pass": true
+}
