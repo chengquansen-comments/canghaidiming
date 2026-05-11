@@ -1,7 +1,7 @@
 # 内容包明细：posture_opening_pressure_v0_1 / posture_opening_pressure_v0_1_formal_sequence_pack_001
 
 - pack_storage_mode: profile_root
-- is_active_pack: true
+- is_active_pack: false
 - formal_encounter_total_count: 15
 - card_count: 40
 - deck_count: 15

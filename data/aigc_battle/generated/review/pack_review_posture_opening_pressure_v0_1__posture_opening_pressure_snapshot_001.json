@@ -9459,10 +9459,23 @@
   "review_status": "pending",
   "reviewer": "",
   "recommended_action": "safe_to_test",
+  "llm_candidate_source": false,
+  "accepted_candidate_count": 0,
+  "rejected_candidate_count": 0,
+  "deterministic_fill_used": false,
+  "candidate_diff_summary": {},
+  "candidate_rejection_summary": {},
+  "ai_pack_ready_for_review": false,
   "release_status": "draft",
   "frozen": false,
   "release_candidate": false,
+  "active_release": false,
   "archived": false,
+  "rollback_available": false,
+  "suggested_git_commands": {
+    "suggested_git_commit_command": "",
+    "suggested_git_tag_command": ""
+  },
   "active_history_summary": {
     "switch_count": 0,
     "latest_switch": {}

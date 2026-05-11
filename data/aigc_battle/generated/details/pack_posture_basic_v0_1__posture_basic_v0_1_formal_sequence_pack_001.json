@@ -4,6 +4,13 @@
   "pack_storage_mode": "profile_root",
   "runtime_manifest_path": "data/aigc_battle/generated/posture_basic_v0_1/runtime_manifest.json",
   "is_active_pack": false,
+  "release_channel_membership": {
+    "is_current_release": false,
+    "is_candidate_release": false,
+    "is_fallback_release": false,
+    "current_release_smoke_test_status": "",
+    "current_release_last_smoke_report_path": ""
+  },
   "target_sequence_id": "formal_sequence_mvp_v1",
   "replacement_mode": "full_sequence",
   "formal_encounter_total_count": 15,
@@ -219,7 +226,24 @@
     "opening_pressure_all_slots_covered": true,
     "opening_pressure_values_in_range": true,
     "opening_pressure_curve_ready": true,
+    "weapon_followup_declared": false,
+    "weapon_followup_cards_present": true,
+    "weapon_followup_decks_present": true,
+    "weapon_followup_all_slots_covered": true,
+    "weapon_followup_chain_valid": true,
+    "weapon_followup_values_in_range": true,
+    "weapon_followup_curve_ready": true,
+    "weapon_followup_runtime_export_allowed": true,
     "runtime_primitive_playable": true
+  },
+  "ai_source_trace": {
+    "llm_candidate_source": false,
+    "accepted_candidate_count": 0,
+    "rejected_candidate_count": 0,
+    "deterministic_fill_used": false,
+    "candidate_import_report_path": "",
+    "candidate_diff_report_path": "",
+    "built_from_llm_candidates": false
   },
   "card_pool_summary": {
     "card_count": 40,

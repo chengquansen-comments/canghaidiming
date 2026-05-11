@@ -1,0 +1,16 @@
+{
+  "current_release_valid": true,
+  "current_release_activated": true,
+  "active_release_pack_visible": true,
+  "player_formal_entry_uses_ai_pack": true,
+  "full_sequence_generated_loadout_count": 15,
+  "fallback_loadout_count": 0,
+  "reward_coverage_complete": true,
+  "sequence_balance_pass": true,
+  "runtime_primitive_ready": true,
+  "weapon_followup_runtime_ready": true,
+  "release_candidate_playable": true,
+  "rollback_to_fallback_ready": true,
+  "smoke_pass": true,
+  "rollback_performed": false
+}

@@ -1,0 +1,21 @@
+{
+  "playable_ai_release_ready": true,
+  "current_release_profile_id": "weapon_followup_v0_1",
+  "current_release_content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+  "fallback_release_profile_id": "posture_opening_pressure_v0_1",
+  "fallback_release_content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+  "player_formal_entry_uses_ai_pack": true,
+  "active_release_pack_visible": true,
+  "full_sequence_generated_loadout_count": 15,
+  "formal_encounter_total_count": 15,
+  "fallback_loadout_count": 0,
+  "reward_coverage_complete": true,
+  "weapon_followup_or_selected_mechanic_runtime_ready": true,
+  "release_candidate_playable": true,
+  "rollback_to_fallback_ready": true,
+  "dashboard_release_channel_ready": true,
+  "active_profile_matches_current_release": true,
+  "smoke_pass": true,
+  "rollback_performed": false,
+  "probe_pass": true
+}

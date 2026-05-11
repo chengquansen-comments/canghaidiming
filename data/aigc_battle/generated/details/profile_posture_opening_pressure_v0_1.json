@@ -3,7 +3,7 @@
   "display_name": "开场压迫架势战斗 v0.1",
   "version": "0.1.0",
   "content_pack_count": 4,
-  "active_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+  "active_pack_id": "",
   "resources": [
     "hp",
     "posture",
@@ -186,13 +186,13 @@
   "validation_gate_summary": {
     "ready_packs": 4,
     "total_packs": 4,
-    "active_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001"
+    "active_pack_id": ""
   },
   "profile_pack_list": [
     {
       "content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
       "pack_storage_mode": "profile_root",
-      "is_active_pack": true,
+      "is_active_pack": false,
       "ready_for_runtime_export": true,
       "sequence_balance_pass": true,
       "runtime_primitives": [

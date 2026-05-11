@@ -2,7 +2,7 @@
 
 - display_name: 本地候选导入架势战斗 v0.1
 - version: 0.1.0
-- active_pack_id: 
+- active_pack_id: (none)
 - target_sequence_id: formal_sequence_mvp_v1
 - replacement_mode: full_sequence
 - runtime_primitives: -

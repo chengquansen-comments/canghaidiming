@@ -1,0 +1,21 @@
+# R1 Playable AI Release Probe
+
+- playable_ai_release_ready: `True`
+- current_release_profile_id: `weapon_followup_v0_1`
+- current_release_content_pack_id: `weapon_followup_v0_1_formal_sequence_pack_001`
+- fallback_release_profile_id: `posture_opening_pressure_v0_1`
+- fallback_release_content_pack_id: `posture_opening_pressure_v0_1_formal_sequence_pack_001`
+- player_formal_entry_uses_ai_pack: `True`
+- active_release_pack_visible: `True`
+- full_sequence_generated_loadout_count: `15`
+- formal_encounter_total_count: `15`
+- fallback_loadout_count: `0`
+- reward_coverage_complete: `True`
+- weapon_followup_or_selected_mechanic_runtime_ready: `True`
+- release_candidate_playable: `True`
+- rollback_to_fallback_ready: `True`
+- dashboard_release_channel_ready: `True`
+- active_profile_matches_current_release: `True`
+- smoke_pass: `True`
+- rollback_performed: `False`
+- probe_pass: `True`

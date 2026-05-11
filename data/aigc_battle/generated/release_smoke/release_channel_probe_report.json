@@ -1,0 +1,12 @@
+{
+  "release_channels_ready": true,
+  "current_release_ready": true,
+  "fallback_release_ready": true,
+  "current_release_valid": true,
+  "fallback_release_valid": true,
+  "activate_current_ready": true,
+  "rollback_to_fallback_ready": true,
+  "channel_api_ready": true,
+  "invalid_release_pack_rejected": true,
+  "probe_pass": true
+}

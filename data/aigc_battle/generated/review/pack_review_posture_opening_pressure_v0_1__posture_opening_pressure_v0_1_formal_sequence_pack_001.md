@@ -1,7 +1,7 @@
 # Pack 审核表：posture_opening_pressure_v0_1 / posture_opening_pressure_v0_1_formal_sequence_pack_001
 
 ## 包基本信息
-- active: 是
+- active: 否
 - pack_storage_mode: `profile_root`
 - runtime_manifest_path: `data/aigc_battle/generated/posture_opening_pressure_v0_1/runtime_manifest.json`
 - target_sequence_id: `formal_sequence_mvp_v1`

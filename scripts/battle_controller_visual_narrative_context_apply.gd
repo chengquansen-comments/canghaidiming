@@ -88,6 +88,19 @@ func _apply_runtime_primitives(loadout: Dictionary) -> void:
 	last_opening_pressure_enemy_block_bonus = 0
 	last_opening_pressure_applied = false
 	last_opening_pressure_applied_fields.clear()
+	last_weapon_followup_enabled = false
+	last_weapon_followup_expected_chain_count = 0
+	last_weapon_followup_primary_weapon_style = ""
+	last_weapon_followup_pressure_level = ""
+	last_weapon_followup_triggered = false
+	last_weapon_followup_trigger_count = 0
+	last_weapon_followup_bonus_applied = {}
+	last_weapon_followup_applied_fields.clear()
+	last_weapon_followup_card_id = ""
+	last_weapon_followup_group = ""
+	last_weapon_followup_trigger = ""
+	last_weapon_followup_error = ""
+	_runtime_generated_card_meta = {}
 	if enemy == null:
 		return
 	if not last_runtime_primitives.has("opening_pressure"):
@@ -107,6 +120,27 @@ func _apply_runtime_primitives(loadout: Dictionary) -> void:
 		enemy.add_guard(last_opening_pressure_enemy_block_bonus)
 		last_opening_pressure_applied_fields.append("enemy_start_block_bonus")
 	last_opening_pressure_applied = not last_opening_pressure_applied_fields.is_empty()
+	if last_runtime_primitives.has("weapon_followup"):
+		var weapon_followup: Dictionary = _dict(loadout.get("weapon_followup", {}))
+		last_weapon_followup_enabled = bool(weapon_followup.get("enabled", false))
+		last_weapon_followup_expected_chain_count = int(weapon_followup.get("expected_chain_count", 0))
+		last_weapon_followup_primary_weapon_style = str(weapon_followup.get("primary_weapon_style", ""))
+		last_weapon_followup_pressure_level = str(weapon_followup.get("pressure_level", ""))
+		for card_variant in loadout.get("cards", []):
+			if not (card_variant is Dictionary):
+				continue
+			var card: Dictionary = card_variant
+			var card_id := str(card.get("card_id", card.get("id", "")))
+			if card_id.is_empty():
+				continue
+			_runtime_generated_card_meta[card_id] = {
+				"followup_group": str(card.get("followup_group", "")),
+				"followup_trigger": str(card.get("followup_trigger", "")),
+				"followup_bonus": _dict(card.get("followup_bonus", {})),
+				"followup_chain_role": str(card.get("followup_chain_role", "standalone")),
+				"weapon_style": str(card.get("weapon_style", "")),
+				"tags": (card.get("tags", []) as Array).duplicate(),
+			}
 
 func _apply_battle_loadout_once(loadout: Dictionary) -> void:
 	if battle_loadout_applied:
@@ -123,6 +157,23 @@ func _apply_battle_loadout_once(loadout: Dictionary) -> void:
 	_clear_actor_runtime(true)
 	_clear_actor_runtime(false)
 	_apply_runtime_primitives(loadout)
+	var active_profile_summary: Dictionary = AigcBattleRuntimeManifestLoader.get_active_profile_summary()
+	var current_release: Dictionary = AigcBattleRuntimeManifestLoader.get_release_channel("current")
+	var fallback_release: Dictionary = AigcBattleRuntimeManifestLoader.get_release_channel("fallback")
+	last_release_profile_id = str(active_profile_summary.get("active_mechanic_profile_id", ""))
+	last_release_content_pack_id = str(active_profile_summary.get("active_content_pack_id", ""))
+	last_release_runtime_manifest_path = str(active_profile_summary.get("runtime_manifest_path", ""))
+	last_release_channel = "active_profile"
+	if last_release_profile_id == str(current_release.get("mechanic_profile_id", "")) and last_release_content_pack_id == str(current_release.get("content_pack_id", "")):
+		last_release_channel = "current"
+	elif last_release_profile_id == str(fallback_release.get("mechanic_profile_id", "")) and last_release_content_pack_id == str(fallback_release.get("content_pack_id", "")):
+		last_release_channel = "fallback"
+	last_formal_entry_uses_release_pack = str(loadout.get("loadout_source", "")) == "generated_manifest" and last_release_channel == "current"
+	last_formal_entry_fallback_used = str(loadout.get("loadout_source", "")) != "generated_manifest"
+	last_formal_entry_generated_loadout_count = 1 if str(loadout.get("loadout_source", "")) == "generated_manifest" else 0
+	last_formal_entry_fallback_loadout_count = 0 if str(loadout.get("loadout_source", "")) == "generated_manifest" else 1
+	_runtime_player_hp_start = player.hp
+	_runtime_enemy_hp_start = enemy.hp
 	if state_machine != null:
 		var settlement_mode: String = str(loadout.get("settlement_mode", ""))
 		if not settlement_mode.is_empty():

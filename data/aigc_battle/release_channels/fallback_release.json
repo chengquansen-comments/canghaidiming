@@ -1,0 +1,8 @@
+{
+  "channel": "fallback",
+  "mechanic_profile_id": "posture_opening_pressure_v0_1",
+  "content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+  "runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/runtime_manifest.json",
+  "release_status": "draft",
+  "reason": "rollback_target"
+}

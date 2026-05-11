@@ -1,7 +1,7 @@
 # AIGC Battle 审核报告：posture_opening_pressure_v0_1 / posture_opening_pressure_v0_1_formal_sequence_pack_001
 
 ## 1. 包基本信息
-- active: 是
+- active: 否
 - pack_storage_mode: `profile_root`
 - target_sequence_id: `formal_sequence_mvp_v1`
 - replacement_mode: `full_sequence`

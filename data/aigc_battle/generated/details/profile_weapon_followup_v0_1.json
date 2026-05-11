@@ -1,0 +1,228 @@
+{
+  "mechanic_profile_id": "weapon_followup_v0_1",
+  "display_name": "武器追击机制",
+  "version": "0.1.0",
+  "content_pack_count": 5,
+  "active_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+  "resources": [
+    "hp",
+    "posture",
+    "block"
+  ],
+  "card_types": [
+    "attack",
+    "defense",
+    "skill"
+  ],
+  "weapon_styles": [
+    "spearman",
+    "blademaster"
+  ],
+  "allowed_design_effects": [
+    "damage",
+    "gain_block",
+    "gain_momentum",
+    "break_momentum"
+  ],
+  "allowed_runtime_effects": [
+    "damage",
+    "gain_block",
+    "gain_momentum",
+    "break_momentum"
+  ],
+  "runtime_primitives": [
+    "weapon_followup"
+  ],
+  "runtime_primitive_constraints": {
+    "weapon_followup": {
+      "max_followup_links_per_deck": 4,
+      "max_bonus_damage": 4,
+      "max_bonus_momentum": 2,
+      "max_bonus_block": 4,
+      "allowed_triggers": [
+        "same_weapon_previous_card",
+        "specific_tag_previous_card",
+        "stance_gain_previous_card"
+      ]
+    }
+  },
+  "card_constraints": {
+    "min_cost": 0,
+    "max_cost": 2,
+    "min_power_score": 2,
+    "max_power_score": 9
+  },
+  "deck_constraints": {
+    "min_deck_size": 6,
+    "max_deck_size": 8,
+    "max_same_card": 2
+  },
+  "power_model": {
+    "damage_weight": 1.0,
+    "block_weight": 1.0,
+    "gain_momentum_weight": 0.8,
+    "break_momentum_weight": 0.8,
+    "difficulty_tiers": [
+      "normal",
+      "elite",
+      "boss"
+    ]
+  },
+  "card_eligibility_rules": {
+    "technique_requires_player_realm": true,
+    "forbid_required_wujing_above_player_cap": true,
+    "forbid_closing_form_above_player_cap": true,
+    "missing_realm_metadata_policy": "fail"
+  },
+  "player_progression_policy": {
+    "default_player_wujing_cap": 1,
+    "tier_wujing_cap": {
+      "early": 1,
+      "mid": 2,
+      "late": 3,
+      "boss": 4
+    }
+  },
+  "balance_policy": {
+    "sequence_tiers": [
+      {
+        "tier": "early",
+        "position_min": 1,
+        "position_max_ratio": 0.34,
+        "deck_power_min": 20,
+        "deck_power_max": 30,
+        "reward_tier": "basic"
+      },
+      {
+        "tier": "mid",
+        "position_min_ratio": 0.34,
+        "position_max_ratio": 0.67,
+        "deck_power_min": 28,
+        "deck_power_max": 38,
+        "reward_tier": "standard"
+      },
+      {
+        "tier": "late",
+        "position_min_ratio": 0.67,
+        "position_max_ratio": 0.95,
+        "deck_power_min": 40,
+        "deck_power_max": 50,
+        "reward_tier": "advanced"
+      },
+      {
+        "tier": "boss",
+        "deck_power_min": 52,
+        "deck_power_max": 62,
+        "reward_tier": "boss"
+      }
+    ],
+    "enemy_role_curve": {
+      "early": [
+        "spearman",
+        "blademaster"
+      ],
+      "mid": [
+        "blademaster",
+        "spearman"
+      ],
+      "late": [
+        "spearman",
+        "blademaster"
+      ],
+      "boss": [
+        "spearman",
+        "blademaster"
+      ]
+    },
+    "boss_keywords": [
+      "boss",
+      "wakou_leader",
+      "final"
+    ],
+    "elite_keywords": [
+      "trial",
+      "duel",
+      "officer",
+      "escort",
+      "transport",
+      "mutiny",
+      "gu_chengyue",
+      "shen_zhaoye",
+      "qi_heng"
+    ],
+    "elite_power_bonus_min": 3,
+    "elite_power_bonus_max": 5,
+    "min_late_avg_power_over_early": 20
+  },
+  "reward_generation_policy": {
+    "per_battle_slot_reward": true,
+    "reward_types": [
+      "card_pick",
+      "resource"
+    ]
+  },
+  "runtime_primitive_policy": {},
+  "candidate_import_policy": {},
+  "target_sequence_id": "formal_sequence_mvp_v1",
+  "replacement_mode": "full_sequence",
+  "content_recipe_id": "weapon_followup_formal_sequence_recipe",
+  "validation_gate_summary": {
+    "ready_packs": 5,
+    "total_packs": 5,
+    "active_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001"
+  },
+  "profile_pack_list": [
+    {
+      "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+      "pack_storage_mode": "profile_root",
+      "is_active_pack": true,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_ai_candidate_pack_001",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_ai_candidate_pack_probe_001",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_ai_candidate_pack_probe_002",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_real_rebuild_001",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    }
+  ],
+  "profile_diff_summary": {},
+  "missing_fields": []
+}

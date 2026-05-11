@@ -9049,6 +9049,14 @@
       "opening_pressure_all_slots_covered": true,
       "opening_pressure_values_in_range": true,
       "opening_pressure_curve_ready": true,
+      "weapon_followup_declared": false,
+      "weapon_followup_cards_present": true,
+      "weapon_followup_decks_present": true,
+      "weapon_followup_all_slots_covered": true,
+      "weapon_followup_chain_valid": true,
+      "weapon_followup_values_in_range": true,
+      "weapon_followup_curve_ready": true,
+      "weapon_followup_runtime_export_allowed": true,
       "runtime_primitive_playable": true
     },
     "missing_reports": [
@@ -9078,10 +9086,23 @@
   "review_status": "pending",
   "reviewer": "",
   "recommended_action": "safe_to_test",
+  "llm_candidate_source": false,
+  "accepted_candidate_count": 0,
+  "rejected_candidate_count": 0,
+  "deterministic_fill_used": false,
+  "candidate_diff_summary": {},
+  "candidate_rejection_summary": {},
+  "ai_pack_ready_for_review": false,
   "release_status": "draft",
   "frozen": false,
   "release_candidate": false,
+  "active_release": false,
   "archived": false,
+  "rollback_available": false,
+  "suggested_git_commands": {
+    "suggested_git_commit_command": "",
+    "suggested_git_tag_command": ""
+  },
   "active_history_summary": {
     "switch_count": 0,
     "latest_switch": {}

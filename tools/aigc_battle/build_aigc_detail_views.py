@@ -12,6 +12,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from tools.aigc_battle import build_aigc_content_index as index_lib
+from tools.aigc_battle import aigc_release_gate as release_lib
 from tools.aigc_battle import switch_active_profile as switch_lib
 
 GENERATED_ROOT = ROOT / 'data' / 'aigc_battle' / 'generated'
@@ -118,6 +119,10 @@ def build_pack_detail(profile_id: str, pack_entry: dict[str, Any]) -> None:
     rebuild_probe = try_read_json(generated_dir / 'rebuild_from_snapshot_probe_report.json') or {}
     content_pack_summary = try_read_json(generated_dir / 'content_pack_summary.json') or {}
     snapshot_summary = try_read_json(generated_dir / 'snapshot_summary.json') or {}
+    release_channels = release_lib.show_channels()
+    current_release = release_channels.get('current_release', {})
+    candidate_release = release_channels.get('candidate_release', {})
+    fallback_release = release_channels.get('fallback_release', {})
 
     card_index = {str(card.get('card_id', '')): card for card in cards}
     deck_index = {str(deck.get('deck_id', '')): deck for deck in decks}
@@ -288,6 +293,13 @@ def build_pack_detail(profile_id: str, pack_entry: dict[str, Any]) -> None:
         'pack_storage_mode': pack_entry.get('pack_storage_mode', ''),
         'runtime_manifest_path': pack_entry.get('runtime_manifest_path', ''),
         'is_active_pack': pack_entry.get('is_active_pack', False),
+        'release_channel_membership': {
+            'is_current_release': profile_id == str(current_release.get('mechanic_profile_id', '')) and content_pack_id == str(current_release.get('content_pack_id', '')),
+            'is_candidate_release': profile_id == str(candidate_release.get('mechanic_profile_id', '')) and content_pack_id == str(candidate_release.get('content_pack_id', '')),
+            'is_fallback_release': profile_id == str(fallback_release.get('mechanic_profile_id', '')) and content_pack_id == str(fallback_release.get('content_pack_id', '')),
+            'current_release_smoke_test_status': str(current_release.get('smoke_test_status', '')) if profile_id == str(current_release.get('mechanic_profile_id', '')) and content_pack_id == str(current_release.get('content_pack_id', '')) else '',
+            'current_release_last_smoke_report_path': str(current_release.get('last_smoke_report_path', '')) if profile_id == str(current_release.get('mechanic_profile_id', '')) and content_pack_id == str(current_release.get('content_pack_id', '')) else '',
+        },
         'target_sequence_id': runtime_manifest.get('target_sequence_id', ''),
         'replacement_mode': runtime_manifest.get('replacement_mode', ''),
         'formal_encounter_total_count': len(sequence_detail),
@@ -309,6 +321,15 @@ def build_pack_detail(profile_id: str, pack_entry: dict[str, Any]) -> None:
         'telemetry_summary': telemetry_probe or {'telemetry_event_count': snapshot.get('telemetry_event_count', 0)},
         'snapshot_summary': snapshot or snapshot_summary,
         'runtime_primitive_summary': primitive_probe or runtime_manifest.get('runtime_primitive_summary', {}),
+        'ai_source_trace': {
+            'llm_candidate_source': bool(content_pack_summary.get('llm_candidate_source', False)),
+            'accepted_candidate_count': int(content_pack_summary.get('accepted_candidate_count', 0)),
+            'rejected_candidate_count': int(content_pack_summary.get('rejected_candidate_count', 0)),
+            'deterministic_fill_used': bool(content_pack_summary.get('deterministic_fill_used', False)),
+            'candidate_import_report_path': str(content_pack_summary.get('candidate_import_report_path', '')),
+            'candidate_diff_report_path': str(content_pack_summary.get('candidate_diff_report_path', '')),
+            'built_from_llm_candidates': bool(content_pack_summary.get('built_from_llm_candidates', False)),
+        },
         'card_pool_summary': {
             'card_count': len(cards),
             'used_card_count': len(used_card_ids),
@@ -349,7 +370,7 @@ def build_profile_markdown(detail: dict[str, Any]) -> str:
         '',
         f"- display_name: {detail.get('display_name', '')}",
         f"- version: {detail.get('version', '')}",
-        f"- active_pack_id: {detail.get('active_pack_id', '')}",
+        f"- active_pack_id: {detail.get('active_pack_id', '(none)') or '(none)'}",
         f"- target_sequence_id: {detail.get('target_sequence_id', '')}",
         f"- replacement_mode: {detail.get('replacement_mode', '')}",
         f"- runtime_primitives: {', '.join(detail.get('runtime_primitives', [])) or '-'}",

@@ -2,6 +2,7 @@ extends RefCounted
 class_name AigcBattleRuntimeManifestLoader
 
 const ACTIVE_PROFILE_PATH := "res://data/aigc_battle/runtime/active_profile.json"
+const RELEASE_CHANNELS_DIR := "res://data/aigc_battle/release_channels/"
 
 static var _loaded := false
 static var _last_error := ""
@@ -107,6 +108,19 @@ static func get_opening_pressure(formal_encounter_id: String, formal_battle_id: 
 	return {}
 
 
+static func get_weapon_followup(formal_encounter_id: String, formal_battle_id: String = "") -> Dictionary:
+	if not _loaded and not load_active_manifest():
+		return {}
+	var loadout := get_generated_loadout(formal_encounter_id, formal_battle_id)
+	if loadout.is_empty():
+		return {}
+	var weapon_followup = loadout.get("weapon_followup", {})
+	if weapon_followup is Dictionary:
+		return (weapon_followup as Dictionary).duplicate(true)
+	_last_error = "weapon_followup missing for: %s|%s" % [formal_encounter_id, formal_battle_id]
+	return {}
+
+
 static func get_generated_loadout(formal_encounter_id: String, formal_battle_id: String = "") -> Dictionary:
 	if not _loaded and not load_active_manifest():
 		return {}
@@ -141,6 +155,11 @@ static func get_generated_loadout(formal_encounter_id: String, formal_battle_id:
 		"difficulty_tier": str(slot.get("difficulty_tier", deck.get("difficulty_tier", ""))),
 		"runtime_primitives": (slot.get("runtime_primitives", []) as Array).duplicate(),
 		"opening_pressure": (slot.get("opening_pressure", {}) as Dictionary).duplicate(true),
+		"weapon_followup": (slot.get("weapon_followup", {}) as Dictionary).duplicate(true),
+		"followup_chain_count": int(deck.get("followup_chain_count", 0)),
+		"followup_card_count": int(deck.get("followup_card_count", 0)),
+		"followup_density": float(deck.get("followup_density", 0.0)),
+		"followup_groups": (deck.get("followup_groups", []) as Array).duplicate(),
 		"card_ids": (deck.get("card_ids", []) as Array).duplicate(),
 		"cards": cards,
 		"reward_source": "generated_manifest",
@@ -163,6 +182,19 @@ static func get_manifest_summary() -> Dictionary:
 		"card_count": (_runtime_manifest.get("cards", []) as Array).size(),
 		"reward_count": (_runtime_manifest.get("rewards", []) as Array).size(),
 	}
+
+
+static func get_active_profile_summary() -> Dictionary:
+	if not _loaded and not load_active_manifest():
+		return {}
+	return _active_profile.duplicate(true)
+
+
+static func get_release_channel(channel_id: String) -> Dictionary:
+	if channel_id.is_empty():
+		return {}
+	var path := "%s%s_release.json" % [RELEASE_CHANNELS_DIR, channel_id]
+	return _read_json_dict(path)
 
 
 static func _build_indexes() -> void:

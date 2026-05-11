@@ -147,3 +147,26 @@ v2 目标是 `full sequence reward / progression closure`：
 - Review Notes 独立存储在 `data/aigc_battle/review_notes/`，不修改 generated 内容。
 - Release Manifest 独立存储在 `data/aigc_battle/release/`，不修改 generated 内容。
 - Pack Factory / switch / rollback / freeze / archive / probe 全部必须串行执行，禁止并行。
+
+## P2
+- P2 是 Playable Mechanic Loop。
+- 新增 `weapon_followup_v0_1` 机制包，目标是把可生产内容推进到真实玩家可感机制。
+- `weapon_followup` 是真实战斗 primitive，不是只做链路验证的 metadata。
+- full sequence 15 场 formal encounter 必须覆盖 followup card / deck / battle_slot runtime metadata。
+- validator / export / loader / runtime apply / telemetry / dashboard 都要理解 `weapon_followup`。
+- real telemetry 至少记录 `turn_count` / `hp_delta` / `card usage` / `weapon_followup_trigger_count`，不允许继续停留在全 `minimal`。
+- `build_real_telemetry_snapshot.py` 负责从实战 JSONL 生成规则化平衡建议，不做机器学习。
+- `build-from-real-telemetry` 读取 snapshot 后做最小调参，再走 validate / export / review 刷新。
+- 旧 profile 在无 followup 字段时行为必须保持兼容。
+- build / validate / export / switch / telemetry / rebuild / probe 必须串行执行，禁止并行。
+
+## R1
+- R1 是 Playable AI Release。
+- R1 目标是让游戏正式流程默认体验 AI release pack，而不是只在控制台里可切包。
+- Release Channel 分为 `current` / `candidate` / `fallback` / `archived`；`current` / `candidate` / `fallback` 独立存储在 `data/aigc_battle/release_channels/`。
+- 正式流程仍只读取 `data/aigc_battle/runtime/active_profile.json`；R1 通过 `activate-current` 把 `current_release` 安全切到 `active_profile`，不在 Godot 运行时引入双入口。
+- `fallback` 只用于 rollback，不能掩盖 `current_release` smoke 失败。
+- formal entry smoke test 必须证明玩家走的是正式 narrative / formal battle entry，不是 debug-only，也不是 mini route。
+- `set-current` / `set-candidate` / `set-fallback` / `activate-current` / `rollback-to-fallback` / smoke / probe 都必须串行执行，禁止并行。
+- R1 推荐 `current_release = weapon_followup_v0_1 / weapon_followup_v0_1_formal_sequence_pack_001`。
+- R1 推荐 `fallback_release = posture_opening_pressure_v0_1 / posture_opening_pressure_v0_1_formal_sequence_pack_001`。

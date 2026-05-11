@@ -1,20 +1,27 @@
 # AIGC Battle 外部内容总览
 
-- 当前 active profile: `posture_opening_pressure_v0_1`
-- 当前 active content pack: `posture_opening_pressure_v0_1_formal_sequence_pack_001`
-- 当前 manifest: `data/aigc_battle/generated/posture_opening_pressure_v0_1/runtime_manifest.json`
-- profile 数量: `4`
-- content pack 数量: `7`
+- 当前 active profile: `weapon_followup_v0_1`
+- 当前 active content pack: `weapon_followup_v0_1_formal_sequence_pack_001`
+- 当前 manifest: `data/aigc_battle/generated/weapon_followup_v0_1/runtime_manifest.json`
+- Current Release: `weapon_followup_v0_1` / `weapon_followup_v0_1_formal_sequence_pack_001`
+- active_profile_drift_from_current_release: `False`
+- profile 数量: `5`
+- content pack 数量: `12`
 
 | Active | Profile | Pack | Mode | Encounters | Cards | Decks | Rewards | Export | Balance | Runtime Export | Primitive | Detail |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | --- | --- | --- | --- | --- |
 |  | `posture_basic_v0_1` | `posture_basic_v0_1_formal_sequence_pack_001` | `profile_root` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `-` | ready |
 |  | `posture_llm_candidate_v0_1` | `posture_llm_candidate_v0_1_formal_sequence_pack_001` | `profile_root` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `-` | ready |
-| YES | `posture_opening_pressure_v0_1` | `posture_opening_pressure_v0_1_formal_sequence_pack_001` | `profile_root` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `opening_pressure` | ready |
+|  | `posture_opening_pressure_v0_1` | `posture_opening_pressure_v0_1_formal_sequence_pack_001` | `profile_root` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `opening_pressure` | ready |
 |  | `posture_opening_pressure_v0_1` | `posture_opening_pressure_p1_probe_snapshot_001` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `opening_pressure` | ready |
 |  | `posture_opening_pressure_v0_1` | `posture_opening_pressure_p1_probe_snapshot_002` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `opening_pressure` | ready |
 |  | `posture_opening_pressure_v0_1` | `posture_opening_pressure_snapshot_001` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `opening_pressure` | ready |
 |  | `posture_tuned_v0_1b` | `posture_tuned_v0_1b_formal_sequence_pack_001` | `profile_root` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `-` | ready |
+| YES | `weapon_followup_v0_1` | `weapon_followup_v0_1_formal_sequence_pack_001` | `profile_root` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
+|  | `weapon_followup_v0_1` | `weapon_followup_ai_candidate_pack_001` | `profile_pack_dir` | 15 | 41 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
+|  | `weapon_followup_v0_1` | `weapon_followup_ai_candidate_pack_probe_001` | `profile_pack_dir` | 15 | 41 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
+|  | `weapon_followup_v0_1` | `weapon_followup_ai_candidate_pack_probe_002` | `profile_pack_dir` | 15 | 41 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
+|  | `weapon_followup_v0_1` | `weapon_followup_real_rebuild_001` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
 
 ## 控制台命令
 

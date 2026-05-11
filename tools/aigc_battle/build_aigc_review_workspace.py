@@ -97,6 +97,9 @@ def main() -> int:
         'generated_at': datetime.now(timezone.utc).isoformat(),
         'active_profile_id': index_payload.get('active_profile_id', ''),
         'active_content_pack_id': index_payload.get('active_content_pack_id', ''),
+        'release_channels': index_payload.get('release_channels', {}),
+        'active_profile_matches_current_release': bool(index_payload.get('active_profile_matches_current_release', False)),
+        'active_profile_drift_from_current_release': bool(index_payload.get('active_profile_drift_from_current_release', False)),
         'profile_count': int(index_payload.get('profile_count', 0)),
         'content_pack_count': int(index_payload.get('content_pack_count', 0)),
         'active_pack_review_path': active_pack_review.get('pack_review_json_path', '') if active_pack_review else '',
@@ -355,8 +358,15 @@ def build_pack_review(index_payload: dict[str, Any], profile_id: str, pack_entry
         telemetry_risks.append(risk_item('info', 'snapshot_flag_only', 'snapshot 当前仅标记 flag。', profile_id, content_pack_id, suggested_action='needs_real_telemetry'))
     if detail.get('original_content_pack_id') or detail.get('snapshot_content_pack_id'):
         telemetry_risks.append(risk_item('info', 'snapshot_pack', '当前 pack 含 snapshot 关系信息。', profile_id, content_pack_id, suggested_action='ready_for_review'))
-    if 'llm_candidate' in profile_id or 'llm_candidate' in content_pack_id:
+    ai_trace = detail.get('ai_source_trace', {})
+    if 'llm_candidate' in profile_id or 'llm_candidate' in content_pack_id or ai_trace.get('llm_candidate_source'):
         telemetry_risks.append(risk_item('info', 'llm_candidate_import_source', '当前 pack 含 llm candidate import 来源。', profile_id, content_pack_id, suggested_action='ready_for_review'))
+    if ai_trace.get('deterministic_fill_used'):
+        telemetry_risks.append(risk_item('warning', 'deterministic_fill_used', 'AI pack 使用了 deterministic fill。', profile_id, content_pack_id, suggested_action='needs_review'))
+    if int(ai_trace.get('rejected_candidate_count', 0)) > 0:
+        telemetry_risks.append(risk_item('warning', 'rejected_candidate_count_present', '当前 AI pack 上下文存在 rejected candidates。', profile_id, content_pack_id, suggested_action='needs_review'))
+    if ai_trace.get('llm_candidate_source') and not ai_trace.get('candidate_diff_report_path'):
+        telemetry_risks.append(risk_item('warning', 'ai_pack_missing_candidate_diff', 'AI pack 缺少 candidate diff 报告。', profile_id, content_pack_id, suggested_action='needs_rebuild'))
 
     validation_risks = build_validation_risks(profile_id, content_pack_id, detail, encounter_rows)
     all_risks = validation_risks + encounter_risks + card_risks + deck_risks + reward_risks + telemetry_risks
@@ -422,10 +432,23 @@ def build_pack_review(index_payload: dict[str, Any], profile_id: str, pack_entry
         'review_status': review_notes.get('review_status', 'pending'),
         'reviewer': review_notes.get('reviewer', ''),
         'recommended_action': review_notes.get('recommended_action', recommended_action),
+        'llm_candidate_source': bool(ai_trace.get('llm_candidate_source', False)),
+        'accepted_candidate_count': int(ai_trace.get('accepted_candidate_count', 0)),
+        'rejected_candidate_count': int(ai_trace.get('rejected_candidate_count', 0)),
+        'deterministic_fill_used': bool(ai_trace.get('deterministic_fill_used', False)),
+        'candidate_diff_summary': load_optional_json(ai_trace.get('candidate_diff_report_path', '')),
+        'candidate_rejection_summary': load_optional_json(ai_trace.get('candidate_import_report_path', '')),
+        'ai_pack_ready_for_review': bool(ai_trace.get('built_from_llm_candidates', False)),
         'release_status': release_status.get('release_status', 'draft'),
         'frozen': bool(release_status.get('frozen', False)),
         'release_candidate': release_status.get('release_status') == 'release_candidate',
+        'active_release': release_status.get('release_status') == 'active',
         'archived': release_status.get('release_status') == 'archived',
+        'rollback_available': bool(release_status.get('rollback_available', False)),
+        'suggested_git_commands': {
+            'suggested_git_commit_command': release_status.get('suggested_git_commit_command', ''),
+            'suggested_git_tag_command': release_status.get('suggested_git_tag_command', ''),
+        },
         'active_history_summary': active_history_summary,
         'factory_log_summary': factory_log_summary,
         'all_risks': all_risks,
@@ -627,6 +650,8 @@ def build_compare_row(pack_review: dict[str, Any]) -> dict[str, Any]:
         'frozen': bool(pack_review.get('frozen', False)),
         'release_candidate': bool(pack_review.get('release_candidate', False)),
         'archived': bool(pack_review.get('archived', False)),
+        'llm_candidate_source': bool(pack_review.get('llm_candidate_source', False)),
+        'deterministic_fill_used': bool(pack_review.get('deterministic_fill_used', False)),
         'risk_count': pack_review['risk_summary']['risk_count'],
         'fail_count': pack_review['risk_summary']['fail_count'],
         'warning_count': pack_review['risk_summary']['warning_count'],
@@ -650,7 +675,7 @@ def build_compare_matrix(index_payload: dict[str, Any], rows: list[dict[str, Any
         'most_risky_pack': pack_ref(risky),
         'active_pack_rank_by_health': active_rank,
         'packs_with_runtime_primitives': [pack_ref(row) for row in rows if row.get('runtime_primitives')],
-        'packs_with_llm_candidate_source': [pack_ref(row) for row in rows if 'llm_candidate' in row.get('mechanic_profile_id', '') or 'llm_candidate' in row.get('content_pack_id', '')],
+        'packs_with_llm_candidate_source': [pack_ref(row) for row in rows if row.get('llm_candidate_source') or 'llm_candidate' in row.get('mechanic_profile_id', '') or 'llm_candidate' in row.get('content_pack_id', '')],
         'healthiest_pack': pack_ref(healthiest),
         'weakest_pack_by_avg_power': pack_ref(weakest),
     }
@@ -1106,6 +1131,15 @@ def default_review_notes(profile_id: str, content_pack_id: str) -> dict[str, Any
         'risk_decisions': {},
         'last_updated_at': '',
     }
+
+
+def load_optional_json(relative_path: str) -> dict[str, Any]:
+    if not relative_path:
+        return {}
+    path = ROOT / relative_path
+    if not path.exists():
+        return {}
+    return json.loads(path.read_text(encoding='utf-8'))
 
 
 def build_active_history_summary(profile_id: str, content_pack_id: str) -> dict[str, Any]:

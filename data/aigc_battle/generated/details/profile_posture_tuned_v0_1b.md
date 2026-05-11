@@ -2,7 +2,7 @@
 
 - display_name: 调校版架势战斗 v0.1b
 - version: 0.1.1
-- active_pack_id: 
+- active_pack_id: (none)
 - target_sequence_id: formal_sequence_mvp_v1
 - replacement_mode: full_sequence
 - runtime_primitives: -

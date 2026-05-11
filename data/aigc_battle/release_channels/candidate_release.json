@@ -1,0 +1,9 @@
+{
+  "channel": "candidate",
+  "mechanic_profile_id": "",
+  "content_pack_id": "",
+  "runtime_manifest_path": "",
+  "release_status": "pending",
+  "candidate_created_at": "",
+  "smoke_test_required": true
+}

@@ -12,35 +12,100 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from tools.aigc_battle import build_aigc_detail_views as detail_lib
 from tools.aigc_battle import build_aigc_review_workspace as review_lib
 from tools.aigc_battle import switch_active_profile as switch_lib
 
 RELEASE_DIR = ROOT / 'data' / 'aigc_battle' / 'release'
+RELEASE_CHANNELS_DIR = ROOT / 'data' / 'aigc_battle' / 'release_channels'
 REVIEW_NOTES_DIR = ROOT / 'data' / 'aigc_battle' / 'review_notes'
 DETAILS_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'details'
-REVIEW_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'review'
+RELEASE_SMOKE_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'release_smoke'
+RUNTIME_DIR = ROOT / 'data' / 'aigc_battle' / 'runtime'
+
+DEFAULT_CURRENT_PROFILE_ID = 'weapon_followup_v0_1'
+DEFAULT_CURRENT_PACK_ID = 'weapon_followup_v0_1_formal_sequence_pack_001'
+DEFAULT_FALLBACK_PROFILE_ID = 'posture_opening_pressure_v0_1'
+DEFAULT_FALLBACK_PACK_ID = 'posture_opening_pressure_v0_1_formal_sequence_pack_001'
 
 
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description='aigc release gate')
     sub = parser.add_subparsers(dest='command', required=True)
-    for name in ['freeze', 'mark-release-candidate', 'archive', 'report', 'status']:
+    for name in [
+        'freeze',
+        'mark-release-candidate',
+        'archive',
+        'report',
+        'status',
+        'activate-release-candidate',
+        'suggest-git-commands',
+    ]:
         sp = sub.add_parser(name)
         sp.add_argument('--profile', required=True)
         sp.add_argument('--pack', required=True)
+    set_status = sub.add_parser('set-status')
+    set_status.add_argument('--profile', required=True)
+    set_status.add_argument('--pack', required=True)
+    set_status.add_argument('--status', required=True)
+    sub.add_parser('rollback-release')
+    sub.add_parser('compare-release-candidates')
+
+    for name in ['set-current', 'set-candidate', 'set-fallback']:
+        sp = sub.add_parser(name)
+        sp.add_argument('--profile', required=True)
+        sp.add_argument('--pack', required=True)
+    sub.add_parser('activate-current')
+    sub.add_parser('rollback-to-fallback')
+    sub.add_parser('show-channels')
+
     args = parser.parse_args(argv[1:])
+    ensure_default_release_channels()
     if args.command == 'freeze':
         payload = freeze_pack(args.profile, args.pack)
+    elif args.command == 'set-status':
+        payload = set_release_status(args.profile, args.pack, args.status)
     elif args.command == 'mark-release-candidate':
         payload = mark_release_candidate(args.profile, args.pack)
+    elif args.command == 'activate-release-candidate':
+        payload = activate_release_candidate(args.profile, args.pack)
+    elif args.command == 'rollback-release':
+        payload = rollback_release()
     elif args.command == 'archive':
         payload = archive_pack(args.profile, args.pack)
     elif args.command == 'report':
         payload = generate_release_report(args.profile, args.pack)
+    elif args.command == 'compare-release-candidates':
+        payload = compare_release_candidates()
+    elif args.command == 'suggest-git-commands':
+        payload = suggest_git_commands(args.profile, args.pack)
+    elif args.command == 'set-current':
+        payload = set_release_channel('current', args.profile, args.pack)
+    elif args.command == 'set-candidate':
+        payload = set_release_channel('candidate', args.profile, args.pack)
+    elif args.command == 'set-fallback':
+        payload = set_release_channel('fallback', args.profile, args.pack)
+    elif args.command == 'activate-current':
+        payload = activate_current_release()
+    elif args.command == 'rollback-to-fallback':
+        payload = rollback_to_fallback()
+    elif args.command == 'show-channels':
+        payload = show_channels()
     else:
         payload = get_release_status(args.profile, args.pack)
     print(json.dumps(payload, ensure_ascii=False, indent=2))
     return 0
+
+
+def set_release_status(profile_id: str, content_pack_id: str, status: str) -> dict[str, Any]:
+    allowed = {'draft', 'reviewing', 'accepted', 'rejected', 'release_candidate', 'active', 'archived'}
+    if status not in allowed:
+        raise SystemExit('invalid release status')
+    manifest = get_release_status(profile_id, content_pack_id)
+    manifest['release_status'] = status
+    manifest['updated_at'] = now_iso()
+    write_json(release_manifest_path(profile_id, content_pack_id), manifest)
+    return manifest
 
 
 def freeze_pack(profile_id: str, content_pack_id: str) -> dict[str, Any]:
@@ -68,7 +133,9 @@ def freeze_pack(profile_id: str, content_pack_id: str) -> dict[str, Any]:
     manifest['frozen_at'] = now_iso()
     manifest['review_status'] = notes.get('review_status', 'pending')
     manifest['release_status'] = 'accepted' if notes.get('review_status') == 'accepted' else 'reviewing'
+    manifest['rollback_available'] = False
     manifest['updated_at'] = now_iso()
+    manifest.update(suggest_git_commands(profile_id, content_pack_id))
     write_json(release_manifest_path(profile_id, content_pack_id), manifest)
     return manifest
 
@@ -78,14 +145,58 @@ def mark_release_candidate(profile_id: str, content_pack_id: str) -> dict[str, A
     if not manifest.get('frozen', False):
         raise SystemExit('mark release candidate blocked: pack is not frozen')
     manifest['release_status'] = 'release_candidate'
+    manifest['release_candidate_id'] = f'{profile_id}__{content_pack_id}'
     manifest['updated_at'] = now_iso()
     write_json(release_manifest_path(profile_id, content_pack_id), manifest)
     return manifest
 
 
+def activate_release_candidate(profile_id: str, content_pack_id: str) -> dict[str, Any]:
+    manifest = get_release_status(profile_id, content_pack_id)
+    if manifest.get('release_status') != 'release_candidate':
+        raise SystemExit('activate blocked: pack is not release_candidate')
+    if not manifest.get('frozen', False):
+        raise SystemExit('activate blocked: pack is not frozen')
+    if str(manifest.get('review_status', 'pending')) != 'accepted':
+        raise SystemExit('activate blocked: review_status is not accepted')
+    previous_active = read_active_profile()
+    summary = switch_lib.switch_active_profile(profile_id, content_pack_id, switch_source='release_activation')
+    manifest['release_status'] = 'active'
+    manifest['activated_at'] = now_iso()
+    manifest['previous_active_profile_id'] = str(previous_active.get('active_mechanic_profile_id', ''))
+    manifest['previous_active_content_pack_id'] = str(previous_active.get('active_content_pack_id', ''))
+    manifest['rollback_available'] = True
+    manifest['updated_at'] = now_iso()
+    write_json(release_manifest_path(profile_id, content_pack_id), manifest)
+    if manifest['previous_active_profile_id'] and manifest['previous_active_content_pack_id']:
+        previous_manifest = get_release_status(manifest['previous_active_profile_id'], manifest['previous_active_content_pack_id'])
+        if previous_manifest.get('content_pack_id') != content_pack_id or previous_manifest.get('mechanic_profile_id') != profile_id:
+            previous_manifest['release_status'] = 'archived'
+            previous_manifest['archived_at'] = now_iso()
+            previous_manifest['updated_at'] = now_iso()
+            write_json(release_manifest_path(previous_manifest['mechanic_profile_id'], previous_manifest['content_pack_id']), previous_manifest)
+    return {'ok': True, 'summary': summary, 'manifest': manifest}
+
+
+def rollback_release() -> dict[str, Any]:
+    previous_active = read_active_profile()
+    result = switch_lib.rollback_active_profile(switch_source='release_rollback')
+    current_manifest = get_release_status(str(previous_active.get('active_mechanic_profile_id', '')), str(previous_active.get('active_content_pack_id', '')))
+    current_manifest['release_status'] = 'release_candidate'
+    current_manifest['rollback_available'] = False
+    current_manifest['updated_at'] = now_iso()
+    write_json(release_manifest_path(current_manifest['mechanic_profile_id'], current_manifest['content_pack_id']), current_manifest)
+    restored_manifest = get_release_status(result['rolled_back_to_profile_id'], result['rolled_back_to_content_pack_id'])
+    restored_manifest['release_status'] = 'active'
+    restored_manifest['updated_at'] = now_iso()
+    write_json(release_manifest_path(restored_manifest['mechanic_profile_id'], restored_manifest['content_pack_id']), restored_manifest)
+    return {'ok': True, **result}
+
+
 def archive_pack(profile_id: str, content_pack_id: str) -> dict[str, Any]:
     manifest = get_release_status(profile_id, content_pack_id)
     manifest['release_status'] = 'archived'
+    manifest['archived_at'] = now_iso()
     manifest['updated_at'] = now_iso()
     write_json(release_manifest_path(profile_id, content_pack_id), manifest)
     return manifest
@@ -125,6 +236,7 @@ def generate_release_report(profile_id: str, content_pack_id: str) -> dict[str, 
     report_path.write_text('\n'.join(lines) + '\n', encoding='utf-8')
     manifest['release_report_path'] = to_relative(report_path)
     manifest['updated_at'] = now_iso()
+    manifest.update(suggest_git_commands(profile_id, content_pack_id))
     write_json(release_manifest_path(profile_id, content_pack_id), manifest)
     return {'ok': True, 'release_report_path': manifest['release_report_path'], 'release_manifest_path': to_relative(release_manifest_path(profile_id, content_pack_id)), 'review_report_exists': review_report_path.exists()}
 
@@ -141,31 +253,318 @@ def get_release_status(profile_id: str, content_pack_id: str) -> dict[str, Any]:
 
 
 def build_release_manifest(profile_id: str, content_pack_id: str) -> dict[str, Any]:
-    load_pack_detail(profile_id, content_pack_id)
+    detail = load_pack_detail(profile_id, content_pack_id)
     notes = load_review_notes(profile_id, content_pack_id)
     report_path = review_lib.review_report_md_path(profile_id, content_pack_id)
-    detail_path = DETAILS_DIR / f'pack_{profile_id}__{content_pack_id}.json'
-    detail = read_json(detail_path)
-    is_active = bool(detail.get('is_active_pack', False))
+    switch_summary = switch_lib.validate_profile_ready(profile_id, content_pack_id)
+    is_active = active_profile_matches(profile_id, content_pack_id)
+    suggestions = build_git_suggestions(profile_id, content_pack_id)
     return {
         'mechanic_profile_id': profile_id,
         'content_pack_id': content_pack_id,
         'release_status': 'active' if is_active else 'draft',
         'frozen': False,
         'frozen_at': '',
+        'activated_at': '',
+        'archived_at': '',
         'review_status': notes.get('review_status', 'pending'),
+        'release_candidate_id': '',
+        'previous_active_profile_id': '',
+        'previous_active_content_pack_id': '',
+        'rollback_available': False,
         'review_notes_path': to_relative(review_notes_path(profile_id, content_pack_id)),
-        'runtime_manifest_path': str(detail.get('runtime_manifest_path', '')),
-        'validation_report_path': str(switch_lib.resolve_validation_report_path(profile_id, content_pack_id if detail.get('pack_storage_mode') == 'profile_pack_dir' else None).relative_to(ROOT).as_posix()),
+        'runtime_manifest_path': str(switch_summary.get('runtime_manifest_path', '')),
+        'validation_report_path': str(switch_summary.get('validation_report_path', '')),
         'review_report_path': to_relative(report_path),
         'release_report_path': to_relative(release_report_path(profile_id, content_pack_id)) if release_report_path(profile_id, content_pack_id).exists() else '',
+        'suggested_git_commit_command': suggestions['suggested_git_commit_command'],
+        'suggested_git_tag_command': suggestions['suggested_git_tag_command'],
+        'detail_path': to_relative(detail_lib.detail_pack_json_path(profile_id, content_pack_id)),
         'created_at': now_iso(),
         'updated_at': now_iso(),
+        'ready_for_runtime_export': bool(detail.get('validation_summary', {}).get('ready_for_runtime_export', False)),
+        'full_sequence_coverage_complete': bool(detail.get('validation_summary', {}).get('full_sequence_coverage_complete', False)),
+        'runtime_export_allowed': bool(detail.get('validation_summary', {}).get('runtime_export_allowed', False)),
+        'sequence_balance_pass': bool(detail.get('validation_summary', {}).get('sequence_balance_pass', False)),
     }
+
+
+def compare_release_candidates() -> dict[str, Any]:
+    rows: list[dict[str, Any]] = []
+    if RELEASE_DIR.exists():
+        for path in sorted(RELEASE_DIR.glob('release_manifest_*.json')):
+            manifest = read_json(path)
+            if manifest.get('release_status') not in {'release_candidate', 'active'}:
+                continue
+            rows.append({
+                'mechanic_profile_id': manifest.get('mechanic_profile_id', ''),
+                'content_pack_id': manifest.get('content_pack_id', ''),
+                'release_status': manifest.get('release_status', ''),
+                'review_status': manifest.get('review_status', ''),
+                'rollback_available': manifest.get('rollback_available', False),
+            })
+    return {'release_candidates': rows, 'compare_ready': True}
+
+
+def suggest_git_commands(profile_id: str, content_pack_id: str) -> dict[str, Any]:
+    return build_git_suggestions(profile_id, content_pack_id)
+
+
+def build_git_suggestions(profile_id: str, content_pack_id: str) -> dict[str, Any]:
+    slug = f'{profile_id}__{content_pack_id}'
+    return {
+        'suggested_git_commit_command': f'git commit -am "release: {slug}"',
+        'suggested_git_tag_command': f'git tag aigc-release/{slug}',
+    }
+
+
+def set_release_channel(channel: str, profile_id: str, content_pack_id: str) -> dict[str, Any]:
+    validated = validate_release_pack(profile_id, content_pack_id, allow_archived=(channel == 'fallback'))
+    previous = read_release_channel(channel)
+    payload = build_release_channel_payload(channel, validated)
+    if channel == 'current':
+        payload['activated_at'] = str(previous.get('activated_at', ''))
+        payload['formal_entry_enabled'] = True
+        payload['fallback_enabled'] = True
+        fallback = read_release_channel('fallback')
+        payload['fallback_profile_id'] = str(fallback.get('mechanic_profile_id', DEFAULT_FALLBACK_PROFILE_ID))
+        payload['fallback_content_pack_id'] = str(fallback.get('content_pack_id', DEFAULT_FALLBACK_PACK_ID))
+        payload['fallback_runtime_manifest_path'] = str(fallback.get('runtime_manifest_path', ''))
+        payload['smoke_test_status'] = str(previous.get('smoke_test_status', 'pending'))
+        payload['last_smoke_report_path'] = str(previous.get('last_smoke_report_path', ''))
+    elif channel == 'candidate':
+        payload['candidate_created_at'] = now_iso()
+        payload['smoke_test_required'] = True
+    elif channel == 'fallback':
+        payload['reason'] = 'rollback_target'
+    write_json(release_channel_path(channel), payload)
+    return payload
+
+
+def activate_current_release() -> dict[str, Any]:
+    current = read_release_channel('current', required=True)
+    fallback = read_release_channel('fallback', required=True)
+    validate_release_pack(str(current.get('mechanic_profile_id', '')), str(current.get('content_pack_id', '')), allow_archived=False)
+    validate_release_pack(str(fallback.get('mechanic_profile_id', '')), str(fallback.get('content_pack_id', '')), allow_archived=True)
+    previous_active = read_active_profile()
+    summary = switch_lib.switch_active_profile(str(current.get('mechanic_profile_id', '')), str(current.get('content_pack_id', '')), switch_source='release_channel_current')
+    active_profile = read_active_profile()
+    if not active_profile_matches(str(current.get('mechanic_profile_id', '')), str(current.get('content_pack_id', '')), active_profile):
+        raise SystemExit('activate-current failed: active profile does not match current_release')
+    current['activated_at'] = now_iso()
+    current['release_status'] = 'active'
+    current['formal_entry_enabled'] = True
+    current['fallback_enabled'] = True
+    current['fallback_profile_id'] = str(fallback.get('mechanic_profile_id', ''))
+    current['fallback_content_pack_id'] = str(fallback.get('content_pack_id', ''))
+    current['fallback_runtime_manifest_path'] = str(fallback.get('runtime_manifest_path', ''))
+    write_json(release_channel_path('current'), current)
+    update_release_manifest_after_switch(
+        previous_profile_id=str(previous_active.get('active_mechanic_profile_id', '')),
+        previous_content_pack_id=str(previous_active.get('active_content_pack_id', '')),
+        next_profile_id=str(current.get('mechanic_profile_id', '')),
+        next_content_pack_id=str(current.get('content_pack_id', '')),
+    )
+    return {
+        'ok': True,
+        'summary': summary,
+        'current_release': current,
+        'active_profile': active_profile,
+        'active_profile_matches_current_release': True,
+    }
+
+
+def rollback_to_fallback() -> dict[str, Any]:
+    fallback = read_release_channel('fallback', required=True)
+    validate_release_pack(str(fallback.get('mechanic_profile_id', '')), str(fallback.get('content_pack_id', '')), allow_archived=True)
+    previous_active = read_active_profile()
+    summary = switch_lib.switch_active_profile(str(fallback.get('mechanic_profile_id', '')), str(fallback.get('content_pack_id', '')), switch_source='release_channel_fallback')
+    active_profile = read_active_profile()
+    if not active_profile_matches(str(fallback.get('mechanic_profile_id', '')), str(fallback.get('content_pack_id', '')), active_profile):
+        raise SystemExit('rollback-to-fallback failed: active profile does not match fallback_release')
+    update_release_manifest_after_switch(
+        previous_profile_id=str(previous_active.get('active_mechanic_profile_id', '')),
+        previous_content_pack_id=str(previous_active.get('active_content_pack_id', '')),
+        next_profile_id=str(fallback.get('mechanic_profile_id', '')),
+        next_content_pack_id=str(fallback.get('content_pack_id', '')),
+    )
+    return {
+        'ok': True,
+        'summary': summary,
+        'fallback_release': fallback,
+        'active_profile': active_profile,
+        'active_profile_matches_fallback_release': True,
+    }
+
+
+def show_channels() -> dict[str, Any]:
+    ensure_default_release_channels()
+    current = read_release_channel('current')
+    candidate = read_release_channel('candidate')
+    fallback = read_release_channel('fallback')
+    active_profile = read_active_profile()
+    active_profile_id = str(active_profile.get('active_mechanic_profile_id', ''))
+    active_content_pack_id = str(active_profile.get('active_content_pack_id', ''))
+    current_match = active_profile_matches(str(current.get('mechanic_profile_id', '')), str(current.get('content_pack_id', '')), active_profile) if current else False
+    fallback_ready = False
+    if fallback:
+        try:
+            validate_release_pack(str(fallback.get('mechanic_profile_id', '')), str(fallback.get('content_pack_id', '')), allow_archived=True)
+            fallback_ready = True
+        except SystemExit:
+            fallback_ready = False
+    return {
+        'current_release': current,
+        'candidate_release': candidate,
+        'fallback_release': fallback,
+        'active_runtime': {
+            'active_profile_id': active_profile_id,
+            'active_content_pack_id': active_content_pack_id,
+            'runtime_manifest_path': str(active_profile.get('runtime_manifest_path', '')),
+            'matches_current_release': current_match,
+            'active_profile_drift_from_current_release': bool(current) and not current_match,
+        },
+        'rollback_to_fallback_ready': fallback_ready,
+    }
+
+
+def ensure_default_release_channels() -> None:
+    if not release_channel_path('fallback').exists():
+        set_release_channel('fallback', DEFAULT_FALLBACK_PROFILE_ID, DEFAULT_FALLBACK_PACK_ID)
+    if not release_channel_path('current').exists():
+        set_release_channel('current', DEFAULT_CURRENT_PROFILE_ID, DEFAULT_CURRENT_PACK_ID)
+    if not release_channel_path('candidate').exists():
+        write_json(release_channel_path('candidate'), {
+            'channel': 'candidate',
+            'mechanic_profile_id': '',
+            'content_pack_id': '',
+            'runtime_manifest_path': '',
+            'release_status': 'pending',
+            'candidate_created_at': '',
+            'smoke_test_required': True,
+        })
+
+
+def validate_release_pack(profile_id: str, content_pack_id: str, allow_archived: bool) -> dict[str, Any]:
+    switch_lib.ensure_safe_id(profile_id, 'profile_id')
+    switch_lib.ensure_safe_id(content_pack_id, 'content_pack_id')
+    switch_summary = switch_lib.validate_profile_ready(profile_id, content_pack_id)
+    detail = load_pack_detail(profile_id, content_pack_id)
+    validation = detail.get('validation_summary', {})
+    runtime_manifest = read_json(ROOT / str(switch_summary['runtime_manifest_path']))
+    runtime_primitives = [str(item) for item in runtime_manifest.get('runtime_primitives', [])]
+    checks = [
+        ('ready_for_runtime_export', bool(validation.get('ready_for_runtime_export', False))),
+        ('full_sequence_coverage_complete', bool(validation.get('full_sequence_coverage_complete', False))),
+        ('runtime_export_allowed', bool(validation.get('runtime_export_allowed', False))),
+        ('sequence_balance_pass', bool(validation.get('sequence_balance_pass', False))),
+    ]
+    if 'deck_card_realm_eligibility_valid' in validation:
+        checks.append(('deck_card_realm_eligibility_valid', bool(validation.get('deck_card_realm_eligibility_valid', False))))
+    if 'no_card_above_player_wujing_in_deck' in validation:
+        checks.append(('no_card_above_player_wujing_in_deck', bool(validation.get('no_card_above_player_wujing_in_deck', False))))
+    if 'realm_eligibility_valid' in validation:
+        checks.append(('realm_eligibility_valid', bool(validation.get('realm_eligibility_valid', False))))
+    if 'weapon_followup' in runtime_primitives:
+        checks.append(('weapon_followup_chain_valid', bool(read_validation_report(profile_id, content_pack_id).get('weapon_followup_chain_valid', False))))
+    rewards = runtime_manifest.get('rewards', [])
+    battle_slots = runtime_manifest.get('battle_slots', [])
+    checks.append(('reward_coverage_complete', len(rewards) == len(battle_slots) and len(rewards) > 0))
+    release_manifest = get_release_status(profile_id, content_pack_id)
+    if not allow_archived and str(release_manifest.get('release_status', '')) == 'archived':
+        raise SystemExit('release channel blocked: archived pack cannot be activated')
+    failed = [name for name, passed in checks if not passed]
+    if failed:
+        raise SystemExit('release channel blocked: ' + ', '.join(failed))
+    return {
+        'mechanic_profile_id': profile_id,
+        'content_pack_id': content_pack_id,
+        'runtime_manifest_path': str(switch_summary.get('runtime_manifest_path', '')),
+        'validation_report_path': str(switch_summary.get('validation_report_path', '')),
+        'release_status': str(release_manifest.get('release_status', 'draft')),
+        'release_manifest_path': to_relative(release_manifest_path(profile_id, content_pack_id)),
+        'review_report_path': to_relative(review_lib.review_report_md_path(profile_id, content_pack_id)),
+        'review_notes_path': to_relative(review_notes_path(profile_id, content_pack_id)),
+        'formal_encounter_total_count': int(detail.get('formal_encounter_total_count', 0)),
+        'runtime_primitives': runtime_primitives,
+        'reward_coverage_complete': len(rewards) == len(battle_slots) and len(rewards) > 0,
+        'validation_summary': validation,
+    }
+
+
+def build_release_channel_payload(channel: str, validated: dict[str, Any]) -> dict[str, Any]:
+    payload = {
+        'channel': channel,
+        'mechanic_profile_id': validated['mechanic_profile_id'],
+        'content_pack_id': validated['content_pack_id'],
+        'runtime_manifest_path': validated['runtime_manifest_path'],
+        'release_status': validated['release_status'],
+    }
+    if channel == 'current':
+        payload.update({
+            'release_manifest_path': validated['release_manifest_path'],
+            'review_report_path': validated['review_report_path'],
+            'activated_at': '',
+            'formal_entry_enabled': True,
+            'fallback_enabled': True,
+            'fallback_profile_id': DEFAULT_FALLBACK_PROFILE_ID,
+            'fallback_content_pack_id': DEFAULT_FALLBACK_PACK_ID,
+            'fallback_runtime_manifest_path': '',
+            'smoke_test_status': 'pending',
+            'last_smoke_report_path': '',
+        })
+    elif channel == 'candidate':
+        payload.update({
+            'candidate_created_at': '',
+            'smoke_test_required': True,
+        })
+    elif channel == 'fallback':
+        payload.update({
+            'reason': 'rollback_target',
+        })
+    return payload
+
+
+def update_release_manifest_after_switch(
+    previous_profile_id: str,
+    previous_content_pack_id: str,
+    next_profile_id: str,
+    next_content_pack_id: str,
+) -> None:
+    if previous_profile_id and previous_content_pack_id:
+        previous_manifest = get_release_status(previous_profile_id, previous_content_pack_id)
+        if previous_profile_id != next_profile_id or previous_content_pack_id != next_content_pack_id:
+            previous_manifest['release_status'] = 'accepted' if previous_manifest.get('frozen', False) else 'draft'
+            previous_manifest['rollback_available'] = False
+            previous_manifest['updated_at'] = now_iso()
+            write_json(release_manifest_path(previous_profile_id, previous_content_pack_id), previous_manifest)
+    next_manifest = get_release_status(next_profile_id, next_content_pack_id)
+    next_manifest['release_status'] = 'active'
+    next_manifest['activated_at'] = now_iso()
+    next_manifest['rollback_available'] = True
+    next_manifest['updated_at'] = now_iso()
+    write_json(release_manifest_path(next_profile_id, next_content_pack_id), next_manifest)
+
+
+def read_active_profile() -> dict[str, Any]:
+    path = RUNTIME_DIR / 'active_profile.json'
+    if not path.exists():
+        return {}
+    return read_json(path)
+
+
+def active_profile_matches(profile_id: str, content_pack_id: str, active_profile: dict[str, Any] | None = None) -> bool:
+    payload = active_profile or read_active_profile()
+    return (
+        str(payload.get('active_mechanic_profile_id', '')) == profile_id
+        and str(payload.get('active_content_pack_id', '')) == content_pack_id
+    )
 
 
 def load_pack_detail(profile_id: str, content_pack_id: str) -> dict[str, Any]:
     path = DETAILS_DIR / f'pack_{profile_id}__{content_pack_id}.json'
+    if not path.exists():
+        detail_lib.main()
     if not path.exists():
         raise SystemExit('pack detail not found')
     return read_json(path)
@@ -183,6 +582,26 @@ def load_review_notes(profile_id: str, content_pack_id: str) -> dict[str, Any]:
         'reviewer': '',
         'summary': '',
     }
+
+
+def read_validation_report(profile_id: str, content_pack_id: str) -> dict[str, Any]:
+    summary = switch_lib.validate_profile_ready(profile_id, content_pack_id)
+    return read_json(ROOT / str(summary.get('validation_report_path', '')))
+
+
+def read_release_channel(channel: str, required: bool = False) -> dict[str, Any]:
+    path = release_channel_path(channel)
+    if not path.exists():
+        if required:
+            raise SystemExit(f'{channel}_release.json not found')
+        return {}
+    return read_json(path)
+
+
+def release_channel_path(channel: str) -> Path:
+    if channel not in {'current', 'candidate', 'fallback'}:
+        raise SystemExit(f'invalid release channel: {channel}')
+    return RELEASE_CHANNELS_DIR / f'{channel}_release.json'
 
 
 def release_manifest_path(profile_id: str, content_pack_id: str) -> Path:

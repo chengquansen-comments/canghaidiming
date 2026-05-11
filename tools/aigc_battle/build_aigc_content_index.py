@@ -12,6 +12,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from tools.aigc_battle import switch_active_profile as switch_lib
+from tools.aigc_battle import aigc_release_gate as release_lib
 
 MECHANICS_DIR = ROOT / 'data' / 'aigc_battle' / 'mechanics'
 GENERATED_ROOT = ROOT / 'data' / 'aigc_battle' / 'generated'
@@ -78,11 +79,18 @@ def build_index() -> dict[str, Any]:
             'profile_detail_md_path': to_relative(profile_detail_md) if profile_detail_md.exists() else '',
             'content_packs': content_packs,
         })
+    release_channels = release_lib.show_channels()
+    current_release = release_channels.get('current_release', {})
     return {
         'generated_at': datetime.now(timezone.utc).isoformat(),
         'active_profile_id': active_profile_id,
         'active_content_pack_id': active_content_pack_id,
         'active_runtime_manifest_path': active_runtime_manifest_path,
+        'release_channels': release_channels,
+        'active_profile_matches_current_release': bool(release_channels.get('active_runtime', {}).get('matches_current_release', False)),
+        'active_profile_drift_from_current_release': bool(release_channels.get('active_runtime', {}).get('active_profile_drift_from_current_release', False)),
+        'current_release_profile_id': str(current_release.get('mechanic_profile_id', '')),
+        'current_release_content_pack_id': str(current_release.get('content_pack_id', '')),
         'profile_count': len(profiles),
         'content_pack_count': content_pack_count,
         'profiles': profiles,
@@ -101,6 +109,10 @@ def build_pack_entry(profile_id: str, pack_id: str | None, active_profile_id: st
     primitive_probe = try_read_json(generated_dir / 'runtime_primitive_probe_report.json') or {}
     reward_probe = try_read_json(generated_dir / 'full_sequence_reward_probe_report.json') or {}
     content_pack_id = str(runtime_manifest.get('content_pack_id') or validation_report.get('content_pack_id') or pack_id or '')
+    release_channels = release_lib.show_channels()
+    current_release = release_channels.get('current_release', {})
+    candidate_release = release_channels.get('candidate_release', {})
+    fallback_release = release_channels.get('fallback_release', {})
     runtime_manifest_path = generated_dir / 'runtime_manifest.json'
     is_active_pack = (
         profile_id == active_profile_id
@@ -119,6 +131,9 @@ def build_pack_entry(profile_id: str, pack_id: str | None, active_profile_id: st
         'generated_dir': to_relative(generated_dir),
         'runtime_manifest_path': to_relative(runtime_manifest_path) if runtime_manifest_path.exists() else '',
         'validation_report_path': to_relative(generated_dir / 'validation_report.json') if (generated_dir / 'validation_report.json').exists() else '',
+        'is_current_release': profile_id == str(current_release.get('mechanic_profile_id', '')) and content_pack_id == str(current_release.get('content_pack_id', '')),
+        'is_candidate_release': profile_id == str(candidate_release.get('mechanic_profile_id', '')) and content_pack_id == str(candidate_release.get('content_pack_id', '')),
+        'is_fallback_release': profile_id == str(fallback_release.get('mechanic_profile_id', '')) and content_pack_id == str(fallback_release.get('content_pack_id', '')),
         'sequence_balance_summary_path': to_relative(generated_dir / 'sequence_balance_summary.json') if (generated_dir / 'sequence_balance_summary.json').exists() else '',
         'telemetry_probe_report_path': to_relative(generated_dir / 'telemetry_probe_report.json') if (generated_dir / 'telemetry_probe_report.json').exists() else '',
         'sequence_balance_snapshot_path': to_relative(generated_dir / 'sequence_balance_snapshot.json') if (generated_dir / 'sequence_balance_snapshot.json').exists() else '',
@@ -168,6 +183,8 @@ def build_markdown(index_payload: dict[str, Any]) -> str:
         f"- 当前 active profile: `{index_payload['active_profile_id']}`",
         f"- 当前 active content pack: `{index_payload['active_content_pack_id']}`",
         f"- 当前 manifest: `{index_payload['active_runtime_manifest_path']}`",
+        f"- Current Release: `{index_payload['current_release_profile_id']}` / `{index_payload['current_release_content_pack_id']}`",
+        f"- active_profile_drift_from_current_release: `{index_payload['active_profile_drift_from_current_release']}`",
         f"- profile 数量: `{index_payload['profile_count']}`",
         f"- content pack 数量: `{index_payload['content_pack_count']}`",
         '',

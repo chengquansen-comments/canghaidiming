@@ -13,12 +13,46 @@ var last_reward_plan_id := ""
 var last_generated_reward_visible := false
 var last_generated_reward_claimed := false
 var last_formal_progression_continues := false
+var last_release_channel := ""
+var last_release_profile_id := ""
+var last_release_content_pack_id := ""
+var last_release_runtime_manifest_path := ""
+var last_formal_entry_uses_release_pack := false
+var last_formal_entry_fallback_used := false
+var last_formal_entry_generated_loadout_count := 0
+var last_formal_entry_fallback_loadout_count := 0
 var last_runtime_primitives: Array = []
 var last_opening_pressure_source := ""
 var last_opening_pressure_enemy_momentum_bonus := 0
 var last_opening_pressure_enemy_block_bonus := 0
 var last_opening_pressure_applied := false
 var last_opening_pressure_applied_fields: Array = []
+var last_weapon_followup_enabled := false
+var last_weapon_followup_expected_chain_count := 0
+var last_weapon_followup_primary_weapon_style := ""
+var last_weapon_followup_pressure_level := ""
+var last_weapon_followup_triggered := false
+var last_weapon_followup_trigger_count := 0
+var last_weapon_followup_bonus_applied := {}
+var last_weapon_followup_applied_fields: Array = []
+var last_weapon_followup_card_id := ""
+var last_weapon_followup_group := ""
+var last_weapon_followup_trigger := ""
+var last_weapon_followup_error := ""
+var _runtime_generated_card_meta := {}
+var _runtime_last_card_by_side := {}
+var _runtime_turn_count := 0
+var _runtime_cards_played_count := 0
+var _runtime_enemy_cards_played_count := 0
+var _runtime_damage_dealt := 0
+var _runtime_damage_taken := 0
+var _runtime_block_gained := 0
+var _runtime_momentum_gained := 0
+var _runtime_momentum_broken := 0
+var _runtime_player_hp_start := 0
+var _runtime_enemy_hp_start := 0
+var _runtime_player_card_ids_played: Array = []
+var _runtime_enemy_card_ids_played: Array = []
 var last_telemetry_written := false
 var last_telemetry_path := ""
 var last_telemetry_error := ""
@@ -36,12 +70,46 @@ func _reset_last_loadout_resolution() -> void:
 	last_generated_reward_visible = false
 	last_generated_reward_claimed = false
 	last_formal_progression_continues = false
+	last_release_channel = ""
+	last_release_profile_id = ""
+	last_release_content_pack_id = ""
+	last_release_runtime_manifest_path = ""
+	last_formal_entry_uses_release_pack = false
+	last_formal_entry_fallback_used = false
+	last_formal_entry_generated_loadout_count = 0
+	last_formal_entry_fallback_loadout_count = 0
 	last_runtime_primitives.clear()
 	last_opening_pressure_source = ""
 	last_opening_pressure_enemy_momentum_bonus = 0
 	last_opening_pressure_enemy_block_bonus = 0
 	last_opening_pressure_applied = false
 	last_opening_pressure_applied_fields.clear()
+	last_weapon_followup_enabled = false
+	last_weapon_followup_expected_chain_count = 0
+	last_weapon_followup_primary_weapon_style = ""
+	last_weapon_followup_pressure_level = ""
+	last_weapon_followup_triggered = false
+	last_weapon_followup_trigger_count = 0
+	last_weapon_followup_bonus_applied = {}
+	last_weapon_followup_applied_fields.clear()
+	last_weapon_followup_card_id = ""
+	last_weapon_followup_group = ""
+	last_weapon_followup_trigger = ""
+	last_weapon_followup_error = ""
+	_runtime_generated_card_meta = {}
+	_runtime_last_card_by_side = {}
+	_runtime_turn_count = 0
+	_runtime_cards_played_count = 0
+	_runtime_enemy_cards_played_count = 0
+	_runtime_damage_dealt = 0
+	_runtime_damage_taken = 0
+	_runtime_block_gained = 0
+	_runtime_momentum_gained = 0
+	_runtime_momentum_broken = 0
+	_runtime_player_hp_start = 0
+	_runtime_enemy_hp_start = 0
+	_runtime_player_card_ids_played.clear()
+	_runtime_enemy_card_ids_played.clear()
 	last_telemetry_written = false
 	last_telemetry_path = ""
 	last_telemetry_error = ""
@@ -260,12 +328,18 @@ func _resolve_battle_loadout() -> Dictionary:
 		"encounter_kind": str(generated_loadout.get("encounter_kind", "")) if not generated_loadout.is_empty() else "",
 		"target_power_min": int(generated_loadout.get("target_power_min", 0)) if not generated_loadout.is_empty() else 0,
 		"target_power_max": int(generated_loadout.get("target_power_max", 0)) if not generated_loadout.is_empty() else 0,
-		"deck_power_score": float(generated_loadout.get("deck_power_score", 0.0)) if not generated_loadout.is_empty() else 0.0,
-		"runtime_primitives": generated_loadout.get("runtime_primitives", []) if not generated_loadout.is_empty() else [],
-		"opening_pressure": generated_loadout.get("opening_pressure", {}) if not generated_loadout.is_empty() else {},
-		"settlement_mode": settlement_mode,
-		"debug_source": "NarrativeBattleContext + StoryBattleLoader + enemy_manifest + battle_scene_manifest + active_manifest"
-	}
+			"deck_power_score": float(generated_loadout.get("deck_power_score", 0.0)) if not generated_loadout.is_empty() else 0.0,
+			"runtime_primitives": generated_loadout.get("runtime_primitives", []) if not generated_loadout.is_empty() else [],
+			"cards": generated_loadout.get("cards", []) if not generated_loadout.is_empty() else [],
+			"weapon_followup": generated_loadout.get("weapon_followup", {}) if not generated_loadout.is_empty() else {},
+			"followup_chain_count": int(generated_loadout.get("followup_chain_count", 0)) if not generated_loadout.is_empty() else 0,
+			"followup_card_count": int(generated_loadout.get("followup_card_count", 0)) if not generated_loadout.is_empty() else 0,
+			"followup_density": float(generated_loadout.get("followup_density", 0.0)) if not generated_loadout.is_empty() else 0.0,
+			"followup_groups": generated_loadout.get("followup_groups", []) if not generated_loadout.is_empty() else [],
+			"opening_pressure": generated_loadout.get("opening_pressure", {}) if not generated_loadout.is_empty() else {},
+			"settlement_mode": settlement_mode,
+			"debug_source": "NarrativeBattleContext + StoryBattleLoader + enemy_manifest + battle_scene_manifest + active_manifest"
+		}
 
 func _resolve_pending_battle_loadout() -> void:
 	if not NarrativeBattleContext.has_request():

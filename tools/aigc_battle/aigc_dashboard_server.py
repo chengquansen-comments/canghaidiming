@@ -80,6 +80,15 @@ class DashboardHandler(BaseHTTPRequestHandler):
         if parsed.path == '/api/review-report':
             self.handle_review_report(parsed.query)
             return
+        if parsed.path == '/api/real-telemetry-snapshot':
+            self.handle_real_telemetry_snapshot(parsed.query)
+            return
+        if parsed.path == '/api/llm/prompt':
+            self.handle_llm_prompt(parsed.query)
+            return
+        if parsed.path == '/api/llm/candidate-diff':
+            self.handle_candidate_diff(parsed.query)
+            return
         if parsed.path == '/api/review-notes':
             self.handle_review_notes_get(parsed.query)
             return
@@ -88,6 +97,18 @@ class DashboardHandler(BaseHTTPRequestHandler):
             return
         if parsed.path == '/api/release/report':
             self.handle_release_report(parsed.query)
+            return
+        if parsed.path == '/api/release/compare-candidates':
+            self.respond_json(release_lib.compare_release_candidates())
+            return
+        if parsed.path == '/api/release/git-suggestions':
+            self.handle_release_git_suggestions(parsed.query)
+            return
+        if parsed.path == '/api/release/channels':
+            self.respond_json(release_lib.show_channels())
+            return
+        if parsed.path == '/api/release/smoke-report':
+            self.respond_json(load_release_smoke_report())
             return
         self.respond_json({'ok': False, 'error': 'not found'}, status=HTTPStatus.NOT_FOUND)
 
@@ -135,6 +156,16 @@ class DashboardHandler(BaseHTTPRequestHandler):
                 pack_id = safe_payload_id(payload, 'pack_id')
                 self.respond_json(factory_lib.run_action('build_from_llm', profile_id, pack_id, lambda log: factory_lib.build_from_llm(profile_id, pack_id, bool(payload.get('force', False)), log)))
                 return
+            if parsed.path == '/api/factory/build-from-real-telemetry':
+                profile_id = safe_payload_id(payload, 'profile_id')
+                pack_id = safe_payload_id(payload, 'pack_id')
+                self.respond_json(factory_lib.run_action('build_from_real_telemetry', profile_id, pack_id, lambda log: factory_lib.build_from_real_telemetry(profile_id, pack_id, bool(payload.get('force', False)), log)))
+                return
+            if parsed.path == '/api/llm/import-candidates':
+                profile_id = safe_payload_id(payload, 'profile_id')
+                candidate_path = str(payload.get('input_path', '')).strip()
+                self.respond_json(factory_lib.run_action('import_llm_candidates', profile_id, '', lambda log: factory_lib.import_llm_candidates(profile_id, candidate_path, log)))
+                return
             if parsed.path == '/api/factory/validate-pack':
                 profile_id = safe_payload_id(payload, 'profile_id')
                 pack_id = optional_safe_payload_id(payload, 'content_pack_id')
@@ -148,17 +179,52 @@ class DashboardHandler(BaseHTTPRequestHandler):
             if parsed.path == '/api/factory/refresh-review':
                 self.respond_json(factory_lib.run_action('refresh_review', 'global', '', lambda log: factory_lib.refresh_review(log)))
                 return
+            if parsed.path == '/api/factory/build-ai-pack':
+                profile_id = safe_payload_id(payload, 'profile_id')
+                pack_id = safe_payload_id(payload, 'pack_id')
+                self.respond_json(factory_lib.run_action('build_ai_pack', profile_id, pack_id, lambda log: factory_lib.build_ai_pack(profile_id, pack_id, log)))
+                return
             if parsed.path == '/api/release/freeze-pack':
                 profile_id, pack_id = require_pack_payload(payload)
                 self.respond_json({'ok': True, 'result': release_lib.freeze_pack(profile_id, pack_id)})
+                return
+            if parsed.path == '/api/release/set-status':
+                profile_id, pack_id = require_pack_payload(payload)
+                status = str(payload.get('status', '')).strip()
+                self.respond_json({'ok': True, 'result': release_lib.set_release_status(profile_id, pack_id, status)})
                 return
             if parsed.path == '/api/release/mark-release-candidate':
                 profile_id, pack_id = require_pack_payload(payload)
                 self.respond_json({'ok': True, 'result': release_lib.mark_release_candidate(profile_id, pack_id)})
                 return
+            if parsed.path == '/api/release/activate-release-candidate':
+                profile_id, pack_id = require_pack_payload(payload)
+                self.respond_json({'ok': True, 'result': release_lib.activate_release_candidate(profile_id, pack_id)})
+                return
+            if parsed.path == '/api/release/rollback-release':
+                self.respond_json({'ok': True, 'result': release_lib.rollback_release()})
+                return
             if parsed.path == '/api/release/archive-pack':
                 profile_id, pack_id = require_pack_payload(payload)
                 self.respond_json({'ok': True, 'result': release_lib.archive_pack(profile_id, pack_id)})
+                return
+            if parsed.path == '/api/release/set-current':
+                profile_id, pack_id = require_pack_payload(payload)
+                self.respond_json({'ok': True, 'result': release_lib.set_release_channel('current', profile_id, pack_id)})
+                return
+            if parsed.path == '/api/release/set-candidate':
+                profile_id, pack_id = require_pack_payload(payload)
+                self.respond_json({'ok': True, 'result': release_lib.set_release_channel('candidate', profile_id, pack_id)})
+                return
+            if parsed.path == '/api/release/set-fallback':
+                profile_id, pack_id = require_pack_payload(payload)
+                self.respond_json({'ok': True, 'result': release_lib.set_release_channel('fallback', profile_id, pack_id)})
+                return
+            if parsed.path == '/api/release/activate-current':
+                self.respond_json({'ok': True, 'result': release_lib.activate_current_release()})
+                return
+            if parsed.path == '/api/release/rollback-to-fallback':
+                self.respond_json({'ok': True, 'result': release_lib.rollback_to_fallback()})
                 return
         except SystemExit as exc:
             self.respond_json({'ok': False, 'error': str(exc)}, status=HTTPStatus.BAD_REQUEST)
@@ -239,6 +305,52 @@ class DashboardHandler(BaseHTTPRequestHandler):
             return
         self.respond_json(load_review_notes(profile_id, content_pack_id))
 
+    def handle_real_telemetry_snapshot(self, query: str) -> None:
+        try:
+            params = self.safe_query_params(query, {'profile_id', 'content_pack_id'})
+            profile_id = params.get('profile_id', '')
+            switch_lib.ensure_safe_id(profile_id, 'profile_id')
+            path = switch_lib.resolve_generated_dir(profile_id) / 'real_telemetry_snapshot.json'
+            payload = read_required_json(path)
+            if payload is None:
+                raise SystemExit('real telemetry snapshot not found')
+        except SystemExit as exc:
+            self.respond_json({'ok': False, 'error': str(exc)}, status=HTTPStatus.BAD_REQUEST)
+            return
+        self.respond_json(payload)
+
+    def handle_llm_prompt(self, query: str) -> None:
+        try:
+            from tools.aigc_battle import export_llm_generation_prompt as prompt_lib
+            params = self.safe_query_params(query, {'profile_id', 'content_pack_id'})
+            profile_id = params.get('profile_id', '')
+            content_pack_id = params.get('content_pack_id', '')
+            switch_lib.ensure_safe_id(profile_id, 'profile_id')
+            switch_lib.ensure_safe_id(content_pack_id, 'content_pack_id')
+            path = prompt_lib.prompt_md_path(profile_id, content_pack_id)
+            if not path.exists():
+                raise SystemExit('llm prompt not found')
+            schema_path = prompt_lib.prompt_schema_path(profile_id, content_pack_id)
+            context_path = prompt_lib.prompt_context_path(profile_id, content_pack_id)
+        except SystemExit as exc:
+            self.respond_json({'ok': False, 'error': str(exc)}, status=HTTPStatus.BAD_REQUEST)
+            return
+        self.respond_json({'ok': True, 'prompt_path': to_relative(path), 'schema_path': to_relative(schema_path), 'context_path': to_relative(context_path), 'content': path.read_text(encoding='utf-8')})
+
+    def handle_candidate_diff(self, query: str) -> None:
+        try:
+            params = self.safe_query_params(query, {'profile_id'})
+            profile_id = params.get('profile_id', '')
+            switch_lib.ensure_safe_id(profile_id, 'profile_id')
+            path = ROOT / 'data' / 'aigc_battle' / 'generated' / 'ai_production' / 'diff' / f'{profile_id}__candidate_diff.json'
+            payload = read_required_json(path)
+            if payload is None:
+                raise SystemExit('candidate diff not found')
+        except SystemExit as exc:
+            self.respond_json({'ok': False, 'error': str(exc)}, status=HTTPStatus.BAD_REQUEST)
+            return
+        self.respond_json(payload)
+
     def handle_review_notes_post(self, payload: dict[str, Any]) -> dict[str, Any]:
         profile_id, content_pack_id = require_pack_payload(payload)
         ensure_pack_exists(profile_id, content_pack_id)
@@ -284,6 +396,17 @@ class DashboardHandler(BaseHTTPRequestHandler):
             self.respond_json({'ok': False, 'error': str(exc)}, status=HTTPStatus.BAD_REQUEST)
             return
         self.respond_json({'ok': True, 'path': to_relative(path), 'content': path.read_text(encoding='utf-8')})
+
+    def handle_release_git_suggestions(self, query: str) -> None:
+        try:
+            params = self.safe_query_params(query, {'profile_id', 'content_pack_id'})
+            profile_id, content_pack_id = params.get('profile_id', ''), params.get('content_pack_id', '')
+            ensure_pack_exists(profile_id, content_pack_id)
+            payload = release_lib.suggest_git_commands(profile_id, content_pack_id)
+        except SystemExit as exc:
+            self.respond_json({'ok': False, 'error': str(exc)}, status=HTTPStatus.BAD_REQUEST)
+            return
+        self.respond_json(payload)
 
     def handle_json_file(self, query: str, allowed_keys: set[str], path: Path, missing_message: str) -> None:
         try:
@@ -414,6 +537,20 @@ def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+def load_release_smoke_report() -> dict[str, Any]:
+    channels = release_lib.show_channels()
+    current_release = channels.get('current_release', {})
+    preferred = str(current_release.get('last_smoke_report_path', '')).strip()
+    if preferred:
+        preferred_path = ROOT / preferred
+        if preferred_path.exists():
+            return read_required_json(preferred_path) or {'ok': False, 'error': 'smoke report unreadable'}
+    default_path = ROOT / 'data' / 'aigc_battle' / 'generated' / 'release_smoke' / 'playable_release_smoke_report.json'
+    if default_path.exists():
+        return read_required_json(default_path) or {'ok': False, 'error': 'smoke report unreadable'}
+    return {'ok': False, 'error': 'smoke report not found'}
+
+
 def build_console_html() -> str:
     return """<!doctype html>
 <html lang="zh-CN">
@@ -462,7 +599,7 @@ summary { cursor:pointer; font-weight:600; } @media (max-width: 960px) { .dual {
 <section id="actions" class="panel"></section>
 </main>
 <script>
-const state = { workspace:null, compare:null, activeReview:null, notes:null, release:null, report:'' };
+const state = { workspace:null, compare:null, activeReview:null, notes:null, release:null, report:'', channels:null, smoke:null };
 const tabs = [['overview','总览'],['compare','Pack 对比'],['review','审核'],['encounters','战斗链路'],['pool','卡池卡组'],['rewards','奖励'],['actions','生产动作']];
 const $ = (id) => document.getElementById(id);
 const esc = (v) => String(v ?? '').replace(/[&<>"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -473,6 +610,8 @@ function makeTabs() { const root = $('tabs'); root.innerHTML = tabs.map(([id,lab
 async function bootstrap() {
   state.workspace = await api('/api/review-workspace');
   state.compare = await api('/api/compare-matrix');
+  state.channels = await api('/api/release/channels');
+  state.smoke = await api('/api/release/smoke-report').catch(() => ({ ok:false, error:'smoke report not found' }));
   await focusPack(state.workspace.active_profile_id, state.workspace.active_content_pack_id);
 }
 async function focusPack(profileId, contentPackId) {
@@ -512,6 +651,7 @@ async function doSwitch(dryRun) {
 async function doRollback() { await postJson('/api/rollback-active-pack', {}); location.reload(); }
 async function doFactory(path, payload) { await postJson(path, payload); await bootstrap(); }
 async function doRelease(path) { const payload = { profile_id: state.activeReview.pack_identity.mechanic_profile_id, content_pack_id: state.activeReview.pack_identity.content_pack_id }; await postJson(path, payload); await focusPack(payload.profile_id, payload.content_pack_id); }
+async function doReleaseChannel(path, payload) { await postJson(path, payload || {}); await bootstrap(); renderAll(); }
 function renderHeader() {
   const review = state.activeReview || {}; const notes = state.notes || {}; const release = state.release || {}; const risk = review.risk_summary || {}; const health = review.health_summary || {};
   $('active-line').innerHTML = `<span class="badge mono">${esc(state.workspace.active_profile_id)}</span><span class="badge mono">${esc(state.workspace.active_content_pack_id)}</span><span class="badge ${cls(health.health_status)}">${esc(health.health_status || '-')}</span><span class="badge">${health.health_score || 0}</span>`;
@@ -521,8 +661,9 @@ function renderHeader() {
 }
 function bindPackButtons(root) { root.querySelectorAll('[data-pack]').forEach((b) => b.onclick = async () => { const [profileId, contentPackId] = b.dataset.pack.split('::'); await focusPack(profileId, contentPackId); }); }
 function renderOverview() {
-  const review = state.activeReview; const health = review.health_summary || {}; const notes = state.notes || {}; const release = state.release || {};
-  $('overview').innerHTML = `<div class="band"><h2>总览</h2><div class="stats"><div class="card"><div class="muted">Health</div><strong>${health.health_score || 0}</strong></div><div class="card"><div class="muted">Review Status</div><strong>${esc(notes.review_status || '-')}</strong></div><div class="card"><div class="muted">Release Status</div><strong>${esc(release.release_status || '-')}</strong></div><div class="card"><div class="muted">Reviewer</div><strong>${esc(notes.reviewer || '-')}</strong></div></div><div class="toolbar"><button onclick="bootstrap()">Refresh Index</button><button onclick="doFactory('/api/factory/refresh-review', {})">Rebuild Review Workspace</button><button onclick="doSwitch(true)">Dry Run Switch</button><button class="primary" onclick="doSwitch(false)">Enable Pack</button><button onclick="doRollback()">Rollback</button><button onclick="snapshotPrompt()">Snapshot Pack</button><button onclick="doRelease('/api/release/freeze-pack')">Freeze Pack</button><button onclick="doRelease('/api/release/mark-release-candidate')">Mark Release Candidate</button></div></div>`;
+  const review = state.activeReview; const health = review.health_summary || {}; const notes = state.notes || {}; const release = state.release || {}; const channels = state.channels || {}; const smoke = state.smoke || {};
+  const current = channels.current_release || {}; const candidate = channels.candidate_release || {}; const fallback = channels.fallback_release || {}; const runtime = channels.active_runtime || {};
+  $('overview').innerHTML = `<div class="band"><h2>总览</h2><div class="stats"><div class="card"><div class="muted">Health</div><strong>${health.health_score || 0}</strong></div><div class="card"><div class="muted">Review Status</div><strong>${esc(notes.review_status || '-')}</strong></div><div class="card"><div class="muted">Release Status</div><strong>${esc(release.release_status || '-')}</strong></div><div class="card"><div class="muted">Reviewer</div><strong>${esc(notes.reviewer || '-')}</strong></div></div><div class="cards" style="margin-top:12px;"><div class="card"><div class="muted">Current Release</div><div class="mono">${esc(current.mechanic_profile_id || '-')}</div><div class="mono">${esc(current.content_pack_id || '-')}</div><div>formal_entry_enabled: ${esc(String(current.formal_entry_enabled ?? false))}</div><div>smoke_test_status: ${esc(current.smoke_test_status || '-')}</div><div class="muted">${esc(current.last_smoke_report_path || '-')}</div></div><div class="card"><div class="muted">Candidate Release</div><div class="mono">${esc(candidate.mechanic_profile_id || '-')}</div><div class="mono">${esc(candidate.content_pack_id || '-')}</div><div>smoke_test_required: ${esc(String(candidate.smoke_test_required ?? false))}</div></div><div class="card"><div class="muted">Fallback Release</div><div class="mono">${esc(fallback.mechanic_profile_id || '-')}</div><div class="mono">${esc(fallback.content_pack_id || '-')}</div><div>rollback_ready: ${esc(String(channels.rollback_to_fallback_ready ?? false))}</div></div><div class="card"><div class="muted">Active Runtime</div><div class="mono">${esc(runtime.active_profile_id || '-')}</div><div class="mono">${esc(runtime.active_content_pack_id || '-')}</div><div>matches_current_release: ${esc(String(runtime.matches_current_release ?? false))}</div><div class="${runtime.active_profile_drift_from_current_release ? 'fail' : 'ok'}">active_profile_drift_from_current_release: ${esc(String(runtime.active_profile_drift_from_current_release ?? false))}</div></div></div><div class="toolbar"><button onclick="bootstrap()">Refresh Index</button><button onclick="doFactory('/api/factory/refresh-review', {})">Rebuild Review Workspace</button><button onclick="doSwitch(true)">Dry Run Switch</button><button class="primary" onclick="doSwitch(false)">Enable Pack</button><button onclick="doRollback()">Rollback</button><button onclick="snapshotPrompt()">Snapshot Pack</button><button onclick="doRelease('/api/release/freeze-pack')">Freeze Pack</button><button onclick="doRelease('/api/release/mark-release-candidate')">Mark Release Candidate</button><button onclick="doReleaseChannel('/api/release/set-current', { profile_id: state.activeReview.pack_identity.mechanic_profile_id, content_pack_id: state.activeReview.pack_identity.content_pack_id })">Set Current</button><button onclick="doReleaseChannel('/api/release/set-candidate', { profile_id: state.activeReview.pack_identity.mechanic_profile_id, content_pack_id: state.activeReview.pack_identity.content_pack_id })">Set Candidate</button><button onclick="doReleaseChannel('/api/release/set-fallback', { profile_id: state.activeReview.pack_identity.mechanic_profile_id, content_pack_id: state.activeReview.pack_identity.content_pack_id })">Set Fallback</button><button class="primary" onclick="doReleaseChannel('/api/release/activate-current')">Activate Current</button><button onclick="doReleaseChannel('/api/release/rollback-to-fallback')">Rollback to Fallback</button></div><div class="card" style="margin-top:12px;"><div class="muted">Smoke Report</div><div>smoke_pass: ${esc(String(smoke.smoke_pass ?? false))}</div><div>player_formal_entry_uses_ai_pack: ${esc(String(smoke.player_formal_entry_uses_ai_pack ?? false))}</div><div>fallback_loadout_count: ${esc(String(smoke.fallback_loadout_count ?? '-'))}</div></div></div>`;
 }
 function renderCompare() {
   const q = ($('compare-q')?.value || '').toLowerCase(); const sort = $('compare-sort')?.value || 'health_score';
@@ -549,7 +690,7 @@ function renderRewards() {
   $('rewards').innerHTML = `<div class="band"><h2>奖励</h2><div class="table"><table><thead><tr><th>Reward</th><th>Type</th><th>Tier</th><th>Items</th><th>Matched Encounter</th><th>Risk</th></tr></thead><tbody>${rows.map((row) => `<tr><td class="mono">${esc(row.reward_plan_id)}</td><td>${esc(row.reward_type)}</td><td>${esc(row.reward_tier)}</td><td>${esc(row.reward_items_text)}</td><td>${esc(join(row.matched_encounter_tier))}</td><td>${esc(join(row.risk_flags))}</td></tr>`).join('')}</tbody></table></div></div>`;
 }
 function renderActions() {
-  $('actions').innerHTML = `<div class="band"><h2>生产动作</h2><div class="toolbar"><input id="action-pack-id" placeholder="新 pack_id / snapshot_id"><input id="action-snapshot" placeholder="approved snapshot path"><button onclick="buildRoot()">Build Root Pack</button><button onclick="snapshotPrompt()">Snapshot Current Pack</button><button onclick="buildFromSnapshotPrompt()">Build From Snapshot</button><button onclick="buildFromTelemetryPrompt()">Build From Telemetry Snapshot</button><button onclick="buildFromLlmPrompt()">Build From LLM Candidates</button><button onclick="factoryValidate()">Validate Pack</button><button onclick="factoryExport()">Export Manifest</button><button onclick="doSwitch(false)">Safe Switch</button><button onclick="doRollback()">Rollback</button><button onclick="doRelease('/api/release/freeze-pack')">Freeze Pack</button><button onclick="doRelease('/api/release/mark-release-candidate')">Mark Release Candidate</button><button onclick="doRelease('/api/release/archive-pack')">Archive Pack</button></div></div>`;
+  $('actions').innerHTML = `<div class="band"><h2>生产动作</h2><div class="toolbar"><input id="action-pack-id" placeholder="新 pack_id / snapshot_id"><input id="action-snapshot" placeholder="approved snapshot path"><button onclick="buildRoot()">Build Root Pack</button><button onclick="snapshotPrompt()">Snapshot Current Pack</button><button onclick="buildFromSnapshotPrompt()">Build From Snapshot</button><button onclick="buildFromTelemetryPrompt()">Build From Telemetry Snapshot</button><button onclick="buildFromLlmPrompt()">Build From LLM Candidates</button><button onclick="factoryValidate()">Validate Pack</button><button onclick="factoryExport()">Export Manifest</button><button onclick="doSwitch(false)">Safe Switch</button><button onclick="doRollback()">Rollback</button><button onclick="doRelease('/api/release/freeze-pack')">Freeze Pack</button><button onclick="doRelease('/api/release/mark-release-candidate')">Mark Release Candidate</button><button onclick="doRelease('/api/release/archive-pack')">Archive Pack</button><button onclick="doReleaseChannel('/api/release/activate-current')">Activate Current</button><button onclick="doReleaseChannel('/api/release/rollback-to-fallback')">Rollback to Fallback</button><button onclick="alert('/api/release/channels\\n/api/release/set-current\\n/api/release/set-candidate\\n/api/release/set-fallback\\n/api/release/activate-current\\n/api/release/rollback-to-fallback\\n/api/release/smoke-report')">Release Channel API</button></div></div>`;
 }
 async function buildRoot() { await doFactory('/api/factory/build-pack', { profile_id: state.activeReview.pack_identity.mechanic_profile_id }); }
 async function snapshotPrompt() { const packId = $('action-pack-id')?.value || 'snapshot_pack_id_required'; await doFactory('/api/factory/snapshot-pack', { profile_id: state.activeReview.pack_identity.mechanic_profile_id, pack_id: packId }); }
