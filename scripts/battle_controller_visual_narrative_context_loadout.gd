@@ -1,6 +1,72 @@
 extends "res://scripts/battle_controller_visual_narrative_context_player_profile.gd"
 
+const AigcBattleRuntimeManifestLoader := preload("res://scripts/aigc_battle/aigc_battle_runtime_manifest_loader.gd")
+
 # Narrative context loadout layer.
+
+var last_loadout_source := ""
+var last_generated_battle_slot_id := ""
+var last_generated_deck_id := ""
+var last_content_pack_id := ""
+var last_reward_source := ""
+var last_reward_plan_id := ""
+var last_generated_reward_visible := false
+var last_generated_reward_claimed := false
+var last_formal_progression_continues := false
+var last_runtime_primitives: Array = []
+var last_opening_pressure_source := ""
+var last_opening_pressure_enemy_momentum_bonus := 0
+var last_opening_pressure_enemy_block_bonus := 0
+var last_opening_pressure_applied := false
+var last_opening_pressure_applied_fields: Array = []
+var last_telemetry_written := false
+var last_telemetry_path := ""
+var last_telemetry_error := ""
+var last_telemetry_event_profile_id := ""
+var last_telemetry_event_battle_slot_id := ""
+var last_telemetry_event_deck_id := ""
+
+func _reset_last_loadout_resolution() -> void:
+	last_loadout_source = ""
+	last_generated_battle_slot_id = ""
+	last_generated_deck_id = ""
+	last_content_pack_id = ""
+	last_reward_source = ""
+	last_reward_plan_id = ""
+	last_generated_reward_visible = false
+	last_generated_reward_claimed = false
+	last_formal_progression_continues = false
+	last_runtime_primitives.clear()
+	last_opening_pressure_source = ""
+	last_opening_pressure_enemy_momentum_bonus = 0
+	last_opening_pressure_enemy_block_bonus = 0
+	last_opening_pressure_applied = false
+	last_opening_pressure_applied_fields.clear()
+	last_telemetry_written = false
+	last_telemetry_path = ""
+	last_telemetry_error = ""
+	last_telemetry_event_profile_id = ""
+	last_telemetry_event_battle_slot_id = ""
+	last_telemetry_event_deck_id = ""
+
+func _get_generated_manifest_loadout(encounter_id: String, battle_id: String) -> Dictionary:
+	if encounter_id.is_empty():
+		return {}
+	if not AigcBattleRuntimeManifestLoader.load_active_manifest():
+		return {}
+	return AigcBattleRuntimeManifestLoader.get_generated_loadout(encounter_id, battle_id)
+
+func _apply_generated_manifest_enemy_config(enemy_config: Dictionary, generated_loadout: Dictionary) -> Dictionary:
+	if enemy_config.is_empty() or generated_loadout.is_empty():
+		return enemy_config
+	enemy_config["deck"] = generated_loadout.get("cards", [])
+	enemy_config["enemy_role"] = str(generated_loadout.get("enemy_role", enemy_config.get("enemy_role", "")))
+	enemy_config["difficulty_tier"] = str(generated_loadout.get("difficulty_tier", enemy_config.get("difficulty_tier", "")))
+	enemy_config["generated_battle_slot_id"] = str(generated_loadout.get("generated_battle_slot_id", ""))
+	enemy_config["generated_deck_id"] = str(generated_loadout.get("generated_deck_id", ""))
+	enemy_config["content_pack_id"] = str(generated_loadout.get("content_pack_id", ""))
+	enemy_config["enemy_source"] = "generated_manifest"
+	return enemy_config
 
 func _story_battle_for_encounter(encounter_id: String) -> Dictionary:
 	var catalog: Dictionary = _story_loader_card_catalog()
@@ -123,6 +189,7 @@ func _apply_enemy_martial_stats(enemy_config: Dictionary, martial_level: int) ->
 
 func _resolve_battle_loadout() -> Dictionary:
 	battle_loadout_error = ""
+	_reset_last_loadout_resolution()
 	var encounter_id: String = str(NarrativeBattleContext.encounter_id)
 	var source_node_id: String = str(NarrativeBattleContext.source_node_id)
 	var context_battle_id: String = NarrativeBattleContext.get_battle_id()
@@ -148,6 +215,16 @@ func _resolve_battle_loadout() -> Dictionary:
 	enemy_config = _apply_narrative_battle_overrides(enemy_config)
 	var profile: Dictionary = NarrativeBattleContext.get_player_profile()
 	player_config = _apply_story_player_overrides(player_config, profile)
+	var generated_loadout := _get_generated_manifest_loadout(encounter_id, battle_id)
+	var generated_manifest_summary: Dictionary = AigcBattleRuntimeManifestLoader.get_manifest_summary() if not generated_loadout.is_empty() else {}
+	if not generated_loadout.is_empty():
+		enemy_config = _apply_generated_manifest_enemy_config(enemy_config, generated_loadout)
+		last_loadout_source = "generated_manifest"
+		last_generated_battle_slot_id = str(generated_loadout.get("generated_battle_slot_id", ""))
+		last_generated_deck_id = str(generated_loadout.get("generated_deck_id", ""))
+		last_content_pack_id = str(generated_loadout.get("content_pack_id", ""))
+	else:
+		last_loadout_source = "fallback_story_battle_loader"
 	var override_player_profile := NarrativeBattleContext.should_override_player_profile()
 	var settlement_mode: String = str(story_battle.get("settlement_mode", BattleStateMachineScript.MODE_REACTIVE_ID))
 	var manifest_encounter: Dictionary = _dict(manifest_context.get("encounter", {}))
@@ -168,12 +245,29 @@ func _resolve_battle_loadout() -> Dictionary:
 		"enemy_deck": enemy_config.get("deck", []),
 		"enemy_id": enemy_id,
 		"enemy_source": enemy_source,
+		"loadout_source": last_loadout_source,
+		"generated_battle_slot_id": last_generated_battle_slot_id,
+		"generated_deck_id": last_generated_deck_id,
+		"content_pack_id": last_content_pack_id,
+		"generated_reward": generated_loadout.get("reward", {}) if not generated_loadout.is_empty() else {},
+		"reward_plan": generated_loadout.get("reward", {}) if not generated_loadout.is_empty() else {},
+		"reward_plan_id": str(generated_loadout.get("reward_plan_id", "")) if not generated_loadout.is_empty() else "",
+		"reward_source": str(generated_loadout.get("reward_source", "generated_manifest")) if not generated_loadout.is_empty() else "fallback",
+		"mechanic_profile_id": str(generated_loadout.get("mechanic_profile_id", generated_manifest_summary.get("mechanic_profile_id", ""))) if not generated_loadout.is_empty() else "",
+		"target_sequence_id": str(generated_manifest_summary.get("target_sequence_id", "")) if not generated_loadout.is_empty() else "",
+		"sequence_position": int(generated_loadout.get("sequence_position", 0)) if not generated_loadout.is_empty() else 0,
+		"encounter_tier": str(generated_loadout.get("encounter_tier", "")) if not generated_loadout.is_empty() else "",
+		"encounter_kind": str(generated_loadout.get("encounter_kind", "")) if not generated_loadout.is_empty() else "",
+		"target_power_min": int(generated_loadout.get("target_power_min", 0)) if not generated_loadout.is_empty() else 0,
+		"target_power_max": int(generated_loadout.get("target_power_max", 0)) if not generated_loadout.is_empty() else 0,
+		"deck_power_score": float(generated_loadout.get("deck_power_score", 0.0)) if not generated_loadout.is_empty() else 0.0,
+		"runtime_primitives": generated_loadout.get("runtime_primitives", []) if not generated_loadout.is_empty() else [],
+		"opening_pressure": generated_loadout.get("opening_pressure", {}) if not generated_loadout.is_empty() else {},
 		"settlement_mode": settlement_mode,
-		"debug_source": "NarrativeBattleContext + StoryBattleLoader + enemy_manifest + battle_scene_manifest"
+		"debug_source": "NarrativeBattleContext + StoryBattleLoader + enemy_manifest + battle_scene_manifest + active_manifest"
 	}
 
 func _resolve_pending_battle_loadout() -> void:
 	if not NarrativeBattleContext.has_request():
 		return
 	battle_loadout = _resolve_battle_loadout()
-

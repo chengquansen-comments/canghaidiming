@@ -1,0 +1,63 @@
+{
+  "timestamp": "2026-05-11T03:32:23.401589+00:00",
+  "action": "snapshot",
+  "profile_id": "posture_opening_pressure_v0_1",
+  "pack_id": "posture_opening_pressure_p1_probe_snapshot_002",
+  "status": "ok",
+  "steps": [
+    {
+      "type": "python_call",
+      "name": "snapshot_content_pack",
+      "pack_id": "posture_opening_pressure_p1_probe_snapshot_002"
+    },
+    {
+      "type": "command",
+      "cmd": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "/Users/happy/Documents/Codex/canghaidiming/tools/aigc_battle/build_aigc_content_index.py"
+      ],
+      "returncode": 0,
+      "stdout": "built aigc content index\n",
+      "stderr": ""
+    },
+    {
+      "type": "command",
+      "cmd": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "/Users/happy/Documents/Codex/canghaidiming/tools/aigc_battle/build_aigc_detail_views.py"
+      ],
+      "returncode": 0,
+      "stdout": "built aigc detail views: profiles=4 packs=7\n",
+      "stderr": ""
+    },
+    {
+      "type": "command",
+      "cmd": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "/Users/happy/Documents/Codex/canghaidiming/tools/aigc_battle/build_aigc_content_index.py"
+      ],
+      "returncode": 0,
+      "stdout": "built aigc content index\n",
+      "stderr": ""
+    },
+    {
+      "type": "command",
+      "cmd": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "/Users/happy/Documents/Codex/canghaidiming/tools/aigc_battle/build_aigc_review_workspace.py"
+      ],
+      "returncode": 0,
+      "stdout": "built aigc review workspace: packs=7\n",
+      "stderr": ""
+    }
+  ],
+  "result": {
+    "source_profile_id": "posture_opening_pressure_v0_1",
+    "source_content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+    "snapshot_content_pack_id": "posture_opening_pressure_p1_probe_snapshot_002",
+    "snapshot_dir": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_002",
+    "runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_002/runtime_manifest.json",
+    "validation_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_002/validation_report.json",
+    "snapshot_ready": true
+  }
+}

@@ -1,0 +1,3125 @@
+{
+  "manifest_version": 1,
+  "mechanic_profile_id": "posture_tuned_v0_1b",
+  "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+  "target_sequence_id": "formal_sequence_mvp_v1",
+  "replacement_mode": "full_sequence",
+  "runtime_supported_effects": [
+    "damage",
+    "gain_block",
+    "gain_momentum",
+    "break_momentum"
+  ],
+  "runtime_primitives": [],
+  "runtime_primitive_summary": {
+    "runtime_primitives_supported": true,
+    "opening_pressure_declared": false,
+    "opening_pressure_slot_count": 0,
+    "opening_pressure_all_slots_covered": true,
+    "opening_pressure_values_in_range": true,
+    "opening_pressure_curve_ready": true,
+    "runtime_primitive_playable": true
+  },
+  "balance_summary": {
+    "mechanic_profile_id": "posture_tuned_v0_1b",
+    "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+    "target_sequence_id": "formal_sequence_mvp_v1",
+    "formal_encounter_total_count": 15,
+    "tier_counts": {
+      "early": 4,
+      "boss": 3,
+      "mid": 4,
+      "late": 4
+    },
+    "encounter_kind_counts": {
+      "normal": 4,
+      "elite": 8,
+      "boss": 3
+    },
+    "deck_power_by_encounter": [
+      {
+        "formal_encounter_id": "enc_beach_ambush",
+        "sequence_position": 1,
+        "encounter_tier": "early",
+        "encounter_kind": "normal",
+        "target_power_min": 22,
+        "target_power_max": 30,
+        "deck_power_score": 23.5,
+        "reward_tier": "basic"
+      },
+      {
+        "formal_encounter_id": "enc_fishing_village_embers",
+        "sequence_position": 2,
+        "encounter_tier": "early",
+        "encounter_kind": "normal",
+        "target_power_min": 22,
+        "target_power_max": 30,
+        "deck_power_score": 23.5,
+        "reward_tier": "basic"
+      },
+      {
+        "formal_encounter_id": "enc_transport_officer",
+        "sequence_position": 3,
+        "encounter_tier": "early",
+        "encounter_kind": "elite",
+        "target_power_min": 25,
+        "target_power_max": 35,
+        "deck_power_score": 29.5,
+        "reward_tier": "basic"
+      },
+      {
+        "formal_encounter_id": "enc_mutiny_camp",
+        "sequence_position": 4,
+        "encounter_tier": "early",
+        "encounter_kind": "elite",
+        "target_power_min": 25,
+        "target_power_max": 35,
+        "deck_power_score": 29.5,
+        "reward_tier": "basic"
+      },
+      {
+        "formal_encounter_id": "enc_wakou_boss",
+        "sequence_position": 5,
+        "encounter_tier": "boss",
+        "encounter_kind": "boss",
+        "target_power_min": 56,
+        "target_power_max": 66,
+        "deck_power_score": 56.9,
+        "reward_tier": "boss"
+      },
+      {
+        "formal_encounter_id": "enc_wuke_spear_trial",
+        "sequence_position": 6,
+        "encounter_tier": "mid",
+        "encounter_kind": "elite",
+        "target_power_min": 35,
+        "target_power_max": 45,
+        "deck_power_score": 35.5,
+        "reward_tier": "standard_plus"
+      },
+      {
+        "formal_encounter_id": "enc_wuke_blade_trial",
+        "sequence_position": 7,
+        "encounter_tier": "mid",
+        "encounter_kind": "elite",
+        "target_power_min": 35,
+        "target_power_max": 45,
+        "deck_power_score": 35.5,
+        "reward_tier": "standard_plus"
+      },
+      {
+        "formal_encounter_id": "enc_wuke_final_duel",
+        "sequence_position": 8,
+        "encounter_tier": "boss",
+        "encounter_kind": "boss",
+        "target_power_min": 56,
+        "target_power_max": 66,
+        "deck_power_score": 56.9,
+        "reward_tier": "boss"
+      },
+      {
+        "formal_encounter_id": "enc_wuke_gu_chengyue",
+        "sequence_position": 9,
+        "encounter_tier": "mid",
+        "encounter_kind": "elite",
+        "target_power_min": 35,
+        "target_power_max": 45,
+        "deck_power_score": 35.5,
+        "reward_tier": "standard_plus"
+      },
+      {
+        "formal_encounter_id": "enc_wuke_shen_zhaoye",
+        "sequence_position": 10,
+        "encounter_tier": "mid",
+        "encounter_kind": "elite",
+        "target_power_min": 35,
+        "target_power_max": 45,
+        "deck_power_score": 35.5,
+        "reward_tier": "standard_plus"
+      },
+      {
+        "formal_encounter_id": "enc_wuke_qi_heng",
+        "sequence_position": 11,
+        "encounter_tier": "late",
+        "encounter_kind": "elite",
+        "target_power_min": 47,
+        "target_power_max": 59,
+        "deck_power_score": 52.25,
+        "reward_tier": "advanced_plus"
+      },
+      {
+        "formal_encounter_id": "enc_ch2_reed_ambush",
+        "sequence_position": 12,
+        "encounter_tier": "late",
+        "encounter_kind": "normal",
+        "target_power_min": 44,
+        "target_power_max": 54,
+        "deck_power_score": 46.55,
+        "reward_tier": "advanced_plus"
+      },
+      {
+        "formal_encounter_id": "enc_ch3_escort_clash",
+        "sequence_position": 13,
+        "encounter_tier": "late",
+        "encounter_kind": "elite",
+        "target_power_min": 47,
+        "target_power_max": 59,
+        "deck_power_score": 52.25,
+        "reward_tier": "advanced_plus"
+      },
+      {
+        "formal_encounter_id": "enc_ch4_tide_bandits",
+        "sequence_position": 14,
+        "encounter_tier": "late",
+        "encounter_kind": "normal",
+        "target_power_min": 44,
+        "target_power_max": 54,
+        "deck_power_score": 46.55,
+        "reward_tier": "advanced_plus"
+      },
+      {
+        "formal_encounter_id": "enc_boss_ext_wakou_leader",
+        "sequence_position": 15,
+        "encounter_tier": "boss",
+        "encounter_kind": "boss",
+        "target_power_min": 56,
+        "target_power_max": 66,
+        "deck_power_score": 56.9,
+        "reward_tier": "boss"
+      }
+    ],
+    "early_avg_power": 26.5,
+    "mid_avg_power": 35.5,
+    "late_avg_power": 49.4,
+    "boss_avg_power": 56.9,
+    "min_late_avg_power_over_early": 22.0,
+    "late_avg_power_over_early": 22.9,
+    "all_decks_within_power_range": true,
+    "elite_decks_stronger_than_normal": true,
+    "boss_decks_stronger_than_late_or_elite": true,
+    "boss_decks_stronger_than_elite": true,
+    "sequence_balance_curve_ready": true,
+    "sequence_balance_pass": true,
+    "no_elite_detected": false,
+    "no_boss_detected": false,
+    "rebuild_uses_snapshot": false,
+    "snapshot_source_path": "",
+    "adjusted_or_flagged_encounters": [],
+    "snapshot_rebuild_pass": true
+  },
+  "sequence_balance_pass": true,
+  "content_source": "generated_pipeline",
+  "candidate_import_summary": null,
+  "cards": [
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_spearman_early_strike",
+      "id": "posture_tuned_v0_1b_spearman_early_strike",
+      "name": "中平刺",
+      "card_type": "attack",
+      "weapon_style": "spearman",
+      "style": "枪",
+      "cost": 1,
+      "min": 0,
+      "max": 4,
+      "role": "attack",
+      "gain": 0,
+      "break": 0,
+      "damage": 5,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 5
+        }
+      ],
+      "tags": [
+        "early",
+        "spearman",
+        "attack",
+        "measured",
+        "technique"
+      ],
+      "difficulty_tier": "early",
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "power_score": 5.25
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_spearman_early_guard",
+      "id": "posture_tuned_v0_1b_spearman_early_guard",
+      "name": "圆架守",
+      "card_type": "defense",
+      "weapon_style": "spearman",
+      "style": "枪",
+      "cost": 1,
+      "min": 0,
+      "max": 4,
+      "role": "guard",
+      "gain": 0,
+      "break": 0,
+      "damage": 0,
+      "guard": 4,
+      "effects": [
+        {
+          "type": "gain_block",
+          "value": 4
+        }
+      ],
+      "tags": [
+        "early",
+        "spearman",
+        "defense",
+        "anchor"
+      ],
+      "difficulty_tier": "early",
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "power_score": 3.8
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_spearman_early_pressure",
+      "id": "posture_tuned_v0_1b_spearman_early_pressure",
+      "name": "压杆逼势",
+      "card_type": "skill",
+      "weapon_style": "spearman",
+      "style": "枪",
+      "cost": 1,
+      "min": 0,
+      "max": 4,
+      "role": "feint",
+      "gain": 0,
+      "break": 3,
+      "damage": 0,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "break_momentum",
+          "value": 3
+        }
+      ],
+      "tags": [
+        "early",
+        "spearman",
+        "skill",
+        "pressure",
+        "technique"
+      ],
+      "difficulty_tier": "early",
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "power_score": 2.85
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_spearman_early_focus",
+      "id": "posture_tuned_v0_1b_spearman_early_focus",
+      "name": "压线整势",
+      "card_type": "skill",
+      "weapon_style": "spearman",
+      "style": "枪",
+      "cost": 1,
+      "min": 0,
+      "max": 4,
+      "role": "feint",
+      "gain": 3,
+      "break": 0,
+      "damage": 0,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "gain_momentum",
+          "value": 3
+        }
+      ],
+      "tags": [
+        "early",
+        "spearman",
+        "skill",
+        "setup",
+        "technique"
+      ],
+      "difficulty_tier": "early",
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "power_score": 2.55
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_spearman_early_finisher",
+      "id": "posture_tuned_v0_1b_spearman_early_finisher",
+      "name": "穿线追刺",
+      "card_type": "attack",
+      "weapon_style": "spearman",
+      "style": "枪",
+      "cost": 2,
+      "min": 0,
+      "max": 4,
+      "role": "attack",
+      "gain": 1,
+      "break": 2,
+      "damage": 4,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 4
+        },
+        {
+          "type": "gain_momentum",
+          "value": 1
+        },
+        {
+          "type": "break_momentum",
+          "value": 2
+        }
+      ],
+      "tags": [
+        "early",
+        "spearman",
+        "attack",
+        "high_pressure",
+        "technique",
+        "closing_form"
+      ],
+      "difficulty_tier": "early",
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "power_score": 6.95
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_spearman_mid_strike",
+      "id": "posture_tuned_v0_1b_spearman_mid_strike",
+      "name": "穿线枪",
+      "card_type": "attack",
+      "weapon_style": "spearman",
+      "style": "枪",
+      "cost": 1,
+      "min": 0,
+      "max": 4,
+      "role": "attack",
+      "gain": 0,
+      "break": 0,
+      "damage": 6,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 6
+        }
+      ],
+      "tags": [
+        "mid",
+        "spearman",
+        "attack",
+        "measured",
+        "technique"
+      ],
+      "difficulty_tier": "mid",
+      "required_wujing": 2,
+      "closing_form_tier": 2,
+      "power_score": 6.3
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_spearman_mid_guard",
+      "id": "posture_tuned_v0_1b_spearman_mid_guard",
+      "name": "回枪固守",
+      "card_type": "defense",
+      "weapon_style": "spearman",
+      "style": "枪",
+      "cost": 1,
+      "min": 0,
+      "max": 4,
+      "role": "guard",
+      "gain": 0,
+      "break": 0,
+      "damage": 0,
+      "guard": 5,
+      "effects": [
+        {
+          "type": "gain_block",
+          "value": 5
+        }
+      ],
+      "tags": [
+        "mid",
+        "spearman",
+        "defense",
+        "anchor"
+      ],
+      "difficulty_tier": "mid",
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "power_score": 4.75
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_spearman_mid_pressure",
+      "id": "posture_tuned_v0_1b_spearman_mid_pressure",
+      "name": "封线破势",
+      "card_type": "skill",
+      "weapon_style": "spearman",
+      "style": "枪",
+      "cost": 1,
+      "min": 0,
+      "max": 4,
+      "role": "feint",
+      "gain": 0,
+      "break": 4,
+      "damage": 0,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "break_momentum",
+          "value": 4
+        }
+      ],
+      "tags": [
+        "mid",
+        "spearman",
+        "skill",
+        "pressure",
+        "technique"
+      ],
+      "difficulty_tier": "mid",
+      "required_wujing": 2,
+      "closing_form_tier": 2,
+      "power_score": 3.8
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_spearman_mid_focus",
+      "id": "posture_tuned_v0_1b_spearman_mid_focus",
+      "name": "稳步蓄势",
+      "card_type": "skill",
+      "weapon_style": "spearman",
+      "style": "枪",
+      "cost": 1,
+      "min": 0,
+      "max": 4,
+      "role": "feint",
+      "gain": 3,
+      "break": 0,
+      "damage": 0,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "gain_momentum",
+          "value": 3
+        }
+      ],
+      "tags": [
+        "mid",
+        "spearman",
+        "skill",
+        "setup",
+        "technique"
+      ],
+      "difficulty_tier": "mid",
+      "required_wujing": 2,
+      "closing_form_tier": 2,
+      "power_score": 2.55
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_spearman_mid_finisher",
+      "id": "posture_tuned_v0_1b_spearman_mid_finisher",
+      "name": "抢线突穿",
+      "card_type": "attack",
+      "weapon_style": "spearman",
+      "style": "枪",
+      "cost": 2,
+      "min": 0,
+      "max": 4,
+      "role": "attack",
+      "gain": 1,
+      "break": 2,
+      "damage": 5,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 5
+        },
+        {
+          "type": "gain_momentum",
+          "value": 1
+        },
+        {
+          "type": "break_momentum",
+          "value": 2
+        }
+      ],
+      "tags": [
+        "mid",
+        "spearman",
+        "attack",
+        "high_pressure",
+        "technique",
+        "closing_form"
+      ],
+      "difficulty_tier": "mid",
+      "required_wujing": 2,
+      "closing_form_tier": 2,
+      "power_score": 8.0
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_spearman_late_strike",
+      "id": "posture_tuned_v0_1b_spearman_late_strike",
+      "name": "贯潮枪",
+      "card_type": "attack",
+      "weapon_style": "spearman",
+      "style": "枪",
+      "cost": 2,
+      "min": 0,
+      "max": 4,
+      "role": "attack",
+      "gain": 0,
+      "break": 0,
+      "damage": 8,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 8
+        }
+      ],
+      "tags": [
+        "late",
+        "spearman",
+        "attack",
+        "high_pressure",
+        "technique"
+      ],
+      "difficulty_tier": "late",
+      "required_wujing": 3,
+      "closing_form_tier": 3,
+      "power_score": 8.4
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_spearman_late_guard",
+      "id": "posture_tuned_v0_1b_spearman_late_guard",
+      "name": "沉肩守线",
+      "card_type": "defense",
+      "weapon_style": "spearman",
+      "style": "枪",
+      "cost": 1,
+      "min": 0,
+      "max": 4,
+      "role": "guard",
+      "gain": 0,
+      "break": 0,
+      "damage": 0,
+      "guard": 6,
+      "effects": [
+        {
+          "type": "gain_block",
+          "value": 6
+        }
+      ],
+      "tags": [
+        "late",
+        "spearman",
+        "defense",
+        "anchor"
+      ],
+      "difficulty_tier": "late",
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "power_score": 5.7
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_spearman_late_pressure",
+      "id": "posture_tuned_v0_1b_spearman_late_pressure",
+      "name": "压营断势",
+      "card_type": "skill",
+      "weapon_style": "spearman",
+      "style": "枪",
+      "cost": 2,
+      "min": 0,
+      "max": 4,
+      "role": "feint",
+      "gain": 0,
+      "break": 7,
+      "damage": 0,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "break_momentum",
+          "value": 7
+        }
+      ],
+      "tags": [
+        "late",
+        "spearman",
+        "skill",
+        "pressure",
+        "high_pressure",
+        "technique"
+      ],
+      "difficulty_tier": "late",
+      "required_wujing": 3,
+      "closing_form_tier": 3,
+      "power_score": 6.65
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_spearman_late_focus",
+      "id": "posture_tuned_v0_1b_spearman_late_focus",
+      "name": "逼线聚势",
+      "card_type": "skill",
+      "weapon_style": "spearman",
+      "style": "枪",
+      "cost": 1,
+      "min": 0,
+      "max": 4,
+      "role": "feint",
+      "gain": 3,
+      "break": 0,
+      "damage": 0,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "gain_momentum",
+          "value": 3
+        }
+      ],
+      "tags": [
+        "late",
+        "spearman",
+        "skill",
+        "setup",
+        "technique"
+      ],
+      "difficulty_tier": "late",
+      "required_wujing": 3,
+      "closing_form_tier": 3,
+      "power_score": 2.55
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_spearman_late_finisher",
+      "id": "posture_tuned_v0_1b_spearman_late_finisher",
+      "name": "潮头追命",
+      "card_type": "attack",
+      "weapon_style": "spearman",
+      "style": "枪",
+      "cost": 2,
+      "min": 0,
+      "max": 4,
+      "role": "attack",
+      "gain": 0,
+      "break": 2,
+      "damage": 6,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 6
+        },
+        {
+          "type": "break_momentum",
+          "value": 2
+        }
+      ],
+      "tags": [
+        "late",
+        "spearman",
+        "attack",
+        "high_pressure",
+        "technique",
+        "closing_form"
+      ],
+      "difficulty_tier": "late",
+      "required_wujing": 3,
+      "closing_form_tier": 3,
+      "power_score": 8.2
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_spearman_boss_strike",
+      "id": "posture_tuned_v0_1b_spearman_boss_strike",
+      "name": "断潮重枪",
+      "card_type": "attack",
+      "weapon_style": "spearman",
+      "style": "枪",
+      "cost": 2,
+      "min": 0,
+      "max": 4,
+      "role": "attack",
+      "gain": 0,
+      "break": 0,
+      "damage": 8,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 8
+        }
+      ],
+      "tags": [
+        "boss",
+        "spearman",
+        "attack",
+        "boss_tag",
+        "high_pressure",
+        "technique"
+      ],
+      "difficulty_tier": "boss",
+      "required_wujing": 4,
+      "closing_form_tier": 4,
+      "power_score": 8.4
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_spearman_boss_guard",
+      "id": "posture_tuned_v0_1b_spearman_boss_guard",
+      "name": "大架封线",
+      "card_type": "defense",
+      "weapon_style": "spearman",
+      "style": "枪",
+      "cost": 1,
+      "min": 0,
+      "max": 4,
+      "role": "guard",
+      "gain": 0,
+      "break": 0,
+      "damage": 0,
+      "guard": 7,
+      "effects": [
+        {
+          "type": "gain_block",
+          "value": 7
+        }
+      ],
+      "tags": [
+        "boss",
+        "spearman",
+        "defense",
+        "boss_tag",
+        "anchor"
+      ],
+      "difficulty_tier": "boss",
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "power_score": 6.65
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_spearman_boss_pressure",
+      "id": "posture_tuned_v0_1b_spearman_boss_pressure",
+      "name": "锁营夺势",
+      "card_type": "skill",
+      "weapon_style": "spearman",
+      "style": "枪",
+      "cost": 2,
+      "min": 0,
+      "max": 4,
+      "role": "feint",
+      "gain": 0,
+      "break": 8,
+      "damage": 0,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "break_momentum",
+          "value": 8
+        }
+      ],
+      "tags": [
+        "boss",
+        "spearman",
+        "skill",
+        "boss_tag",
+        "high_pressure",
+        "technique"
+      ],
+      "difficulty_tier": "boss",
+      "required_wujing": 4,
+      "closing_form_tier": 4,
+      "power_score": 7.6
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_spearman_boss_focus",
+      "id": "posture_tuned_v0_1b_spearman_boss_focus",
+      "name": "裂阵聚势",
+      "card_type": "skill",
+      "weapon_style": "spearman",
+      "style": "枪",
+      "cost": 1,
+      "min": 0,
+      "max": 4,
+      "role": "feint",
+      "gain": 4,
+      "break": 0,
+      "damage": 0,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "gain_momentum",
+          "value": 4
+        }
+      ],
+      "tags": [
+        "boss",
+        "spearman",
+        "skill",
+        "boss_tag",
+        "setup",
+        "technique"
+      ],
+      "difficulty_tier": "boss",
+      "required_wujing": 4,
+      "closing_form_tier": 4,
+      "power_score": 3.4
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_spearman_boss_finisher",
+      "id": "posture_tuned_v0_1b_spearman_boss_finisher",
+      "name": "贯心落潮",
+      "card_type": "attack",
+      "weapon_style": "spearman",
+      "style": "枪",
+      "cost": 2,
+      "min": 0,
+      "max": 4,
+      "role": "attack",
+      "gain": 1,
+      "break": 0,
+      "damage": 7,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 7
+        },
+        {
+          "type": "gain_momentum",
+          "value": 1
+        }
+      ],
+      "tags": [
+        "boss",
+        "spearman",
+        "attack",
+        "boss_tag",
+        "high_pressure",
+        "technique",
+        "closing_form"
+      ],
+      "difficulty_tier": "boss",
+      "required_wujing": 4,
+      "closing_form_tier": 4,
+      "power_score": 8.2
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_blademaster_early_strike",
+      "id": "posture_tuned_v0_1b_blademaster_early_strike",
+      "name": "贴步快斩",
+      "card_type": "attack",
+      "weapon_style": "blademaster",
+      "style": "刀",
+      "cost": 1,
+      "min": 0,
+      "max": 2,
+      "role": "attack",
+      "gain": 0,
+      "break": 0,
+      "damage": 5,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 5
+        }
+      ],
+      "tags": [
+        "early",
+        "blademaster",
+        "attack",
+        "measured",
+        "technique"
+      ],
+      "difficulty_tier": "early",
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "power_score": 5.25
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_blademaster_early_guard",
+      "id": "posture_tuned_v0_1b_blademaster_early_guard",
+      "name": "藏锋格",
+      "card_type": "defense",
+      "weapon_style": "blademaster",
+      "style": "刀",
+      "cost": 1,
+      "min": 0,
+      "max": 2,
+      "role": "guard",
+      "gain": 0,
+      "break": 0,
+      "damage": 0,
+      "guard": 4,
+      "effects": [
+        {
+          "type": "gain_block",
+          "value": 4
+        }
+      ],
+      "tags": [
+        "early",
+        "blademaster",
+        "defense",
+        "anchor"
+      ],
+      "difficulty_tier": "early",
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "power_score": 3.8
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_blademaster_early_pressure",
+      "id": "posture_tuned_v0_1b_blademaster_early_pressure",
+      "name": "逼身断势",
+      "card_type": "skill",
+      "weapon_style": "blademaster",
+      "style": "刀",
+      "cost": 1,
+      "min": 0,
+      "max": 2,
+      "role": "feint",
+      "gain": 0,
+      "break": 3,
+      "damage": 0,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "break_momentum",
+          "value": 3
+        }
+      ],
+      "tags": [
+        "early",
+        "blademaster",
+        "skill",
+        "pressure",
+        "technique"
+      ],
+      "difficulty_tier": "early",
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "power_score": 2.85
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_blademaster_early_focus",
+      "id": "posture_tuned_v0_1b_blademaster_early_focus",
+      "name": "短促换气",
+      "card_type": "skill",
+      "weapon_style": "blademaster",
+      "style": "刀",
+      "cost": 1,
+      "min": 0,
+      "max": 2,
+      "role": "feint",
+      "gain": 3,
+      "break": 0,
+      "damage": 0,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "gain_momentum",
+          "value": 3
+        }
+      ],
+      "tags": [
+        "early",
+        "blademaster",
+        "skill",
+        "setup",
+        "technique"
+      ],
+      "difficulty_tier": "early",
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "power_score": 2.55
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_blademaster_early_finisher",
+      "id": "posture_tuned_v0_1b_blademaster_early_finisher",
+      "name": "贴身追斩",
+      "card_type": "attack",
+      "weapon_style": "blademaster",
+      "style": "刀",
+      "cost": 2,
+      "min": 0,
+      "max": 2,
+      "role": "attack",
+      "gain": 1,
+      "break": 2,
+      "damage": 4,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 4
+        },
+        {
+          "type": "gain_momentum",
+          "value": 1
+        },
+        {
+          "type": "break_momentum",
+          "value": 2
+        }
+      ],
+      "tags": [
+        "early",
+        "blademaster",
+        "attack",
+        "high_pressure",
+        "technique",
+        "closing_form"
+      ],
+      "difficulty_tier": "early",
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "power_score": 6.95
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_blademaster_mid_strike",
+      "id": "posture_tuned_v0_1b_blademaster_mid_strike",
+      "name": "追影斩",
+      "card_type": "attack",
+      "weapon_style": "blademaster",
+      "style": "刀",
+      "cost": 1,
+      "min": 0,
+      "max": 2,
+      "role": "attack",
+      "gain": 0,
+      "break": 0,
+      "damage": 6,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 6
+        }
+      ],
+      "tags": [
+        "mid",
+        "blademaster",
+        "attack",
+        "measured",
+        "technique"
+      ],
+      "difficulty_tier": "mid",
+      "required_wujing": 2,
+      "closing_form_tier": 2,
+      "power_score": 6.3
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_blademaster_mid_guard",
+      "id": "posture_tuned_v0_1b_blademaster_mid_guard",
+      "name": "折腕收锋",
+      "card_type": "defense",
+      "weapon_style": "blademaster",
+      "style": "刀",
+      "cost": 1,
+      "min": 0,
+      "max": 2,
+      "role": "guard",
+      "gain": 0,
+      "break": 0,
+      "damage": 0,
+      "guard": 5,
+      "effects": [
+        {
+          "type": "gain_block",
+          "value": 5
+        }
+      ],
+      "tags": [
+        "mid",
+        "blademaster",
+        "defense",
+        "anchor"
+      ],
+      "difficulty_tier": "mid",
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "power_score": 4.75
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_blademaster_mid_pressure",
+      "id": "posture_tuned_v0_1b_blademaster_mid_pressure",
+      "name": "贴身压势",
+      "card_type": "skill",
+      "weapon_style": "blademaster",
+      "style": "刀",
+      "cost": 1,
+      "min": 0,
+      "max": 2,
+      "role": "feint",
+      "gain": 0,
+      "break": 4,
+      "damage": 0,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "break_momentum",
+          "value": 4
+        }
+      ],
+      "tags": [
+        "mid",
+        "blademaster",
+        "skill",
+        "pressure",
+        "technique"
+      ],
+      "difficulty_tier": "mid",
+      "required_wujing": 2,
+      "closing_form_tier": 2,
+      "power_score": 3.8
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_blademaster_mid_focus",
+      "id": "posture_tuned_v0_1b_blademaster_mid_focus",
+      "name": "步内聚势",
+      "card_type": "skill",
+      "weapon_style": "blademaster",
+      "style": "刀",
+      "cost": 1,
+      "min": 0,
+      "max": 2,
+      "role": "feint",
+      "gain": 3,
+      "break": 0,
+      "damage": 0,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "gain_momentum",
+          "value": 3
+        }
+      ],
+      "tags": [
+        "mid",
+        "blademaster",
+        "skill",
+        "setup",
+        "technique"
+      ],
+      "difficulty_tier": "mid",
+      "required_wujing": 2,
+      "closing_form_tier": 2,
+      "power_score": 2.55
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_blademaster_mid_finisher",
+      "id": "posture_tuned_v0_1b_blademaster_mid_finisher",
+      "name": "欺身落刃",
+      "card_type": "attack",
+      "weapon_style": "blademaster",
+      "style": "刀",
+      "cost": 2,
+      "min": 0,
+      "max": 2,
+      "role": "attack",
+      "gain": 1,
+      "break": 2,
+      "damage": 5,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 5
+        },
+        {
+          "type": "gain_momentum",
+          "value": 1
+        },
+        {
+          "type": "break_momentum",
+          "value": 2
+        }
+      ],
+      "tags": [
+        "mid",
+        "blademaster",
+        "attack",
+        "high_pressure",
+        "technique",
+        "closing_form"
+      ],
+      "difficulty_tier": "mid",
+      "required_wujing": 2,
+      "closing_form_tier": 2,
+      "power_score": 8.0
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_blademaster_late_strike",
+      "id": "posture_tuned_v0_1b_blademaster_late_strike",
+      "name": "断潮重斩",
+      "card_type": "attack",
+      "weapon_style": "blademaster",
+      "style": "刀",
+      "cost": 2,
+      "min": 0,
+      "max": 2,
+      "role": "attack",
+      "gain": 0,
+      "break": 0,
+      "damage": 8,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 8
+        }
+      ],
+      "tags": [
+        "late",
+        "blademaster",
+        "attack",
+        "high_pressure",
+        "technique"
+      ],
+      "difficulty_tier": "late",
+      "required_wujing": 3,
+      "closing_form_tier": 3,
+      "power_score": 8.4
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_blademaster_late_guard",
+      "id": "posture_tuned_v0_1b_blademaster_late_guard",
+      "name": "沉锋稳架",
+      "card_type": "defense",
+      "weapon_style": "blademaster",
+      "style": "刀",
+      "cost": 1,
+      "min": 0,
+      "max": 2,
+      "role": "guard",
+      "gain": 0,
+      "break": 0,
+      "damage": 0,
+      "guard": 6,
+      "effects": [
+        {
+          "type": "gain_block",
+          "value": 6
+        }
+      ],
+      "tags": [
+        "late",
+        "blademaster",
+        "defense",
+        "anchor"
+      ],
+      "difficulty_tier": "late",
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "power_score": 5.7
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_blademaster_late_pressure",
+      "id": "posture_tuned_v0_1b_blademaster_late_pressure",
+      "name": "逼命压锋",
+      "card_type": "skill",
+      "weapon_style": "blademaster",
+      "style": "刀",
+      "cost": 2,
+      "min": 0,
+      "max": 2,
+      "role": "feint",
+      "gain": 0,
+      "break": 7,
+      "damage": 0,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "break_momentum",
+          "value": 7
+        }
+      ],
+      "tags": [
+        "late",
+        "blademaster",
+        "skill",
+        "pressure",
+        "high_pressure",
+        "technique"
+      ],
+      "difficulty_tier": "late",
+      "required_wujing": 3,
+      "closing_form_tier": 3,
+      "power_score": 6.65
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_blademaster_late_focus",
+      "id": "posture_tuned_v0_1b_blademaster_late_focus",
+      "name": "近身蓄势",
+      "card_type": "skill",
+      "weapon_style": "blademaster",
+      "style": "刀",
+      "cost": 1,
+      "min": 0,
+      "max": 2,
+      "role": "feint",
+      "gain": 3,
+      "break": 0,
+      "damage": 0,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "gain_momentum",
+          "value": 3
+        }
+      ],
+      "tags": [
+        "late",
+        "blademaster",
+        "skill",
+        "setup",
+        "technique"
+      ],
+      "difficulty_tier": "late",
+      "required_wujing": 3,
+      "closing_form_tier": 3,
+      "power_score": 2.55
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_blademaster_late_finisher",
+      "id": "posture_tuned_v0_1b_blademaster_late_finisher",
+      "name": "断潮夺命",
+      "card_type": "attack",
+      "weapon_style": "blademaster",
+      "style": "刀",
+      "cost": 2,
+      "min": 0,
+      "max": 2,
+      "role": "attack",
+      "gain": 0,
+      "break": 2,
+      "damage": 6,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 6
+        },
+        {
+          "type": "break_momentum",
+          "value": 2
+        }
+      ],
+      "tags": [
+        "late",
+        "blademaster",
+        "attack",
+        "high_pressure",
+        "technique",
+        "closing_form"
+      ],
+      "difficulty_tier": "late",
+      "required_wujing": 3,
+      "closing_form_tier": 3,
+      "power_score": 8.2
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_blademaster_boss_strike",
+      "id": "posture_tuned_v0_1b_blademaster_boss_strike",
+      "name": "裂波断首",
+      "card_type": "attack",
+      "weapon_style": "blademaster",
+      "style": "刀",
+      "cost": 2,
+      "min": 0,
+      "max": 2,
+      "role": "attack",
+      "gain": 0,
+      "break": 0,
+      "damage": 8,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 8
+        }
+      ],
+      "tags": [
+        "boss",
+        "blademaster",
+        "attack",
+        "boss_tag",
+        "high_pressure",
+        "technique"
+      ],
+      "difficulty_tier": "boss",
+      "required_wujing": 4,
+      "closing_form_tier": 4,
+      "power_score": 8.4
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_blademaster_boss_guard",
+      "id": "posture_tuned_v0_1b_blademaster_boss_guard",
+      "name": "沉锋锁门",
+      "card_type": "defense",
+      "weapon_style": "blademaster",
+      "style": "刀",
+      "cost": 1,
+      "min": 0,
+      "max": 2,
+      "role": "guard",
+      "gain": 0,
+      "break": 0,
+      "damage": 0,
+      "guard": 7,
+      "effects": [
+        {
+          "type": "gain_block",
+          "value": 7
+        }
+      ],
+      "tags": [
+        "boss",
+        "blademaster",
+        "defense",
+        "boss_tag",
+        "anchor"
+      ],
+      "difficulty_tier": "boss",
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "power_score": 6.65
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_blademaster_boss_pressure",
+      "id": "posture_tuned_v0_1b_blademaster_boss_pressure",
+      "name": "逼宫断势",
+      "card_type": "skill",
+      "weapon_style": "blademaster",
+      "style": "刀",
+      "cost": 2,
+      "min": 0,
+      "max": 2,
+      "role": "feint",
+      "gain": 0,
+      "break": 8,
+      "damage": 0,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "break_momentum",
+          "value": 8
+        }
+      ],
+      "tags": [
+        "boss",
+        "blademaster",
+        "skill",
+        "boss_tag",
+        "high_pressure",
+        "technique"
+      ],
+      "difficulty_tier": "boss",
+      "required_wujing": 4,
+      "closing_form_tier": 4,
+      "power_score": 7.6
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_blademaster_boss_focus",
+      "id": "posture_tuned_v0_1b_blademaster_boss_focus",
+      "name": "血潮聚锋",
+      "card_type": "skill",
+      "weapon_style": "blademaster",
+      "style": "刀",
+      "cost": 1,
+      "min": 0,
+      "max": 2,
+      "role": "feint",
+      "gain": 4,
+      "break": 0,
+      "damage": 0,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "gain_momentum",
+          "value": 4
+        }
+      ],
+      "tags": [
+        "boss",
+        "blademaster",
+        "skill",
+        "boss_tag",
+        "setup",
+        "technique"
+      ],
+      "difficulty_tier": "boss",
+      "required_wujing": 4,
+      "closing_form_tier": 4,
+      "power_score": 3.4
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "card_id": "posture_tuned_v0_1b_blademaster_boss_finisher",
+      "id": "posture_tuned_v0_1b_blademaster_boss_finisher",
+      "name": "追潮绝斩",
+      "card_type": "attack",
+      "weapon_style": "blademaster",
+      "style": "刀",
+      "cost": 2,
+      "min": 0,
+      "max": 2,
+      "role": "attack",
+      "gain": 1,
+      "break": 0,
+      "damage": 7,
+      "guard": 0,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 7
+        },
+        {
+          "type": "gain_momentum",
+          "value": 1
+        }
+      ],
+      "tags": [
+        "boss",
+        "blademaster",
+        "attack",
+        "boss_tag",
+        "high_pressure",
+        "technique",
+        "closing_form"
+      ],
+      "difficulty_tier": "boss",
+      "required_wujing": 4,
+      "closing_form_tier": 4,
+      "power_score": 8.2
+    }
+  ],
+  "enemy_decks": [
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "deck_id": "posture_tuned_v0_1b_deck_001",
+      "enemy_role": "spearman",
+      "difficulty_tier": "normal",
+      "sequence_position": 1,
+      "encounter_tier": "early",
+      "encounter_kind": "normal",
+      "player_wujing_cap": 1,
+      "target_power_min": 22,
+      "target_power_max": 30,
+      "card_ids": [
+        "posture_tuned_v0_1b_spearman_early_strike",
+        "posture_tuned_v0_1b_spearman_early_strike",
+        "posture_tuned_v0_1b_spearman_early_pressure",
+        "posture_tuned_v0_1b_spearman_early_guard",
+        "posture_tuned_v0_1b_spearman_early_guard",
+        "posture_tuned_v0_1b_spearman_early_focus"
+      ],
+      "deck_power_score": 23.5,
+      "power_range_pass": true,
+      "realm_eligibility_checked": true,
+      "invalid_realm_card_count": 0,
+      "tags": [
+        "early",
+        "normal",
+        "spearman"
+      ]
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "deck_id": "posture_tuned_v0_1b_deck_002",
+      "enemy_role": "spearman",
+      "difficulty_tier": "normal",
+      "sequence_position": 2,
+      "encounter_tier": "early",
+      "encounter_kind": "normal",
+      "player_wujing_cap": 1,
+      "target_power_min": 22,
+      "target_power_max": 30,
+      "card_ids": [
+        "posture_tuned_v0_1b_spearman_early_strike",
+        "posture_tuned_v0_1b_spearman_early_strike",
+        "posture_tuned_v0_1b_spearman_early_pressure",
+        "posture_tuned_v0_1b_spearman_early_guard",
+        "posture_tuned_v0_1b_spearman_early_guard",
+        "posture_tuned_v0_1b_spearman_early_focus"
+      ],
+      "deck_power_score": 23.5,
+      "power_range_pass": true,
+      "realm_eligibility_checked": true,
+      "invalid_realm_card_count": 0,
+      "tags": [
+        "early",
+        "normal",
+        "spearman"
+      ]
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "deck_id": "posture_tuned_v0_1b_deck_003",
+      "enemy_role": "blademaster",
+      "difficulty_tier": "elite",
+      "sequence_position": 3,
+      "encounter_tier": "early",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 1,
+      "target_power_min": 25,
+      "target_power_max": 35,
+      "card_ids": [
+        "posture_tuned_v0_1b_blademaster_early_strike",
+        "posture_tuned_v0_1b_blademaster_early_strike",
+        "posture_tuned_v0_1b_blademaster_early_pressure",
+        "posture_tuned_v0_1b_blademaster_early_pressure",
+        "posture_tuned_v0_1b_blademaster_early_guard",
+        "posture_tuned_v0_1b_blademaster_early_focus",
+        "posture_tuned_v0_1b_blademaster_early_finisher"
+      ],
+      "deck_power_score": 29.5,
+      "power_range_pass": true,
+      "realm_eligibility_checked": true,
+      "invalid_realm_card_count": 0,
+      "tags": [
+        "early",
+        "elite",
+        "blademaster"
+      ]
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "deck_id": "posture_tuned_v0_1b_deck_004",
+      "enemy_role": "spearman",
+      "difficulty_tier": "elite",
+      "sequence_position": 4,
+      "encounter_tier": "early",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 1,
+      "target_power_min": 25,
+      "target_power_max": 35,
+      "card_ids": [
+        "posture_tuned_v0_1b_spearman_early_strike",
+        "posture_tuned_v0_1b_spearman_early_strike",
+        "posture_tuned_v0_1b_spearman_early_pressure",
+        "posture_tuned_v0_1b_spearman_early_pressure",
+        "posture_tuned_v0_1b_spearman_early_guard",
+        "posture_tuned_v0_1b_spearman_early_focus",
+        "posture_tuned_v0_1b_spearman_early_finisher"
+      ],
+      "deck_power_score": 29.5,
+      "power_range_pass": true,
+      "realm_eligibility_checked": true,
+      "invalid_realm_card_count": 0,
+      "tags": [
+        "early",
+        "elite",
+        "spearman"
+      ]
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "deck_id": "posture_tuned_v0_1b_deck_005",
+      "enemy_role": "blademaster",
+      "difficulty_tier": "boss",
+      "sequence_position": 5,
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "player_wujing_cap": 4,
+      "target_power_min": 56,
+      "target_power_max": 66,
+      "card_ids": [
+        "posture_tuned_v0_1b_blademaster_boss_strike",
+        "posture_tuned_v0_1b_blademaster_boss_strike",
+        "posture_tuned_v0_1b_blademaster_boss_pressure",
+        "posture_tuned_v0_1b_blademaster_boss_pressure",
+        "posture_tuned_v0_1b_blademaster_boss_guard",
+        "posture_tuned_v0_1b_blademaster_boss_guard",
+        "posture_tuned_v0_1b_blademaster_boss_focus",
+        "posture_tuned_v0_1b_blademaster_boss_finisher"
+      ],
+      "deck_power_score": 56.9,
+      "power_range_pass": true,
+      "realm_eligibility_checked": true,
+      "invalid_realm_card_count": 0,
+      "tags": [
+        "boss",
+        "boss",
+        "blademaster"
+      ]
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "deck_id": "posture_tuned_v0_1b_deck_006",
+      "enemy_role": "spearman",
+      "difficulty_tier": "elite",
+      "sequence_position": 6,
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 2,
+      "target_power_min": 35,
+      "target_power_max": 45,
+      "card_ids": [
+        "posture_tuned_v0_1b_spearman_mid_strike",
+        "posture_tuned_v0_1b_spearman_mid_strike",
+        "posture_tuned_v0_1b_spearman_mid_pressure",
+        "posture_tuned_v0_1b_spearman_mid_pressure",
+        "posture_tuned_v0_1b_spearman_mid_guard",
+        "posture_tuned_v0_1b_spearman_mid_focus",
+        "posture_tuned_v0_1b_spearman_mid_finisher"
+      ],
+      "deck_power_score": 35.5,
+      "power_range_pass": true,
+      "realm_eligibility_checked": true,
+      "invalid_realm_card_count": 0,
+      "tags": [
+        "mid",
+        "elite",
+        "spearman"
+      ]
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "deck_id": "posture_tuned_v0_1b_deck_007",
+      "enemy_role": "blademaster",
+      "difficulty_tier": "elite",
+      "sequence_position": 7,
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 2,
+      "target_power_min": 35,
+      "target_power_max": 45,
+      "card_ids": [
+        "posture_tuned_v0_1b_blademaster_mid_strike",
+        "posture_tuned_v0_1b_blademaster_mid_strike",
+        "posture_tuned_v0_1b_blademaster_mid_pressure",
+        "posture_tuned_v0_1b_blademaster_mid_pressure",
+        "posture_tuned_v0_1b_blademaster_mid_guard",
+        "posture_tuned_v0_1b_blademaster_mid_focus",
+        "posture_tuned_v0_1b_blademaster_mid_finisher"
+      ],
+      "deck_power_score": 35.5,
+      "power_range_pass": true,
+      "realm_eligibility_checked": true,
+      "invalid_realm_card_count": 0,
+      "tags": [
+        "mid",
+        "elite",
+        "blademaster"
+      ]
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "deck_id": "posture_tuned_v0_1b_deck_008",
+      "enemy_role": "blademaster",
+      "difficulty_tier": "boss",
+      "sequence_position": 8,
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "player_wujing_cap": 4,
+      "target_power_min": 56,
+      "target_power_max": 66,
+      "card_ids": [
+        "posture_tuned_v0_1b_blademaster_boss_strike",
+        "posture_tuned_v0_1b_blademaster_boss_strike",
+        "posture_tuned_v0_1b_blademaster_boss_pressure",
+        "posture_tuned_v0_1b_blademaster_boss_pressure",
+        "posture_tuned_v0_1b_blademaster_boss_guard",
+        "posture_tuned_v0_1b_blademaster_boss_guard",
+        "posture_tuned_v0_1b_blademaster_boss_focus",
+        "posture_tuned_v0_1b_blademaster_boss_finisher"
+      ],
+      "deck_power_score": 56.9,
+      "power_range_pass": true,
+      "realm_eligibility_checked": true,
+      "invalid_realm_card_count": 0,
+      "tags": [
+        "boss",
+        "boss",
+        "blademaster"
+      ]
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "deck_id": "posture_tuned_v0_1b_deck_009",
+      "enemy_role": "spearman",
+      "difficulty_tier": "elite",
+      "sequence_position": 9,
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 2,
+      "target_power_min": 35,
+      "target_power_max": 45,
+      "card_ids": [
+        "posture_tuned_v0_1b_spearman_mid_strike",
+        "posture_tuned_v0_1b_spearman_mid_strike",
+        "posture_tuned_v0_1b_spearman_mid_pressure",
+        "posture_tuned_v0_1b_spearman_mid_pressure",
+        "posture_tuned_v0_1b_spearman_mid_guard",
+        "posture_tuned_v0_1b_spearman_mid_focus",
+        "posture_tuned_v0_1b_spearman_mid_finisher"
+      ],
+      "deck_power_score": 35.5,
+      "power_range_pass": true,
+      "realm_eligibility_checked": true,
+      "invalid_realm_card_count": 0,
+      "tags": [
+        "mid",
+        "elite",
+        "spearman"
+      ]
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "deck_id": "posture_tuned_v0_1b_deck_010",
+      "enemy_role": "blademaster",
+      "difficulty_tier": "elite",
+      "sequence_position": 10,
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 2,
+      "target_power_min": 35,
+      "target_power_max": 45,
+      "card_ids": [
+        "posture_tuned_v0_1b_blademaster_mid_strike",
+        "posture_tuned_v0_1b_blademaster_mid_strike",
+        "posture_tuned_v0_1b_blademaster_mid_pressure",
+        "posture_tuned_v0_1b_blademaster_mid_pressure",
+        "posture_tuned_v0_1b_blademaster_mid_guard",
+        "posture_tuned_v0_1b_blademaster_mid_focus",
+        "posture_tuned_v0_1b_blademaster_mid_finisher"
+      ],
+      "deck_power_score": 35.5,
+      "power_range_pass": true,
+      "realm_eligibility_checked": true,
+      "invalid_realm_card_count": 0,
+      "tags": [
+        "mid",
+        "elite",
+        "blademaster"
+      ]
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "deck_id": "posture_tuned_v0_1b_deck_011",
+      "enemy_role": "blademaster",
+      "difficulty_tier": "elite",
+      "sequence_position": 11,
+      "encounter_tier": "late",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 3,
+      "target_power_min": 47,
+      "target_power_max": 59,
+      "card_ids": [
+        "posture_tuned_v0_1b_blademaster_late_strike",
+        "posture_tuned_v0_1b_blademaster_late_strike",
+        "posture_tuned_v0_1b_blademaster_late_pressure",
+        "posture_tuned_v0_1b_blademaster_late_pressure",
+        "posture_tuned_v0_1b_blademaster_late_guard",
+        "posture_tuned_v0_1b_blademaster_late_guard",
+        "posture_tuned_v0_1b_blademaster_late_focus",
+        "posture_tuned_v0_1b_blademaster_late_finisher"
+      ],
+      "deck_power_score": 52.25,
+      "power_range_pass": true,
+      "realm_eligibility_checked": true,
+      "invalid_realm_card_count": 0,
+      "tags": [
+        "late",
+        "elite",
+        "blademaster"
+      ]
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "deck_id": "posture_tuned_v0_1b_deck_012",
+      "enemy_role": "spearman",
+      "difficulty_tier": "normal",
+      "sequence_position": 12,
+      "encounter_tier": "late",
+      "encounter_kind": "normal",
+      "player_wujing_cap": 3,
+      "target_power_min": 44,
+      "target_power_max": 54,
+      "card_ids": [
+        "posture_tuned_v0_1b_spearman_late_strike",
+        "posture_tuned_v0_1b_spearman_late_strike",
+        "posture_tuned_v0_1b_spearman_late_pressure",
+        "posture_tuned_v0_1b_spearman_late_pressure",
+        "posture_tuned_v0_1b_spearman_late_guard",
+        "posture_tuned_v0_1b_spearman_late_focus",
+        "posture_tuned_v0_1b_spearman_late_finisher"
+      ],
+      "deck_power_score": 46.55,
+      "power_range_pass": true,
+      "realm_eligibility_checked": true,
+      "invalid_realm_card_count": 0,
+      "tags": [
+        "late",
+        "normal",
+        "spearman"
+      ]
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "deck_id": "posture_tuned_v0_1b_deck_013",
+      "enemy_role": "blademaster",
+      "difficulty_tier": "elite",
+      "sequence_position": 13,
+      "encounter_tier": "late",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 3,
+      "target_power_min": 47,
+      "target_power_max": 59,
+      "card_ids": [
+        "posture_tuned_v0_1b_blademaster_late_strike",
+        "posture_tuned_v0_1b_blademaster_late_strike",
+        "posture_tuned_v0_1b_blademaster_late_pressure",
+        "posture_tuned_v0_1b_blademaster_late_pressure",
+        "posture_tuned_v0_1b_blademaster_late_guard",
+        "posture_tuned_v0_1b_blademaster_late_guard",
+        "posture_tuned_v0_1b_blademaster_late_focus",
+        "posture_tuned_v0_1b_blademaster_late_finisher"
+      ],
+      "deck_power_score": 52.25,
+      "power_range_pass": true,
+      "realm_eligibility_checked": true,
+      "invalid_realm_card_count": 0,
+      "tags": [
+        "late",
+        "elite",
+        "blademaster"
+      ]
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "deck_id": "posture_tuned_v0_1b_deck_014",
+      "enemy_role": "blademaster",
+      "difficulty_tier": "normal",
+      "sequence_position": 14,
+      "encounter_tier": "late",
+      "encounter_kind": "normal",
+      "player_wujing_cap": 3,
+      "target_power_min": 44,
+      "target_power_max": 54,
+      "card_ids": [
+        "posture_tuned_v0_1b_blademaster_late_strike",
+        "posture_tuned_v0_1b_blademaster_late_strike",
+        "posture_tuned_v0_1b_blademaster_late_pressure",
+        "posture_tuned_v0_1b_blademaster_late_pressure",
+        "posture_tuned_v0_1b_blademaster_late_guard",
+        "posture_tuned_v0_1b_blademaster_late_focus",
+        "posture_tuned_v0_1b_blademaster_late_finisher"
+      ],
+      "deck_power_score": 46.55,
+      "power_range_pass": true,
+      "realm_eligibility_checked": true,
+      "invalid_realm_card_count": 0,
+      "tags": [
+        "late",
+        "normal",
+        "blademaster"
+      ]
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "deck_id": "posture_tuned_v0_1b_deck_015",
+      "enemy_role": "blademaster",
+      "difficulty_tier": "boss",
+      "sequence_position": 15,
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "player_wujing_cap": 4,
+      "target_power_min": 56,
+      "target_power_max": 66,
+      "card_ids": [
+        "posture_tuned_v0_1b_blademaster_boss_strike",
+        "posture_tuned_v0_1b_blademaster_boss_strike",
+        "posture_tuned_v0_1b_blademaster_boss_pressure",
+        "posture_tuned_v0_1b_blademaster_boss_pressure",
+        "posture_tuned_v0_1b_blademaster_boss_guard",
+        "posture_tuned_v0_1b_blademaster_boss_guard",
+        "posture_tuned_v0_1b_blademaster_boss_focus",
+        "posture_tuned_v0_1b_blademaster_boss_finisher"
+      ],
+      "deck_power_score": 56.9,
+      "power_range_pass": true,
+      "realm_eligibility_checked": true,
+      "invalid_realm_card_count": 0,
+      "tags": [
+        "boss",
+        "boss",
+        "blademaster"
+      ]
+    }
+  ],
+  "battle_slots": [
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "battle_slot_id": "posture_tuned_v0_1b_slot_001",
+      "enemy_role": "spearman",
+      "difficulty_tier": "normal",
+      "sequence_position": 1,
+      "encounter_tier": "early",
+      "encounter_kind": "normal",
+      "player_wujing_cap": 1,
+      "target_power_min": 22,
+      "target_power_max": 30,
+      "reward_tier": "basic",
+      "deck_id": "posture_tuned_v0_1b_deck_001",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_001",
+      "runtime_primitives": [],
+      "opening_pressure": {},
+      "source": {
+        "target_sequence_id": "formal_sequence_mvp_v1",
+        "formal_encounter_id": "enc_beach_ambush",
+        "formal_battle_id": "first_act_beach_ambush",
+        "node_id": "beach_ambush"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "battle_slot_id": "posture_tuned_v0_1b_slot_002",
+      "enemy_role": "spearman",
+      "difficulty_tier": "normal",
+      "sequence_position": 2,
+      "encounter_tier": "early",
+      "encounter_kind": "normal",
+      "player_wujing_cap": 1,
+      "target_power_min": 22,
+      "target_power_max": 30,
+      "reward_tier": "basic",
+      "deck_id": "posture_tuned_v0_1b_deck_002",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_002",
+      "runtime_primitives": [],
+      "opening_pressure": {},
+      "source": {
+        "target_sequence_id": "formal_sequence_mvp_v1",
+        "formal_encounter_id": "enc_fishing_village_embers",
+        "formal_battle_id": "first_act_fishing_village_embers",
+        "node_id": "fishing_village_embers"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "battle_slot_id": "posture_tuned_v0_1b_slot_003",
+      "enemy_role": "blademaster",
+      "difficulty_tier": "elite",
+      "sequence_position": 3,
+      "encounter_tier": "early",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 1,
+      "target_power_min": 25,
+      "target_power_max": 35,
+      "reward_tier": "basic",
+      "deck_id": "posture_tuned_v0_1b_deck_003",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_003",
+      "runtime_primitives": [],
+      "opening_pressure": {},
+      "source": {
+        "target_sequence_id": "formal_sequence_mvp_v1",
+        "formal_encounter_id": "enc_transport_officer",
+        "formal_battle_id": "first_act_transport_officer",
+        "node_id": "transport_officer"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "battle_slot_id": "posture_tuned_v0_1b_slot_004",
+      "enemy_role": "spearman",
+      "difficulty_tier": "elite",
+      "sequence_position": 4,
+      "encounter_tier": "early",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 1,
+      "target_power_min": 25,
+      "target_power_max": 35,
+      "reward_tier": "basic",
+      "deck_id": "posture_tuned_v0_1b_deck_004",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_004",
+      "runtime_primitives": [],
+      "opening_pressure": {},
+      "source": {
+        "target_sequence_id": "formal_sequence_mvp_v1",
+        "formal_encounter_id": "enc_mutiny_camp",
+        "formal_battle_id": "first_act_mutiny_camp",
+        "node_id": "mutiny_camp"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "battle_slot_id": "posture_tuned_v0_1b_slot_005",
+      "enemy_role": "blademaster",
+      "difficulty_tier": "boss",
+      "sequence_position": 5,
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "player_wujing_cap": 4,
+      "target_power_min": 56,
+      "target_power_max": 66,
+      "reward_tier": "boss",
+      "deck_id": "posture_tuned_v0_1b_deck_005",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_005",
+      "runtime_primitives": [],
+      "opening_pressure": {},
+      "source": {
+        "target_sequence_id": "formal_sequence_mvp_v1",
+        "formal_encounter_id": "enc_wakou_boss",
+        "formal_battle_id": "first_act_wakou_boss",
+        "node_id": "wakou_boss"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "battle_slot_id": "posture_tuned_v0_1b_slot_006",
+      "enemy_role": "spearman",
+      "difficulty_tier": "elite",
+      "sequence_position": 6,
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 2,
+      "target_power_min": 35,
+      "target_power_max": 45,
+      "reward_tier": "standard_plus",
+      "deck_id": "posture_tuned_v0_1b_deck_006",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_006",
+      "runtime_primitives": [],
+      "opening_pressure": {},
+      "source": {
+        "target_sequence_id": "formal_sequence_mvp_v1",
+        "formal_encounter_id": "enc_wuke_spear_trial",
+        "formal_battle_id": "wuke_spear_trial",
+        "node_id": "wuke_spear_trial"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "battle_slot_id": "posture_tuned_v0_1b_slot_007",
+      "enemy_role": "blademaster",
+      "difficulty_tier": "elite",
+      "sequence_position": 7,
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 2,
+      "target_power_min": 35,
+      "target_power_max": 45,
+      "reward_tier": "standard_plus",
+      "deck_id": "posture_tuned_v0_1b_deck_007",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_007",
+      "runtime_primitives": [],
+      "opening_pressure": {},
+      "source": {
+        "target_sequence_id": "formal_sequence_mvp_v1",
+        "formal_encounter_id": "enc_wuke_blade_trial",
+        "formal_battle_id": "wuke_blade_trial",
+        "node_id": "wuke_blade_trial"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "battle_slot_id": "posture_tuned_v0_1b_slot_008",
+      "enemy_role": "blademaster",
+      "difficulty_tier": "boss",
+      "sequence_position": 8,
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "player_wujing_cap": 4,
+      "target_power_min": 56,
+      "target_power_max": 66,
+      "reward_tier": "boss",
+      "deck_id": "posture_tuned_v0_1b_deck_008",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_008",
+      "runtime_primitives": [],
+      "opening_pressure": {},
+      "source": {
+        "target_sequence_id": "formal_sequence_mvp_v1",
+        "formal_encounter_id": "enc_wuke_final_duel",
+        "formal_battle_id": "wuke_final_duel",
+        "node_id": "wuke_final_duel"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "battle_slot_id": "posture_tuned_v0_1b_slot_009",
+      "enemy_role": "spearman",
+      "difficulty_tier": "elite",
+      "sequence_position": 9,
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 2,
+      "target_power_min": 35,
+      "target_power_max": 45,
+      "reward_tier": "standard_plus",
+      "deck_id": "posture_tuned_v0_1b_deck_009",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_009",
+      "runtime_primitives": [],
+      "opening_pressure": {},
+      "source": {
+        "target_sequence_id": "formal_sequence_mvp_v1",
+        "formal_encounter_id": "enc_wuke_gu_chengyue",
+        "formal_battle_id": "wuke_gu_chengyue",
+        "node_id": "wuke_elim_gu_chengyue_battle"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "battle_slot_id": "posture_tuned_v0_1b_slot_010",
+      "enemy_role": "blademaster",
+      "difficulty_tier": "elite",
+      "sequence_position": 10,
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 2,
+      "target_power_min": 35,
+      "target_power_max": 45,
+      "reward_tier": "standard_plus",
+      "deck_id": "posture_tuned_v0_1b_deck_010",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_010",
+      "runtime_primitives": [],
+      "opening_pressure": {},
+      "source": {
+        "target_sequence_id": "formal_sequence_mvp_v1",
+        "formal_encounter_id": "enc_wuke_shen_zhaoye",
+        "formal_battle_id": "wuke_shen_zhaoye",
+        "node_id": "wuke_elim_shen_zhaoye_battle"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "battle_slot_id": "posture_tuned_v0_1b_slot_011",
+      "enemy_role": "blademaster",
+      "difficulty_tier": "elite",
+      "sequence_position": 11,
+      "encounter_tier": "late",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 3,
+      "target_power_min": 47,
+      "target_power_max": 59,
+      "reward_tier": "advanced_plus",
+      "deck_id": "posture_tuned_v0_1b_deck_011",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_011",
+      "runtime_primitives": [],
+      "opening_pressure": {},
+      "source": {
+        "target_sequence_id": "formal_sequence_mvp_v1",
+        "formal_encounter_id": "enc_wuke_qi_heng",
+        "formal_battle_id": "wuke_qi_heng",
+        "node_id": "wuke_elim_qi_heng_battle"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "battle_slot_id": "posture_tuned_v0_1b_slot_012",
+      "enemy_role": "spearman",
+      "difficulty_tier": "normal",
+      "sequence_position": 12,
+      "encounter_tier": "late",
+      "encounter_kind": "normal",
+      "player_wujing_cap": 3,
+      "target_power_min": 44,
+      "target_power_max": 54,
+      "reward_tier": "advanced_plus",
+      "deck_id": "posture_tuned_v0_1b_deck_012",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_012",
+      "runtime_primitives": [],
+      "opening_pressure": {},
+      "source": {
+        "target_sequence_id": "formal_sequence_mvp_v1",
+        "formal_encounter_id": "enc_ch2_reed_ambush",
+        "formal_battle_id": "chapter2_reed_ambush",
+        "node_id": "ch2_reed_ambush_battle"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "battle_slot_id": "posture_tuned_v0_1b_slot_013",
+      "enemy_role": "blademaster",
+      "difficulty_tier": "elite",
+      "sequence_position": 13,
+      "encounter_tier": "late",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 3,
+      "target_power_min": 47,
+      "target_power_max": 59,
+      "reward_tier": "advanced_plus",
+      "deck_id": "posture_tuned_v0_1b_deck_013",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_013",
+      "runtime_primitives": [],
+      "opening_pressure": {},
+      "source": {
+        "target_sequence_id": "formal_sequence_mvp_v1",
+        "formal_encounter_id": "enc_ch3_escort_clash",
+        "formal_battle_id": "chapter3_escort_clash",
+        "node_id": "ch3_escort_clash_battle"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "battle_slot_id": "posture_tuned_v0_1b_slot_014",
+      "enemy_role": "blademaster",
+      "difficulty_tier": "normal",
+      "sequence_position": 14,
+      "encounter_tier": "late",
+      "encounter_kind": "normal",
+      "player_wujing_cap": 3,
+      "target_power_min": 44,
+      "target_power_max": 54,
+      "reward_tier": "advanced_plus",
+      "deck_id": "posture_tuned_v0_1b_deck_014",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_014",
+      "runtime_primitives": [],
+      "opening_pressure": {},
+      "source": {
+        "target_sequence_id": "formal_sequence_mvp_v1",
+        "formal_encounter_id": "enc_ch4_tide_bandits",
+        "formal_battle_id": "chapter4_tide_bandits",
+        "node_id": "ch4_tide_bandits_battle"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "battle_slot_id": "posture_tuned_v0_1b_slot_015",
+      "enemy_role": "blademaster",
+      "difficulty_tier": "boss",
+      "sequence_position": 15,
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "player_wujing_cap": 4,
+      "target_power_min": 56,
+      "target_power_max": 66,
+      "reward_tier": "boss",
+      "deck_id": "posture_tuned_v0_1b_deck_015",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_015",
+      "runtime_primitives": [],
+      "opening_pressure": {},
+      "source": {
+        "target_sequence_id": "formal_sequence_mvp_v1",
+        "formal_encounter_id": "enc_boss_ext_wakou_leader",
+        "formal_battle_id": "boss_ext_wakou_leader",
+        "node_id": "boss_ext_wakou_leader_battle"
+      }
+    }
+  ],
+  "rewards": [
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_001",
+      "reward_type": "card_pick",
+      "reward_tier": "basic",
+      "sequence_position": 1,
+      "encounter_tier": "early",
+      "reward_items": [
+        {
+          "item_id": "basic_reward_card_001",
+          "quantity": 1
+        }
+      ],
+      "source": {
+        "formal_encounter_id": "enc_beach_ambush",
+        "formal_battle_id": "first_act_beach_ambush"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_002",
+      "reward_type": "card_pick",
+      "reward_tier": "basic",
+      "sequence_position": 2,
+      "encounter_tier": "early",
+      "reward_items": [
+        {
+          "item_id": "basic_reward_card_002",
+          "quantity": 1
+        }
+      ],
+      "source": {
+        "formal_encounter_id": "enc_fishing_village_embers",
+        "formal_battle_id": "first_act_fishing_village_embers"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_003",
+      "reward_type": "card_pick",
+      "reward_tier": "basic",
+      "sequence_position": 3,
+      "encounter_tier": "early",
+      "reward_items": [
+        {
+          "item_id": "basic_reward_card_003",
+          "quantity": 1
+        }
+      ],
+      "source": {
+        "formal_encounter_id": "enc_transport_officer",
+        "formal_battle_id": "first_act_transport_officer"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_004",
+      "reward_type": "card_pick",
+      "reward_tier": "basic",
+      "sequence_position": 4,
+      "encounter_tier": "early",
+      "reward_items": [
+        {
+          "item_id": "basic_reward_card_004",
+          "quantity": 1
+        }
+      ],
+      "source": {
+        "formal_encounter_id": "enc_mutiny_camp",
+        "formal_battle_id": "first_act_mutiny_camp"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_005",
+      "reward_type": "resource",
+      "reward_tier": "boss",
+      "sequence_position": 5,
+      "encounter_tier": "boss",
+      "reward_items": [
+        {
+          "item_id": "boss_reward_token",
+          "quantity": 1
+        },
+        {
+          "item_id": "resource_merit",
+          "quantity": 3
+        }
+      ],
+      "source": {
+        "formal_encounter_id": "enc_wakou_boss",
+        "formal_battle_id": "first_act_wakou_boss"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_006",
+      "reward_type": "card_pick",
+      "reward_tier": "standard_plus",
+      "sequence_position": 6,
+      "encounter_tier": "mid",
+      "reward_items": [
+        {
+          "item_id": "standard_reward_card_006",
+          "quantity": 1
+        },
+        {
+          "item_id": "resource_merit",
+          "quantity": 2
+        }
+      ],
+      "source": {
+        "formal_encounter_id": "enc_wuke_spear_trial",
+        "formal_battle_id": "wuke_spear_trial"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_007",
+      "reward_type": "card_pick",
+      "reward_tier": "standard_plus",
+      "sequence_position": 7,
+      "encounter_tier": "mid",
+      "reward_items": [
+        {
+          "item_id": "standard_reward_card_007",
+          "quantity": 1
+        },
+        {
+          "item_id": "resource_merit",
+          "quantity": 2
+        }
+      ],
+      "source": {
+        "formal_encounter_id": "enc_wuke_blade_trial",
+        "formal_battle_id": "wuke_blade_trial"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_008",
+      "reward_type": "resource",
+      "reward_tier": "boss",
+      "sequence_position": 8,
+      "encounter_tier": "boss",
+      "reward_items": [
+        {
+          "item_id": "boss_reward_token",
+          "quantity": 1
+        },
+        {
+          "item_id": "resource_merit",
+          "quantity": 3
+        }
+      ],
+      "source": {
+        "formal_encounter_id": "enc_wuke_final_duel",
+        "formal_battle_id": "wuke_final_duel"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_009",
+      "reward_type": "card_pick",
+      "reward_tier": "standard_plus",
+      "sequence_position": 9,
+      "encounter_tier": "mid",
+      "reward_items": [
+        {
+          "item_id": "standard_reward_card_009",
+          "quantity": 1
+        },
+        {
+          "item_id": "resource_merit",
+          "quantity": 2
+        }
+      ],
+      "source": {
+        "formal_encounter_id": "enc_wuke_gu_chengyue",
+        "formal_battle_id": "wuke_gu_chengyue"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_010",
+      "reward_type": "card_pick",
+      "reward_tier": "standard_plus",
+      "sequence_position": 10,
+      "encounter_tier": "mid",
+      "reward_items": [
+        {
+          "item_id": "standard_reward_card_010",
+          "quantity": 1
+        },
+        {
+          "item_id": "resource_merit",
+          "quantity": 2
+        }
+      ],
+      "source": {
+        "formal_encounter_id": "enc_wuke_shen_zhaoye",
+        "formal_battle_id": "wuke_shen_zhaoye"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_011",
+      "reward_type": "card_pick",
+      "reward_tier": "advanced_plus",
+      "sequence_position": 11,
+      "encounter_tier": "late",
+      "reward_items": [
+        {
+          "item_id": "advanced_reward_card_011",
+          "quantity": 1
+        },
+        {
+          "item_id": "resource_merit",
+          "quantity": 2
+        }
+      ],
+      "source": {
+        "formal_encounter_id": "enc_wuke_qi_heng",
+        "formal_battle_id": "wuke_qi_heng"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_012",
+      "reward_type": "card_pick",
+      "reward_tier": "advanced_plus",
+      "sequence_position": 12,
+      "encounter_tier": "late",
+      "reward_items": [
+        {
+          "item_id": "advanced_reward_card_012",
+          "quantity": 1
+        },
+        {
+          "item_id": "resource_merit",
+          "quantity": 1
+        }
+      ],
+      "source": {
+        "formal_encounter_id": "enc_ch2_reed_ambush",
+        "formal_battle_id": "chapter2_reed_ambush"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_013",
+      "reward_type": "card_pick",
+      "reward_tier": "advanced_plus",
+      "sequence_position": 13,
+      "encounter_tier": "late",
+      "reward_items": [
+        {
+          "item_id": "advanced_reward_card_013",
+          "quantity": 1
+        },
+        {
+          "item_id": "resource_merit",
+          "quantity": 2
+        }
+      ],
+      "source": {
+        "formal_encounter_id": "enc_ch3_escort_clash",
+        "formal_battle_id": "chapter3_escort_clash"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_014",
+      "reward_type": "card_pick",
+      "reward_tier": "advanced_plus",
+      "sequence_position": 14,
+      "encounter_tier": "late",
+      "reward_items": [
+        {
+          "item_id": "advanced_reward_card_014",
+          "quantity": 1
+        },
+        {
+          "item_id": "resource_merit",
+          "quantity": 1
+        }
+      ],
+      "source": {
+        "formal_encounter_id": "enc_ch4_tide_bandits",
+        "formal_battle_id": "chapter4_tide_bandits"
+      }
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_015",
+      "reward_type": "resource",
+      "reward_tier": "boss",
+      "sequence_position": 15,
+      "encounter_tier": "boss",
+      "reward_items": [
+        {
+          "item_id": "boss_reward_token",
+          "quantity": 1
+        },
+        {
+          "item_id": "resource_merit",
+          "quantity": 3
+        }
+      ],
+      "source": {
+        "formal_encounter_id": "enc_boss_ext_wakou_leader",
+        "formal_battle_id": "boss_ext_wakou_leader"
+      }
+    }
+  ],
+  "formal_sequence_mapping": [
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "target_sequence_id": "formal_sequence_mvp_v1",
+      "formal_encounter_id": "enc_beach_ambush",
+      "formal_battle_id": "first_act_beach_ambush",
+      "generated_battle_slot_id": "posture_tuned_v0_1b_slot_001",
+      "generated_deck_id": "posture_tuned_v0_1b_deck_001",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_001",
+      "replacement_mode": "full_sequence",
+      "sequence_position": 1,
+      "encounter_tier": "early",
+      "encounter_kind": "normal",
+      "player_wujing_cap": 1,
+      "target_power_min": 22,
+      "target_power_max": 30,
+      "reward_tier": "basic",
+      "runtime_primitives": []
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "target_sequence_id": "formal_sequence_mvp_v1",
+      "formal_encounter_id": "enc_fishing_village_embers",
+      "formal_battle_id": "first_act_fishing_village_embers",
+      "generated_battle_slot_id": "posture_tuned_v0_1b_slot_002",
+      "generated_deck_id": "posture_tuned_v0_1b_deck_002",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_002",
+      "replacement_mode": "full_sequence",
+      "sequence_position": 2,
+      "encounter_tier": "early",
+      "encounter_kind": "normal",
+      "player_wujing_cap": 1,
+      "target_power_min": 22,
+      "target_power_max": 30,
+      "reward_tier": "basic",
+      "runtime_primitives": []
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "target_sequence_id": "formal_sequence_mvp_v1",
+      "formal_encounter_id": "enc_transport_officer",
+      "formal_battle_id": "first_act_transport_officer",
+      "generated_battle_slot_id": "posture_tuned_v0_1b_slot_003",
+      "generated_deck_id": "posture_tuned_v0_1b_deck_003",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_003",
+      "replacement_mode": "full_sequence",
+      "sequence_position": 3,
+      "encounter_tier": "early",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 1,
+      "target_power_min": 25,
+      "target_power_max": 35,
+      "reward_tier": "basic",
+      "runtime_primitives": []
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "target_sequence_id": "formal_sequence_mvp_v1",
+      "formal_encounter_id": "enc_mutiny_camp",
+      "formal_battle_id": "first_act_mutiny_camp",
+      "generated_battle_slot_id": "posture_tuned_v0_1b_slot_004",
+      "generated_deck_id": "posture_tuned_v0_1b_deck_004",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_004",
+      "replacement_mode": "full_sequence",
+      "sequence_position": 4,
+      "encounter_tier": "early",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 1,
+      "target_power_min": 25,
+      "target_power_max": 35,
+      "reward_tier": "basic",
+      "runtime_primitives": []
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "target_sequence_id": "formal_sequence_mvp_v1",
+      "formal_encounter_id": "enc_wakou_boss",
+      "formal_battle_id": "first_act_wakou_boss",
+      "generated_battle_slot_id": "posture_tuned_v0_1b_slot_005",
+      "generated_deck_id": "posture_tuned_v0_1b_deck_005",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_005",
+      "replacement_mode": "full_sequence",
+      "sequence_position": 5,
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "player_wujing_cap": 4,
+      "target_power_min": 56,
+      "target_power_max": 66,
+      "reward_tier": "boss",
+      "runtime_primitives": []
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "target_sequence_id": "formal_sequence_mvp_v1",
+      "formal_encounter_id": "enc_wuke_spear_trial",
+      "formal_battle_id": "wuke_spear_trial",
+      "generated_battle_slot_id": "posture_tuned_v0_1b_slot_006",
+      "generated_deck_id": "posture_tuned_v0_1b_deck_006",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_006",
+      "replacement_mode": "full_sequence",
+      "sequence_position": 6,
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 2,
+      "target_power_min": 35,
+      "target_power_max": 45,
+      "reward_tier": "standard_plus",
+      "runtime_primitives": []
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "target_sequence_id": "formal_sequence_mvp_v1",
+      "formal_encounter_id": "enc_wuke_blade_trial",
+      "formal_battle_id": "wuke_blade_trial",
+      "generated_battle_slot_id": "posture_tuned_v0_1b_slot_007",
+      "generated_deck_id": "posture_tuned_v0_1b_deck_007",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_007",
+      "replacement_mode": "full_sequence",
+      "sequence_position": 7,
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 2,
+      "target_power_min": 35,
+      "target_power_max": 45,
+      "reward_tier": "standard_plus",
+      "runtime_primitives": []
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "target_sequence_id": "formal_sequence_mvp_v1",
+      "formal_encounter_id": "enc_wuke_final_duel",
+      "formal_battle_id": "wuke_final_duel",
+      "generated_battle_slot_id": "posture_tuned_v0_1b_slot_008",
+      "generated_deck_id": "posture_tuned_v0_1b_deck_008",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_008",
+      "replacement_mode": "full_sequence",
+      "sequence_position": 8,
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "player_wujing_cap": 4,
+      "target_power_min": 56,
+      "target_power_max": 66,
+      "reward_tier": "boss",
+      "runtime_primitives": []
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "target_sequence_id": "formal_sequence_mvp_v1",
+      "formal_encounter_id": "enc_wuke_gu_chengyue",
+      "formal_battle_id": "wuke_gu_chengyue",
+      "generated_battle_slot_id": "posture_tuned_v0_1b_slot_009",
+      "generated_deck_id": "posture_tuned_v0_1b_deck_009",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_009",
+      "replacement_mode": "full_sequence",
+      "sequence_position": 9,
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 2,
+      "target_power_min": 35,
+      "target_power_max": 45,
+      "reward_tier": "standard_plus",
+      "runtime_primitives": []
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "target_sequence_id": "formal_sequence_mvp_v1",
+      "formal_encounter_id": "enc_wuke_shen_zhaoye",
+      "formal_battle_id": "wuke_shen_zhaoye",
+      "generated_battle_slot_id": "posture_tuned_v0_1b_slot_010",
+      "generated_deck_id": "posture_tuned_v0_1b_deck_010",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_010",
+      "replacement_mode": "full_sequence",
+      "sequence_position": 10,
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 2,
+      "target_power_min": 35,
+      "target_power_max": 45,
+      "reward_tier": "standard_plus",
+      "runtime_primitives": []
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "target_sequence_id": "formal_sequence_mvp_v1",
+      "formal_encounter_id": "enc_wuke_qi_heng",
+      "formal_battle_id": "wuke_qi_heng",
+      "generated_battle_slot_id": "posture_tuned_v0_1b_slot_011",
+      "generated_deck_id": "posture_tuned_v0_1b_deck_011",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_011",
+      "replacement_mode": "full_sequence",
+      "sequence_position": 11,
+      "encounter_tier": "late",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 3,
+      "target_power_min": 47,
+      "target_power_max": 59,
+      "reward_tier": "advanced_plus",
+      "runtime_primitives": []
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "target_sequence_id": "formal_sequence_mvp_v1",
+      "formal_encounter_id": "enc_ch2_reed_ambush",
+      "formal_battle_id": "chapter2_reed_ambush",
+      "generated_battle_slot_id": "posture_tuned_v0_1b_slot_012",
+      "generated_deck_id": "posture_tuned_v0_1b_deck_012",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_012",
+      "replacement_mode": "full_sequence",
+      "sequence_position": 12,
+      "encounter_tier": "late",
+      "encounter_kind": "normal",
+      "player_wujing_cap": 3,
+      "target_power_min": 44,
+      "target_power_max": 54,
+      "reward_tier": "advanced_plus",
+      "runtime_primitives": []
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "target_sequence_id": "formal_sequence_mvp_v1",
+      "formal_encounter_id": "enc_ch3_escort_clash",
+      "formal_battle_id": "chapter3_escort_clash",
+      "generated_battle_slot_id": "posture_tuned_v0_1b_slot_013",
+      "generated_deck_id": "posture_tuned_v0_1b_deck_013",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_013",
+      "replacement_mode": "full_sequence",
+      "sequence_position": 13,
+      "encounter_tier": "late",
+      "encounter_kind": "elite",
+      "player_wujing_cap": 3,
+      "target_power_min": 47,
+      "target_power_max": 59,
+      "reward_tier": "advanced_plus",
+      "runtime_primitives": []
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "target_sequence_id": "formal_sequence_mvp_v1",
+      "formal_encounter_id": "enc_ch4_tide_bandits",
+      "formal_battle_id": "chapter4_tide_bandits",
+      "generated_battle_slot_id": "posture_tuned_v0_1b_slot_014",
+      "generated_deck_id": "posture_tuned_v0_1b_deck_014",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_014",
+      "replacement_mode": "full_sequence",
+      "sequence_position": 14,
+      "encounter_tier": "late",
+      "encounter_kind": "normal",
+      "player_wujing_cap": 3,
+      "target_power_min": 44,
+      "target_power_max": 54,
+      "reward_tier": "advanced_plus",
+      "runtime_primitives": []
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+      "target_sequence_id": "formal_sequence_mvp_v1",
+      "formal_encounter_id": "enc_boss_ext_wakou_leader",
+      "formal_battle_id": "boss_ext_wakou_leader",
+      "generated_battle_slot_id": "posture_tuned_v0_1b_slot_015",
+      "generated_deck_id": "posture_tuned_v0_1b_deck_015",
+      "reward_plan_id": "posture_tuned_v0_1b_reward_015",
+      "replacement_mode": "full_sequence",
+      "sequence_position": 15,
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "player_wujing_cap": 4,
+      "target_power_min": 56,
+      "target_power_max": 66,
+      "reward_tier": "boss",
+      "runtime_primitives": []
+    }
+  ]
+}

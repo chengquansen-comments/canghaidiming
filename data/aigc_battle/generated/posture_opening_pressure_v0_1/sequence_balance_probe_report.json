@@ -1,0 +1,14 @@
+{
+  "active_profile_loaded": true,
+  "runtime_manifest_loaded": true,
+  "formal_encounter_total_count": 15,
+  "battle_slots_with_balance_metadata_count": 15,
+  "decks_with_power_range_count": 15,
+  "rewards_with_tier_count": 15,
+  "sequence_balance_curve_ready": true,
+  "all_decks_within_power_range": true,
+  "elite_decks_stronger_than_normal": true,
+  "boss_decks_stronger_than_elite": true,
+  "late_avg_power_over_early": 21.0,
+  "sequence_balance_pass": true
+}

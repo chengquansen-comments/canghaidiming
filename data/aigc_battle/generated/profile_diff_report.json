@@ -1,0 +1,64 @@
+{
+  "from_profile_id": "posture_basic_v0_1",
+  "to_profile_id": "posture_opening_pressure_v0_1",
+  "same_target_sequence_id": true,
+  "same_replacement_mode": true,
+  "resource_changes": {
+    "added": [],
+    "removed": [],
+    "changed": []
+  },
+  "runtime_effect_changes": {
+    "added": [],
+    "removed": [],
+    "changed": [],
+    "unsupported_by_runtime_level": []
+  },
+  "design_effect_changes": {
+    "added": [],
+    "removed": [],
+    "changed": [],
+    "unsupported_by_runtime": []
+  },
+  "card_type_changes": {
+    "added": [],
+    "removed": [],
+    "changed": []
+  },
+  "weapon_style_changes": {
+    "added": [],
+    "removed": [],
+    "changed": []
+  },
+  "card_constraint_changes": {
+    "changed_keys": [],
+    "changes": {}
+  },
+  "deck_constraint_changes": {
+    "changed_keys": [],
+    "changes": {}
+  },
+  "runtime_primitive_changes": {
+    "added": [
+      "opening_pressure"
+    ],
+    "removed": [],
+    "changed": [
+      "opening_pressure"
+    ],
+    "unsupported_by_runtime_level": []
+  },
+  "runtime_primitive_playable": true,
+  "power_model_changed": false,
+  "balance_policy_changed": false,
+  "reward_policy_changed": false,
+  "runtime_support_level_changed": false,
+  "target_sequence_changed": false,
+  "change_type": "partial_regeneration",
+  "recommended_action": "regenerate_cards_and_decks_then_validate_full_sequence",
+  "full_sequence_rebuild_required": false,
+  "not_runtime_playable": false,
+  "reason_codes": [
+    "content_surface_added"
+  ]
+}

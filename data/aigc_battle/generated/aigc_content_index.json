@@ -1,0 +1,449 @@
+{
+  "generated_at": "2026-05-11T03:33:25.439017+00:00",
+  "active_profile_id": "posture_opening_pressure_v0_1",
+  "active_content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+  "active_runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/runtime_manifest.json",
+  "profile_count": 4,
+  "content_pack_count": 7,
+  "profiles": [
+    {
+      "mechanic_profile_id": "posture_basic_v0_1",
+      "profile_dir": "data/aigc_battle/mechanics/posture_basic_v0_1",
+      "is_active_profile": false,
+      "content_pack_count": 1,
+      "profile_detail_json_path": "data/aigc_battle/generated/details/profile_posture_basic_v0_1.json",
+      "profile_detail_md_path": "data/aigc_battle/generated/details/profile_posture_basic_v0_1.md",
+      "content_packs": [
+        {
+          "mechanic_profile_id": "posture_basic_v0_1",
+          "content_pack_id": "posture_basic_v0_1_formal_sequence_pack_001",
+          "is_active_pack": false,
+          "pack_storage_mode": "profile_root",
+          "generated_dir": "data/aigc_battle/generated/posture_basic_v0_1",
+          "runtime_manifest_path": "data/aigc_battle/generated/posture_basic_v0_1/runtime_manifest.json",
+          "validation_report_path": "data/aigc_battle/generated/posture_basic_v0_1/validation_report.json",
+          "sequence_balance_summary_path": "data/aigc_battle/generated/posture_basic_v0_1/sequence_balance_summary.json",
+          "telemetry_probe_report_path": "",
+          "sequence_balance_snapshot_path": "",
+          "runtime_primitive_probe_report_path": "",
+          "formal_encounter_total_count": 15,
+          "battle_slot_count": 15,
+          "deck_count": 15,
+          "card_count": 40,
+          "reward_count": 15,
+          "full_sequence_coverage_complete": true,
+          "ready_for_runtime_export": true,
+          "runtime_export_allowed": true,
+          "sequence_balance_pass": true,
+          "all_generated_slots_have_reward": true,
+          "fallback_loadout_count": 0,
+          "runtime_primitives": [],
+          "opening_pressure_applied_count": 0,
+          "telemetry_event_count": 0,
+          "snapshot_ready": false,
+          "rebuild_uses_snapshot": false,
+          "last_modified": "2026-05-09T02:16:33.546979+00:00",
+          "missing_reports": [
+            "telemetry_probe_report.json",
+            "sequence_balance_snapshot.json",
+            "runtime_primitive_probe_report.json",
+            "rebuild_from_snapshot_probe_report.json",
+            "snapshot_summary.json"
+          ],
+          "switchable": true,
+          "switch_block_reasons": [],
+          "detail_missing": false,
+          "pack_detail_json_path": "data/aigc_battle/generated/details/pack_posture_basic_v0_1__posture_basic_v0_1_formal_sequence_pack_001.json",
+          "pack_detail_md_path": "data/aigc_battle/generated/details/pack_posture_basic_v0_1__posture_basic_v0_1_formal_sequence_pack_001.md",
+          "deck_power_summary": {
+            "early_avg_power": 25.2,
+            "mid_avg_power": 33.2,
+            "late_avg_power": 46.2,
+            "boss_avg_power": 53.8
+          },
+          "reward_tiers": [
+            "advanced",
+            "basic",
+            "boss",
+            "standard"
+          ],
+          "telemetry_summary": {
+            "telemetry_event_count": 0,
+            "encounters_with_telemetry_count": 0,
+            "snapshot_ready": false
+          }
+        }
+      ]
+    },
+    {
+      "mechanic_profile_id": "posture_llm_candidate_v0_1",
+      "profile_dir": "data/aigc_battle/mechanics/posture_llm_candidate_v0_1",
+      "is_active_profile": false,
+      "content_pack_count": 1,
+      "profile_detail_json_path": "data/aigc_battle/generated/details/profile_posture_llm_candidate_v0_1.json",
+      "profile_detail_md_path": "data/aigc_battle/generated/details/profile_posture_llm_candidate_v0_1.md",
+      "content_packs": [
+        {
+          "mechanic_profile_id": "posture_llm_candidate_v0_1",
+          "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
+          "is_active_pack": false,
+          "pack_storage_mode": "profile_root",
+          "generated_dir": "data/aigc_battle/generated/posture_llm_candidate_v0_1",
+          "runtime_manifest_path": "data/aigc_battle/generated/posture_llm_candidate_v0_1/runtime_manifest.json",
+          "validation_report_path": "data/aigc_battle/generated/posture_llm_candidate_v0_1/validation_report.json",
+          "sequence_balance_summary_path": "data/aigc_battle/generated/posture_llm_candidate_v0_1/sequence_balance_summary.json",
+          "telemetry_probe_report_path": "",
+          "sequence_balance_snapshot_path": "",
+          "runtime_primitive_probe_report_path": "",
+          "formal_encounter_total_count": 15,
+          "battle_slot_count": 15,
+          "deck_count": 15,
+          "card_count": 40,
+          "reward_count": 15,
+          "full_sequence_coverage_complete": true,
+          "ready_for_runtime_export": true,
+          "runtime_export_allowed": true,
+          "sequence_balance_pass": true,
+          "all_generated_slots_have_reward": true,
+          "fallback_loadout_count": 0,
+          "runtime_primitives": [],
+          "opening_pressure_applied_count": 0,
+          "telemetry_event_count": 0,
+          "snapshot_ready": false,
+          "rebuild_uses_snapshot": false,
+          "last_modified": "2026-05-09T02:17:17.603060+00:00",
+          "missing_reports": [
+            "telemetry_probe_report.json",
+            "sequence_balance_snapshot.json",
+            "runtime_primitive_probe_report.json",
+            "rebuild_from_snapshot_probe_report.json",
+            "snapshot_summary.json"
+          ],
+          "switchable": true,
+          "switch_block_reasons": [],
+          "detail_missing": false,
+          "pack_detail_json_path": "data/aigc_battle/generated/details/pack_posture_llm_candidate_v0_1__posture_llm_candidate_v0_1_formal_sequence_pack_001.json",
+          "pack_detail_md_path": "data/aigc_battle/generated/details/pack_posture_llm_candidate_v0_1__posture_llm_candidate_v0_1_formal_sequence_pack_001.md",
+          "deck_power_summary": {
+            "early_avg_power": 25.2,
+            "mid_avg_power": 33.2,
+            "late_avg_power": 46.2,
+            "boss_avg_power": 53.8
+          },
+          "reward_tiers": [
+            "advanced",
+            "basic",
+            "boss",
+            "standard"
+          ],
+          "telemetry_summary": {
+            "telemetry_event_count": 0,
+            "encounters_with_telemetry_count": 0,
+            "snapshot_ready": false
+          }
+        }
+      ]
+    },
+    {
+      "mechanic_profile_id": "posture_opening_pressure_v0_1",
+      "profile_dir": "data/aigc_battle/mechanics/posture_opening_pressure_v0_1",
+      "is_active_profile": true,
+      "content_pack_count": 4,
+      "profile_detail_json_path": "data/aigc_battle/generated/details/profile_posture_opening_pressure_v0_1.json",
+      "profile_detail_md_path": "data/aigc_battle/generated/details/profile_posture_opening_pressure_v0_1.md",
+      "content_packs": [
+        {
+          "mechanic_profile_id": "posture_opening_pressure_v0_1",
+          "content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+          "is_active_pack": true,
+          "pack_storage_mode": "profile_root",
+          "generated_dir": "data/aigc_battle/generated/posture_opening_pressure_v0_1",
+          "runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/runtime_manifest.json",
+          "validation_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/validation_report.json",
+          "sequence_balance_summary_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/sequence_balance_summary.json",
+          "telemetry_probe_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/telemetry_probe_report.json",
+          "sequence_balance_snapshot_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/sequence_balance_snapshot.json",
+          "runtime_primitive_probe_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/runtime_primitive_probe_report.json",
+          "formal_encounter_total_count": 15,
+          "battle_slot_count": 15,
+          "deck_count": 15,
+          "card_count": 40,
+          "reward_count": 15,
+          "full_sequence_coverage_complete": true,
+          "ready_for_runtime_export": true,
+          "runtime_export_allowed": true,
+          "sequence_balance_pass": true,
+          "all_generated_slots_have_reward": true,
+          "fallback_loadout_count": 0,
+          "runtime_primitives": [
+            "opening_pressure"
+          ],
+          "opening_pressure_applied_count": 15,
+          "telemetry_event_count": 15,
+          "snapshot_ready": true,
+          "rebuild_uses_snapshot": false,
+          "last_modified": "2026-05-11T03:32:23.419041+00:00",
+          "missing_reports": [
+            "snapshot_summary.json"
+          ],
+          "switchable": true,
+          "switch_block_reasons": [],
+          "detail_missing": false,
+          "pack_detail_json_path": "data/aigc_battle/generated/details/pack_posture_opening_pressure_v0_1__posture_opening_pressure_v0_1_formal_sequence_pack_001.json",
+          "pack_detail_md_path": "data/aigc_battle/generated/details/pack_posture_opening_pressure_v0_1__posture_opening_pressure_v0_1_formal_sequence_pack_001.md",
+          "deck_power_summary": {
+            "early_avg_power": 25.2,
+            "mid_avg_power": 33.2,
+            "late_avg_power": 46.2,
+            "boss_avg_power": 53.8
+          },
+          "reward_tiers": [
+            "advanced",
+            "basic",
+            "boss",
+            "standard"
+          ],
+          "telemetry_summary": {
+            "telemetry_event_count": 15,
+            "encounters_with_telemetry_count": 15,
+            "snapshot_ready": true
+          }
+        },
+        {
+          "mechanic_profile_id": "posture_opening_pressure_v0_1",
+          "content_pack_id": "posture_opening_pressure_p1_probe_snapshot_001",
+          "is_active_pack": false,
+          "pack_storage_mode": "profile_pack_dir",
+          "generated_dir": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_001",
+          "runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_001/runtime_manifest.json",
+          "validation_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_001/validation_report.json",
+          "sequence_balance_summary_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_001/sequence_balance_summary.json",
+          "telemetry_probe_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_001/telemetry_probe_report.json",
+          "sequence_balance_snapshot_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_001/sequence_balance_snapshot.json",
+          "runtime_primitive_probe_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_001/runtime_primitive_probe_report.json",
+          "formal_encounter_total_count": 15,
+          "battle_slot_count": 15,
+          "deck_count": 15,
+          "card_count": 40,
+          "reward_count": 15,
+          "full_sequence_coverage_complete": true,
+          "ready_for_runtime_export": true,
+          "runtime_export_allowed": true,
+          "sequence_balance_pass": true,
+          "all_generated_slots_have_reward": true,
+          "fallback_loadout_count": 0,
+          "runtime_primitives": [
+            "opening_pressure"
+          ],
+          "opening_pressure_applied_count": 15,
+          "telemetry_event_count": 15,
+          "snapshot_ready": true,
+          "rebuild_uses_snapshot": false,
+          "last_modified": "2026-05-11T03:31:46.841134+00:00",
+          "missing_reports": [],
+          "switchable": true,
+          "switch_block_reasons": [],
+          "detail_missing": false,
+          "pack_detail_json_path": "data/aigc_battle/generated/details/pack_posture_opening_pressure_v0_1__posture_opening_pressure_p1_probe_snapshot_001.json",
+          "pack_detail_md_path": "data/aigc_battle/generated/details/pack_posture_opening_pressure_v0_1__posture_opening_pressure_p1_probe_snapshot_001.md",
+          "deck_power_summary": {
+            "early_avg_power": 25.2,
+            "mid_avg_power": 33.2,
+            "late_avg_power": 46.2,
+            "boss_avg_power": 53.8
+          },
+          "reward_tiers": [
+            "advanced",
+            "basic",
+            "boss",
+            "standard"
+          ],
+          "telemetry_summary": {
+            "telemetry_event_count": 15,
+            "encounters_with_telemetry_count": 15,
+            "snapshot_ready": true
+          }
+        },
+        {
+          "mechanic_profile_id": "posture_opening_pressure_v0_1",
+          "content_pack_id": "posture_opening_pressure_p1_probe_snapshot_002",
+          "is_active_pack": false,
+          "pack_storage_mode": "profile_pack_dir",
+          "generated_dir": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_002",
+          "runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_002/runtime_manifest.json",
+          "validation_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_002/validation_report.json",
+          "sequence_balance_summary_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_002/sequence_balance_summary.json",
+          "telemetry_probe_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_002/telemetry_probe_report.json",
+          "sequence_balance_snapshot_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_002/sequence_balance_snapshot.json",
+          "runtime_primitive_probe_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_002/runtime_primitive_probe_report.json",
+          "formal_encounter_total_count": 15,
+          "battle_slot_count": 15,
+          "deck_count": 15,
+          "card_count": 40,
+          "reward_count": 15,
+          "full_sequence_coverage_complete": true,
+          "ready_for_runtime_export": true,
+          "runtime_export_allowed": true,
+          "sequence_balance_pass": true,
+          "all_generated_slots_have_reward": true,
+          "fallback_loadout_count": 0,
+          "runtime_primitives": [
+            "opening_pressure"
+          ],
+          "opening_pressure_applied_count": 15,
+          "telemetry_event_count": 15,
+          "snapshot_ready": true,
+          "rebuild_uses_snapshot": false,
+          "last_modified": "2026-05-11T03:32:23.419041+00:00",
+          "missing_reports": [],
+          "switchable": true,
+          "switch_block_reasons": [],
+          "detail_missing": false,
+          "pack_detail_json_path": "data/aigc_battle/generated/details/pack_posture_opening_pressure_v0_1__posture_opening_pressure_p1_probe_snapshot_002.json",
+          "pack_detail_md_path": "data/aigc_battle/generated/details/pack_posture_opening_pressure_v0_1__posture_opening_pressure_p1_probe_snapshot_002.md",
+          "deck_power_summary": {
+            "early_avg_power": 25.2,
+            "mid_avg_power": 33.2,
+            "late_avg_power": 46.2,
+            "boss_avg_power": 53.8
+          },
+          "reward_tiers": [
+            "advanced",
+            "basic",
+            "boss",
+            "standard"
+          ],
+          "telemetry_summary": {
+            "telemetry_event_count": 15,
+            "encounters_with_telemetry_count": 15,
+            "snapshot_ready": true
+          }
+        },
+        {
+          "mechanic_profile_id": "posture_opening_pressure_v0_1",
+          "content_pack_id": "posture_opening_pressure_snapshot_001",
+          "is_active_pack": false,
+          "pack_storage_mode": "profile_pack_dir",
+          "generated_dir": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_snapshot_001",
+          "runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_snapshot_001/runtime_manifest.json",
+          "validation_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_snapshot_001/validation_report.json",
+          "sequence_balance_summary_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_snapshot_001/sequence_balance_summary.json",
+          "telemetry_probe_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_snapshot_001/telemetry_probe_report.json",
+          "sequence_balance_snapshot_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_snapshot_001/sequence_balance_snapshot.json",
+          "runtime_primitive_probe_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_snapshot_001/runtime_primitive_probe_report.json",
+          "formal_encounter_total_count": 15,
+          "battle_slot_count": 15,
+          "deck_count": 15,
+          "card_count": 40,
+          "reward_count": 15,
+          "full_sequence_coverage_complete": true,
+          "ready_for_runtime_export": true,
+          "runtime_export_allowed": true,
+          "sequence_balance_pass": true,
+          "all_generated_slots_have_reward": true,
+          "fallback_loadout_count": 0,
+          "runtime_primitives": [
+            "opening_pressure"
+          ],
+          "opening_pressure_applied_count": 15,
+          "telemetry_event_count": 15,
+          "snapshot_ready": true,
+          "rebuild_uses_snapshot": false,
+          "last_modified": "2026-05-09T03:04:53.190419+00:00",
+          "missing_reports": [],
+          "switchable": true,
+          "switch_block_reasons": [],
+          "detail_missing": false,
+          "pack_detail_json_path": "data/aigc_battle/generated/details/pack_posture_opening_pressure_v0_1__posture_opening_pressure_snapshot_001.json",
+          "pack_detail_md_path": "data/aigc_battle/generated/details/pack_posture_opening_pressure_v0_1__posture_opening_pressure_snapshot_001.md",
+          "deck_power_summary": {
+            "early_avg_power": 25.2,
+            "mid_avg_power": 33.2,
+            "late_avg_power": 46.2,
+            "boss_avg_power": 53.8
+          },
+          "reward_tiers": [
+            "advanced",
+            "basic",
+            "boss",
+            "standard"
+          ],
+          "telemetry_summary": {
+            "telemetry_event_count": 15,
+            "encounters_with_telemetry_count": 15,
+            "snapshot_ready": true
+          }
+        }
+      ]
+    },
+    {
+      "mechanic_profile_id": "posture_tuned_v0_1b",
+      "profile_dir": "data/aigc_battle/mechanics/posture_tuned_v0_1b",
+      "is_active_profile": false,
+      "content_pack_count": 1,
+      "profile_detail_json_path": "data/aigc_battle/generated/details/profile_posture_tuned_v0_1b.json",
+      "profile_detail_md_path": "data/aigc_battle/generated/details/profile_posture_tuned_v0_1b.md",
+      "content_packs": [
+        {
+          "mechanic_profile_id": "posture_tuned_v0_1b",
+          "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
+          "is_active_pack": false,
+          "pack_storage_mode": "profile_root",
+          "generated_dir": "data/aigc_battle/generated/posture_tuned_v0_1b",
+          "runtime_manifest_path": "data/aigc_battle/generated/posture_tuned_v0_1b/runtime_manifest.json",
+          "validation_report_path": "data/aigc_battle/generated/posture_tuned_v0_1b/validation_report.json",
+          "sequence_balance_summary_path": "data/aigc_battle/generated/posture_tuned_v0_1b/sequence_balance_summary.json",
+          "telemetry_probe_report_path": "",
+          "sequence_balance_snapshot_path": "",
+          "runtime_primitive_probe_report_path": "",
+          "formal_encounter_total_count": 15,
+          "battle_slot_count": 15,
+          "deck_count": 15,
+          "card_count": 40,
+          "reward_count": 15,
+          "full_sequence_coverage_complete": true,
+          "ready_for_runtime_export": true,
+          "runtime_export_allowed": true,
+          "sequence_balance_pass": true,
+          "all_generated_slots_have_reward": true,
+          "fallback_loadout_count": 0,
+          "runtime_primitives": [],
+          "opening_pressure_applied_count": 0,
+          "telemetry_event_count": 0,
+          "snapshot_ready": false,
+          "rebuild_uses_snapshot": false,
+          "last_modified": "2026-05-09T02:16:33.726159+00:00",
+          "missing_reports": [
+            "telemetry_probe_report.json",
+            "sequence_balance_snapshot.json",
+            "runtime_primitive_probe_report.json",
+            "rebuild_from_snapshot_probe_report.json",
+            "snapshot_summary.json"
+          ],
+          "switchable": true,
+          "switch_block_reasons": [],
+          "detail_missing": false,
+          "pack_detail_json_path": "data/aigc_battle/generated/details/pack_posture_tuned_v0_1b__posture_tuned_v0_1b_formal_sequence_pack_001.json",
+          "pack_detail_md_path": "data/aigc_battle/generated/details/pack_posture_tuned_v0_1b__posture_tuned_v0_1b_formal_sequence_pack_001.md",
+          "deck_power_summary": {
+            "early_avg_power": 26.5,
+            "mid_avg_power": 35.5,
+            "late_avg_power": 49.4,
+            "boss_avg_power": 56.9
+          },
+          "reward_tiers": [
+            "advanced_plus",
+            "basic",
+            "boss",
+            "standard_plus"
+          ],
+          "telemetry_summary": {
+            "telemetry_event_count": 0,
+            "encounters_with_telemetry_count": 0,
+            "snapshot_ready": false
+          }
+        }
+      ]
+    }
+  ]
+}

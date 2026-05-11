@@ -1,0 +1,8 @@
+{
+  "active_mechanic_profile_id": "posture_opening_pressure_v0_1",
+  "active_content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+  "target_sequence_id": "formal_sequence_mvp_v1",
+  "replacement_mode": "full_sequence",
+  "runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/runtime_manifest.json",
+  "fallback_story_battle_loader": true
+}

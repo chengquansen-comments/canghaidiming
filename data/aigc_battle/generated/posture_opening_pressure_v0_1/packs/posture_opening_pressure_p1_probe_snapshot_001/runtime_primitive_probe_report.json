@@ -1,0 +1,27 @@
+{
+  "active_profile_loaded": true,
+  "fallback_loadout_count": 0,
+  "formal_encounter_total_count": 15,
+  "formal_sequence_shows_new_primitive": true,
+  "generated_sequence_uses_new_primitive": true,
+  "godot_loader_reads_opening_pressure": true,
+  "manifest_exports_opening_pressure": true,
+  "mechanic_expansion_full_sequence_playable": true,
+  "new_runtime_effect_supported": true,
+  "new_runtime_primitive_id": "opening_pressure",
+  "opening_pressure_all_slots_covered": true,
+  "opening_pressure_applied_count": 15,
+  "opening_pressure_applied_fields": [
+    "enemy_start_momentum_bonus",
+    "enemy_start_block_bonus"
+  ],
+  "opening_pressure_curve_ready": true,
+  "opening_pressure_slot_count": 15,
+  "opening_pressure_values_in_range": true,
+  "probe_pass": true,
+  "profile_declares_new_primitive": true,
+  "runtime_manifest_loaded": true,
+  "runtime_primitive_apply_blocked": false,
+  "original_content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+  "snapshot_content_pack_id": "posture_opening_pressure_p1_probe_snapshot_001"
+}

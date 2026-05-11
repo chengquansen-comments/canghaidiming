@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIGC Battle External Console</title>
+<style>
+:root { --bg:#f5f1e8; --card:#fffaf1; --ink:#1f1d1a; --muted:#6a6258; --ok:#2f7d32; --bad:#9a2f2f; --line:#d9cfbf; --accent:#9b6b2e; --accent2:#1d5b73; }
+body { margin:0; font-family: Georgia, 'Songti SC', serif; background:linear-gradient(180deg,#efe5d1,#f8f4ec); color:var(--ink); }
+main { max-width:1380px; margin:0 auto; padding:28px 20px 80px; }
+header { margin-bottom:24px; padding:24px; background:rgba(255,250,241,.9); border:1px solid var(--line); border-radius:18px; box-shadow:0 12px 40px rgba(73,53,30,.08); }
+.layout { display:grid; grid-template-columns: minmax(0, 2fr) minmax(320px, 1fr); gap:20px; align-items:start; }
+.notice { margin-top:12px; padding:10px 12px; border-radius:12px; background:#f1e8d8; color:#704d1f; }
+.profile { margin-bottom:18px; padding:18px; background:rgba(255,250,241,.88); border:1px solid var(--line); border-radius:18px; box-shadow:0 10px 30px rgba(73,53,30,.06); }
+.pack-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px; margin-top:14px; }
+.pack-card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px; }
+.pack-card.active { outline:3px solid rgba(155,107,46,.25); }
+.badge { display:inline-block; padding:4px 10px; border-radius:999px; background:#efe2c9; color:#704d1f; font-size:12px; margin-right:8px; margin-bottom:6px; }
+.badge.ok { background:#dff0e0; color:var(--ok); }
+.badge.bad { background:#f5dddd; color:var(--bad); }
+.badge.info { background:#dceaf0; color:var(--accent2); }
+button { border:none; border-radius:10px; padding:10px 14px; margin-right:8px; margin-top:8px; cursor:pointer; background:#1d5b73; color:white; font:inherit; }
+button.secondary { background:#9b6b2e; }
+button[disabled] { opacity:.45; cursor:not-allowed; }
+pre { white-space:pre-wrap; word-break:break-word; background:#f7f0e3; border-radius:12px; padding:12px; color:var(--muted); }
+.small { color:var(--muted); font-size:13px; }
+.sidebar { position:sticky; top:20px; background:rgba(255,250,241,.92); border:1px solid var(--line); border-radius:18px; padding:18px; box-shadow:0 10px 30px rgba(73,53,30,.06); }
+.sidebar h2 { margin-top:0; }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>AIGC Battle External Console</h1>
+  <p>当前 active profile：<code id="active-profile"></code></p>
+  <p>当前 active content pack：<code id="active-pack"></code></p>
+  <p>当前 runtime manifest：<code id="active-manifest"></code></p>
+  <div class="notice" id="mode-notice"></div>
+  <pre id="status-box">等待操作。</pre>
+</header>
+<div class="layout">
+  <section id="profiles"></section>
+  <aside class="sidebar">
+    <h2 id="detail-title">明细面板</h2>
+    <div id="detail-summary" class="small">点击“查看机制明细”或“查看内容包明细”加载数据。</div>
+    <pre id="detail-box">{}</pre>
+  </aside>
+</div>
+</main>
+<script>
+const embeddedIndex = {"generated_at": "2026-05-11T03:33:25.439017+00:00", "active_profile_id": "posture_opening_pressure_v0_1", "active_content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001", "active_runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/runtime_manifest.json", "profile_count": 4, "content_pack_count": 7, "profiles": [{"mechanic_profile_id": "posture_basic_v0_1", "profile_dir": "data/aigc_battle/mechanics/posture_basic_v0_1", "is_active_profile": false, "content_pack_count": 1, "profile_detail_json_path": "data/aigc_battle/generated/details/profile_posture_basic_v0_1.json", "profile_detail_md_path": "data/aigc_battle/generated/details/profile_posture_basic_v0_1.md", "content_packs": [{"mechanic_profile_id": "posture_basic_v0_1", "content_pack_id": "posture_basic_v0_1_formal_sequence_pack_001", "is_active_pack": false, "pack_storage_mode": "profile_root", "generated_dir": "data/aigc_battle/generated/posture_basic_v0_1", "runtime_manifest_path": "data/aigc_battle/generated/posture_basic_v0_1/runtime_manifest.json", "validation_report_path": "data/aigc_battle/generated/posture_basic_v0_1/validation_report.json", "sequence_balance_summary_path": "data/aigc_battle/generated/posture_basic_v0_1/sequence_balance_summary.json", "telemetry_probe_report_path": "", "sequence_balance_snapshot_path": "", "runtime_primitive_probe_report_path": "", "formal_encounter_total_count": 15, "battle_slot_count": 15, "deck_count": 15, "card_count": 40, "reward_count": 15, "full_sequence_coverage_complete": true, "ready_for_runtime_export": true, "runtime_export_allowed": true, "sequence_balance_pass": true, "all_generated_slots_have_reward": true, "fallback_loadout_count": 0, "runtime_primitives": [], "opening_pressure_applied_count": 0, "telemetry_event_count": 0, "snapshot_ready": false, "rebuild_uses_snapshot": false, "last_modified": "2026-05-09T02:16:33.546979+00:00", "missing_reports": ["telemetry_probe_report.json", "sequence_balance_snapshot.json", "runtime_primitive_probe_report.json", "rebuild_from_snapshot_probe_report.json", "snapshot_summary.json"], "switchable": true, "switch_block_reasons": [], "detail_missing": false, "pack_detail_json_path": "data/aigc_battle/generated/details/pack_posture_basic_v0_1__posture_basic_v0_1_formal_sequence_pack_001.json", "pack_detail_md_path": "data/aigc_battle/generated/details/pack_posture_basic_v0_1__posture_basic_v0_1_formal_sequence_pack_001.md", "deck_power_summary": {"early_avg_power": 25.2, "mid_avg_power": 33.2, "late_avg_power": 46.2, "boss_avg_power": 53.8}, "reward_tiers": ["advanced", "basic", "boss", "standard"], "telemetry_summary": {"telemetry_event_count": 0, "encounters_with_telemetry_count": 0, "snapshot_ready": false}}]}, {"mechanic_profile_id": "posture_llm_candidate_v0_1", "profile_dir": "data/aigc_battle/mechanics/posture_llm_candidate_v0_1", "is_active_profile": false, "content_pack_count": 1, "profile_detail_json_path": "data/aigc_battle/generated/details/profile_posture_llm_candidate_v0_1.json", "profile_detail_md_path": "data/aigc_battle/generated/details/profile_posture_llm_candidate_v0_1.md", "content_packs": [{"mechanic_profile_id": "posture_llm_candidate_v0_1", "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001", "is_active_pack": false, "pack_storage_mode": "profile_root", "generated_dir": "data/aigc_battle/generated/posture_llm_candidate_v0_1", "runtime_manifest_path": "data/aigc_battle/generated/posture_llm_candidate_v0_1/runtime_manifest.json", "validation_report_path": "data/aigc_battle/generated/posture_llm_candidate_v0_1/validation_report.json", "sequence_balance_summary_path": "data/aigc_battle/generated/posture_llm_candidate_v0_1/sequence_balance_summary.json", "telemetry_probe_report_path": "", "sequence_balance_snapshot_path": "", "runtime_primitive_probe_report_path": "", "formal_encounter_total_count": 15, "battle_slot_count": 15, "deck_count": 15, "card_count": 40, "reward_count": 15, "full_sequence_coverage_complete": true, "ready_for_runtime_export": true, "runtime_export_allowed": true, "sequence_balance_pass": true, "all_generated_slots_have_reward": true, "fallback_loadout_count": 0, "runtime_primitives": [], "opening_pressure_applied_count": 0, "telemetry_event_count": 0, "snapshot_ready": false, "rebuild_uses_snapshot": false, "last_modified": "2026-05-09T02:17:17.603060+00:00", "missing_reports": ["telemetry_probe_report.json", "sequence_balance_snapshot.json", "runtime_primitive_probe_report.json", "rebuild_from_snapshot_probe_report.json", "snapshot_summary.json"], "switchable": true, "switch_block_reasons": [], "detail_missing": false, "pack_detail_json_path": "data/aigc_battle/generated/details/pack_posture_llm_candidate_v0_1__posture_llm_candidate_v0_1_formal_sequence_pack_001.json", "pack_detail_md_path": "data/aigc_battle/generated/details/pack_posture_llm_candidate_v0_1__posture_llm_candidate_v0_1_formal_sequence_pack_001.md", "deck_power_summary": {"early_avg_power": 25.2, "mid_avg_power": 33.2, "late_avg_power": 46.2, "boss_avg_power": 53.8}, "reward_tiers": ["advanced", "basic", "boss", "standard"], "telemetry_summary": {"telemetry_event_count": 0, "encounters_with_telemetry_count": 0, "snapshot_ready": false}}]}, {"mechanic_profile_id": "posture_opening_pressure_v0_1", "profile_dir": "data/aigc_battle/mechanics/posture_opening_pressure_v0_1", "is_active_profile": true, "content_pack_count": 4, "profile_detail_json_path": "data/aigc_battle/generated/details/profile_posture_opening_pressure_v0_1.json", "profile_detail_md_path": "data/aigc_battle/generated/details/profile_posture_opening_pressure_v0_1.md", "content_packs": [{"mechanic_profile_id": "posture_opening_pressure_v0_1", "content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001", "is_active_pack": true, "pack_storage_mode": "profile_root", "generated_dir": "data/aigc_battle/generated/posture_opening_pressure_v0_1", "runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/runtime_manifest.json", "validation_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/validation_report.json", "sequence_balance_summary_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/sequence_balance_summary.json", "telemetry_probe_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/telemetry_probe_report.json", "sequence_balance_snapshot_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/sequence_balance_snapshot.json", "runtime_primitive_probe_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/runtime_primitive_probe_report.json", "formal_encounter_total_count": 15, "battle_slot_count": 15, "deck_count": 15, "card_count": 40, "reward_count": 15, "full_sequence_coverage_complete": true, "ready_for_runtime_export": true, "runtime_export_allowed": true, "sequence_balance_pass": true, "all_generated_slots_have_reward": true, "fallback_loadout_count": 0, "runtime_primitives": ["opening_pressure"], "opening_pressure_applied_count": 15, "telemetry_event_count": 15, "snapshot_ready": true, "rebuild_uses_snapshot": false, "last_modified": "2026-05-11T03:32:23.419041+00:00", "missing_reports": ["snapshot_summary.json"], "switchable": true, "switch_block_reasons": [], "detail_missing": false, "pack_detail_json_path": "data/aigc_battle/generated/details/pack_posture_opening_pressure_v0_1__posture_opening_pressure_v0_1_formal_sequence_pack_001.json", "pack_detail_md_path": "data/aigc_battle/generated/details/pack_posture_opening_pressure_v0_1__posture_opening_pressure_v0_1_formal_sequence_pack_001.md", "deck_power_summary": {"early_avg_power": 25.2, "mid_avg_power": 33.2, "late_avg_power": 46.2, "boss_avg_power": 53.8}, "reward_tiers": ["advanced", "basic", "boss", "standard"], "telemetry_summary": {"telemetry_event_count": 15, "encounters_with_telemetry_count": 15, "snapshot_ready": true}}, {"mechanic_profile_id": "posture_opening_pressure_v0_1", "content_pack_id": "posture_opening_pressure_p1_probe_snapshot_001", "is_active_pack": false, "pack_storage_mode": "profile_pack_dir", "generated_dir": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_001", "runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_001/runtime_manifest.json", "validation_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_001/validation_report.json", "sequence_balance_summary_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_001/sequence_balance_summary.json", "telemetry_probe_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_001/telemetry_probe_report.json", "sequence_balance_snapshot_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_001/sequence_balance_snapshot.json", "runtime_primitive_probe_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_001/runtime_primitive_probe_report.json", "formal_encounter_total_count": 15, "battle_slot_count": 15, "deck_count": 15, "card_count": 40, "reward_count": 15, "full_sequence_coverage_complete": true, "ready_for_runtime_export": true, "runtime_export_allowed": true, "sequence_balance_pass": true, "all_generated_slots_have_reward": true, "fallback_loadout_count": 0, "runtime_primitives": ["opening_pressure"], "opening_pressure_applied_count": 15, "telemetry_event_count": 15, "snapshot_ready": true, "rebuild_uses_snapshot": false, "last_modified": "2026-05-11T03:31:46.841134+00:00", "missing_reports": [], "switchable": true, "switch_block_reasons": [], "detail_missing": false, "pack_detail_json_path": "data/aigc_battle/generated/details/pack_posture_opening_pressure_v0_1__posture_opening_pressure_p1_probe_snapshot_001.json", "pack_detail_md_path": "data/aigc_battle/generated/details/pack_posture_opening_pressure_v0_1__posture_opening_pressure_p1_probe_snapshot_001.md", "deck_power_summary": {"early_avg_power": 25.2, "mid_avg_power": 33.2, "late_avg_power": 46.2, "boss_avg_power": 53.8}, "reward_tiers": ["advanced", "basic", "boss", "standard"], "telemetry_summary": {"telemetry_event_count": 15, "encounters_with_telemetry_count": 15, "snapshot_ready": true}}, {"mechanic_profile_id": "posture_opening_pressure_v0_1", "content_pack_id": "posture_opening_pressure_p1_probe_snapshot_002", "is_active_pack": false, "pack_storage_mode": "profile_pack_dir", "generated_dir": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_002", "runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_002/runtime_manifest.json", "validation_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_002/validation_report.json", "sequence_balance_summary_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_002/sequence_balance_summary.json", "telemetry_probe_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_002/telemetry_probe_report.json", "sequence_balance_snapshot_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_002/sequence_balance_snapshot.json", "runtime_primitive_probe_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_002/runtime_primitive_probe_report.json", "formal_encounter_total_count": 15, "battle_slot_count": 15, "deck_count": 15, "card_count": 40, "reward_count": 15, "full_sequence_coverage_complete": true, "ready_for_runtime_export": true, "runtime_export_allowed": true, "sequence_balance_pass": true, "all_generated_slots_have_reward": true, "fallback_loadout_count": 0, "runtime_primitives": ["opening_pressure"], "opening_pressure_applied_count": 15, "telemetry_event_count": 15, "snapshot_ready": true, "rebuild_uses_snapshot": false, "last_modified": "2026-05-11T03:32:23.419041+00:00", "missing_reports": [], "switchable": true, "switch_block_reasons": [], "detail_missing": false, "pack_detail_json_path": "data/aigc_battle/generated/details/pack_posture_opening_pressure_v0_1__posture_opening_pressure_p1_probe_snapshot_002.json", "pack_detail_md_path": "data/aigc_battle/generated/details/pack_posture_opening_pressure_v0_1__posture_opening_pressure_p1_probe_snapshot_002.md", "deck_power_summary": {"early_avg_power": 25.2, "mid_avg_power": 33.2, "late_avg_power": 46.2, "boss_avg_power": 53.8}, "reward_tiers": ["advanced", "basic", "boss", "standard"], "telemetry_summary": {"telemetry_event_count": 15, "encounters_with_telemetry_count": 15, "snapshot_ready": true}}, {"mechanic_profile_id": "posture_opening_pressure_v0_1", "content_pack_id": "posture_opening_pressure_snapshot_001", "is_active_pack": false, "pack_storage_mode": "profile_pack_dir", "generated_dir": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_snapshot_001", "runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_snapshot_001/runtime_manifest.json", "validation_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_snapshot_001/validation_report.json", "sequence_balance_summary_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_snapshot_001/sequence_balance_summary.json", "telemetry_probe_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_snapshot_001/telemetry_probe_report.json", "sequence_balance_snapshot_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_snapshot_001/sequence_balance_snapshot.json", "runtime_primitive_probe_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_snapshot_001/runtime_primitive_probe_report.json", "formal_encounter_total_count": 15, "battle_slot_count": 15, "deck_count": 15, "card_count": 40, "reward_count": 15, "full_sequence_coverage_complete": true, "ready_for_runtime_export": true, "runtime_export_allowed": true, "sequence_balance_pass": true, "all_generated_slots_have_reward": true, "fallback_loadout_count": 0, "runtime_primitives": ["opening_pressure"], "opening_pressure_applied_count": 15, "telemetry_event_count": 15, "snapshot_ready": true, "rebuild_uses_snapshot": false, "last_modified": "2026-05-09T03:04:53.190419+00:00", "missing_reports": [], "switchable": true, "switch_block_reasons": [], "detail_missing": false, "pack_detail_json_path": "data/aigc_battle/generated/details/pack_posture_opening_pressure_v0_1__posture_opening_pressure_snapshot_001.json", "pack_detail_md_path": "data/aigc_battle/generated/details/pack_posture_opening_pressure_v0_1__posture_opening_pressure_snapshot_001.md", "deck_power_summary": {"early_avg_power": 25.2, "mid_avg_power": 33.2, "late_avg_power": 46.2, "boss_avg_power": 53.8}, "reward_tiers": ["advanced", "basic", "boss", "standard"], "telemetry_summary": {"telemetry_event_count": 15, "encounters_with_telemetry_count": 15, "snapshot_ready": true}}]}, {"mechanic_profile_id": "posture_tuned_v0_1b", "profile_dir": "data/aigc_battle/mechanics/posture_tuned_v0_1b", "is_active_profile": false, "content_pack_count": 1, "profile_detail_json_path": "data/aigc_battle/generated/details/profile_posture_tuned_v0_1b.json", "profile_detail_md_path": "data/aigc_battle/generated/details/profile_posture_tuned_v0_1b.md", "content_packs": [{"mechanic_profile_id": "posture_tuned_v0_1b", "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001", "is_active_pack": false, "pack_storage_mode": "profile_root", "generated_dir": "data/aigc_battle/generated/posture_tuned_v0_1b", "runtime_manifest_path": "data/aigc_battle/generated/posture_tuned_v0_1b/runtime_manifest.json", "validation_report_path": "data/aigc_battle/generated/posture_tuned_v0_1b/validation_report.json", "sequence_balance_summary_path": "data/aigc_battle/generated/posture_tuned_v0_1b/sequence_balance_summary.json", "telemetry_probe_report_path": "", "sequence_balance_snapshot_path": "", "runtime_primitive_probe_report_path": "", "formal_encounter_total_count": 15, "battle_slot_count": 15, "deck_count": 15, "card_count": 40, "reward_count": 15, "full_sequence_coverage_complete": true, "ready_for_runtime_export": true, "runtime_export_allowed": true, "sequence_balance_pass": true, "all_generated_slots_have_reward": true, "fallback_loadout_count": 0, "runtime_primitives": [], "opening_pressure_applied_count": 0, "telemetry_event_count": 0, "snapshot_ready": false, "rebuild_uses_snapshot": false, "last_modified": "2026-05-09T02:16:33.726159+00:00", "missing_reports": ["telemetry_probe_report.json", "sequence_balance_snapshot.json", "runtime_primitive_probe_report.json", "rebuild_from_snapshot_probe_report.json", "snapshot_summary.json"], "switchable": true, "switch_block_reasons": [], "detail_missing": false, "pack_detail_json_path": "data/aigc_battle/generated/details/pack_posture_tuned_v0_1b__posture_tuned_v0_1b_formal_sequence_pack_001.json", "pack_detail_md_path": "data/aigc_battle/generated/details/pack_posture_tuned_v0_1b__posture_tuned_v0_1b_formal_sequence_pack_001.md", "deck_power_summary": {"early_avg_power": 26.5, "mid_avg_power": 35.5, "late_avg_power": 49.4, "boss_avg_power": 56.9}, "reward_tiers": ["advanced_plus", "basic", "boss", "standard_plus"], "telemetry_summary": {"telemetry_event_count": 0, "encounters_with_telemetry_count": 0, "snapshot_ready": false}}]}]};
+const state = { index: embeddedIndex, apiEnabled: location.protocol !== 'file:' };
+const profilesEl = document.getElementById('profiles');
+const statusBox = document.getElementById('status-box');
+const modeNotice = document.getElementById('mode-notice');
+const detailTitle = document.getElementById('detail-title');
+const detailSummary = document.getElementById('detail-summary');
+const detailBox = document.getElementById('detail-box');
+
+function setStatus(message) { statusBox.textContent = message; }
+function setDetail(title, summary, payload) { detailTitle.textContent = title; detailSummary.textContent = summary; detailBox.textContent = JSON.stringify(payload, null, 2); }
+
+async function loadIndex() {
+  if (!state.apiEnabled) return state.index;
+  const response = await fetch('/api/index');
+  const payload = await response.json();
+  state.index = payload;
+  return payload;
+}
+
+async function fetchDetail(kind, profileId, contentPackId) {
+  if (!state.apiEnabled) throw new Error('静态模式不支持加载 detail API');
+  const url = kind === 'profile'
+    ? `/api/profile-detail?profile_id=${encodeURIComponent(profileId)}`
+    : `/api/pack-detail?profile_id=${encodeURIComponent(profileId)}&content_pack_id=${encodeURIComponent(contentPackId || '')}`;
+  const response = await fetch(url);
+  const payload = await response.json();
+  if (!response.ok || payload.ok === false) throw new Error(payload.error || 'detail request failed');
+  return payload;
+}
+
+async function callSwitchApi(path, profileId, packId) {
+  const response = await fetch(path, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ profile_id: profileId, content_pack_id: packId || '' })
+  });
+  const payload = await response.json();
+  if (!response.ok || payload.ok === false || payload.can_switch === false) {
+    throw new Error(payload.error || (payload.reasons || []).join('; ') || '请求失败');
+  }
+  return payload;
+}
+
+function render() {
+  const index = state.index;
+  document.getElementById('active-profile').textContent = index.active_profile_id || '-';
+  document.getElementById('active-pack').textContent = index.active_content_pack_id || '-';
+  document.getElementById('active-manifest').textContent = index.active_runtime_manifest_path || '-';
+  modeNotice.textContent = state.apiEnabled
+    ? '当前为 localhost server 模式，可点击查看明细、Dry Run 或 启用此内容包。'
+    : '当前为 file:// 静态模式，只读查看摘要。若要查看完整 detail 和点击切换，请先运行 python3 tools/aigc_battle/aigc_dashboard_server.py';
+  profilesEl.innerHTML = '';
+  for (const profile of index.profiles) {
+    const section = document.createElement('section');
+    section.className = 'profile';
+    section.innerHTML = `<h2>${profile.mechanic_profile_id}</h2><div class="small">content packs: ${profile.content_pack_count}</div>`;
+    const profileDetailButton = document.createElement('button');
+    profileDetailButton.textContent = '查看机制明细';
+    profileDetailButton.disabled = !state.apiEnabled;
+    profileDetailButton.onclick = async () => {
+      try {
+        const payload = await fetchDetail('profile', profile.mechanic_profile_id, '');
+        setDetail(`机制包明细: ${profile.mechanic_profile_id}`, 'profile / recipe 规则摘要', payload);
+      } catch (error) { setStatus(`读取机制明细失败: ${error.message}`); }
+    };
+    section.appendChild(profileDetailButton);
+    const grid = document.createElement('div');
+    grid.className = 'pack-grid';
+    for (const pack of profile.content_packs) {
+      const card = document.createElement('article');
+      card.className = 'pack-card' + (pack.is_active_pack ? ' active' : '');
+      const switchable = !!pack.switchable;
+      const reasons = (pack.switch_block_reasons || []).join('; ');
+      card.innerHTML = `
+        <div>
+          ${pack.is_active_pack ? '<span class="badge">ACTIVE</span>' : ''}
+          <span class="badge info">${pack.pack_storage_mode}</span>
+          <span class="badge ${pack.ready_for_runtime_export ? 'ok' : 'bad'}">EXPORT ${pack.ready_for_runtime_export ? 'PASS' : 'FAIL'}</span>
+          <span class="badge ${pack.sequence_balance_pass ? 'ok' : 'bad'}">BALANCE ${pack.sequence_balance_pass ? 'PASS' : 'FAIL'}</span>
+        </div>
+        <h3>${pack.content_pack_id || '(missing pack id)'}</h3>
+        <div class="small">manifest: <code>${pack.runtime_manifest_path}</code></div>
+        <p>Encounters: ${pack.formal_encounter_total_count} | Battles: ${pack.battle_slot_count}</p>
+        <p>Cards: ${pack.card_count} | Decks: ${pack.deck_count} | Rewards: ${pack.reward_count}</p>
+        <p>Runtime primitives: <code>${(pack.runtime_primitives || []).join(', ') || '-'}</code></p>
+        <p>Telemetry: ${pack.telemetry_event_count} | Snapshot: ${pack.snapshot_ready ? 'ready' : 'missing'}</p>
+        <p class="small">switchable: ${switchable ? 'yes' : 'no'} | detail: ${pack.detail_missing ? 'missing' : 'ready'}</p>
+        <pre>${reasons || '无阻塞原因'}</pre>
+      `;
+      const detailButton = document.createElement('button');
+      detailButton.textContent = '查看内容包明细';
+      detailButton.disabled = !state.apiEnabled;
+      detailButton.onclick = async () => {
+        try {
+          const payload = await fetchDetail('pack', pack.mechanic_profile_id, pack.pack_storage_mode === 'profile_pack_dir' ? pack.content_pack_id : '');
+          setDetail(`内容包明细: ${pack.content_pack_id}`, 'pack 总览 / 卡池 / formal sequence 明细', payload);
+        } catch (error) { setStatus(`读取内容包明细失败: ${error.message}`); }
+      };
+      const dryButton = document.createElement('button');
+      dryButton.textContent = 'Dry Run';
+      const switchButton = document.createElement('button');
+      switchButton.textContent = '启用此内容包';
+      switchButton.className = 'secondary';
+      const commandHint = document.createElement('div');
+      commandHint.className = 'small';
+      const packArg = pack.pack_storage_mode === 'profile_pack_dir' ? ` --pack ${pack.content_pack_id}` : '';
+      commandHint.innerHTML = `命令行：<code>python3 tools/aigc_battle/aigc_external_profile_switch.py --profile ${pack.mechanic_profile_id}${packArg}</code>`;
+      if (!state.apiEnabled) {
+        dryButton.disabled = true;
+        switchButton.disabled = true;
+      } else {
+        dryButton.disabled = !switchable;
+        switchButton.disabled = !switchable || pack.is_active_pack;
+        dryButton.onclick = async () => {
+          try {
+            const payload = await callSwitchApi('/api/dry-run-switch', pack.mechanic_profile_id, pack.pack_storage_mode === 'profile_pack_dir' ? pack.content_pack_id : '');
+            setStatus(JSON.stringify(payload, null, 2));
+          } catch (error) { setStatus(`Dry Run 失败: ${error.message}`); }
+        };
+        switchButton.onclick = async () => {
+          try {
+            const payload = await callSwitchApi('/api/switch-pack', pack.mechanic_profile_id, pack.pack_storage_mode === 'profile_pack_dir' ? pack.content_pack_id : '');
+            await loadIndex();
+            render();
+            setStatus(JSON.stringify(payload, null, 2));
+          } catch (error) { setStatus(`切换失败: ${error.message}`); }
+        };
+      }
+      card.appendChild(detailButton);
+      card.appendChild(dryButton);
+      card.appendChild(switchButton);
+      card.appendChild(commandHint);
+      grid.appendChild(card);
+    }
+    section.appendChild(grid);
+    profilesEl.appendChild(section);
+  }
+}
+
+(async function init() {
+  if (state.apiEnabled) {
+    try { await loadIndex(); } catch (error) { setStatus(`读取 /api/index 失败: ${error.message}`); }
+  }
+  render();
+})();
+</script>
+</body>
+</html>

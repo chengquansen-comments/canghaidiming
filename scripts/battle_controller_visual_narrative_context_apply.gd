@@ -81,6 +81,33 @@ func _safe_refresh_runtime_ui() -> void:
 			callv(method_name, [])
 			return
 
+func _apply_runtime_primitives(loadout: Dictionary) -> void:
+	last_runtime_primitives = (loadout.get("runtime_primitives", []) as Array).duplicate()
+	last_opening_pressure_source = ""
+	last_opening_pressure_enemy_momentum_bonus = 0
+	last_opening_pressure_enemy_block_bonus = 0
+	last_opening_pressure_applied = false
+	last_opening_pressure_applied_fields.clear()
+	if enemy == null:
+		return
+	if not last_runtime_primitives.has("opening_pressure"):
+		return
+	var opening_pressure: Dictionary = _dict(loadout.get("opening_pressure", {}))
+	if opening_pressure.is_empty():
+		return
+	last_opening_pressure_source = str(opening_pressure.get("source", "runtime_manifest"))
+	last_opening_pressure_enemy_momentum_bonus = int(opening_pressure.get("enemy_start_momentum_bonus", 0))
+	last_opening_pressure_enemy_block_bonus = int(opening_pressure.get("enemy_start_block_bonus", 0))
+	if last_opening_pressure_enemy_momentum_bonus > 0:
+		var next_momentum := clampi(enemy.data.starting_momentum + last_opening_pressure_enemy_momentum_bonus, 0, enemy.data.max_momentum)
+		enemy.data.starting_momentum = next_momentum
+		enemy.momentum = next_momentum
+		last_opening_pressure_applied_fields.append("enemy_start_momentum_bonus")
+	if last_opening_pressure_enemy_block_bonus > 0:
+		enemy.add_guard(last_opening_pressure_enemy_block_bonus)
+		last_opening_pressure_applied_fields.append("enemy_start_block_bonus")
+	last_opening_pressure_applied = not last_opening_pressure_applied_fields.is_empty()
+
 func _apply_battle_loadout_once(loadout: Dictionary) -> void:
 	if battle_loadout_applied:
 		return
@@ -95,6 +122,7 @@ func _apply_battle_loadout_once(loadout: Dictionary) -> void:
 	_apply_fighter_config(enemy, enemy_config)
 	_clear_actor_runtime(true)
 	_clear_actor_runtime(false)
+	_apply_runtime_primitives(loadout)
 	if state_machine != null:
 		var settlement_mode: String = str(loadout.get("settlement_mode", ""))
 		if not settlement_mode.is_empty():
@@ -104,8 +132,13 @@ func _apply_battle_loadout_once(loadout: Dictionary) -> void:
 	_apply_battle_background(loadout)
 	battle_loadout_applied = true
 	narrative_numbers_applied = true
+	last_reward_source = str(loadout.get("reward_source", "fallback"))
+	last_reward_plan_id = str(loadout.get("reward_plan_id", ""))
+	last_generated_reward_visible = false
+	last_generated_reward_claimed = false
+	last_formal_progression_continues = false
 	_refresh_narrative_debug_labels()
-	_set_battle_result_debug_text("BattleLoadout：已一次性应用敌我配置与背景。")
+	_set_battle_result_debug_text("BattleLoadout：来源=%s｜slot=%s｜deck=%s｜pack=%s" % [str(loadout.get("loadout_source", "")), str(loadout.get("generated_battle_slot_id", "")), str(loadout.get("generated_deck_id", "")), str(loadout.get("content_pack_id", ""))])
 	_safe_refresh_runtime_ui()
 
 func _load_narrative_battle_once() -> void:
@@ -123,4 +156,3 @@ func _load_narrative_battle_once() -> void:
 
 func _apply_narrative_numbers_once() -> void:
 	_load_narrative_battle_once()
-

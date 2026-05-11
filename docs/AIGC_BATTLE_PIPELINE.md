@@ -1,0 +1,149 @@
+# AIGC Battle Pipeline
+
+## v1 目标
+
+当前 v1 目标是 `Full Formal Battle Sequence Replacement`：用 `posture_basic_v0_1` 的 generated content pack 覆盖当前正式流程里的全部正式战斗节点，不接受单场替换、mini run 或 debug-only 终点。
+
+## 职责边界
+
+- `Mechanic Profile`：声明当前 runtime 真正支持的资源、效果、卡牌和牌组约束。
+- `Content Recipe`：声明目标正式序列、替换模式和生成规则。
+- `Content Pack`：生成 `cards / enemy_decks / battle_slots / rewards / formal_sequence_mapping`。
+- `Runtime Manifest`：只保留 Godot 运行时需要读取的对象。
+- `Active Profile`：只声明当前激活的 profile、pack 和 runtime manifest 路径。
+
+## coverage 基准
+
+`formal_sequence_inventory.generated.json` 是 v1 coverage 基准。它从 `tables/narrative_mvp_nodes.tsv` 的正式战斗引用抽取 formal encounter 清单，再与 `story_encounters` 对齐。validator 以它为唯一覆盖标准。
+
+## validator gate
+
+validator 是 v1 的 coverage gate：
+
+- formal inventory 不能为空。
+- 每个 formal encounter 都必须有 generated mapping。
+- `full_sequence_coverage_complete=true` 才能导出 runtime manifest。
+- fallback 只能保底，不能参与 v1 验收通过。
+
+## Godot 侧
+
+Godot 只读 `active_profile.json` 和 `runtime_manifest.json`。正式流程解析 battle loadout 时优先命中 generated manifest，未命中时才回落到 `StoryBattleLoader`。
+
+## 当前 v1 已完成项
+
+- formal sequence inventory 生成
+- profile/recipe/content pack 构建
+- coverage validator
+- runtime manifest 导出
+- active profile 切换
+- formal encounter 级别的 generated loadout probe
+
+## 下一步
+
+v2 补 full sequence reward / progression closure。
+
+## v2 奖励闭环
+
+v2 目标是 `full sequence reward / progression closure`：
+
+- generated reward 从 `runtime_manifest` 读取
+- formal battle 命中 generated manifest 后，reward 随 loadout 一起进入结算层
+- 胜利后展示 generated reward，并以确认动作视为领取
+- fallback 只保底，不参与 v2 PASS
+
+当前限制：
+
+- 当前 probe 验证的是 loader、loadout、结算桥和可观测字段，不是完整自动通关脚本
+
+## v3：Full Sequence Balance Pass
+- v3 目标：full sequence balance pass。
+- battle_slot / deck / reward 增加 sequence_position、encounter_tier、encounter_kind、target_power_range、reward_tier。
+- validator 新增 balance gate，要求全序列 deck power 落入目标区间，后段平均强于前段，boss 强于 late / elite。
+- export runtime_manifest 依赖 sequence_balance_pass=true，并写入 balance_summary。
+- 当前仍不做复杂模拟，不新增战斗机制。
+
+## v4：Full Sequence Mechanic Profile Switch
+- v4 目标：full sequence mechanic profile switch。
+- 新增 `posture_tuned_v0_1b`，与 `posture_basic_v0_1` 一样覆盖完整 formal sequence。
+- `active_profile.json` 是唯一切换入口，Godot loader 保持 profile-agnostic。
+- A/B 两套 content_pack、runtime_manifest、generated 目录必须隔离。
+- build / validate / export / switch / probe 必须串行执行，禁止并行。
+
+## v5：Mechanic Diff + Full Sequence Rebuild Policy
+- v5 目标：mechanic diff + full sequence rebuild policy。
+- `change_type` 五类：`no_change` / `value_rebalance` / `partial_regeneration` / `full_sequence_regeneration` / `not_runtime_playable`。
+- runtime 不支持的 design effect 不能进入 playable `runtime_manifest`。
+- validate / export 现在会用 policy gate 阻止不可运行内容进入 runtime。
+- build / validate / export / switch / probe / diff 必须串行执行，禁止并行。
+
+## v6：LLM Candidate Import for Full Sequence Pack
+- v6 目标：LLM candidate import for full sequence pack。
+- 当前不调用在线 LLM，只导入本地 JSONL candidate fixture。
+- LLM candidates 不能绕过 validator / export / runtime gate。
+- invalid candidates 必须被拒绝，不能进入 playable runtime_manifest。
+- build / import / validate / export / switch / probe 必须串行执行，禁止并行。
+- v6 结束后 active_profile 默认切回 `posture_basic_v0_1`。
+
+## v7
+- v7 目标：Real New Runtime Mechanic for Full Sequence。
+- 新增 opening_pressure runtime primitive。
+- opening_pressure 是 battle_slot/loadout primitive，不是 card effect。
+- 15 个 formal encounter 都必须带 opening_pressure。
+- validator / export / loader / apply / probe 都必须支持 opening_pressure。
+- 如果不能真实应用，不允许伪造 PASS。
+- build / validate / export / switch / probe 必须串行执行，禁止并行。
+
+## v8
+- v8 目标：Full Sequence Telemetry + Rebuild Loop。
+- telemetry 是轻量 JSONL，不是复杂埋点平台。
+- snapshot 只做异常标记和最小调参，不做机器学习。
+- rebuild 读取 snapshot 后，仍必须通过 coverage / reward / balance / runtime primitive gate。
+- build / validate / export / switch / probe / telemetry / rebuild 必须串行执行，禁止并行。
+
+## 武境 / 收式卡组合法性修复
+- 新增武境 / 收式卡组合法性硬校验，规则声明在 `mechanic_profile.json`。
+- `content_recipe.json` 负责声明玩家武境曲线，并为 battle_slot 生成 `player_wujing_cap`。
+- build / import 先做前置过滤，禁止超武境招式牌进入 deck。
+- `validate_content_pack.py` 是硬门禁，缺失 `required_wujing` / `closing_form_tier` 或超过 `player_wujing_cap` 都直接失败。
+- `export_runtime_manifest.py` 是二次门禁，不允许违规内容导出 runtime。
+- Godot loader 不负责内容合法性校验，只读取已通过 validator 的 manifest。
+- build / import / validate / export / switch / probe 必须串行执行，禁止并行。
+
+## v9
+- v9 只做游戏外查看和切换，不做游戏内 UI。
+- `build_aigc_content_index.py` 生成统一内容索引、Markdown 总览和本地静态 HTML dashboard。
+- `aigc_external_profile_switch.py` 是唯一推荐的手动切换入口，必须复用现有校验门禁后再写 `active_profile.json`。
+- 不做单场 override，不允许直接编辑 generated 文件或绕过校验切 active。
+- index / validate / switch / probe 必须串行执行，禁止并行。
+
+## v9
+- v9 只做游戏外查看和切换，不做游戏内 UI。
+- 外部 dashboard 现在支持 profile / content_pack 双键查看与切换。
+- `data/aigc_battle/generated/{profile_id}/` 视为 root pack，`packs/{content_pack_id}/` 支持同一 profile 下多内容包。
+- 浏览器点击切换必须运行 localhost server；静态 HTML 只读。
+- 切换仍走安全 gate，不允许直接编辑 generated 文件或传任意 runtime_manifest 路径。
+- index / validate / switch / probe / server check 必须串行执行，禁止并行。
+
+## v9.2
+- 外部控制台支持机制包明细和内容包明细。
+- 机制包明细展示 mechanic_profile / content_recipe 的规则摘要。
+- 内容包明细展示 pack 总览、整体卡池、formal encounter → battle_slot → deck → cards → reward → runtime primitive。
+- Pack 层整体卡池展示使用情况、未使用卡、orphan card、武境/收式信息。
+- 明细页只读，不允许编辑 generated 文件；切换仍走安全 switch。
+- index / detail / server / probe 必须串行执行，禁止并行。
+
+## v10
+- v10 是外部控制台审核工作台，不再只是 detail JSON 浏览器。
+- Review 数据优先来自 v9.2 的 detail JSON；detail 缺失时只标记 missing_detail，不直接改 generated 内容。
+- 审核工作台支持 Pack 对比、整局节奏、Formal Encounter 链路表、单场战斗设计卡、整体卡池表、Deck 行为表、Reward 表、Risk Board、审核报告导出。
+- 风险聚合只用于审核排序和策划判断，不替代 validator gate。
+- 控制台仍然只读展示 generated 内容；切换仍然只能走 safe switch API。
+- `build_aigc_review_workspace.py` / `aigc_dashboard_review_probe.py` 都必须串行执行，禁止并行。
+
+## P1
+- P1 是 Production Console。
+- 控制台支持审核、备注、生产、快照、验证、导出、切换、回滚、冻结、release candidate、归档。
+- 所有写操作必须走 localhost server 或安全 CLI，不能让浏览器直接写 generated JSON。
+- Review Notes 独立存储在 `data/aigc_battle/review_notes/`，不修改 generated 内容。
+- Release Manifest 独立存储在 `data/aigc_battle/release/`，不修改 generated 内容。
+- Pack Factory / switch / rollback / freeze / archive / probe 全部必须串行执行，禁止并行。

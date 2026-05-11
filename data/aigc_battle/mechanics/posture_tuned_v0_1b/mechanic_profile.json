@@ -1,0 +1,61 @@
+{
+  "mechanic_profile_id": "posture_tuned_v0_1b",
+  "display_name": "调校版架势战斗 v0.1b",
+  "version": "0.1.1",
+  "runtime_support_level": "godot_formal_sequence_v1",
+  "resources": [
+    "hp",
+    "posture",
+    "block"
+  ],
+  "card_types": [
+    "attack",
+    "defense",
+    "skill"
+  ],
+  "weapon_styles": [
+    "generic",
+    "spearman",
+    "blademaster"
+  ],
+  "allowed_design_effects": [
+    "damage",
+    "gain_block",
+    "gain_momentum",
+    "break_momentum"
+  ],
+  "allowed_runtime_effects": [
+    "damage",
+    "gain_block",
+    "gain_momentum",
+    "break_momentum"
+  ],
+  "card_constraints": {
+    "min_cost": 0,
+    "max_cost": 2,
+    "min_power_score": 2,
+    "max_power_score": 11
+  },
+  "deck_constraints": {
+    "min_deck_size": 6,
+    "max_deck_size": 8,
+    "max_same_card": 2
+  },
+  "power_model": {
+    "damage_weight": 1.05,
+    "block_weight": 0.95,
+    "gain_momentum_weight": 0.85,
+    "break_momentum_weight": 0.95,
+    "difficulty_tiers": [
+      "normal",
+      "elite",
+      "boss"
+    ]
+  },
+  "card_eligibility_rules": {
+    "technique_requires_player_realm": true,
+    "forbid_required_wujing_above_player_cap": true,
+    "forbid_closing_form_above_player_cap": true,
+    "missing_realm_metadata_policy": "fail"
+  }
+}

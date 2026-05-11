@@ -1,0 +1,21 @@
+{
+  "mechanic_profile_id": "posture_llm_candidate_v0_1",
+  "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
+  "input_card_candidate_count": 40,
+  "accepted_card_candidate_count": 40,
+  "rejected_card_candidate_count": 0,
+  "input_deck_candidate_count": 8,
+  "accepted_deck_candidate_count": 8,
+  "rejected_deck_candidate_count": 0,
+  "deterministic_fill_used": true,
+  "generated_battle_slot_count": 15,
+  "generated_deck_count": 15,
+  "generated_card_count": 40,
+  "import_ready_for_validation": true,
+  "rejected_card_candidate_ids": [],
+  "rejected_deck_candidate_ids": [],
+  "realm_metadata_checked": true,
+  "invalid_realm_candidate_count": 0,
+  "realm_filtered_card_ref_count": 0,
+  "deck_candidate_rejected_by_realm_count": 0
+}

@@ -1,0 +1,16 @@
+{
+  "mechanic_profile_id": "posture_opening_pressure_v0_1",
+  "content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+  "review_status": "accepted",
+  "reviewer": "production_probe",
+  "review_time": "2026-05-11T03:31:20.574843+00:00",
+  "summary": "probe accepted",
+  "recommended_action": "ready_for_release_candidate",
+  "global_notes": "probe notes",
+  "encounter_notes": {},
+  "card_notes": {},
+  "deck_notes": {},
+  "reward_notes": {},
+  "risk_decisions": {},
+  "last_updated_at": "2026-05-11T03:31:20.574836+00:00"
+}

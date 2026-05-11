@@ -1,0 +1,15 @@
+{
+  "mechanic_profile_id": "posture_opening_pressure_v0_1",
+  "content_pack_id": "posture_opening_pressure_snapshot_001",
+  "release_status": "draft",
+  "frozen": false,
+  "frozen_at": "",
+  "review_status": "pending",
+  "review_notes_path": "data/aigc_battle/review_notes/posture_opening_pressure_v0_1__posture_opening_pressure_snapshot_001.json",
+  "runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_snapshot_001/runtime_manifest.json",
+  "validation_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_snapshot_001/validation_report.json",
+  "review_report_path": "data/aigc_battle/generated/review/review_report_posture_opening_pressure_v0_1__posture_opening_pressure_snapshot_001.md",
+  "release_report_path": "",
+  "created_at": "2026-05-11T03:30:07.261798+00:00",
+  "updated_at": "2026-05-11T03:30:07.261808+00:00"
+}

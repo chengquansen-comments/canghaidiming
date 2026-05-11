@@ -1,0 +1,19 @@
+{
+  "active_profile_loaded": true,
+  "all_formal_encounters_have_telemetry": true,
+  "fallback_telemetry_event_count": 0,
+  "formal_encounter_total_count": 15,
+  "generated_telemetry_event_count": 15,
+  "runtime_manifest_loaded": true,
+  "telemetry_content_pack_id_matched": true,
+  "telemetry_detail_level": "minimal",
+  "telemetry_event_count": 15,
+  "telemetry_path": "/Users/happy/Documents/Codex/canghaidiming/data/aigc_battle/telemetry/aigc_sequence_telemetry.jsonl",
+  "telemetry_probe_pass": true,
+  "telemetry_profile_id_matched": true,
+  "telemetry_return_flow_recorded": true,
+  "telemetry_reward_claimed_recorded": true,
+  "telemetry_runtime_primitives_recorded": true,
+  "original_content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+  "snapshot_content_pack_id": "posture_opening_pressure_snapshot_001"
+}

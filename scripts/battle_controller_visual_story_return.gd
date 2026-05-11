@@ -22,6 +22,7 @@ var _battle_reward_choices: Array[CardData] = []
 var _selected_battle_reward_card_id := ""
 var _battle_result_confirm_button: Button
 var _intent_visibility_policy := BattleIntentVisibility.POLICY_FULL
+const AIGC_TELEMETRY_PATH := "res://data/aigc_battle/telemetry/aigc_sequence_telemetry.jsonl"
 
 
 func _apply_selected_story_battle_to_current_battle() -> void:
@@ -266,6 +267,7 @@ func _show_battle_result_overlay(victory: bool) -> void:
 	_battle_reward_choices.clear()
 	_selected_battle_reward_card_id = ""
 	_battle_result_confirm_button = null
+	_mark_generated_reward_visible(victory)
 	var title: String = "战斗胜利" if victory else "战斗失败"
 	battle_result_title.text = title
 	_set_battle_result_body_text(_battle_result_body_text(victory, ""))
@@ -314,6 +316,10 @@ func _battle_result_body_text(victory: bool, selected_card_id: String) -> String
 		return ""
 	var lines: Array[String] = []
 	lines.append(_projected_player_growth_text())
+	if _has_generated_manifest_reward():
+		lines.append("本场奖励：%s" % _generated_reward_summary_text())
+		lines.append("确认后领取并返回正式流程。")
+		return "\n".join(lines)
 	if _battle_result_should_offer_player_reward():
 		if selected_card_id.is_empty():
 			lines.append("选择 1 张新招式加入长期牌库。")
@@ -327,7 +333,7 @@ func _battle_result_is_proxy_player() -> bool:
 
 
 func _battle_result_should_offer_player_reward() -> bool:
-	return NarrativeBattleContext.has_request() and not _battle_result_is_proxy_player()
+	return NarrativeBattleContext.has_request() and not _battle_result_is_proxy_player() and not _has_generated_manifest_reward()
 
 
 func _battle_result_should_use_story_size() -> bool:
@@ -429,6 +435,116 @@ func _card_display_name(card_id: String) -> String:
 	return card_id
 
 
+func _has_generated_manifest_reward() -> bool:
+	if battle_loadout.is_empty():
+		return false
+	if str(battle_loadout.get("loadout_source", "")) != "generated_manifest":
+		return false
+	if str(battle_loadout.get("reward_plan_id", "")).is_empty():
+		return false
+	var reward: Dictionary = battle_loadout.get("generated_reward", battle_loadout.get("reward_plan", {}))
+	return not reward.is_empty()
+
+
+func _active_generated_reward() -> Dictionary:
+	if not _has_generated_manifest_reward():
+		return {}
+	return _dict(battle_loadout.get("generated_reward", battle_loadout.get("reward_plan", {})))
+
+
+func _generated_reward_summary_text() -> String:
+	var reward := _active_generated_reward()
+	if reward.is_empty():
+		return "无"
+	var reward_type := str(reward.get("reward_type", "reward"))
+	var item_texts: Array[String] = []
+	for item_variant in reward.get("reward_items", []):
+		if not (item_variant is Dictionary):
+			continue
+		var item: Dictionary = item_variant
+		item_texts.append("%s x%s" % [str(item.get("item_id", "")), str(item.get("quantity", 1))])
+	if item_texts.is_empty():
+		return reward_type
+	return "%s｜%s" % [reward_type, "，".join(item_texts)]
+
+
+func _mark_generated_reward_visible(victory: bool) -> void:
+	if not victory:
+		return
+	if not _has_generated_manifest_reward():
+		return
+	last_reward_source = "generated_manifest"
+	last_reward_plan_id = str(battle_loadout.get("reward_plan_id", ""))
+	last_generated_reward_visible = true
+
+
+func _claim_generated_manifest_reward(result_key: String) -> void:
+	if result_key != "win":
+		return
+	if not _has_generated_manifest_reward():
+		return
+	last_reward_source = "generated_manifest"
+	last_reward_plan_id = str(battle_loadout.get("reward_plan_id", ""))
+	last_generated_reward_claimed = true
+	last_formal_progression_continues = true
+
+
+func _append_generated_telemetry_event(result_key: String) -> void:
+	last_telemetry_written = false
+	last_telemetry_error = ""
+	if battle_loadout.is_empty():
+		return
+	if str(battle_loadout.get("loadout_source", "")) != "generated_manifest":
+		return
+	var telemetry_path := ProjectSettings.globalize_path(AIGC_TELEMETRY_PATH)
+	var telemetry_dir := telemetry_path.get_base_dir()
+	var dir_result := DirAccess.make_dir_recursive_absolute(telemetry_dir)
+	if dir_result != OK and not DirAccess.dir_exists_absolute(telemetry_dir):
+		last_telemetry_error = "telemetry_dir_create_failed:%s" % telemetry_dir
+		return
+	var file := FileAccess.open(telemetry_path, FileAccess.READ_WRITE)
+	if file == null:
+		file = FileAccess.open(telemetry_path, FileAccess.WRITE_READ)
+	if file == null:
+		last_telemetry_error = "telemetry_open_failed:%s" % telemetry_path
+		return
+	file.seek_end()
+	var event := {
+		"timestamp": Time.get_datetime_string_from_system(true, true),
+		"mechanic_profile_id": str(battle_loadout.get("mechanic_profile_id", "")),
+		"content_pack_id": str(battle_loadout.get("content_pack_id", "")),
+		"target_sequence_id": str(battle_loadout.get("target_sequence_id", "")),
+		"formal_encounter_id": str(battle_loadout.get("encounter_id", "")),
+		"formal_battle_id": str(battle_loadout.get("battle_id", "")),
+		"generated_battle_slot_id": str(battle_loadout.get("generated_battle_slot_id", "")),
+		"generated_deck_id": str(battle_loadout.get("generated_deck_id", "")),
+		"reward_plan_id": str(battle_loadout.get("reward_plan_id", "")),
+		"loadout_source": str(battle_loadout.get("loadout_source", "")),
+		"encounter_tier": str(battle_loadout.get("encounter_tier", "")),
+		"encounter_kind": str(battle_loadout.get("encounter_kind", "")),
+		"sequence_position": int(battle_loadout.get("sequence_position", 0)),
+		"deck_power_score": float(battle_loadout.get("deck_power_score", 0.0)),
+		"target_power_min": int(battle_loadout.get("target_power_min", 0)),
+		"target_power_max": int(battle_loadout.get("target_power_max", 0)),
+		"runtime_primitives": (battle_loadout.get("runtime_primitives", []) as Array).duplicate(),
+		"opening_pressure": _dict(battle_loadout.get("opening_pressure", {})),
+		"battle_result": result_key,
+		"win": result_key == "win",
+		"turn_count": -1,
+		"player_hp_end": player.hp if player != null else -1,
+		"enemy_hp_end": enemy.hp if enemy != null else -1,
+		"reward_claimed": last_generated_reward_claimed,
+		"return_flow_completed": last_formal_progression_continues,
+		"telemetry_source": "battle_controller_visual_story_return",
+	}
+	file.store_line(JSON.stringify(event))
+	last_telemetry_written = true
+	last_telemetry_path = telemetry_path
+	last_telemetry_event_profile_id = str(event.get("mechanic_profile_id", ""))
+	last_telemetry_event_battle_slot_id = str(event.get("generated_battle_slot_id", ""))
+	last_telemetry_event_deck_id = str(event.get("generated_deck_id", ""))
+
+
 func _on_battle_result_confirm_pressed() -> void:
 	_hide_battle_result_overlay()
 	var result_text: String = "战斗胜利"
@@ -452,6 +568,8 @@ func _on_battle_result_confirm_pressed() -> void:
 		var source_scene: String = NarrativeBattleContext.source_scene
 		if source_scene.is_empty():
 			source_scene = "res://scenes/NarrativeDemo.tscn"
+		_claim_generated_manifest_reward(result_key)
+		_append_generated_telemetry_event(result_key)
 		if result_key == "win" and not _selected_battle_reward_card_id.is_empty():
 			NarrativeBattleContext.grant_player_cards([_selected_battle_reward_card_id])
 		NarrativeBattleContext.set_result(result_key)

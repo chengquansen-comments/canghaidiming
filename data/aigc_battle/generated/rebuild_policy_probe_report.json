@@ -1,0 +1,11 @@
+{
+  "profile_diff_ready": true,
+  "regeneration_policy_ready": true,
+  "value_rebalance_detected": true,
+  "full_sequence_regeneration_detected": true,
+  "unsupported_runtime_effect_blocked": true,
+  "recommended_action_present": true,
+  "not_runtime_playable_blocked": true,
+  "rebuilt_pack_full_sequence_valid": true,
+  "policy_probe_pass": true
+}

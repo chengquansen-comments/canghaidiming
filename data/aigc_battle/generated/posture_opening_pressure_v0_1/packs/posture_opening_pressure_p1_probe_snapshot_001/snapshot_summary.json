@@ -1,0 +1,9 @@
+{
+  "source_profile_id": "posture_opening_pressure_v0_1",
+  "source_content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+  "snapshot_content_pack_id": "posture_opening_pressure_p1_probe_snapshot_001",
+  "snapshot_dir": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_001",
+  "runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_001/runtime_manifest.json",
+  "validation_report_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/packs/posture_opening_pressure_p1_probe_snapshot_001/validation_report.json",
+  "snapshot_ready": true
+}

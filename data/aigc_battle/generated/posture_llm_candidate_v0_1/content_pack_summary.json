@@ -1,0 +1,12 @@
+{
+  "mechanic_profile_id": "posture_llm_candidate_v0_1",
+  "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
+  "target_sequence_id": "formal_sequence_mvp_v1",
+  "formal_encounter_total_count": 15,
+  "generated_battle_slot_count": 15,
+  "generated_deck_count": 15,
+  "generated_card_count": 40,
+  "generated_reward_count": 15,
+  "replacement_mode": "full_sequence",
+  "content_source": "llm_candidate_import"
+}

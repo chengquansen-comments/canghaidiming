@@ -1,0 +1,24 @@
+{
+  "mechanic_profile_id": "posture_opening_pressure_v0_1",
+  "content_pack_id": "posture_opening_pressure_p1_probe_snapshot_002",
+  "target_sequence_id": "formal_sequence_mvp_v1",
+  "formal_encounter_total_count": 15,
+  "generated_battle_slot_count": 15,
+  "generated_deck_count": 15,
+  "generated_card_count": 40,
+  "generated_reward_count": 15,
+  "replacement_mode": "full_sequence",
+  "runtime_primitives_used": [
+    "opening_pressure"
+  ],
+  "opening_pressure_slot_count": 15,
+  "realm_eligibility_rule_enabled": true,
+  "deck_card_realm_eligibility_valid": true,
+  "invalid_realm_card_count": 0,
+  "rebuild_uses_snapshot": false,
+  "snapshot_source_path": "",
+  "flagged_deck_count": 0,
+  "flagged_deck_ids": [],
+  "original_content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+  "snapshot_content_pack_id": "posture_opening_pressure_p1_probe_snapshot_002"
+}

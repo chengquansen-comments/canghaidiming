@@ -1,0 +1,16 @@
+{
+  "active_profile_loaded": true,
+  "all_generated_slots_have_reward": true,
+  "fallback_loadout_count": 0,
+  "formal_encounter_total_count": 15,
+  "formal_progression_continues": true,
+  "full_sequence_loop_closed": true,
+  "generated_reward_count": 15,
+  "missing_reward_count": 0,
+  "reward_claimed": true,
+  "reward_source_is_manifest": true,
+  "reward_visible_after_each_win": true,
+  "runtime_manifest_loaded": true,
+  "original_content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+  "snapshot_content_pack_id": "posture_opening_pressure_snapshot_001"
+}
