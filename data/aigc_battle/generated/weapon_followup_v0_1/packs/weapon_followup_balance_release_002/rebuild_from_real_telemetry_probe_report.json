@@ -1,0 +1,12 @@
+{
+  "real_telemetry_snapshot_ready": true,
+  "balance_snapshot_has_real_metrics": true,
+  "rebuild_recommendations_actionable": true,
+  "build_from_real_telemetry_ready": true,
+  "rebuilt_pack_validated": true,
+  "rebuilt_pack_exported": true,
+  "rebuilt_pack_review_ready": true,
+  "safe_switch_dry_run_ready": true,
+  "probe_pass": true,
+  "rebuilt_pack_id": "weapon_followup_real_rebuild_001"
+}

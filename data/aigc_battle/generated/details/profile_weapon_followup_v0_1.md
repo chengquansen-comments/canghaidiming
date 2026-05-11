@@ -2,7 +2,7 @@
 
 - display_name: 武器追击机制
 - version: 0.1.0
-- active_pack_id: weapon_followup_v0_1_formal_sequence_pack_001
+- active_pack_id: weapon_followup_balance_release_007
 - target_sequence_id: formal_sequence_mvp_v1
 - replacement_mode: full_sequence
 - runtime_primitives: weapon_followup
@@ -15,11 +15,18 @@
 - weapon_styles: spearman, blademaster
 
 ## content packs
-- weapon_followup_v0_1_formal_sequence_pack_001 | mode=profile_root | active=true | export=true
+- weapon_followup_v0_1_formal_sequence_pack_001 | mode=profile_root | active=false | export=true
 - snapshot_pack_id_required | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_ai_candidate_pack_001 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_ai_candidate_pack_probe_001 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_ai_candidate_pack_probe_002 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_balance_release_001 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_balance_release_002 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_balance_release_003 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_balance_release_004 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_balance_release_005 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_balance_release_006 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_balance_release_007 | mode=profile_pack_dir | active=true | export=true
 - weapon_followup_eval_rebuild_001 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_eval_rebuild_002 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_eval_rebuild_003 | mode=profile_pack_dir | active=false | export=true

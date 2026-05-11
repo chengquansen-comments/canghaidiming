@@ -11016,6 +11016,7 @@
     "latest_rebuild_recommendation_path": "data/aigc_battle/evaluation/rebuild_recommendations/clue_pressure_v0_1__clue_pressure_v0_1_formal_sequence_pack_001__rebuild_recommendations.json",
     "needs_rebuild": true
   },
+  "balance_release_summary": {},
   "review_report_path": "data/aigc_battle/generated/review/review_report_clue_pressure_v0_1__clue_pressure_v0_1_formal_sequence_pack_001.md",
   "review_notes_summary": {
     "mechanic_profile_id": "clue_pressure_v0_1",

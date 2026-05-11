@@ -17,6 +17,14 @@
 - avg_turn_count: 10.6667
 - rebuild_recommendation_count: 48
 
+## Balance Release
+- balance_release: false
+- source_pack_id: -
+- playable_balance_gate_pass: false
+- current_release_is_balanced: false
+- win_rate_delta_from_source: 0
+- too_hard_delta_from_source: 0
+
 ## 整体卡池
 - used_card_count: 35
 - unused_card_count: 45

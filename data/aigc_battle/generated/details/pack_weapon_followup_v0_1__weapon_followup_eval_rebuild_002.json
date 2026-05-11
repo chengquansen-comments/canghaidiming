@@ -5864,5 +5864,6 @@
   "latest_evaluation_snapshot_path": "",
   "latest_rebuild_recommendation_path": "",
   "original_content_pack_id": null,
-  "snapshot_content_pack_id": null
+  "snapshot_content_pack_id": null,
+  "balance_release_summary": {}
 }

@@ -1,0 +1,13 @@
+{
+  "current_release_points_to_balanced_pack": true,
+  "active_profile_points_to_balanced_pack": true,
+  "formal_entry_uses_balanced_release": true,
+  "generated_loadout_count": 15,
+  "fallback_loadout_count": 0,
+  "reward_coverage_complete": true,
+  "sequence_balance_pass": true,
+  "weapon_followup_runtime_ready": true,
+  "rollback_to_fallback_ready": true,
+  "rollback_to_previous_current_ready": true,
+  "smoke_pass": true
+}

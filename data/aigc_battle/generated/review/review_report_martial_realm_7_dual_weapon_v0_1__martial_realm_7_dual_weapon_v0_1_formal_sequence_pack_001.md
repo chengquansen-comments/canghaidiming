@@ -10,6 +10,11 @@
 - runtime_manifest_path: `data/aigc_battle/generated/martial_realm_7_dual_weapon_v0_1/runtime_manifest.json`
 - runtime primitives: dual_weapon, martial_realm_7
 
+## 2.5 Balance Release
+- balance_release: `False`
+- source_pack_id: `-`
+- playable_balance_gate_pass: `False`
+
 ## 3. 健康状态
 - health_status: `warning`
 - health_score: `0`

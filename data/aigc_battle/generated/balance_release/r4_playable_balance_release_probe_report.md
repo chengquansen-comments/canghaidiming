@@ -1,0 +1,29 @@
+# R4 Playable Balance Release Probe
+
+- playable_balance_release_ready: `True`
+- recommendation_conflict_resolved: `True`
+- pack_overall_too_hard: `True`
+- conflicting_recommendations_removed: `15`
+- balanced_pack_id: `weapon_followup_balance_release_007`
+- balanced_pack_generated: `True`
+- balanced_pack_validated: `True`
+- balanced_pack_exported: `True`
+- balanced_pack_evaluated: `True`
+- source_win_rate: `0.0667`
+- balanced_win_rate: `0.8222`
+- overall_win_rate_improved: `True`
+- too_hard_candidates_reduced: `True`
+- too_long_candidates_reduced: `True`
+- reward_mismatch_candidates_reduced: `True`
+- weapon_followup_trigger_rate_ready: `True`
+- playable_balance_gate_pass: `True`
+- balanced_pack_marked_release_candidate: `True`
+- current_release_updated: `True`
+- formal_entry_uses_balanced_release: `True`
+- rollback_to_fallback_ready: `True`
+- rollback_to_previous_current_ready: `True`
+- dashboard_balance_release_ready: `True`
+- old_profiles_regression_pass: `True`
+- active_profile_matches_current_release: `True`
+- rollback_performed: `False`
+- probe_pass: `True`

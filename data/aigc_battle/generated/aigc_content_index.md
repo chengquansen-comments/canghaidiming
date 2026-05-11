@@ -1,12 +1,12 @@
 # AIGC Battle 外部内容总览
 
 - 当前 active profile: `weapon_followup_v0_1`
-- 当前 active content pack: `weapon_followup_v0_1_formal_sequence_pack_001`
-- 当前 manifest: `data/aigc_battle/generated/weapon_followup_v0_1/runtime_manifest.json`
-- Current Release: `weapon_followup_v0_1` / `weapon_followup_v0_1_formal_sequence_pack_001`
+- 当前 active content pack: `weapon_followup_balance_release_007`
+- 当前 manifest: `data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_007/runtime_manifest.json`
+- Current Release: `weapon_followup_v0_1` / `weapon_followup_balance_release_007`
 - active_profile_drift_from_current_release: `False`
 - profile 数量: `7`
-- content pack 数量: `19`
+- content pack 数量: `26`
 
 | Active | Profile | Pack | Mode | Encounters | Cards | Decks | Rewards | Export | Balance | Runtime Export | Primitive | Detail |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | --- | --- | --- | --- | --- |
@@ -20,11 +20,18 @@
 |  | `posture_opening_pressure_v0_1` | `posture_opening_pressure_snapshot_001` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `opening_pressure` | ready |
 |  | `posture_opening_pressure_v0_1` | `snapshot_pack_id_required` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `opening_pressure` | ready |
 |  | `posture_tuned_v0_1b` | `posture_tuned_v0_1b_formal_sequence_pack_001` | `profile_root` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `-` | ready |
-| YES | `weapon_followup_v0_1` | `weapon_followup_v0_1_formal_sequence_pack_001` | `profile_root` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
+|  | `weapon_followup_v0_1` | `weapon_followup_v0_1_formal_sequence_pack_001` | `profile_root` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
 |  | `weapon_followup_v0_1` | `snapshot_pack_id_required` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
 |  | `weapon_followup_v0_1` | `weapon_followup_ai_candidate_pack_001` | `profile_pack_dir` | 15 | 41 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
 |  | `weapon_followup_v0_1` | `weapon_followup_ai_candidate_pack_probe_001` | `profile_pack_dir` | 15 | 41 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
 |  | `weapon_followup_v0_1` | `weapon_followup_ai_candidate_pack_probe_002` | `profile_pack_dir` | 15 | 41 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
+|  | `weapon_followup_v0_1` | `weapon_followup_balance_release_001` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
+|  | `weapon_followup_v0_1` | `weapon_followup_balance_release_002` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
+|  | `weapon_followup_v0_1` | `weapon_followup_balance_release_003` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
+|  | `weapon_followup_v0_1` | `weapon_followup_balance_release_004` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
+|  | `weapon_followup_v0_1` | `weapon_followup_balance_release_005` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
+|  | `weapon_followup_v0_1` | `weapon_followup_balance_release_006` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
+| YES | `weapon_followup_v0_1` | `weapon_followup_balance_release_007` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
 |  | `weapon_followup_v0_1` | `weapon_followup_eval_rebuild_001` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
 |  | `weapon_followup_v0_1` | `weapon_followup_eval_rebuild_002` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
 |  | `weapon_followup_v0_1` | `weapon_followup_eval_rebuild_003` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |

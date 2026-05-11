@@ -182,6 +182,7 @@ def build_pack_review(index_payload: dict[str, Any], profile_id: str, pack_entry
     runtime_primitive_summary = detail.get('runtime_primitive_summary', {})
     evaluation = detail.get('evaluation_summary', {}) if isinstance(detail.get('evaluation_summary', {}), dict) else {}
     rebuild_recommendation_summary = detail.get('rebuild_recommendation_summary', {}) if isinstance(detail.get('rebuild_recommendation_summary', {}), dict) else {}
+    balance_release_summary = detail.get('balance_release_summary', {}) if isinstance(detail.get('balance_release_summary', {}), dict) else {}
     cards = detail.get('card_pool_detail', [])
     sequences = detail.get('sequence_detail', [])
 
@@ -457,6 +458,7 @@ def build_pack_review(index_payload: dict[str, Any], profile_id: str, pack_entry
             'latest_rebuild_recommendation_path': detail.get('latest_rebuild_recommendation_path', ''),
             'needs_rebuild': bool(int(evaluation.get('rebuild_recommendation_count', rebuild_recommendation_summary.get('recommendation_count', 0) or 0)) > 0),
         },
+        'balance_release_summary': balance_release_summary,
         'review_report_path': to_relative(review_report_md_path(profile_id, content_pack_id)),
         'review_notes_summary': review_notes,
         'review_status': review_notes.get('review_status', 'pending'),
@@ -654,6 +656,8 @@ def build_compare_row(pack_review: dict[str, Any]) -> dict[str, Any]:
     snapshot_summary = pack_review.get('telemetry_snapshot_status', {}).get('snapshot_summary', {})
     evaluation_summary = pack_review.get('evaluation_summary', {})
     runtime_primitives = sorted({primitive for row in encounter_rows for primitive in row.get('runtime_primitives', [])})
+    balance_summary = pack_review.get('balance_release_summary', {})
+    balance_delta = balance_summary.get('source_vs_balanced_delta', {}) if isinstance(balance_summary, dict) else {}
     return {
         'mechanic_profile_id': pack_review['pack_identity']['mechanic_profile_id'],
         'content_pack_id': pack_review['pack_identity']['content_pack_id'],
@@ -694,6 +698,13 @@ def build_compare_row(pack_review: dict[str, Any]) -> dict[str, Any]:
         'mechanic_trigger_rate': float(evaluation_summary.get('runtime_primitive_trigger_rate', 0) or 0),
         'actionability_score': int(evaluation_summary.get('actionability_score', 0) or 0),
         'needs_rebuild': bool(evaluation_summary.get('needs_rebuild', False)),
+        'is_balance_release': bool(balance_summary.get('balance_release', False)),
+        'source_pack_id': str(balance_summary.get('source_pack_id', '')),
+        'win_rate_delta_from_source': float(balance_delta.get('win_rate_delta_from_source', 0) or 0),
+        'too_hard_delta_from_source': int(balance_delta.get('too_hard_delta_from_source', 0) or 0),
+        'avg_turn_delta_from_source': float(balance_delta.get('avg_turn_delta_from_source', 0) or 0),
+        'player_hp_delta_from_source': float(balance_delta.get('player_hp_delta_from_source', 0) or 0),
+        'playable_balance_gate_pass': bool(balance_summary.get('playable_balance_gate_pass', False)),
     }
 
 
@@ -791,6 +802,7 @@ def build_pack_review_markdown(pack_review: dict[str, Any]) -> str:
     identity = pack_review['pack_identity']
     health = pack_review['health_summary']
     risk = pack_review['risk_summary']
+    balance = pack_review.get('balance_release_summary', {})
     lines = [
         f"# Pack 审核表：{identity['mechanic_profile_id']} / {identity['content_pack_id']}",
         '',
@@ -808,6 +820,11 @@ def build_pack_review_markdown(pack_review: dict[str, Any]) -> str:
         f"- sequence_balance_pass: `{health['sequence_balance_pass']}`",
         f"- unused_card_count: `{health['unused_card_count']}`",
         f"- orphan_card_count: `{health['orphan_card_count']}`",
+        '',
+        '## Balance Release',
+        f"- balance_release: `{bool(balance.get('balance_release', False))}`",
+        f"- source_pack_id: `{balance.get('source_pack_id', '-') or '-'}`",
+        f"- playable_balance_gate_pass: `{bool(balance.get('playable_balance_gate_pass', False))}`",
         '',
         '## 全序列节奏',
     ]
@@ -831,6 +848,7 @@ def build_review_report_markdown(pack_review: dict[str, Any]) -> str:
     health = pack_review['health_summary']
     risk = pack_review['risk_summary']
     telemetry = pack_review.get('telemetry_snapshot_status', {})
+    balance = pack_review.get('balance_release_summary', {})
     deck_rows = pack_review.get('deck_review_table', [])
     reward_rows = pack_review.get('reward_review_table', [])
     card_rows = pack_review.get('card_pool_review_table', [])
@@ -846,6 +864,11 @@ def build_review_report_markdown(pack_review: dict[str, Any]) -> str:
         '## 2. 机制摘要',
         f"- runtime_manifest_path: `{identity['runtime_manifest_path']}`",
         f"- runtime primitives: {', '.join(pack_review['visual_filter_options'].get('runtime_primitives', [])) or '-'}",
+        '',
+        '## 2.5 Balance Release',
+        f"- balance_release: `{bool(balance.get('balance_release', False))}`",
+        f"- source_pack_id: `{balance.get('source_pack_id', '-') or '-'}`",
+        f"- playable_balance_gate_pass: `{bool(balance.get('playable_balance_gate_pass', False))}`",
         '',
         '## 3. 健康状态',
         f"- health_status: `{health['health_status']}`",
@@ -936,12 +959,12 @@ def build_compare_matrix_markdown(compare_matrix: dict[str, Any]) -> str:
         f"- healthiest_pack: `{compare_matrix['healthiest_pack']}`",
         f"- weakest_pack_by_avg_power: `{compare_matrix['weakest_pack_by_avg_power']}`",
         '',
-        '| Active | Profile | Pack | Health | Score | Avg Power | Eval | Win | Avg Turn | Trigger | Actionability | Rebuild | Runtime Primitives |',
-        '| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |',
+        '| Active | Profile | Pack | Health | Score | Avg Power | Eval | Win | Avg Turn | Trigger | Actionability | Rebuild | Balance Release | Win Delta | Runtime Primitives |',
+        '| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | ---: | --- |',
     ]
     for row in compare_matrix.get('packs', []):
         lines.append(
-            f"| {'YES' if row['is_active'] else ''} | `{row['mechanic_profile_id']}` | `{row['content_pack_id']}` | `{row['health_status']}` | {row['health_score']} | {row['average_deck_power']} | {row.get('evaluation_event_count', 0)} | {row.get('win_rate', 0)} | {row.get('avg_turn_count', 0)} | {row.get('mechanic_trigger_rate', 0)} | {row.get('actionability_score', 0)} | {'YES' if row.get('needs_rebuild') else ''} | `{','.join(row['runtime_primitives']) or '-'}` |"
+            f"| {'YES' if row['is_active'] else ''} | `{row['mechanic_profile_id']}` | `{row['content_pack_id']}` | `{row['health_status']}` | {row['health_score']} | {row['average_deck_power']} | {row.get('evaluation_event_count', 0)} | {row.get('win_rate', 0)} | {row.get('avg_turn_count', 0)} | {row.get('mechanic_trigger_rate', 0)} | {row.get('actionability_score', 0)} | {'YES' if row.get('needs_rebuild') else ''} | {'YES' if row.get('is_balance_release') else ''} | {row.get('win_rate_delta_from_source', 0)} | `{','.join(row['runtime_primitives']) or '-'}` |"
         )
     return '\n'.join(lines) + '\n'
 

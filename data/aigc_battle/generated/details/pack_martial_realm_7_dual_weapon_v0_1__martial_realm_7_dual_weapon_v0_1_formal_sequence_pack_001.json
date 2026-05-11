@@ -11889,5 +11889,6 @@
   "latest_evaluation_snapshot_path": "data/aigc_battle/evaluation/snapshots/martial_realm_7_dual_weapon_v0_1__martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001__evaluation_snapshot.json",
   "latest_rebuild_recommendation_path": "data/aigc_battle/evaluation/rebuild_recommendations/martial_realm_7_dual_weapon_v0_1__martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001__rebuild_recommendations.json",
   "original_content_pack_id": null,
-  "snapshot_content_pack_id": null
+  "snapshot_content_pack_id": null,
+  "balance_release_summary": {}
 }

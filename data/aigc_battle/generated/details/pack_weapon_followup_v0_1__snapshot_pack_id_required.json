@@ -5816,5 +5816,6 @@
   "latest_evaluation_snapshot_path": "",
   "latest_rebuild_recommendation_path": "",
   "original_content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
-  "snapshot_content_pack_id": "snapshot_pack_id_required"
+  "snapshot_content_pack_id": "snapshot_pack_id_required",
+  "balance_release_summary": {}
 }

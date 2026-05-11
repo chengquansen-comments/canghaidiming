@@ -65,6 +65,11 @@ def main(argv: list[str]) -> int:
     bfe.add_argument('--pack', required=True)
     bfe.add_argument('--new-pack-id', required=True)
 
+    bbr = sub.add_parser('build-balance-release')
+    bbr.add_argument('--profile', required=True)
+    bbr.add_argument('--source-pack', required=True)
+    bbr.add_argument('--new-pack-id', required=True)
+
     exp_prompt = sub.add_parser('export-llm-prompt')
     exp_prompt.add_argument('--profile', required=True)
     exp_prompt.add_argument('--pack', required=True)
@@ -106,6 +111,8 @@ def main(argv: list[str]) -> int:
         result = run_action('build_from_real_telemetry', args.profile, args.pack_id, lambda log: build_from_real_telemetry(args.profile, args.pack_id, args.force, log))
     elif args.command == 'build-from-evaluation-snapshot':
         result = run_action('build_from_evaluation_snapshot', args.profile, args.new_pack_id, lambda log: build_from_evaluation_snapshot(args.profile, args.pack, args.new_pack_id, log))
+    elif args.command == 'build-balance-release':
+        result = run_action('build_balance_release', args.profile, args.new_pack_id, lambda log: build_balance_release(args.profile, args.source_pack, args.new_pack_id, log))
     elif args.command == 'export-llm-prompt':
         result = run_action('export_llm_prompt', args.profile, args.pack, lambda log: export_llm_prompt(args.profile, args.pack, log))
     elif args.command == 'import-llm-candidates':
@@ -237,6 +244,32 @@ def build_from_evaluation_snapshot(profile_id: str, content_pack_id: str, new_pa
         'new_pack_id': new_pack_id,
         'generated_dir': to_relative(generated_dir),
         'rebuild_uses_real_evaluation': True,
+    }
+
+
+def build_balance_release(profile_id: str, source_pack_id: str, new_pack_id: str, log: dict[str, Any]) -> dict[str, Any]:
+    ensure_pack_write_allowed(profile_id, new_pack_id, force=False)
+    run_step(
+        log,
+        [
+            sys.executable,
+            str(TOOLS_DIR / 'aigc_build_balance_release.py'),
+            '--profile',
+            profile_id,
+            '--source-pack',
+            source_pack_id,
+            '--new-pack-id',
+            new_pack_id,
+        ],
+    )
+    refresh_review(log)
+    generated_dir = switch_lib.resolve_generated_dir(profile_id, new_pack_id)
+    return {
+        'profile_id': profile_id,
+        'source_pack_id': source_pack_id,
+        'new_pack_id': new_pack_id,
+        'generated_dir': to_relative(generated_dir),
+        'balance_release': True,
     }
 
 

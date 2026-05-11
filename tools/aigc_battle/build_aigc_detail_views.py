@@ -22,6 +22,7 @@ PROFILE_DIFF_PATH = GENERATED_ROOT / 'profile_diff_report.json'
 EVALUATION_REPORTS_DIR = GENERATED_ROOT / 'evaluation' / 'reports'
 EVALUATION_SNAPSHOT_DIR = ROOT / 'data' / 'aigc_battle' / 'evaluation' / 'snapshots'
 REBUILD_RECOMMEND_DIR = ROOT / 'data' / 'aigc_battle' / 'evaluation' / 'rebuild_recommendations'
+BALANCE_RELEASE_DIR = GENERATED_ROOT / 'balance_release'
 
 
 def main() -> int:
@@ -125,6 +126,8 @@ def build_pack_detail(profile_id: str, pack_entry: dict[str, Any]) -> None:
     evaluation_report = try_read_json(EVALUATION_REPORTS_DIR / f'{profile_id}__{content_pack_id}__evaluation_report.json') or {}
     evaluation_snapshot = try_read_json(EVALUATION_SNAPSHOT_DIR / f'{profile_id}__{content_pack_id}__evaluation_snapshot.json') or {}
     rebuild_recommendations = try_read_json(REBUILD_RECOMMEND_DIR / f'{profile_id}__{content_pack_id}__rebuild_recommendations.json') or {}
+    balance_build_report = try_read_json(BALANCE_RELEASE_DIR / 'balance_release_build_report.json') or {}
+    balance_eval_report = try_read_json(BALANCE_RELEASE_DIR / 'balance_release_evaluation_report.json') or {}
     release_channels = release_lib.show_channels()
     current_release = release_channels.get('current_release', {})
     candidate_release = release_channels.get('candidate_release', {})
@@ -293,6 +296,54 @@ def build_pack_detail(profile_id: str, pack_entry: dict[str, Any]) -> None:
         if not (generated_dir / name).exists():
             missing_reports.append(name)
 
+    balance_release_summary: dict[str, Any] = {}
+    if content_pack_summary.get('balance_release') or (
+        balance_build_report.get('new_pack_id') == content_pack_id
+        or balance_eval_report.get('balanced_pack_id') == content_pack_id
+    ):
+        source_win_rate = float(balance_eval_report.get('source_win_rate', 0) or 0)
+        balanced_win_rate = float(balance_eval_report.get('balanced_win_rate', 0) or 0)
+        source_too_hard = int(balance_eval_report.get('source_too_hard_candidates', 0) or 0)
+        balanced_too_hard = int(balance_eval_report.get('balanced_too_hard_candidates', 0) or 0)
+        source_avg_turn = float(balance_eval_report.get('source_avg_turn_count', 0) or 0)
+        balanced_avg_turn = float(balance_eval_report.get('balanced_avg_turn_count', 0) or 0)
+        source_player_hp = float(balance_eval_report.get('source_avg_player_hp_end', 0) or 0)
+        balanced_player_hp = float(balance_eval_report.get('balanced_avg_player_hp_end', 0) or 0)
+        balance_release_summary = {
+            'balance_release': True,
+            'source_pack_id': content_pack_summary.get('source_pack_id') or balance_build_report.get('source_pack_id', ''),
+            'current_release_is_balanced': (
+                profile_id == str(current_release.get('mechanic_profile_id', ''))
+                and content_pack_id == str(current_release.get('content_pack_id', ''))
+            ),
+            'balance_evaluation_summary': {
+                'playable_balance_gate_pass': bool(balance_eval_report.get('playable_balance_gate_pass', False)),
+                'absolute_win_rate_still_low': bool(balance_eval_report.get('absolute_win_rate_still_low', False)),
+                'source_win_rate': source_win_rate,
+                'balanced_win_rate': balanced_win_rate,
+                'source_too_hard_candidates': source_too_hard,
+                'balanced_too_hard_candidates': balanced_too_hard,
+                'source_too_long_candidates': int(balance_eval_report.get('source_too_long_candidates', 0) or 0),
+                'balanced_too_long_candidates': int(balance_eval_report.get('balanced_too_long_candidates', 0) or 0),
+                'source_reward_mismatch_candidates': int(balance_eval_report.get('source_reward_mismatch_candidates', 0) or 0),
+                'balanced_reward_mismatch_candidates': int(balance_eval_report.get('balanced_reward_mismatch_candidates', 0) or 0),
+                'weapon_followup_trigger_rate': float(balance_eval_report.get('weapon_followup_trigger_rate', 0) or 0),
+            },
+            'source_vs_balanced_delta': {
+                'win_rate_delta_from_source': round(balanced_win_rate - source_win_rate, 4),
+                'too_hard_delta_from_source': balanced_too_hard - source_too_hard,
+                'avg_turn_delta_from_source': round(balanced_avg_turn - source_avg_turn, 4),
+                'player_hp_delta_from_source': round(balanced_player_hp - source_player_hp, 4),
+            },
+            'playable_balance_gate_pass': bool(balance_eval_report.get('playable_balance_gate_pass', False)),
+            'absolute_win_rate_still_low': bool(balance_eval_report.get('absolute_win_rate_still_low', False)),
+            'applied_recommendation_count': int(content_pack_summary.get('applied_recommendation_count', balance_build_report.get('applied_recommendation_count', 0) or 0)),
+            'skipped_recommendation_count': int(content_pack_summary.get('skipped_recommendation_count', balance_build_report.get('skipped_recommendation_count', 0) or 0)),
+            'deck_power_delta_summary': content_pack_summary.get('deck_power_delta_summary', balance_build_report.get('deck_power_delta_summary', {})),
+            'reward_tier_delta_summary': content_pack_summary.get('reward_tier_delta_summary', balance_build_report.get('reward_tier_delta_summary', {})),
+            'followup_density_delta_summary': content_pack_summary.get('followup_density_delta_summary', balance_build_report.get('followup_density_delta_summary', {})),
+        }
+
     detail = {
         'mechanic_profile_id': profile_id,
         'content_pack_id': content_pack_id,
@@ -367,6 +418,7 @@ def build_pack_detail(profile_id: str, pack_entry: dict[str, Any]) -> None:
         'latest_rebuild_recommendation_path': to_relative(REBUILD_RECOMMEND_DIR / f'{profile_id}__{content_pack_id}__rebuild_recommendations.json') if rebuild_recommendations else '',
         'original_content_pack_id': snapshot_summary.get('source_content_pack_id') or content_pack_summary.get('original_content_pack_id'),
         'snapshot_content_pack_id': snapshot_summary.get('snapshot_content_pack_id') or content_pack_summary.get('snapshot_content_pack_id'),
+        'balance_release_summary': balance_release_summary,
     }
     json_path = detail_pack_json_path(profile_id, content_pack_id)
     md_path = detail_pack_md_path(profile_id, content_pack_id)
@@ -423,6 +475,14 @@ def build_pack_markdown(detail: dict[str, Any]) -> str:
         f"- win_rate: {detail.get('evaluation_summary', {}).get('pack_metrics', {}).get('win_rate', 0)}",
         f"- avg_turn_count: {detail.get('evaluation_summary', {}).get('pack_metrics', {}).get('avg_turn_count', 0)}",
         f"- rebuild_recommendation_count: {detail.get('evaluation_summary', {}).get('rebuild_recommendation_count', detail.get('rebuild_recommendation_summary', {}).get('recommendation_count', 0))}",
+    '',
+        '## Balance Release',
+        f"- balance_release: {str(detail.get('balance_release_summary', {}).get('balance_release', False)).lower()}",
+        f"- source_pack_id: {detail.get('balance_release_summary', {}).get('source_pack_id', '-') or '-'}",
+        f"- playable_balance_gate_pass: {str(detail.get('balance_release_summary', {}).get('playable_balance_gate_pass', False)).lower()}",
+        f"- current_release_is_balanced: {str(detail.get('balance_release_summary', {}).get('current_release_is_balanced', False)).lower()}",
+        f"- win_rate_delta_from_source: {detail.get('balance_release_summary', {}).get('source_vs_balanced_delta', {}).get('win_rate_delta_from_source', 0)}",
+        f"- too_hard_delta_from_source: {detail.get('balance_release_summary', {}).get('source_vs_balanced_delta', {}).get('too_hard_delta_from_source', 0)}",
         '',
         '## 整体卡池',
         f"- used_card_count: {detail.get('card_pool_summary', {}).get('used_card_count', 0)}",

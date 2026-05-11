@@ -15,6 +15,11 @@
 - unused_card_count: `5`
 - orphan_card_count: `0`
 
+## Balance Release
+- balance_release: `False`
+- source_pack_id: `-`
+- playable_balance_gate_pass: `False`
+
 ## 全序列节奏
 - #1 `enc_beach_ambush` | tier=early | kind=normal | power=25.2 | reward=basic | risk=realm_invalid,realm_cap_close
 - #2 `enc_fishing_village_embers` | tier=early | kind=normal | power=22.8 | reward=basic | risk=realm_cap_close

@@ -1,19 +1,26 @@
 # AIGC Battle Review Workspace
 
 - active_profile_id: `weapon_followup_v0_1`
-- active_content_pack_id: `weapon_followup_v0_1_formal_sequence_pack_001`
+- active_content_pack_id: `weapon_followup_balance_release_007`
 - profile_count: `7`
-- content_pack_count: `19`
-- active_pack_review_path: `data/aigc_battle/generated/review/pack_review_weapon_followup_v0_1__weapon_followup_v0_1_formal_sequence_pack_001.json`
+- content_pack_count: `26`
+- active_pack_review_path: `data/aigc_battle/generated/review/pack_review_weapon_followup_v0_1__weapon_followup_balance_release_007.json`
 
 ## 全局风险摘要
-- risk_count: `818`
+- risk_count: `1212`
 - fail_count: `6`
-- warning_count: `557`
+- warning_count: `846`
 
 ## 推荐审核顺序
 - `clue_pressure_v0_1` / `clue_pressure_v0_1_formal_sequence_pack_001` | status=`warning` | score=`0` | risk=`81`
 - `martial_realm_7_dual_weapon_v0_1` / `martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001` | status=`warning` | score=`0` | risk=`69`
+- `weapon_followup_v0_1` / `weapon_followup_balance_release_004` | status=`warning` | score=`0` | risk=`65`
+- `weapon_followup_v0_1` / `weapon_followup_balance_release_005` | status=`warning` | score=`0` | risk=`65`
+- `weapon_followup_v0_1` / `weapon_followup_balance_release_006` | status=`warning` | score=`0` | risk=`65`
+- `weapon_followup_v0_1` / `weapon_followup_balance_release_007` | status=`warning` | score=`0` | risk=`65`
+- `weapon_followup_v0_1` / `weapon_followup_balance_release_003` | status=`warning` | score=`29` | risk=`48`
+- `weapon_followup_v0_1` / `weapon_followup_balance_release_001` | status=`warning` | score=`39` | risk=`43`
+- `weapon_followup_v0_1` / `weapon_followup_balance_release_002` | status=`warning` | score=`39` | risk=`43`
 - `weapon_followup_v0_1` / `weapon_followup_eval_rebuild_002` | status=`warning` | score=`39` | risk=`43`
 - `weapon_followup_v0_1` / `weapon_followup_eval_rebuild_003` | status=`warning` | score=`39` | risk=`43`
 - `weapon_followup_v0_1` / `weapon_followup_eval_rebuild_001` | status=`warning` | score=`41` | risk=`42`

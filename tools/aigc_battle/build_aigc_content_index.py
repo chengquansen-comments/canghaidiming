@@ -35,6 +35,7 @@ PACK_REPORT_NAMES = [
 EVALUATION_REPORTS_DIR = GENERATED_ROOT / 'evaluation' / 'reports'
 EVALUATION_SNAPSHOT_DIR = ROOT / 'data' / 'aigc_battle' / 'evaluation' / 'snapshots'
 REBUILD_RECOMMEND_DIR = ROOT / 'data' / 'aigc_battle' / 'evaluation' / 'rebuild_recommendations'
+BALANCE_RELEASE_DIR = GENERATED_ROOT / 'balance_release'
 
 
 def main() -> int:
@@ -107,6 +108,7 @@ def build_pack_entry(profile_id: str, pack_id: str | None, active_profile_id: st
     validation_report = try_read_json(generated_dir / 'validation_report.json') or {}
     runtime_manifest = try_read_json(generated_dir / 'runtime_manifest.json') or {}
     balance_summary = try_read_json(generated_dir / 'sequence_balance_summary.json') or {}
+    content_pack_summary = try_read_json(generated_dir / 'content_pack_summary.json') or {}
     telemetry_probe = try_read_json(generated_dir / 'telemetry_probe_report.json') or {}
     snapshot = try_read_json(generated_dir / 'sequence_balance_snapshot.json') or {}
     primitive_probe = try_read_json(generated_dir / 'runtime_primitive_probe_report.json') or {}
@@ -115,6 +117,9 @@ def build_pack_entry(profile_id: str, pack_id: str | None, active_profile_id: st
     evaluation_report = try_read_json(EVALUATION_REPORTS_DIR / f'{profile_id}__{content_pack_id}__evaluation_report.json') or {}
     evaluation_snapshot = try_read_json(EVALUATION_SNAPSHOT_DIR / f'{profile_id}__{content_pack_id}__evaluation_snapshot.json') or {}
     rebuild_recommendations = try_read_json(REBUILD_RECOMMEND_DIR / f'{profile_id}__{content_pack_id}__rebuild_recommendations.json') or {}
+    balance_build_report = try_read_json(BALANCE_RELEASE_DIR / 'balance_release_build_report.json') or {}
+    balance_eval_report = try_read_json(BALANCE_RELEASE_DIR / 'balance_release_evaluation_report.json') or {}
+    balance_report_matches = str(balance_build_report.get('new_pack_id', '')) == content_pack_id or str(balance_eval_report.get('balanced_pack_id', '')) == content_pack_id
     release_channels = release_lib.show_channels()
     current_release = release_channels.get('current_release', {})
     candidate_release = release_channels.get('candidate_release', {})
@@ -190,6 +195,10 @@ def build_pack_entry(profile_id: str, pack_id: str | None, active_profile_id: st
         'mechanic_trigger_rate': float(evaluation_snapshot.get('mechanic_metrics', {}).get('runtime_primitive_trigger_rate', evaluation_report.get('pack_metrics', {}).get('runtime_primitive_trigger_rate', 0)) or 0),
         'actionability_score': int(evaluation_snapshot.get('actionability_score', 0) or 0),
         'needs_rebuild': bool(int(evaluation_snapshot.get('rebuild_recommendation_count', rebuild_recommendations.get('recommendation_count', 0) or 0)) > 0),
+        'balance_release': bool(content_pack_summary.get('balance_release', False)),
+        'source_pack_id': str(content_pack_summary.get('source_pack_id', '')),
+        'playable_balance_gate_pass': bool(balance_eval_report.get('playable_balance_gate_pass', False)) if balance_report_matches else False,
+        'current_release_is_balanced': bool(content_pack_summary.get('balance_release', False) and profile_id == str(current_release.get('mechanic_profile_id', '')) and content_pack_id == str(current_release.get('content_pack_id', ''))),
     }
 
 

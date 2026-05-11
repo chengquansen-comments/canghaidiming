@@ -1,7 +1,7 @@
 # Pack 审核表：weapon_followup_v0_1 / weapon_followup_v0_1_formal_sequence_pack_001
 
 ## 包基本信息
-- active: 是
+- active: 否
 - pack_storage_mode: `profile_root`
 - runtime_manifest_path: `data/aigc_battle/generated/weapon_followup_v0_1/runtime_manifest.json`
 - target_sequence_id: `formal_sequence_mvp_v1`
@@ -14,6 +14,11 @@
 - sequence_balance_pass: `True`
 - unused_card_count: `5`
 - orphan_card_count: `0`
+
+## Balance Release
+- balance_release: `False`
+- source_pack_id: `-`
+- playable_balance_gate_pass: `False`
 
 ## 全序列节奏
 - #1 `enc_beach_ambush` | tier=early | kind=normal | power=22.8 | reward=basic | risk=realm_cap_close

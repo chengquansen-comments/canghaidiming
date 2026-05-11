@@ -9459,6 +9459,7 @@
     "latest_rebuild_recommendation_path": "",
     "needs_rebuild": false
   },
+  "balance_release_summary": {},
   "review_report_path": "data/aigc_battle/generated/review/review_report_posture_opening_pressure_v0_1__posture_opening_pressure_p1_probe_snapshot_002.md",
   "review_notes_summary": {
     "mechanic_profile_id": "posture_opening_pressure_v0_1",

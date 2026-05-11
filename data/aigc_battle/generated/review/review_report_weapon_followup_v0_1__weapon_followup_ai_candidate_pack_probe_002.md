@@ -10,6 +10,11 @@
 - runtime_manifest_path: `data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_ai_candidate_pack_probe_002/runtime_manifest.json`
 - runtime primitives: weapon_followup
 
+## 2.5 Balance Release
+- balance_release: `False`
+- source_pack_id: `-`
+- playable_balance_gate_pass: `False`
+
 ## 3. 健康状态
 - health_status: `fail`
 - health_score: `39`

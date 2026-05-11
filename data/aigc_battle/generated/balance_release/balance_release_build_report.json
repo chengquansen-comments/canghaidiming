@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-05-11T10:25:55.617393+00:00",
+  "source_profile_id": "weapon_followup_v0_1",
+  "source_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+  "new_pack_id": "weapon_followup_balance_release_007",
+  "resolved_recommendations_path": "data/aigc_battle/generated/balance_release/resolved_rebuild_recommendations.json",
+  "applied_recommendation_count": 31,
+  "skipped_recommendation_count": 1,
+  "applied_action_type_counts": {
+    "replace_dead_card": 1,
+    "reduce_overused_card": 7,
+    "reduce_deck_power": 15,
+    "adjust_reward_tier": 8
+  },
+  "deck_power_delta_summary": {
+    "count": 15,
+    "avg_delta": -27.03,
+    "min_delta": -42.6,
+    "max_delta": -10.8
+  },
+  "reward_tier_delta_summary": {
+    "shifted_reward_count": 8,
+    "upgraded_only": true
+  },
+  "followup_density_delta_summary": {
+    "count": 15,
+    "avg_delta": 0.0,
+    "min_delta": 0.0,
+    "max_delta": 0.0
+  },
+  "dead_card_replacement_count": 1,
+  "overused_card_reduction_count": 7,
+  "balance_release_pack_generated": true,
+  "balanced_pack_validated": true,
+  "balanced_pack_exported": true,
+  "balanced_pack_review_ready": true,
+  "generated_dir": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_007"
+}

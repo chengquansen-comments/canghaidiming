@@ -14,7 +14,7 @@
 		"bonus_momentum"
 	],
 	"last_weapon_followup_bonus_applied": {
-		"bonus_momentum": 2
+		"bonus_momentum": 1
 	},
 	"last_weapon_followup_enabled": true,
 	"last_weapon_followup_triggered": true,
@@ -22,5 +22,5 @@
 	"probe_pass": true,
 	"profile_declares_weapon_followup": true,
 	"runtime_turn_count": 2,
-	"weapon_followup_trigger_count": 2
+	"weapon_followup_trigger_count": 1
 }

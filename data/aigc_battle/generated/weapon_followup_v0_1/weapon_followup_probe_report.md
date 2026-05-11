@@ -8,6 +8,6 @@
 - manifest_exports_followup: true
 - godot_loader_reads_followup: true
 - battle_shows_followup_effect: true
-- weapon_followup_trigger_count: 2
+- weapon_followup_trigger_count: 1
 - fallback_loadout_count: 0
 - probe_pass: true

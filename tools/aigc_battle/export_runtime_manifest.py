@@ -16,10 +16,16 @@ GENERATED_DIR = ROOT / "data" / "aigc_battle" / "generated"
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("profile_id")
+    parser.add_argument("--pack", dest="pack_id", default="")
     parser.add_argument("--generated-dir", dest="generated_dir", default="")
     args = parser.parse_args(argv[1:])
     profile_id = args.profile_id
-    generated_dir = Path(args.generated_dir) if args.generated_dir else GENERATED_DIR / profile_id
+    if args.generated_dir:
+        generated_dir = Path(args.generated_dir)
+    elif args.pack_id:
+        generated_dir = GENERATED_DIR / profile_id / "packs" / args.pack_id
+    else:
+        generated_dir = GENERATED_DIR / profile_id
     mechanic_profile = read_json(MECHANICS_DIR / profile_id / "mechanic_profile.json")
     content_recipe = read_json(MECHANICS_DIR / profile_id / "content_recipe.json")
     validation_report = read_json(generated_dir / "validation_report.json")

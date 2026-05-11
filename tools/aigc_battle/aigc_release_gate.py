@@ -21,6 +21,7 @@ RELEASE_CHANNELS_DIR = ROOT / 'data' / 'aigc_battle' / 'release_channels'
 REVIEW_NOTES_DIR = ROOT / 'data' / 'aigc_battle' / 'review_notes'
 DETAILS_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'details'
 RELEASE_SMOKE_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'release_smoke'
+BALANCE_RELEASE_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'balance_release'
 RUNTIME_DIR = ROOT / 'data' / 'aigc_battle' / 'runtime'
 
 DEFAULT_CURRENT_PROFILE_ID = 'weapon_followup_v0_1'
@@ -101,6 +102,8 @@ def set_release_status(profile_id: str, content_pack_id: str, status: str) -> di
     allowed = {'draft', 'reviewing', 'accepted', 'rejected', 'release_candidate', 'active', 'archived'}
     if status not in allowed:
         raise SystemExit('invalid release status')
+    if status == 'accepted':
+        ensure_balance_release_gate(profile_id, content_pack_id)
     manifest = get_release_status(profile_id, content_pack_id)
     manifest['release_status'] = status
     manifest['updated_at'] = now_iso()
@@ -123,6 +126,7 @@ def freeze_pack(profile_id: str, content_pack_id: str) -> dict[str, Any]:
     for optional in ['deck_card_realm_eligibility_valid', 'no_card_above_player_wujing_in_deck']:
         if optional in validation:
             checks.append((optional, bool(validation.get(optional, False))))
+    ensure_balance_release_gate(profile_id, content_pack_id)
     failed = [name for name, passed in checks if not passed]
     if failed:
         raise SystemExit(f'freeze blocked: {", ".join(failed)}')
@@ -141,6 +145,7 @@ def freeze_pack(profile_id: str, content_pack_id: str) -> dict[str, Any]:
 
 
 def mark_release_candidate(profile_id: str, content_pack_id: str) -> dict[str, Any]:
+    ensure_balance_release_gate(profile_id, content_pack_id)
     manifest = get_release_status(profile_id, content_pack_id)
     if not manifest.get('frozen', False):
         raise SystemExit('mark release candidate blocked: pack is not frozen')
@@ -260,6 +265,8 @@ def build_release_manifest(profile_id: str, content_pack_id: str) -> dict[str, A
     switch_summary = switch_lib.validate_profile_ready(profile_id, content_pack_id)
     is_active = active_profile_matches(profile_id, content_pack_id)
     suggestions = build_git_suggestions(profile_id, content_pack_id)
+    pack_summary = detail.get('content_pack_summary', {}) if isinstance(detail.get('content_pack_summary', {}), dict) else {}
+    balance_report = load_balance_release_evaluation_report(profile_id, content_pack_id)
     return {
         'mechanic_profile_id': profile_id,
         'content_pack_id': content_pack_id,
@@ -293,6 +300,14 @@ def build_release_manifest(profile_id: str, content_pack_id: str) -> dict[str, A
         'dual_weapon_enabled': 'dual_weapon' in detail.get('runtime_primitive_summary', {}).get('runtime_primitives', []) or bool(detail.get('runtime_primitive_summary', {}).get('dual_weapon_declared', False)),
         'clue_pressure_enabled': 'clue_pressure' in detail.get('runtime_primitive_summary', {}).get('runtime_primitives', []) or bool(detail.get('runtime_primitive_summary', {}).get('clue_pressure_declared', False)),
         'playable_mechanic_candidate': bool(detail.get('validation_summary', {}).get('ready_for_runtime_export', False)),
+        'balance_release': bool(pack_summary.get('balance_release', False)),
+        'source_pack_id': str(pack_summary.get('source_pack_id', '')),
+        'balance_evaluation_report_path': balance_report.get('report_path', ''),
+        'playable_balance_gate_pass': bool(balance_report.get('playable_balance_gate_pass', False)),
+        'source_win_rate': float(balance_report.get('source_win_rate', 0) or 0),
+        'balanced_win_rate': float(balance_report.get('balanced_win_rate', 0) or 0),
+        'too_hard_candidates_reduced': bool(balance_report.get('too_hard_candidates_reduced', False)),
+        'activated_as_current_release': is_active and bool(pack_summary.get('balance_release', False)),
     }
 
 
@@ -339,6 +354,8 @@ def build_git_suggestions(profile_id: str, content_pack_id: str) -> dict[str, An
 
 
 def set_release_channel(channel: str, profile_id: str, content_pack_id: str) -> dict[str, Any]:
+    if channel == 'current':
+        ensure_balance_release_gate(profile_id, content_pack_id)
     validated = validate_release_pack(profile_id, content_pack_id, allow_archived=(channel == 'fallback'))
     previous = read_release_channel(channel)
     payload = build_release_channel_payload(channel, validated)
@@ -562,8 +579,30 @@ def update_release_manifest_after_switch(
     next_manifest['release_status'] = 'active'
     next_manifest['activated_at'] = now_iso()
     next_manifest['rollback_available'] = True
+    if next_manifest.get('balance_release'):
+        next_manifest['activated_as_current_release'] = True
     next_manifest['updated_at'] = now_iso()
     write_json(release_manifest_path(next_profile_id, next_content_pack_id), next_manifest)
+
+
+def ensure_balance_release_gate(profile_id: str, content_pack_id: str) -> None:
+    manifest = get_release_status(profile_id, content_pack_id)
+    if not manifest.get('balance_release', False):
+        return
+    if not manifest.get('playable_balance_gate_pass', False):
+        raise SystemExit('balance release blocked: playable_balance_gate_pass is false')
+
+
+def load_balance_release_evaluation_report(profile_id: str, content_pack_id: str) -> dict[str, Any]:
+    path = BALANCE_RELEASE_DIR / 'balance_release_evaluation_report.json'
+    if not path.exists():
+        return {'report_path': '', 'playable_balance_gate_pass': False}
+    payload = read_json(path)
+    if str(payload.get('balanced_pack_id', '')) != content_pack_id:
+        return {'report_path': '', 'playable_balance_gate_pass': False}
+    if str(payload.get('source_profile_id', profile_id)) != profile_id:
+        return {'report_path': '', 'playable_balance_gate_pass': False}
+    return {'report_path': to_relative(path), **payload}
 
 
 def read_active_profile() -> dict[str, Any]:

@@ -1,0 +1,176 @@
+{
+  "snapshot_path": "data/aigc_battle/generated/weapon_followup_v0_1/real_telemetry_snapshot.json",
+  "mechanic_profile_id": "weapon_followup_v0_1",
+  "content_pack_id": "weapon_followup_balance_release_003",
+  "telemetry_event_count": 5,
+  "encounters_with_real_telemetry_count": 5,
+  "missing_real_telemetry_encounters": [
+    "enc_wuke_spear_trial",
+    "enc_wuke_blade_trial",
+    "enc_wuke_final_duel",
+    "enc_wuke_gu_chengyue",
+    "enc_wuke_shen_zhaoye",
+    "enc_wuke_qi_heng",
+    "enc_ch2_reed_ambush",
+    "enc_ch3_escort_clash",
+    "enc_ch4_tide_bandits",
+    "enc_boss_ext_wakou_leader"
+  ],
+  "avg_turn_count": 2.0,
+  "avg_damage_taken": 1.0,
+  "avg_damage_dealt": 3.0,
+  "avg_player_hp_end": 23.0,
+  "avg_enemy_hp_end": 26.2,
+  "weapon_followup_trigger_total": 10,
+  "weapon_followup_trigger_by_encounter": {
+    "enc_beach_ambush": 2,
+    "enc_fishing_village_embers": 2,
+    "enc_transport_officer": 2,
+    "enc_mutiny_camp": 2,
+    "enc_wakou_boss": 2
+  },
+  "too_easy_candidates": [],
+  "too_hard_candidates": [
+    {
+      "formal_encounter_id": "enc_beach_ambush",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_001",
+      "reason": "low_hp_or_loss"
+    },
+    {
+      "formal_encounter_id": "enc_fishing_village_embers",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_002",
+      "reason": "low_hp_or_loss"
+    },
+    {
+      "formal_encounter_id": "enc_transport_officer",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_003",
+      "reason": "low_hp_or_loss"
+    },
+    {
+      "formal_encounter_id": "enc_mutiny_camp",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_004",
+      "reason": "low_hp_or_loss"
+    },
+    {
+      "formal_encounter_id": "enc_wakou_boss",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_005",
+      "reason": "low_hp_or_loss"
+    }
+  ],
+  "long_battle_candidates": [],
+  "burst_damage_candidates": [],
+  "reward_mismatch_candidates": [],
+  "overused_card_candidates": [],
+  "underused_card_candidates": [
+    {
+      "card_id": "weapon_followup_v0_1_spearman_early_guard",
+      "usage_count": 0
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_early_pressure",
+      "usage_count": 0
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_early_finisher",
+      "usage_count": 0
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_mid_strike",
+      "usage_count": 0
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_mid_guard",
+      "usage_count": 0
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_mid_pressure",
+      "usage_count": 0
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_mid_focus",
+      "usage_count": 0
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_mid_finisher",
+      "usage_count": 0
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_late_strike",
+      "usage_count": 0
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_late_guard",
+      "usage_count": 0
+    }
+  ],
+  "followup_underused_candidates": [],
+  "rebuild_recommendations": [
+    {
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_001",
+      "recommendation": "too_hard",
+      "adjustment": {
+        "target_power_shift": -2,
+        "followup_density_shift": -0.05
+      }
+    },
+    {
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_002",
+      "recommendation": "too_hard",
+      "adjustment": {
+        "target_power_shift": -2,
+        "followup_density_shift": -0.05
+      }
+    },
+    {
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_003",
+      "recommendation": "too_hard",
+      "adjustment": {
+        "target_power_shift": -2,
+        "followup_density_shift": -0.05
+      }
+    },
+    {
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_004",
+      "recommendation": "too_hard",
+      "adjustment": {
+        "target_power_shift": -2,
+        "followup_density_shift": -0.05
+      }
+    },
+    {
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_005",
+      "recommendation": "too_hard",
+      "adjustment": {
+        "target_power_shift": -2,
+        "followup_density_shift": -0.05
+      }
+    }
+  ],
+  "adjusted_or_flagged_encounters": [
+    {
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_001",
+      "recommendation": "too_hard"
+    },
+    {
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_002",
+      "recommendation": "too_hard"
+    },
+    {
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_003",
+      "recommendation": "too_hard"
+    },
+    {
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_004",
+      "recommendation": "too_hard"
+    },
+    {
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_005",
+      "recommendation": "too_hard"
+    }
+  ],
+  "snapshot_ready": true,
+  "real_metrics_ready": true,
+  "sequence_balance_summary_path": "data/aigc_battle/generated/weapon_followup_v0_1/sequence_balance_summary.json",
+  "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/runtime_manifest.json",
+  "telemetry_detail_level": "partial"
+}

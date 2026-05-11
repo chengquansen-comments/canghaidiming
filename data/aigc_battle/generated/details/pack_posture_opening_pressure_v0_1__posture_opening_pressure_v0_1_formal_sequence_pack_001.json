@@ -9252,5 +9252,6 @@
   "latest_evaluation_snapshot_path": "data/aigc_battle/evaluation/snapshots/posture_opening_pressure_v0_1__posture_opening_pressure_v0_1_formal_sequence_pack_001__evaluation_snapshot.json",
   "latest_rebuild_recommendation_path": "data/aigc_battle/evaluation/rebuild_recommendations/posture_opening_pressure_v0_1__posture_opening_pressure_v0_1_formal_sequence_pack_001__rebuild_recommendations.json",
   "original_content_pack_id": null,
-  "snapshot_content_pack_id": null
+  "snapshot_content_pack_id": null,
+  "balance_release_summary": {}
 }

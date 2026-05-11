@@ -1,7 +1,7 @@
 # 内容包明细：weapon_followup_v0_1 / weapon_followup_v0_1_formal_sequence_pack_001
 
 - pack_storage_mode: profile_root
-- is_active_pack: true
+- is_active_pack: false
 - formal_encounter_total_count: 15
 - card_count: 40
 - deck_count: 15
@@ -16,6 +16,14 @@
 - win_rate: 0.0667
 - avg_turn_count: 8.9667
 - rebuild_recommendation_count: 51
+
+## Balance Release
+- balance_release: false
+- source_pack_id: -
+- playable_balance_gate_pass: false
+- current_release_is_balanced: false
+- win_rate_delta_from_source: 0
+- too_hard_delta_from_source: 0
 
 ## 整体卡池
 - used_card_count: 35

@@ -3,13 +3,13 @@
   "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
   "pack_storage_mode": "profile_root",
   "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/runtime_manifest.json",
-  "is_active_pack": true,
+  "is_active_pack": false,
   "release_channel_membership": {
-    "is_current_release": true,
+    "is_current_release": false,
     "is_candidate_release": false,
     "is_fallback_release": false,
-    "current_release_smoke_test_status": "pass",
-    "current_release_last_smoke_report_path": "data/aigc_battle/generated/release_smoke/playable_release_smoke_report.json"
+    "current_release_smoke_test_status": "",
+    "current_release_last_smoke_report_path": ""
   },
   "target_sequence_id": "formal_sequence_mvp_v1",
   "replacement_mode": "full_sequence",
@@ -8996,5 +8996,6 @@
   "latest_evaluation_snapshot_path": "data/aigc_battle/evaluation/snapshots/weapon_followup_v0_1__weapon_followup_v0_1_formal_sequence_pack_001__evaluation_snapshot.json",
   "latest_rebuild_recommendation_path": "data/aigc_battle/evaluation/rebuild_recommendations/weapon_followup_v0_1__weapon_followup_v0_1_formal_sequence_pack_001__rebuild_recommendations.json",
   "original_content_pack_id": null,
-  "snapshot_content_pack_id": null
+  "snapshot_content_pack_id": null,
+  "balance_release_summary": {}
 }

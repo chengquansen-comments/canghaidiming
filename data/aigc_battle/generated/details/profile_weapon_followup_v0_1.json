@@ -2,8 +2,8 @@
   "mechanic_profile_id": "weapon_followup_v0_1",
   "display_name": "武器追击机制",
   "version": "0.1.0",
-  "content_pack_count": 9,
-  "active_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+  "content_pack_count": 16,
+  "active_pack_id": "weapon_followup_balance_release_007",
   "resources": [
     "hp",
     "posture",
@@ -167,15 +167,15 @@
   "replacement_mode": "full_sequence",
   "content_recipe_id": "weapon_followup_formal_sequence_recipe",
   "validation_gate_summary": {
-    "ready_packs": 9,
-    "total_packs": 9,
-    "active_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001"
+    "ready_packs": 16,
+    "total_packs": 16,
+    "active_pack_id": "weapon_followup_balance_release_007"
   },
   "profile_pack_list": [
     {
       "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
       "pack_storage_mode": "profile_root",
-      "is_active_pack": true,
+      "is_active_pack": false,
       "ready_for_runtime_export": true,
       "sequence_balance_pass": true,
       "runtime_primitives": [
@@ -216,6 +216,76 @@
       "content_pack_id": "weapon_followup_ai_candidate_pack_probe_002",
       "pack_storage_mode": "profile_pack_dir",
       "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_balance_release_001",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_balance_release_002",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_balance_release_003",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_balance_release_004",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_balance_release_005",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_balance_release_006",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_balance_release_007",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": true,
       "ready_for_runtime_export": true,
       "sequence_balance_pass": true,
       "runtime_primitives": [

@@ -198,3 +198,14 @@ v2 目标是 `full sequence reward / progression closure`：
 - dashboard / review workspace / compare matrix 需要显示 evaluation summary、actionability score、needs_rebuild 与 rebuild recommendation 信息。
 - evaluation 不等于 release gate，但必须为 release / rebuild 决策提供依据。
 - eval / snapshot / recommendation / rebuild / probe / regression 都必须串行执行，禁止并行。
+
+## R4
+- R4 是 Playable Balance Release。
+- R4 使用 R3 的 evaluation snapshot 与 rebuild recommendations 修正当前 `weapon_followup` release 偏难问题，不新增机制，也不接在线 LLM。
+- `resolve_rebuild_recommendation_conflicts.py` 负责移除同一 encounter 的升强 / 降强冲突建议；当 pack 全局偏难时，不允许再保留 `increase_deck_power`。
+- `aigc_build_balance_release.py` 基于 resolved recommendations 生成新的 balanced pack，只应用安全可自动落地的调优，不允许手工硬改 runtime manifest。
+- balanced pack 必须重新跑 evaluation；只有 `playable_balance_gate_pass=true` 才允许 `accepted -> freeze -> release candidate -> set-current -> activate-current`。
+- fallback release 继续保持 `posture_opening_pressure_v0_1`，只用于 rollback，不允许掩盖 balanced pack 失败。
+- previous current release 必须可 rollback；如果 balanced current smoke 失败，必须回滚到 previous current 或 fallback。
+- dashboard / review workspace / compare matrix 需要显示 `balance_release`、`source_pack_id`、`source_vs_balanced_delta`、`playable_balance_gate_pass` 与 balance release API。
+- R4 的 build / validate / export / evaluate / release / smoke / rollback / probe 全部必须串行执行，禁止并行。

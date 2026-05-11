@@ -1,0 +1,17 @@
+- weapon_followup_runtime_supported: true
+- generated_sequence_uses_weapon_followup: true
+- followup_cards_generated: true
+- followup_decks_generated: true
+- followup_chain_valid: true
+- battle_shows_followup_effect: true
+- real_telemetry_recorded: true
+- turn_count_recorded: true
+- hp_delta_recorded: true
+- card_usage_recorded: true
+- weapon_followup_triggered_recorded: true
+- balance_snapshot_has_real_metrics: true
+- build_from_real_telemetry_ready: true
+- full_sequence_playable: true
+- old_profiles_regression_pass: true
+- active_profile_not_corrupted: true
+- probe_pass: true

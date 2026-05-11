@@ -2,7 +2,7 @@
   "pack_identity": {
     "mechanic_profile_id": "weapon_followup_v0_1",
     "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
-    "is_active_pack": true,
+    "is_active_pack": false,
     "pack_storage_mode": "profile_root",
     "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/runtime_manifest.json",
     "target_sequence_id": "formal_sequence_mvp_v1",
@@ -9724,6 +9724,7 @@
     "latest_rebuild_recommendation_path": "data/aigc_battle/evaluation/rebuild_recommendations/weapon_followup_v0_1__weapon_followup_v0_1_formal_sequence_pack_001__rebuild_recommendations.json",
     "needs_rebuild": true
   },
+  "balance_release_summary": {},
   "review_report_path": "data/aigc_battle/generated/review/review_report_weapon_followup_v0_1__weapon_followup_v0_1_formal_sequence_pack_001.md",
   "review_notes_summary": {
     "mechanic_profile_id": "weapon_followup_v0_1",
@@ -9751,12 +9752,12 @@
   "candidate_diff_summary": {},
   "candidate_rejection_summary": {},
   "ai_pack_ready_for_review": false,
-  "release_status": "active",
+  "release_status": "accepted",
   "frozen": true,
   "release_candidate": false,
-  "active_release": true,
+  "active_release": false,
   "archived": false,
-  "rollback_available": true,
+  "rollback_available": false,
   "suggested_git_commands": {
     "suggested_git_commit_command": "git commit -am \"release: weapon_followup_v0_1__weapon_followup_v0_1_formal_sequence_pack_001\"",
     "suggested_git_tag_command": "git tag aigc-release/weapon_followup_v0_1__weapon_followup_v0_1_formal_sequence_pack_001"
