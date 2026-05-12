@@ -4,6 +4,9 @@
 - is_active_pack: false
 - sequence_template_id: bossrush_9_v1
 - template_usage_recommendation: boss_rush
+- matrix_slot: False
+- matrix_build_variant: -
+- matrix_strategy_tag: -
 - build_variant: portfolio_001
 - formal_encounter_total_count: 9
 - card_count: 40

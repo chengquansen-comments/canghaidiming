@@ -2,7 +2,7 @@
   "mechanic_profile_id": "clue_pressure_v0_1",
   "display_name": "线索破防机制",
   "version": "0.1.0",
-  "content_pack_count": 1,
+  "content_pack_count": 4,
   "active_pack_id": "",
   "resources": [
     "hp",
@@ -246,14 +246,44 @@
   "replacement_mode": "full_sequence",
   "content_recipe_id": "clue_pressure_v0_1_formal_sequence_recipe",
   "validation_gate_summary": {
-    "ready_packs": 1,
-    "total_packs": 1,
+    "ready_packs": 4,
+    "total_packs": 4,
     "active_pack_id": ""
   },
   "profile_pack_list": [
     {
       "content_pack_id": "clue_pressure_v0_1_formal_sequence_pack_001",
       "pack_storage_mode": "profile_root",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "clue_pressure"
+      ]
+    },
+    {
+      "content_pack_id": "clue_pressure_v0_1__bossrush_9_v1__matrix_001",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "clue_pressure"
+      ]
+    },
+    {
+      "content_pack_id": "clue_pressure_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "clue_pressure"
+      ]
+    },
+    {
+      "content_pack_id": "clue_pressure_v0_1__formal_sequence_15_v1__matrix_001",
+      "pack_storage_mode": "profile_pack_dir",
       "is_active_pack": false,
       "ready_for_runtime_export": true,
       "sequence_balance_pass": true,

@@ -424,6 +424,9 @@ def build_pack_review(index_payload: dict[str, Any], profile_id: str, pack_entry
             'template_display_name': str(detail.get('template_display_name', detail.get('sequence_template_id', ''))),
             'template_usage_recommendation': str(detail.get('template_usage_recommendation', '')),
             'build_variant': str(detail.get('build_variant', '')),
+            'matrix_slot': bool(detail.get('matrix_slot', False)),
+            'matrix_build_variant': str(detail.get('matrix_build_variant', '')),
+            'matrix_strategy_tag': str(detail.get('matrix_strategy_tag', '')),
             'pack_identity': detail.get('pack_identity', {}),
             'stage_counts': detail.get('stage_counts', {}),
             'template_mechanic_pack_binding_valid': bool(detail.get('template_mechanic_pack_binding_valid', False)),
@@ -472,6 +475,9 @@ def build_pack_review(index_payload: dict[str, Any], profile_id: str, pack_entry
         },
         'template_release_strategy': detail.get('template_release_strategy', {}),
         'template_portfolio_metrics': detail.get('template_portfolio_metrics', {}),
+        'matrix_evaluation_summary': detail.get('matrix_evaluation_summary', {}),
+        'needs_balance_before_release': bool(detail.get('needs_balance_before_release', False)),
+        'ready_for_candidate_review': bool(detail.get('ready_for_candidate_review', False)),
         'balance_release_summary': balance_release_summary,
         'review_report_path': to_relative(review_report_md_path(profile_id, content_pack_id)),
         'review_notes_summary': review_notes,
@@ -679,6 +685,9 @@ def build_compare_row(pack_review: dict[str, Any]) -> dict[str, Any]:
         'template_display_name': str(pack_review['pack_identity'].get('template_display_name', pack_review['pack_identity'].get('sequence_template_id', ''))),
         'template_usage_recommendation': str(pack_review['pack_identity'].get('template_usage_recommendation', '')),
         'build_variant': str(pack_review['pack_identity'].get('build_variant', '')),
+        'matrix_slot': bool(pack_review['pack_identity'].get('matrix_slot', False)),
+        'matrix_build_variant': str(pack_review['pack_identity'].get('matrix_build_variant', '')),
+        'matrix_strategy_tag': str(pack_review['pack_identity'].get('matrix_strategy_tag', '')),
         'stage_counts': pack_review['pack_identity'].get('stage_counts', {}),
         'template_mechanic_pack_binding_valid': bool(pack_review['pack_identity'].get('template_mechanic_pack_binding_valid', False)),
         'is_active': bool(pack_review['pack_identity']['is_active_pack']),
@@ -728,6 +737,8 @@ def build_compare_row(pack_review: dict[str, Any]) -> dict[str, Any]:
         'player_hp_delta_from_source': float(balance_delta.get('player_hp_delta_from_source', 0) or 0),
         'playable_balance_gate_pass': bool(balance_summary.get('playable_balance_gate_pass', False)),
         'template_release_strategy': pack_review.get('template_release_strategy', {}),
+        'needs_balance_before_release': bool(pack_review.get('needs_balance_before_release', False)),
+        'ready_for_candidate_review': bool(pack_review.get('ready_for_candidate_review', False)),
     }
 
 

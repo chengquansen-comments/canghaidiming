@@ -1,0 +1,24 @@
+# R7 Mechanic Template Matrix Probe
+
+- mechanic_template_matrix_ready: `True`
+- matrix_mechanic_count: `3`
+- matrix_template_count: `3`
+- matrix_slot_count: `9`
+- matrix_pack_count: `9`
+- each_matrix_slot_built_or_referenced: `True`
+- each_matrix_slot_validated: `True`
+- each_matrix_slot_exported: `True`
+- each_matrix_slot_evaluated: `True`
+- matrix_evaluation_ready: `True`
+- matrix_release_strategy_ready: `True`
+- recommended_standard_candidate: `{'mechanic_profile_id': 'weapon_followup_v0_1', 'sequence_template_id': 'formal_sequence_15_v1', 'content_pack_id': 'weapon_followup_balance_release_007'}`
+- recommended_fast_candidate: `{'mechanic_profile_id': 'weapon_followup_v0_1', 'sequence_template_id': 'formal_sequence_12_fast_v1', 'content_pack_id': 'weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001'}`
+- recommended_bossrush_candidate: `{'mechanic_profile_id': 'weapon_followup_v0_1', 'sequence_template_id': 'bossrush_9_v1', 'content_pack_id': 'weapon_followup_v0_1__bossrush_9_v1__matrix_001'}`
+- recommended_mechanic_showcase_candidate: `{'mechanic_profile_id': 'weapon_followup_v0_1', 'sequence_template_id': 'formal_sequence_15_v1', 'content_pack_id': 'weapon_followup_balance_release_007'}`
+- slots_needing_balance_count: `8`
+- slots_ready_for_candidate_review_count: `1`
+- pack_resolver_updated: `True`
+- dashboard_matrix_ready: `True`
+- current_release_unchanged: `True`
+- active_profile_matches_current_release: `True`
+- probe_pass: `True`

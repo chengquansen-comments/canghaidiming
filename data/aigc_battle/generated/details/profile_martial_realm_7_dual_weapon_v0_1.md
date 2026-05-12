@@ -16,3 +16,6 @@
 
 ## content packs
 - martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001 | mode=profile_root | active=false | export=true
+- martial_realm_7_dual_weapon_v0_1__bossrush_9_v1__matrix_001 | mode=profile_pack_dir | active=false | export=true
+- martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001 | mode=profile_pack_dir | active=false | export=true
+- martial_realm_7_dual_weapon_v0_1__formal_sequence_15_v1__matrix_001 | mode=profile_pack_dir | active=false | export=true

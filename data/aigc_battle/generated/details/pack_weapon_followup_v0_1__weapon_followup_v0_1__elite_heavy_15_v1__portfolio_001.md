@@ -4,6 +4,9 @@
 - is_active_pack: false
 - sequence_template_id: elite_heavy_15_v1
 - template_usage_recommendation: elite_pressure
+- matrix_slot: False
+- matrix_build_variant: -
+- matrix_strategy_tag: -
 - build_variant: portfolio_001
 - formal_encounter_total_count: 15
 - card_count: 40

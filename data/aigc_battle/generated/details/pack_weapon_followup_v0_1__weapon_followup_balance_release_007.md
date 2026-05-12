@@ -4,6 +4,9 @@
 - is_active_pack: true
 - sequence_template_id: formal_sequence_15_v1
 - template_usage_recommendation: standard_run
+- matrix_slot: True
+- matrix_build_variant: matrix_reference_001
+- matrix_strategy_tag: standard_candidate
 - build_variant: balance_release_007
 - formal_encounter_total_count: 15
 - card_count: 40
@@ -16,7 +19,7 @@
 - sequence_balance_pass: true
 - template_mechanic_pack_binding_valid: true
 - deck_card_realm_eligibility_valid: true
-- evaluation_event_count: 105
+- evaluation_event_count: 165
 - win_rate: 0.8667
 - avg_turn_count: 3.5333
 - rebuild_recommendation_count: 27

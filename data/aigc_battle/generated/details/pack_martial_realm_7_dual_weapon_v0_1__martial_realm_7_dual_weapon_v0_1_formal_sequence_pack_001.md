@@ -4,6 +4,9 @@
 - is_active_pack: false
 - sequence_template_id: formal_sequence_15_v1
 - template_usage_recommendation: standard_run
+- matrix_slot: False
+- matrix_build_variant: -
+- matrix_strategy_tag: -
 - build_variant: baseline_001
 - formal_encounter_total_count: 15
 - card_count: 70

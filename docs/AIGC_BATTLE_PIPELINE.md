@@ -229,3 +229,12 @@ v2 目标是 `full sequence reward / progression closure`：
 - R6 输出 `template_portfolio_summary`、`template_portfolio_evaluation_report`、`template_release_strategy`。
 - current release 保持 `weapon_followup_v0_1 / weapon_followup_balance_release_007`，不自动切换。
 - 新模板包只进入 `review` 或 `candidate` 观察状态，不自动 activate。
+
+## R7：Mechanic × Template Matrix
+
+- R7 将单机制多模板推进为多机制 × 多模板矩阵。
+- 交叉机制：`weapon_followup_v0_1`、`clue_pressure_v0_1`、`martial_realm_7_dual_weapon_v0_1`。
+- 交叉模板：`formal_sequence_15_v1`、`formal_sequence_12_fast_v1`、`bossrush_9_v1`。
+- 输出 `matrix_build_report`、`matrix_evaluation_report`、`matrix_release_strategy`。
+- current release 保持 `weapon_followup_v0_1 / weapon_followup_balance_release_007 / formal_sequence_15_v1` 不变。
+- matrix pack 只进入 `matrix_review` / `review` 观察层，不自动 set-current，不自动 activate。

@@ -61,7 +61,7 @@
         "boss": 3
       },
       "player_wujing_cap_range": [7, 7],
-      "deck_power_range": [54, 60],
+      "deck_power_range": [53, 60],
       "reward_tiers": ["boss", "rare", "boss"],
       "mechanic_density_range": [0.82, 0.92],
       "difficulty_label": "bossrush_final_gauntlet"

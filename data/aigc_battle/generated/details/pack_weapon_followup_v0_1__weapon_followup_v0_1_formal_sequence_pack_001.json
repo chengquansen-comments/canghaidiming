@@ -32,6 +32,9 @@
     ],
     "template_release_strategy_ready": true
   },
+  "matrix_slot": false,
+  "matrix_build_variant": "",
+  "matrix_strategy_tag": "",
   "pack_storage_mode": "profile_root",
   "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/runtime_manifest.json",
   "is_active_pack": false,
@@ -2364,6 +2367,9 @@
     }
   },
   "template_portfolio_metrics": {},
+  "matrix_evaluation_summary": {},
+  "needs_balance_before_release": false,
+  "ready_for_candidate_review": false,
   "rebuild_recommendation_summary": {
     "generated_at": "2026-05-11T09:52:04.397498+00:00",
     "mechanic_profile_id": "weapon_followup_v0_1",

@@ -25,6 +25,7 @@ EVALUATION_SNAPSHOT_DIR = ROOT / 'data' / 'aigc_battle' / 'evaluation' / 'snapsh
 REBUILD_RECOMMEND_DIR = ROOT / 'data' / 'aigc_battle' / 'evaluation' / 'rebuild_recommendations'
 BALANCE_RELEASE_DIR = GENERATED_ROOT / 'balance_release'
 TEMPLATE_PORTFOLIO_DIR = GENERATED_ROOT / 'template_portfolio'
+MATRIX_DIR = GENERATED_ROOT / 'mechanic_template_matrix'
 
 
 def main() -> int:
@@ -132,6 +133,9 @@ def build_pack_detail(profile_id: str, pack_entry: dict[str, Any]) -> None:
     balance_eval_report = try_read_json(BALANCE_RELEASE_DIR / 'balance_release_evaluation_report.json') or {}
     template_strategy = try_read_json(TEMPLATE_PORTFOLIO_DIR / 'template_release_strategy.json') or {}
     template_eval = try_read_json(TEMPLATE_PORTFOLIO_DIR / 'template_portfolio_evaluation_report.json') or {}
+    matrix_build_report = try_read_json(MATRIX_DIR / 'matrix_build_report.json') or {}
+    matrix_eval_report = try_read_json(MATRIX_DIR / 'matrix_evaluation_report.json') or {}
+    matrix_strategy = try_read_json(MATRIX_DIR / 'matrix_release_strategy.json') or {}
     release_channels = release_lib.show_channels()
     current_release = release_channels.get('current_release', {})
     candidate_release = release_channels.get('candidate_release', {})
@@ -366,6 +370,9 @@ def build_pack_detail(profile_id: str, pack_entry: dict[str, Any]) -> None:
         'template_display_name': str(content_pack_summary.get('sequence_template_id', runtime_manifest.get('sequence_template_id', validation_report.get('sequence_template_id', '')))),
         'template_usage_recommendation': infer_template_usage_recommendation(str(content_pack_summary.get('sequence_template_id', runtime_manifest.get('sequence_template_id', validation_report.get('sequence_template_id', '')))), template_strategy),
         'template_release_strategy': template_strategy if template_strategy else {},
+        'matrix_slot': any(str(item.get('content_pack_id', '')) == content_pack_id and str(item.get('mechanic_profile_id', '')) == profile_id for item in matrix_build_report.get('matrix_slots', [])),
+        'matrix_build_variant': next((str(item.get('build_variant', '')) for item in matrix_build_report.get('matrix_slots', []) if str(item.get('content_pack_id', '')) == content_pack_id and str(item.get('mechanic_profile_id', '')) == profile_id), ''),
+        'matrix_strategy_tag': infer_matrix_strategy_tag(content_pack_id, matrix_strategy),
         'pack_storage_mode': pack_entry.get('pack_storage_mode', ''),
         'runtime_manifest_path': pack_entry.get('runtime_manifest_path', ''),
         'is_active_pack': pack_entry.get('is_active_pack', False),
@@ -406,6 +413,9 @@ def build_pack_detail(profile_id: str, pack_entry: dict[str, Any]) -> None:
         'runtime_primitive_summary': primitive_probe or runtime_manifest.get('runtime_primitive_summary', {}),
         'evaluation_summary': evaluation_snapshot or evaluation_report,
         'template_portfolio_metrics': next((item for item in template_eval.get('template_metrics', []) if str(item.get('content_pack_id', '')) == content_pack_id), {}),
+        'matrix_evaluation_summary': next((item for item in matrix_eval_report.get('slots', []) if str(item.get('content_pack_id', '')) == content_pack_id and str(item.get('mechanic_profile_id', '')) == profile_id), {}),
+        'needs_balance_before_release': bool(next((item.get('needs_balance_before_release', False) for item in matrix_eval_report.get('slots', []) if str(item.get('content_pack_id', '')) == content_pack_id and str(item.get('mechanic_profile_id', '')) == profile_id), False)),
+        'ready_for_candidate_review': bool(next((item.get('ready_for_candidate_review', False) for item in matrix_eval_report.get('slots', []) if str(item.get('content_pack_id', '')) == content_pack_id and str(item.get('mechanic_profile_id', '')) == profile_id), False)),
         'rebuild_recommendation_summary': rebuild_recommendations,
         'ai_source_trace': {
             'llm_candidate_source': bool(content_pack_summary.get('llm_candidate_source', False)),
@@ -491,6 +501,9 @@ def build_pack_markdown(detail: dict[str, Any]) -> str:
         f"- is_active_pack: {str(detail.get('is_active_pack', False)).lower()}",
         f"- sequence_template_id: {detail.get('sequence_template_id', '') or '-'}",
         f"- template_usage_recommendation: {detail.get('template_usage_recommendation', '') or '-'}",
+        f"- matrix_slot: {detail.get('matrix_slot', False)}",
+        f"- matrix_build_variant: {detail.get('matrix_build_variant', '') or '-'}",
+        f"- matrix_strategy_tag: {detail.get('matrix_strategy_tag', '') or '-'}",
         f"- build_variant: {detail.get('build_variant', '') or '-'}",
         f"- formal_encounter_total_count: {detail.get('formal_encounter_total_count', 0)}",
         f"- card_count: {detail.get('card_count', 0)}",
@@ -552,6 +565,20 @@ def infer_template_usage_recommendation(sequence_template_id: str, strategy: dic
     }
     for key, label in mapping.items():
         if str(strategy.get(key, '')).strip() == sequence_template_id:
+            return label
+    return ''
+
+
+def infer_matrix_strategy_tag(content_pack_id: str, strategy: dict[str, Any]) -> str:
+    mapping = {
+        'recommended_standard_candidate': 'standard_candidate',
+        'recommended_fast_candidate': 'fast_candidate',
+        'recommended_bossrush_candidate': 'bossrush_candidate',
+        'recommended_mechanic_showcase_candidate': 'mechanic_showcase',
+    }
+    for key, label in mapping.items():
+        value = strategy.get(key, {})
+        if isinstance(value, dict) and str(value.get('content_pack_id', '')) == content_pack_id:
             return label
     return ''
 

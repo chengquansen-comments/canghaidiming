@@ -3,22 +3,28 @@
 - active_profile_id: `weapon_followup_v0_1`
 - active_content_pack_id: `weapon_followup_balance_release_007`
 - profile_count: `7`
-- content_pack_count: `30`
+- content_pack_count: `38`
 - active_pack_review_path: `data/aigc_battle/generated/review/pack_review_weapon_followup_v0_1__weapon_followup_balance_release_007.json`
 
 ## 全局风险摘要
-- risk_count: `1335`
+- risk_count: `1736`
 - fail_count: `6`
-- warning_count: `921`
+- warning_count: `1229`
 
 ## 推荐审核顺序
 - `clue_pressure_v0_1` / `clue_pressure_v0_1_formal_sequence_pack_001` | status=`warning` | score=`0` | risk=`81`
+- `clue_pressure_v0_1` / `clue_pressure_v0_1__formal_sequence_15_v1__matrix_001` | status=`warning` | score=`0` | risk=`73`
+- `clue_pressure_v0_1` / `clue_pressure_v0_1__formal_sequence_12_fast_v1__matrix_001` | status=`warning` | score=`0` | risk=`69`
 - `martial_realm_7_dual_weapon_v0_1` / `martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001` | status=`warning` | score=`0` | risk=`69`
 - `weapon_followup_v0_1` / `weapon_followup_balance_release_004` | status=`warning` | score=`0` | risk=`65`
 - `weapon_followup_v0_1` / `weapon_followup_balance_release_005` | status=`warning` | score=`0` | risk=`65`
 - `weapon_followup_v0_1` / `weapon_followup_balance_release_006` | status=`warning` | score=`0` | risk=`65`
 - `weapon_followup_v0_1` / `weapon_followup_balance_release_007` | status=`warning` | score=`0` | risk=`65`
+- `clue_pressure_v0_1` / `clue_pressure_v0_1__bossrush_9_v1__matrix_001` | status=`warning` | score=`0` | risk=`64`
+- `martial_realm_7_dual_weapon_v0_1` / `martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001` | status=`warning` | score=`13` | risk=`53`
+- `martial_realm_7_dual_weapon_v0_1` / `martial_realm_7_dual_weapon_v0_1__formal_sequence_15_v1__matrix_001` | status=`warning` | score=`25` | risk=`50`
 - `weapon_followup_v0_1` / `weapon_followup_balance_release_003` | status=`warning` | score=`29` | risk=`48`
+- `martial_realm_7_dual_weapon_v0_1` / `martial_realm_7_dual_weapon_v0_1__bossrush_9_v1__matrix_001` | status=`warning` | score=`23` | risk=`45`
 - `weapon_followup_v0_1` / `weapon_followup_balance_release_001` | status=`warning` | score=`39` | risk=`43`
 - `weapon_followup_v0_1` / `weapon_followup_balance_release_002` | status=`warning` | score=`39` | risk=`43`
 - `weapon_followup_v0_1` / `weapon_followup_eval_rebuild_002` | status=`warning` | score=`39` | risk=`43`
@@ -38,7 +44,9 @@
 - `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__portfolio_001` | status=`warning` | score=`61` | risk=`29`
 - `posture_llm_candidate_v0_1` / `posture_llm_candidate_v0_1_formal_sequence_pack_001` | status=`warning` | score=`43` | risk=`27`
 - `posture_basic_v0_1` / `posture_basic_v0_1_formal_sequence_pack_001` | status=`warning` | score=`43` | risk=`26`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001` | status=`warning` | score=`67` | risk=`26`
 - `weapon_followup_v0_1` / `weapon_followup_v0_1__bossrush_9_v1__portfolio_001` | status=`warning` | score=`65` | risk=`24`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__bossrush_9_v1__matrix_001` | status=`warning` | score=`71` | risk=`21`
 - `weapon_followup_v0_1` / `weapon_followup_ai_candidate_pack_001` | status=`fail` | score=`39` | risk=`46`
 - `weapon_followup_v0_1` / `weapon_followup_ai_candidate_pack_probe_001` | status=`fail` | score=`39` | risk=`46`
 - `weapon_followup_v0_1` / `weapon_followup_ai_candidate_pack_probe_002` | status=`fail` | score=`39` | risk=`46`

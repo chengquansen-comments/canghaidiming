@@ -4,6 +4,9 @@
 - is_active_pack: false
 - sequence_template_id: -
 - template_usage_recommendation: fast_run
+- matrix_slot: False
+- matrix_build_variant: -
+- matrix_strategy_tag: -
 - build_variant: balance_release_006
 - formal_encounter_total_count: 15
 - card_count: 40

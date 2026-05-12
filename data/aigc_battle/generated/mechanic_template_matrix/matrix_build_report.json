@@ -1,0 +1,232 @@
+{
+  "generated_at": "2026-05-12T01:23:38.510038+00:00",
+  "matrix_mechanic_count": 3,
+  "matrix_template_count": 3,
+  "matrix_slot_count": 9,
+  "built_slot_count": 8,
+  "referenced_slot_count": 1,
+  "validated_slot_count": 8,
+  "exported_slot_count": 8,
+  "failed_slot_count": 0,
+  "matrix_pack_ids": [
+    "weapon_followup_balance_release_007",
+    "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "weapon_followup_v0_1__bossrush_9_v1__matrix_001",
+    "clue_pressure_v0_1__formal_sequence_15_v1__matrix_001",
+    "clue_pressure_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "clue_pressure_v0_1__bossrush_9_v1__matrix_001",
+    "martial_realm_7_dual_weapon_v0_1__formal_sequence_15_v1__matrix_001",
+    "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "martial_realm_7_dual_weapon_v0_1__bossrush_9_v1__matrix_001"
+  ],
+  "failed_slots": [],
+  "current_release_unchanged": true,
+  "matrix_build_ready": true,
+  "matrix_slots": [
+    {
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "formal_sequence_15_v1",
+      "build_variant": "matrix_reference_001",
+      "content_pack_id": "weapon_followup_balance_release_007",
+      "channel": "matrix_review",
+      "source": "current_release_reference",
+      "source_pack_id": "weapon_followup_balance_release_007",
+      "referenced": true,
+      "validated": true,
+      "exported": true,
+      "failed": false,
+      "total_encounter_count": 15,
+      "stage_counts": {},
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "build_variant": "matrix_001",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "channel": "matrix_review",
+      "source": "matrix_build",
+      "source_pack_id": "",
+      "referenced": false,
+      "validated": true,
+      "exported": true,
+      "failed": false,
+      "total_encounter_count": 12,
+      "stage_counts": {
+        "early": 3,
+        "mid": 3,
+        "late": 3,
+        "boss": 3
+      },
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "build_variant": "matrix_001",
+      "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__matrix_001",
+      "channel": "matrix_review",
+      "source": "matrix_build",
+      "source_pack_id": "",
+      "referenced": false,
+      "validated": true,
+      "exported": true,
+      "failed": false,
+      "total_encounter_count": 9,
+      "stage_counts": {
+        "early": 2,
+        "mid": 2,
+        "late": 2,
+        "boss": 3
+      },
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "mechanic_profile_id": "clue_pressure_v0_1",
+      "sequence_template_id": "formal_sequence_15_v1",
+      "build_variant": "matrix_001",
+      "content_pack_id": "clue_pressure_v0_1__formal_sequence_15_v1__matrix_001",
+      "channel": "matrix_review",
+      "source": "matrix_build",
+      "source_pack_id": "",
+      "referenced": false,
+      "validated": true,
+      "exported": true,
+      "failed": false,
+      "total_encounter_count": 15,
+      "stage_counts": {
+        "early": 4,
+        "mid": 4,
+        "late": 4,
+        "boss": 3
+      },
+      "runtime_primitives": [
+        "clue_pressure"
+      ]
+    },
+    {
+      "mechanic_profile_id": "clue_pressure_v0_1",
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "build_variant": "matrix_001",
+      "content_pack_id": "clue_pressure_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "channel": "matrix_review",
+      "source": "matrix_build",
+      "source_pack_id": "",
+      "referenced": false,
+      "validated": true,
+      "exported": true,
+      "failed": false,
+      "total_encounter_count": 12,
+      "stage_counts": {
+        "early": 3,
+        "mid": 3,
+        "late": 3,
+        "boss": 3
+      },
+      "runtime_primitives": [
+        "clue_pressure"
+      ]
+    },
+    {
+      "mechanic_profile_id": "clue_pressure_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "build_variant": "matrix_001",
+      "content_pack_id": "clue_pressure_v0_1__bossrush_9_v1__matrix_001",
+      "channel": "matrix_review",
+      "source": "matrix_build",
+      "source_pack_id": "",
+      "referenced": false,
+      "validated": true,
+      "exported": true,
+      "failed": false,
+      "total_encounter_count": 9,
+      "stage_counts": {
+        "early": 2,
+        "mid": 2,
+        "late": 2,
+        "boss": 3
+      },
+      "runtime_primitives": [
+        "clue_pressure"
+      ]
+    },
+    {
+      "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+      "sequence_template_id": "formal_sequence_15_v1",
+      "build_variant": "matrix_001",
+      "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_15_v1__matrix_001",
+      "channel": "matrix_review",
+      "source": "matrix_build",
+      "source_pack_id": "",
+      "referenced": false,
+      "validated": true,
+      "exported": true,
+      "failed": false,
+      "total_encounter_count": 15,
+      "stage_counts": {
+        "early": 4,
+        "mid": 4,
+        "late": 4,
+        "boss": 3
+      },
+      "runtime_primitives": [
+        "martial_realm_7",
+        "dual_weapon"
+      ]
+    },
+    {
+      "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "build_variant": "matrix_001",
+      "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "channel": "matrix_review",
+      "source": "matrix_build",
+      "source_pack_id": "",
+      "referenced": false,
+      "validated": true,
+      "exported": true,
+      "failed": false,
+      "total_encounter_count": 12,
+      "stage_counts": {
+        "early": 3,
+        "mid": 3,
+        "late": 3,
+        "boss": 3
+      },
+      "runtime_primitives": [
+        "martial_realm_7",
+        "dual_weapon"
+      ]
+    },
+    {
+      "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "build_variant": "matrix_001",
+      "content_pack_id": "martial_realm_7_dual_weapon_v0_1__bossrush_9_v1__matrix_001",
+      "channel": "matrix_review",
+      "source": "matrix_build",
+      "source_pack_id": "",
+      "referenced": false,
+      "validated": true,
+      "exported": true,
+      "failed": false,
+      "total_encounter_count": 9,
+      "stage_counts": {
+        "early": 2,
+        "mid": 2,
+        "late": 2,
+        "boss": 3
+      },
+      "runtime_primitives": [
+        "martial_realm_7",
+        "dual_weapon"
+      ]
+    }
+  ]
+}

@@ -32,6 +32,9 @@
     ],
     "template_release_strategy_ready": true
   },
+  "matrix_slot": true,
+  "matrix_build_variant": "matrix_reference_001",
+  "matrix_strategy_tag": "standard_candidate",
   "pack_storage_mode": "profile_pack_dir",
   "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_007/runtime_manifest.json",
   "is_active_pack": true,
@@ -323,14 +326,14 @@
     "runtime_primitive_playable": true
   },
   "evaluation_summary": {
-    "generated_at": "2026-05-12T01:03:48.048979+00:00",
+    "generated_at": "2026-05-12T01:23:38.687782+00:00",
     "snapshot_path": "data/aigc_battle/evaluation/snapshots/weapon_followup_v0_1__weapon_followup_balance_release_007__evaluation_snapshot.json",
     "mechanic_profile_id": "weapon_followup_v0_1",
     "content_pack_id": "weapon_followup_balance_release_007",
-    "evaluation_event_count": 105,
+    "evaluation_event_count": 165,
     "sequence_template_id": "formal_sequence_15_v1",
     "telemetry_detail_level_summary": {
-      "real": 105
+      "real": 165
     },
     "formal_encounter_coverage": {
       "expected": 15,
@@ -339,29 +342,29 @@
     },
     "encounter_metrics": {
       "enc_beach_ambush": {
-        "sample_count": 7,
-        "win_rate": 0.4286,
-        "avg_turn_count": 5.2857,
-        "avg_player_hp_end": 7.2857,
-        "avg_enemy_hp_end": 5.4286,
-        "avg_damage_taken": 24.7143,
-        "avg_damage_dealt": 14.5714,
-        "avg_cards_played": 5.2857,
-        "avg_enemy_cards_played": 4.8571,
-        "avg_hp_delta": -24.7143,
+        "sample_count": 11,
+        "win_rate": 0.4545,
+        "avg_turn_count": 5.1818,
+        "avg_player_hp_end": 7.7273,
+        "avg_enemy_hp_end": 4.5455,
+        "avg_damage_taken": 24.2727,
+        "avg_damage_dealt": 15.4545,
+        "avg_cards_played": 5.1818,
+        "avg_enemy_cards_played": 4.7273,
+        "avg_hp_delta": -24.2727,
         "runtime_primitive_trigger_rate": 1.0,
         "weapon_followup_trigger_rate": 1.0,
         "clue_pressure_trigger_rate": 0.0,
         "dual_weapon_usage_rate": 0.0,
-        "reward_claim_rate": 0.4286,
+        "reward_claim_rate": 0.4545,
         "telemetry_detail_level_summary": {
-          "real": 7
+          "real": 11
         },
         "mechanism_underused_count": 0,
         "too_easy_count": 0,
-        "too_hard_count": 4,
-        "too_long_count": 4,
-        "burst_damage_count": 7,
+        "too_hard_count": 6,
+        "too_long_count": 6,
+        "burst_damage_count": 11,
         "reward_mismatch_count": 0,
         "card_dead_count": 0,
         "runtime_primitive_enabled_rate": 1.0,
@@ -381,29 +384,29 @@
         "reward_tier": "basic"
       },
       "enc_fishing_village_embers": {
-        "sample_count": 7,
-        "win_rate": 0.4286,
-        "avg_turn_count": 5.2857,
-        "avg_player_hp_end": 7.2857,
-        "avg_enemy_hp_end": 5.4286,
-        "avg_damage_taken": 24.7143,
-        "avg_damage_dealt": 14.5714,
-        "avg_cards_played": 5.2857,
-        "avg_enemy_cards_played": 4.8571,
-        "avg_hp_delta": -24.7143,
+        "sample_count": 11,
+        "win_rate": 0.4545,
+        "avg_turn_count": 5.1818,
+        "avg_player_hp_end": 7.7273,
+        "avg_enemy_hp_end": 4.5455,
+        "avg_damage_taken": 24.2727,
+        "avg_damage_dealt": 15.4545,
+        "avg_cards_played": 5.1818,
+        "avg_enemy_cards_played": 4.7273,
+        "avg_hp_delta": -24.2727,
         "runtime_primitive_trigger_rate": 1.0,
         "weapon_followup_trigger_rate": 1.0,
         "clue_pressure_trigger_rate": 0.0,
         "dual_weapon_usage_rate": 0.0,
-        "reward_claim_rate": 0.4286,
+        "reward_claim_rate": 0.4545,
         "telemetry_detail_level_summary": {
-          "real": 7
+          "real": 11
         },
         "mechanism_underused_count": 0,
         "too_easy_count": 0,
-        "too_hard_count": 4,
-        "too_long_count": 4,
-        "burst_damage_count": 7,
+        "too_hard_count": 6,
+        "too_long_count": 6,
+        "burst_damage_count": 11,
         "reward_mismatch_count": 0,
         "card_dead_count": 0,
         "runtime_primitive_enabled_rate": 1.0,
@@ -423,29 +426,29 @@
         "reward_tier": "basic"
       },
       "enc_transport_officer": {
-        "sample_count": 7,
-        "win_rate": 0.4286,
-        "avg_turn_count": 5.2857,
-        "avg_player_hp_end": 7.2857,
-        "avg_enemy_hp_end": 5.4286,
-        "avg_damage_taken": 24.7143,
-        "avg_damage_dealt": 14.5714,
-        "avg_cards_played": 5.2857,
-        "avg_enemy_cards_played": 4.8571,
-        "avg_hp_delta": -24.7143,
+        "sample_count": 11,
+        "win_rate": 0.4545,
+        "avg_turn_count": 5.1818,
+        "avg_player_hp_end": 7.7273,
+        "avg_enemy_hp_end": 4.5455,
+        "avg_damage_taken": 24.2727,
+        "avg_damage_dealt": 15.4545,
+        "avg_cards_played": 5.1818,
+        "avg_enemy_cards_played": 4.7273,
+        "avg_hp_delta": -24.2727,
         "runtime_primitive_trigger_rate": 1.0,
         "weapon_followup_trigger_rate": 1.0,
         "clue_pressure_trigger_rate": 0.0,
         "dual_weapon_usage_rate": 0.0,
-        "reward_claim_rate": 0.4286,
+        "reward_claim_rate": 0.4545,
         "telemetry_detail_level_summary": {
-          "real": 7
+          "real": 11
         },
         "mechanism_underused_count": 0,
         "too_easy_count": 0,
-        "too_hard_count": 4,
-        "too_long_count": 4,
-        "burst_damage_count": 7,
+        "too_hard_count": 6,
+        "too_long_count": 6,
+        "burst_damage_count": 11,
         "reward_mismatch_count": 0,
         "card_dead_count": 0,
         "runtime_primitive_enabled_rate": 1.0,
@@ -465,29 +468,29 @@
         "reward_tier": "basic"
       },
       "enc_mutiny_camp": {
-        "sample_count": 7,
-        "win_rate": 0.4286,
-        "avg_turn_count": 5.2857,
-        "avg_player_hp_end": 7.2857,
-        "avg_enemy_hp_end": 5.4286,
-        "avg_damage_taken": 24.7143,
-        "avg_damage_dealt": 14.5714,
-        "avg_cards_played": 5.2857,
-        "avg_enemy_cards_played": 4.8571,
-        "avg_hp_delta": -24.7143,
+        "sample_count": 11,
+        "win_rate": 0.4545,
+        "avg_turn_count": 5.1818,
+        "avg_player_hp_end": 7.7273,
+        "avg_enemy_hp_end": 4.5455,
+        "avg_damage_taken": 24.2727,
+        "avg_damage_dealt": 15.4545,
+        "avg_cards_played": 5.1818,
+        "avg_enemy_cards_played": 4.7273,
+        "avg_hp_delta": -24.2727,
         "runtime_primitive_trigger_rate": 1.0,
         "weapon_followup_trigger_rate": 1.0,
         "clue_pressure_trigger_rate": 0.0,
         "dual_weapon_usage_rate": 0.0,
-        "reward_claim_rate": 0.4286,
+        "reward_claim_rate": 0.4545,
         "telemetry_detail_level_summary": {
-          "real": 7
+          "real": 11
         },
         "mechanism_underused_count": 0,
         "too_easy_count": 0,
-        "too_hard_count": 4,
-        "too_long_count": 4,
-        "burst_damage_count": 7,
+        "too_hard_count": 6,
+        "too_long_count": 6,
+        "burst_damage_count": 11,
         "reward_mismatch_count": 0,
         "card_dead_count": 0,
         "runtime_primitive_enabled_rate": 1.0,
@@ -507,26 +510,26 @@
         "reward_tier": "basic"
       },
       "enc_wakou_boss": {
-        "sample_count": 7,
+        "sample_count": 11,
         "win_rate": 1.0,
         "avg_turn_count": 3.0,
-        "avg_player_hp_end": 34.4286,
+        "avg_player_hp_end": 33.9091,
         "avg_enemy_hp_end": 0.0,
-        "avg_damage_taken": 9.5714,
+        "avg_damage_taken": 10.0909,
         "avg_damage_dealt": 20.0,
         "avg_cards_played": 3.0,
         "avg_enemy_cards_played": 2.0,
-        "avg_hp_delta": -9.5714,
+        "avg_hp_delta": -10.0909,
         "runtime_primitive_trigger_rate": 1.0,
         "weapon_followup_trigger_rate": 1.0,
         "clue_pressure_trigger_rate": 0.0,
         "dual_weapon_usage_rate": 0.0,
         "reward_claim_rate": 1.0,
         "telemetry_detail_level_summary": {
-          "real": 7
+          "real": 11
         },
         "mechanism_underused_count": 0,
-        "too_easy_count": 4,
+        "too_easy_count": 6,
         "too_hard_count": 0,
         "too_long_count": 0,
         "burst_damage_count": 0,
@@ -549,26 +552,26 @@
         "reward_tier": "boss"
       },
       "enc_wuke_spear_trial": {
-        "sample_count": 7,
+        "sample_count": 11,
         "win_rate": 1.0,
         "avg_turn_count": 3.0,
-        "avg_player_hp_end": 26.4286,
+        "avg_player_hp_end": 25.9091,
         "avg_enemy_hp_end": 0.0,
-        "avg_damage_taken": 9.5714,
+        "avg_damage_taken": 10.0909,
         "avg_damage_dealt": 20.0,
         "avg_cards_played": 3.0,
         "avg_enemy_cards_played": 2.0,
-        "avg_hp_delta": -9.5714,
+        "avg_hp_delta": -10.0909,
         "runtime_primitive_trigger_rate": 1.0,
         "weapon_followup_trigger_rate": 1.0,
         "clue_pressure_trigger_rate": 0.0,
         "dual_weapon_usage_rate": 0.0,
         "reward_claim_rate": 1.0,
         "telemetry_detail_level_summary": {
-          "real": 7
+          "real": 11
         },
         "mechanism_underused_count": 0,
-        "too_easy_count": 4,
+        "too_easy_count": 6,
         "too_hard_count": 0,
         "too_long_count": 0,
         "burst_damage_count": 0,
@@ -591,26 +594,26 @@
         "reward_tier": "mid"
       },
       "enc_wuke_blade_trial": {
-        "sample_count": 7,
+        "sample_count": 11,
         "win_rate": 1.0,
         "avg_turn_count": 3.0,
-        "avg_player_hp_end": 26.4286,
+        "avg_player_hp_end": 25.9091,
         "avg_enemy_hp_end": 0.0,
-        "avg_damage_taken": 9.5714,
+        "avg_damage_taken": 10.0909,
         "avg_damage_dealt": 20.0,
         "avg_cards_played": 3.0,
         "avg_enemy_cards_played": 2.0,
-        "avg_hp_delta": -9.5714,
+        "avg_hp_delta": -10.0909,
         "runtime_primitive_trigger_rate": 1.0,
         "weapon_followup_trigger_rate": 1.0,
         "clue_pressure_trigger_rate": 0.0,
         "dual_weapon_usage_rate": 0.0,
         "reward_claim_rate": 1.0,
         "telemetry_detail_level_summary": {
-          "real": 7
+          "real": 11
         },
         "mechanism_underused_count": 0,
-        "too_easy_count": 4,
+        "too_easy_count": 6,
         "too_hard_count": 0,
         "too_long_count": 0,
         "burst_damage_count": 0,
@@ -633,26 +636,26 @@
         "reward_tier": "mid"
       },
       "enc_wuke_final_duel": {
-        "sample_count": 7,
+        "sample_count": 11,
         "win_rate": 1.0,
         "avg_turn_count": 3.0,
-        "avg_player_hp_end": 34.4286,
+        "avg_player_hp_end": 33.9091,
         "avg_enemy_hp_end": 0.0,
-        "avg_damage_taken": 9.5714,
+        "avg_damage_taken": 10.0909,
         "avg_damage_dealt": 20.0,
         "avg_cards_played": 3.0,
         "avg_enemy_cards_played": 2.0,
-        "avg_hp_delta": -9.5714,
+        "avg_hp_delta": -10.0909,
         "runtime_primitive_trigger_rate": 1.0,
         "weapon_followup_trigger_rate": 1.0,
         "clue_pressure_trigger_rate": 0.0,
         "dual_weapon_usage_rate": 0.0,
         "reward_claim_rate": 1.0,
         "telemetry_detail_level_summary": {
-          "real": 7
+          "real": 11
         },
         "mechanism_underused_count": 0,
-        "too_easy_count": 4,
+        "too_easy_count": 6,
         "too_hard_count": 0,
         "too_long_count": 0,
         "burst_damage_count": 0,
@@ -675,26 +678,26 @@
         "reward_tier": "boss"
       },
       "enc_wuke_gu_chengyue": {
-        "sample_count": 7,
+        "sample_count": 11,
         "win_rate": 1.0,
         "avg_turn_count": 3.0,
-        "avg_player_hp_end": 26.4286,
+        "avg_player_hp_end": 25.9091,
         "avg_enemy_hp_end": 0.0,
-        "avg_damage_taken": 9.5714,
+        "avg_damage_taken": 10.0909,
         "avg_damage_dealt": 20.0,
         "avg_cards_played": 3.0,
         "avg_enemy_cards_played": 2.0,
-        "avg_hp_delta": -9.5714,
+        "avg_hp_delta": -10.0909,
         "runtime_primitive_trigger_rate": 1.0,
         "weapon_followup_trigger_rate": 1.0,
         "clue_pressure_trigger_rate": 0.0,
         "dual_weapon_usage_rate": 0.0,
         "reward_claim_rate": 1.0,
         "telemetry_detail_level_summary": {
-          "real": 7
+          "real": 11
         },
         "mechanism_underused_count": 0,
-        "too_easy_count": 4,
+        "too_easy_count": 6,
         "too_hard_count": 0,
         "too_long_count": 0,
         "burst_damage_count": 0,
@@ -717,26 +720,26 @@
         "reward_tier": "mid"
       },
       "enc_wuke_shen_zhaoye": {
-        "sample_count": 7,
+        "sample_count": 11,
         "win_rate": 1.0,
         "avg_turn_count": 3.0,
-        "avg_player_hp_end": 26.4286,
+        "avg_player_hp_end": 25.9091,
         "avg_enemy_hp_end": 0.0,
-        "avg_damage_taken": 9.5714,
+        "avg_damage_taken": 10.0909,
         "avg_damage_dealt": 20.0,
         "avg_cards_played": 3.0,
         "avg_enemy_cards_played": 2.0,
-        "avg_hp_delta": -9.5714,
+        "avg_hp_delta": -10.0909,
         "runtime_primitive_trigger_rate": 1.0,
         "weapon_followup_trigger_rate": 1.0,
         "clue_pressure_trigger_rate": 0.0,
         "dual_weapon_usage_rate": 0.0,
         "reward_claim_rate": 1.0,
         "telemetry_detail_level_summary": {
-          "real": 7
+          "real": 11
         },
         "mechanism_underused_count": 0,
-        "too_easy_count": 4,
+        "too_easy_count": 6,
         "too_hard_count": 0,
         "too_long_count": 0,
         "burst_damage_count": 0,
@@ -759,26 +762,26 @@
         "reward_tier": "mid"
       },
       "enc_wuke_qi_heng": {
-        "sample_count": 7,
+        "sample_count": 11,
         "win_rate": 1.0,
         "avg_turn_count": 3.0,
-        "avg_player_hp_end": 30.4286,
+        "avg_player_hp_end": 29.9091,
         "avg_enemy_hp_end": 0.0,
-        "avg_damage_taken": 9.5714,
+        "avg_damage_taken": 10.0909,
         "avg_damage_dealt": 20.0,
         "avg_cards_played": 3.0,
         "avg_enemy_cards_played": 2.0,
-        "avg_hp_delta": -9.5714,
+        "avg_hp_delta": -10.0909,
         "runtime_primitive_trigger_rate": 1.0,
         "weapon_followup_trigger_rate": 1.0,
         "clue_pressure_trigger_rate": 0.0,
         "dual_weapon_usage_rate": 0.0,
         "reward_claim_rate": 1.0,
         "telemetry_detail_level_summary": {
-          "real": 7
+          "real": 11
         },
         "mechanism_underused_count": 0,
-        "too_easy_count": 4,
+        "too_easy_count": 6,
         "too_hard_count": 0,
         "too_long_count": 0,
         "burst_damage_count": 0,
@@ -801,26 +804,26 @@
         "reward_tier": "late"
       },
       "enc_ch2_reed_ambush": {
-        "sample_count": 7,
+        "sample_count": 11,
         "win_rate": 1.0,
         "avg_turn_count": 3.0,
-        "avg_player_hp_end": 30.4286,
+        "avg_player_hp_end": 29.9091,
         "avg_enemy_hp_end": 0.0,
-        "avg_damage_taken": 9.5714,
+        "avg_damage_taken": 10.0909,
         "avg_damage_dealt": 20.0,
         "avg_cards_played": 3.0,
         "avg_enemy_cards_played": 2.0,
-        "avg_hp_delta": -9.5714,
+        "avg_hp_delta": -10.0909,
         "runtime_primitive_trigger_rate": 1.0,
         "weapon_followup_trigger_rate": 1.0,
         "clue_pressure_trigger_rate": 0.0,
         "dual_weapon_usage_rate": 0.0,
         "reward_claim_rate": 1.0,
         "telemetry_detail_level_summary": {
-          "real": 7
+          "real": 11
         },
         "mechanism_underused_count": 0,
-        "too_easy_count": 4,
+        "too_easy_count": 6,
         "too_hard_count": 0,
         "too_long_count": 0,
         "burst_damage_count": 0,
@@ -843,26 +846,26 @@
         "reward_tier": "late"
       },
       "enc_ch3_escort_clash": {
-        "sample_count": 7,
+        "sample_count": 11,
         "win_rate": 1.0,
         "avg_turn_count": 3.0,
-        "avg_player_hp_end": 30.4286,
+        "avg_player_hp_end": 29.9091,
         "avg_enemy_hp_end": 0.0,
-        "avg_damage_taken": 9.5714,
+        "avg_damage_taken": 10.0909,
         "avg_damage_dealt": 20.0,
         "avg_cards_played": 3.0,
         "avg_enemy_cards_played": 2.0,
-        "avg_hp_delta": -9.5714,
+        "avg_hp_delta": -10.0909,
         "runtime_primitive_trigger_rate": 1.0,
         "weapon_followup_trigger_rate": 1.0,
         "clue_pressure_trigger_rate": 0.0,
         "dual_weapon_usage_rate": 0.0,
         "reward_claim_rate": 1.0,
         "telemetry_detail_level_summary": {
-          "real": 7
+          "real": 11
         },
         "mechanism_underused_count": 0,
-        "too_easy_count": 4,
+        "too_easy_count": 6,
         "too_hard_count": 0,
         "too_long_count": 0,
         "burst_damage_count": 0,
@@ -885,26 +888,26 @@
         "reward_tier": "late"
       },
       "enc_ch4_tide_bandits": {
-        "sample_count": 7,
+        "sample_count": 11,
         "win_rate": 1.0,
         "avg_turn_count": 3.0,
-        "avg_player_hp_end": 30.4286,
+        "avg_player_hp_end": 29.9091,
         "avg_enemy_hp_end": 0.0,
-        "avg_damage_taken": 9.5714,
+        "avg_damage_taken": 10.0909,
         "avg_damage_dealt": 20.0,
         "avg_cards_played": 3.0,
         "avg_enemy_cards_played": 2.0,
-        "avg_hp_delta": -9.5714,
+        "avg_hp_delta": -10.0909,
         "runtime_primitive_trigger_rate": 1.0,
         "weapon_followup_trigger_rate": 1.0,
         "clue_pressure_trigger_rate": 0.0,
         "dual_weapon_usage_rate": 0.0,
         "reward_claim_rate": 1.0,
         "telemetry_detail_level_summary": {
-          "real": 7
+          "real": 11
         },
         "mechanism_underused_count": 0,
-        "too_easy_count": 4,
+        "too_easy_count": 6,
         "too_hard_count": 0,
         "too_long_count": 0,
         "burst_damage_count": 0,
@@ -927,26 +930,26 @@
         "reward_tier": "late"
       },
       "enc_boss_ext_wakou_leader": {
-        "sample_count": 7,
+        "sample_count": 11,
         "win_rate": 1.0,
         "avg_turn_count": 3.0,
-        "avg_player_hp_end": 34.4286,
+        "avg_player_hp_end": 33.9091,
         "avg_enemy_hp_end": 0.0,
-        "avg_damage_taken": 9.5714,
+        "avg_damage_taken": 10.0909,
         "avg_damage_dealt": 20.0,
         "avg_cards_played": 3.0,
         "avg_enemy_cards_played": 2.0,
-        "avg_hp_delta": -9.5714,
+        "avg_hp_delta": -10.0909,
         "runtime_primitive_trigger_rate": 1.0,
         "weapon_followup_trigger_rate": 1.0,
         "clue_pressure_trigger_rate": 0.0,
         "dual_weapon_usage_rate": 0.0,
         "reward_claim_rate": 1.0,
         "telemetry_detail_level_summary": {
-          "real": 7
+          "real": 11
         },
         "mechanism_underused_count": 0,
-        "too_easy_count": 4,
+        "too_easy_count": 6,
         "too_hard_count": 0,
         "too_long_count": 0,
         "burst_damage_count": 0,
@@ -1032,28 +1035,28 @@
     "card_metrics": {
       "used_card_count": 26,
       "card_usage_counts": {
-        "weapon_followup_v0_1_blademaster_early_strike": 74,
-        "weapon_followup_v0_1_spearman_early_strike": 44,
-        "weapon_followup_v0_1_blademaster_early_finisher": 40,
-        "weapon_followup_v0_1_blademaster_mid_finisher": 39,
-        "weapon_followup_v0_1_blademaster_early_focus": 36,
-        "weapon_followup_v0_1_spearman_early_finisher": 24,
-        "weapon_followup_v0_1_spearman_early_focus": 24,
-        "weapon_followup_v0_1_spearman_mid_finisher": 24,
-        "weapon_followup_v0_1_blademaster_late_strike": 21,
-        "weapon_followup_v0_1_spearman_late_strike": 21,
-        "weapon_followup_v0_1_spearman_boss_strike": 18,
-        "weapon_followup_v0_1_blademaster_boss_guard": 16,
-        "weapon_followup_v0_1_spearman_boss_guard": 16,
-        "weapon_followup_v0_1_blademaster_late_guard": 16,
-        "weapon_followup_v0_1_spearman_late_guard": 16,
-        "weapon_followup_v0_1_blademaster_mid_guard": 16,
-        "weapon_followup_v0_1_blademaster_mid_strike": 16,
-        "weapon_followup_v0_1_blademaster_late_finisher": 16,
-        "weapon_followup_v0_1_blademaster_boss_finisher": 12,
-        "weapon_followup_v0_1_blademaster_boss_strike": 9,
-        "weapon_followup_v0_1_spearman_early_pressure": 8,
-        "weapon_followup_v0_1_blademaster_early_pressure": 8,
+        "weapon_followup_v0_1_blademaster_early_strike": 118,
+        "weapon_followup_v0_1_spearman_early_strike": 72,
+        "weapon_followup_v0_1_blademaster_early_finisher": 64,
+        "weapon_followup_v0_1_blademaster_mid_finisher": 63,
+        "weapon_followup_v0_1_blademaster_early_focus": 54,
+        "weapon_followup_v0_1_spearman_early_finisher": 40,
+        "weapon_followup_v0_1_spearman_mid_finisher": 40,
+        "weapon_followup_v0_1_spearman_early_focus": 36,
+        "weapon_followup_v0_1_blademaster_late_strike": 35,
+        "weapon_followup_v0_1_spearman_late_strike": 35,
+        "weapon_followup_v0_1_spearman_boss_strike": 30,
+        "weapon_followup_v0_1_blademaster_boss_guard": 24,
+        "weapon_followup_v0_1_spearman_boss_guard": 24,
+        "weapon_followup_v0_1_blademaster_late_guard": 24,
+        "weapon_followup_v0_1_spearman_late_guard": 24,
+        "weapon_followup_v0_1_blademaster_mid_guard": 24,
+        "weapon_followup_v0_1_blademaster_mid_strike": 24,
+        "weapon_followup_v0_1_blademaster_late_finisher": 24,
+        "weapon_followup_v0_1_blademaster_boss_finisher": 18,
+        "weapon_followup_v0_1_blademaster_boss_strike": 15,
+        "weapon_followup_v0_1_spearman_early_pressure": 12,
+        "weapon_followup_v0_1_blademaster_early_pressure": 12,
         "weapon_followup_v0_1_spearman_mid_guard": 4,
         "weapon_followup_v0_1_spearman_mid_strike": 4,
         "weapon_followup_v0_1_spearman_late_finisher": 4,
@@ -1062,45 +1065,45 @@
       "card_overused_candidates": [
         {
           "card_id": "weapon_followup_v0_1_blademaster_early_strike",
-          "event_count": 35
+          "event_count": 57
         },
         {
           "card_id": "weapon_followup_v0_1_spearman_early_strike",
-          "event_count": 26
+          "event_count": 42
         },
         {
           "card_id": "weapon_followup_v0_1_blademaster_early_focus",
-          "event_count": 15
+          "event_count": 19
         },
         {
           "card_id": "weapon_followup_v0_1_spearman_early_focus",
-          "event_count": 12
+          "event_count": 16
         },
         {
           "card_id": "weapon_followup_v0_1_spearman_early_pressure",
-          "event_count": 8
+          "event_count": 12
         },
         {
           "card_id": "weapon_followup_v0_1_blademaster_early_pressure",
-          "event_count": 8
+          "event_count": 12
         }
       ],
       "card_dead_candidates": [
         {
           "card_id": "weapon_followup_v0_1_blademaster_early_pressure",
-          "event_count": 55
+          "event_count": 87
         },
         {
           "card_id": "weapon_followup_v0_1_spearman_early_pressure",
-          "event_count": 34
+          "event_count": 54
         },
         {
           "card_id": "weapon_followup_v0_1_blademaster_early_focus",
-          "event_count": 27
+          "event_count": 45
         },
         {
           "card_id": "weapon_followup_v0_1_spearman_early_focus",
-          "event_count": 18
+          "event_count": 30
         },
         {
           "card_id": "weapon_followup_v0_1_blademaster_early_strike",
@@ -1121,9 +1124,9 @@
           "reward_plan_id": "weapon_followup_v0_1_reward_001",
           "reason": "deck_underperform",
           "evidence": {
-            "win_rate": 0.4286,
-            "avg_turn_count": 5.2857,
-            "avg_player_hp_end": 7.2857,
+            "win_rate": 0.4545,
+            "avg_turn_count": 5.1818,
+            "avg_player_hp_end": 7.7273,
             "runtime_primitive_trigger_rate": 1.0
           }
         },
@@ -1134,9 +1137,9 @@
           "reward_plan_id": "weapon_followup_v0_1_reward_002",
           "reason": "deck_underperform",
           "evidence": {
-            "win_rate": 0.4286,
-            "avg_turn_count": 5.2857,
-            "avg_player_hp_end": 7.2857,
+            "win_rate": 0.4545,
+            "avg_turn_count": 5.1818,
+            "avg_player_hp_end": 7.7273,
             "runtime_primitive_trigger_rate": 1.0
           }
         },
@@ -1147,9 +1150,9 @@
           "reward_plan_id": "weapon_followup_v0_1_reward_003",
           "reason": "deck_underperform",
           "evidence": {
-            "win_rate": 0.4286,
-            "avg_turn_count": 5.2857,
-            "avg_player_hp_end": 7.2857,
+            "win_rate": 0.4545,
+            "avg_turn_count": 5.1818,
+            "avg_player_hp_end": 7.7273,
             "runtime_primitive_trigger_rate": 1.0
           }
         },
@@ -1160,9 +1163,9 @@
           "reward_plan_id": "weapon_followup_v0_1_reward_004",
           "reason": "deck_underperform",
           "evidence": {
-            "win_rate": 0.4286,
-            "avg_turn_count": 5.2857,
-            "avg_player_hp_end": 7.2857,
+            "win_rate": 0.4545,
+            "avg_turn_count": 5.1818,
+            "avg_player_hp_end": 7.7273,
             "runtime_primitive_trigger_rate": 1.0
           }
         }
@@ -1182,7 +1185,7 @@
         "evidence": {
           "win_rate": 1.0,
           "avg_turn_count": 3.0,
-          "avg_player_hp_end": 34.4286,
+          "avg_player_hp_end": 33.9091,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -1195,7 +1198,7 @@
         "evidence": {
           "win_rate": 1.0,
           "avg_turn_count": 3.0,
-          "avg_player_hp_end": 26.4286,
+          "avg_player_hp_end": 25.9091,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -1208,7 +1211,7 @@
         "evidence": {
           "win_rate": 1.0,
           "avg_turn_count": 3.0,
-          "avg_player_hp_end": 26.4286,
+          "avg_player_hp_end": 25.9091,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -1221,7 +1224,7 @@
         "evidence": {
           "win_rate": 1.0,
           "avg_turn_count": 3.0,
-          "avg_player_hp_end": 34.4286,
+          "avg_player_hp_end": 33.9091,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -1234,7 +1237,7 @@
         "evidence": {
           "win_rate": 1.0,
           "avg_turn_count": 3.0,
-          "avg_player_hp_end": 26.4286,
+          "avg_player_hp_end": 25.9091,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -1247,7 +1250,7 @@
         "evidence": {
           "win_rate": 1.0,
           "avg_turn_count": 3.0,
-          "avg_player_hp_end": 26.4286,
+          "avg_player_hp_end": 25.9091,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -1260,7 +1263,7 @@
         "evidence": {
           "win_rate": 1.0,
           "avg_turn_count": 3.0,
-          "avg_player_hp_end": 30.4286,
+          "avg_player_hp_end": 29.9091,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -1273,7 +1276,7 @@
         "evidence": {
           "win_rate": 1.0,
           "avg_turn_count": 3.0,
-          "avg_player_hp_end": 30.4286,
+          "avg_player_hp_end": 29.9091,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -1286,7 +1289,7 @@
         "evidence": {
           "win_rate": 1.0,
           "avg_turn_count": 3.0,
-          "avg_player_hp_end": 30.4286,
+          "avg_player_hp_end": 29.9091,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -1299,7 +1302,7 @@
         "evidence": {
           "win_rate": 1.0,
           "avg_turn_count": 3.0,
-          "avg_player_hp_end": 30.4286,
+          "avg_player_hp_end": 29.9091,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -1312,7 +1315,7 @@
         "evidence": {
           "win_rate": 1.0,
           "avg_turn_count": 3.0,
-          "avg_player_hp_end": 34.4286,
+          "avg_player_hp_end": 33.9091,
           "runtime_primitive_trigger_rate": 1.0
         }
       }
@@ -1325,9 +1328,9 @@
         "reward_plan_id": "weapon_followup_v0_1_reward_001",
         "reason": "too_hard",
         "evidence": {
-          "win_rate": 0.4286,
-          "avg_turn_count": 5.2857,
-          "avg_player_hp_end": 7.2857,
+          "win_rate": 0.4545,
+          "avg_turn_count": 5.1818,
+          "avg_player_hp_end": 7.7273,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -1338,9 +1341,9 @@
         "reward_plan_id": "weapon_followup_v0_1_reward_002",
         "reason": "too_hard",
         "evidence": {
-          "win_rate": 0.4286,
-          "avg_turn_count": 5.2857,
-          "avg_player_hp_end": 7.2857,
+          "win_rate": 0.4545,
+          "avg_turn_count": 5.1818,
+          "avg_player_hp_end": 7.7273,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -1351,9 +1354,9 @@
         "reward_plan_id": "weapon_followup_v0_1_reward_003",
         "reason": "too_hard",
         "evidence": {
-          "win_rate": 0.4286,
-          "avg_turn_count": 5.2857,
-          "avg_player_hp_end": 7.2857,
+          "win_rate": 0.4545,
+          "avg_turn_count": 5.1818,
+          "avg_player_hp_end": 7.7273,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -1364,9 +1367,9 @@
         "reward_plan_id": "weapon_followup_v0_1_reward_004",
         "reason": "too_hard",
         "evidence": {
-          "win_rate": 0.4286,
-          "avg_turn_count": 5.2857,
-          "avg_player_hp_end": 7.2857,
+          "win_rate": 0.4545,
+          "avg_turn_count": 5.1818,
+          "avg_player_hp_end": 7.7273,
           "runtime_primitive_trigger_rate": 1.0
         }
       }
@@ -1380,9 +1383,9 @@
         "reward_plan_id": "weapon_followup_v0_1_reward_001",
         "reason": "burst_damage",
         "evidence": {
-          "win_rate": 0.4286,
-          "avg_turn_count": 5.2857,
-          "avg_player_hp_end": 7.2857,
+          "win_rate": 0.4545,
+          "avg_turn_count": 5.1818,
+          "avg_player_hp_end": 7.7273,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -1393,9 +1396,9 @@
         "reward_plan_id": "weapon_followup_v0_1_reward_002",
         "reason": "burst_damage",
         "evidence": {
-          "win_rate": 0.4286,
-          "avg_turn_count": 5.2857,
-          "avg_player_hp_end": 7.2857,
+          "win_rate": 0.4545,
+          "avg_turn_count": 5.1818,
+          "avg_player_hp_end": 7.7273,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -1406,9 +1409,9 @@
         "reward_plan_id": "weapon_followup_v0_1_reward_003",
         "reason": "burst_damage",
         "evidence": {
-          "win_rate": 0.4286,
-          "avg_turn_count": 5.2857,
-          "avg_player_hp_end": 7.2857,
+          "win_rate": 0.4545,
+          "avg_turn_count": 5.1818,
+          "avg_player_hp_end": 7.7273,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -1419,9 +1422,9 @@
         "reward_plan_id": "weapon_followup_v0_1_reward_004",
         "reason": "burst_damage",
         "evidence": {
-          "win_rate": 0.4286,
-          "avg_turn_count": 5.2857,
-          "avg_player_hp_end": 7.2857,
+          "win_rate": 0.4545,
+          "avg_turn_count": 5.1818,
+          "avg_player_hp_end": 7.7273,
           "runtime_primitive_trigger_rate": 1.0
         }
       }
@@ -1431,45 +1434,45 @@
     "card_overused_candidates": [
       {
         "card_id": "weapon_followup_v0_1_blademaster_early_strike",
-        "event_count": 35
+        "event_count": 57
       },
       {
         "card_id": "weapon_followup_v0_1_spearman_early_strike",
-        "event_count": 26
+        "event_count": 42
       },
       {
         "card_id": "weapon_followup_v0_1_blademaster_early_focus",
-        "event_count": 15
+        "event_count": 19
       },
       {
         "card_id": "weapon_followup_v0_1_spearman_early_focus",
-        "event_count": 12
+        "event_count": 16
       },
       {
         "card_id": "weapon_followup_v0_1_spearman_early_pressure",
-        "event_count": 8
+        "event_count": 12
       },
       {
         "card_id": "weapon_followup_v0_1_blademaster_early_pressure",
-        "event_count": 8
+        "event_count": 12
       }
     ],
     "card_dead_candidates": [
       {
         "card_id": "weapon_followup_v0_1_blademaster_early_pressure",
-        "event_count": 55
+        "event_count": 87
       },
       {
         "card_id": "weapon_followup_v0_1_spearman_early_pressure",
-        "event_count": 34
+        "event_count": 54
       },
       {
         "card_id": "weapon_followup_v0_1_blademaster_early_focus",
-        "event_count": 27
+        "event_count": 45
       },
       {
         "card_id": "weapon_followup_v0_1_spearman_early_focus",
-        "event_count": 18
+        "event_count": 30
       },
       {
         "card_id": "weapon_followup_v0_1_blademaster_early_strike",
@@ -1488,9 +1491,9 @@
         "reward_plan_id": "weapon_followup_v0_1_reward_001",
         "reason": "deck_underperform",
         "evidence": {
-          "win_rate": 0.4286,
-          "avg_turn_count": 5.2857,
-          "avg_player_hp_end": 7.2857,
+          "win_rate": 0.4545,
+          "avg_turn_count": 5.1818,
+          "avg_player_hp_end": 7.7273,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -1501,9 +1504,9 @@
         "reward_plan_id": "weapon_followup_v0_1_reward_002",
         "reason": "deck_underperform",
         "evidence": {
-          "win_rate": 0.4286,
-          "avg_turn_count": 5.2857,
-          "avg_player_hp_end": 7.2857,
+          "win_rate": 0.4545,
+          "avg_turn_count": 5.1818,
+          "avg_player_hp_end": 7.7273,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -1514,9 +1517,9 @@
         "reward_plan_id": "weapon_followup_v0_1_reward_003",
         "reason": "deck_underperform",
         "evidence": {
-          "win_rate": 0.4286,
-          "avg_turn_count": 5.2857,
-          "avg_player_hp_end": 7.2857,
+          "win_rate": 0.4545,
+          "avg_turn_count": 5.1818,
+          "avg_player_hp_end": 7.7273,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -1527,9 +1530,9 @@
         "reward_plan_id": "weapon_followup_v0_1_reward_004",
         "reason": "deck_underperform",
         "evidence": {
-          "win_rate": 0.4286,
-          "avg_turn_count": 5.2857,
-          "avg_player_hp_end": 7.2857,
+          "win_rate": 0.4545,
+          "avg_turn_count": 5.1818,
+          "avg_player_hp_end": 7.7273,
           "runtime_primitive_trigger_rate": 1.0
         }
       }
@@ -1585,6 +1588,54 @@
     "role": "standard_current_release",
     "snapshot_path": "data/aigc_battle/evaluation/snapshots/weapon_followup_v0_1__weapon_followup_balance_release_007__evaluation_snapshot.json"
   },
+  "matrix_evaluation_summary": {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "sequence_template_id": "formal_sequence_15_v1",
+    "content_pack_id": "weapon_followup_balance_release_007",
+    "total_encounter_count": 15,
+    "evaluation_event_count": 165,
+    "win_rate": 0.8667,
+    "avg_turn_count": 3.5333,
+    "avg_player_hp_end": 23.2667,
+    "too_hard_candidates": 4,
+    "too_long_candidates": 0,
+    "reward_mismatch_candidates": 0,
+    "mechanic_trigger_rate": 1.0,
+    "runtime_primitive_observed": true,
+    "stage_metrics": {
+      "early_win_rate": 0,
+      "early_avg_turn_count": 0,
+      "early_stage_event_count": 0,
+      "early_stage_too_hard_count": 0,
+      "early_stage_too_long_count": 0,
+      "early_stage_reward_mismatch_count": 0,
+      "mid_win_rate": 0,
+      "mid_avg_turn_count": 0,
+      "mid_stage_event_count": 0,
+      "mid_stage_too_hard_count": 0,
+      "mid_stage_too_long_count": 0,
+      "mid_stage_reward_mismatch_count": 0,
+      "late_win_rate": 0,
+      "late_avg_turn_count": 0,
+      "late_stage_event_count": 0,
+      "late_stage_too_hard_count": 0,
+      "late_stage_too_long_count": 0,
+      "late_stage_reward_mismatch_count": 0,
+      "boss_win_rate": 0,
+      "boss_avg_turn_count": 0,
+      "boss_stage_event_count": 0,
+      "boss_stage_too_hard_count": 0,
+      "boss_stage_too_long_count": 0,
+      "boss_stage_reward_mismatch_count": 0
+    },
+    "evaluation_pass": true,
+    "ready_for_candidate_review": true,
+    "needs_balance_before_release": false,
+    "matrix_slot": true,
+    "matrix_build_variant": "matrix_reference_001"
+  },
+  "needs_balance_before_release": false,
+  "ready_for_candidate_review": true,
   "rebuild_recommendation_summary": {},
   "ai_source_trace": {
     "llm_candidate_source": false,

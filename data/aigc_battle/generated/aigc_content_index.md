@@ -6,12 +6,18 @@
 - Current Release: `weapon_followup_v0_1` / `weapon_followup_balance_release_007`
 - active_profile_drift_from_current_release: `False`
 - profile 数量: `7`
-- content pack 数量: `30`
+- content pack 数量: `38`
 
 | Active | Profile | Pack | Mode | Encounters | Cards | Decks | Rewards | Export | Balance | Runtime Export | Primitive | Detail |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | --- | --- | --- | --- | --- |
 |  | `clue_pressure_v0_1` | `clue_pressure_v0_1_formal_sequence_pack_001` | `profile_root` | 15 | 80 | 15 | 15 | PASS | PASS | PASS | `clue_pressure` | ready |
+|  | `clue_pressure_v0_1` | `clue_pressure_v0_1__bossrush_9_v1__matrix_001` | `profile_pack_dir` | 9 | 80 | 9 | 9 | PASS | PASS | PASS | `clue_pressure` | ready |
+|  | `clue_pressure_v0_1` | `clue_pressure_v0_1__formal_sequence_12_fast_v1__matrix_001` | `profile_pack_dir` | 12 | 80 | 12 | 12 | PASS | PASS | PASS | `clue_pressure` | ready |
+|  | `clue_pressure_v0_1` | `clue_pressure_v0_1__formal_sequence_15_v1__matrix_001` | `profile_pack_dir` | 15 | 80 | 15 | 15 | PASS | PASS | PASS | `clue_pressure` | ready |
 |  | `martial_realm_7_dual_weapon_v0_1` | `martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001` | `profile_root` | 15 | 70 | 15 | 15 | PASS | PASS | PASS | `martial_realm_7,dual_weapon` | ready |
+|  | `martial_realm_7_dual_weapon_v0_1` | `martial_realm_7_dual_weapon_v0_1__bossrush_9_v1__matrix_001` | `profile_pack_dir` | 9 | 70 | 9 | 9 | PASS | PASS | PASS | `martial_realm_7,dual_weapon` | ready |
+|  | `martial_realm_7_dual_weapon_v0_1` | `martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001` | `profile_pack_dir` | 12 | 70 | 12 | 12 | PASS | PASS | PASS | `martial_realm_7,dual_weapon` | ready |
+|  | `martial_realm_7_dual_weapon_v0_1` | `martial_realm_7_dual_weapon_v0_1__formal_sequence_15_v1__matrix_001` | `profile_pack_dir` | 15 | 70 | 15 | 15 | PASS | PASS | PASS | `martial_realm_7,dual_weapon` | ready |
 |  | `posture_basic_v0_1` | `posture_basic_v0_1_formal_sequence_pack_001` | `profile_root` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `-` | ready |
 |  | `posture_llm_candidate_v0_1` | `posture_llm_candidate_v0_1_formal_sequence_pack_001` | `profile_root` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `-` | ready |
 |  | `posture_opening_pressure_v0_1` | `posture_opening_pressure_v0_1_formal_sequence_pack_001` | `profile_root` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `opening_pressure` | ready |
@@ -36,9 +42,11 @@
 |  | `weapon_followup_v0_1` | `weapon_followup_eval_rebuild_002` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
 |  | `weapon_followup_v0_1` | `weapon_followup_eval_rebuild_003` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
 |  | `weapon_followup_v0_1` | `weapon_followup_real_rebuild_001` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
+|  | `weapon_followup_v0_1` | `weapon_followup_v0_1__bossrush_9_v1__matrix_001` | `profile_pack_dir` | 9 | 40 | 9 | 9 | PASS | PASS | PASS | `weapon_followup` | ready |
 |  | `weapon_followup_v0_1` | `weapon_followup_v0_1__bossrush_9_v1__portfolio_001` | `profile_pack_dir` | 9 | 40 | 9 | 9 | PASS | PASS | PASS | `weapon_followup` | ready |
 |  | `weapon_followup_v0_1` | `weapon_followup_v0_1__elite_heavy_15_v1__portfolio_001` | `profile_pack_dir` | 15 | 40 | 15 | 15 | PASS | PASS | PASS | `weapon_followup` | ready |
 |  | `weapon_followup_v0_1` | `weapon_followup_v0_1__formal_sequence_12_fast_v1__baseline_001` | `profile_pack_dir` | 12 | 40 | 12 | 12 | PASS | PASS | PASS | `weapon_followup` | ready |
+|  | `weapon_followup_v0_1` | `weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001` | `profile_pack_dir` | 12 | 40 | 12 | 12 | PASS | PASS | PASS | `weapon_followup` | ready |
 |  | `weapon_followup_v0_1` | `weapon_followup_v0_1__formal_sequence_12_fast_v1__portfolio_001` | `profile_pack_dir` | 12 | 40 | 12 | 12 | PASS | PASS | PASS | `weapon_followup` | ready |
 
 ## 控制台命令

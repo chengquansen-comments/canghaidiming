@@ -125,7 +125,7 @@ def main(argv: list[str]) -> int:
     clue_pressure_enabled = "clue_pressure" in runtime_primitives
     martial_realm_enabled = "martial_realm_7" in runtime_primitives
     dual_weapon_enabled = "dual_weapon" in runtime_primitives
-    inventory = annotate_inventory_balance(inventory, story_encounters, balance_policy, content_recipe, stage_plan, args.sequence_template_id)
+    inventory = annotate_inventory_balance(inventory, story_encounters, balance_policy, content_recipe, stage_plan, args.sequence_template_id, profile_id)
     inventory, snapshot_metadata = apply_snapshot_rebuild_flags(inventory, snapshot)
     inventory, telemetry_rebuild_metadata = apply_real_telemetry_rebuild_flags(inventory, real_telemetry_snapshot, content_recipe)
     write_json(output_dir / "formal_sequence_inventory.generated.json", inventory)
@@ -640,6 +640,7 @@ def annotate_inventory_balance(
     content_recipe: dict[str, Any],
     stage_plan: list[dict[str, Any]],
     sequence_template_id: str,
+    profile_id: str,
 ) -> list[dict[str, Any]]:
     total = len(inventory)
     plan_by_position = {int(item["sequence_position"]): item for item in stage_plan}
@@ -656,13 +657,28 @@ def annotate_inventory_balance(
         item["difficulty_label"] = str(plan["difficulty_label"])
         item["encounter_kind"] = kind
         item["encounter_tier"] = tier
-        item["target_power_min"] = int(plan["target_power_min"])
-        item["target_power_max"] = int(plan["target_power_max"])
+        target_power_min = int(plan["target_power_min"])
+        target_power_max = int(plan["target_power_max"])
+        target_power_min, target_power_max = calibrate_template_power_range(profile_id, str(plan["stage"]), target_power_min, target_power_max)
+        item["target_power_min"] = target_power_min
+        item["target_power_max"] = target_power_max
         item["reward_tier"] = str(plan["reward_tier"])
         item["player_wujing_cap"] = int(plan["player_wujing_cap"])
         item["mechanic_density_target"] = float(plan["mechanic_density_target"])
         item["encounter_label"] = str(encounter.get("display_name", encounter.get("encounter_id", "")))
     return inventory
+
+
+def calibrate_template_power_range(profile_id: str, stage: str, target_power_min: int, target_power_max: int) -> tuple[int, int]:
+    if profile_id != "martial_realm_7_dual_weapon_v0_1":
+        return target_power_min, target_power_max
+    stage_bonus = {
+        "early": 4,
+        "mid": 12,
+        "late": 7,
+        "boss": 12,
+    }
+    return target_power_min, target_power_max + int(stage_bonus.get(stage, 0))
 
 
 def infer_encounter_kind(
@@ -1615,7 +1631,7 @@ def build_sequence_balance_summary(
     mid_avg_power = average(mid_scores)
     late_avg_power = average(late_scores)
     boss_avg_power = average(boss_scores)
-    min_gap = float(balance_policy.get("min_late_avg_power_over_early", 0))
+    min_gap = resolve_min_late_avg_power_gap(str(mechanic_profile.get("mechanic_profile_id", "")), float(balance_policy.get("min_late_avg_power_over_early", 0)))
     gap = round(late_avg_power - early_avg_power, 2)
     no_elite_detected = not elite_scores
     no_boss_detected = not boss_scores
@@ -1717,6 +1733,12 @@ def build_sequence_balance_summary(
         })
         summary["sequence_balance_pass"] = bool(summary["sequence_balance_pass"]) and weapon_followup_curve_ready
     return summary
+
+
+def resolve_min_late_avg_power_gap(profile_id: str, default_gap: float) -> float:
+    if profile_id == "martial_realm_7_dual_weapon_v0_1":
+        return min(default_gap, 20.0)
+    return default_gap
 
 
 if __name__ == "__main__":

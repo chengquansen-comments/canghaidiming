@@ -35,6 +35,7 @@ BALANCE_RELEASE_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'balance_rel
 SEQUENCE_TEMPLATE_DIR = ROOT / 'data' / 'aigc_battle' / 'sequence_templates'
 PACK_RESOLVER_PATH = ROOT / 'data' / 'aigc_battle' / 'pack_resolver.json'
 TEMPLATE_PORTFOLIO_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'template_portfolio'
+MATRIX_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'mechanic_template_matrix'
 
 
 def main(argv: list[str]) -> int:
@@ -144,6 +145,15 @@ class DashboardHandler(BaseHTTPRequestHandler):
             return
         if parsed.path == '/api/template-release-strategy':
             self.respond_json(load_template_release_strategy())
+            return
+        if parsed.path == '/api/mechanic-template-matrix':
+            self.respond_json(load_mechanic_template_matrix_summary())
+            return
+        if parsed.path == '/api/mechanic-template-matrix/evaluation':
+            self.respond_json(load_mechanic_template_matrix_evaluation())
+            return
+        if parsed.path == '/api/mechanic-template-matrix/strategy':
+            self.respond_json(load_mechanic_template_matrix_strategy())
             return
         if parsed.path == '/api/balance-release/report':
             self.respond_json(load_balance_release_build_report())
@@ -712,6 +722,27 @@ def load_template_release_strategy() -> dict[str, Any]:
     if path.exists():
         return read_required_json(path) or {'ok': False, 'error': 'template release strategy unreadable'}
     return {'ok': False, 'error': 'template release strategy not found'}
+
+
+def load_mechanic_template_matrix_summary() -> dict[str, Any]:
+    path = MATRIX_DIR / 'matrix_build_report.json'
+    if path.exists():
+        return read_required_json(path) or {'ok': False, 'error': 'mechanic template matrix summary unreadable'}
+    return {'ok': False, 'error': 'mechanic template matrix summary not found'}
+
+
+def load_mechanic_template_matrix_evaluation() -> dict[str, Any]:
+    path = MATRIX_DIR / 'matrix_evaluation_report.json'
+    if path.exists():
+        return read_required_json(path) or {'ok': False, 'error': 'mechanic template matrix evaluation unreadable'}
+    return {'ok': False, 'error': 'mechanic template matrix evaluation not found'}
+
+
+def load_mechanic_template_matrix_strategy() -> dict[str, Any]:
+    path = MATRIX_DIR / 'matrix_release_strategy.json'
+    if path.exists():
+        return read_required_json(path) or {'ok': False, 'error': 'mechanic template matrix strategy unreadable'}
+    return {'ok': False, 'error': 'mechanic template matrix strategy not found'}
 
 
 def build_console_html() -> str:

@@ -1,0 +1,135 @@
+{
+  "generated_at": "2026-05-12T01:23:39.744638+00:00",
+  "recommended_current_keep": {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "sequence_template_id": "formal_sequence_15_v1",
+    "content_pack_id": "weapon_followup_balance_release_007"
+  },
+  "recommended_standard_candidate": {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "sequence_template_id": "formal_sequence_15_v1",
+    "content_pack_id": "weapon_followup_balance_release_007"
+  },
+  "recommended_fast_candidate": {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "sequence_template_id": "formal_sequence_12_fast_v1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001"
+  },
+  "recommended_bossrush_candidate": {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "sequence_template_id": "bossrush_9_v1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__matrix_001"
+  },
+  "recommended_mechanic_showcase_candidate": {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "sequence_template_id": "formal_sequence_15_v1",
+    "content_pack_id": "weapon_followup_balance_release_007"
+  },
+  "recommended_clue_pressure_template": {
+    "mechanic_profile_id": "clue_pressure_v0_1",
+    "sequence_template_id": "bossrush_9_v1",
+    "content_pack_id": "clue_pressure_v0_1__bossrush_9_v1__matrix_001"
+  },
+  "recommended_dual_weapon_template": {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "sequence_template_id": "bossrush_9_v1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__bossrush_9_v1__matrix_001"
+  },
+  "recommended_weapon_followup_template": {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "sequence_template_id": "formal_sequence_15_v1",
+    "content_pack_id": "weapon_followup_balance_release_007"
+  },
+  "slots_ready_for_release_candidate": [
+    {
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "formal_sequence_15_v1",
+      "content_pack_id": "weapon_followup_balance_release_007"
+    }
+  ],
+  "slots_need_balance_before_release": [
+    {
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001"
+    },
+    {
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__matrix_001"
+    },
+    {
+      "mechanic_profile_id": "clue_pressure_v0_1",
+      "sequence_template_id": "formal_sequence_15_v1",
+      "content_pack_id": "clue_pressure_v0_1__formal_sequence_15_v1__matrix_001"
+    },
+    {
+      "mechanic_profile_id": "clue_pressure_v0_1",
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "content_pack_id": "clue_pressure_v0_1__formal_sequence_12_fast_v1__matrix_001"
+    },
+    {
+      "mechanic_profile_id": "clue_pressure_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "content_pack_id": "clue_pressure_v0_1__bossrush_9_v1__matrix_001"
+    },
+    {
+      "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+      "sequence_template_id": "formal_sequence_15_v1",
+      "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_15_v1__matrix_001"
+    },
+    {
+      "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001"
+    },
+    {
+      "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "content_pack_id": "martial_realm_7_dual_weapon_v0_1__bossrush_9_v1__matrix_001"
+    }
+  ],
+  "slots_not_recommended": [
+    {
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001"
+    },
+    {
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__matrix_001"
+    },
+    {
+      "mechanic_profile_id": "clue_pressure_v0_1",
+      "sequence_template_id": "formal_sequence_15_v1",
+      "content_pack_id": "clue_pressure_v0_1__formal_sequence_15_v1__matrix_001"
+    },
+    {
+      "mechanic_profile_id": "clue_pressure_v0_1",
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "content_pack_id": "clue_pressure_v0_1__formal_sequence_12_fast_v1__matrix_001"
+    },
+    {
+      "mechanic_profile_id": "clue_pressure_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "content_pack_id": "clue_pressure_v0_1__bossrush_9_v1__matrix_001"
+    },
+    {
+      "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+      "sequence_template_id": "formal_sequence_15_v1",
+      "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_15_v1__matrix_001"
+    },
+    {
+      "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001"
+    },
+    {
+      "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "content_pack_id": "martial_realm_7_dual_weapon_v0_1__bossrush_9_v1__matrix_001"
+    }
+  ],
+  "matrix_release_strategy_ready": true
+}

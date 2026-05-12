@@ -6,6 +6,9 @@
     "template_display_name": "",
     "template_usage_recommendation": "fast_run",
     "build_variant": "balance_release_005",
+    "matrix_slot": false,
+    "matrix_build_variant": "",
+    "matrix_strategy_tag": "",
     "pack_identity": {
       "sequence_template_id": "",
       "mechanic_profile_id": "weapon_followup_v0_1",
@@ -8307,6 +8310,9 @@
     "template_release_strategy_ready": true
   },
   "template_portfolio_metrics": {},
+  "matrix_evaluation_summary": {},
+  "needs_balance_before_release": false,
+  "ready_for_candidate_review": false,
   "balance_release_summary": {
     "balance_release": true,
     "source_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
