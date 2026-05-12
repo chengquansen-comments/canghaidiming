@@ -9,6 +9,29 @@
     "build_variant": "balance_release_005",
     "content_pack_id": "weapon_followup_balance_release_005"
   },
+  "template_display_name": "",
+  "template_usage_recommendation": "fast_run",
+  "template_release_strategy": {
+    "generated_at": "2026-05-12T01:03:48.455372+00:00",
+    "current_release_template": "formal_sequence_15_v1",
+    "fallback_template": "formal_sequence_15_v1",
+    "candidate_templates": [
+      "formal_sequence_12_fast_v1",
+      "bossrush_9_v1",
+      "elite_heavy_15_v1"
+    ],
+    "recommended_standard_template": "formal_sequence_15_v1",
+    "recommended_fast_template": "",
+    "recommended_bossrush_template": "bossrush_9_v1",
+    "recommended_elite_template": "elite_heavy_15_v1",
+    "templates_ready_for_release_candidate": [],
+    "templates_needing_balance": [
+      "formal_sequence_12_fast_v1",
+      "bossrush_9_v1",
+      "elite_heavy_15_v1"
+    ],
+    "template_release_strategy_ready": true
+  },
   "pack_storage_mode": "profile_pack_dir",
   "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_005/runtime_manifest.json",
   "is_active_pack": false,
@@ -1534,6 +1557,7 @@
     "sequence_balance_pass": true,
     "mechanic_compare_row": {}
   },
+  "template_portfolio_metrics": {},
   "rebuild_recommendation_summary": {},
   "ai_source_trace": {
     "llm_candidate_source": false,

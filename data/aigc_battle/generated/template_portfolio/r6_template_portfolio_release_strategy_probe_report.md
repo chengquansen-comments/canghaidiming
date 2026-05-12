@@ -1,0 +1,23 @@
+# R6 Template Portfolio Release Strategy Probe
+
+- template_portfolio_ready: `True`
+- template_count: `4`
+- bossrush_template_ready: `True`
+- eliteheavy_template_ready: `True`
+- formal15_template_ready: `True`
+- formal12fast_template_ready: `True`
+- each_template_generates_pack: `True`
+- each_template_validated: `True`
+- each_template_exported: `True`
+- each_template_evaluated: `True`
+- template_comparison_ready: `True`
+- template_release_strategy_ready: `True`
+- recommended_standard_template: `formal_sequence_15_v1`
+- recommended_fast_template: ``
+- recommended_bossrush_template: `bossrush_9_v1`
+- recommended_elite_template: `elite_heavy_15_v1`
+- pack_resolver_updated: `True`
+- dashboard_template_portfolio_ready: `True`
+- current_release_unchanged: `True`
+- active_profile_matches_current_release: `True`
+- probe_pass: `True`

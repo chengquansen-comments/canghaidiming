@@ -1,0 +1,96 @@
+{
+  "sequence_template_id": "bossrush_9_v1",
+  "sequence_template_version": 1,
+  "target_sequence_id": "formal_sequence_mvp_v1",
+  "total_encounter_count": 9,
+  "stage_order": [
+    "early",
+    "mid",
+    "late",
+    "boss"
+  ],
+  "stage_counts": {
+    "early": 2,
+    "mid": 2,
+    "late": 2,
+    "boss": 3
+  },
+  "stages": {
+    "early": {
+      "sequence_positions": [1, 2],
+      "allowed_encounter_kinds": ["normal", "elite"],
+      "preferred_encounter_kind_counts": {
+        "normal": 1,
+        "elite": 1
+      },
+      "player_wujing_cap_range": [2, 3],
+      "deck_power_range": [22, 32],
+      "reward_tiers": ["early", "mid"],
+      "mechanic_density_range": [0.48, 0.58],
+      "difficulty_label": "bossrush_opening_pressure"
+    },
+    "mid": {
+      "sequence_positions": [3, 4],
+      "allowed_encounter_kinds": ["elite"],
+      "preferred_encounter_kind_counts": {
+        "elite": 2
+      },
+      "player_wujing_cap_range": [4, 5],
+      "deck_power_range": [32, 44],
+      "reward_tiers": ["mid", "advanced"],
+      "mechanic_density_range": [0.62, 0.74],
+      "difficulty_label": "bossrush_mid_elite"
+    },
+    "late": {
+      "sequence_positions": [5, 6],
+      "allowed_encounter_kinds": ["elite", "boss_lite"],
+      "preferred_encounter_kind_counts": {
+        "elite": 1,
+        "boss_lite": 1
+      },
+      "player_wujing_cap_range": [5, 6],
+      "deck_power_range": [42, 52],
+      "reward_tiers": ["advanced", "rare"],
+      "mechanic_density_range": [0.72, 0.82],
+      "difficulty_label": "bossrush_late_crunch"
+    },
+    "boss": {
+      "sequence_positions": [7, 8, 9],
+      "allowed_encounter_kinds": ["boss"],
+      "preferred_encounter_kind_counts": {
+        "boss": 3
+      },
+      "player_wujing_cap_range": [7, 7],
+      "deck_power_range": [54, 60],
+      "reward_tiers": ["boss", "rare", "boss"],
+      "mechanic_density_range": [0.82, 0.92],
+      "difficulty_label": "bossrush_final_gauntlet"
+    }
+  },
+  "difficulty_curve": {
+    "must_be_monotonic_by_stage": true,
+    "elite_stronger_than_normal": true,
+    "boss_stronger_than_elite": true
+  },
+  "reward_curve": {
+    "reward_tier_should_match_encounter_tier": true,
+    "boss_reward_required": true
+  },
+  "realm_curve": {
+    "max_wujing": 7,
+    "stage_wujing_caps": {
+      "early": [2, 3],
+      "mid": [4, 5],
+      "late": [5, 6],
+      "boss": [7, 7]
+    }
+  },
+  "mechanic_curve": {
+    "stage_density_targets": {
+      "early": 0.53,
+      "mid": 0.68,
+      "late": 0.77,
+      "boss": 0.88
+    }
+  }
+}

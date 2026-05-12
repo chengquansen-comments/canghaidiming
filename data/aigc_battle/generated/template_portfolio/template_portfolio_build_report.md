@@ -1,0 +1,8 @@
+# Template Portfolio Build Report
+
+- template_pack_count: `4`
+- built_pack_ids: `weapon_followup_balance_release_007, weapon_followup_v0_1__formal_sequence_12_fast_v1__portfolio_001, weapon_followup_v0_1__bossrush_9_v1__portfolio_001, weapon_followup_v0_1__elite_heavy_15_v1__portfolio_001`
+- validated_pack_ids: `weapon_followup_balance_release_007, weapon_followup_v0_1__formal_sequence_12_fast_v1__portfolio_001, weapon_followup_v0_1__bossrush_9_v1__portfolio_001, weapon_followup_v0_1__elite_heavy_15_v1__portfolio_001`
+- exported_pack_ids: `weapon_followup_balance_release_007, weapon_followup_v0_1__formal_sequence_12_fast_v1__portfolio_001, weapon_followup_v0_1__bossrush_9_v1__portfolio_001, weapon_followup_v0_1__elite_heavy_15_v1__portfolio_001`
+- failed_pack_ids: `-`
+- current_release_unchanged: `True`

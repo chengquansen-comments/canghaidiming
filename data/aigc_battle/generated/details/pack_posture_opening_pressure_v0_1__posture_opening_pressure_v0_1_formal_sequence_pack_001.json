@@ -9,6 +9,29 @@
     "build_variant": "baseline_001",
     "content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001"
   },
+  "template_display_name": "formal_sequence_15_v1",
+  "template_usage_recommendation": "standard_run",
+  "template_release_strategy": {
+    "generated_at": "2026-05-12T01:03:48.455372+00:00",
+    "current_release_template": "formal_sequence_15_v1",
+    "fallback_template": "formal_sequence_15_v1",
+    "candidate_templates": [
+      "formal_sequence_12_fast_v1",
+      "bossrush_9_v1",
+      "elite_heavy_15_v1"
+    ],
+    "recommended_standard_template": "formal_sequence_15_v1",
+    "recommended_fast_template": "",
+    "recommended_bossrush_template": "bossrush_9_v1",
+    "recommended_elite_template": "elite_heavy_15_v1",
+    "templates_ready_for_release_candidate": [],
+    "templates_needing_balance": [
+      "formal_sequence_12_fast_v1",
+      "bossrush_9_v1",
+      "elite_heavy_15_v1"
+    ],
+    "template_release_strategy_ready": true
+  },
   "pack_storage_mode": "profile_root",
   "runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/runtime_manifest.json",
   "is_active_pack": false,
@@ -2593,6 +2616,7 @@
       "clue_pressure_density_by_tier": {}
     }
   },
+  "template_portfolio_metrics": {},
   "rebuild_recommendation_summary": {
     "generated_at": "2026-05-11T09:52:04.408653+00:00",
     "mechanic_profile_id": "posture_opening_pressure_v0_1",

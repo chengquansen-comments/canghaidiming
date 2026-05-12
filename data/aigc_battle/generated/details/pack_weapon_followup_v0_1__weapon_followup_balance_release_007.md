@@ -3,6 +3,7 @@
 - pack_storage_mode: profile_pack_dir
 - is_active_pack: true
 - sequence_template_id: formal_sequence_15_v1
+- template_usage_recommendation: standard_run
 - build_variant: balance_release_007
 - formal_encounter_total_count: 15
 - card_count: 40
@@ -15,11 +16,11 @@
 - sequence_balance_pass: true
 - template_mechanic_pack_binding_valid: true
 - deck_card_realm_eligibility_valid: true
-- evaluation_event_count: 45
-- win_rate: 0.8222
-- avg_turn_count: 3.7111
+- evaluation_event_count: 105
+- win_rate: 0.8667
+- avg_turn_count: 3.5333
 - rebuild_recommendation_count: 27
-- stage_metrics: {}
+- stage_metrics: {'early_win_rate': 0, 'early_avg_turn_count': 0, 'early_stage_event_count': 0, 'early_stage_too_hard_count': 0, 'early_stage_too_long_count': 0, 'early_stage_reward_mismatch_count': 0, 'mid_win_rate': 0, 'mid_avg_turn_count': 0, 'mid_stage_event_count': 0, 'mid_stage_too_hard_count': 0, 'mid_stage_too_long_count': 0, 'mid_stage_reward_mismatch_count': 0, 'late_win_rate': 0, 'late_avg_turn_count': 0, 'late_stage_event_count': 0, 'late_stage_too_hard_count': 0, 'late_stage_too_long_count': 0, 'late_stage_reward_mismatch_count': 0, 'boss_win_rate': 0, 'boss_avg_turn_count': 0, 'boss_stage_event_count': 0, 'boss_stage_too_hard_count': 0, 'boss_stage_too_long_count': 0, 'boss_stage_reward_mismatch_count': 0}
 
 ## Balance Release
 - balance_release: true

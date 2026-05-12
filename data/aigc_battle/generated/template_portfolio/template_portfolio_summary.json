@@ -1,0 +1,918 @@
+{
+  "generated_at": "2026-05-12T01:03:47.429338+00:00",
+  "template_count": 4,
+  "template_ids": [
+    "formal_sequence_15_v1",
+    "formal_sequence_12_fast_v1",
+    "bossrush_9_v1",
+    "elite_heavy_15_v1"
+  ],
+  "total_encounter_counts": {
+    "formal_sequence_15_v1": 15,
+    "formal_sequence_12_fast_v1": 12,
+    "bossrush_9_v1": 9,
+    "elite_heavy_15_v1": 15
+  },
+  "stage_counts_by_template": {
+    "formal_sequence_15_v1": {
+      "early": 4,
+      "mid": 4,
+      "late": 4,
+      "boss": 3
+    },
+    "formal_sequence_12_fast_v1": {
+      "early": 3,
+      "mid": 3,
+      "late": 3,
+      "boss": 3
+    },
+    "bossrush_9_v1": {
+      "early": 2,
+      "mid": 2,
+      "late": 2,
+      "boss": 3
+    },
+    "elite_heavy_15_v1": {
+      "early": 3,
+      "mid": 4,
+      "late": 5,
+      "boss": 3
+    }
+  },
+  "encounter_kind_distribution_by_template": {
+    "formal_sequence_15_v1": {
+      "early": {
+        "normal": 3,
+        "elite": 1
+      },
+      "mid": {
+        "normal": 2,
+        "elite": 2
+      },
+      "late": {
+        "elite": 3,
+        "boss": 1
+      },
+      "boss": {
+        "boss": 3
+      }
+    },
+    "formal_sequence_12_fast_v1": {
+      "early": {
+        "normal": 2,
+        "elite": 1
+      },
+      "mid": {
+        "normal": 1,
+        "elite": 2
+      },
+      "late": {
+        "elite": 3
+      },
+      "boss": {
+        "boss": 3
+      }
+    },
+    "bossrush_9_v1": {
+      "early": {
+        "normal": 1,
+        "elite": 1
+      },
+      "mid": {
+        "elite": 2
+      },
+      "late": {
+        "elite": 1,
+        "boss_lite": 1
+      },
+      "boss": {
+        "boss": 3
+      }
+    },
+    "elite_heavy_15_v1": {
+      "early": {
+        "normal": 2,
+        "elite": 1
+      },
+      "mid": {
+        "normal": 1,
+        "elite": 3
+      },
+      "late": {
+        "elite": 3,
+        "boss_lite": 2
+      },
+      "boss": {
+        "boss": 3
+      }
+    }
+  },
+  "power_curve_by_template": {
+    "formal_sequence_15_v1": {
+      "early": [
+        18,
+        28
+      ],
+      "mid": [
+        26,
+        38
+      ],
+      "late": [
+        36,
+        50
+      ],
+      "boss": [
+        46,
+        62
+      ]
+    },
+    "formal_sequence_12_fast_v1": {
+      "early": [
+        22,
+        28
+      ],
+      "mid": [
+        30,
+        34
+      ],
+      "late": [
+        43,
+        52
+      ],
+      "boss": [
+        54,
+        56
+      ]
+    },
+    "bossrush_9_v1": {
+      "early": [
+        22,
+        32
+      ],
+      "mid": [
+        32,
+        44
+      ],
+      "late": [
+        42,
+        52
+      ],
+      "boss": [
+        54,
+        60
+      ]
+    },
+    "elite_heavy_15_v1": {
+      "early": [
+        22,
+        30
+      ],
+      "mid": [
+        30,
+        40
+      ],
+      "late": [
+        40,
+        52
+      ],
+      "boss": [
+        54,
+        60
+      ]
+    }
+  },
+  "reward_curve_by_template": {
+    "formal_sequence_15_v1": {
+      "early": [
+        "early"
+      ],
+      "mid": [
+        "mid"
+      ],
+      "late": [
+        "late"
+      ],
+      "boss": [
+        "boss"
+      ]
+    },
+    "formal_sequence_12_fast_v1": {
+      "early": [
+        "early"
+      ],
+      "mid": [
+        "mid"
+      ],
+      "late": [
+        "late"
+      ],
+      "boss": [
+        "boss"
+      ]
+    },
+    "bossrush_9_v1": {
+      "early": [
+        "early",
+        "mid"
+      ],
+      "mid": [
+        "mid",
+        "advanced"
+      ],
+      "late": [
+        "advanced",
+        "rare"
+      ],
+      "boss": [
+        "boss",
+        "rare",
+        "boss"
+      ]
+    },
+    "elite_heavy_15_v1": {
+      "early": [
+        "early",
+        "early",
+        "mid"
+      ],
+      "mid": [
+        "mid",
+        "advanced",
+        "advanced",
+        "advanced"
+      ],
+      "late": [
+        "advanced",
+        "advanced",
+        "rare",
+        "rare",
+        "rare"
+      ],
+      "boss": [
+        "boss",
+        "boss",
+        "rare"
+      ]
+    }
+  },
+  "realm_curve_by_template": {
+    "formal_sequence_15_v1": {
+      "max_wujing": 7,
+      "stage_wujing_caps": {
+        "early": [
+          1,
+          2
+        ],
+        "mid": [
+          3,
+          4
+        ],
+        "late": [
+          5,
+          6
+        ],
+        "boss": [
+          7,
+          7
+        ]
+      }
+    },
+    "formal_sequence_12_fast_v1": {
+      "max_wujing": 7,
+      "stage_wujing_caps": {
+        "early": [
+          1,
+          2
+        ],
+        "mid": [
+          3,
+          4
+        ],
+        "late": [
+          5,
+          6
+        ],
+        "boss": [
+          7,
+          7
+        ]
+      }
+    },
+    "bossrush_9_v1": {
+      "max_wujing": 7,
+      "stage_wujing_caps": {
+        "early": [
+          2,
+          3
+        ],
+        "mid": [
+          4,
+          5
+        ],
+        "late": [
+          5,
+          6
+        ],
+        "boss": [
+          7,
+          7
+        ]
+      }
+    },
+    "elite_heavy_15_v1": {
+      "max_wujing": 7,
+      "stage_wujing_caps": {
+        "early": [
+          1,
+          2
+        ],
+        "mid": [
+          3,
+          4
+        ],
+        "late": [
+          5,
+          6
+        ],
+        "boss": [
+          7,
+          7
+        ]
+      }
+    }
+  },
+  "mechanic_density_curve_by_template": {
+    "formal_sequence_15_v1": {
+      "early": [
+        0.3,
+        0.5
+      ],
+      "mid": [
+        0.45,
+        0.65
+      ],
+      "late": [
+        0.55,
+        0.75
+      ],
+      "boss": [
+        0.65,
+        0.85
+      ]
+    },
+    "formal_sequence_12_fast_v1": {
+      "early": [
+        0.4,
+        0.55
+      ],
+      "mid": [
+        0.55,
+        0.7
+      ],
+      "late": [
+        0.65,
+        0.8
+      ],
+      "boss": [
+        0.75,
+        0.9
+      ]
+    },
+    "bossrush_9_v1": {
+      "early": [
+        0.48,
+        0.58
+      ],
+      "mid": [
+        0.62,
+        0.74
+      ],
+      "late": [
+        0.72,
+        0.82
+      ],
+      "boss": [
+        0.82,
+        0.92
+      ]
+    },
+    "elite_heavy_15_v1": {
+      "early": [
+        0.42,
+        0.54
+      ],
+      "mid": [
+        0.58,
+        0.72
+      ],
+      "late": [
+        0.68,
+        0.82
+      ],
+      "boss": [
+        0.78,
+        0.88
+      ]
+    }
+  },
+  "templates": [
+    {
+      "sequence_template_id": "formal_sequence_15_v1",
+      "target_sequence_id": "formal_sequence_mvp_v1",
+      "total_encounter_count": 15,
+      "stage_counts": {
+        "early": 4,
+        "mid": 4,
+        "late": 4,
+        "boss": 3
+      },
+      "encounter_kind_distribution": {
+        "early": {
+          "normal": 3,
+          "elite": 1
+        },
+        "mid": {
+          "normal": 2,
+          "elite": 2
+        },
+        "late": {
+          "elite": 3,
+          "boss": 1
+        },
+        "boss": {
+          "boss": 3
+        }
+      },
+      "power_curve": {
+        "early": [
+          18,
+          28
+        ],
+        "mid": [
+          26,
+          38
+        ],
+        "late": [
+          36,
+          50
+        ],
+        "boss": [
+          46,
+          62
+        ]
+      },
+      "reward_curve": {
+        "early": [
+          "early"
+        ],
+        "mid": [
+          "mid"
+        ],
+        "late": [
+          "late"
+        ],
+        "boss": [
+          "boss"
+        ]
+      },
+      "realm_curve": {
+        "max_wujing": 7,
+        "stage_wujing_caps": {
+          "early": [
+            1,
+            2
+          ],
+          "mid": [
+            3,
+            4
+          ],
+          "late": [
+            5,
+            6
+          ],
+          "boss": [
+            7,
+            7
+          ]
+        }
+      },
+      "mechanic_density_curve": {
+        "early": [
+          0.3,
+          0.5
+        ],
+        "mid": [
+          0.45,
+          0.65
+        ],
+        "late": [
+          0.55,
+          0.75
+        ],
+        "boss": [
+          0.65,
+          0.85
+        ]
+      },
+      "difficulty_curve": {
+        "early": "opening_ramp",
+        "mid": "stabilized_pressure",
+        "late": "high_pressure",
+        "boss": "boss_gauntlet"
+      },
+      "stage_plan_path": "data/aigc_battle/generated/sequence_template_validation/formal_sequence_15_v1_stage_plan.json",
+      "positions": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ]
+    },
+    {
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "target_sequence_id": "formal_sequence_mvp_v1",
+      "total_encounter_count": 12,
+      "stage_counts": {
+        "early": 3,
+        "mid": 3,
+        "late": 3,
+        "boss": 3
+      },
+      "encounter_kind_distribution": {
+        "early": {
+          "normal": 2,
+          "elite": 1
+        },
+        "mid": {
+          "normal": 1,
+          "elite": 2
+        },
+        "late": {
+          "elite": 3
+        },
+        "boss": {
+          "boss": 3
+        }
+      },
+      "power_curve": {
+        "early": [
+          22,
+          28
+        ],
+        "mid": [
+          30,
+          34
+        ],
+        "late": [
+          43,
+          52
+        ],
+        "boss": [
+          54,
+          56
+        ]
+      },
+      "reward_curve": {
+        "early": [
+          "early"
+        ],
+        "mid": [
+          "mid"
+        ],
+        "late": [
+          "late"
+        ],
+        "boss": [
+          "boss"
+        ]
+      },
+      "realm_curve": {
+        "max_wujing": 7,
+        "stage_wujing_caps": {
+          "early": [
+            1,
+            2
+          ],
+          "mid": [
+            3,
+            4
+          ],
+          "late": [
+            5,
+            6
+          ],
+          "boss": [
+            7,
+            7
+          ]
+        }
+      },
+      "mechanic_density_curve": {
+        "early": [
+          0.4,
+          0.55
+        ],
+        "mid": [
+          0.55,
+          0.7
+        ],
+        "late": [
+          0.65,
+          0.8
+        ],
+        "boss": [
+          0.75,
+          0.9
+        ]
+      },
+      "difficulty_curve": {
+        "early": "fast_opening",
+        "mid": "fast_mid_pressure",
+        "late": "compressed_late",
+        "boss": "fast_boss_chain"
+      },
+      "stage_plan_path": "data/aigc_battle/generated/sequence_template_validation/formal_sequence_12_fast_v1_stage_plan.json",
+      "positions": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "sequence_template_id": "bossrush_9_v1",
+      "target_sequence_id": "formal_sequence_mvp_v1",
+      "total_encounter_count": 9,
+      "stage_counts": {
+        "early": 2,
+        "mid": 2,
+        "late": 2,
+        "boss": 3
+      },
+      "encounter_kind_distribution": {
+        "early": {
+          "normal": 1,
+          "elite": 1
+        },
+        "mid": {
+          "elite": 2
+        },
+        "late": {
+          "elite": 1,
+          "boss_lite": 1
+        },
+        "boss": {
+          "boss": 3
+        }
+      },
+      "power_curve": {
+        "early": [
+          22,
+          32
+        ],
+        "mid": [
+          32,
+          44
+        ],
+        "late": [
+          42,
+          52
+        ],
+        "boss": [
+          54,
+          60
+        ]
+      },
+      "reward_curve": {
+        "early": [
+          "early",
+          "mid"
+        ],
+        "mid": [
+          "mid",
+          "advanced"
+        ],
+        "late": [
+          "advanced",
+          "rare"
+        ],
+        "boss": [
+          "boss",
+          "rare",
+          "boss"
+        ]
+      },
+      "realm_curve": {
+        "max_wujing": 7,
+        "stage_wujing_caps": {
+          "early": [
+            2,
+            3
+          ],
+          "mid": [
+            4,
+            5
+          ],
+          "late": [
+            5,
+            6
+          ],
+          "boss": [
+            7,
+            7
+          ]
+        }
+      },
+      "mechanic_density_curve": {
+        "early": [
+          0.48,
+          0.58
+        ],
+        "mid": [
+          0.62,
+          0.74
+        ],
+        "late": [
+          0.72,
+          0.82
+        ],
+        "boss": [
+          0.82,
+          0.92
+        ]
+      },
+      "difficulty_curve": {
+        "early": "bossrush_opening_pressure",
+        "mid": "bossrush_mid_elite",
+        "late": "bossrush_late_crunch",
+        "boss": "bossrush_final_gauntlet"
+      },
+      "stage_plan_path": "data/aigc_battle/generated/sequence_template_validation/bossrush_9_v1_stage_plan.json",
+      "positions": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "sequence_template_id": "elite_heavy_15_v1",
+      "target_sequence_id": "formal_sequence_mvp_v1",
+      "total_encounter_count": 15,
+      "stage_counts": {
+        "early": 3,
+        "mid": 4,
+        "late": 5,
+        "boss": 3
+      },
+      "encounter_kind_distribution": {
+        "early": {
+          "normal": 2,
+          "elite": 1
+        },
+        "mid": {
+          "normal": 1,
+          "elite": 3
+        },
+        "late": {
+          "elite": 3,
+          "boss_lite": 2
+        },
+        "boss": {
+          "boss": 3
+        }
+      },
+      "power_curve": {
+        "early": [
+          22,
+          30
+        ],
+        "mid": [
+          30,
+          40
+        ],
+        "late": [
+          40,
+          52
+        ],
+        "boss": [
+          54,
+          60
+        ]
+      },
+      "reward_curve": {
+        "early": [
+          "early",
+          "early",
+          "mid"
+        ],
+        "mid": [
+          "mid",
+          "advanced",
+          "advanced",
+          "advanced"
+        ],
+        "late": [
+          "advanced",
+          "advanced",
+          "rare",
+          "rare",
+          "rare"
+        ],
+        "boss": [
+          "boss",
+          "boss",
+          "rare"
+        ]
+      },
+      "realm_curve": {
+        "max_wujing": 7,
+        "stage_wujing_caps": {
+          "early": [
+            1,
+            2
+          ],
+          "mid": [
+            3,
+            4
+          ],
+          "late": [
+            5,
+            6
+          ],
+          "boss": [
+            7,
+            7
+          ]
+        }
+      },
+      "mechanic_density_curve": {
+        "early": [
+          0.42,
+          0.54
+        ],
+        "mid": [
+          0.58,
+          0.72
+        ],
+        "late": [
+          0.68,
+          0.82
+        ],
+        "boss": [
+          0.78,
+          0.88
+        ]
+      },
+      "difficulty_curve": {
+        "early": "elite_pressure_opening",
+        "mid": "elite_pressure_midline",
+        "late": "elite_pressure_late_chain",
+        "boss": "elite_pressure_boss_gauntlet"
+      },
+      "stage_plan_path": "data/aigc_battle/generated/sequence_template_validation/elite_heavy_15_v1_stage_plan.json",
+      "positions": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ]
+    }
+  ],
+  "template_portfolio_ready": true
+}

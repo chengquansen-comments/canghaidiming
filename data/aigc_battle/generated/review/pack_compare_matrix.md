@@ -1,9 +1,9 @@
 # Pack 对比矩阵
 
-- pack_count: `27`
+- pack_count: `30`
 - strongest_pack_by_avg_power: `martial_realm_7_dual_weapon_v0_1::martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001`
 - most_risky_pack: `weapon_followup_v0_1::weapon_followup_ai_candidate_pack_001`
-- healthiest_pack: `weapon_followup_v0_1::weapon_followup_v0_1__formal_sequence_12_fast_v1__baseline_001`
+- healthiest_pack: `weapon_followup_v0_1::weapon_followup_v0_1__bossrush_9_v1__portfolio_001`
 - weakest_pack_by_avg_power: `weapon_followup_v0_1::weapon_followup_balance_release_006`
 
 | Active | Profile | Pack | Health | Score | Avg Power | Eval | Win | Avg Turn | Trigger | Actionability | Rebuild | Balance Release | Win Delta | Runtime Primitives |
@@ -29,9 +29,12 @@
 |  | `weapon_followup_v0_1` | `weapon_followup_balance_release_004` | `warning` | 0 | 18.6 | 45 | 0.7333 | 6.9778 | 1.0 | 100 | YES | YES | 0.7555 | `weapon_followup` |
 |  | `weapon_followup_v0_1` | `weapon_followup_balance_release_005` | `warning` | 0 | 19.6 | 45 | 0.7333 | 6.8444 | 1.0 | 99 | YES | YES | 0.7555 | `weapon_followup` |
 |  | `weapon_followup_v0_1` | `weapon_followup_balance_release_006` | `warning` | 0 | 12.0 | 45 | 0.8222 | 3.7111 | 1.0 | 100 | YES | YES | 0.7555 | `weapon_followup` |
-| YES | `weapon_followup_v0_1` | `weapon_followup_balance_release_007` | `warning` | 0 | 12.0 | 45 | 0.8222 | 3.7111 | 1.0 | 100 | YES | YES | 0.7555 | `weapon_followup` |
+| YES | `weapon_followup_v0_1` | `weapon_followup_balance_release_007` | `warning` | 0 | 12.0 | 105 | 0.8667 | 3.5333 | 1.0 | 100 | YES | YES | 0.7555 | `weapon_followup` |
 |  | `weapon_followup_v0_1` | `weapon_followup_eval_rebuild_001` | `warning` | 41 | 38.43 | 0 | 0.0 | 0.0 | 0.0 | 0 |  |  | 0.0 | `weapon_followup` |
 |  | `weapon_followup_v0_1` | `weapon_followup_eval_rebuild_002` | `warning` | 39 | 38.48 | 0 | 0.0 | 0.0 | 0.0 | 0 |  |  | 0.0 | `weapon_followup` |
 |  | `weapon_followup_v0_1` | `weapon_followup_eval_rebuild_003` | `warning` | 39 | 38.48 | 0 | 0.0 | 0.0 | 0.0 | 0 |  |  | 0.0 | `weapon_followup` |
 |  | `weapon_followup_v0_1` | `weapon_followup_real_rebuild_001` | `warning` | 45 | 39.03 | 0 | 0.0 | 0.0 | 0.0 | 0 |  |  | 0.0 | `weapon_followup` |
+|  | `weapon_followup_v0_1` | `weapon_followup_v0_1__bossrush_9_v1__portfolio_001` | `warning` | 65 | 41.62 | 36 | 0.4444 | 8.7222 | 1.0 | 100 | YES |  | 0.0 | `weapon_followup` |
+|  | `weapon_followup_v0_1` | `weapon_followup_v0_1__elite_heavy_15_v1__portfolio_001` | `warning` | 43 | 40.36 | 60 | 0.3667 | 9.2 | 1.0 | 100 | YES |  | 0.0 | `weapon_followup` |
 |  | `weapon_followup_v0_1` | `weapon_followup_v0_1__formal_sequence_12_fast_v1__baseline_001` | `warning` | 61 | 40.48 | 12 | 0.5 | 9.0833 | 1.0 | 0 |  |  | 0.0 | `weapon_followup` |
+|  | `weapon_followup_v0_1` | `weapon_followup_v0_1__formal_sequence_12_fast_v1__portfolio_001` | `warning` | 61 | 40.48 | 48 | 0.4167 | 9.2917 | 1.0 | 100 | YES |  | 0.0 | `weapon_followup` |

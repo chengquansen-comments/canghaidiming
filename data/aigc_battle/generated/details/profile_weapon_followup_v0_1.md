@@ -31,4 +31,7 @@
 - weapon_followup_eval_rebuild_002 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_eval_rebuild_003 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_real_rebuild_001 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__bossrush_9_v1__portfolio_001 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__elite_heavy_15_v1__portfolio_001 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_v0_1__formal_sequence_12_fast_v1__baseline_001 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__formal_sequence_12_fast_v1__portfolio_001 | mode=profile_pack_dir | active=false | export=true

@@ -2,7 +2,7 @@
   "mechanic_profile_id": "weapon_followup_v0_1",
   "display_name": "武器追击机制",
   "version": "0.1.0",
-  "content_pack_count": 17,
+  "content_pack_count": 20,
   "active_pack_id": "weapon_followup_balance_release_007",
   "resources": [
     "hp",
@@ -167,8 +167,8 @@
   "replacement_mode": "full_sequence",
   "content_recipe_id": "weapon_followup_formal_sequence_recipe",
   "validation_gate_summary": {
-    "ready_packs": 17,
-    "total_packs": 17,
+    "ready_packs": 20,
+    "total_packs": 20,
     "active_pack_id": "weapon_followup_balance_release_007"
   },
   "profile_pack_list": [
@@ -333,7 +333,37 @@
       ]
     },
     {
+      "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__portfolio_001",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__elite_heavy_15_v1__portfolio_001",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
       "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__baseline_001",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__portfolio_001",
       "pack_storage_mode": "profile_pack_dir",
       "is_active_pack": false,
       "ready_for_runtime_export": true,

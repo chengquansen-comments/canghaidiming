@@ -1,9 +1,10 @@
 {
   "resolver_id": "pack_resolver_v1",
-  "generated_at": "2026-05-11T12:29:40.981236+00:00",
+  "generated_at": "2026-05-12T01:03:48.816300+00:00",
   "entries": [
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "clue_pressure_v0_1",
       "build_variant": "baseline_001",
       "content_pack_id": "clue_pressure_v0_1_formal_sequence_pack_001",
@@ -20,10 +21,34 @@
         "mechanic_profile_id": "clue_pressure_v0_1",
         "build_variant": "baseline_001",
         "content_pack_id": "clue_pressure_v0_1_formal_sequence_pack_001"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
       "build_variant": "baseline_001",
       "content_pack_id": "martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001",
@@ -40,10 +65,34 @@
         "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
         "build_variant": "baseline_001",
         "content_pack_id": "martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "posture_basic_v0_1",
       "build_variant": "baseline_001",
       "content_pack_id": "posture_basic_v0_1_formal_sequence_pack_001",
@@ -60,10 +109,34 @@
         "mechanic_profile_id": "posture_basic_v0_1",
         "build_variant": "baseline_001",
         "content_pack_id": "posture_basic_v0_1_formal_sequence_pack_001"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "posture_llm_candidate_v0_1",
       "build_variant": "baseline_001",
       "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001",
@@ -80,10 +153,34 @@
         "mechanic_profile_id": "posture_llm_candidate_v0_1",
         "build_variant": "baseline_001",
         "content_pack_id": "posture_llm_candidate_v0_1_formal_sequence_pack_001"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "posture_opening_pressure_v0_1",
       "build_variant": "baseline_001",
       "content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
@@ -100,10 +197,34 @@
         "mechanic_profile_id": "posture_opening_pressure_v0_1",
         "build_variant": "baseline_001",
         "content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "posture_opening_pressure_v0_1",
       "build_variant": "baseline_001",
       "content_pack_id": "posture_opening_pressure_p1_probe_snapshot_001",
@@ -120,10 +241,34 @@
         "mechanic_profile_id": "posture_opening_pressure_v0_1",
         "build_variant": "baseline_001",
         "content_pack_id": "posture_opening_pressure_p1_probe_snapshot_001"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "posture_opening_pressure_v0_1",
       "build_variant": "baseline_001",
       "content_pack_id": "posture_opening_pressure_p1_probe_snapshot_002",
@@ -140,10 +285,34 @@
         "mechanic_profile_id": "posture_opening_pressure_v0_1",
         "build_variant": "baseline_001",
         "content_pack_id": "posture_opening_pressure_p1_probe_snapshot_002"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "posture_opening_pressure_v0_1",
       "build_variant": "baseline_001",
       "content_pack_id": "posture_opening_pressure_snapshot_001",
@@ -160,10 +329,34 @@
         "mechanic_profile_id": "posture_opening_pressure_v0_1",
         "build_variant": "baseline_001",
         "content_pack_id": "posture_opening_pressure_snapshot_001"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "posture_opening_pressure_v0_1",
       "build_variant": "baseline_001",
       "content_pack_id": "snapshot_pack_id_required",
@@ -180,10 +373,34 @@
         "mechanic_profile_id": "posture_opening_pressure_v0_1",
         "build_variant": "baseline_001",
         "content_pack_id": "snapshot_pack_id_required"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "posture_tuned_v0_1b",
       "build_variant": "baseline_001",
       "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001",
@@ -200,10 +417,34 @@
         "mechanic_profile_id": "posture_tuned_v0_1b",
         "build_variant": "baseline_001",
         "content_pack_id": "posture_tuned_v0_1b_formal_sequence_pack_001"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "weapon_followup_v0_1",
       "build_variant": "baseline_001",
       "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
@@ -220,10 +461,34 @@
         "mechanic_profile_id": "weapon_followup_v0_1",
         "build_variant": "baseline_001",
         "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "weapon_followup_v0_1",
       "build_variant": "baseline_001",
       "content_pack_id": "snapshot_pack_id_required",
@@ -240,10 +505,34 @@
         "mechanic_profile_id": "weapon_followup_v0_1",
         "build_variant": "baseline_001",
         "content_pack_id": "snapshot_pack_id_required"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "weapon_followup_v0_1",
       "build_variant": "baseline_001",
       "content_pack_id": "weapon_followup_ai_candidate_pack_001",
@@ -260,10 +549,34 @@
         "mechanic_profile_id": "weapon_followup_v0_1",
         "build_variant": "baseline_001",
         "content_pack_id": "weapon_followup_ai_candidate_pack_001"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "weapon_followup_v0_1",
       "build_variant": "baseline_001",
       "content_pack_id": "weapon_followup_ai_candidate_pack_probe_001",
@@ -280,10 +593,34 @@
         "mechanic_profile_id": "weapon_followup_v0_1",
         "build_variant": "baseline_001",
         "content_pack_id": "weapon_followup_ai_candidate_pack_probe_001"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "weapon_followup_v0_1",
       "build_variant": "baseline_001",
       "content_pack_id": "weapon_followup_ai_candidate_pack_probe_002",
@@ -300,10 +637,34 @@
         "mechanic_profile_id": "weapon_followup_v0_1",
         "build_variant": "baseline_001",
         "content_pack_id": "weapon_followup_ai_candidate_pack_probe_002"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "weapon_followup_v0_1",
       "build_variant": "balance_release_001",
       "content_pack_id": "weapon_followup_balance_release_001",
@@ -320,10 +681,34 @@
         "mechanic_profile_id": "weapon_followup_v0_1",
         "build_variant": "balance_release_001",
         "content_pack_id": "weapon_followup_balance_release_001"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "weapon_followup_v0_1",
       "build_variant": "balance_release_002",
       "content_pack_id": "weapon_followup_balance_release_002",
@@ -340,10 +725,34 @@
         "mechanic_profile_id": "weapon_followup_v0_1",
         "build_variant": "balance_release_002",
         "content_pack_id": "weapon_followup_balance_release_002"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "weapon_followup_v0_1",
       "build_variant": "balance_release_003",
       "content_pack_id": "weapon_followup_balance_release_003",
@@ -360,10 +769,34 @@
         "mechanic_profile_id": "weapon_followup_v0_1",
         "build_variant": "balance_release_003",
         "content_pack_id": "weapon_followup_balance_release_003"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "weapon_followup_v0_1",
       "build_variant": "balance_release_004",
       "content_pack_id": "weapon_followup_balance_release_004",
@@ -380,10 +813,34 @@
         "mechanic_profile_id": "weapon_followup_v0_1",
         "build_variant": "balance_release_004",
         "content_pack_id": "weapon_followup_balance_release_004"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "weapon_followup_v0_1",
       "build_variant": "balance_release_005",
       "content_pack_id": "weapon_followup_balance_release_005",
@@ -400,10 +857,34 @@
         "mechanic_profile_id": "weapon_followup_v0_1",
         "build_variant": "balance_release_005",
         "content_pack_id": "weapon_followup_balance_release_005"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "weapon_followup_v0_1",
       "build_variant": "balance_release_006",
       "content_pack_id": "weapon_followup_balance_release_006",
@@ -420,10 +901,34 @@
         "mechanic_profile_id": "weapon_followup_v0_1",
         "build_variant": "balance_release_006",
         "content_pack_id": "weapon_followup_balance_release_006"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "weapon_followup_v0_1",
       "build_variant": "balance_release_007",
       "content_pack_id": "weapon_followup_balance_release_007",
@@ -440,10 +945,75 @@
         "mechanic_profile_id": "weapon_followup_v0_1",
         "build_variant": "balance_release_007",
         "content_pack_id": "weapon_followup_balance_release_007"
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {
+        "template_id": "formal_sequence_15_v1",
+        "content_pack_id": "weapon_followup_balance_release_007",
+        "total_encounter_count": 15,
+        "win_rate": 0.8667,
+        "avg_turn_count": 3.5333,
+        "avg_player_hp_end": 23.2667,
+        "too_hard_candidates": 4,
+        "too_long_candidates": 0,
+        "reward_mismatch_candidates": 0,
+        "mechanic_trigger_rate": 1.0,
+        "stage_metrics": {
+          "early_win_rate": 0,
+          "early_avg_turn_count": 0,
+          "early_stage_event_count": 0,
+          "early_stage_too_hard_count": 0,
+          "early_stage_too_long_count": 0,
+          "early_stage_reward_mismatch_count": 0,
+          "mid_win_rate": 0,
+          "mid_avg_turn_count": 0,
+          "mid_stage_event_count": 0,
+          "mid_stage_too_hard_count": 0,
+          "mid_stage_too_long_count": 0,
+          "mid_stage_reward_mismatch_count": 0,
+          "late_win_rate": 0,
+          "late_avg_turn_count": 0,
+          "late_stage_event_count": 0,
+          "late_stage_too_hard_count": 0,
+          "late_stage_too_long_count": 0,
+          "late_stage_reward_mismatch_count": 0,
+          "boss_win_rate": 0,
+          "boss_avg_turn_count": 0,
+          "boss_stage_event_count": 0,
+          "boss_stage_too_hard_count": 0,
+          "boss_stage_too_long_count": 0,
+          "boss_stage_reward_mismatch_count": 0
+        },
+        "fallback_loadout_count": 0,
+        "needs_balance": false,
+        "role": "standard_current_release",
+        "snapshot_path": "data/aigc_battle/evaluation/snapshots/weapon_followup_v0_1__weapon_followup_balance_release_007__evaluation_snapshot.json"
       }
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "weapon_followup_v0_1",
       "build_variant": "eval_rebuild_001",
       "content_pack_id": "weapon_followup_eval_rebuild_001",
@@ -460,10 +1030,34 @@
         "mechanic_profile_id": "weapon_followup_v0_1",
         "build_variant": "eval_rebuild_001",
         "content_pack_id": "weapon_followup_eval_rebuild_001"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "weapon_followup_v0_1",
       "build_variant": "eval_rebuild_002",
       "content_pack_id": "weapon_followup_eval_rebuild_002",
@@ -480,10 +1074,34 @@
         "mechanic_profile_id": "weapon_followup_v0_1",
         "build_variant": "eval_rebuild_002",
         "content_pack_id": "weapon_followup_eval_rebuild_002"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "weapon_followup_v0_1",
       "build_variant": "eval_rebuild_003",
       "content_pack_id": "weapon_followup_eval_rebuild_003",
@@ -500,10 +1118,34 @@
         "mechanic_profile_id": "weapon_followup_v0_1",
         "build_variant": "eval_rebuild_003",
         "content_pack_id": "weapon_followup_eval_rebuild_003"
-      }
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
     },
     {
       "sequence_template_id": "formal_sequence_15_v1",
+      "template_display_name": "formal_sequence_15_v1",
       "mechanic_profile_id": "weapon_followup_v0_1",
       "build_variant": "real_rebuild_001",
       "content_pack_id": "weapon_followup_real_rebuild_001",
@@ -520,10 +1162,204 @@
         "mechanic_profile_id": "weapon_followup_v0_1",
         "build_variant": "real_rebuild_001",
         "content_pack_id": "weapon_followup_real_rebuild_001"
+      },
+      "template_usage_recommendation": "standard_run",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
+    },
+    {
+      "sequence_template_id": "bossrush_9_v1",
+      "template_display_name": "bossrush_9_v1",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "portfolio_001",
+      "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__portfolio_001",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__bossrush_9_v1__portfolio_001/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__bossrush_9_v1__portfolio_001/validation_report.json",
+      "release_status": "draft",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "bossrush_9_v1",
+        "mechanic_profile_id": "weapon_followup_v0_1",
+        "build_variant": "portfolio_001",
+        "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__portfolio_001"
+      },
+      "template_usage_recommendation": "boss_rush",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {
+        "template_id": "bossrush_9_v1",
+        "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__portfolio_001",
+        "total_encounter_count": 9,
+        "win_rate": 0.4444,
+        "avg_turn_count": 8.7222,
+        "avg_player_hp_end": 8.1111,
+        "too_hard_candidates": 5,
+        "too_long_candidates": 9,
+        "reward_mismatch_candidates": 4,
+        "mechanic_trigger_rate": 1.0,
+        "stage_metrics": {
+          "early_win_rate": 1.0,
+          "early_avg_turn_count": 8.25,
+          "early_stage_event_count": 8,
+          "early_stage_too_hard_count": 0,
+          "early_stage_too_long_count": 8,
+          "early_stage_reward_mismatch_count": 0,
+          "mid_win_rate": 1.0,
+          "mid_avg_turn_count": 8.5,
+          "mid_stage_event_count": 8,
+          "mid_stage_too_hard_count": 0,
+          "mid_stage_too_long_count": 8,
+          "mid_stage_reward_mismatch_count": 4,
+          "late_win_rate": 0.0,
+          "late_avg_turn_count": 9.0,
+          "late_stage_event_count": 8,
+          "late_stage_too_hard_count": 8,
+          "late_stage_too_long_count": 8,
+          "late_stage_reward_mismatch_count": 8,
+          "boss_win_rate": 0.0,
+          "boss_avg_turn_count": 9.0,
+          "boss_stage_event_count": 12,
+          "boss_stage_too_hard_count": 12,
+          "boss_stage_too_long_count": 12,
+          "boss_stage_reward_mismatch_count": 4
+        },
+        "fallback_loadout_count": 0,
+        "needs_balance": true,
+        "role": "boss_rush_candidate",
+        "snapshot_path": "data/aigc_battle/evaluation/snapshots/weapon_followup_v0_1__weapon_followup_v0_1__bossrush_9_v1__portfolio_001__evaluation_snapshot.json"
+      }
+    },
+    {
+      "sequence_template_id": "elite_heavy_15_v1",
+      "template_display_name": "elite_heavy_15_v1",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "portfolio_001",
+      "content_pack_id": "weapon_followup_v0_1__elite_heavy_15_v1__portfolio_001",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__elite_heavy_15_v1__portfolio_001/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__elite_heavy_15_v1__portfolio_001/validation_report.json",
+      "release_status": "draft",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "elite_heavy_15_v1",
+        "mechanic_profile_id": "weapon_followup_v0_1",
+        "build_variant": "portfolio_001",
+        "content_pack_id": "weapon_followup_v0_1__elite_heavy_15_v1__portfolio_001"
+      },
+      "template_usage_recommendation": "elite_pressure",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {
+        "template_id": "elite_heavy_15_v1",
+        "content_pack_id": "weapon_followup_v0_1__elite_heavy_15_v1__portfolio_001",
+        "total_encounter_count": 15,
+        "win_rate": 0.3667,
+        "avg_turn_count": 9.2,
+        "avg_player_hp_end": 3.9667,
+        "too_hard_candidates": 12,
+        "too_long_candidates": 15,
+        "reward_mismatch_candidates": 9,
+        "mechanic_trigger_rate": 1.0,
+        "stage_metrics": {
+          "early_win_rate": 0.6667,
+          "early_avg_turn_count": 9.6667,
+          "early_stage_event_count": 12,
+          "early_stage_too_hard_count": 6,
+          "early_stage_too_long_count": 12,
+          "early_stage_reward_mismatch_count": 0,
+          "mid_win_rate": 0.875,
+          "mid_avg_turn_count": 9.0,
+          "mid_stage_event_count": 16,
+          "mid_stage_too_hard_count": 8,
+          "mid_stage_too_long_count": 16,
+          "mid_stage_reward_mismatch_count": 12,
+          "late_win_rate": 0.0,
+          "late_avg_turn_count": 9.2,
+          "late_stage_event_count": 20,
+          "late_stage_too_hard_count": 20,
+          "late_stage_too_long_count": 20,
+          "late_stage_reward_mismatch_count": 20,
+          "boss_win_rate": 0.0,
+          "boss_avg_turn_count": 9.0,
+          "boss_stage_event_count": 12,
+          "boss_stage_too_hard_count": 12,
+          "boss_stage_too_long_count": 12,
+          "boss_stage_reward_mismatch_count": 4
+        },
+        "fallback_loadout_count": 0,
+        "needs_balance": true,
+        "role": "elite_pressure_candidate",
+        "snapshot_path": "data/aigc_battle/evaluation/snapshots/weapon_followup_v0_1__weapon_followup_v0_1__elite_heavy_15_v1__portfolio_001__evaluation_snapshot.json"
       }
     },
     {
       "sequence_template_id": "formal_sequence_12_fast_v1",
+      "template_display_name": "formal_sequence_12_fast_v1",
       "mechanic_profile_id": "weapon_followup_v0_1",
       "build_variant": "baseline_001",
       "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__baseline_001",
@@ -540,6 +1376,114 @@
         "mechanic_profile_id": "weapon_followup_v0_1",
         "build_variant": "baseline_001",
         "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__baseline_001"
+      },
+      "template_usage_recommendation": "",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {}
+    },
+    {
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "template_display_name": "formal_sequence_12_fast_v1",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "build_variant": "portfolio_001",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__portfolio_001",
+      "channel": "review",
+      "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__portfolio_001/runtime_manifest.json",
+      "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__portfolio_001/validation_report.json",
+      "release_status": "draft",
+      "active": false,
+      "fallback": false,
+      "source_pack_id": "",
+      "resolver_entry_valid": true,
+      "pack_identity": {
+        "sequence_template_id": "formal_sequence_12_fast_v1",
+        "mechanic_profile_id": "weapon_followup_v0_1",
+        "build_variant": "portfolio_001",
+        "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__portfolio_001"
+      },
+      "template_usage_recommendation": "",
+      "template_release_strategy": {
+        "generated_at": "2026-05-12T01:03:48.455372+00:00",
+        "current_release_template": "formal_sequence_15_v1",
+        "fallback_template": "formal_sequence_15_v1",
+        "candidate_templates": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "recommended_standard_template": "formal_sequence_15_v1",
+        "recommended_fast_template": "",
+        "recommended_bossrush_template": "bossrush_9_v1",
+        "recommended_elite_template": "elite_heavy_15_v1",
+        "templates_ready_for_release_candidate": [],
+        "templates_needing_balance": [
+          "formal_sequence_12_fast_v1",
+          "bossrush_9_v1",
+          "elite_heavy_15_v1"
+        ],
+        "template_release_strategy_ready": true
+      },
+      "evaluation_metrics": {
+        "template_id": "formal_sequence_12_fast_v1",
+        "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__portfolio_001",
+        "total_encounter_count": 12,
+        "win_rate": 0.4167,
+        "avg_turn_count": 9.2917,
+        "avg_player_hp_end": 4.8333,
+        "too_hard_candidates": 9,
+        "too_long_candidates": 12,
+        "reward_mismatch_candidates": 0,
+        "mechanic_trigger_rate": 1.0,
+        "stage_metrics": {
+          "early_win_rate": 0.6667,
+          "early_avg_turn_count": 9.6667,
+          "early_stage_event_count": 12,
+          "early_stage_too_hard_count": 6,
+          "early_stage_too_long_count": 12,
+          "early_stage_reward_mismatch_count": 0,
+          "mid_win_rate": 1.0,
+          "mid_avg_turn_count": 8.8333,
+          "mid_stage_event_count": 12,
+          "mid_stage_too_hard_count": 4,
+          "mid_stage_too_long_count": 12,
+          "mid_stage_reward_mismatch_count": 0,
+          "late_win_rate": 0.0,
+          "late_avg_turn_count": 9.6667,
+          "late_stage_event_count": 12,
+          "late_stage_too_hard_count": 12,
+          "late_stage_too_long_count": 12,
+          "late_stage_reward_mismatch_count": 0,
+          "boss_win_rate": 0.0,
+          "boss_avg_turn_count": 9.0,
+          "boss_stage_event_count": 12,
+          "boss_stage_too_hard_count": 12,
+          "boss_stage_too_long_count": 12,
+          "boss_stage_reward_mismatch_count": 0
+        },
+        "fallback_loadout_count": 0,
+        "needs_balance": true,
+        "role": "fast_run_candidate",
+        "snapshot_path": "data/aigc_battle/evaluation/snapshots/weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__portfolio_001__evaluation_snapshot.json"
       }
     }
   ]

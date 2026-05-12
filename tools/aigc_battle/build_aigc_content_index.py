@@ -37,6 +37,7 @@ EVALUATION_REPORTS_DIR = GENERATED_ROOT / 'evaluation' / 'reports'
 EVALUATION_SNAPSHOT_DIR = ROOT / 'data' / 'aigc_battle' / 'evaluation' / 'snapshots'
 REBUILD_RECOMMEND_DIR = ROOT / 'data' / 'aigc_battle' / 'evaluation' / 'rebuild_recommendations'
 BALANCE_RELEASE_DIR = GENERATED_ROOT / 'balance_release'
+TEMPLATE_PORTFOLIO_DIR = GENERATED_ROOT / 'template_portfolio'
 
 
 def main() -> int:
@@ -141,6 +142,10 @@ def build_pack_entry(profile_id: str, pack_id: str | None, active_profile_id: st
     rebuild_recommendations = try_read_json(REBUILD_RECOMMEND_DIR / f'{profile_id}__{content_pack_id}__rebuild_recommendations.json') or {}
     balance_build_report = try_read_json(BALANCE_RELEASE_DIR / 'balance_release_build_report.json') or {}
     balance_eval_report = try_read_json(BALANCE_RELEASE_DIR / 'balance_release_evaluation_report.json') or {}
+    template_eval_report = try_read_json(TEMPLATE_PORTFOLIO_DIR / 'template_portfolio_evaluation_report.json') or {}
+    template_strategy = try_read_json(TEMPLATE_PORTFOLIO_DIR / 'template_release_strategy.json') or {}
+    template_metric = next((item for item in template_eval_report.get('template_metrics', []) if str(item.get('content_pack_id', '')) == content_pack_id), {})
+    usage_recommendation = infer_template_usage_recommendation(sequence_template_id, template_strategy)
     balance_report_matches = str(balance_build_report.get('new_pack_id', '')) == content_pack_id or str(balance_eval_report.get('balanced_pack_id', '')) == content_pack_id
     release_channels = release_lib.show_channels()
     current_release = release_channels.get('current_release', {})
@@ -169,6 +174,9 @@ def build_pack_entry(profile_id: str, pack_id: str | None, active_profile_id: st
         'total_encounter_count': total_encounter_count,
         'stage_counts': stage_counts,
         'pack_identity': pack_identity,
+        'template_display_name': sequence_template_id,
+        'template_usage_recommendation': usage_recommendation,
+        'template_release_strategy': template_strategy if template_strategy else {},
         'template_mechanic_pack_binding_valid': binding_valid,
         'is_current_release': profile_id == str(current_release.get('mechanic_profile_id', '')) and content_pack_id == str(current_release.get('content_pack_id', '')),
         'is_candidate_release': profile_id == str(candidate_release.get('mechanic_profile_id', '')) and content_pack_id == str(candidate_release.get('content_pack_id', '')),
@@ -223,11 +231,25 @@ def build_pack_entry(profile_id: str, pack_id: str | None, active_profile_id: st
         'mechanic_trigger_rate': float(evaluation_snapshot.get('mechanic_metrics', {}).get('runtime_primitive_trigger_rate', evaluation_report.get('pack_metrics', {}).get('runtime_primitive_trigger_rate', 0)) or 0),
         'actionability_score': int(evaluation_snapshot.get('actionability_score', 0) or 0),
         'needs_rebuild': bool(int(evaluation_snapshot.get('rebuild_recommendation_count', rebuild_recommendations.get('recommendation_count', 0) or 0)) > 0),
+        'template_portfolio_metrics': template_metric,
         'balance_release': bool(content_pack_summary.get('balance_release', False)),
         'source_pack_id': str(content_pack_summary.get('source_pack_id', '')),
         'playable_balance_gate_pass': bool(balance_eval_report.get('playable_balance_gate_pass', False)) if balance_report_matches else False,
         'current_release_is_balanced': bool(content_pack_summary.get('balance_release', False) and profile_id == str(current_release.get('mechanic_profile_id', '')) and content_pack_id == str(current_release.get('content_pack_id', ''))),
     }
+
+
+def infer_template_usage_recommendation(sequence_template_id: str, strategy: dict[str, Any]) -> str:
+    mapping = {
+        'recommended_standard_template': 'standard_run',
+        'recommended_fast_template': 'fast_run',
+        'recommended_bossrush_template': 'boss_rush',
+        'recommended_elite_template': 'elite_pressure',
+    }
+    for key, label in mapping.items():
+        if str(strategy.get(key, '')).strip() == sequence_template_id:
+            return label
+    return ''
 
 
 def build_markdown(index_payload: dict[str, Any]) -> str:

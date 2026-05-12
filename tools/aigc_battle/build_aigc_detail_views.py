@@ -24,6 +24,7 @@ EVALUATION_REPORTS_DIR = GENERATED_ROOT / 'evaluation' / 'reports'
 EVALUATION_SNAPSHOT_DIR = ROOT / 'data' / 'aigc_battle' / 'evaluation' / 'snapshots'
 REBUILD_RECOMMEND_DIR = ROOT / 'data' / 'aigc_battle' / 'evaluation' / 'rebuild_recommendations'
 BALANCE_RELEASE_DIR = GENERATED_ROOT / 'balance_release'
+TEMPLATE_PORTFOLIO_DIR = GENERATED_ROOT / 'template_portfolio'
 
 
 def main() -> int:
@@ -129,6 +130,8 @@ def build_pack_detail(profile_id: str, pack_entry: dict[str, Any]) -> None:
     rebuild_recommendations = try_read_json(REBUILD_RECOMMEND_DIR / f'{profile_id}__{content_pack_id}__rebuild_recommendations.json') or {}
     balance_build_report = try_read_json(BALANCE_RELEASE_DIR / 'balance_release_build_report.json') or {}
     balance_eval_report = try_read_json(BALANCE_RELEASE_DIR / 'balance_release_evaluation_report.json') or {}
+    template_strategy = try_read_json(TEMPLATE_PORTFOLIO_DIR / 'template_release_strategy.json') or {}
+    template_eval = try_read_json(TEMPLATE_PORTFOLIO_DIR / 'template_portfolio_evaluation_report.json') or {}
     release_channels = release_lib.show_channels()
     current_release = release_channels.get('current_release', {})
     candidate_release = release_channels.get('candidate_release', {})
@@ -360,6 +363,9 @@ def build_pack_detail(profile_id: str, pack_entry: dict[str, Any]) -> None:
             template_lib.resolve_build_variant(content_pack_summary.get('build_variant', runtime_manifest.get('build_variant', validation_report.get('build_variant', ''))), profile_id, content_pack_id),
             content_pack_id,
         ),
+        'template_display_name': str(content_pack_summary.get('sequence_template_id', runtime_manifest.get('sequence_template_id', validation_report.get('sequence_template_id', '')))),
+        'template_usage_recommendation': infer_template_usage_recommendation(str(content_pack_summary.get('sequence_template_id', runtime_manifest.get('sequence_template_id', validation_report.get('sequence_template_id', '')))), template_strategy),
+        'template_release_strategy': template_strategy if template_strategy else {},
         'pack_storage_mode': pack_entry.get('pack_storage_mode', ''),
         'runtime_manifest_path': pack_entry.get('runtime_manifest_path', ''),
         'is_active_pack': pack_entry.get('is_active_pack', False),
@@ -399,6 +405,7 @@ def build_pack_detail(profile_id: str, pack_entry: dict[str, Any]) -> None:
         'snapshot_summary': snapshot or snapshot_summary,
         'runtime_primitive_summary': primitive_probe or runtime_manifest.get('runtime_primitive_summary', {}),
         'evaluation_summary': evaluation_snapshot or evaluation_report,
+        'template_portfolio_metrics': next((item for item in template_eval.get('template_metrics', []) if str(item.get('content_pack_id', '')) == content_pack_id), {}),
         'rebuild_recommendation_summary': rebuild_recommendations,
         'ai_source_trace': {
             'llm_candidate_source': bool(content_pack_summary.get('llm_candidate_source', False)),
@@ -483,6 +490,7 @@ def build_pack_markdown(detail: dict[str, Any]) -> str:
         f"- pack_storage_mode: {detail.get('pack_storage_mode', '')}",
         f"- is_active_pack: {str(detail.get('is_active_pack', False)).lower()}",
         f"- sequence_template_id: {detail.get('sequence_template_id', '') or '-'}",
+        f"- template_usage_recommendation: {detail.get('template_usage_recommendation', '') or '-'}",
         f"- build_variant: {detail.get('build_variant', '') or '-'}",
         f"- formal_encounter_total_count: {detail.get('formal_encounter_total_count', 0)}",
         f"- card_count: {detail.get('card_count', 0)}",
@@ -533,6 +541,19 @@ def detail_pack_json_path(profile_id: str, content_pack_id: str) -> Path:
 
 def detail_pack_md_path(profile_id: str, content_pack_id: str) -> Path:
     return DETAILS_DIR / f'pack_{profile_id}__{content_pack_id}.md'
+
+
+def infer_template_usage_recommendation(sequence_template_id: str, strategy: dict[str, Any]) -> str:
+    mapping = {
+        'recommended_standard_template': 'standard_run',
+        'recommended_fast_template': 'fast_run',
+        'recommended_bossrush_template': 'boss_rush',
+        'recommended_elite_template': 'elite_pressure',
+    }
+    for key, label in mapping.items():
+        if str(strategy.get(key, '')).strip() == sequence_template_id:
+            return label
+    return ''
 
 
 def to_relative(path: Path) -> str:

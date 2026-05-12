@@ -3,6 +3,7 @@
 - pack_storage_mode: profile_root
 - is_active_pack: false
 - sequence_template_id: formal_sequence_15_v1
+- template_usage_recommendation: standard_run
 - build_variant: baseline_001
 - formal_encounter_total_count: 15
 - card_count: 40

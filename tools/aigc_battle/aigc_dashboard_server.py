@@ -34,6 +34,7 @@ REBUILD_RECOMMEND_DIR = ROOT / 'data' / 'aigc_battle' / 'evaluation' / 'rebuild_
 BALANCE_RELEASE_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'balance_release'
 SEQUENCE_TEMPLATE_DIR = ROOT / 'data' / 'aigc_battle' / 'sequence_templates'
 PACK_RESOLVER_PATH = ROOT / 'data' / 'aigc_battle' / 'pack_resolver.json'
+TEMPLATE_PORTFOLIO_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'template_portfolio'
 
 
 def main(argv: list[str]) -> int:
@@ -134,6 +135,15 @@ class DashboardHandler(BaseHTTPRequestHandler):
             return
         if parsed.path == '/api/pack-resolver':
             self.respond_json(load_pack_resolver())
+            return
+        if parsed.path == '/api/template-portfolio':
+            self.respond_json(load_template_portfolio_summary())
+            return
+        if parsed.path == '/api/template-portfolio/evaluation':
+            self.respond_json(load_template_portfolio_evaluation())
+            return
+        if parsed.path == '/api/template-release-strategy':
+            self.respond_json(load_template_release_strategy())
             return
         if parsed.path == '/api/balance-release/report':
             self.respond_json(load_balance_release_build_report())
@@ -681,6 +691,27 @@ def load_pack_resolver() -> dict[str, Any]:
     if PACK_RESOLVER_PATH.exists():
         return read_required_json(PACK_RESOLVER_PATH) or {'ok': False, 'error': 'pack resolver unreadable'}
     return {'ok': False, 'error': 'pack resolver not found'}
+
+
+def load_template_portfolio_summary() -> dict[str, Any]:
+    path = TEMPLATE_PORTFOLIO_DIR / 'template_portfolio_summary.json'
+    if path.exists():
+        return read_required_json(path) or {'ok': False, 'error': 'template portfolio summary unreadable'}
+    return {'ok': False, 'error': 'template portfolio summary not found'}
+
+
+def load_template_portfolio_evaluation() -> dict[str, Any]:
+    path = TEMPLATE_PORTFOLIO_DIR / 'template_portfolio_evaluation_report.json'
+    if path.exists():
+        return read_required_json(path) or {'ok': False, 'error': 'template portfolio evaluation unreadable'}
+    return {'ok': False, 'error': 'template portfolio evaluation not found'}
+
+
+def load_template_release_strategy() -> dict[str, Any]:
+    path = TEMPLATE_PORTFOLIO_DIR / 'template_release_strategy.json'
+    if path.exists():
+        return read_required_json(path) or {'ok': False, 'error': 'template release strategy unreadable'}
+    return {'ok': False, 'error': 'template release strategy not found'}
 
 
 def build_console_html() -> str:

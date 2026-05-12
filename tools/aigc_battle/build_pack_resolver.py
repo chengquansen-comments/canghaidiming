@@ -19,6 +19,8 @@ from tools.aigc_battle import aigc_release_gate as release_lib
 
 RESOLVER_PATH = ROOT / "data" / "aigc_battle" / "pack_resolver.json"
 OUT_DIR = ROOT / "data" / "aigc_battle" / "generated" / "pack_resolver"
+TEMPLATE_PORTFOLIO_EVAL_PATH = ROOT / "data" / "aigc_battle" / "generated" / "template_portfolio" / "template_portfolio_evaluation_report.json"
+TEMPLATE_RELEASE_STRATEGY_PATH = ROOT / "data" / "aigc_battle" / "generated" / "template_portfolio" / "template_release_strategy.json"
 
 
 def main() -> int:
@@ -37,6 +39,10 @@ def build_pack_resolver() -> dict[str, Any]:
     candidate = channels.get("candidate_release", {})
     fallback = channels.get("fallback_release", {})
     active_runtime = channels.get("active_runtime", {})
+    portfolio_eval = index_lib.try_read_json(TEMPLATE_PORTFOLIO_EVAL_PATH) or {}
+    portfolio_strategy = index_lib.try_read_json(TEMPLATE_RELEASE_STRATEGY_PATH) or {}
+    usage_map = build_usage_map(portfolio_strategy)
+    eval_map = {str(item.get("content_pack_id", "")): item for item in portfolio_eval.get("template_metrics", [])}
 
     entries: list[dict[str, Any]] = []
     for profile in index_payload.get("profiles", []):
@@ -57,6 +63,7 @@ def build_pack_resolver() -> dict[str, Any]:
             build_variant = str(content_pack_summary.get("build_variant", "")).strip() or template_lib.infer_build_variant(profile_id, pack_id)
             entry = {
                 "sequence_template_id": sequence_template_id,
+                "template_display_name": str(sequence_template_id),
                 "mechanic_profile_id": profile_id,
                 "build_variant": build_variant,
                 "content_pack_id": pack_id,
@@ -69,6 +76,9 @@ def build_pack_resolver() -> dict[str, Any]:
                 "source_pack_id": str(content_pack_summary.get("source_pack_id", "")),
                 "resolver_entry_valid": bool(sequence_template_id and build_variant and pack_id),
                 "pack_identity": template_lib.build_pack_identity(sequence_template_id, profile_id, build_variant, pack_id),
+                "template_usage_recommendation": usage_map.get(sequence_template_id, ""),
+                "template_release_strategy": portfolio_strategy if portfolio_strategy else {},
+                "evaluation_metrics": eval_map.get(pack_id, {}),
             }
             entries.append(entry)
     return {
@@ -76,6 +86,23 @@ def build_pack_resolver() -> dict[str, Any]:
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "entries": entries,
     }
+
+
+def build_usage_map(strategy: dict[str, Any]) -> dict[str, str]:
+    mapping: dict[str, str] = {}
+    if not strategy:
+        return mapping
+    labels = {
+        "recommended_standard_template": "standard_run",
+        "recommended_fast_template": "fast_run",
+        "recommended_bossrush_template": "boss_rush",
+        "recommended_elite_template": "elite_pressure",
+    }
+    for key, label in labels.items():
+        template_id = str(strategy.get(key, "")).strip()
+        if template_id:
+            mapping[template_id] = label
+    return mapping
 
 
 if __name__ == "__main__":

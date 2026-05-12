@@ -3,6 +3,8 @@
     "mechanic_profile_id": "weapon_followup_v0_1",
     "content_pack_id": "weapon_followup_balance_release_007",
     "sequence_template_id": "formal_sequence_15_v1",
+    "template_display_name": "formal_sequence_15_v1",
+    "template_usage_recommendation": "standard_run",
     "build_variant": "balance_release_007",
     "pack_identity": {
       "sequence_template_id": "formal_sequence_15_v1",
@@ -8051,17 +8053,42 @@
   },
   "evaluation_summary": {
     "evaluated": true,
-    "evaluation_event_count": 45,
+    "evaluation_event_count": 105,
     "sequence_template_id": "formal_sequence_15_v1",
     "telemetry_detail_level_summary": {
-      "real": 45
+      "real": 105
     },
-    "win_rate": 0.8222,
-    "avg_turn_count": 3.7111,
-    "avg_player_hp_end": 24.9556,
-    "avg_damage_taken": 12.6444,
+    "win_rate": 0.8667,
+    "avg_turn_count": 3.5333,
+    "avg_player_hp_end": 23.2667,
+    "avg_damage_taken": 14.3333,
     "runtime_primitive_trigger_rate": 1.0,
-    "stage_metrics": {},
+    "stage_metrics": {
+      "early_win_rate": 0,
+      "early_avg_turn_count": 0,
+      "early_stage_event_count": 0,
+      "early_stage_too_hard_count": 0,
+      "early_stage_too_long_count": 0,
+      "early_stage_reward_mismatch_count": 0,
+      "mid_win_rate": 0,
+      "mid_avg_turn_count": 0,
+      "mid_stage_event_count": 0,
+      "mid_stage_too_hard_count": 0,
+      "mid_stage_too_long_count": 0,
+      "mid_stage_reward_mismatch_count": 0,
+      "late_win_rate": 0,
+      "late_avg_turn_count": 0,
+      "late_stage_event_count": 0,
+      "late_stage_too_hard_count": 0,
+      "late_stage_too_long_count": 0,
+      "late_stage_reward_mismatch_count": 0,
+      "boss_win_rate": 0,
+      "boss_avg_turn_count": 0,
+      "boss_stage_event_count": 0,
+      "boss_stage_too_hard_count": 0,
+      "boss_stage_too_long_count": 0,
+      "boss_stage_reward_mismatch_count": 0
+    },
     "mechanism_underused_candidates": [],
     "too_easy_candidates": [
       {
@@ -8073,7 +8100,7 @@
         "evidence": {
           "win_rate": 1.0,
           "avg_turn_count": 3.0,
-          "avg_player_hp_end": 36.3333,
+          "avg_player_hp_end": 34.4286,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -8086,7 +8113,7 @@
         "evidence": {
           "win_rate": 1.0,
           "avg_turn_count": 3.0,
-          "avg_player_hp_end": 28.3333,
+          "avg_player_hp_end": 26.4286,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -8099,7 +8126,7 @@
         "evidence": {
           "win_rate": 1.0,
           "avg_turn_count": 3.0,
-          "avg_player_hp_end": 28.3333,
+          "avg_player_hp_end": 26.4286,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -8112,7 +8139,7 @@
         "evidence": {
           "win_rate": 1.0,
           "avg_turn_count": 3.0,
-          "avg_player_hp_end": 36.3333,
+          "avg_player_hp_end": 34.4286,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -8125,7 +8152,7 @@
         "evidence": {
           "win_rate": 1.0,
           "avg_turn_count": 3.0,
-          "avg_player_hp_end": 28.3333,
+          "avg_player_hp_end": 26.4286,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -8138,7 +8165,7 @@
         "evidence": {
           "win_rate": 1.0,
           "avg_turn_count": 3.0,
-          "avg_player_hp_end": 28.3333,
+          "avg_player_hp_end": 26.4286,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -8151,7 +8178,7 @@
         "evidence": {
           "win_rate": 1.0,
           "avg_turn_count": 3.0,
-          "avg_player_hp_end": 32.3333,
+          "avg_player_hp_end": 30.4286,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -8164,7 +8191,7 @@
         "evidence": {
           "win_rate": 1.0,
           "avg_turn_count": 3.0,
-          "avg_player_hp_end": 32.3333,
+          "avg_player_hp_end": 30.4286,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -8177,7 +8204,7 @@
         "evidence": {
           "win_rate": 1.0,
           "avg_turn_count": 3.0,
-          "avg_player_hp_end": 32.3333,
+          "avg_player_hp_end": 30.4286,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -8190,7 +8217,7 @@
         "evidence": {
           "win_rate": 1.0,
           "avg_turn_count": 3.0,
-          "avg_player_hp_end": 32.3333,
+          "avg_player_hp_end": 30.4286,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -8203,7 +8230,7 @@
         "evidence": {
           "win_rate": 1.0,
           "avg_turn_count": 3.0,
-          "avg_player_hp_end": 36.3333,
+          "avg_player_hp_end": 34.4286,
           "runtime_primitive_trigger_rate": 1.0
         }
       }
@@ -8216,9 +8243,9 @@
         "reward_plan_id": "weapon_followup_v0_1_reward_001",
         "reason": "too_hard",
         "evidence": {
-          "win_rate": 0.3333,
-          "avg_turn_count": 5.6667,
-          "avg_player_hp_end": 5.6667,
+          "win_rate": 0.4286,
+          "avg_turn_count": 5.2857,
+          "avg_player_hp_end": 7.2857,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -8229,9 +8256,9 @@
         "reward_plan_id": "weapon_followup_v0_1_reward_002",
         "reason": "too_hard",
         "evidence": {
-          "win_rate": 0.3333,
-          "avg_turn_count": 5.6667,
-          "avg_player_hp_end": 5.6667,
+          "win_rate": 0.4286,
+          "avg_turn_count": 5.2857,
+          "avg_player_hp_end": 7.2857,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -8242,9 +8269,9 @@
         "reward_plan_id": "weapon_followup_v0_1_reward_003",
         "reason": "too_hard",
         "evidence": {
-          "win_rate": 0.3333,
-          "avg_turn_count": 5.6667,
-          "avg_player_hp_end": 5.6667,
+          "win_rate": 0.4286,
+          "avg_turn_count": 5.2857,
+          "avg_player_hp_end": 7.2857,
           "runtime_primitive_trigger_rate": 1.0
         }
       },
@@ -8255,9 +8282,9 @@
         "reward_plan_id": "weapon_followup_v0_1_reward_004",
         "reason": "too_hard",
         "evidence": {
-          "win_rate": 0.3333,
-          "avg_turn_count": 5.6667,
-          "avg_player_hp_end": 5.6667,
+          "win_rate": 0.4286,
+          "avg_turn_count": 5.2857,
+          "avg_player_hp_end": 7.2857,
           "runtime_primitive_trigger_rate": 1.0
         }
       }
@@ -8269,6 +8296,69 @@
     "latest_evaluation_snapshot_path": "data/aigc_battle/evaluation/snapshots/weapon_followup_v0_1__weapon_followup_balance_release_007__evaluation_snapshot.json",
     "latest_rebuild_recommendation_path": "",
     "needs_rebuild": true
+  },
+  "template_release_strategy": {
+    "generated_at": "2026-05-12T01:03:48.455372+00:00",
+    "current_release_template": "formal_sequence_15_v1",
+    "fallback_template": "formal_sequence_15_v1",
+    "candidate_templates": [
+      "formal_sequence_12_fast_v1",
+      "bossrush_9_v1",
+      "elite_heavy_15_v1"
+    ],
+    "recommended_standard_template": "formal_sequence_15_v1",
+    "recommended_fast_template": "",
+    "recommended_bossrush_template": "bossrush_9_v1",
+    "recommended_elite_template": "elite_heavy_15_v1",
+    "templates_ready_for_release_candidate": [],
+    "templates_needing_balance": [
+      "formal_sequence_12_fast_v1",
+      "bossrush_9_v1",
+      "elite_heavy_15_v1"
+    ],
+    "template_release_strategy_ready": true
+  },
+  "template_portfolio_metrics": {
+    "template_id": "formal_sequence_15_v1",
+    "content_pack_id": "weapon_followup_balance_release_007",
+    "total_encounter_count": 15,
+    "win_rate": 0.8667,
+    "avg_turn_count": 3.5333,
+    "avg_player_hp_end": 23.2667,
+    "too_hard_candidates": 4,
+    "too_long_candidates": 0,
+    "reward_mismatch_candidates": 0,
+    "mechanic_trigger_rate": 1.0,
+    "stage_metrics": {
+      "early_win_rate": 0,
+      "early_avg_turn_count": 0,
+      "early_stage_event_count": 0,
+      "early_stage_too_hard_count": 0,
+      "early_stage_too_long_count": 0,
+      "early_stage_reward_mismatch_count": 0,
+      "mid_win_rate": 0,
+      "mid_avg_turn_count": 0,
+      "mid_stage_event_count": 0,
+      "mid_stage_too_hard_count": 0,
+      "mid_stage_too_long_count": 0,
+      "mid_stage_reward_mismatch_count": 0,
+      "late_win_rate": 0,
+      "late_avg_turn_count": 0,
+      "late_stage_event_count": 0,
+      "late_stage_too_hard_count": 0,
+      "late_stage_too_long_count": 0,
+      "late_stage_reward_mismatch_count": 0,
+      "boss_win_rate": 0,
+      "boss_avg_turn_count": 0,
+      "boss_stage_event_count": 0,
+      "boss_stage_too_hard_count": 0,
+      "boss_stage_too_long_count": 0,
+      "boss_stage_reward_mismatch_count": 0
+    },
+    "fallback_loadout_count": 0,
+    "needs_balance": false,
+    "role": "standard_current_release",
+    "snapshot_path": "data/aigc_battle/evaluation/snapshots/weapon_followup_v0_1__weapon_followup_balance_release_007__evaluation_snapshot.json"
   },
   "balance_release_summary": {
     "balance_release": true,

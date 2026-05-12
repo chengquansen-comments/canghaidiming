@@ -220,3 +220,12 @@ v2 目标是 `full sequence reward / progression closure`：
 - current release 继续保持 `weapon_followup_v0_1 / weapon_followup_balance_release_007`，只补齐 `sequence_template_id=formal_sequence_15_v1` 与 `build_variant=balance_release_007` 的契约信息。
 - formal12fast 生成的 `weapon_followup_v0_1__formal_sequence_12_fast_v1__baseline_001` 只作为 candidate/review pack 验证模板可调，不自动替换 current。
 - R5 的 validate / plan / build / export / evaluation / resolver / probe 全部必须串行执行，禁止并行。
+## R6：Template Portfolio Release Strategy
+
+- R6 将 R5 的 sequence template 配置能力推进为多模板组合库。
+- 新增 `bossrush_9_v1` 与 `elite_heavy_15_v1`，并与既有 `formal_sequence_15_v1`、`formal_sequence_12_fast_v1` 共同组成 template portfolio。
+- 同一个 `weapon_followup_v0_1` 机制可在不同模板下生成不同节奏的候选 pack。
+- portfolio build / validate / export / evaluation 全部走串行脚本，不允许并行。
+- R6 输出 `template_portfolio_summary`、`template_portfolio_evaluation_report`、`template_release_strategy`。
+- current release 保持 `weapon_followup_v0_1 / weapon_followup_balance_release_007`，不自动切换。
+- 新模板包只进入 `review` 或 `candidate` 观察状态，不自动 activate。

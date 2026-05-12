@@ -3,6 +3,7 @@
 - pack_storage_mode: profile_pack_dir
 - is_active_pack: false
 - sequence_template_id: -
+- template_usage_recommendation: fast_run
 - build_variant: balance_release_006
 - formal_encounter_total_count: 15
 - card_count: 40
