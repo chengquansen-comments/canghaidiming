@@ -65,6 +65,7 @@ static func complete_node(graph: Dictionary, node: Dictionary) -> void:
 	if node_id.is_empty():
 		return
 	var completed: Array = graph.get("completed_node_ids", [])
+	var was_completed := completed.has(node_id)
 	if not completed.has(node_id):
 		completed.append(node_id)
 	var outgoing: Array = []
@@ -83,6 +84,14 @@ static func complete_node(graph: Dictionary, node: Dictionary) -> void:
 	else:
 		graph["selected_node_id"] = node_id
 		graph["map_complete"] = true
+	if not was_completed:
+		_append_unique(graph, "visited_path_order", node_id)
+		if _is_combat_node(node):
+			graph["battle_count_so_far"] = int(graph.get("battle_count_so_far", 0)) + 1
+			if _is_elite_combat_node(node):
+				graph["elite_count_so_far"] = int(graph.get("elite_count_so_far", 0)) + 1
+		elif _is_operation_node(node):
+			graph["operation_count_so_far"] = int(graph.get("operation_count_so_far", 0)) + 1
 
 static func refresh_node_states(graph: Dictionary) -> void:
 	var completed: Array = graph.get("completed_node_ids", [])
@@ -122,7 +131,35 @@ static func sync_mirror_fields(strategic_state: Dictionary, graph: Dictionary) -
 	strategic_state["selected_node_id"] = str(graph.get("selected_node_id", ""))
 	strategic_state["available_node_ids"] = (graph.get("available_node_ids", []) as Array).duplicate(true)
 	strategic_state["completed_node_ids"] = (graph.get("completed_node_ids", []) as Array).duplicate(true)
+	strategic_state["visited_path_order"] = (graph.get("visited_path_order", []) as Array).duplicate(true)
 	strategic_state["current_node_id"] = str(graph.get("current_node_id", ""))
 	strategic_state["pending_map_node_id"] = str(graph.get("pending_map_node_id", ""))
 	strategic_state["pending_result_text"] = str(graph.get("pending_result_text", ""))
 	strategic_state["pending_effects"] = (graph.get("pending_effects", {}) as Dictionary).duplicate(true)
+	strategic_state["battle_count_so_far"] = int(graph.get("battle_count_so_far", strategic_state.get("battle_count_so_far", 0)))
+	strategic_state["elite_count_so_far"] = int(graph.get("elite_count_so_far", strategic_state.get("elite_count_so_far", 0)))
+	strategic_state["operation_count_so_far"] = int(graph.get("operation_count_so_far", strategic_state.get("operation_count_so_far", 0)))
+	strategic_state["route_flags"] = (graph.get("route_flags", strategic_state.get("route_flags", {})) as Dictionary).duplicate(true)
+	strategic_state["lightness_level"] = int(graph.get("lightness_level", strategic_state.get("lightness_level", 1)))
+	strategic_state["old_case_progress"] = int(graph.get("old_case_progress", strategic_state.get("old_case_progress", 0)))
+
+
+static func _append_unique(graph: Dictionary, field: String, value: String) -> void:
+	var items: Array = graph.get(field, [])
+	if not items.has(value):
+		items.append(value)
+	graph[field] = items
+
+
+static func _is_combat_node(node: Dictionary) -> bool:
+	return str(node.get("node_type", "")).begins_with("combat_")
+
+
+static func _is_elite_combat_node(node: Dictionary) -> bool:
+	return str(node.get("node_type", "")) == "combat_elite"
+
+
+static func _is_operation_node(node: Dictionary) -> bool:
+	if _is_combat_node(node):
+		return false
+	return not str(node.get("operation_node_id", "")).is_empty()

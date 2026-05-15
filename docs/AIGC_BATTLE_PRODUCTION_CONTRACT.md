@@ -182,3 +182,10 @@
 - `地图实例` 页展示 `map_instance / route_state / selected_node_materialized_loadout / battle_entry_request`。
 - DUNGEON-4 仍不允许修改 `current_release / active_profile / fallback_release`。
 - DUNGEON-4 仍未接入 Godot runtime，不改 scene，不改 battle core。
+
+## DUNGEON-5 Contract Addendum
+
+- 已新增 AIGC dungeon loader 与 Godot headless probe，用于只读加载 `big_map_compatible network_map`。
+- AIGC dungeon 节点选择后仍必须走现有 `encounter_id / battle_id / combat_pool_id` battle bridge 契约。
+- DUNGEON-5 不重做大地图 UI，不改 scene，不改 battle core。
+- DUNGEON-5 仍不允许修改 `current_release / active_profile / fallback_release`。

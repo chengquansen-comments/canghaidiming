@@ -1,0 +1,91 @@
+{
+  "generated_at": "2026-05-15T10:57:12.793744+00:00",
+  "probe": "aigc_dungeon_godot_big_map_probe",
+  "fields": {
+    "godot_big_map_loader_ready": true,
+    "aigc_network_map_loaded": true,
+    "route_state_initial_loaded": true,
+    "no_fixed_sequence_runtime_path": true,
+    "available_next_nodes_visible": true,
+    "selected_node_id_ready": true,
+    "player_choice_simulated": true,
+    "selected_battle_node_resolved": true,
+    "battle_entry_request_ready": true,
+    "narrative_battle_context_request_ready": true,
+    "route_state_after_choice_ready": true,
+    "visited_path_recorded": true,
+    "fallback_loadout_count": 0,
+    "broken_ref_count": 0,
+    "current_release_unchanged": true,
+    "active_profile_matches_current_release": true,
+    "fallback_release_unchanged": true,
+    "scene_unchanged": true,
+    "combat_core_untouched": true,
+    "probe_pass": true
+  },
+  "runtime_report": {
+    "after_choice_available_node_ids": [
+      "node_wuju_001"
+    ],
+    "after_choice_completed_node_ids": [
+      "node_start",
+      "node_prologue_001"
+    ],
+    "after_choice_current_node_id": "node_prologue_001",
+    "after_choice_selected_node_id": "node_wuju_001",
+    "after_choice_visited_path_order": [
+      "node_start",
+      "node_prologue_001"
+    ],
+    "aigc_network_map_loaded": true,
+    "available_next_nodes_visible": true,
+    "battle_entry_request_ready": true,
+    "battle_request": {
+      "battle_id": "prologue_master_rescue",
+      "combat_pool_id": "spear_patrol",
+      "enabled": true,
+      "encounter_id": "enc_prologue_master_rescue",
+      "enemy_martial_level": 0,
+      "override_player_profile": true,
+      "recommended_martial_max": 0,
+      "recommended_martial_min": 0,
+      "source_battle_slot_id": "slot_prologue_001",
+      "source_enemy_deck_id": "deck_prologue_tutorial_enemy",
+      "source_node_id": "node_prologue_001",
+      "source_reward_plan_id": "reward_prologue_story"
+    },
+    "broken_ref_count": 0,
+    "fallback_loadout_count": 0,
+    "godot_big_map_loader_ready": true,
+    "hook_error": "",
+    "hook_loaded_aigc_runtime": true,
+    "initial_available_node_ids": [
+      "node_prologue_001"
+    ],
+    "initial_completed_node_ids": [
+      "node_start"
+    ],
+    "initial_current_node_id": "node_start",
+    "initial_selected_node_id": "node_prologue_001",
+    "loader_error": "",
+    "narrative_battle_context_request_ready": true,
+    "no_fixed_sequence_runtime_path": true,
+    "player_choice_simulated": true,
+    "route_state_after_choice_ready": true,
+    "route_state_initial_loaded": true,
+    "selected_battle_node_resolved": true,
+    "selected_node_id_ready": true,
+    "visited_path_recorded": true
+  },
+  "current_release_summary": {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+    "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json"
+  },
+  "active_profile_summary": {
+    "active_mechanic_profile_id": "weapon_followup_v0_1",
+    "active_content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+    "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json"
+  },
+  "probe_pass": true
+}

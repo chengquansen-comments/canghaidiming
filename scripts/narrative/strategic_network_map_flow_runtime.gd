@@ -5,6 +5,7 @@ const StrategicNetworkBattleBridge := preload("res://scripts/strategic_network_b
 const StrategicNetworkMapConfirm := preload("res://scripts/strategic_network_map_confirm.gd")
 const StrategicNetworkMapBattleResult := preload("res://scripts/strategic_network_map_battle_result.gd")
 const NetworkMapGenerator := preload("res://scripts/strategic_network_map_generator.gd")
+const AigcDungeonBigMapLoader := preload("res://scripts/aigc_dungeon_big_map_loader.gd")
 const NarrativeBattleContext := preload("res://scripts/narrative_battle_context.gd")
 
 static func on_network_node_clicked(c, map_graph_id: String) -> void:
@@ -113,6 +114,17 @@ static func on_network_final_boss_pressed(c) -> void:
 static func ensure_network_map_for_state(c, warn_if_regenerated: bool = false) -> void:
 	var map_variant = c.strategic_state.get("network_map", {})
 	if map_variant is Dictionary and not (map_variant as Dictionary).is_empty():
+		return
+	if AigcDungeonBigMapLoader.has_compatible_map_file():
+		var bundle := AigcDungeonBigMapLoader.load_runtime_bundle()
+		if not bool(bundle.get("ok", false)):
+			var error_text := "AIGC dungeon map load failed: %s" % str(bundle.get("error", "unknown"))
+			if bundle.has("details"):
+				error_text += "｜%s" % ",".join(bundle.get("details", []))
+			c.last_hint = error_text
+			push_error(error_text)
+			return
+		AigcDungeonBigMapLoader.apply_bundle_to_state(c.strategic_state, bundle)
 		return
 	var seed_value := int(c.strategic_state.get("seed", 1701))
 	if warn_if_regenerated:

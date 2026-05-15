@@ -478,3 +478,11 @@ v2 目标是 `full sequence reward / progression closure`：
 - `地图实例` 页展示 `map_instance / route_state / materialized node / battle entry request`。
 - 当前仍未接入 Godot runtime。
 - DUNGEON-5 将实现 Godot Big Map Runtime 接入。
+
+## DUNGEON-5：Godot Big Map Runtime Probe
+
+- DUNGEON-5 已完成 Godot Big Map Runtime 接入 probe。
+- AIGC dungeon map 通过 `big_map_compatible network_map` 接入原大地图 runtime。
+- 玩家选择节点后继续走现有 `battle bridge -> narrative_battle_context -> MainVisual` 入口。
+- 不重做大地图 UI，不改 battle core。
+- DUNGEON-6 将实现普通 / 真结局 / 武状元路线分流。

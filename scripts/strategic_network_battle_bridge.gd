@@ -65,6 +65,10 @@ static func combat_request_for_node(node: Dictionary) -> Dictionary:
 		"recommended_martial_min": int(node.get("recommended_martial_min", 0)),
 		"recommended_martial_max": int(node.get("recommended_martial_max", 0)),
 		"enemy_martial_level": int(node.get("enemy_martial_level", 0)),
+		"source_node_id": str(node.get("map_graph_id", "")),
+		"source_battle_slot_id": str(node.get("source_battle_slot_id", node.get("battle_slot_id", ""))),
+		"source_enemy_deck_id": str(node.get("source_enemy_deck_id", "")),
+		"source_reward_plan_id": str(node.get("source_reward_plan_id", "")),
 	}
 
 static func combat_block_reason(node: Dictionary) -> String:
