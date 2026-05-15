@@ -174,3 +174,11 @@
 - battle entry request 仍必须兼容现有 `encounter_id / battle_id / combat_pool_id` bridge 契约。
 - DUNGEON-3 仍不允许修改 `current_release / active_profile / fallback_release`。
 - DUNGEON-3 仍未接入 Godot runtime，不改 scene，不改 battle core。
+
+## DUNGEON-4 Contract Addendum
+
+- 已新增 Dashboard `Pack 内容 / 地图实例` 只读视图。
+- `Pack 内容` 页展示 `content_pool_pack` 候选池。
+- `地图实例` 页展示 `map_instance / route_state / selected_node_materialized_loadout / battle_entry_request`。
+- DUNGEON-4 仍不允许修改 `current_release / active_profile / fallback_release`。
+- DUNGEON-4 仍未接入 Godot runtime，不改 scene，不改 battle core。

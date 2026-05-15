@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-14T02:28:33.586012+00:00",
+  "generated_at": "2026-05-15T10:47:06.326714+00:00",
   "active_profile_id": "weapon_followup_v0_1",
   "active_content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
   "release_channels": {
@@ -6211,7 +6211,7 @@
     "json_path": "data/aigc_battle/generated/review/pack_compare_matrix.json",
     "md_path": "data/aigc_battle/generated/review/pack_compare_matrix.md",
     "summary": {
-      "generated_at": "2026-05-14T02:28:33.578449+00:00",
+      "generated_at": "2026-05-15T10:47:06.319819+00:00",
       "pack_count": 66,
       "real_mechanic_profile_count": 7,
       "runtime_primitive_types": [

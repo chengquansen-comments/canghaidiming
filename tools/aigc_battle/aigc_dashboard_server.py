@@ -68,6 +68,11 @@ ADMIN_GENERATED_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'dashboard_a
 ACTIVE_PROFILE_PATH = ROOT / 'data' / 'aigc_battle' / 'runtime' / 'active_profile.json'
 CURRENT_RELEASE_PATH = ROOT / 'data' / 'aigc_battle' / 'release_channels' / 'current_release.json'
 FALLBACK_RELEASE_PATH = ROOT / 'data' / 'aigc_battle' / 'release_channels' / 'fallback_release.json'
+DUNGEON_PROGRESSION_PATH = ROOT / 'data' / 'aigc_battle' / 'progression_templates' / 'dungeon_progression_v1_3.json'
+DUNGEON_PACK_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'dungeon_progression_v1_3' / 'packs' / 'dungeon_pool_pack_001'
+DUNGEON_MAP_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'dungeon_maps'
+DUNGEON_NODE_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'dungeon_node_materializer'
+DUNGEON_CONTRACT_PATH = ROOT / 'data' / 'aigc_battle' / 'generated' / 'dungeon_big_map_integration' / 'existing_big_map_contract.json'
 ADMIN_ALLOWED_REVIEW_STATUS = {'accepted', 'rejected', 'needs_balance', 'pending'}
 ADMIN_PROHIBITED_FIELDS = {
     'shell_command',
@@ -304,6 +309,15 @@ class DashboardHandler(BaseHTTPRequestHandler):
             return
         if parsed.path == '/api/dashboard-display/risk-board':
             self.respond_json(load_dashboard_display_risk_board())
+            return
+        if parsed.path == '/api/dungeon/pack-content':
+            self.respond_json(load_dungeon_pack_content())
+            return
+        if parsed.path == '/api/dungeon/map-instance':
+            self.respond_json(load_dungeon_map_instance())
+            return
+        if parsed.path == '/api/dungeon/node-materialized':
+            self.respond_json(load_dungeon_node_materialized())
             return
         if parsed.path == '/api/admin/status':
             self.respond_json(load_admin_status(self.admin_write_enabled))
@@ -1507,6 +1521,119 @@ def load_production_closeout_summary() -> dict[str, Any]:
     }
 
 
+def load_dungeon_pack_content() -> dict[str, Any]:
+    progression = read_json_file(DUNGEON_PROGRESSION_PATH)
+    manifest = read_json_file(DUNGEON_PACK_DIR / 'content_pool_manifest.json')
+    battle_slot_pool = read_json_file(DUNGEON_PACK_DIR / 'battle_slot_pool.json').get('battle_slots', [])
+    enemy_deck_pool = read_json_file(DUNGEON_PACK_DIR / 'enemy_deck_pool.json').get('enemy_decks', [])
+    reward_plan_pool = read_json_file(DUNGEON_PACK_DIR / 'reward_plan_pool.json').get('reward_plans', [])
+    card_pool = read_json_file(DUNGEON_PACK_DIR / 'card_pool.json').get('cards', [])
+    operation_node_pool = read_json_file(DUNGEON_PACK_DIR / 'operation_node_pool.json').get('operation_nodes', [])
+    return {
+        'progression_template_id': str(progression.get('progression_template_id', manifest.get('progression_template_id', ''))),
+        'content_pool_pack_id': str(manifest.get('content_pool_pack_id', '')),
+        'pool_status': str(manifest.get('pool_status', '')),
+        'supports_map_instance': bool(manifest.get('supports_map_instance', False)),
+        'supports_fixed_sequence': bool(manifest.get('supports_fixed_sequence', False)),
+        'summary': {
+            'battle_slot_count': len(battle_slot_pool),
+            'enemy_deck_count': len(enemy_deck_pool),
+            'reward_plan_count': len(reward_plan_pool),
+            'card_count': len(card_pool),
+            'operation_node_count': len(operation_node_pool),
+        },
+        'battle_slot_pool': battle_slot_pool,
+        'enemy_deck_pool': enemy_deck_pool,
+        'reward_plan_pool': reward_plan_pool,
+        'card_pool': card_pool,
+        'operation_node_pool': operation_node_pool,
+    }
+
+
+def load_dungeon_node_materialized() -> dict[str, Any]:
+    return {
+        'selected_node_materialized_loadout': read_json_file(DUNGEON_NODE_DIR / 'selected_node_materialized_loadout.json'),
+        'selected_node_battle_entry_request': read_json_file(DUNGEON_NODE_DIR / 'selected_node_battle_entry_request.json'),
+        'selected_node_route_state_after_choice': read_json_file(DUNGEON_NODE_DIR / 'selected_node_route_state_after_choice.json'),
+    }
+
+
+def load_dungeon_map_instance() -> dict[str, Any]:
+    map_instance = read_json_file(DUNGEON_MAP_DIR / 'map_seed_1001.json')
+    route_state = read_json_file(DUNGEON_MAP_DIR / 'route_state_seed_1001_initial.json')
+    compatible = read_json_file(DUNGEON_MAP_DIR / 'big_map_compatible_seed_1001.json')
+    materialized = load_dungeon_node_materialized()
+    pack_content = load_dungeon_pack_content()
+    contract = read_json_file(DUNGEON_CONTRACT_PATH)
+
+    battle_slots = {str(item.get('battle_slot_id', '')): item for item in pack_content.get('battle_slot_pool', []) if isinstance(item, dict)}
+    enemy_decks = {str(item.get('enemy_deck_id', '')): item for item in pack_content.get('enemy_deck_pool', []) if isinstance(item, dict)}
+    reward_plans = {str(item.get('reward_plan_id', '')): item for item in pack_content.get('reward_plan_pool', []) if isinstance(item, dict)}
+    nodes = [node for node in map_instance.get('nodes', []) if isinstance(node, dict)]
+    layer_map: dict[int, list[dict[str, Any]]] = {}
+    for node in nodes:
+        layer_map.setdefault(int(node.get('layer_index', 0)), []).append(node)
+    layers = [
+        {
+            'layer_index': index,
+            'node_count': len(layer_nodes),
+            'nodes': sorted(layer_nodes, key=lambda item: (int(item.get('lane', 0)), str(item.get('node_id', '')))),
+        }
+        for index, layer_nodes in sorted(layer_map.items())
+    ]
+
+    root_required = contract.get('existing_big_map', {}).get('graph_schema', {}).get('root_required_fields', [])
+    node_required = contract.get('existing_big_map', {}).get('graph_schema', {}).get('node_required_fields', [])
+    compatible_nodes = [node for node in compatible.get('nodes', []) if isinstance(node, dict)]
+    battle_compatible_nodes = [
+        {
+            'map_graph_id': str(node.get('map_graph_id', '')),
+            'encounter_id': str(node.get('encounter_id', '')),
+            'battle_id': str(node.get('battle_id', '')),
+            'combat_pool_id': str(node.get('combat_pool_id', '')),
+        }
+        for node in compatible_nodes
+        if str(node.get('combat_pool_id', '')) or str(node.get('encounter_id', '')) or str(node.get('battle_id', ''))
+    ]
+
+    loadout = materialized.get('selected_node_materialized_loadout', {})
+    enemy_deck_detail = enemy_decks.get(str(loadout.get('enemy_deck_id', '')), {})
+    reward_detail = reward_plans.get(str(loadout.get('reward_plan_id', '')), {})
+    selected_node = next((node for node in nodes if str(node.get('node_id', '')) == str(loadout.get('node_id', ''))), {})
+    selected_battle_slot = battle_slots.get(str(loadout.get('battle_slot_id', '')), {})
+
+    return {
+        'map_summary': {
+            'map_instance_id': str(map_instance.get('map_instance_id', '')),
+            'progression_template_id': str(map_instance.get('progression_template_id', '')),
+            'content_pool_pack_id': str(map_instance.get('content_pool_pack_id', '')),
+            'seed': int(map_instance.get('seed', 0) or 0),
+            'layer_count': len(map_instance.get('layers', [])),
+            'no_fixed_linear_sequence': bool(map_instance.get('no_fixed_linear_sequence', False)),
+            'route_choice_available': bool(map_instance.get('route_choice_available', False)),
+        },
+        'map_instance': map_instance,
+        'route_state': route_state,
+        'map_layers': layers,
+        'compatible_network_map': compatible,
+        'compatible_network_map_summary': {
+            'root_fields_ready': all(field in compatible for field in root_required),
+            'node_fields_ready': all(all(field in node for field in node_required) for node in compatible_nodes),
+            'node_count': len(compatible_nodes),
+            'available_node_ids': compatible.get('available_node_ids', []),
+            'completed_node_ids': compatible.get('completed_node_ids', []),
+            'battle_nodes': battle_compatible_nodes,
+        },
+        'selected_node_materialized_loadout': loadout,
+        'selected_node_battle_entry_request': materialized.get('selected_node_battle_entry_request', {}),
+        'selected_node_route_state_after_choice': materialized.get('selected_node_route_state_after_choice', {}),
+        'selected_enemy_deck_detail': enemy_deck_detail,
+        'selected_reward_detail': reward_detail,
+        'selected_battle_slot_detail': selected_battle_slot,
+        'selected_node_map_detail': selected_node,
+    }
+
+
 def load_dashboard_display_current() -> dict[str, Any]:
     index_payload = index_lib.build_index()
     hero = index_payload.get('current_status_hero', {})
@@ -1653,12 +1780,13 @@ summary { cursor:pointer; font-weight:600; } @media (max-width: 960px) { .dual {
 <section id="runtime" class="panel"></section>
 <section id="pack-detail" class="panel"></section>
 <section id="pack-content" class="panel"></section>
+<section id="map-instance" class="panel"></section>
 <section id="timeline-risk" class="panel"></section>
 <section id="admin-actions" class="panel"></section>
 </main>
 <script>
-const state = { workspace:null, activeReview:null, packDetail:null, notes:null, release:null, report:'', channels:null, smoke:null, evaluationSummary:null, evaluationSnapshot:null, rebuildRecommendations:null, balanceReleaseReport:null, balanceReleaseEvaluation:null, display:null, adminStatus:null, previewStatus:null, selectedPackKey:null, selectedEncounterKey:null, contentWeaponFilter:'all', contentCardTypeFilter:'all', contentDifficultyFilter:'all', contentRealmFilter:'all', contentUsageFilter:'all', displaySearch:'', displayStatusFilter:'all', displayProfileFilter:'all', displayTemplateFilter:'all', reportsExpanded:false, copyFeedback:'', adminActionMessage:'', adminActionError:'', adminActionRunning:'' };
-const tabs = [['display','总览'],['runtime','运行态'],['pack-detail','Pack 详情'],['pack-content','Pack 内容'],['timeline-risk','时间线与风险'],['admin-actions','管理动作']];
+const state = { workspace:null, activeReview:null, packDetail:null, notes:null, release:null, report:'', channels:null, smoke:null, evaluationSummary:null, evaluationSnapshot:null, rebuildRecommendations:null, balanceReleaseReport:null, balanceReleaseEvaluation:null, display:null, adminStatus:null, previewStatus:null, dungeonPack:null, dungeonMap:null, selectedPackKey:null, selectedEncounterKey:null, selectedMapNodeId:null, contentWeaponFilter:'all', contentCardTypeFilter:'all', contentDifficultyFilter:'all', contentRealmFilter:'all', contentUsageFilter:'all', dungeonStageFilter:'all', dungeonBattleTypeFilter:'all', dungeonRouteTypeFilter:'all', dungeonEnemyFilter:'all', dungeonCardTypeFilter:'all', dungeonWeaponStyleFilter:'all', displaySearch:'', displayStatusFilter:'all', displayProfileFilter:'all', displayTemplateFilter:'all', reportsExpanded:false, copyFeedback:'', adminActionMessage:'', adminActionError:'', adminActionRunning:'' };
+const tabs = [['display','总览'],['runtime','运行态'],['pack-detail','Pack 详情'],['pack-content','Pack 内容'],['map-instance','地图实例'],['timeline-risk','时间线与风险'],['admin-actions','管理动作']];
 const $ = (id) => document.getElementById(id);
 const esc = (v) => String(v ?? '').replace(/[&<>"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const join = (v) => Array.isArray(v) ? v.join(', ') : (v || '-');
@@ -1704,6 +1832,8 @@ async function loadBaseState() {
   state.display = await api('/api/dashboard-display');
   state.adminStatus = await api('/api/admin/status').catch(() => ({ admin_write_enabled:false, lock_available:false, latest_admin_action:{} }));
   state.previewStatus = await api('/api/preview/status').catch(() => ({ preview_status:'unknown' }));
+  state.dungeonPack = await api('/api/dungeon/pack-content').catch(() => ({}));
+  state.dungeonMap = await api('/api/dungeon/map-instance').catch(() => ({}));
   state.smoke = await api('/api/release/smoke-report').catch(() => ({ ok:false, error:'smoke report not found' }));
   state.evaluationSummary = await api('/api/evaluation/summary').catch(() => ({ ok:false, error:'evaluation summary not found' }));
   state.balanceReleaseReport = await api('/api/balance-release/report').catch(() => ({ ok:false, error:'balance release build report not found' }));
@@ -1711,6 +1841,7 @@ async function loadBaseState() {
 }
 async function bootstrap() {
   await loadBaseState();
+  state.selectedMapNodeId = state.dungeonMap?.selected_node_materialized_loadout?.node_id || state.dungeonMap?.route_state?.selected_node_id || null;
   await focusPack(state.workspace.active_profile_id, state.workspace.active_content_pack_id);
 }
 async function focusPack(profileId, contentPackId) {
@@ -1991,64 +2122,78 @@ function renderPackDetail() {
   if (reportsNode) reportsNode.ontoggle = () => { state.reportsExpanded = reportsNode.open; };
 }
 function renderPackContent() {
-  const detail = state.packDetail || {};
-  const sequenceRows = detail.sequence_detail || [];
-  const encounterRows = state.activeReview?.encounter_review_table || [];
-  const deckRows = state.activeReview?.deck_review_table || [];
-  const rewardRows = state.activeReview?.reward_review_table || [];
-  const cardPoolSummary = detail.card_pool_summary || {};
-  const cardPoolRows = detail.card_pool_detail || state.activeReview?.card_pool_review_table || [];
-  const runtimeSummary = detail.dashboard_display_summary?.runtime_group || {};
-  const expectedEncounterCount = Number(detail.formal_encounter_total_count || runtimeSummary.encounter_count || sequenceRows.length || 0);
-  const fallbackLoadoutCount = Number(runtimeSummary.fallback_loadout_count || 0);
-  if (!state.selectedPackKey || !selectedPack()) {
-    $('pack-content').innerHTML = `<div class="band"><h2>Pack 内容</h2><div class="card"><div class="muted">请选择包</div><div>无匹配包</div></div></div>`;
+  const dungeon = state.dungeonPack || {};
+  const summary = dungeon.summary || {};
+  const battleSlots = dungeon.battle_slot_pool || [];
+  const enemyDecks = dungeon.enemy_deck_pool || [];
+  const rewardPlans = dungeon.reward_plan_pool || [];
+  const cardPool = dungeon.card_pool || [];
+  const operationNodes = dungeon.operation_node_pool || [];
+  if (!dungeon.content_pool_pack_id) {
+    $('pack-content').innerHTML = `<div class="band"><h2>Pack 内容</h2><div class="card"><div class="muted">Dungeon Pack 未生成</div><div>未生成 / 不适用</div></div></div>`;
     return;
   }
-  const selectedEncounter = encounterRows.find((row) => String(row.formal_encounter_id || row.generated_battle_slot_id || row.sequence_position) === String(state.selectedEncounterKey))
-    || encounterRows[0]
-    || null;
-  if (selectedEncounter && !state.selectedEncounterKey) {
-    state.selectedEncounterKey = String(selectedEncounter.formal_encounter_id || selectedEncounter.generated_battle_slot_id || selectedEncounter.sequence_position);
-  }
-  const selectedDeck = selectedEncounter ? deckRows.find((row) => row.deck_id === selectedEncounter.generated_deck_id) : null;
-  const selectedReward = selectedEncounter ? rewardRows.find((row) => row.reward_plan_id === selectedEncounter.reward_plan_id) : null;
-  const brokenDeckRef = !!selectedEncounter && !selectedDeck;
-  const brokenRewardRef = !!selectedEncounter && !selectedReward;
-  const weaponOptions = [...new Set(cardPoolRows.map((row) => String(row.weapon_style || '')).filter(Boolean))].sort();
-  const cardTypeOptions = [...new Set(cardPoolRows.map((row) => String(row.card_type || '')).filter(Boolean))].sort();
-  const difficultyOptions = [...new Set(cardPoolRows.map((row) => String(row.difficulty_tier || '')).filter(Boolean))].sort();
-  const realmOptions = [...new Set(cardPoolRows.map((row) => String(row.realm_requirement_label || row.required_wujing || '')).filter(Boolean))].sort();
-  const filteredCards = cardPoolRows.filter((row) => state.contentWeaponFilter === 'all' ? true : String(row.weapon_style || '') === state.contentWeaponFilter)
-    .filter((row) => state.contentCardTypeFilter === 'all' ? true : String(row.card_type || '') === state.contentCardTypeFilter)
-    .filter((row) => state.contentDifficultyFilter === 'all' ? true : String(row.difficulty_tier || '') === state.contentDifficultyFilter)
-    .filter((row) => state.contentRealmFilter === 'all' ? true : String(row.realm_requirement_label || row.required_wujing || '') === state.contentRealmFilter)
-    .filter((row) => {
-      if (state.contentUsageFilter === 'all') return true;
-      if (state.contentUsageFilter === 'unused') return !!row.is_unused;
-      if (state.contentUsageFilter === 'orphan') return !!row.is_orphan;
-      if (state.contentUsageFilter === 'used') return !row.is_unused;
-      return true;
-    });
-  const rewardTypeCounts = rewardRows.reduce((acc, row) => { const k = String(row.reward_type || 'unknown'); acc[k] = (acc[k] || 0) + 1; return acc; }, {});
-  const rewardTierCounts = rewardRows.reduce((acc, row) => { const k = String(row.reward_tier || 'unknown'); acc[k] = (acc[k] || 0) + 1; return acc; }, {});
-  const brokenRewardCount = rewardRows.filter((row) => !row.reward_plan_id).length + (brokenRewardRef ? 1 : 0);
-  $('pack-content').innerHTML = `<div class="band"><h2>Pack 内容</h2><div class="cards"><div class="card"><div class="muted">Selected Pack Identity</div><div class="mono">${esc(detail.mechanic_profile_id || '未生成 / 不适用')}</div><div class="mono">${esc(detail.sequence_template_id || '未生成 / 不适用')}</div><div class="mono">${esc(detail.content_pack_id || '未生成 / 不适用')}</div><div>build_variant: ${esc(detail.build_variant || '未生成 / 不适用')}</div><div>encounter_count: ${esc(String(expectedEncounterCount))}</div><div>card_pool_count: ${esc(String(detail.card_count || cardPoolRows.length || 0))}</div><div>deck_count: ${esc(String(detail.deck_count || deckRows.length || 0))}</div><div>reward_plan_count: ${esc(String(detail.reward_count || rewardRows.length || 0))}</div></div></div><div class="dual" style="margin-top:12px;"><div class="band"><h2>战斗序列 Sequence</h2><div class="muted">generated_loadout_count=${esc(String(sequenceRows.length))} · expected_encounter_count=${esc(String(expectedEncounterCount))} · fallback_loadout_count=${esc(String(fallbackLoadoutCount))}</div><div class="table"><table><thead><tr><th>#</th><th>Encounter</th><th>Battle Slot</th><th>Tier</th><th>Stage</th><th>Enemy</th><th>Enemy Deck</th><th>Reward</th><th>Runtime</th><th>Loadout</th><th>Fallback</th></tr></thead><tbody>${sequenceRows.length ? sequenceRows.map((row) => { const key = String(row.formal_encounter_id || row.generated_battle_slot_id || row.sequence_position); const encounterRef = encounterRows.find((item) => String(item.formal_encounter_id || item.generated_battle_slot_id || item.sequence_position) === key) || {}; const selectedClass = key === String(state.selectedEncounterKey || '') ? 'is-selected' : ''; const fallbackUsed = Boolean(encounterRef.fallback_used || row.fallback_used || false); return `<tr class="pack-row ${selectedClass}" data-encounter-key="${esc(key)}" aria-selected="${selectedClass ? 'true' : 'false'}" title="点击查看此战斗详情"><td>${esc(String(row.sequence_position || '-'))}</td><td class="mono">${esc(row.formal_encounter_id || '未生成 / 不适用')}</td><td class="mono">${esc(row.generated_battle_slot_id || '未生成 / 不适用')}</td><td>${esc(row.encounter_tier || encounterRef.difficulty_tier || '未生成 / 不适用')}</td><td>${esc(row.stage || row.stage_index || '未生成 / 不适用')}</td><td>${esc(encounterRef.enemy_role || row.encounter_kind || '未生成 / 不适用')}</td><td class="mono">${esc(row.generated_deck_id || '未生成 / 不适用')}</td><td class="mono">${esc(row.reward_plan_id || '未生成 / 不适用')}</td><td>${esc(join(row.runtime_primitives))}</td><td>${esc(row.power_range_pass ? 'generated' : 'review')}</td><td>${esc(String(fallbackUsed))}</td></tr>`; }).join('') : `<tr><td colspan="11" class="muted">未生成 / 不适用</td></tr>`}</tbody></table></div></div><div class="band"><h2>每场战斗 Encounter Detail</h2>${selectedEncounter ? `<div class="cards"><div class="card"><div class="muted">Battle Identity</div><div class="mono">${esc(selectedEncounter.formal_encounter_id || '未生成 / 不适用')}</div><div class="mono">${esc(selectedEncounter.generated_battle_slot_id || '未生成 / 不适用')}</div><div>${esc(selectedEncounter.enemy_role || '未生成 / 不适用')}</div><div class="mono">enemy_deck_id: ${esc(selectedEncounter.generated_deck_id || '未生成 / 不适用')}</div><div class="mono">reward_plan_id: ${esc(selectedEncounter.reward_plan_id || '未生成 / 不适用')}</div><div>difficulty_tier: ${esc(selectedEncounter.difficulty_tier || selectedEncounter.encounter_tier || '未生成 / 不适用')}</div><div>sequence_template_id: ${esc(detail.sequence_template_id || '未生成 / 不适用')}</div></div><div class="card"><div class="muted">Enemy Deck</div><div class="mono">deck_id: ${esc(selectedDeck?.deck_id || selectedEncounter.generated_deck_id || '未生成 / 不适用')}</div><div>card_count: ${esc(String(selectedDeck?.card_count || selectedEncounter.deck_cards?.length || 0))}</div><div>broken_ref: ${esc(String(brokenDeckRef))}</div><div class="table" style="margin-top:8px;"><table><thead><tr><th>Card</th><th>Type</th><th>Style</th><th>Realm</th><th>Cost</th><th>Power</th><th>Tags</th></tr></thead><tbody>${(selectedDeck?.cards || selectedEncounter.deck_cards || []).length ? (selectedDeck?.cards || selectedEncounter.deck_cards || []).map((card) => `<tr><td><div class="mono">${esc(card.card_id || '-')}</div><div>${esc(card.name || '-')}</div></td><td>${esc(card.card_type || '-')}</td><td>${esc(card.weapon_style || '-')}</td><td>${esc(String(card.required_wujing ?? card.realm_requirement_label ?? '-'))}</td><td>${esc(String(card.cost ?? '-'))}</td><td>${esc(String(card.power_score ?? '-'))}</td><td>${esc(join(card.tags || card.effects_text || '-'))}</td></tr>`).join('') : `<tr><td colspan="7" class="muted">未生成 / 不适用</td></tr>`}</tbody></table></div></div><div class="card"><div class="muted">Reward</div><div class="mono">reward_plan_id: ${esc(selectedReward?.reward_plan_id || selectedEncounter.reward_plan_id || '未生成 / 不适用')}</div><div>reward_type: ${esc(selectedReward?.reward_type || '未生成 / 不适用')}</div><div>reward_tier: ${esc(selectedReward?.reward_tier || '未生成 / 不适用')}</div><div>reward_source: ${esc(join(selectedReward?.used_by_battle_slots || selectedReward?.matched_encounter_tier || []))}</div><div>broken_ref: ${esc(String(brokenRewardRef))}</div><div style="margin-top:8px;">${esc(selectedReward?.reward_items_text || '未生成 / 不适用')}</div></div></div>` : `<div class="card"><div class="muted">请选择战斗</div><div>未生成 / 不适用</div></div>`}</div></div><div class="band" style="margin-top:12px;"><h2>总卡池 Card Pool</h2><div class="cards"><div class="card"><div class="muted">摘要</div><div>total_card_count: ${esc(String(detail.card_count || cardPoolRows.length || 0))}</div><div>used_card_count: ${esc(String(cardPoolSummary.used_card_count ?? '未生成 / 不适用'))}</div><div>unused_card_count: ${esc(String(cardPoolSummary.unused_card_count ?? '未生成 / 不适用'))}</div><div>orphan_card_count: ${esc(String(cardPoolSummary.orphan_card_count ?? '未生成 / 不适用'))}</div><div>by_weapon_style: ${esc(JSON.stringify(cardPoolSummary.weapon_style_counts || {}))}</div><div>by_card_type: ${esc(JSON.stringify(cardPoolSummary.card_type_counts || {}))}</div><div>by_difficulty_tier: ${esc(JSON.stringify(cardPoolSummary.difficulty_tier_counts || {}))}</div><div>by_realm_requirement: ${esc(JSON.stringify(cardPoolSummary.realm_requirement_counts || {}))}</div></div></div><div class="toolbar"><select id="content-weapon-filter"><option value="all">weapon_style: all</option>${weaponOptions.map((value) => `<option value="${esc(value)}">${esc(value)}</option>`).join('')}</select><select id="content-card-type-filter"><option value="all">card_type: all</option>${cardTypeOptions.map((value) => `<option value="${esc(value)}">${esc(value)}</option>`).join('')}</select><select id="content-difficulty-filter"><option value="all">difficulty: all</option>${difficultyOptions.map((value) => `<option value="${esc(value)}">${esc(value)}</option>`).join('')}</select><select id="content-realm-filter"><option value="all">realm: all</option>${realmOptions.map((value) => `<option value="${esc(value)}">${esc(value)}</option>`).join('')}</select><select id="content-usage-filter"><option value="all">usage: all</option><option value="used">used</option><option value="unused">unused</option><option value="orphan">orphan</option></select></div><div class="table"><table><thead><tr><th>Card</th><th>Type</th><th>Style</th><th>Difficulty</th><th>Realm</th><th>Deck Usage</th><th>Reward Usage</th><th>Unused</th><th>Orphan</th><th>Tags / Effect</th></tr></thead><tbody>${filteredCards.length ? filteredCards.map((row) => `<tr><td><div class="mono">${esc(row.card_id || '-')}</div><div>${esc(row.name || '-')}</div></td><td>${esc(row.card_type || '-')}</td><td>${esc(row.weapon_style || '-')}</td><td>${esc(row.difficulty_tier || '-')}</td><td>${esc(row.realm_requirement_label || String(row.required_wujing ?? '-'))}</td><td>${esc(String(row.used_in_deck_count ?? row.usage_count ?? '-'))}</td><td>${esc(String(row.used_in_reward_count ?? 0))}</td><td>${esc(String(!!row.is_unused))}</td><td>${esc(String(!!row.is_orphan))}</td><td>${esc(join(row.tags || row.effects_text || row.effect_types || '-'))}</td></tr>`).join('') : `<tr><td colspan="10" class="muted">该 pack 缺少卡池明细</td></tr>`}</tbody></table></div></div><div class="band" style="margin-top:12px;"><h2>奖励 Reward Plans</h2><div class="cards"><div class="card"><div class="muted">摘要</div><div>reward_plan_count: ${esc(String(detail.reward_count || rewardRows.length || 0))}</div><div>reward_type_counts: ${esc(JSON.stringify(rewardTypeCounts))}</div><div>reward_tier_counts: ${esc(JSON.stringify(rewardTierCounts))}</div><div>broken_reward_ref_count: ${esc(String(brokenRewardCount))}</div></div></div><div class="table"><table><thead><tr><th>Reward Plan</th><th>Encounter / Slot</th><th>Type</th><th>Tier</th><th>Card Rewards</th><th>Currency</th><th>Source</th><th>Broken</th></tr></thead><tbody>${rewardRows.length ? rewardRows.map((row) => { const linkedEncounter = encounterRows.find((enc) => enc.reward_plan_id === row.reward_plan_id) || {}; return `<tr class="${selectedEncounter?.reward_plan_id === row.reward_plan_id ? 'active' : ''}"><td class="mono">${esc(row.reward_plan_id || '-')}</td><td><div class="mono">${esc(linkedEncounter.formal_encounter_id || '-')}</div><div class="mono">${esc(linkedEncounter.generated_battle_slot_id || '-')}</div></td><td>${esc(row.reward_type || '-')}</td><td>${esc(row.reward_tier || '-')}</td><td>${esc(row.reward_items_text || '-')}</td><td>${esc('-')}</td><td>${esc(join(row.used_by_battle_slots || row.matched_encounter_tier || []))}</td><td>${esc(String(!row.reward_plan_id))}</td></tr>`; }).join('') : `<tr><td colspan="8" class="muted">未生成 / 不适用</td></tr>`}</tbody></table></div></div>`;
-  const root = $('pack-content');
-  const encounterNodes = root.querySelectorAll('[data-encounter-key]');
-  encounterNodes.forEach((row) => {
-    row.onclick = () => {
-      state.selectedEncounterKey = row.dataset.encounterKey;
-      renderPackContent();
-    };
-  });
-  [['content-weapon-filter','contentWeaponFilter'],['content-card-type-filter','contentCardTypeFilter'],['content-difficulty-filter','contentDifficultyFilter'],['content-realm-filter','contentRealmFilter'],['content-usage-filter','contentUsageFilter']].forEach(([id,key]) => {
+  const stageOptions = [...new Set(battleSlots.map((row) => String(row.stage || '')).filter(Boolean))].sort();
+  const battleTypeOptions = [...new Set(battleSlots.map((row) => String(row.battle_type || '')).filter(Boolean))].sort();
+  const routeTypeOptions = [...new Set(battleSlots.map((row) => String(row.route_type || '')).filter(Boolean))].sort();
+  const enemyOptions = [...new Set(battleSlots.map((row) => String(row.enemy_archetype || '')).filter(Boolean))].sort();
+  const cardTypeOptions = [...new Set(cardPool.map((row) => String(row.card_type || '')).filter(Boolean))].sort();
+  const weaponStyleOptions = [...new Set(cardPool.map((row) => String(row.weapon_style || '')).filter(Boolean))].sort();
+  const filteredBattleSlots = battleSlots
+    .filter((row) => state.dungeonStageFilter === 'all' ? true : String(row.stage || '') === state.dungeonStageFilter)
+    .filter((row) => state.dungeonBattleTypeFilter === 'all' ? true : String(row.battle_type || '') === state.dungeonBattleTypeFilter)
+    .filter((row) => state.dungeonRouteTypeFilter === 'all' ? true : String(row.route_type || '') === state.dungeonRouteTypeFilter)
+    .filter((row) => state.dungeonEnemyFilter === 'all' ? true : String(row.enemy_archetype || '') === state.dungeonEnemyFilter);
+  const filteredEnemyDecks = enemyDecks.filter((row) => state.dungeonEnemyFilter === 'all' ? true : String(row.enemy_archetype || '') === state.dungeonEnemyFilter);
+  const filteredRewardPlans = rewardPlans.filter((row) => state.dungeonRouteTypeFilter === 'all' ? true : (row.compatible_battle_slot_ids || []).some((slotId) => {
+    const slot = battleSlots.find((item) => item.battle_slot_id === slotId) || {};
+    return String(slot.route_type || '') === state.dungeonRouteTypeFilter;
+  }));
+  const filteredCards = cardPool
+    .filter((row) => state.dungeonCardTypeFilter === 'all' ? true : String(row.card_type || '') === state.dungeonCardTypeFilter)
+    .filter((row) => state.dungeonWeaponStyleFilter === 'all' ? true : String(row.weapon_style || '') === state.dungeonWeaponStyleFilter);
+  const cardUsageSummary = {
+    used_card_count: new Set([...enemyDecks.flatMap((row) => row.card_ids || []), ...rewardPlans.flatMap((row) => row.card_rewards || [])]).size,
+    total_card_count: cardPool.length,
+  };
+  $('pack-content').innerHTML = `<div class="band"><h2>Pack 内容</h2><div class="cards"><div class="card"><div class="muted">Dungeon Pack Summary</div><div class="mono">${esc(detailValue(dungeon.progression_template_id))}</div><div class="mono">${esc(detailValue(dungeon.content_pool_pack_id))}</div><div>pool_status: ${esc(detailValue(dungeon.pool_status))}</div><div>supports_map_instance: ${esc(String(detailValue(dungeon.supports_map_instance)))}</div><div>supports_fixed_sequence: ${esc(String(detailValue(dungeon.supports_fixed_sequence)))}</div></div><div class="card"><div class="muted">Pool Counts</div><div>battle_slot_count: ${esc(String(summary.battle_slot_count ?? 0))}</div><div>enemy_deck_count: ${esc(String(summary.enemy_deck_count ?? 0))}</div><div>reward_plan_count: ${esc(String(summary.reward_plan_count ?? 0))}</div><div>card_count: ${esc(String(summary.card_count ?? 0))}</div><div>operation_node_count: ${esc(String(summary.operation_node_count ?? 0))}</div></div><div class="card"><div class="muted">Card Pool Summary</div><div>used_card_count: ${esc(String(cardUsageSummary.used_card_count))}</div><div>unused_card_count: ${esc(String(Math.max(cardUsageSummary.total_card_count - cardUsageSummary.used_card_count, 0)))}</div><div>total_card_count: ${esc(String(cardUsageSummary.total_card_count))}</div></div></div><div class="toolbar"><select id="dungeon-stage-filter"><option value="all">stage: all</option>${stageOptions.map((value) => `<option value="${esc(value)}">${esc(value)}</option>`).join('')}</select><select id="dungeon-battle-type-filter"><option value="all">battle_type: all</option>${battleTypeOptions.map((value) => `<option value="${esc(value)}">${esc(value)}</option>`).join('')}</select><select id="dungeon-route-type-filter"><option value="all">route_type: all</option>${routeTypeOptions.map((value) => `<option value="${esc(value)}">${esc(value)}</option>`).join('')}</select><select id="dungeon-enemy-filter"><option value="all">enemy_archetype: all</option>${enemyOptions.map((value) => `<option value="${esc(value)}">${esc(value)}</option>`).join('')}</select><select id="dungeon-card-type-filter"><option value="all">card_type: all</option>${cardTypeOptions.map((value) => `<option value="${esc(value)}">${esc(value)}</option>`).join('')}</select><select id="dungeon-weapon-style-filter"><option value="all">weapon_style: all</option>${weaponStyleOptions.map((value) => `<option value="${esc(value)}">${esc(value)}</option>`).join('')}</select></div><div class="band" style="margin-top:12px;"><h2>Battle Slot Pool</h2><div class="table"><table><thead><tr><th>battle_slot_id</th><th>stage</th><th>battle_type</th><th>route_type</th><th>node_type_hint</th><th>enemy_archetype</th><th>enemy_deck_id</th><th>reward_plan_id</th><th>deck_tier</th><th>expected_player_realm</th><th>expected_lightness_level</th><th>compatible_encounter_id</th><th>compatible_battle_id</th><th>compatible_combat_pool_id</th></tr></thead><tbody>${filteredBattleSlots.length ? filteredBattleSlots.map((row) => `<tr><td class="mono">${esc(detailValue(row.battle_slot_id))}</td><td>${esc(detailValue(row.stage))}</td><td>${esc(detailValue(row.battle_type))}</td><td>${esc(detailValue(row.route_type))}</td><td>${esc(detailValue(row.node_type_hint))}</td><td>${esc(detailValue(row.enemy_archetype))}</td><td class="mono">${esc(detailValue(row.enemy_deck_id))}</td><td class="mono">${esc(detailValue(row.reward_plan_id))}</td><td>${esc(detailValue(row.deck_tier))}</td><td>${esc(String(detailValue(row.expected_player_realm)))}</td><td>${esc(String(detailValue(row.expected_lightness_level)))}</td><td class="mono">${esc(detailValue(row.compatible_encounter_id))}</td><td class="mono">${esc(detailValue(row.compatible_battle_id))}</td><td class="mono">${esc(detailValue(row.compatible_combat_pool_id))}</td></tr>`).join('') : `<tr><td colspan="14" class="muted">未生成 / 不适用</td></tr>`}</tbody></table></div></div><div class="band" style="margin-top:12px;"><h2>Enemy Deck Pool</h2><div class="table"><table><thead><tr><th>enemy_deck_id</th><th>enemy_archetype</th><th>deck_tier</th><th>intended_stage</th><th>expected_player_realm</th><th>card_count</th><th>card_ids</th><th>behavior_tags</th></tr></thead><tbody>${filteredEnemyDecks.length ? filteredEnemyDecks.map((row) => `<tr><td class="mono">${esc(detailValue(row.enemy_deck_id))}</td><td>${esc(detailValue(row.enemy_archetype))}</td><td>${esc(detailValue(row.deck_tier))}</td><td>${esc(detailValue(row.intended_stage))}</td><td>${esc(String(detailValue(row.expected_player_realm)))}</td><td>${esc(String((row.card_ids || []).length))}</td><td class="mono">${esc(join(row.card_ids || []))}</td><td>${esc(join(row.behavior_tags || []))}</td></tr>`).join('') : `<tr><td colspan="8" class="muted">未生成 / 不适用</td></tr>`}</tbody></table></div></div><div class="band" style="margin-top:12px;"><h2>Reward Plan Pool</h2><div class="table"><table><thead><tr><th>reward_plan_id</th><th>reward_type</th><th>reward_tier</th><th>martial_xp</th><th>weapon_xp</th><th>lightness_reward_type</th><th>military_merit_reward</th><th>card_rewards</th><th>compatible_battle_slot_ids</th></tr></thead><tbody>${filteredRewardPlans.length ? filteredRewardPlans.map((row) => `<tr><td class="mono">${esc(detailValue(row.reward_plan_id))}</td><td>${esc(detailValue(row.reward_type))}</td><td>${esc(detailValue(row.reward_tier))}</td><td>${esc(String(detailValue(row.martial_xp)))}</td><td>${esc(String(detailValue(row.weapon_xp)))}</td><td>${esc(detailValue(row.lightness_reward_type))}</td><td>${esc(String(detailValue(row.military_merit_reward)))}</td><td class="mono">${esc(join(row.card_rewards || []))}</td><td class="mono">${esc(join(row.compatible_battle_slot_ids || []))}</td></tr>`).join('') : `<tr><td colspan="9" class="muted">未生成 / 不适用</td></tr>`}</tbody></table></div></div><div class="band" style="margin-top:12px;"><h2>Operation Node Pool</h2><div class="table"><table><thead><tr><th>operation_node_id</th><th>operation_type</th><th>stage_hint</th><th>effects</th><th>costs</th><th>route_tags</th><th>old_case_tags</th><th>lightness_unlock_possible</th><th>compatible_network_node_type</th></tr></thead><tbody>${operationNodes.length ? operationNodes.map((row) => `<tr><td class="mono">${esc(detailValue(row.operation_node_id))}</td><td>${esc(detailValue(row.operation_type))}</td><td>${esc(detailValue(row.stage_hint))}</td><td>${esc(JSON.stringify(row.effects || {}))}</td><td>${esc(JSON.stringify(row.costs || {}))}</td><td>${esc(join(row.route_tags || []))}</td><td>${esc(join(row.old_case_tags || []))}</td><td>${esc(String(detailValue(row.lightness_unlock_possible)))}</td><td>${esc(detailValue(row.compatible_network_node_type))}</td></tr>`).join('') : `<tr><td colspan="9" class="muted">未生成 / 不适用</td></tr>`}</tbody></table></div></div><div class="band" style="margin-top:12px;"><h2>Card Pool</h2><div class="table"><table><thead><tr><th>card_id</th><th>name</th><th>card_type</th><th>weapon_style</th><th>difficulty_tier</th><th>realm_requirement</th><th>cost</th><th>effect_summary</th><th>tags</th></tr></thead><tbody>${filteredCards.length ? filteredCards.map((row) => `<tr><td class="mono">${esc(detailValue(row.card_id))}</td><td>${esc(detailValue(row.name))}</td><td>${esc(detailValue(row.card_type))}</td><td>${esc(detailValue(row.weapon_style))}</td><td>${esc(detailValue(row.difficulty_tier))}</td><td>${esc(String(detailValue(row.realm_requirement)))}</td><td>${esc(String(detailValue(row.cost)))}</td><td>${esc(detailValue(row.effect_summary))}</td><td>${esc(join(row.tags || []))}</td></tr>`).join('') : `<tr><td colspan="9" class="muted">未生成 / 不适用</td></tr>`}</tbody></table></div></div></div>`;
+  [['dungeon-stage-filter','dungeonStageFilter'],['dungeon-battle-type-filter','dungeonBattleTypeFilter'],['dungeon-route-type-filter','dungeonRouteTypeFilter'],['dungeon-enemy-filter','dungeonEnemyFilter'],['dungeon-card-type-filter','dungeonCardTypeFilter'],['dungeon-weapon-style-filter','dungeonWeaponStyleFilter']].forEach(([id,key]) => {
     const node = $(id);
     if (!node) return;
     node.value = state[key];
     node.onchange = (event) => {
       state[key] = event.target.value;
       renderPackContent();
+    };
+  });
+}
+function renderMapInstance() {
+  const dungeon = state.dungeonMap || {};
+  const summary = dungeon.map_summary || {};
+  const route = dungeon.route_state || {};
+  const mapInstance = dungeon.map_instance || {};
+  const compatibleSummary = dungeon.compatible_network_map_summary || {};
+  const layers = dungeon.map_layers || [];
+  const loadout = dungeon.selected_node_materialized_loadout || {};
+  const battleRequest = dungeon.selected_node_battle_entry_request || {};
+  const routeAfter = dungeon.selected_node_route_state_after_choice || {};
+  const selectedDeck = dungeon.selected_enemy_deck_detail || {};
+  const selectedReward = dungeon.selected_reward_detail || {};
+  const allNodes = mapInstance.nodes || [];
+  if (!summary.map_instance_id) {
+    $('map-instance').innerHTML = `<div class="band"><h2>地图实例</h2><div class="card"><div class="muted">Dungeon Map 未生成</div><div>未生成 / 不适用</div></div></div>`;
+    return;
+  }
+  if (!state.selectedMapNodeId) state.selectedMapNodeId = loadout.node_id || route.selected_node_id || route.current_node_id || '';
+  const selectedNode = allNodes.find((row) => String(row.node_id || '') === String(state.selectedMapNodeId || '')) || allNodes[0] || null;
+  const selectedLoadout = selectedNode && String(selectedNode.node_id || '') === String(loadout.node_id || '') ? loadout : null;
+  const selectedNodeBattle = selectedNode && String(selectedNode.node_type || '').includes('battle');
+  const selectedNodeOperation = selectedNode && ['operation','old_case','training','lightness_event','prepare','boss_gate'].includes(String(selectedNode.node_type || ''));
+  $('map-instance').innerHTML = `<div class="band"><h2>地图实例</h2><div class="cards"><div class="card"><div class="muted">Map Summary</div><div class="mono">${esc(detailValue(summary.map_instance_id))}</div><div class="mono">${esc(detailValue(summary.progression_template_id))}</div><div class="mono">${esc(detailValue(summary.content_pool_pack_id))}</div><div>seed: ${esc(String(detailValue(summary.seed)))}</div><div>layer_count: ${esc(String(detailValue(summary.layer_count)))}</div><div>no_fixed_linear_sequence: ${esc(String(detailValue(summary.no_fixed_linear_sequence)))}</div><div>route_choice_available: ${esc(String(detailValue(summary.route_choice_available)))}</div></div><div class="card"><div class="muted">Route State</div><div class="mono">run_id: ${esc(detailValue(route.run_id))}</div><div class="mono">current_node_id: ${esc(detailValue(route.current_node_id))}</div><div class="mono">selected_node_id: ${esc(detailValue(route.selected_node_id))}</div><div>battle_count_so_far: ${esc(String(detailValue(route.battle_count_so_far)))}</div><div>elite_count_so_far: ${esc(String(detailValue(route.elite_count_so_far)))}</div><div>operation_count_so_far: ${esc(String(detailValue(route.operation_count_so_far)))}</div><div>martial_realm: ${esc(String(detailValue(route.martial_realm)))}</div><div>lightness_level: ${esc(String(detailValue(route.lightness_level)))}</div></div><div class="card"><div class="muted">Compatible Network Map</div><div>root_fields_ready: ${esc(String(detailValue(compatibleSummary.root_fields_ready)))}</div><div>node_fields_ready: ${esc(String(detailValue(compatibleSummary.node_fields_ready)))}</div><div>node_count: ${esc(String(detailValue(compatibleSummary.node_count)))}</div><div>available_node_ids: ${esc(join(compatibleSummary.available_node_ids || []))}</div><div>completed_node_ids: ${esc(join(compatibleSummary.completed_node_ids || []))}</div></div></div><div class="dual" style="margin-top:12px;"><div class="band"><h2>Map Layers / Nodes</h2><div class="table"><table><thead><tr><th>layer</th><th>node_id</th><th>node_type</th><th>lane</th><th>title</th><th>battle_slot_id</th><th>operation_node_id</th><th>outgoing_node_ids</th><th>incoming_node_ids</th></tr></thead><tbody>${layers.length ? layers.flatMap((layer) => (layer.nodes || []).map((row) => `<tr class="pack-row ${String(row.node_id || '') === String(state.selectedMapNodeId || '') ? 'is-selected' : ''}" data-map-node-id="${esc(row.node_id || '')}" aria-selected="${String(row.node_id || '') === String(state.selectedMapNodeId || '') ? 'true' : 'false'}"><td>${esc(String(layer.layer_index))}</td><td class="mono">${esc(detailValue(row.node_id))}</td><td>${esc(detailValue(row.node_type))}</td><td>${esc(String(detailValue(row.lane)))}</td><td>${esc(detailValue(row.title))}</td><td class="mono">${esc(detailValue(row.battle_slot_id))}</td><td class="mono">${esc(detailValue(row.operation_node_id))}</td><td>${esc(join(row.outgoing_node_ids || []))}</td><td>${esc(join(row.incoming_node_ids || []))}</td></tr>`)).join('') : `<tr><td colspan="9" class="muted">未生成 / 不适用</td></tr>`}</tbody></table></div></div><div class="band"><h2>Selected Node Detail</h2>${selectedNode ? `<div class="cards"><div class="card"><div class="muted">Node</div><div class="mono">${esc(detailValue(selectedNode.node_id))}</div><div>${esc(detailValue(selectedNode.node_type))}</div><div>${esc(detailValue(selectedNode.title))}</div><div class="mono">battle_slot_id: ${esc(detailValue(selectedNode.battle_slot_id))}</div><div class="mono">operation_node_id: ${esc(detailValue(selectedNode.operation_node_id))}</div></div><div class="card"><div class="muted">Materialized Loadout</div>${selectedLoadout ? `<div class="mono">materialized_kind: ${esc(detailValue(selectedLoadout.materialized_kind))}</div><div class="mono">battle_slot_id: ${esc(detailValue(selectedLoadout.battle_slot_id))}</div><div class="mono">enemy_deck_id: ${esc(detailValue(selectedLoadout.enemy_deck_id))}</div><div class="mono">reward_plan_id: ${esc(detailValue(selectedLoadout.reward_plan_id))}</div><div class="mono">operation_node_id: ${esc(detailValue(selectedLoadout.operation_node_id))}</div><div>fallback_used: ${esc(String(detailValue(selectedLoadout.fallback_used)))}</div><div>broken_ref: ${esc(String(detailValue(selectedLoadout.broken_ref)))}</div><div>loadout_source: ${esc(detailValue(selectedLoadout.loadout_source))}</div>` : `<div>未 materialize / 后续点击节点时生成</div>${selectedNodeBattle ? `<div class="mono">battle_slot_id: ${esc(detailValue(selectedNode.battle_slot_id))}</div>` : ''}${selectedNodeOperation ? `<div class="mono">operation_node_id: ${esc(detailValue(selectedNode.operation_node_id))}</div><div>${esc(JSON.stringify(selectedNode.effects || {}))}</div>` : ''}`}</div></div>` : `<div class="card"><div class="muted">请选择节点</div><div>未生成 / 不适用</div></div>`}</div></div><div class="band" style="margin-top:12px;"><h2>Route State</h2><div class="table"><table><thead><tr><th>field</th><th>value</th></tr></thead><tbody><tr><td>visited_node_ids</td><td>${esc(join(route.visited_node_ids || []))}</td></tr><tr><td>visited_path_order</td><td>${esc(join(route.visited_path_order || []))}</td></tr><tr><td>available_next_node_ids</td><td>${esc(join(route.available_next_node_ids || []))}</td></tr><tr><td>route_flags</td><td>${esc(JSON.stringify(route.route_flags || {}))}</td></tr><tr><td>military_merit</td><td>${esc(String(detailValue(route.military_merit)))}</td></tr><tr><td>clean_reputation</td><td>${esc(String(detailValue(route.clean_reputation)))}</td></tr><tr><td>old_case_progress</td><td>${esc(String(detailValue(route.old_case_progress)))}</td></tr></tbody></table></div></div><div class="band" style="margin-top:12px;"><h2>Compatible Network Map</h2><div class="table"><table><thead><tr><th>map_graph_id</th><th>encounter_id</th><th>battle_id</th><th>combat_pool_id</th></tr></thead><tbody>${(compatibleSummary.battle_nodes || []).length ? (compatibleSummary.battle_nodes || []).map((row) => `<tr><td class="mono">${esc(detailValue(row.map_graph_id))}</td><td class="mono">${esc(detailValue(row.encounter_id))}</td><td class="mono">${esc(detailValue(row.battle_id))}</td><td class="mono">${esc(detailValue(row.combat_pool_id))}</td></tr>`).join('') : `<tr><td colspan="4" class="muted">未生成 / 不适用</td></tr>`}</tbody></table></div></div><div class="dual" style="margin-top:12px;"><div class="band"><h2>Battle Entry Request</h2>${selectedLoadout && selectedLoadout.materialized_kind === 'battle' ? `<div class="cards"><div class="card"><div class="mono">encounter_id: ${esc(detailValue(battleRequest.encounter_id))}</div><div class="mono">battle_id: ${esc(detailValue(battleRequest.battle_id))}</div><div class="mono">combat_pool_id: ${esc(detailValue(battleRequest.combat_pool_id))}</div><div class="mono">source_node_id: ${esc(detailValue(battleRequest.source_node_id))}</div><div class="mono">source_battle_slot_id: ${esc(detailValue(battleRequest.source_battle_slot_id))}</div><div class="mono">source_enemy_deck_id: ${esc(detailValue(battleRequest.source_enemy_deck_id))}</div><div class="mono">source_reward_plan_id: ${esc(detailValue(battleRequest.source_reward_plan_id))}</div></div></div>` : `<div class="card"><div class="muted">非 battle node</div><div>未生成 / 不适用</div></div>`}</div><div class="band"><h2>Route State After Choice</h2><div class="cards"><div class="card"><div class="mono">current_node_id: ${esc(detailValue(routeAfter.current_node_id))}</div><div class="mono">completed_node_ids: ${esc(join(routeAfter.completed_node_ids || []))}</div><div class="mono">available_next_node_ids: ${esc(join(routeAfter.available_next_node_ids || []))}</div><div>battle_count_so_far: ${esc(String(detailValue(routeAfter.battle_count_so_far)))}</div><div>elite_count_so_far: ${esc(String(detailValue(routeAfter.elite_count_so_far)))}</div><div>operation_count_so_far: ${esc(String(detailValue(routeAfter.operation_count_so_far)))}</div></div></div></div></div><div class="dual" style="margin-top:12px;"><div class="band"><h2>Enemy Deck Detail</h2>${selectedLoadout && selectedLoadout.materialized_kind === 'battle' ? `<div class="cards"><div class="card"><div class="mono">enemy_deck_id: ${esc(detailValue(selectedDeck.enemy_deck_id))}</div><div>enemy_archetype: ${esc(detailValue(selectedDeck.enemy_archetype))}</div><div>deck_tier: ${esc(detailValue(selectedDeck.deck_tier))}</div><div>intended_stage: ${esc(detailValue(selectedDeck.intended_stage))}</div><div>expected_player_realm: ${esc(String(detailValue(selectedDeck.expected_player_realm)))}</div><div>card_count: ${esc(String((selectedDeck.card_ids || []).length))}</div><div class="mono">${esc(join(selectedDeck.card_ids || []))}</div></div></div>` : `<div class="card"><div class="muted">未 materialize</div><div>未生成 / 不适用</div></div>`}</div><div class="band"><h2>Reward Detail</h2>${selectedLoadout && selectedLoadout.materialized_kind === 'battle' ? `<div class="cards"><div class="card"><div class="mono">reward_plan_id: ${esc(detailValue(selectedReward.reward_plan_id))}</div><div>reward_type: ${esc(detailValue(selectedReward.reward_type))}</div><div>reward_tier: ${esc(detailValue(selectedReward.reward_tier))}</div><div>martial_xp: ${esc(String(detailValue(selectedReward.martial_xp)))}</div><div>weapon_xp: ${esc(String(detailValue(selectedReward.weapon_xp)))}</div><div>lightness_reward_type: ${esc(detailValue(selectedReward.lightness_reward_type))}</div><div>military_merit_reward: ${esc(String(detailValue(selectedReward.military_merit_reward)))}</div><div class="mono">${esc(join(selectedReward.card_rewards || []))}</div></div></div>` : `<div class="card"><div class="muted">未 materialize</div><div>未生成 / 不适用</div></div>`}</div></div></div>`;
+  $('map-instance').querySelectorAll('[data-map-node-id]').forEach((row) => {
+    row.onclick = () => {
+      state.selectedMapNodeId = row.dataset.mapNodeId;
+      renderMapInstance();
     };
   });
 }
@@ -2067,7 +2212,7 @@ function renderAdminActions() {
   $('admin-actions').innerHTML = buildAdminPanel(selected, detail, selectedRiskRow);
   bindAdminButtons($('admin-actions'));
 }
-function renderAll() { renderHeader(); renderDisplay(); renderRuntime(); renderPackDetail(); renderPackContent(); renderTimelineRisk(); renderAdminActions(); }
+function renderAll() { renderHeader(); renderDisplay(); renderRuntime(); renderPackDetail(); renderPackContent(); renderMapInstance(); renderTimelineRisk(); renderAdminActions(); }
 (async function init() { makeTabs(); await bootstrap(); renderAll(); })();
 </script>
 </body>

@@ -470,3 +470,11 @@ v2 目标是 `full sequence reward / progression closure`：
 - battle entry request 继续沿用现有 `encounter_id / battle_id / combat_pool_id` 契约。
 - DUNGEON-3 仍未接入 Godot runtime。
 - DUNGEON-4 将实现 Dashboard `Pack 内容 + 地图实例 / node detail` 展示。
+
+## DUNGEON-4：Dashboard Pack Content + Map View
+
+- DUNGEON-4 已新增 Dashboard `Pack 内容` 与 `地图实例` 只读视图。
+- `Pack 内容` 页展示 dungeon `content_pool_pack`。
+- `地图实例` 页展示 `map_instance / route_state / materialized node / battle entry request`。
+- 当前仍未接入 Godot runtime。
+- DUNGEON-5 将实现 Godot Big Map Runtime 接入。
