@@ -1,0 +1,423 @@
+{
+  "contract_version": "dungeon_0.big_map_integration.v1",
+  "generated_at": "2026-05-15T09:36:30.544178+00:00",
+  "recon_scope": "read_only",
+  "source_plan": "PROGRESSION_BATTLE_COUNT_PLAN_V1_3_副本",
+  "artifacts": {
+    "contract_path": "data/aigc_battle/generated/dungeon_big_map_integration/existing_big_map_contract.json",
+    "report_path": "data/aigc_battle/generated/dungeon_big_map_integration/existing_big_map_integration_report.md"
+  },
+  "acceptance": {
+    "existing_big_map_node_schema_found": true,
+    "existing_big_map_selection_hook_found": true,
+    "existing_big_map_route_state_found": true,
+    "existing_big_map_battle_entry_hook_found": true,
+    "aigc_big_map_adapter_plan_ready": true,
+    "no_fixed_sequence_assumption": true,
+    "no_runtime_modified": true,
+    "no_scene_modified": true,
+    "probe_pass": true
+  },
+  "existing_big_map": {
+    "entry": {
+      "network_map_scene": "res://scenes/NarrativeDemo.tscn",
+      "battle_scene": "res://scenes/MainVisual.tscn",
+      "primary_controller_alias": "res://scripts/narrative_demo_ui_focus_tuned_controller.gd"
+    },
+    "graph_schema": {
+      "root_required_fields": [
+        "run_id",
+        "seed",
+        "layer_count",
+        "current_layer",
+        "current_node_id",
+        "selected_node_id",
+        "completed_node_ids",
+        "available_node_ids",
+        "pending_map_node_id",
+        "pending_result_text",
+        "pending_effects",
+        "nodes"
+      ],
+      "node_required_fields": [
+        "map_graph_id",
+        "pool_node_id",
+        "layer",
+        "lane",
+        "x",
+        "y",
+        "title",
+        "node_type",
+        "primary_line",
+        "secondary_line",
+        "preview_text",
+        "result_text",
+        "effects",
+        "tags",
+        "combat",
+        "combat_pool_id",
+        "encounter_id",
+        "battle_id",
+        "enemy_martial_level",
+        "recommended_martial_min",
+        "recommended_martial_max",
+        "debug_fallback",
+        "outgoing",
+        "incoming",
+        "state"
+      ],
+      "node_state_enum": [
+        "available",
+        "locked",
+        "completed",
+        "unreachable",
+        "start"
+      ],
+      "node_identity_rule": {
+        "stable_runtime_id": "map_graph_id",
+        "pool_identity": "pool_node_id",
+        "progression_state_must_key_by": "map_graph_id"
+      },
+      "node_pool_source_fields": [
+        "node_id",
+        "title",
+        "node_type",
+        "region_min",
+        "region_max",
+        "primary_line",
+        "secondary_line",
+        "min_military_merit",
+        "max_military_merit",
+        "min_case_clues",
+        "min_clean_reputation",
+        "max_clean_reputation",
+        "min_martial_level",
+        "weight",
+        "max_per_run",
+        "can_repeat",
+        "unique_group",
+        "encounter_id",
+        "battle_id",
+        "combat_pool_id",
+        "recommended_martial_min",
+        "recommended_martial_max",
+        "enemy_martial_level",
+        "visual_path",
+        "preview_text",
+        "result_text",
+        "effects",
+        "tags"
+      ],
+      "config_node_types": [
+        "case",
+        "combat_common",
+        "combat_elite",
+        "military",
+        "reputation",
+        "rest",
+        "risk"
+      ]
+    },
+    "route_state": {
+      "strategic_state_fields": [
+        "active",
+        "completed",
+        "seed",
+        "region_index",
+        "layer_index",
+        "selected_nodes",
+        "current_map",
+        "network_map",
+        "current_node_id",
+        "selected_node_id",
+        "completed_node_ids",
+        "available_node_ids",
+        "pending_map_node_id",
+        "pending_result_text",
+        "pending_effects",
+        "military_merit",
+        "clean_reputation",
+        "case_clues",
+        "martial_level",
+        "owned_card_ids",
+        "selected_loadout_ids",
+        "deck_slots",
+        "active_deck_index",
+        "last_node_result",
+        "final_boss"
+      ],
+      "network_mirror_fields": [
+        "network_map",
+        "selected_node_id",
+        "available_node_ids",
+        "completed_node_ids",
+        "current_node_id",
+        "pending_map_node_id",
+        "pending_result_text",
+        "pending_effects"
+      ],
+      "progression_counters_present_now": [
+        "military_merit",
+        "clean_reputation",
+        "case_clues",
+        "martial_level"
+      ],
+      "missing_for_new_dungeon_model": [
+        "battle_count_so_far",
+        "elite_count_so_far",
+        "operation_count_so_far",
+        "visited_path_order",
+        "route_flags",
+        "old_case_progress",
+        "lightness_level"
+      ]
+    },
+    "selection_flow": {
+      "click_hook": {
+        "file": "scripts/narrative/strategic_network_map_flow_runtime.gd",
+        "method": "on_network_node_clicked",
+        "line": 10
+      },
+      "confirm_hook": {
+        "file": "scripts/narrative/strategic_network_map_flow_runtime.gd",
+        "method": "confirm_network_node",
+        "line": 22
+      },
+      "confirm_guard": {
+        "file": "scripts/strategic_network_map_confirm.gd",
+        "method": "selected_can_confirm",
+        "line": 22
+      },
+      "node_completion": {
+        "file": "scripts/strategic_network_map_runtime.gd",
+        "method": "complete_node",
+        "line": 63
+      }
+    },
+    "battle_entry_hook": {
+      "combat_node_detector": {
+        "file": "scripts/strategic_network_battle_bridge.gd",
+        "method": "is_combat_node",
+        "line": 25
+      },
+      "request_builder": {
+        "file": "scripts/strategic_network_battle_bridge.gd",
+        "method": "combat_request_for_node",
+        "line": 32,
+        "fields": [
+          "enabled",
+          "encounter_id",
+          "battle_id",
+          "override_player_profile",
+          "combat_pool_id",
+          "recommended_martial_min",
+          "recommended_martial_max",
+          "enemy_martial_level"
+        ]
+      },
+      "context_bridge": {
+        "file": "scripts/narrative_battle_context.gd",
+        "method": "set_request_from_combat",
+        "line": 75
+      },
+      "scene_transition": {
+        "file": "scripts/narrative/strategic_network_map_flow_runtime.gd",
+        "line": 74,
+        "target_scene": "res://scenes/MainVisual.tscn"
+      }
+    },
+    "generated_loadout_hook": {
+      "resolver": {
+        "file": "scripts/battle_controller_visual_narrative_context_loadout.gd",
+        "method": "_resolve_battle_loadout",
+        "line": 296
+      },
+      "generated_manifest_lookup": {
+        "file": "scripts/aigc_battle/aigc_battle_runtime_manifest_loader.gd",
+        "method": "get_generated_loadout",
+        "line": 137,
+        "fields": [
+          "loadout_source",
+          "mechanic_profile_id",
+          "content_pack_id",
+          "formal_encounter_id",
+          "formal_battle_id",
+          "generated_battle_slot_id",
+          "generated_deck_id",
+          "reward_plan_id",
+          "enemy_role",
+          "difficulty_tier",
+          "runtime_primitives",
+          "opening_pressure",
+          "weapon_followup",
+          "clue_pressure",
+          "followup_chain_count",
+          "followup_card_count",
+          "followup_density",
+          "followup_groups",
+          "player_wujing_cap",
+          "max_enemy_wujing",
+          "weapon_loadout",
+          "dual_weapon_enabled",
+          "primary_weapon_style",
+          "secondary_weapon_style",
+          "primary_weapon_ratio",
+          "secondary_weapon_ratio",
+          "generic_ratio",
+          "max_required_wujing",
+          "max_closing_form_tier",
+          "dual_weapon_synergy_count",
+          "martial_realm_stage",
+          "realm_pressure_level",
+          "card_ids",
+          "cards",
+          "reward_source",
+          "reward"
+        ]
+      },
+      "current_resolution_key": [
+        "formal_encounter_id",
+        "formal_battle_id"
+      ],
+      "current_gap": "No direct per-map-node injection for battle_slot_id/enemy_deck_id/reward_plan_id; current generated loadout resolves through active runtime manifest mapping."
+    }
+  },
+  "aigc_big_map_adapter_plan": {
+    "goal": "Convert AIGC map_instance + route_state + node_materialized_loadout into existing network_map + strategic_state mirrors + combat request without changing current big-map UI.",
+    "input_contract": {
+      "map_instance_root_fields": [
+        "map_instance_id",
+        "progression_template_id",
+        "content_pool_pack_id",
+        "seed",
+        "layers",
+        "nodes",
+        "edges"
+      ],
+      "route_state_fields": [
+        "run_id",
+        "map_instance_id",
+        "current_node_id",
+        "visited_node_ids",
+        "available_next_node_ids",
+        "battle_count_so_far",
+        "elite_count_so_far",
+        "operation_count_so_far",
+        "route_flags",
+        "old_case_progress",
+        "military_merit",
+        "clean_reputation",
+        "martial_realm",
+        "lightness_level"
+      ],
+      "node_materialized_loadout_fields": [
+        "node_id",
+        "node_type",
+        "battle_slot_id",
+        "enemy_deck_id",
+        "reward_plan_id",
+        "operation_node_id",
+        "fallback_used",
+        "broken_ref",
+        "loadout_source"
+      ]
+    },
+    "output_contract": {
+      "existing_network_map_fields": [
+        "run_id",
+        "seed",
+        "layer_count",
+        "current_layer",
+        "current_node_id",
+        "selected_node_id",
+        "completed_node_ids",
+        "available_node_ids",
+        "pending_map_node_id",
+        "pending_result_text",
+        "pending_effects",
+        "nodes"
+      ],
+      "existing_network_map_node_fields": [
+        "map_graph_id",
+        "pool_node_id",
+        "layer",
+        "lane",
+        "x",
+        "y",
+        "title",
+        "node_type",
+        "primary_line",
+        "secondary_line",
+        "preview_text",
+        "result_text",
+        "effects",
+        "tags",
+        "combat",
+        "combat_pool_id",
+        "encounter_id",
+        "battle_id",
+        "enemy_martial_level",
+        "recommended_martial_min",
+        "recommended_martial_max",
+        "debug_fallback",
+        "outgoing",
+        "incoming",
+        "state"
+      ],
+      "existing_route_state_mirrors": [
+        "network_map",
+        "selected_node_id",
+        "available_node_ids",
+        "completed_node_ids",
+        "current_node_id",
+        "pending_map_node_id",
+        "pending_result_text",
+        "pending_effects"
+      ],
+      "existing_combat_request_fields": [
+        "enabled",
+        "encounter_id",
+        "battle_id",
+        "override_player_profile",
+        "combat_pool_id",
+        "recommended_martial_min",
+        "recommended_martial_max",
+        "enemy_martial_level"
+      ]
+    },
+    "mapping_rules": [
+      "AIGC map_instance.node_id must map to existing map_graph_id and remain the only visited/completed identity key.",
+      "AIGC source pool identifier should map to pool_node_id and may repeat across runs or branches.",
+      "AIGC visited_node_ids should map to completed_node_ids; available_next_node_ids should map to available_node_ids.",
+      "AIGC route_state.current_node_id should map to current_node_id; current preview choice should map to selected_node_id.",
+      "AIGC node_type must be downgraded to existing node_type labels that current UI/bridge already recognizes.",
+      "Combat-capable AIGC nodes must provide encounter_id and battle_id, or a combat_pool_id fallback that current bridge can resolve.",
+      "Node materialization should not bypass current battle entry; it must surface through NarrativeBattleContext battle_overrides or a manifest-compatible lookup layer.",
+      "Operation / event nodes must be converted into non-combat nodes with preview_text/result_text/effects/tags and completed through existing non-combat path."
+    ],
+    "phase_2_risks": [
+      "Current route state lacks explicit battle_count/elite_count/operation_count counters; adapter must add an AIGC-owned state file and only mirror a minimal subset back to strategic_state.",
+      "Current combat bridge is keyed by encounter_id/battle_id, not node_materialized_loadout ids; DUNGEON-3 will need a bridge layer instead of direct battle_slot injection into big-map code.",
+      "Current generated-manifest lookup is active-release scoped; dungeon node materialization must not mutate active_profile/current_release and should use a sidecar resolver in later phases."
+    ]
+  },
+  "read_only_recon": {
+    "files_examined": {
+      "strategic_runtime": "scripts/strategic_network_map_runtime.gd",
+      "flow_runtime": "scripts/narrative/strategic_network_map_flow_runtime.gd",
+      "controller_runtime": "scripts/narrative/strategic_network_map_controller_runtime.gd",
+      "battle_bridge": "scripts/strategic_network_battle_bridge.gd",
+      "confirm_runtime": "scripts/strategic_network_map_confirm.gd",
+      "map_generator": "scripts/strategic_network_map_generator.gd",
+      "map_state": "scripts/strategic_map_state.gd",
+      "battle_context": "scripts/narrative_battle_context.gd",
+      "loadout_runtime": "scripts/battle_controller_visual_narrative_context_loadout.gd",
+      "manifest_loader": "scripts/aigc_battle/aigc_battle_runtime_manifest_loader.gd",
+      "strategic_map_config": "data/strategic_map.json",
+      "flow_doc": "docs/NARRATIVE_FLOW.md"
+    },
+    "no_runtime_modified": true,
+    "no_scene_modified": true,
+    "no_godot_integration_done": true
+  }
+}
