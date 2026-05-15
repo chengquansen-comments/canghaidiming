@@ -166,3 +166,11 @@
 - DUNGEON-2 不以全图节点总数代表单局长度；必须使用 sampled route metrics 校验 big map 路径长度与战斗结构。
 - DUNGEON-2 仍不允许修改 `current_release / active_profile / fallback_release`。
 - DUNGEON-2 仍未接入 Godot runtime，不改 scene，不改 battle core。
+
+## DUNGEON-3 Contract Addendum
+
+- 已新增离线 `selected_node_materialized_loadout / battle_entry_request / route_state_after_choice` 产物。
+- battle node 必须解析到 `battle_slot / enemy_deck / reward_plan`，operation node 必须解析到 `operation_node`。
+- battle entry request 仍必须兼容现有 `encounter_id / battle_id / combat_pool_id` bridge 契约。
+- DUNGEON-3 仍不允许修改 `current_release / active_profile / fallback_release`。
+- DUNGEON-3 仍未接入 Godot runtime，不改 scene，不改 battle core。

@@ -1,0 +1,33 @@
+{
+  "materializer": "aigc_dungeon_node_materializer",
+  "inputs": {
+    "map_path": "data/aigc_battle/generated/dungeon_maps/map_seed_1001.json",
+    "route_state_path": "data/aigc_battle/generated/dungeon_maps/route_state_seed_1001_initial.json",
+    "compatible_map_path": "data/aigc_battle/generated/dungeon_maps/big_map_compatible_seed_1001.json",
+    "pack_id": "dungeon_pool_pack_001",
+    "selected_node_id": "node_prologue_001",
+    "allow_any_node_for_probe": false,
+    "sample": ""
+  },
+  "checks": {
+    "selected_node_exists": true,
+    "selected_node_available_or_probe_override": true,
+    "selected_node_compatible_exists": true,
+    "battle_slot_resolved": true,
+    "enemy_deck_resolved": true,
+    "reward_plan_resolved": true,
+    "operation_node_resolved": true,
+    "enemy_deck_card_refs_valid": true,
+    "reward_card_refs_valid": true,
+    "battle_entry_request_ready": true,
+    "route_state_after_choice_ready": true,
+    "route_state_next_candidates_ready": true,
+    "fallback_used_false": true,
+    "broken_ref_false": true
+  },
+  "errors": {
+    "enemy_deck_card_ref_errors": [],
+    "reward_card_ref_errors": []
+  },
+  "all_checks_passed": true
+}

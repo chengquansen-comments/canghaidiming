@@ -1,0 +1,29 @@
+# Dungeon Node Materializer Probe Report
+
+## Fields
+- `node_materializer_ready=true`
+- `selected_battle_node_resolved=true`
+- `selected_elite_node_resolved=true`
+- `selected_operation_node_resolved=true`
+- `battle_slot_resolved=true`
+- `enemy_deck_resolved=true`
+- `reward_plan_resolved=true`
+- `operation_node_resolved=true`
+- `enemy_deck_card_refs_valid=true`
+- `reward_card_refs_valid=true`
+- `battle_entry_request_ready=true`
+- `battle_entry_request_compatible=true`
+- `compatible_encounter_id_ready=true`
+- `compatible_battle_id_ready=true`
+- `compatible_combat_pool_id_ready=true`
+- `route_state_after_choice_ready=true`
+- `route_state_next_candidates_ready=true`
+- `fallback_loadout_count=0`
+- `broken_ref_count=0`
+- `existing_battle_entry_bridge_ready=true`
+- `current_release_unchanged=true`
+- `active_profile_matches_current_release=true`
+- `fallback_release_unchanged=true`
+- `no_runtime_modified=true`
+- `no_scene_modified=true`
+- `probe_pass=true`

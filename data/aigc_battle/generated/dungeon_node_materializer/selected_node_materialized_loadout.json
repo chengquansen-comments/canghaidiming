@@ -1,0 +1,54 @@
+{
+  "node_id": "node_prologue_001",
+  "map_graph_id": "node_prologue_001",
+  "node_type": "prologue_battle",
+  "materialized_kind": "battle",
+  "battle_slot_id": "slot_prologue_001",
+  "enemy_deck_id": "deck_prologue_tutorial_enemy",
+  "reward_plan_id": "reward_prologue_story",
+  "operation_node_id": "",
+  "enemy_deck": {
+    "enemy_deck_id": "deck_prologue_tutorial_enemy",
+    "enemy_archetype": "tutorial_raider",
+    "deck_tier": "tutorial",
+    "intended_stage": "prologue",
+    "expected_player_realm": 1,
+    "card_ids": [
+      "spear_basic_thrust",
+      "guard_hold"
+    ],
+    "behavior_tags": [
+      "tutorial",
+      "slow"
+    ],
+    "compatible_battle_slot_ids": [
+      "slot_prologue_001"
+    ]
+  },
+  "reward_plan": {
+    "reward_plan_id": "reward_prologue_story",
+    "reward_type": "story",
+    "reward_tier": "prologue",
+    "card_rewards": [],
+    "martial_xp": 3,
+    "weapon_xp": 0,
+    "lightness_reward_type": "none",
+    "military_merit_reward": 0,
+    "clean_reputation_delta": 0,
+    "old_case_clue_delta": 0,
+    "compatible_battle_slot_ids": [
+      "slot_prologue_001"
+    ]
+  },
+  "card_refs": [
+    "spear_basic_thrust",
+    "guard_hold"
+  ],
+  "reward_card_refs": [],
+  "fallback_used": false,
+  "broken_ref": false,
+  "loadout_source": "aigc_dungeon_node_materializer",
+  "compatible_encounter_id": "enc_prologue_master_rescue",
+  "compatible_battle_id": "prologue_master_rescue",
+  "compatible_combat_pool_id": "spear_patrol"
+}

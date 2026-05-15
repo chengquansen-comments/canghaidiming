@@ -1,0 +1,15 @@
+{
+  "encounter_id": "enc_prologue_master_rescue",
+  "battle_id": "prologue_master_rescue",
+  "combat_pool_id": "spear_patrol",
+  "enemy_martial_level": 0,
+  "recommended_martial_min": 0,
+  "recommended_martial_max": 0,
+  "override_player_profile": true,
+  "source_node_id": "node_prologue_001",
+  "source_map_graph_id": "node_prologue_001",
+  "source_battle_slot_id": "slot_prologue_001",
+  "source_enemy_deck_id": "deck_prologue_tutorial_enemy",
+  "source_reward_plan_id": "reward_prologue_story",
+  "loadout_source": "aigc_dungeon_node_materializer"
+}

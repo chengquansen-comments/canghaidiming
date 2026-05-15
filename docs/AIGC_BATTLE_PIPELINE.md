@@ -462,3 +462,11 @@ v2 目标是 `full sequence reward / progression closure`：
 - sampled route metrics 只衡量单条可行路径在 big map 段的 battle / operation / elite 分布。
 - DUNGEON-3 将实现 `node_materializer + battle entry bridge`。
 - 当前仍未接入 Godot runtime。
+
+## DUNGEON-3：Node Materializer + Battle Entry Bridge
+
+- DUNGEON-3 已实现离线 `node_materializer + battle entry bridge request`。
+- battle node 可解析 `battle_slot / enemy_deck / reward_plan`；operation node 可解析 `operation_node`。
+- battle entry request 继续沿用现有 `encounter_id / battle_id / combat_pool_id` 契约。
+- DUNGEON-3 仍未接入 Godot runtime。
+- DUNGEON-4 将实现 Dashboard `Pack 内容 + 地图实例 / node detail` 展示。
