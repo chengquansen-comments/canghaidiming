@@ -159,3 +159,10 @@
 - Dungeon 副本规则以 `progression_template + content_pool_pack` 为主，不再以 fixed sequence 作为主模型。
 - content pool 必须离线校验通过后才能进入后续 `map_instance / node materialized loadout` 流程。
 - DUNGEON-1 不允许修改 `current_release / active_profile / fallback_release`，也不接入 Godot runtime。
+
+## DUNGEON-2 Contract Addendum
+
+- 已新增离线 `map_instance / route_state_initial / big_map_compatible` 产物，用于 existing big map adapter 验证。
+- DUNGEON-2 不以全图节点总数代表单局长度；必须使用 sampled route metrics 校验 big map 路径长度与战斗结构。
+- DUNGEON-2 仍不允许修改 `current_release / active_profile / fallback_release`。
+- DUNGEON-2 仍未接入 Godot runtime，不改 scene，不改 battle core。

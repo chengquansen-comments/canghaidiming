@@ -1,0 +1,27 @@
+# Dungeon Map Probe Report
+
+## Fields
+- `map_instance_ready=true`
+- `route_state_initial_ready=true`
+- `big_map_compatible_instance_ready=true`
+- `no_fixed_linear_sequence=true`
+- `layer_count_ready=true`
+- `route_choice_available=true`
+- `branching_edges_ready=true`
+- `available_next_nodes_ready=true`
+- `edge_connectivity_valid=true`
+- `sampled_route_metrics_ready=true`
+- `sampled_big_map_battle_count_between_14_and_16=true`
+- `sampled_operation_count_between_7_and_10=true`
+- `sampled_elite_count_between_3_and_5=true`
+- `compatible_network_map_root_ready=true`
+- `compatible_network_map_nodes_ready=true`
+- `compatible_map_graph_id_ready=true`
+- `compatible_battle_entry_fields_ready=true`
+- `existing_big_map_node_schema_compatible=true`
+- `current_release_unchanged=true`
+- `active_profile_matches_current_release=true`
+- `fallback_release_unchanged=true`
+- `no_runtime_modified=true`
+- `no_scene_modified=true`
+- `probe_pass=true`

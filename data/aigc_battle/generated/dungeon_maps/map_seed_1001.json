@@ -1,0 +1,3699 @@
+{
+  "map_instance_id": "dungeon_map_seed_1001",
+  "progression_template_id": "dungeon_progression_v1_3",
+  "content_pool_pack_id": "dungeon_pool_pack_001",
+  "seed": 1001,
+  "supports_fixed_sequence": false,
+  "no_fixed_linear_sequence": true,
+  "route_choice_available": true,
+  "layers": [
+    {
+      "layer_index": 0,
+      "segment": "start",
+      "node_ids": [
+        "node_start"
+      ]
+    },
+    {
+      "layer_index": 1,
+      "segment": "prologue",
+      "node_ids": [
+        "node_prologue_001"
+      ]
+    },
+    {
+      "layer_index": 2,
+      "segment": "wuju",
+      "node_ids": [
+        "node_wuju_001"
+      ]
+    },
+    {
+      "layer_index": 3,
+      "segment": "wuju",
+      "node_ids": [
+        "node_wuju_002"
+      ]
+    },
+    {
+      "layer_index": 4,
+      "segment": "wuju",
+      "node_ids": [
+        "node_wuju_003"
+      ]
+    },
+    {
+      "layer_index": 5,
+      "segment": "wuju",
+      "node_ids": [
+        "node_wuju_004"
+      ]
+    },
+    {
+      "layer_index": 6,
+      "segment": "wuju",
+      "node_ids": [
+        "node_wuju_005"
+      ]
+    },
+    {
+      "layer_index": 7,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_07_00",
+        "node_bigmap_07_01"
+      ]
+    },
+    {
+      "layer_index": 8,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_08_00",
+        "node_bigmap_08_01"
+      ]
+    },
+    {
+      "layer_index": 9,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_09_00",
+        "node_bigmap_09_01"
+      ]
+    },
+    {
+      "layer_index": 10,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_10_00",
+        "node_bigmap_10_01"
+      ]
+    },
+    {
+      "layer_index": 11,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_11_00",
+        "node_bigmap_11_01"
+      ]
+    },
+    {
+      "layer_index": 12,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_12_00",
+        "node_bigmap_12_01",
+        "node_bigmap_12_02"
+      ]
+    },
+    {
+      "layer_index": 13,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_13_00",
+        "node_bigmap_13_01"
+      ]
+    },
+    {
+      "layer_index": 14,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_14_00",
+        "node_bigmap_14_01"
+      ]
+    },
+    {
+      "layer_index": 15,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_15_00",
+        "node_bigmap_15_01"
+      ]
+    },
+    {
+      "layer_index": 16,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_16_00",
+        "node_bigmap_16_01"
+      ]
+    },
+    {
+      "layer_index": 17,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_17_00",
+        "node_bigmap_17_01"
+      ]
+    },
+    {
+      "layer_index": 18,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_18_00",
+        "node_bigmap_18_01"
+      ]
+    },
+    {
+      "layer_index": 19,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_19_00",
+        "node_bigmap_19_01"
+      ]
+    },
+    {
+      "layer_index": 20,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_20_00",
+        "node_bigmap_20_01"
+      ]
+    },
+    {
+      "layer_index": 21,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_21_00",
+        "node_bigmap_21_01"
+      ]
+    },
+    {
+      "layer_index": 22,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_22_00",
+        "node_bigmap_22_01"
+      ]
+    },
+    {
+      "layer_index": 23,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_23_00",
+        "node_bigmap_23_01",
+        "node_bigmap_23_02"
+      ]
+    },
+    {
+      "layer_index": 24,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_24_00",
+        "node_bigmap_24_01"
+      ]
+    },
+    {
+      "layer_index": 25,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_25_00",
+        "node_bigmap_25_01"
+      ]
+    },
+    {
+      "layer_index": 26,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_26_00",
+        "node_bigmap_26_01"
+      ]
+    },
+    {
+      "layer_index": 27,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_27_00",
+        "node_bigmap_27_01"
+      ]
+    },
+    {
+      "layer_index": 28,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_28_00",
+        "node_bigmap_28_01"
+      ]
+    },
+    {
+      "layer_index": 29,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_29_00",
+        "node_bigmap_29_01"
+      ]
+    },
+    {
+      "layer_index": 30,
+      "segment": "big_map",
+      "node_ids": [
+        "node_bigmap_30_00",
+        "node_bigmap_30_01",
+        "node_bigmap_30_02"
+      ]
+    },
+    {
+      "layer_index": 31,
+      "segment": "ending_gate",
+      "node_ids": [
+        "node_boss_gate"
+      ]
+    },
+    {
+      "layer_index": 32,
+      "segment": "route_branch",
+      "node_ids": [
+        "node_route_normal",
+        "node_route_true",
+        "node_route_wuzhuangyuan"
+      ]
+    },
+    {
+      "layer_index": 33,
+      "segment": "ending",
+      "node_ids": [
+        "node_normal_boss",
+        "node_true_boss_001",
+        "node_wuzhuangyuan_exam_001"
+      ]
+    },
+    {
+      "layer_index": 34,
+      "segment": "ending",
+      "node_ids": [
+        "node_true_boss_002",
+        "node_wuzhuangyuan_exam_002"
+      ]
+    },
+    {
+      "layer_index": 35,
+      "segment": "ending",
+      "node_ids": [
+        "node_wuzhuangyuan_exam_003"
+      ]
+    },
+    {
+      "layer_index": 36,
+      "segment": "ending",
+      "node_ids": [
+        "node_wuzhuangyuan_exam_004"
+      ]
+    },
+    {
+      "layer_index": 37,
+      "segment": "ending",
+      "node_ids": [
+        "node_wuzhuangyuan_exam_005"
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": "node_start",
+      "segment": "start",
+      "node_type": "start",
+      "layer_index": 0,
+      "lane": 0,
+      "title": "海疆起点",
+      "subtitle": "整装待发",
+      "preview_text": "从这里往前，路不会只给你一条。",
+      "tags": [
+        "start"
+      ],
+      "route_tags": [],
+      "old_case_tags": [],
+      "battle_slot_id": "",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "military",
+      "compatible_network_node_type": "military",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {},
+      "outgoing_node_ids": [
+        "node_prologue_001"
+      ],
+      "incoming_node_ids": []
+    },
+    {
+      "node_id": "node_prologue_001",
+      "segment": "prologue",
+      "node_type": "prologue_battle",
+      "layer_index": 1,
+      "lane": 0,
+      "title": "Tutorial Raider",
+      "subtitle": "序章教学战",
+      "preview_text": "伤痕未止，潮线上已经有人逼来。",
+      "tags": [
+        "master_rescue",
+        "origin",
+        "prologue_battle",
+        "tutorial"
+      ],
+      "route_tags": [
+        "tutorial",
+        "master_rescue"
+      ],
+      "old_case_tags": [
+        "origin"
+      ],
+      "battle_slot_id": "slot_prologue_001",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_prologue_master_rescue",
+      "compatible_battle_id": "prologue_master_rescue",
+      "compatible_combat_pool_id": "spear_patrol",
+      "primary_line": "military",
+      "secondary_line": "old_case",
+      "effects": {
+        "military_merit": 0,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "outgoing_node_ids": [
+        "node_wuju_001"
+      ],
+      "incoming_node_ids": [
+        "node_start"
+      ]
+    },
+    {
+      "node_id": "node_wuju_001",
+      "segment": "wuju",
+      "node_type": "wuju_battle",
+      "layer_index": 2,
+      "lane": 0,
+      "title": "Wuju Spear Trialist",
+      "subtitle": "武举兵器试",
+      "preview_text": "考场不大，但看台上的目光很重。",
+      "tags": [
+        "spear",
+        "wuju",
+        "wuju_battle"
+      ],
+      "route_tags": [
+        "wuju",
+        "spear"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_wuju_001",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_wuke_spear_trial",
+      "compatible_battle_id": "wuke_spear_trial",
+      "compatible_combat_pool_id": "spear_patrol",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 0,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_wuju_002"
+      ],
+      "incoming_node_ids": [
+        "node_prologue_001"
+      ]
+    },
+    {
+      "node_id": "node_wuju_002",
+      "segment": "wuju",
+      "node_type": "wuju_battle",
+      "layer_index": 3,
+      "lane": 0,
+      "title": "Wuju Blade Trialist",
+      "subtitle": "武举兵器试",
+      "preview_text": "考场不大，但看台上的目光很重。",
+      "tags": [
+        "blade",
+        "wuju",
+        "wuju_battle"
+      ],
+      "route_tags": [
+        "wuju",
+        "blade"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_wuju_002",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_wuke_blade_trial",
+      "compatible_battle_id": "wuke_blade_trial",
+      "compatible_combat_pool_id": "coastal_veteran",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 0,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_wuju_003"
+      ],
+      "incoming_node_ids": [
+        "node_wuju_001"
+      ]
+    },
+    {
+      "node_id": "node_wuju_003",
+      "segment": "wuju",
+      "node_type": "wuju_battle",
+      "layer_index": 4,
+      "lane": 0,
+      "title": "Wuju Exam Duelist",
+      "subtitle": "武举正式考核",
+      "preview_text": "考场不大，但看台上的目光很重。",
+      "tags": [
+        "distance_test",
+        "wuju",
+        "wuju_battle"
+      ],
+      "route_tags": [
+        "wuju",
+        "distance_test"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_wuju_003",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_wuke_spear_trial",
+      "compatible_battle_id": "wuke_step_trial",
+      "compatible_combat_pool_id": "spear_patrol",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 0,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_wuju_004"
+      ],
+      "incoming_node_ids": [
+        "node_wuju_002"
+      ]
+    },
+    {
+      "node_id": "node_wuju_004",
+      "segment": "wuju",
+      "node_type": "wuju_battle",
+      "layer_index": 5,
+      "lane": 0,
+      "title": "Wuju Spear Trialist",
+      "subtitle": "武举正式考核",
+      "preview_text": "考场不大，但看台上的目光很重。",
+      "tags": [
+        "weapon_cycle",
+        "wuju",
+        "wuju_battle"
+      ],
+      "route_tags": [
+        "wuju",
+        "weapon_cycle"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_wuju_004",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_wuke_final_duel",
+      "compatible_battle_id": "wuke_weapon_exam",
+      "compatible_combat_pool_id": "spear_patrol",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_wuju_005"
+      ],
+      "incoming_node_ids": [
+        "node_wuju_003"
+      ]
+    },
+    {
+      "node_id": "node_wuju_005",
+      "segment": "wuju",
+      "node_type": "wuju_battle",
+      "layer_index": 6,
+      "lane": 0,
+      "title": "Wuju Blade Trialist",
+      "subtitle": "武举正式考核",
+      "preview_text": "考场不大，但看台上的目光很重。",
+      "tags": [
+        "duel",
+        "wuju",
+        "wuju_battle"
+      ],
+      "route_tags": [
+        "wuju",
+        "duel"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_wuju_005",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_elite",
+      "compatible_network_node_type": "combat_elite",
+      "compatible_encounter_id": "enc_wuke_final_duel",
+      "compatible_battle_id": "wuke_final_duel",
+      "compatible_combat_pool_id": "military_elite",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_07_00",
+        "node_bigmap_07_01"
+      ],
+      "incoming_node_ids": [
+        "node_wuju_004"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_07_00",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 7,
+      "lane": 0,
+      "title": "Coastal Raider",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "frontline"
+      ],
+      "route_tags": [
+        "big_map",
+        "frontline"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_bigmap_normal_001",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch2_reed_ambush",
+      "compatible_battle_id": "chapter2_reed_ambush",
+      "compatible_combat_pool_id": "coastal_veteran",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_08_00",
+        "node_bigmap_08_01"
+      ],
+      "incoming_node_ids": [
+        "node_wuju_005"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_07_01",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 7,
+      "lane": 1,
+      "title": "Coastal Raider",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "coast"
+      ],
+      "route_tags": [
+        "big_map",
+        "coast"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_bigmap_normal_002",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch2_reed_ambush",
+      "compatible_battle_id": "chapter2_reed_ambush",
+      "compatible_combat_pool_id": "coastal_veteran",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_08_00",
+        "node_bigmap_08_01"
+      ],
+      "incoming_node_ids": [
+        "node_wuju_005"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_08_00",
+      "segment": "big_map",
+      "node_type": "training",
+      "layer_index": 8,
+      "lane": 0,
+      "title": "校场磨招",
+      "subtitle": "稳练兵器",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "tags": [
+        "growth",
+        "training"
+      ],
+      "route_tags": [
+        "growth"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "",
+      "operation_node_id": "op_training_ground",
+      "materialized": true,
+      "map_node_type_hint": "military",
+      "compatible_network_node_type": "military",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "martial_xp": 4,
+        "weapon_xp": 3
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_09_00",
+        "node_bigmap_09_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_07_00",
+        "node_bigmap_07_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_08_01",
+      "segment": "big_map",
+      "node_type": "operation",
+      "layer_index": 8,
+      "lane": 1,
+      "title": "行营修整",
+      "subtitle": "回气整备",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "tags": [
+        "operation",
+        "recovery"
+      ],
+      "route_tags": [
+        "recovery"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "",
+      "operation_node_id": "op_camp_rest",
+      "materialized": true,
+      "map_node_type_hint": "military",
+      "compatible_network_node_type": "military",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {},
+      "outgoing_node_ids": [
+        "node_bigmap_09_00",
+        "node_bigmap_09_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_07_00",
+        "node_bigmap_07_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_09_00",
+      "segment": "big_map",
+      "node_type": "battle_elite",
+      "layer_index": 9,
+      "lane": 0,
+      "title": "Escort Officer",
+      "subtitle": "大地图精英战",
+      "preview_text": "前路有人等你犯错，这一战不是照表出牌。",
+      "tags": [
+        "battle_elite",
+        "big_map",
+        "pressure_test"
+      ],
+      "route_tags": [
+        "big_map",
+        "pressure_test"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_bigmap_elite_002",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_elite",
+      "compatible_network_node_type": "combat_elite",
+      "compatible_encounter_id": "enc_ch3_escort_clash",
+      "compatible_battle_id": "chapter3_escort_clash",
+      "compatible_combat_pool_id": "military_elite",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 2,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_10_00",
+        "node_bigmap_10_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_08_00",
+        "node_bigmap_08_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_09_01",
+      "segment": "big_map",
+      "node_type": "battle_elite",
+      "layer_index": 9,
+      "lane": 1,
+      "title": "Clue Tracker",
+      "subtitle": "大地图精英战",
+      "preview_text": "前路有人等你犯错，这一战不是照表出牌。",
+      "tags": [
+        "battle_elite",
+        "big_map",
+        "deep_clue",
+        "old_case_elite"
+      ],
+      "route_tags": [
+        "big_map",
+        "old_case_elite"
+      ],
+      "old_case_tags": [
+        "deep_clue"
+      ],
+      "battle_slot_id": "slot_bigmap_elite_003",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_elite",
+      "compatible_network_node_type": "combat_elite",
+      "compatible_encounter_id": "enc_ch3_escort_clash",
+      "compatible_battle_id": "chapter3_escort_clash",
+      "compatible_combat_pool_id": "old_case_elite",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_10_00",
+        "node_bigmap_10_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_08_00",
+        "node_bigmap_08_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_10_00",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 10,
+      "lane": 0,
+      "title": "Military Patrol",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "patrol"
+      ],
+      "route_tags": [
+        "big_map",
+        "patrol"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_bigmap_normal_003",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch3_escort_clash",
+      "compatible_battle_id": "chapter3_escort_clash",
+      "compatible_combat_pool_id": "spear_patrol",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_11_00",
+        "node_bigmap_11_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_09_00",
+        "node_bigmap_09_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_10_01",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 10,
+      "lane": 1,
+      "title": "Military Patrol",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "escort"
+      ],
+      "route_tags": [
+        "big_map",
+        "escort"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_bigmap_normal_004",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch3_escort_clash",
+      "compatible_battle_id": "chapter3_escort_clash",
+      "compatible_combat_pool_id": "spear_patrol",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_11_00",
+        "node_bigmap_11_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_09_00",
+        "node_bigmap_09_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_11_00",
+      "segment": "big_map",
+      "node_type": "old_case",
+      "layer_index": 11,
+      "lane": 0,
+      "title": "旧案线索",
+      "subtitle": "拾取残页",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "tags": [
+        "clue_gain",
+        "old_case"
+      ],
+      "route_tags": [
+        "old_case"
+      ],
+      "old_case_tags": [
+        "clue_gain"
+      ],
+      "battle_slot_id": "",
+      "operation_node_id": "op_old_case_clue",
+      "materialized": true,
+      "map_node_type_hint": "case",
+      "compatible_network_node_type": "case",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "effects": {
+        "case_clues": 1
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_12_00",
+        "node_bigmap_12_01",
+        "node_bigmap_12_02"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_10_00",
+        "node_bigmap_10_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_11_01",
+      "segment": "big_map",
+      "node_type": "operation",
+      "layer_index": 11,
+      "lane": 1,
+      "title": "军府批令",
+      "subtitle": "积累军功",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "tags": [
+        "military",
+        "operation"
+      ],
+      "route_tags": [
+        "military"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "",
+      "operation_node_id": "op_military_office",
+      "materialized": true,
+      "map_node_type_hint": "military",
+      "compatible_network_node_type": "military",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 2
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_12_00",
+        "node_bigmap_12_01",
+        "node_bigmap_12_02"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_10_00",
+        "node_bigmap_10_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_12_00",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 12,
+      "lane": 0,
+      "title": "Reed Bandit",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "clue_path",
+        "reed"
+      ],
+      "route_tags": [
+        "big_map",
+        "clue_path"
+      ],
+      "old_case_tags": [
+        "reed"
+      ],
+      "battle_slot_id": "slot_bigmap_normal_005",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch2_reed_ambush",
+      "compatible_battle_id": "chapter2_reed_ambush",
+      "compatible_combat_pool_id": "coastal_veteran",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_13_00",
+        "node_bigmap_13_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_11_00",
+        "node_bigmap_11_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_12_01",
+      "segment": "big_map",
+      "node_type": "battle_elite",
+      "layer_index": 12,
+      "lane": 1,
+      "title": "Mutiny Captain",
+      "subtitle": "大地图精英战",
+      "preview_text": "前路有人等你犯错，这一战不是照表出牌。",
+      "tags": [
+        "battle_elite",
+        "big_map",
+        "lightness_test"
+      ],
+      "route_tags": [
+        "big_map",
+        "lightness_test"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_bigmap_elite_004",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_elite",
+      "compatible_network_node_type": "combat_elite",
+      "compatible_encounter_id": "enc_mutiny_camp",
+      "compatible_battle_id": "mutiny_camp",
+      "compatible_combat_pool_id": "coastal_veteran",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 2,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_13_00",
+        "node_bigmap_13_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_11_00",
+        "node_bigmap_11_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_12_02",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 12,
+      "lane": 2,
+      "title": "Reed Bandit",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "warehouse"
+      ],
+      "route_tags": [
+        "big_map",
+        "warehouse"
+      ],
+      "old_case_tags": [
+        "warehouse"
+      ],
+      "battle_slot_id": "slot_bigmap_normal_006",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch4_tide_bandits",
+      "compatible_battle_id": "chapter4_tide_bandits",
+      "compatible_combat_pool_id": "coastal_veteran",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_13_00",
+        "node_bigmap_13_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_11_00",
+        "node_bigmap_11_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_13_00",
+      "segment": "big_map",
+      "node_type": "operation",
+      "layer_index": 13,
+      "lane": 0,
+      "title": "军器补给",
+      "subtitle": "换新兵刃",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "tags": [
+        "operation",
+        "weapon"
+      ],
+      "route_tags": [
+        "weapon"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "",
+      "operation_node_id": "op_weapon_shop",
+      "materialized": true,
+      "map_node_type_hint": "military",
+      "compatible_network_node_type": "military",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {},
+      "outgoing_node_ids": [
+        "node_bigmap_14_00",
+        "node_bigmap_14_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_12_00",
+        "node_bigmap_12_01",
+        "node_bigmap_12_02"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_13_01",
+      "segment": "big_map",
+      "node_type": "lightness_event",
+      "layer_index": 13,
+      "lane": 1,
+      "title": "轻身奇遇",
+      "subtitle": "寻步法机缘",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "tags": [
+        "lightness",
+        "lightness_event"
+      ],
+      "route_tags": [
+        "lightness"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "",
+      "operation_node_id": "op_lightness_encounter",
+      "materialized": true,
+      "map_node_type_hint": "risk",
+      "compatible_network_node_type": "risk",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "reputation",
+      "secondary_line": "military",
+      "effects": {},
+      "outgoing_node_ids": [
+        "node_bigmap_14_00",
+        "node_bigmap_14_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_12_00",
+        "node_bigmap_12_01",
+        "node_bigmap_12_02"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_14_00",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 14,
+      "lane": 0,
+      "title": "Dock Guard",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "public"
+      ],
+      "route_tags": [
+        "big_map",
+        "public"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_bigmap_normal_007",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch4_tide_bandits",
+      "compatible_battle_id": "chapter4_tide_bandits",
+      "compatible_combat_pool_id": "coastal_veteran",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 1,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_15_00",
+        "node_bigmap_15_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_13_00",
+        "node_bigmap_13_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_14_01",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 14,
+      "lane": 1,
+      "title": "Dock Guard",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "ferry"
+      ],
+      "route_tags": [
+        "big_map",
+        "ferry"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_bigmap_normal_008",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch4_tide_bandits",
+      "compatible_battle_id": "chapter4_tide_bandits",
+      "compatible_combat_pool_id": "coastal_veteran",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_15_00",
+        "node_bigmap_15_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_13_00",
+        "node_bigmap_13_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_15_00",
+      "segment": "big_map",
+      "node_type": "battle_elite",
+      "layer_index": 15,
+      "lane": 0,
+      "title": "Mutiny Captain",
+      "subtitle": "大地图精英战",
+      "preview_text": "前路有人等你犯错，这一战不是照表出牌。",
+      "tags": [
+        "battle_elite",
+        "big_map",
+        "late_elite"
+      ],
+      "route_tags": [
+        "big_map",
+        "late_elite"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_bigmap_elite_005",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_elite",
+      "compatible_network_node_type": "combat_elite",
+      "compatible_encounter_id": "enc_mutiny_camp",
+      "compatible_battle_id": "mutiny_camp",
+      "compatible_combat_pool_id": "coastal_veteran",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 2,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_16_00",
+        "node_bigmap_16_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_14_00",
+        "node_bigmap_14_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_15_01",
+      "segment": "big_map",
+      "node_type": "battle_elite",
+      "layer_index": 15,
+      "lane": 1,
+      "title": "Escort Officer",
+      "subtitle": "大地图精英战",
+      "preview_text": "前路有人等你犯错，这一战不是照表出牌。",
+      "tags": [
+        "battle_elite",
+        "big_map",
+        "elite"
+      ],
+      "route_tags": [
+        "big_map",
+        "elite"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_bigmap_elite_001",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_elite",
+      "compatible_network_node_type": "combat_elite",
+      "compatible_encounter_id": "enc_ch3_escort_clash",
+      "compatible_battle_id": "chapter3_escort_clash",
+      "compatible_combat_pool_id": "military_elite",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 2,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_16_00",
+        "node_bigmap_16_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_14_00",
+        "node_bigmap_14_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_16_00",
+      "segment": "big_map",
+      "node_type": "training",
+      "layer_index": 16,
+      "lane": 0,
+      "title": "校场磨招",
+      "subtitle": "稳练兵器",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "tags": [
+        "growth",
+        "training"
+      ],
+      "route_tags": [
+        "growth"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "",
+      "operation_node_id": "op_training_ground",
+      "materialized": true,
+      "map_node_type_hint": "military",
+      "compatible_network_node_type": "military",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "martial_xp": 4,
+        "weapon_xp": 3
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_17_00",
+        "node_bigmap_17_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_15_00",
+        "node_bigmap_15_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_16_01",
+      "segment": "big_map",
+      "node_type": "old_case",
+      "layer_index": 16,
+      "lane": 1,
+      "title": "旧案线索",
+      "subtitle": "拾取残页",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "tags": [
+        "clue_gain",
+        "old_case"
+      ],
+      "route_tags": [
+        "old_case"
+      ],
+      "old_case_tags": [
+        "clue_gain"
+      ],
+      "battle_slot_id": "",
+      "operation_node_id": "op_old_case_clue",
+      "materialized": true,
+      "map_node_type_hint": "case",
+      "compatible_network_node_type": "case",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "effects": {
+        "case_clues": 1
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_17_00",
+        "node_bigmap_17_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_15_00",
+        "node_bigmap_15_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_17_00",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 17,
+      "lane": 0,
+      "title": "Clue Hunters",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "old_case",
+        "witness"
+      ],
+      "route_tags": [
+        "big_map",
+        "old_case"
+      ],
+      "old_case_tags": [
+        "witness"
+      ],
+      "battle_slot_id": "slot_bigmap_normal_009",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch3_escort_clash",
+      "compatible_battle_id": "chapter3_escort_clash",
+      "compatible_combat_pool_id": "military_elite",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_18_00",
+        "node_bigmap_18_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_16_00",
+        "node_bigmap_16_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_17_01",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 17,
+      "lane": 1,
+      "title": "Clue Hunters",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "branch",
+        "investigation"
+      ],
+      "route_tags": [
+        "big_map",
+        "branch"
+      ],
+      "old_case_tags": [
+        "investigation"
+      ],
+      "battle_slot_id": "slot_bigmap_normal_010",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch3_escort_clash",
+      "compatible_battle_id": "chapter3_escort_clash",
+      "compatible_combat_pool_id": "military_elite",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_18_00",
+        "node_bigmap_18_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_16_00",
+        "node_bigmap_16_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_18_00",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 18,
+      "lane": 0,
+      "title": "Coastal Raider",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "frontline"
+      ],
+      "route_tags": [
+        "big_map",
+        "frontline"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_bigmap_normal_001",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch2_reed_ambush",
+      "compatible_battle_id": "chapter2_reed_ambush",
+      "compatible_combat_pool_id": "coastal_veteran",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_19_00",
+        "node_bigmap_19_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_17_00",
+        "node_bigmap_17_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_18_01",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 18,
+      "lane": 1,
+      "title": "Coastal Raider",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "coast"
+      ],
+      "route_tags": [
+        "big_map",
+        "coast"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_bigmap_normal_002",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch2_reed_ambush",
+      "compatible_battle_id": "chapter2_reed_ambush",
+      "compatible_combat_pool_id": "coastal_veteran",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_19_00",
+        "node_bigmap_19_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_17_00",
+        "node_bigmap_17_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_19_00",
+      "segment": "big_map",
+      "node_type": "operation",
+      "layer_index": 19,
+      "lane": 0,
+      "title": "军府批令",
+      "subtitle": "积累军功",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "tags": [
+        "military",
+        "operation"
+      ],
+      "route_tags": [
+        "military"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "",
+      "operation_node_id": "op_military_office",
+      "materialized": true,
+      "map_node_type_hint": "military",
+      "compatible_network_node_type": "military",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 2
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_20_00",
+        "node_bigmap_20_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_18_00",
+        "node_bigmap_18_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_19_01",
+      "segment": "big_map",
+      "node_type": "operation",
+      "layer_index": 19,
+      "lane": 1,
+      "title": "前辈点拨",
+      "subtitle": "临阵开窍",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "tags": [
+        "growth",
+        "operation",
+        "rare"
+      ],
+      "route_tags": [
+        "growth",
+        "rare"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "",
+      "operation_node_id": "op_master_teaching",
+      "materialized": true,
+      "map_node_type_hint": "military",
+      "compatible_network_node_type": "military",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {},
+      "outgoing_node_ids": [
+        "node_bigmap_20_00",
+        "node_bigmap_20_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_18_00",
+        "node_bigmap_18_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_20_00",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 20,
+      "lane": 0,
+      "title": "Military Patrol",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "patrol"
+      ],
+      "route_tags": [
+        "big_map",
+        "patrol"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_bigmap_normal_003",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch3_escort_clash",
+      "compatible_battle_id": "chapter3_escort_clash",
+      "compatible_combat_pool_id": "spear_patrol",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_21_00",
+        "node_bigmap_21_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_19_00",
+        "node_bigmap_19_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_20_01",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 20,
+      "lane": 1,
+      "title": "Military Patrol",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "escort"
+      ],
+      "route_tags": [
+        "big_map",
+        "escort"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_bigmap_normal_004",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch3_escort_clash",
+      "compatible_battle_id": "chapter3_escort_clash",
+      "compatible_combat_pool_id": "spear_patrol",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_21_00",
+        "node_bigmap_21_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_19_00",
+        "node_bigmap_19_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_21_00",
+      "segment": "big_map",
+      "node_type": "operation",
+      "layer_index": 21,
+      "lane": 0,
+      "title": "行营修整",
+      "subtitle": "回气整备",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "tags": [
+        "operation",
+        "recovery"
+      ],
+      "route_tags": [
+        "recovery"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "",
+      "operation_node_id": "op_camp_rest",
+      "materialized": true,
+      "map_node_type_hint": "military",
+      "compatible_network_node_type": "military",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {},
+      "outgoing_node_ids": [
+        "node_bigmap_22_00",
+        "node_bigmap_22_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_20_00",
+        "node_bigmap_20_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_21_01",
+      "segment": "big_map",
+      "node_type": "old_case",
+      "layer_index": 21,
+      "lane": 1,
+      "title": "旧案线索",
+      "subtitle": "拾取残页",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "tags": [
+        "clue_gain",
+        "old_case"
+      ],
+      "route_tags": [
+        "old_case"
+      ],
+      "old_case_tags": [
+        "clue_gain"
+      ],
+      "battle_slot_id": "",
+      "operation_node_id": "op_old_case_clue",
+      "materialized": true,
+      "map_node_type_hint": "case",
+      "compatible_network_node_type": "case",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "effects": {
+        "case_clues": 1
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_22_00",
+        "node_bigmap_22_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_20_00",
+        "node_bigmap_20_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_22_00",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 22,
+      "lane": 0,
+      "title": "Reed Bandit",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "clue_path",
+        "reed"
+      ],
+      "route_tags": [
+        "big_map",
+        "clue_path"
+      ],
+      "old_case_tags": [
+        "reed"
+      ],
+      "battle_slot_id": "slot_bigmap_normal_005",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch2_reed_ambush",
+      "compatible_battle_id": "chapter2_reed_ambush",
+      "compatible_combat_pool_id": "coastal_veteran",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_23_00",
+        "node_bigmap_23_01",
+        "node_bigmap_23_02"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_21_00",
+        "node_bigmap_21_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_22_01",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 22,
+      "lane": 1,
+      "title": "Reed Bandit",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "warehouse"
+      ],
+      "route_tags": [
+        "big_map",
+        "warehouse"
+      ],
+      "old_case_tags": [
+        "warehouse"
+      ],
+      "battle_slot_id": "slot_bigmap_normal_006",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch4_tide_bandits",
+      "compatible_battle_id": "chapter4_tide_bandits",
+      "compatible_combat_pool_id": "coastal_veteran",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_23_00",
+        "node_bigmap_23_01",
+        "node_bigmap_23_02"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_21_00",
+        "node_bigmap_21_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_23_00",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 23,
+      "lane": 0,
+      "title": "Dock Guard",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "public"
+      ],
+      "route_tags": [
+        "big_map",
+        "public"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_bigmap_normal_007",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch4_tide_bandits",
+      "compatible_battle_id": "chapter4_tide_bandits",
+      "compatible_combat_pool_id": "coastal_veteran",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 1,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_24_00",
+        "node_bigmap_24_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_22_00",
+        "node_bigmap_22_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_23_01",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 23,
+      "lane": 1,
+      "title": "Dock Guard",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "ferry"
+      ],
+      "route_tags": [
+        "big_map",
+        "ferry"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_bigmap_normal_008",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch4_tide_bandits",
+      "compatible_battle_id": "chapter4_tide_bandits",
+      "compatible_combat_pool_id": "coastal_veteran",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_24_00",
+        "node_bigmap_24_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_22_00",
+        "node_bigmap_22_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_23_02",
+      "segment": "big_map",
+      "node_type": "battle_elite",
+      "layer_index": 23,
+      "lane": 2,
+      "title": "Escort Officer",
+      "subtitle": "大地图精英战",
+      "preview_text": "前路有人等你犯错，这一战不是照表出牌。",
+      "tags": [
+        "battle_elite",
+        "big_map",
+        "pressure_test"
+      ],
+      "route_tags": [
+        "big_map",
+        "pressure_test"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_bigmap_elite_002",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_elite",
+      "compatible_network_node_type": "combat_elite",
+      "compatible_encounter_id": "enc_ch3_escort_clash",
+      "compatible_battle_id": "chapter3_escort_clash",
+      "compatible_combat_pool_id": "military_elite",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 2,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_24_00",
+        "node_bigmap_24_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_22_00",
+        "node_bigmap_22_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_24_00",
+      "segment": "big_map",
+      "node_type": "lightness_event",
+      "layer_index": 24,
+      "lane": 0,
+      "title": "轻身奇遇",
+      "subtitle": "寻步法机缘",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "tags": [
+        "lightness",
+        "lightness_event"
+      ],
+      "route_tags": [
+        "lightness"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "",
+      "operation_node_id": "op_lightness_encounter",
+      "materialized": true,
+      "map_node_type_hint": "risk",
+      "compatible_network_node_type": "risk",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "reputation",
+      "secondary_line": "military",
+      "effects": {},
+      "outgoing_node_ids": [
+        "node_bigmap_25_00",
+        "node_bigmap_25_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_23_00",
+        "node_bigmap_23_01",
+        "node_bigmap_23_02"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_24_01",
+      "segment": "big_map",
+      "node_type": "training",
+      "layer_index": 24,
+      "lane": 1,
+      "title": "校场磨招",
+      "subtitle": "稳练兵器",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "tags": [
+        "growth",
+        "training"
+      ],
+      "route_tags": [
+        "growth"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "",
+      "operation_node_id": "op_training_ground",
+      "materialized": true,
+      "map_node_type_hint": "military",
+      "compatible_network_node_type": "military",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "martial_xp": 4,
+        "weapon_xp": 3
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_25_00",
+        "node_bigmap_25_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_23_00",
+        "node_bigmap_23_01",
+        "node_bigmap_23_02"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_25_00",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 25,
+      "lane": 0,
+      "title": "Clue Hunters",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "old_case",
+        "witness"
+      ],
+      "route_tags": [
+        "big_map",
+        "old_case"
+      ],
+      "old_case_tags": [
+        "witness"
+      ],
+      "battle_slot_id": "slot_bigmap_normal_009",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch3_escort_clash",
+      "compatible_battle_id": "chapter3_escort_clash",
+      "compatible_combat_pool_id": "military_elite",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_26_00",
+        "node_bigmap_26_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_24_00",
+        "node_bigmap_24_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_25_01",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 25,
+      "lane": 1,
+      "title": "Clue Hunters",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "branch",
+        "investigation"
+      ],
+      "route_tags": [
+        "big_map",
+        "branch"
+      ],
+      "old_case_tags": [
+        "investigation"
+      ],
+      "battle_slot_id": "slot_bigmap_normal_010",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch3_escort_clash",
+      "compatible_battle_id": "chapter3_escort_clash",
+      "compatible_combat_pool_id": "military_elite",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_26_00",
+        "node_bigmap_26_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_24_00",
+        "node_bigmap_24_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_26_00",
+      "segment": "big_map",
+      "node_type": "battle_elite",
+      "layer_index": 26,
+      "lane": 0,
+      "title": "Clue Tracker",
+      "subtitle": "大地图精英战",
+      "preview_text": "前路有人等你犯错，这一战不是照表出牌。",
+      "tags": [
+        "battle_elite",
+        "big_map",
+        "deep_clue",
+        "old_case_elite"
+      ],
+      "route_tags": [
+        "big_map",
+        "old_case_elite"
+      ],
+      "old_case_tags": [
+        "deep_clue"
+      ],
+      "battle_slot_id": "slot_bigmap_elite_003",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_elite",
+      "compatible_network_node_type": "combat_elite",
+      "compatible_encounter_id": "enc_ch3_escort_clash",
+      "compatible_battle_id": "chapter3_escort_clash",
+      "compatible_combat_pool_id": "old_case_elite",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_27_00",
+        "node_bigmap_27_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_25_00",
+        "node_bigmap_25_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_26_01",
+      "segment": "big_map",
+      "node_type": "battle_elite",
+      "layer_index": 26,
+      "lane": 1,
+      "title": "Mutiny Captain",
+      "subtitle": "大地图精英战",
+      "preview_text": "前路有人等你犯错，这一战不是照表出牌。",
+      "tags": [
+        "battle_elite",
+        "big_map",
+        "lightness_test"
+      ],
+      "route_tags": [
+        "big_map",
+        "lightness_test"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_bigmap_elite_004",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_elite",
+      "compatible_network_node_type": "combat_elite",
+      "compatible_encounter_id": "enc_mutiny_camp",
+      "compatible_battle_id": "mutiny_camp",
+      "compatible_combat_pool_id": "coastal_veteran",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 2,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_27_00",
+        "node_bigmap_27_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_25_00",
+        "node_bigmap_25_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_27_00",
+      "segment": "big_map",
+      "node_type": "operation",
+      "layer_index": 27,
+      "lane": 0,
+      "title": "前辈点拨",
+      "subtitle": "临阵开窍",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "tags": [
+        "growth",
+        "operation",
+        "rare"
+      ],
+      "route_tags": [
+        "growth",
+        "rare"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "",
+      "operation_node_id": "op_master_teaching",
+      "materialized": true,
+      "map_node_type_hint": "military",
+      "compatible_network_node_type": "military",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {},
+      "outgoing_node_ids": [
+        "node_bigmap_28_00",
+        "node_bigmap_28_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_26_00",
+        "node_bigmap_26_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_27_01",
+      "segment": "big_map",
+      "node_type": "operation",
+      "layer_index": 27,
+      "lane": 1,
+      "title": "军府批令",
+      "subtitle": "积累军功",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "tags": [
+        "military",
+        "operation"
+      ],
+      "route_tags": [
+        "military"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "",
+      "operation_node_id": "op_military_office",
+      "materialized": true,
+      "map_node_type_hint": "military",
+      "compatible_network_node_type": "military",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 2
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_28_00",
+        "node_bigmap_28_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_26_00",
+        "node_bigmap_26_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_28_00",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 28,
+      "lane": 0,
+      "title": "Coastal Raider",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "frontline"
+      ],
+      "route_tags": [
+        "big_map",
+        "frontline"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_bigmap_normal_001",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch2_reed_ambush",
+      "compatible_battle_id": "chapter2_reed_ambush",
+      "compatible_combat_pool_id": "coastal_veteran",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_29_00",
+        "node_bigmap_29_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_27_00",
+        "node_bigmap_27_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_28_01",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 28,
+      "lane": 1,
+      "title": "Coastal Raider",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "coast"
+      ],
+      "route_tags": [
+        "big_map",
+        "coast"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_bigmap_normal_002",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch2_reed_ambush",
+      "compatible_battle_id": "chapter2_reed_ambush",
+      "compatible_combat_pool_id": "coastal_veteran",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_bigmap_29_00",
+        "node_bigmap_29_01"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_27_00",
+        "node_bigmap_27_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_29_00",
+      "segment": "big_map",
+      "node_type": "prepare",
+      "layer_index": 29,
+      "lane": 0,
+      "title": "战前整备",
+      "subtitle": "压阵收束",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "tags": [
+        "boss_prepare",
+        "prepare"
+      ],
+      "route_tags": [
+        "boss_prepare"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "",
+      "operation_node_id": "op_prepare_before_boss",
+      "materialized": true,
+      "map_node_type_hint": "rest",
+      "compatible_network_node_type": "rest",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {},
+      "outgoing_node_ids": [
+        "node_bigmap_30_00",
+        "node_bigmap_30_01",
+        "node_bigmap_30_02"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_28_00",
+        "node_bigmap_28_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_29_01",
+      "segment": "big_map",
+      "node_type": "prepare",
+      "layer_index": 29,
+      "lane": 1,
+      "title": "回京备考",
+      "subtitle": "整冠候试",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "tags": [
+        "prepare",
+        "wuzhuangyuan"
+      ],
+      "route_tags": [
+        "wuzhuangyuan"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "",
+      "operation_node_id": "op_capital_prepare",
+      "materialized": true,
+      "map_node_type_hint": "rest",
+      "compatible_network_node_type": "rest",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {},
+      "outgoing_node_ids": [
+        "node_bigmap_30_00",
+        "node_bigmap_30_01",
+        "node_bigmap_30_02"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_28_00",
+        "node_bigmap_28_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_30_00",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 30,
+      "lane": 0,
+      "title": "Military Patrol",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "patrol"
+      ],
+      "route_tags": [
+        "big_map",
+        "patrol"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_bigmap_normal_003",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch3_escort_clash",
+      "compatible_battle_id": "chapter3_escort_clash",
+      "compatible_combat_pool_id": "spear_patrol",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_boss_gate"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_29_00",
+        "node_bigmap_29_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_30_01",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 30,
+      "lane": 1,
+      "title": "Military Patrol",
+      "subtitle": "大地图普通战",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "escort"
+      ],
+      "route_tags": [
+        "big_map",
+        "escort"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_bigmap_normal_004",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch3_escort_clash",
+      "compatible_battle_id": "chapter3_escort_clash",
+      "compatible_combat_pool_id": "spear_patrol",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_boss_gate"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_29_00",
+        "node_bigmap_29_01"
+      ]
+    },
+    {
+      "node_id": "node_bigmap_30_02",
+      "segment": "big_map",
+      "node_type": "battle_normal",
+      "layer_index": 30,
+      "lane": 2,
+      "title": "Rare Assassin",
+      "subtitle": "稀有事件战",
+      "preview_text": "风向忽然不对，这不是寻常路上会遇见的人。",
+      "tags": [
+        "ambush",
+        "battle_normal",
+        "rare",
+        "witness"
+      ],
+      "route_tags": [
+        "rare",
+        "ambush"
+      ],
+      "old_case_tags": [
+        "witness"
+      ],
+      "battle_slot_id": "slot_rare_event_001",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_common",
+      "compatible_network_node_type": "combat_common",
+      "compatible_encounter_id": "enc_ch2_reed_ambush",
+      "compatible_battle_id": "rare_assassin_encounter",
+      "compatible_combat_pool_id": "old_case_elite",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "effects": {
+        "military_merit": 0,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "outgoing_node_ids": [
+        "node_boss_gate"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_29_00",
+        "node_bigmap_29_01"
+      ]
+    },
+    {
+      "node_id": "node_boss_gate",
+      "segment": "ending_gate",
+      "node_type": "boss_gate",
+      "layer_index": 31,
+      "lane": 0,
+      "title": "海门前压阵",
+      "subtitle": "收束前线",
+      "preview_text": "你要带着自己的路，走到最后那道门前。",
+      "tags": [
+        "boss_gate",
+        "prepare"
+      ],
+      "route_tags": [
+        "boss_prepare"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "",
+      "operation_node_id": "op_prepare_before_boss",
+      "materialized": true,
+      "map_node_type_hint": "rest",
+      "compatible_network_node_type": "rest",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "prepare_bonus": "boss_ready"
+      },
+      "outgoing_node_ids": [
+        "node_route_normal",
+        "node_route_true",
+        "node_route_wuzhuangyuan"
+      ],
+      "incoming_node_ids": [
+        "node_bigmap_30_00",
+        "node_bigmap_30_01",
+        "node_bigmap_30_02"
+      ]
+    },
+    {
+      "node_id": "node_route_normal",
+      "segment": "route_branch",
+      "node_type": "route_branch",
+      "layer_index": 32,
+      "lane": 0,
+      "title": "收束海门",
+      "subtitle": "普通结局路线",
+      "preview_text": "条件满足时，最后的路由你自己选。",
+      "tags": [
+        "route_branch",
+        "normal"
+      ],
+      "route_tags": [
+        "normal"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "military",
+      "compatible_network_node_type": "military",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {},
+      "outgoing_node_ids": [
+        "node_normal_boss"
+      ],
+      "incoming_node_ids": [
+        "node_boss_gate"
+      ]
+    },
+    {
+      "node_id": "node_route_true",
+      "segment": "route_branch",
+      "node_type": "route_branch",
+      "layer_index": 32,
+      "lane": 1,
+      "title": "追查真相",
+      "subtitle": "真结局路线",
+      "preview_text": "条件满足时，最后的路由你自己选。",
+      "tags": [
+        "route_branch",
+        "true"
+      ],
+      "route_tags": [
+        "true"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "military",
+      "compatible_network_node_type": "military",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "military",
+      "secondary_line": "old_case",
+      "effects": {},
+      "outgoing_node_ids": [
+        "node_true_boss_001"
+      ],
+      "incoming_node_ids": [
+        "node_boss_gate"
+      ]
+    },
+    {
+      "node_id": "node_route_wuzhuangyuan",
+      "segment": "route_branch",
+      "node_type": "route_branch",
+      "layer_index": 32,
+      "lane": 2,
+      "title": "回京赴试",
+      "subtitle": "武状元路线",
+      "preview_text": "条件满足时，最后的路由你自己选。",
+      "tags": [
+        "route_branch",
+        "wuzhuangyuan"
+      ],
+      "route_tags": [
+        "wuzhuangyuan"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "military",
+      "compatible_network_node_type": "military",
+      "compatible_encounter_id": "",
+      "compatible_battle_id": "",
+      "compatible_combat_pool_id": "",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {},
+      "outgoing_node_ids": [
+        "node_wuzhuangyuan_exam_001"
+      ],
+      "incoming_node_ids": [
+        "node_boss_gate"
+      ]
+    },
+    {
+      "node_id": "node_normal_boss",
+      "segment": "ending",
+      "node_type": "normal_boss",
+      "layer_index": 33,
+      "lane": 0,
+      "title": "Surface Pirate Boss",
+      "subtitle": "结局 Boss",
+      "preview_text": "再往前，路就不会自己退开。",
+      "tags": [
+        "ending",
+        "normal_boss"
+      ],
+      "route_tags": [
+        "normal"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_normal_boss_001",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "boss",
+      "compatible_network_node_type": "combat_elite",
+      "compatible_encounter_id": "enc_wakou_boss",
+      "compatible_battle_id": "first_act_wakou_boss",
+      "compatible_combat_pool_id": "coastal_veteran",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 3,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [],
+      "incoming_node_ids": [
+        "node_route_normal"
+      ]
+    },
+    {
+      "node_id": "node_true_boss_001",
+      "segment": "ending",
+      "node_type": "true_boss",
+      "layer_index": 33,
+      "lane": 1,
+      "title": "True Gatekeeper",
+      "subtitle": "结局 Boss",
+      "preview_text": "再往前，路就不会自己退开。",
+      "tags": [
+        "ending",
+        "true_boss",
+        "true_gate"
+      ],
+      "route_tags": [
+        "true"
+      ],
+      "old_case_tags": [
+        "truth_gate"
+      ],
+      "battle_slot_id": "slot_true_boss_001",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "boss",
+      "compatible_network_node_type": "combat_elite",
+      "compatible_encounter_id": "enc_boss_ext_wakou_leader",
+      "compatible_battle_id": "boss_ext_wakou_leader",
+      "compatible_combat_pool_id": "old_case_elite",
+      "primary_line": "military",
+      "secondary_line": "old_case",
+      "effects": {
+        "military_merit": 3,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "outgoing_node_ids": [
+        "node_true_boss_002"
+      ],
+      "incoming_node_ids": [
+        "node_route_true"
+      ]
+    },
+    {
+      "node_id": "node_wuzhuangyuan_exam_001",
+      "segment": "ending",
+      "node_type": "wuzhuangyuan_exam",
+      "layer_index": 33,
+      "lane": 2,
+      "title": "Capital Exam Rival",
+      "subtitle": "回京考试战",
+      "preview_text": "京师试场只认强弱，不认侥幸。",
+      "tags": [
+        "capital_exam",
+        "entry",
+        "wuzhuangyuan_exam"
+      ],
+      "route_tags": [
+        "wuzhuangyuan"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_wuzhuangyuan_exam_001",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_elite",
+      "compatible_network_node_type": "combat_elite",
+      "compatible_encounter_id": "enc_wuke_gu_chengyue",
+      "compatible_battle_id": "capital_exam_1",
+      "compatible_combat_pool_id": "military_elite",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 2,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_wuzhuangyuan_exam_002"
+      ],
+      "incoming_node_ids": [
+        "node_route_wuzhuangyuan"
+      ]
+    },
+    {
+      "node_id": "node_true_boss_002",
+      "segment": "ending",
+      "node_type": "true_boss",
+      "layer_index": 34,
+      "lane": 0,
+      "title": "True Final Boss",
+      "subtitle": "结局 Boss",
+      "preview_text": "再往前，路就不会自己退开。",
+      "tags": [
+        "true_boss",
+        "true_final"
+      ],
+      "route_tags": [
+        "true"
+      ],
+      "old_case_tags": [
+        "truth_final"
+      ],
+      "battle_slot_id": "slot_true_boss_002",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "boss",
+      "compatible_network_node_type": "combat_elite",
+      "compatible_encounter_id": "enc_boss_ext_wakou_leader",
+      "compatible_battle_id": "true_final_boss",
+      "compatible_combat_pool_id": "old_case_elite",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "effects": {
+        "military_merit": 4,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "outgoing_node_ids": [],
+      "incoming_node_ids": [
+        "node_true_boss_001"
+      ]
+    },
+    {
+      "node_id": "node_wuzhuangyuan_exam_002",
+      "segment": "ending",
+      "node_type": "wuzhuangyuan_exam",
+      "layer_index": 34,
+      "lane": 1,
+      "title": "Capital Exam Rival",
+      "subtitle": "回京考试战",
+      "preview_text": "京师试场只认强弱，不认侥幸。",
+      "tags": [
+        "wuzhuangyuan_exam",
+        "capital"
+      ],
+      "route_tags": [
+        "wuzhuangyuan"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_wuzhuangyuan_exam_002",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_elite",
+      "compatible_network_node_type": "combat_elite",
+      "compatible_encounter_id": "enc_wuke_shen_zhaoye",
+      "compatible_battle_id": "capital_exam_2",
+      "compatible_combat_pool_id": "military_elite",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 2,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_wuzhuangyuan_exam_003"
+      ],
+      "incoming_node_ids": [
+        "node_wuzhuangyuan_exam_001"
+      ]
+    },
+    {
+      "node_id": "node_wuzhuangyuan_exam_003",
+      "segment": "ending",
+      "node_type": "wuzhuangyuan_exam",
+      "layer_index": 35,
+      "lane": 0,
+      "title": "Capital Exam Rival",
+      "subtitle": "回京考试战",
+      "preview_text": "京师试场只认强弱，不认侥幸。",
+      "tags": [
+        "wuzhuangyuan_exam",
+        "capital"
+      ],
+      "route_tags": [
+        "wuzhuangyuan"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_wuzhuangyuan_exam_003",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_elite",
+      "compatible_network_node_type": "combat_elite",
+      "compatible_encounter_id": "enc_wuke_qi_heng",
+      "compatible_battle_id": "capital_exam_3",
+      "compatible_combat_pool_id": "military_elite",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 2,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_wuzhuangyuan_exam_004"
+      ],
+      "incoming_node_ids": [
+        "node_wuzhuangyuan_exam_002"
+      ]
+    },
+    {
+      "node_id": "node_wuzhuangyuan_exam_004",
+      "segment": "ending",
+      "node_type": "wuzhuangyuan_exam",
+      "layer_index": 36,
+      "lane": 0,
+      "title": "Capital Exam Rival",
+      "subtitle": "回京考试战",
+      "preview_text": "京师试场只认强弱，不认侥幸。",
+      "tags": [
+        "wuzhuangyuan_exam",
+        "capital"
+      ],
+      "route_tags": [
+        "wuzhuangyuan"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_wuzhuangyuan_exam_004",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_elite",
+      "compatible_network_node_type": "combat_elite",
+      "compatible_encounter_id": "enc_wuke_final_duel",
+      "compatible_battle_id": "capital_exam_4",
+      "compatible_combat_pool_id": "military_elite",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 2,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [
+        "node_wuzhuangyuan_exam_005"
+      ],
+      "incoming_node_ids": [
+        "node_wuzhuangyuan_exam_003"
+      ]
+    },
+    {
+      "node_id": "node_wuzhuangyuan_exam_005",
+      "segment": "ending",
+      "node_type": "wuzhuangyuan_exam",
+      "layer_index": 37,
+      "lane": 0,
+      "title": "Capital Exam Rival",
+      "subtitle": "回京考试战",
+      "preview_text": "京师试场只认强弱，不认侥幸。",
+      "tags": [
+        "wuzhuangyuan_exam",
+        "capital"
+      ],
+      "route_tags": [
+        "wuzhuangyuan"
+      ],
+      "old_case_tags": [],
+      "battle_slot_id": "slot_wuzhuangyuan_exam_005",
+      "operation_node_id": "",
+      "materialized": true,
+      "map_node_type_hint": "combat_elite",
+      "compatible_network_node_type": "combat_elite",
+      "compatible_encounter_id": "enc_wuke_final_duel",
+      "compatible_battle_id": "capital_exam_5",
+      "compatible_combat_pool_id": "military_elite",
+      "primary_line": "military",
+      "secondary_line": "",
+      "effects": {
+        "military_merit": 2,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "outgoing_node_ids": [],
+      "incoming_node_ids": [
+        "node_wuzhuangyuan_exam_004"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from_node_id": "node_start",
+      "to_node_id": "node_prologue_001"
+    },
+    {
+      "from_node_id": "node_prologue_001",
+      "to_node_id": "node_wuju_001"
+    },
+    {
+      "from_node_id": "node_wuju_001",
+      "to_node_id": "node_wuju_002"
+    },
+    {
+      "from_node_id": "node_wuju_002",
+      "to_node_id": "node_wuju_003"
+    },
+    {
+      "from_node_id": "node_wuju_003",
+      "to_node_id": "node_wuju_004"
+    },
+    {
+      "from_node_id": "node_wuju_004",
+      "to_node_id": "node_wuju_005"
+    },
+    {
+      "from_node_id": "node_wuju_005",
+      "to_node_id": "node_bigmap_07_00"
+    },
+    {
+      "from_node_id": "node_wuju_005",
+      "to_node_id": "node_bigmap_07_01"
+    },
+    {
+      "from_node_id": "node_bigmap_07_00",
+      "to_node_id": "node_bigmap_08_00"
+    },
+    {
+      "from_node_id": "node_bigmap_07_00",
+      "to_node_id": "node_bigmap_08_01"
+    },
+    {
+      "from_node_id": "node_bigmap_07_01",
+      "to_node_id": "node_bigmap_08_00"
+    },
+    {
+      "from_node_id": "node_bigmap_07_01",
+      "to_node_id": "node_bigmap_08_01"
+    },
+    {
+      "from_node_id": "node_bigmap_08_00",
+      "to_node_id": "node_bigmap_09_00"
+    },
+    {
+      "from_node_id": "node_bigmap_08_00",
+      "to_node_id": "node_bigmap_09_01"
+    },
+    {
+      "from_node_id": "node_bigmap_08_01",
+      "to_node_id": "node_bigmap_09_00"
+    },
+    {
+      "from_node_id": "node_bigmap_08_01",
+      "to_node_id": "node_bigmap_09_01"
+    },
+    {
+      "from_node_id": "node_bigmap_09_00",
+      "to_node_id": "node_bigmap_10_00"
+    },
+    {
+      "from_node_id": "node_bigmap_09_00",
+      "to_node_id": "node_bigmap_10_01"
+    },
+    {
+      "from_node_id": "node_bigmap_09_01",
+      "to_node_id": "node_bigmap_10_00"
+    },
+    {
+      "from_node_id": "node_bigmap_09_01",
+      "to_node_id": "node_bigmap_10_01"
+    },
+    {
+      "from_node_id": "node_bigmap_10_00",
+      "to_node_id": "node_bigmap_11_00"
+    },
+    {
+      "from_node_id": "node_bigmap_10_00",
+      "to_node_id": "node_bigmap_11_01"
+    },
+    {
+      "from_node_id": "node_bigmap_10_01",
+      "to_node_id": "node_bigmap_11_00"
+    },
+    {
+      "from_node_id": "node_bigmap_10_01",
+      "to_node_id": "node_bigmap_11_01"
+    },
+    {
+      "from_node_id": "node_bigmap_11_00",
+      "to_node_id": "node_bigmap_12_00"
+    },
+    {
+      "from_node_id": "node_bigmap_11_00",
+      "to_node_id": "node_bigmap_12_01"
+    },
+    {
+      "from_node_id": "node_bigmap_11_00",
+      "to_node_id": "node_bigmap_12_02"
+    },
+    {
+      "from_node_id": "node_bigmap_11_01",
+      "to_node_id": "node_bigmap_12_00"
+    },
+    {
+      "from_node_id": "node_bigmap_11_01",
+      "to_node_id": "node_bigmap_12_01"
+    },
+    {
+      "from_node_id": "node_bigmap_11_01",
+      "to_node_id": "node_bigmap_12_02"
+    },
+    {
+      "from_node_id": "node_bigmap_12_00",
+      "to_node_id": "node_bigmap_13_00"
+    },
+    {
+      "from_node_id": "node_bigmap_12_00",
+      "to_node_id": "node_bigmap_13_01"
+    },
+    {
+      "from_node_id": "node_bigmap_12_01",
+      "to_node_id": "node_bigmap_13_00"
+    },
+    {
+      "from_node_id": "node_bigmap_12_01",
+      "to_node_id": "node_bigmap_13_01"
+    },
+    {
+      "from_node_id": "node_bigmap_12_02",
+      "to_node_id": "node_bigmap_13_00"
+    },
+    {
+      "from_node_id": "node_bigmap_12_02",
+      "to_node_id": "node_bigmap_13_01"
+    },
+    {
+      "from_node_id": "node_bigmap_13_00",
+      "to_node_id": "node_bigmap_14_00"
+    },
+    {
+      "from_node_id": "node_bigmap_13_00",
+      "to_node_id": "node_bigmap_14_01"
+    },
+    {
+      "from_node_id": "node_bigmap_13_01",
+      "to_node_id": "node_bigmap_14_00"
+    },
+    {
+      "from_node_id": "node_bigmap_13_01",
+      "to_node_id": "node_bigmap_14_01"
+    },
+    {
+      "from_node_id": "node_bigmap_14_00",
+      "to_node_id": "node_bigmap_15_00"
+    },
+    {
+      "from_node_id": "node_bigmap_14_00",
+      "to_node_id": "node_bigmap_15_01"
+    },
+    {
+      "from_node_id": "node_bigmap_14_01",
+      "to_node_id": "node_bigmap_15_00"
+    },
+    {
+      "from_node_id": "node_bigmap_14_01",
+      "to_node_id": "node_bigmap_15_01"
+    },
+    {
+      "from_node_id": "node_bigmap_15_00",
+      "to_node_id": "node_bigmap_16_00"
+    },
+    {
+      "from_node_id": "node_bigmap_15_00",
+      "to_node_id": "node_bigmap_16_01"
+    },
+    {
+      "from_node_id": "node_bigmap_15_01",
+      "to_node_id": "node_bigmap_16_00"
+    },
+    {
+      "from_node_id": "node_bigmap_15_01",
+      "to_node_id": "node_bigmap_16_01"
+    },
+    {
+      "from_node_id": "node_bigmap_16_00",
+      "to_node_id": "node_bigmap_17_00"
+    },
+    {
+      "from_node_id": "node_bigmap_16_00",
+      "to_node_id": "node_bigmap_17_01"
+    },
+    {
+      "from_node_id": "node_bigmap_16_01",
+      "to_node_id": "node_bigmap_17_00"
+    },
+    {
+      "from_node_id": "node_bigmap_16_01",
+      "to_node_id": "node_bigmap_17_01"
+    },
+    {
+      "from_node_id": "node_bigmap_17_00",
+      "to_node_id": "node_bigmap_18_00"
+    },
+    {
+      "from_node_id": "node_bigmap_17_00",
+      "to_node_id": "node_bigmap_18_01"
+    },
+    {
+      "from_node_id": "node_bigmap_17_01",
+      "to_node_id": "node_bigmap_18_00"
+    },
+    {
+      "from_node_id": "node_bigmap_17_01",
+      "to_node_id": "node_bigmap_18_01"
+    },
+    {
+      "from_node_id": "node_bigmap_18_00",
+      "to_node_id": "node_bigmap_19_00"
+    },
+    {
+      "from_node_id": "node_bigmap_18_00",
+      "to_node_id": "node_bigmap_19_01"
+    },
+    {
+      "from_node_id": "node_bigmap_18_01",
+      "to_node_id": "node_bigmap_19_00"
+    },
+    {
+      "from_node_id": "node_bigmap_18_01",
+      "to_node_id": "node_bigmap_19_01"
+    },
+    {
+      "from_node_id": "node_bigmap_19_00",
+      "to_node_id": "node_bigmap_20_00"
+    },
+    {
+      "from_node_id": "node_bigmap_19_00",
+      "to_node_id": "node_bigmap_20_01"
+    },
+    {
+      "from_node_id": "node_bigmap_19_01",
+      "to_node_id": "node_bigmap_20_00"
+    },
+    {
+      "from_node_id": "node_bigmap_19_01",
+      "to_node_id": "node_bigmap_20_01"
+    },
+    {
+      "from_node_id": "node_bigmap_20_00",
+      "to_node_id": "node_bigmap_21_00"
+    },
+    {
+      "from_node_id": "node_bigmap_20_00",
+      "to_node_id": "node_bigmap_21_01"
+    },
+    {
+      "from_node_id": "node_bigmap_20_01",
+      "to_node_id": "node_bigmap_21_00"
+    },
+    {
+      "from_node_id": "node_bigmap_20_01",
+      "to_node_id": "node_bigmap_21_01"
+    },
+    {
+      "from_node_id": "node_bigmap_21_00",
+      "to_node_id": "node_bigmap_22_00"
+    },
+    {
+      "from_node_id": "node_bigmap_21_00",
+      "to_node_id": "node_bigmap_22_01"
+    },
+    {
+      "from_node_id": "node_bigmap_21_01",
+      "to_node_id": "node_bigmap_22_00"
+    },
+    {
+      "from_node_id": "node_bigmap_21_01",
+      "to_node_id": "node_bigmap_22_01"
+    },
+    {
+      "from_node_id": "node_bigmap_22_00",
+      "to_node_id": "node_bigmap_23_00"
+    },
+    {
+      "from_node_id": "node_bigmap_22_00",
+      "to_node_id": "node_bigmap_23_01"
+    },
+    {
+      "from_node_id": "node_bigmap_22_00",
+      "to_node_id": "node_bigmap_23_02"
+    },
+    {
+      "from_node_id": "node_bigmap_22_01",
+      "to_node_id": "node_bigmap_23_00"
+    },
+    {
+      "from_node_id": "node_bigmap_22_01",
+      "to_node_id": "node_bigmap_23_01"
+    },
+    {
+      "from_node_id": "node_bigmap_22_01",
+      "to_node_id": "node_bigmap_23_02"
+    },
+    {
+      "from_node_id": "node_bigmap_23_00",
+      "to_node_id": "node_bigmap_24_00"
+    },
+    {
+      "from_node_id": "node_bigmap_23_00",
+      "to_node_id": "node_bigmap_24_01"
+    },
+    {
+      "from_node_id": "node_bigmap_23_01",
+      "to_node_id": "node_bigmap_24_00"
+    },
+    {
+      "from_node_id": "node_bigmap_23_01",
+      "to_node_id": "node_bigmap_24_01"
+    },
+    {
+      "from_node_id": "node_bigmap_23_02",
+      "to_node_id": "node_bigmap_24_00"
+    },
+    {
+      "from_node_id": "node_bigmap_23_02",
+      "to_node_id": "node_bigmap_24_01"
+    },
+    {
+      "from_node_id": "node_bigmap_24_00",
+      "to_node_id": "node_bigmap_25_00"
+    },
+    {
+      "from_node_id": "node_bigmap_24_00",
+      "to_node_id": "node_bigmap_25_01"
+    },
+    {
+      "from_node_id": "node_bigmap_24_01",
+      "to_node_id": "node_bigmap_25_00"
+    },
+    {
+      "from_node_id": "node_bigmap_24_01",
+      "to_node_id": "node_bigmap_25_01"
+    },
+    {
+      "from_node_id": "node_bigmap_25_00",
+      "to_node_id": "node_bigmap_26_00"
+    },
+    {
+      "from_node_id": "node_bigmap_25_00",
+      "to_node_id": "node_bigmap_26_01"
+    },
+    {
+      "from_node_id": "node_bigmap_25_01",
+      "to_node_id": "node_bigmap_26_00"
+    },
+    {
+      "from_node_id": "node_bigmap_25_01",
+      "to_node_id": "node_bigmap_26_01"
+    },
+    {
+      "from_node_id": "node_bigmap_26_00",
+      "to_node_id": "node_bigmap_27_00"
+    },
+    {
+      "from_node_id": "node_bigmap_26_00",
+      "to_node_id": "node_bigmap_27_01"
+    },
+    {
+      "from_node_id": "node_bigmap_26_01",
+      "to_node_id": "node_bigmap_27_00"
+    },
+    {
+      "from_node_id": "node_bigmap_26_01",
+      "to_node_id": "node_bigmap_27_01"
+    },
+    {
+      "from_node_id": "node_bigmap_27_00",
+      "to_node_id": "node_bigmap_28_00"
+    },
+    {
+      "from_node_id": "node_bigmap_27_00",
+      "to_node_id": "node_bigmap_28_01"
+    },
+    {
+      "from_node_id": "node_bigmap_27_01",
+      "to_node_id": "node_bigmap_28_00"
+    },
+    {
+      "from_node_id": "node_bigmap_27_01",
+      "to_node_id": "node_bigmap_28_01"
+    },
+    {
+      "from_node_id": "node_bigmap_28_00",
+      "to_node_id": "node_bigmap_29_00"
+    },
+    {
+      "from_node_id": "node_bigmap_28_00",
+      "to_node_id": "node_bigmap_29_01"
+    },
+    {
+      "from_node_id": "node_bigmap_28_01",
+      "to_node_id": "node_bigmap_29_00"
+    },
+    {
+      "from_node_id": "node_bigmap_28_01",
+      "to_node_id": "node_bigmap_29_01"
+    },
+    {
+      "from_node_id": "node_bigmap_29_00",
+      "to_node_id": "node_bigmap_30_00"
+    },
+    {
+      "from_node_id": "node_bigmap_29_00",
+      "to_node_id": "node_bigmap_30_01"
+    },
+    {
+      "from_node_id": "node_bigmap_29_00",
+      "to_node_id": "node_bigmap_30_02"
+    },
+    {
+      "from_node_id": "node_bigmap_29_01",
+      "to_node_id": "node_bigmap_30_00"
+    },
+    {
+      "from_node_id": "node_bigmap_29_01",
+      "to_node_id": "node_bigmap_30_01"
+    },
+    {
+      "from_node_id": "node_bigmap_29_01",
+      "to_node_id": "node_bigmap_30_02"
+    },
+    {
+      "from_node_id": "node_bigmap_30_00",
+      "to_node_id": "node_boss_gate"
+    },
+    {
+      "from_node_id": "node_bigmap_30_01",
+      "to_node_id": "node_boss_gate"
+    },
+    {
+      "from_node_id": "node_bigmap_30_02",
+      "to_node_id": "node_boss_gate"
+    },
+    {
+      "from_node_id": "node_boss_gate",
+      "to_node_id": "node_route_normal"
+    },
+    {
+      "from_node_id": "node_boss_gate",
+      "to_node_id": "node_route_true"
+    },
+    {
+      "from_node_id": "node_boss_gate",
+      "to_node_id": "node_route_wuzhuangyuan"
+    },
+    {
+      "from_node_id": "node_route_normal",
+      "to_node_id": "node_normal_boss"
+    },
+    {
+      "from_node_id": "node_route_true",
+      "to_node_id": "node_true_boss_001"
+    },
+    {
+      "from_node_id": "node_route_wuzhuangyuan",
+      "to_node_id": "node_wuzhuangyuan_exam_001"
+    },
+    {
+      "from_node_id": "node_true_boss_001",
+      "to_node_id": "node_true_boss_002"
+    },
+    {
+      "from_node_id": "node_wuzhuangyuan_exam_001",
+      "to_node_id": "node_wuzhuangyuan_exam_002"
+    },
+    {
+      "from_node_id": "node_wuzhuangyuan_exam_002",
+      "to_node_id": "node_wuzhuangyuan_exam_003"
+    },
+    {
+      "from_node_id": "node_wuzhuangyuan_exam_003",
+      "to_node_id": "node_wuzhuangyuan_exam_004"
+    },
+    {
+      "from_node_id": "node_wuzhuangyuan_exam_004",
+      "to_node_id": "node_wuzhuangyuan_exam_005"
+    }
+  ]
+}

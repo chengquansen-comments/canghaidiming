@@ -454,3 +454,11 @@ v2 目标是 `full sequence reward / progression closure`：
 - content pool 采用离线生成、离线校验、离线 probe，不允许运行时直接生成未审核 battle/deck/reward/boss 内容。
 - 后续实时层只基于已验收 content pool 生成 `map_instance / route_state / node_materialized_loadout`。
 - DUNGEON-2 将实现 `map_instance + existing_big_map_adapter`，继续接回现有 big map UI / route state / battle entry。
+
+## DUNGEON-2：Map Instance + Existing Big Map Adapter
+
+- DUNGEON-2 已生成 `map_instance + initial route_state + big_map compatible network_map` 的离线产物。
+- DUNGEON-2 明确不是 fixed sequence；验证依据是 sampled route metrics，而不是全图节点总数。
+- sampled route metrics 只衡量单条可行路径在 big map 段的 battle / operation / elite 分布。
+- DUNGEON-3 将实现 `node_materializer + battle entry bridge`。
+- 当前仍未接入 Godot runtime。

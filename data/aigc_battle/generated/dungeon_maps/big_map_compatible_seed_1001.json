@@ -1,0 +1,2766 @@
+{
+  "run_id": "dungeon_run_seed_1001",
+  "seed": 1001,
+  "layer_count": 38,
+  "current_layer": 1,
+  "current_node_id": "node_start",
+  "selected_node_id": "node_prologue_001",
+  "completed_node_ids": [
+    "node_start"
+  ],
+  "available_node_ids": [
+    "node_prologue_001"
+  ],
+  "pending_map_node_id": "",
+  "pending_result_text": "",
+  "pending_effects": {},
+  "nodes": [
+    {
+      "map_graph_id": "node_start",
+      "pool_node_id": "node_start",
+      "layer": 0,
+      "lane": 0,
+      "x": 60.0,
+      "y": 168.0,
+      "title": "海疆起点",
+      "node_type": "military",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "从这里往前，路不会只给你一条。",
+      "result_text": "海疆起点 已定。",
+      "effects": {},
+      "tags": [
+        "start"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_prologue_001"
+      ],
+      "incoming": [],
+      "state": "completed"
+    },
+    {
+      "map_graph_id": "node_prologue_001",
+      "pool_node_id": "slot_prologue_001",
+      "layer": 1,
+      "lane": 0,
+      "x": 106.0,
+      "y": 168.0,
+      "title": "Tutorial Raider",
+      "node_type": "combat_common",
+      "primary_line": "military",
+      "secondary_line": "old_case",
+      "preview_text": "伤痕未止，潮线上已经有人逼来。",
+      "result_text": "Tutorial Raider 已定。",
+      "effects": {
+        "military_merit": 0,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "tags": [
+        "master_rescue",
+        "origin",
+        "prologue_battle",
+        "tutorial"
+      ],
+      "combat": {},
+      "combat_pool_id": "spear_patrol",
+      "encounter_id": "enc_prologue_master_rescue",
+      "battle_id": "prologue_master_rescue",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_wuju_001"
+      ],
+      "incoming": [
+        "node_start"
+      ],
+      "state": "available"
+    },
+    {
+      "map_graph_id": "node_wuju_001",
+      "pool_node_id": "slot_wuju_001",
+      "layer": 2,
+      "lane": 0,
+      "x": 152.0,
+      "y": 168.0,
+      "title": "Wuju Spear Trialist",
+      "node_type": "combat_common",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "考场不大，但看台上的目光很重。",
+      "result_text": "Wuju Spear Trialist 已定。",
+      "effects": {
+        "military_merit": 0,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "spear",
+        "wuju",
+        "wuju_battle"
+      ],
+      "combat": {},
+      "combat_pool_id": "spear_patrol",
+      "encounter_id": "enc_wuke_spear_trial",
+      "battle_id": "wuke_spear_trial",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_wuju_002"
+      ],
+      "incoming": [
+        "node_prologue_001"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_wuju_002",
+      "pool_node_id": "slot_wuju_002",
+      "layer": 3,
+      "lane": 0,
+      "x": 198.0,
+      "y": 168.0,
+      "title": "Wuju Blade Trialist",
+      "node_type": "combat_common",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "考场不大，但看台上的目光很重。",
+      "result_text": "Wuju Blade Trialist 已定。",
+      "effects": {
+        "military_merit": 0,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "blade",
+        "wuju",
+        "wuju_battle"
+      ],
+      "combat": {},
+      "combat_pool_id": "coastal_veteran",
+      "encounter_id": "enc_wuke_blade_trial",
+      "battle_id": "wuke_blade_trial",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_wuju_003"
+      ],
+      "incoming": [
+        "node_wuju_001"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_wuju_003",
+      "pool_node_id": "slot_wuju_003",
+      "layer": 4,
+      "lane": 0,
+      "x": 244.0,
+      "y": 168.0,
+      "title": "Wuju Exam Duelist",
+      "node_type": "combat_common",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "考场不大，但看台上的目光很重。",
+      "result_text": "Wuju Exam Duelist 已定。",
+      "effects": {
+        "military_merit": 0,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "distance_test",
+        "wuju",
+        "wuju_battle"
+      ],
+      "combat": {},
+      "combat_pool_id": "spear_patrol",
+      "encounter_id": "enc_wuke_spear_trial",
+      "battle_id": "wuke_step_trial",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_wuju_004"
+      ],
+      "incoming": [
+        "node_wuju_002"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_wuju_004",
+      "pool_node_id": "slot_wuju_004",
+      "layer": 5,
+      "lane": 0,
+      "x": 290.0,
+      "y": 168.0,
+      "title": "Wuju Spear Trialist",
+      "node_type": "combat_common",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "考场不大，但看台上的目光很重。",
+      "result_text": "Wuju Spear Trialist 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "weapon_cycle",
+        "wuju",
+        "wuju_battle"
+      ],
+      "combat": {},
+      "combat_pool_id": "spear_patrol",
+      "encounter_id": "enc_wuke_final_duel",
+      "battle_id": "wuke_weapon_exam",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_wuju_005"
+      ],
+      "incoming": [
+        "node_wuju_003"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_wuju_005",
+      "pool_node_id": "slot_wuju_005",
+      "layer": 6,
+      "lane": 0,
+      "x": 336.0,
+      "y": 168.0,
+      "title": "Wuju Blade Trialist",
+      "node_type": "combat_elite",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "考场不大，但看台上的目光很重。",
+      "result_text": "Wuju Blade Trialist 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "duel",
+        "wuju",
+        "wuju_battle"
+      ],
+      "combat": {},
+      "combat_pool_id": "military_elite",
+      "encounter_id": "enc_wuke_final_duel",
+      "battle_id": "wuke_final_duel",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_07_00",
+        "node_bigmap_07_01"
+      ],
+      "incoming": [
+        "node_wuju_004"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_07_00",
+      "pool_node_id": "slot_bigmap_normal_001",
+      "layer": 7,
+      "lane": 0,
+      "x": 382.0,
+      "y": 168.0,
+      "title": "Coastal Raider",
+      "node_type": "combat_common",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Coastal Raider 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "frontline"
+      ],
+      "combat": {},
+      "combat_pool_id": "coastal_veteran",
+      "encounter_id": "enc_ch2_reed_ambush",
+      "battle_id": "chapter2_reed_ambush",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_08_00",
+        "node_bigmap_08_01"
+      ],
+      "incoming": [
+        "node_wuju_005"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_07_01",
+      "pool_node_id": "slot_bigmap_normal_002",
+      "layer": 7,
+      "lane": 1,
+      "x": 382.0,
+      "y": 246.0,
+      "title": "Coastal Raider",
+      "node_type": "combat_common",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Coastal Raider 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "coast"
+      ],
+      "combat": {},
+      "combat_pool_id": "coastal_veteran",
+      "encounter_id": "enc_ch2_reed_ambush",
+      "battle_id": "chapter2_reed_ambush",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_08_00",
+        "node_bigmap_08_01"
+      ],
+      "incoming": [
+        "node_wuju_005"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_08_00",
+      "pool_node_id": "op_training_ground",
+      "layer": 8,
+      "lane": 0,
+      "x": 428.0,
+      "y": 168.0,
+      "title": "校场磨招",
+      "node_type": "military",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "result_text": "校场磨招 已定。",
+      "effects": {
+        "martial_xp": 4,
+        "weapon_xp": 3
+      },
+      "tags": [
+        "growth",
+        "training"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_09_00",
+        "node_bigmap_09_01"
+      ],
+      "incoming": [
+        "node_bigmap_07_00",
+        "node_bigmap_07_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_08_01",
+      "pool_node_id": "op_camp_rest",
+      "layer": 8,
+      "lane": 1,
+      "x": 428.0,
+      "y": 246.0,
+      "title": "行营修整",
+      "node_type": "military",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "result_text": "行营修整 已定。",
+      "effects": {},
+      "tags": [
+        "operation",
+        "recovery"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_09_00",
+        "node_bigmap_09_01"
+      ],
+      "incoming": [
+        "node_bigmap_07_00",
+        "node_bigmap_07_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_09_00",
+      "pool_node_id": "slot_bigmap_elite_002",
+      "layer": 9,
+      "lane": 0,
+      "x": 474.0,
+      "y": 168.0,
+      "title": "Escort Officer",
+      "node_type": "combat_elite",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "前路有人等你犯错，这一战不是照表出牌。",
+      "result_text": "Escort Officer 已定。",
+      "effects": {
+        "military_merit": 2,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "battle_elite",
+        "big_map",
+        "pressure_test"
+      ],
+      "combat": {},
+      "combat_pool_id": "military_elite",
+      "encounter_id": "enc_ch3_escort_clash",
+      "battle_id": "chapter3_escort_clash",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_10_00",
+        "node_bigmap_10_01"
+      ],
+      "incoming": [
+        "node_bigmap_08_00",
+        "node_bigmap_08_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_09_01",
+      "pool_node_id": "slot_bigmap_elite_003",
+      "layer": 9,
+      "lane": 1,
+      "x": 474.0,
+      "y": 246.0,
+      "title": "Clue Tracker",
+      "node_type": "combat_elite",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "preview_text": "前路有人等你犯错，这一战不是照表出牌。",
+      "result_text": "Clue Tracker 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "tags": [
+        "battle_elite",
+        "big_map",
+        "deep_clue",
+        "old_case_elite"
+      ],
+      "combat": {},
+      "combat_pool_id": "old_case_elite",
+      "encounter_id": "enc_ch3_escort_clash",
+      "battle_id": "chapter3_escort_clash",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_10_00",
+        "node_bigmap_10_01"
+      ],
+      "incoming": [
+        "node_bigmap_08_00",
+        "node_bigmap_08_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_10_00",
+      "pool_node_id": "slot_bigmap_normal_003",
+      "layer": 10,
+      "lane": 0,
+      "x": 520.0,
+      "y": 168.0,
+      "title": "Military Patrol",
+      "node_type": "combat_common",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Military Patrol 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "patrol"
+      ],
+      "combat": {},
+      "combat_pool_id": "spear_patrol",
+      "encounter_id": "enc_ch3_escort_clash",
+      "battle_id": "chapter3_escort_clash",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_11_00",
+        "node_bigmap_11_01"
+      ],
+      "incoming": [
+        "node_bigmap_09_00",
+        "node_bigmap_09_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_10_01",
+      "pool_node_id": "slot_bigmap_normal_004",
+      "layer": 10,
+      "lane": 1,
+      "x": 520.0,
+      "y": 246.0,
+      "title": "Military Patrol",
+      "node_type": "combat_common",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Military Patrol 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "escort"
+      ],
+      "combat": {},
+      "combat_pool_id": "spear_patrol",
+      "encounter_id": "enc_ch3_escort_clash",
+      "battle_id": "chapter3_escort_clash",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_11_00",
+        "node_bigmap_11_01"
+      ],
+      "incoming": [
+        "node_bigmap_09_00",
+        "node_bigmap_09_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_11_00",
+      "pool_node_id": "op_old_case_clue",
+      "layer": 11,
+      "lane": 0,
+      "x": 566.0,
+      "y": 168.0,
+      "title": "旧案线索",
+      "node_type": "case",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "result_text": "旧案线索 已定。",
+      "effects": {
+        "case_clues": 1
+      },
+      "tags": [
+        "clue_gain",
+        "old_case"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_12_00",
+        "node_bigmap_12_01",
+        "node_bigmap_12_02"
+      ],
+      "incoming": [
+        "node_bigmap_10_00",
+        "node_bigmap_10_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_11_01",
+      "pool_node_id": "op_military_office",
+      "layer": 11,
+      "lane": 1,
+      "x": 566.0,
+      "y": 246.0,
+      "title": "军府批令",
+      "node_type": "military",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "result_text": "军府批令 已定。",
+      "effects": {
+        "military_merit": 2
+      },
+      "tags": [
+        "military",
+        "operation"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_12_00",
+        "node_bigmap_12_01",
+        "node_bigmap_12_02"
+      ],
+      "incoming": [
+        "node_bigmap_10_00",
+        "node_bigmap_10_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_12_00",
+      "pool_node_id": "slot_bigmap_normal_005",
+      "layer": 12,
+      "lane": 0,
+      "x": 612.0,
+      "y": 168.0,
+      "title": "Reed Bandit",
+      "node_type": "combat_common",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Reed Bandit 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "clue_path",
+        "reed"
+      ],
+      "combat": {},
+      "combat_pool_id": "coastal_veteran",
+      "encounter_id": "enc_ch2_reed_ambush",
+      "battle_id": "chapter2_reed_ambush",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_13_00",
+        "node_bigmap_13_01"
+      ],
+      "incoming": [
+        "node_bigmap_11_00",
+        "node_bigmap_11_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_12_01",
+      "pool_node_id": "slot_bigmap_elite_004",
+      "layer": 12,
+      "lane": 1,
+      "x": 612.0,
+      "y": 246.0,
+      "title": "Mutiny Captain",
+      "node_type": "combat_elite",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "前路有人等你犯错，这一战不是照表出牌。",
+      "result_text": "Mutiny Captain 已定。",
+      "effects": {
+        "military_merit": 2,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "battle_elite",
+        "big_map",
+        "lightness_test"
+      ],
+      "combat": {},
+      "combat_pool_id": "coastal_veteran",
+      "encounter_id": "enc_mutiny_camp",
+      "battle_id": "mutiny_camp",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_13_00",
+        "node_bigmap_13_01"
+      ],
+      "incoming": [
+        "node_bigmap_11_00",
+        "node_bigmap_11_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_12_02",
+      "pool_node_id": "slot_bigmap_normal_006",
+      "layer": 12,
+      "lane": 2,
+      "x": 612.0,
+      "y": 324.0,
+      "title": "Reed Bandit",
+      "node_type": "combat_common",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Reed Bandit 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "warehouse"
+      ],
+      "combat": {},
+      "combat_pool_id": "coastal_veteran",
+      "encounter_id": "enc_ch4_tide_bandits",
+      "battle_id": "chapter4_tide_bandits",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_13_00",
+        "node_bigmap_13_01"
+      ],
+      "incoming": [
+        "node_bigmap_11_00",
+        "node_bigmap_11_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_13_00",
+      "pool_node_id": "op_weapon_shop",
+      "layer": 13,
+      "lane": 0,
+      "x": 658.0,
+      "y": 168.0,
+      "title": "军器补给",
+      "node_type": "military",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "result_text": "军器补给 已定。",
+      "effects": {},
+      "tags": [
+        "operation",
+        "weapon"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_14_00",
+        "node_bigmap_14_01"
+      ],
+      "incoming": [
+        "node_bigmap_12_00",
+        "node_bigmap_12_01",
+        "node_bigmap_12_02"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_13_01",
+      "pool_node_id": "op_lightness_encounter",
+      "layer": 13,
+      "lane": 1,
+      "x": 658.0,
+      "y": 246.0,
+      "title": "轻身奇遇",
+      "node_type": "risk",
+      "primary_line": "reputation",
+      "secondary_line": "military",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "result_text": "轻身奇遇 已定。",
+      "effects": {},
+      "tags": [
+        "lightness",
+        "lightness_event"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_14_00",
+        "node_bigmap_14_01"
+      ],
+      "incoming": [
+        "node_bigmap_12_00",
+        "node_bigmap_12_01",
+        "node_bigmap_12_02"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_14_00",
+      "pool_node_id": "slot_bigmap_normal_007",
+      "layer": 14,
+      "lane": 0,
+      "x": 704.0,
+      "y": 168.0,
+      "title": "Dock Guard",
+      "node_type": "combat_common",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Dock Guard 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 1,
+        "case_clues": 0
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "public"
+      ],
+      "combat": {},
+      "combat_pool_id": "coastal_veteran",
+      "encounter_id": "enc_ch4_tide_bandits",
+      "battle_id": "chapter4_tide_bandits",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_15_00",
+        "node_bigmap_15_01"
+      ],
+      "incoming": [
+        "node_bigmap_13_00",
+        "node_bigmap_13_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_14_01",
+      "pool_node_id": "slot_bigmap_normal_008",
+      "layer": 14,
+      "lane": 1,
+      "x": 704.0,
+      "y": 246.0,
+      "title": "Dock Guard",
+      "node_type": "combat_common",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Dock Guard 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "ferry"
+      ],
+      "combat": {},
+      "combat_pool_id": "coastal_veteran",
+      "encounter_id": "enc_ch4_tide_bandits",
+      "battle_id": "chapter4_tide_bandits",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_15_00",
+        "node_bigmap_15_01"
+      ],
+      "incoming": [
+        "node_bigmap_13_00",
+        "node_bigmap_13_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_15_00",
+      "pool_node_id": "slot_bigmap_elite_005",
+      "layer": 15,
+      "lane": 0,
+      "x": 750.0,
+      "y": 168.0,
+      "title": "Mutiny Captain",
+      "node_type": "combat_elite",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "前路有人等你犯错，这一战不是照表出牌。",
+      "result_text": "Mutiny Captain 已定。",
+      "effects": {
+        "military_merit": 2,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "battle_elite",
+        "big_map",
+        "late_elite"
+      ],
+      "combat": {},
+      "combat_pool_id": "coastal_veteran",
+      "encounter_id": "enc_mutiny_camp",
+      "battle_id": "mutiny_camp",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_16_00",
+        "node_bigmap_16_01"
+      ],
+      "incoming": [
+        "node_bigmap_14_00",
+        "node_bigmap_14_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_15_01",
+      "pool_node_id": "slot_bigmap_elite_001",
+      "layer": 15,
+      "lane": 1,
+      "x": 750.0,
+      "y": 246.0,
+      "title": "Escort Officer",
+      "node_type": "combat_elite",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "前路有人等你犯错，这一战不是照表出牌。",
+      "result_text": "Escort Officer 已定。",
+      "effects": {
+        "military_merit": 2,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "battle_elite",
+        "big_map",
+        "elite"
+      ],
+      "combat": {},
+      "combat_pool_id": "military_elite",
+      "encounter_id": "enc_ch3_escort_clash",
+      "battle_id": "chapter3_escort_clash",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_16_00",
+        "node_bigmap_16_01"
+      ],
+      "incoming": [
+        "node_bigmap_14_00",
+        "node_bigmap_14_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_16_00",
+      "pool_node_id": "op_training_ground",
+      "layer": 16,
+      "lane": 0,
+      "x": 796.0,
+      "y": 168.0,
+      "title": "校场磨招",
+      "node_type": "military",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "result_text": "校场磨招 已定。",
+      "effects": {
+        "martial_xp": 4,
+        "weapon_xp": 3
+      },
+      "tags": [
+        "growth",
+        "training"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_17_00",
+        "node_bigmap_17_01"
+      ],
+      "incoming": [
+        "node_bigmap_15_00",
+        "node_bigmap_15_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_16_01",
+      "pool_node_id": "op_old_case_clue",
+      "layer": 16,
+      "lane": 1,
+      "x": 796.0,
+      "y": 246.0,
+      "title": "旧案线索",
+      "node_type": "case",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "result_text": "旧案线索 已定。",
+      "effects": {
+        "case_clues": 1
+      },
+      "tags": [
+        "clue_gain",
+        "old_case"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_17_00",
+        "node_bigmap_17_01"
+      ],
+      "incoming": [
+        "node_bigmap_15_00",
+        "node_bigmap_15_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_17_00",
+      "pool_node_id": "slot_bigmap_normal_009",
+      "layer": 17,
+      "lane": 0,
+      "x": 842.0,
+      "y": 168.0,
+      "title": "Clue Hunters",
+      "node_type": "combat_common",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Clue Hunters 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "old_case",
+        "witness"
+      ],
+      "combat": {},
+      "combat_pool_id": "military_elite",
+      "encounter_id": "enc_ch3_escort_clash",
+      "battle_id": "chapter3_escort_clash",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_18_00",
+        "node_bigmap_18_01"
+      ],
+      "incoming": [
+        "node_bigmap_16_00",
+        "node_bigmap_16_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_17_01",
+      "pool_node_id": "slot_bigmap_normal_010",
+      "layer": 17,
+      "lane": 1,
+      "x": 842.0,
+      "y": 246.0,
+      "title": "Clue Hunters",
+      "node_type": "combat_common",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Clue Hunters 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "branch",
+        "investigation"
+      ],
+      "combat": {},
+      "combat_pool_id": "military_elite",
+      "encounter_id": "enc_ch3_escort_clash",
+      "battle_id": "chapter3_escort_clash",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_18_00",
+        "node_bigmap_18_01"
+      ],
+      "incoming": [
+        "node_bigmap_16_00",
+        "node_bigmap_16_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_18_00",
+      "pool_node_id": "slot_bigmap_normal_001",
+      "layer": 18,
+      "lane": 0,
+      "x": 888.0,
+      "y": 168.0,
+      "title": "Coastal Raider",
+      "node_type": "combat_common",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Coastal Raider 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "frontline"
+      ],
+      "combat": {},
+      "combat_pool_id": "coastal_veteran",
+      "encounter_id": "enc_ch2_reed_ambush",
+      "battle_id": "chapter2_reed_ambush",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_19_00",
+        "node_bigmap_19_01"
+      ],
+      "incoming": [
+        "node_bigmap_17_00",
+        "node_bigmap_17_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_18_01",
+      "pool_node_id": "slot_bigmap_normal_002",
+      "layer": 18,
+      "lane": 1,
+      "x": 888.0,
+      "y": 246.0,
+      "title": "Coastal Raider",
+      "node_type": "combat_common",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Coastal Raider 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "coast"
+      ],
+      "combat": {},
+      "combat_pool_id": "coastal_veteran",
+      "encounter_id": "enc_ch2_reed_ambush",
+      "battle_id": "chapter2_reed_ambush",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_19_00",
+        "node_bigmap_19_01"
+      ],
+      "incoming": [
+        "node_bigmap_17_00",
+        "node_bigmap_17_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_19_00",
+      "pool_node_id": "op_military_office",
+      "layer": 19,
+      "lane": 0,
+      "x": 934.0,
+      "y": 168.0,
+      "title": "军府批令",
+      "node_type": "military",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "result_text": "军府批令 已定。",
+      "effects": {
+        "military_merit": 2
+      },
+      "tags": [
+        "military",
+        "operation"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_20_00",
+        "node_bigmap_20_01"
+      ],
+      "incoming": [
+        "node_bigmap_18_00",
+        "node_bigmap_18_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_19_01",
+      "pool_node_id": "op_master_teaching",
+      "layer": 19,
+      "lane": 1,
+      "x": 934.0,
+      "y": 246.0,
+      "title": "前辈点拨",
+      "node_type": "military",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "result_text": "前辈点拨 已定。",
+      "effects": {},
+      "tags": [
+        "growth",
+        "operation",
+        "rare"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_20_00",
+        "node_bigmap_20_01"
+      ],
+      "incoming": [
+        "node_bigmap_18_00",
+        "node_bigmap_18_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_20_00",
+      "pool_node_id": "slot_bigmap_normal_003",
+      "layer": 20,
+      "lane": 0,
+      "x": 980.0,
+      "y": 168.0,
+      "title": "Military Patrol",
+      "node_type": "combat_common",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Military Patrol 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "patrol"
+      ],
+      "combat": {},
+      "combat_pool_id": "spear_patrol",
+      "encounter_id": "enc_ch3_escort_clash",
+      "battle_id": "chapter3_escort_clash",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_21_00",
+        "node_bigmap_21_01"
+      ],
+      "incoming": [
+        "node_bigmap_19_00",
+        "node_bigmap_19_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_20_01",
+      "pool_node_id": "slot_bigmap_normal_004",
+      "layer": 20,
+      "lane": 1,
+      "x": 980.0,
+      "y": 246.0,
+      "title": "Military Patrol",
+      "node_type": "combat_common",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Military Patrol 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "escort"
+      ],
+      "combat": {},
+      "combat_pool_id": "spear_patrol",
+      "encounter_id": "enc_ch3_escort_clash",
+      "battle_id": "chapter3_escort_clash",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_21_00",
+        "node_bigmap_21_01"
+      ],
+      "incoming": [
+        "node_bigmap_19_00",
+        "node_bigmap_19_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_21_00",
+      "pool_node_id": "op_camp_rest",
+      "layer": 21,
+      "lane": 0,
+      "x": 1026.0,
+      "y": 168.0,
+      "title": "行营修整",
+      "node_type": "military",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "result_text": "行营修整 已定。",
+      "effects": {},
+      "tags": [
+        "operation",
+        "recovery"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_22_00",
+        "node_bigmap_22_01"
+      ],
+      "incoming": [
+        "node_bigmap_20_00",
+        "node_bigmap_20_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_21_01",
+      "pool_node_id": "op_old_case_clue",
+      "layer": 21,
+      "lane": 1,
+      "x": 1026.0,
+      "y": 246.0,
+      "title": "旧案线索",
+      "node_type": "case",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "result_text": "旧案线索 已定。",
+      "effects": {
+        "case_clues": 1
+      },
+      "tags": [
+        "clue_gain",
+        "old_case"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_22_00",
+        "node_bigmap_22_01"
+      ],
+      "incoming": [
+        "node_bigmap_20_00",
+        "node_bigmap_20_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_22_00",
+      "pool_node_id": "slot_bigmap_normal_005",
+      "layer": 22,
+      "lane": 0,
+      "x": 1072.0,
+      "y": 168.0,
+      "title": "Reed Bandit",
+      "node_type": "combat_common",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Reed Bandit 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "clue_path",
+        "reed"
+      ],
+      "combat": {},
+      "combat_pool_id": "coastal_veteran",
+      "encounter_id": "enc_ch2_reed_ambush",
+      "battle_id": "chapter2_reed_ambush",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_23_00",
+        "node_bigmap_23_01",
+        "node_bigmap_23_02"
+      ],
+      "incoming": [
+        "node_bigmap_21_00",
+        "node_bigmap_21_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_22_01",
+      "pool_node_id": "slot_bigmap_normal_006",
+      "layer": 22,
+      "lane": 1,
+      "x": 1072.0,
+      "y": 246.0,
+      "title": "Reed Bandit",
+      "node_type": "combat_common",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Reed Bandit 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "warehouse"
+      ],
+      "combat": {},
+      "combat_pool_id": "coastal_veteran",
+      "encounter_id": "enc_ch4_tide_bandits",
+      "battle_id": "chapter4_tide_bandits",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_23_00",
+        "node_bigmap_23_01",
+        "node_bigmap_23_02"
+      ],
+      "incoming": [
+        "node_bigmap_21_00",
+        "node_bigmap_21_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_23_00",
+      "pool_node_id": "slot_bigmap_normal_007",
+      "layer": 23,
+      "lane": 0,
+      "x": 1118.0,
+      "y": 168.0,
+      "title": "Dock Guard",
+      "node_type": "combat_common",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Dock Guard 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 1,
+        "case_clues": 0
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "public"
+      ],
+      "combat": {},
+      "combat_pool_id": "coastal_veteran",
+      "encounter_id": "enc_ch4_tide_bandits",
+      "battle_id": "chapter4_tide_bandits",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_24_00",
+        "node_bigmap_24_01"
+      ],
+      "incoming": [
+        "node_bigmap_22_00",
+        "node_bigmap_22_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_23_01",
+      "pool_node_id": "slot_bigmap_normal_008",
+      "layer": 23,
+      "lane": 1,
+      "x": 1118.0,
+      "y": 246.0,
+      "title": "Dock Guard",
+      "node_type": "combat_common",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Dock Guard 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "ferry"
+      ],
+      "combat": {},
+      "combat_pool_id": "coastal_veteran",
+      "encounter_id": "enc_ch4_tide_bandits",
+      "battle_id": "chapter4_tide_bandits",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_24_00",
+        "node_bigmap_24_01"
+      ],
+      "incoming": [
+        "node_bigmap_22_00",
+        "node_bigmap_22_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_23_02",
+      "pool_node_id": "slot_bigmap_elite_002",
+      "layer": 23,
+      "lane": 2,
+      "x": 1118.0,
+      "y": 324.0,
+      "title": "Escort Officer",
+      "node_type": "combat_elite",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "前路有人等你犯错，这一战不是照表出牌。",
+      "result_text": "Escort Officer 已定。",
+      "effects": {
+        "military_merit": 2,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "battle_elite",
+        "big_map",
+        "pressure_test"
+      ],
+      "combat": {},
+      "combat_pool_id": "military_elite",
+      "encounter_id": "enc_ch3_escort_clash",
+      "battle_id": "chapter3_escort_clash",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_24_00",
+        "node_bigmap_24_01"
+      ],
+      "incoming": [
+        "node_bigmap_22_00",
+        "node_bigmap_22_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_24_00",
+      "pool_node_id": "op_lightness_encounter",
+      "layer": 24,
+      "lane": 0,
+      "x": 1164.0,
+      "y": 168.0,
+      "title": "轻身奇遇",
+      "node_type": "risk",
+      "primary_line": "reputation",
+      "secondary_line": "military",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "result_text": "轻身奇遇 已定。",
+      "effects": {},
+      "tags": [
+        "lightness",
+        "lightness_event"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_25_00",
+        "node_bigmap_25_01"
+      ],
+      "incoming": [
+        "node_bigmap_23_00",
+        "node_bigmap_23_01",
+        "node_bigmap_23_02"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_24_01",
+      "pool_node_id": "op_training_ground",
+      "layer": 24,
+      "lane": 1,
+      "x": 1164.0,
+      "y": 246.0,
+      "title": "校场磨招",
+      "node_type": "military",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "result_text": "校场磨招 已定。",
+      "effects": {
+        "martial_xp": 4,
+        "weapon_xp": 3
+      },
+      "tags": [
+        "growth",
+        "training"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_25_00",
+        "node_bigmap_25_01"
+      ],
+      "incoming": [
+        "node_bigmap_23_00",
+        "node_bigmap_23_01",
+        "node_bigmap_23_02"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_25_00",
+      "pool_node_id": "slot_bigmap_normal_009",
+      "layer": 25,
+      "lane": 0,
+      "x": 1210.0,
+      "y": 168.0,
+      "title": "Clue Hunters",
+      "node_type": "combat_common",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Clue Hunters 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "old_case",
+        "witness"
+      ],
+      "combat": {},
+      "combat_pool_id": "military_elite",
+      "encounter_id": "enc_ch3_escort_clash",
+      "battle_id": "chapter3_escort_clash",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_26_00",
+        "node_bigmap_26_01"
+      ],
+      "incoming": [
+        "node_bigmap_24_00",
+        "node_bigmap_24_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_25_01",
+      "pool_node_id": "slot_bigmap_normal_010",
+      "layer": 25,
+      "lane": 1,
+      "x": 1210.0,
+      "y": 246.0,
+      "title": "Clue Hunters",
+      "node_type": "combat_common",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Clue Hunters 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "branch",
+        "investigation"
+      ],
+      "combat": {},
+      "combat_pool_id": "military_elite",
+      "encounter_id": "enc_ch3_escort_clash",
+      "battle_id": "chapter3_escort_clash",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_26_00",
+        "node_bigmap_26_01"
+      ],
+      "incoming": [
+        "node_bigmap_24_00",
+        "node_bigmap_24_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_26_00",
+      "pool_node_id": "slot_bigmap_elite_003",
+      "layer": 26,
+      "lane": 0,
+      "x": 1256.0,
+      "y": 168.0,
+      "title": "Clue Tracker",
+      "node_type": "combat_elite",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "preview_text": "前路有人等你犯错，这一战不是照表出牌。",
+      "result_text": "Clue Tracker 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "tags": [
+        "battle_elite",
+        "big_map",
+        "deep_clue",
+        "old_case_elite"
+      ],
+      "combat": {},
+      "combat_pool_id": "old_case_elite",
+      "encounter_id": "enc_ch3_escort_clash",
+      "battle_id": "chapter3_escort_clash",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_27_00",
+        "node_bigmap_27_01"
+      ],
+      "incoming": [
+        "node_bigmap_25_00",
+        "node_bigmap_25_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_26_01",
+      "pool_node_id": "slot_bigmap_elite_004",
+      "layer": 26,
+      "lane": 1,
+      "x": 1256.0,
+      "y": 246.0,
+      "title": "Mutiny Captain",
+      "node_type": "combat_elite",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "前路有人等你犯错，这一战不是照表出牌。",
+      "result_text": "Mutiny Captain 已定。",
+      "effects": {
+        "military_merit": 2,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "battle_elite",
+        "big_map",
+        "lightness_test"
+      ],
+      "combat": {},
+      "combat_pool_id": "coastal_veteran",
+      "encounter_id": "enc_mutiny_camp",
+      "battle_id": "mutiny_camp",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_27_00",
+        "node_bigmap_27_01"
+      ],
+      "incoming": [
+        "node_bigmap_25_00",
+        "node_bigmap_25_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_27_00",
+      "pool_node_id": "op_master_teaching",
+      "layer": 27,
+      "lane": 0,
+      "x": 1302.0,
+      "y": 168.0,
+      "title": "前辈点拨",
+      "node_type": "military",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "result_text": "前辈点拨 已定。",
+      "effects": {},
+      "tags": [
+        "growth",
+        "operation",
+        "rare"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_28_00",
+        "node_bigmap_28_01"
+      ],
+      "incoming": [
+        "node_bigmap_26_00",
+        "node_bigmap_26_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_27_01",
+      "pool_node_id": "op_military_office",
+      "layer": 27,
+      "lane": 1,
+      "x": 1302.0,
+      "y": 246.0,
+      "title": "军府批令",
+      "node_type": "military",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "result_text": "军府批令 已定。",
+      "effects": {
+        "military_merit": 2
+      },
+      "tags": [
+        "military",
+        "operation"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_28_00",
+        "node_bigmap_28_01"
+      ],
+      "incoming": [
+        "node_bigmap_26_00",
+        "node_bigmap_26_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_28_00",
+      "pool_node_id": "slot_bigmap_normal_001",
+      "layer": 28,
+      "lane": 0,
+      "x": 1348.0,
+      "y": 168.0,
+      "title": "Coastal Raider",
+      "node_type": "combat_common",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Coastal Raider 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "frontline"
+      ],
+      "combat": {},
+      "combat_pool_id": "coastal_veteran",
+      "encounter_id": "enc_ch2_reed_ambush",
+      "battle_id": "chapter2_reed_ambush",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_29_00",
+        "node_bigmap_29_01"
+      ],
+      "incoming": [
+        "node_bigmap_27_00",
+        "node_bigmap_27_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_28_01",
+      "pool_node_id": "slot_bigmap_normal_002",
+      "layer": 28,
+      "lane": 1,
+      "x": 1348.0,
+      "y": 246.0,
+      "title": "Coastal Raider",
+      "node_type": "combat_common",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Coastal Raider 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "coast"
+      ],
+      "combat": {},
+      "combat_pool_id": "coastal_veteran",
+      "encounter_id": "enc_ch2_reed_ambush",
+      "battle_id": "chapter2_reed_ambush",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_29_00",
+        "node_bigmap_29_01"
+      ],
+      "incoming": [
+        "node_bigmap_27_00",
+        "node_bigmap_27_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_29_00",
+      "pool_node_id": "op_prepare_before_boss",
+      "layer": 29,
+      "lane": 0,
+      "x": 1394.0,
+      "y": 168.0,
+      "title": "战前整备",
+      "node_type": "rest",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "result_text": "战前整备 已定。",
+      "effects": {},
+      "tags": [
+        "boss_prepare",
+        "prepare"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_30_00",
+        "node_bigmap_30_01",
+        "node_bigmap_30_02"
+      ],
+      "incoming": [
+        "node_bigmap_28_00",
+        "node_bigmap_28_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_29_01",
+      "pool_node_id": "op_capital_prepare",
+      "layer": 29,
+      "lane": 1,
+      "x": 1394.0,
+      "y": 246.0,
+      "title": "回京备考",
+      "node_type": "rest",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "此处不见血，但会决定你后面怎么打。",
+      "result_text": "回京备考 已定。",
+      "effects": {},
+      "tags": [
+        "prepare",
+        "wuzhuangyuan"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_bigmap_30_00",
+        "node_bigmap_30_01",
+        "node_bigmap_30_02"
+      ],
+      "incoming": [
+        "node_bigmap_28_00",
+        "node_bigmap_28_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_30_00",
+      "pool_node_id": "slot_bigmap_normal_003",
+      "layer": 30,
+      "lane": 0,
+      "x": 1440.0,
+      "y": 168.0,
+      "title": "Military Patrol",
+      "node_type": "combat_common",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Military Patrol 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "patrol"
+      ],
+      "combat": {},
+      "combat_pool_id": "spear_patrol",
+      "encounter_id": "enc_ch3_escort_clash",
+      "battle_id": "chapter3_escort_clash",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_boss_gate"
+      ],
+      "incoming": [
+        "node_bigmap_29_00",
+        "node_bigmap_29_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_30_01",
+      "pool_node_id": "slot_bigmap_normal_004",
+      "layer": 30,
+      "lane": 1,
+      "x": 1440.0,
+      "y": 246.0,
+      "title": "Military Patrol",
+      "node_type": "combat_common",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "路口有兵火气，也有你想要的东西。",
+      "result_text": "Military Patrol 已定。",
+      "effects": {
+        "military_merit": 1,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "battle_normal",
+        "big_map",
+        "escort"
+      ],
+      "combat": {},
+      "combat_pool_id": "spear_patrol",
+      "encounter_id": "enc_ch3_escort_clash",
+      "battle_id": "chapter3_escort_clash",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_boss_gate"
+      ],
+      "incoming": [
+        "node_bigmap_29_00",
+        "node_bigmap_29_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_bigmap_30_02",
+      "pool_node_id": "slot_rare_event_001",
+      "layer": 30,
+      "lane": 2,
+      "x": 1440.0,
+      "y": 324.0,
+      "title": "Rare Assassin",
+      "node_type": "combat_common",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "preview_text": "风向忽然不对，这不是寻常路上会遇见的人。",
+      "result_text": "Rare Assassin 已定。",
+      "effects": {
+        "military_merit": 0,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "tags": [
+        "ambush",
+        "battle_normal",
+        "rare",
+        "witness"
+      ],
+      "combat": {},
+      "combat_pool_id": "old_case_elite",
+      "encounter_id": "enc_ch2_reed_ambush",
+      "battle_id": "rare_assassin_encounter",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_boss_gate"
+      ],
+      "incoming": [
+        "node_bigmap_29_00",
+        "node_bigmap_29_01"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_boss_gate",
+      "pool_node_id": "op_prepare_before_boss",
+      "layer": 31,
+      "lane": 0,
+      "x": 1486.0,
+      "y": 168.0,
+      "title": "海门前压阵",
+      "node_type": "rest",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "你要带着自己的路，走到最后那道门前。",
+      "result_text": "海门前压阵 已定。",
+      "effects": {
+        "prepare_bonus": "boss_ready"
+      },
+      "tags": [
+        "boss_gate",
+        "prepare"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_route_normal",
+        "node_route_true",
+        "node_route_wuzhuangyuan"
+      ],
+      "incoming": [
+        "node_bigmap_30_00",
+        "node_bigmap_30_01",
+        "node_bigmap_30_02"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_route_normal",
+      "pool_node_id": "node_route_normal",
+      "layer": 32,
+      "lane": 0,
+      "x": 1532.0,
+      "y": 168.0,
+      "title": "收束海门",
+      "node_type": "military",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "条件满足时，最后的路由你自己选。",
+      "result_text": "收束海门 已定。",
+      "effects": {},
+      "tags": [
+        "route_branch",
+        "normal"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_normal_boss"
+      ],
+      "incoming": [
+        "node_boss_gate"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_route_true",
+      "pool_node_id": "node_route_true",
+      "layer": 32,
+      "lane": 1,
+      "x": 1532.0,
+      "y": 246.0,
+      "title": "追查真相",
+      "node_type": "military",
+      "primary_line": "military",
+      "secondary_line": "old_case",
+      "preview_text": "条件满足时，最后的路由你自己选。",
+      "result_text": "追查真相 已定。",
+      "effects": {},
+      "tags": [
+        "route_branch",
+        "true"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_true_boss_001"
+      ],
+      "incoming": [
+        "node_boss_gate"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_route_wuzhuangyuan",
+      "pool_node_id": "node_route_wuzhuangyuan",
+      "layer": 32,
+      "lane": 2,
+      "x": 1532.0,
+      "y": 324.0,
+      "title": "回京赴试",
+      "node_type": "military",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "条件满足时，最后的路由你自己选。",
+      "result_text": "回京赴试 已定。",
+      "effects": {},
+      "tags": [
+        "route_branch",
+        "wuzhuangyuan"
+      ],
+      "combat": {},
+      "combat_pool_id": "",
+      "encounter_id": "",
+      "battle_id": "",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_wuzhuangyuan_exam_001"
+      ],
+      "incoming": [
+        "node_boss_gate"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_normal_boss",
+      "pool_node_id": "slot_normal_boss_001",
+      "layer": 33,
+      "lane": 0,
+      "x": 1578.0,
+      "y": 168.0,
+      "title": "Surface Pirate Boss",
+      "node_type": "combat_elite",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "再往前，路就不会自己退开。",
+      "result_text": "Surface Pirate Boss 已定。",
+      "effects": {
+        "military_merit": 3,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "ending",
+        "normal_boss"
+      ],
+      "combat": {},
+      "combat_pool_id": "coastal_veteran",
+      "encounter_id": "enc_wakou_boss",
+      "battle_id": "first_act_wakou_boss",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [],
+      "incoming": [
+        "node_route_normal"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_true_boss_001",
+      "pool_node_id": "slot_true_boss_001",
+      "layer": 33,
+      "lane": 1,
+      "x": 1578.0,
+      "y": 246.0,
+      "title": "True Gatekeeper",
+      "node_type": "combat_elite",
+      "primary_line": "military",
+      "secondary_line": "old_case",
+      "preview_text": "再往前，路就不会自己退开。",
+      "result_text": "True Gatekeeper 已定。",
+      "effects": {
+        "military_merit": 3,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "tags": [
+        "ending",
+        "true_boss",
+        "true_gate"
+      ],
+      "combat": {},
+      "combat_pool_id": "old_case_elite",
+      "encounter_id": "enc_boss_ext_wakou_leader",
+      "battle_id": "boss_ext_wakou_leader",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_true_boss_002"
+      ],
+      "incoming": [
+        "node_route_true"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_wuzhuangyuan_exam_001",
+      "pool_node_id": "slot_wuzhuangyuan_exam_001",
+      "layer": 33,
+      "lane": 2,
+      "x": 1578.0,
+      "y": 324.0,
+      "title": "Capital Exam Rival",
+      "node_type": "combat_elite",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "京师试场只认强弱，不认侥幸。",
+      "result_text": "Capital Exam Rival 已定。",
+      "effects": {
+        "military_merit": 2,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "capital_exam",
+        "entry",
+        "wuzhuangyuan_exam"
+      ],
+      "combat": {},
+      "combat_pool_id": "military_elite",
+      "encounter_id": "enc_wuke_gu_chengyue",
+      "battle_id": "capital_exam_1",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_wuzhuangyuan_exam_002"
+      ],
+      "incoming": [
+        "node_route_wuzhuangyuan"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_true_boss_002",
+      "pool_node_id": "slot_true_boss_002",
+      "layer": 34,
+      "lane": 0,
+      "x": 1624.0,
+      "y": 168.0,
+      "title": "True Final Boss",
+      "node_type": "combat_elite",
+      "primary_line": "old_case",
+      "secondary_line": "military",
+      "preview_text": "再往前，路就不会自己退开。",
+      "result_text": "True Final Boss 已定。",
+      "effects": {
+        "military_merit": 4,
+        "clean_reputation": 0,
+        "case_clues": 1
+      },
+      "tags": [
+        "true_boss",
+        "true_final"
+      ],
+      "combat": {},
+      "combat_pool_id": "old_case_elite",
+      "encounter_id": "enc_boss_ext_wakou_leader",
+      "battle_id": "true_final_boss",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [],
+      "incoming": [
+        "node_true_boss_001"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_wuzhuangyuan_exam_002",
+      "pool_node_id": "slot_wuzhuangyuan_exam_002",
+      "layer": 34,
+      "lane": 1,
+      "x": 1624.0,
+      "y": 246.0,
+      "title": "Capital Exam Rival",
+      "node_type": "combat_elite",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "京师试场只认强弱，不认侥幸。",
+      "result_text": "Capital Exam Rival 已定。",
+      "effects": {
+        "military_merit": 2,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "wuzhuangyuan_exam",
+        "capital"
+      ],
+      "combat": {},
+      "combat_pool_id": "military_elite",
+      "encounter_id": "enc_wuke_shen_zhaoye",
+      "battle_id": "capital_exam_2",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_wuzhuangyuan_exam_003"
+      ],
+      "incoming": [
+        "node_wuzhuangyuan_exam_001"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_wuzhuangyuan_exam_003",
+      "pool_node_id": "slot_wuzhuangyuan_exam_003",
+      "layer": 35,
+      "lane": 0,
+      "x": 1670.0,
+      "y": 168.0,
+      "title": "Capital Exam Rival",
+      "node_type": "combat_elite",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "京师试场只认强弱，不认侥幸。",
+      "result_text": "Capital Exam Rival 已定。",
+      "effects": {
+        "military_merit": 2,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "wuzhuangyuan_exam",
+        "capital"
+      ],
+      "combat": {},
+      "combat_pool_id": "military_elite",
+      "encounter_id": "enc_wuke_qi_heng",
+      "battle_id": "capital_exam_3",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_wuzhuangyuan_exam_004"
+      ],
+      "incoming": [
+        "node_wuzhuangyuan_exam_002"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_wuzhuangyuan_exam_004",
+      "pool_node_id": "slot_wuzhuangyuan_exam_004",
+      "layer": 36,
+      "lane": 0,
+      "x": 1716.0,
+      "y": 168.0,
+      "title": "Capital Exam Rival",
+      "node_type": "combat_elite",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "京师试场只认强弱，不认侥幸。",
+      "result_text": "Capital Exam Rival 已定。",
+      "effects": {
+        "military_merit": 2,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "wuzhuangyuan_exam",
+        "capital"
+      ],
+      "combat": {},
+      "combat_pool_id": "military_elite",
+      "encounter_id": "enc_wuke_final_duel",
+      "battle_id": "capital_exam_4",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [
+        "node_wuzhuangyuan_exam_005"
+      ],
+      "incoming": [
+        "node_wuzhuangyuan_exam_003"
+      ],
+      "state": "locked"
+    },
+    {
+      "map_graph_id": "node_wuzhuangyuan_exam_005",
+      "pool_node_id": "slot_wuzhuangyuan_exam_005",
+      "layer": 37,
+      "lane": 0,
+      "x": 1762.0,
+      "y": 168.0,
+      "title": "Capital Exam Rival",
+      "node_type": "combat_elite",
+      "primary_line": "military",
+      "secondary_line": "",
+      "preview_text": "京师试场只认强弱，不认侥幸。",
+      "result_text": "Capital Exam Rival 已定。",
+      "effects": {
+        "military_merit": 2,
+        "clean_reputation": 0,
+        "case_clues": 0
+      },
+      "tags": [
+        "wuzhuangyuan_exam",
+        "capital"
+      ],
+      "combat": {},
+      "combat_pool_id": "military_elite",
+      "encounter_id": "enc_wuke_final_duel",
+      "battle_id": "capital_exam_5",
+      "enemy_martial_level": 0,
+      "recommended_martial_min": 0,
+      "recommended_martial_max": 0,
+      "debug_fallback": false,
+      "outgoing": [],
+      "incoming": [
+        "node_wuzhuangyuan_exam_004"
+      ],
+      "state": "locked"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "run_id": "dungeon_run_seed_1001",
+  "map_instance_id": "dungeon_map_seed_1001",
+  "current_node_id": "node_start",
+  "selected_node_id": "node_prologue_001",
+  "visited_node_ids": [
+    "node_start"
+  ],
+  "visited_path_order": [
+    "node_start"
+  ],
+  "completed_node_ids": [
+    "node_start"
+  ],
+  "available_next_node_ids": [
+    "node_prologue_001"
+  ],
+  "battle_count_so_far": 0,
+  "elite_count_so_far": 0,
+  "operation_count_so_far": 0,
+  "route_flags": {
+    "true_route_unlocked": false,
+    "wuzhuangyuan_route_unlocked": false
+  },
+  "martial_realm": 1,
+  "lightness_level": 0,
+  "military_merit": 0,
+  "clean_reputation": 0,
+  "old_case_progress": 0,
+  "case_clues": 0
+}
