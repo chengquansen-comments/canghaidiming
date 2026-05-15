@@ -1,0 +1,152 @@
+{
+  "content_pool_pack_id": "dungeon_pool_pack_001",
+  "pool_status": "skeleton",
+  "operation_nodes": [
+    {
+      "operation_node_id": "op_camp_rest",
+      "operation_type": "camp_rest",
+      "stage_hint": "big_map",
+      "effects": {
+        "heal_ratio": 0.3
+      },
+      "costs": {},
+      "route_tags": [
+        "recovery"
+      ],
+      "old_case_tags": [],
+      "lightness_unlock_possible": false,
+      "compatible_network_node_type": "rest"
+    },
+    {
+      "operation_node_id": "op_training_ground",
+      "operation_type": "training_ground",
+      "stage_hint": "big_map",
+      "effects": {
+        "martial_xp": 4,
+        "weapon_xp": 3
+      },
+      "costs": {},
+      "route_tags": [
+        "growth"
+      ],
+      "old_case_tags": [],
+      "lightness_unlock_possible": false,
+      "compatible_network_node_type": "military"
+    },
+    {
+      "operation_node_id": "op_military_office",
+      "operation_type": "military_office",
+      "stage_hint": "big_map",
+      "effects": {
+        "military_merit": 2
+      },
+      "costs": {},
+      "route_tags": [
+        "military"
+      ],
+      "old_case_tags": [],
+      "lightness_unlock_possible": false,
+      "compatible_network_node_type": "military"
+    },
+    {
+      "operation_node_id": "op_weapon_shop",
+      "operation_type": "weapon_shop",
+      "stage_hint": "big_map",
+      "effects": {
+        "card_offer_count": 3
+      },
+      "costs": {
+        "military_merit": 1
+      },
+      "route_tags": [
+        "weapon"
+      ],
+      "old_case_tags": [],
+      "lightness_unlock_possible": false,
+      "compatible_network_node_type": "military"
+    },
+    {
+      "operation_node_id": "op_old_case_clue",
+      "operation_type": "old_case_clue",
+      "stage_hint": "big_map",
+      "effects": {
+        "old_case_clue_delta": 1
+      },
+      "costs": {},
+      "route_tags": [
+        "old_case"
+      ],
+      "old_case_tags": [
+        "clue_gain"
+      ],
+      "lightness_unlock_possible": false,
+      "compatible_network_node_type": "case"
+    },
+    {
+      "operation_node_id": "op_lightness_encounter",
+      "operation_type": "lightness_encounter",
+      "stage_hint": "big_map",
+      "effects": {
+        "lightness_attempt": 1
+      },
+      "costs": {},
+      "route_tags": [
+        "lightness"
+      ],
+      "old_case_tags": [],
+      "lightness_unlock_possible": true,
+      "compatible_network_node_type": "risk"
+    },
+    {
+      "operation_node_id": "op_master_teaching",
+      "operation_type": "master_teaching",
+      "stage_hint": "big_map",
+      "effects": {
+        "card_reward_pool": [
+          "parry_answer",
+          "exam_focus"
+        ]
+      },
+      "costs": {},
+      "route_tags": [
+        "growth",
+        "rare"
+      ],
+      "old_case_tags": [],
+      "lightness_unlock_possible": true,
+      "compatible_network_node_type": "reputation"
+    },
+    {
+      "operation_node_id": "op_prepare_before_boss",
+      "operation_type": "prepare_before_boss",
+      "stage_hint": "ending",
+      "effects": {
+        "prepare_bonus": "boss_ready"
+      },
+      "costs": {},
+      "route_tags": [
+        "boss_prepare"
+      ],
+      "old_case_tags": [],
+      "lightness_unlock_possible": false,
+      "compatible_network_node_type": "rest"
+    },
+    {
+      "operation_node_id": "op_capital_prepare",
+      "operation_type": "capital_prepare",
+      "stage_hint": "wuzhuangyuan",
+      "effects": {
+        "route_flag": "capital_ready"
+      },
+      "costs": {
+        "military_merit": 2
+      },
+      "route_tags": [
+        "wuzhuangyuan"
+      ],
+      "old_case_tags": [],
+      "lightness_unlock_possible": false,
+      "compatible_network_node_type": "military"
+    }
+  ]
+}

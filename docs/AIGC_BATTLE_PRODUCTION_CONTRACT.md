@@ -151,3 +151,11 @@
 - deprecated_candidate_count: `12`
 - historical_report_count: `290`
 - local_cleanable_count: `2`
+
+## DUNGEON-1 Contract Addendum
+
+- 已新增 `data/aigc_battle/progression_templates/dungeon_progression_v1_3.json`。
+- 已新增 `data/aigc_battle/generated/dungeon_progression_v1_3/packs/dungeon_pool_pack_001/` skeleton pool pack。
+- Dungeon 副本规则以 `progression_template + content_pool_pack` 为主，不再以 fixed sequence 作为主模型。
+- content pool 必须离线校验通过后才能进入后续 `map_instance / node materialized loadout` 流程。
+- DUNGEON-1 不允许修改 `current_release / active_profile / fallback_release`，也不接入 Godot runtime。

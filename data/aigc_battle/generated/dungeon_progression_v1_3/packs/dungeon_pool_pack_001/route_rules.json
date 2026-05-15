@@ -1,0 +1,38 @@
+{
+  "content_pool_pack_id": "dungeon_pool_pack_001",
+  "multiple_route_choice_supported": true,
+  "player_choice_decides_route": true,
+  "normal_ending": {
+    "unlock_requires": {
+      "big_map_complete": true
+    },
+    "boss_slots": [
+      "slot_normal_boss_001"
+    ]
+  },
+  "true_ending_unlock": {
+    "unlock_requires": {
+      "old_case_progress": "mid_or_higher",
+      "military_merit": "mid_or_higher",
+      "martial_realm": 9
+    },
+    "boss_slots": [
+      "slot_true_boss_001",
+      "slot_true_boss_002"
+    ]
+  },
+  "wuzhuangyuan_route_unlock": {
+    "unlock_requires": {
+      "martial_realm": 10,
+      "military_merit": "high",
+      "capital_prepare_node_completed": true
+    },
+    "exam_slots": [
+      "slot_wuzhuangyuan_exam_001",
+      "slot_wuzhuangyuan_exam_002",
+      "slot_wuzhuangyuan_exam_003",
+      "slot_wuzhuangyuan_exam_004",
+      "slot_wuzhuangyuan_exam_005"
+    ]
+  }
+}

@@ -1,0 +1,334 @@
+{
+  "content_pool_pack_id": "dungeon_pool_pack_001",
+  "pool_status": "skeleton",
+  "enemy_decks": [
+    {
+      "enemy_deck_id": "deck_prologue_tutorial_enemy",
+      "enemy_archetype": "tutorial_raider",
+      "deck_tier": "tutorial",
+      "intended_stage": "prologue",
+      "expected_player_realm": 1,
+      "card_ids": [
+        "spear_basic_thrust",
+        "guard_hold"
+      ],
+      "behavior_tags": [
+        "tutorial",
+        "slow"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_prologue_001"
+      ]
+    },
+    {
+      "enemy_deck_id": "deck_wuju_spear_trial",
+      "enemy_archetype": "wuju_spear_trialist",
+      "deck_tier": "trial",
+      "intended_stage": "wuju",
+      "expected_player_realm": 2,
+      "card_ids": [
+        "spear_basic_thrust",
+        "spear_line_press"
+      ],
+      "behavior_tags": [
+        "distance_control",
+        "trial"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_wuju_001",
+        "slot_wuju_004"
+      ]
+    },
+    {
+      "enemy_deck_id": "deck_wuju_blade_trial",
+      "enemy_archetype": "wuju_blade_trialist",
+      "deck_tier": "trial",
+      "intended_stage": "wuju",
+      "expected_player_realm": 2,
+      "card_ids": [
+        "blade_front_cut",
+        "blade_counter_step"
+      ],
+      "behavior_tags": [
+        "close_range",
+        "trial"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_wuju_002",
+        "slot_wuju_005"
+      ]
+    },
+    {
+      "enemy_deck_id": "deck_wuju_exam_duelist",
+      "enemy_archetype": "wuju_exam_duelist",
+      "deck_tier": "exam",
+      "intended_stage": "wuju",
+      "expected_player_realm": 3,
+      "card_ids": [
+        "guard_hold",
+        "parry_answer",
+        "light_step"
+      ],
+      "behavior_tags": [
+        "exam",
+        "balanced"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_wuju_003"
+      ]
+    },
+    {
+      "enemy_deck_id": "deck_bigmap_common_raider",
+      "enemy_archetype": "coastal_raider",
+      "deck_tier": "normal",
+      "intended_stage": "big_map",
+      "expected_player_realm": 4,
+      "card_ids": [
+        "blade_front_cut",
+        "guard_hold"
+      ],
+      "behavior_tags": [
+        "common",
+        "pressure"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_001",
+        "slot_bigmap_normal_002"
+      ]
+    },
+    {
+      "enemy_deck_id": "deck_bigmap_common_patrol",
+      "enemy_archetype": "military_patrol",
+      "deck_tier": "normal",
+      "intended_stage": "big_map",
+      "expected_player_realm": 4,
+      "card_ids": [
+        "spear_basic_thrust",
+        "guard_hold"
+      ],
+      "behavior_tags": [
+        "common",
+        "formation"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_003",
+        "slot_bigmap_normal_004"
+      ]
+    },
+    {
+      "enemy_deck_id": "deck_bigmap_common_bandit",
+      "enemy_archetype": "reed_bandit",
+      "deck_tier": "normal",
+      "intended_stage": "big_map",
+      "expected_player_realm": 5,
+      "card_ids": [
+        "blade_front_cut",
+        "light_step"
+      ],
+      "behavior_tags": [
+        "common",
+        "mobile"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_005",
+        "slot_bigmap_normal_006"
+      ]
+    },
+    {
+      "enemy_deck_id": "deck_bigmap_common_guard",
+      "enemy_archetype": "dock_guard",
+      "deck_tier": "normal",
+      "intended_stage": "big_map",
+      "expected_player_realm": 6,
+      "card_ids": [
+        "guard_hold",
+        "parry_answer"
+      ],
+      "behavior_tags": [
+        "common",
+        "defensive"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_007",
+        "slot_bigmap_normal_008"
+      ]
+    },
+    {
+      "enemy_deck_id": "deck_bigmap_common_hunters",
+      "enemy_archetype": "clue_hunters",
+      "deck_tier": "normal",
+      "intended_stage": "big_map",
+      "expected_player_realm": 6,
+      "card_ids": [
+        "spear_line_press",
+        "light_step"
+      ],
+      "behavior_tags": [
+        "common",
+        "old_case"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_009",
+        "slot_bigmap_normal_010"
+      ]
+    },
+    {
+      "enemy_deck_id": "deck_bigmap_elite_officer",
+      "enemy_archetype": "escort_officer",
+      "deck_tier": "elite",
+      "intended_stage": "big_map",
+      "expected_player_realm": 7,
+      "card_ids": [
+        "spear_line_press",
+        "parry_answer",
+        "light_step"
+      ],
+      "behavior_tags": [
+        "elite",
+        "formation"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_elite_001",
+        "slot_bigmap_elite_002"
+      ]
+    },
+    {
+      "enemy_deck_id": "deck_bigmap_elite_tracker",
+      "enemy_archetype": "clue_tracker",
+      "deck_tier": "elite",
+      "intended_stage": "big_map",
+      "expected_player_realm": 7,
+      "card_ids": [
+        "blade_counter_step",
+        "parry_answer",
+        "old_case_fragment"
+      ],
+      "behavior_tags": [
+        "elite",
+        "old_case"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_elite_003"
+      ]
+    },
+    {
+      "enemy_deck_id": "deck_bigmap_elite_captain",
+      "enemy_archetype": "mutiny_captain",
+      "deck_tier": "elite",
+      "intended_stage": "big_map",
+      "expected_player_realm": 8,
+      "card_ids": [
+        "blade_front_cut",
+        "parry_answer",
+        "light_step"
+      ],
+      "behavior_tags": [
+        "elite",
+        "aggressive"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_elite_004",
+        "slot_bigmap_elite_005"
+      ]
+    },
+    {
+      "enemy_deck_id": "deck_rare_assassin",
+      "enemy_archetype": "rare_assassin",
+      "deck_tier": "rare",
+      "intended_stage": "big_map",
+      "expected_player_realm": 8,
+      "card_ids": [
+        "blade_counter_step",
+        "reed_drift"
+      ],
+      "behavior_tags": [
+        "rare",
+        "assassin"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_rare_event_001",
+        "slot_rare_event_002"
+      ]
+    },
+    {
+      "enemy_deck_id": "deck_normal_boss_surface",
+      "enemy_archetype": "surface_pirate_boss",
+      "deck_tier": "boss",
+      "intended_stage": "normal_ending",
+      "expected_player_realm": 8,
+      "card_ids": [
+        "blade_front_cut",
+        "parry_answer",
+        "boss_reward_placeholder"
+      ],
+      "behavior_tags": [
+        "boss",
+        "normal_ending"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_normal_boss_001"
+      ]
+    },
+    {
+      "enemy_deck_id": "deck_true_boss_gatekeeper",
+      "enemy_archetype": "true_gatekeeper",
+      "deck_tier": "boss",
+      "intended_stage": "true_ending",
+      "expected_player_realm": 9,
+      "card_ids": [
+        "spear_line_press",
+        "parry_answer",
+        "boss_reward_placeholder"
+      ],
+      "behavior_tags": [
+        "boss",
+        "true_ending"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_true_boss_001"
+      ]
+    },
+    {
+      "enemy_deck_id": "deck_true_boss_final",
+      "enemy_archetype": "true_final_boss",
+      "deck_tier": "boss",
+      "intended_stage": "true_ending",
+      "expected_player_realm": 10,
+      "card_ids": [
+        "blade_counter_step",
+        "parry_answer",
+        "boss_reward_placeholder"
+      ],
+      "behavior_tags": [
+        "boss",
+        "true_final"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_true_boss_002"
+      ]
+    },
+    {
+      "enemy_deck_id": "deck_capital_exam_series",
+      "enemy_archetype": "capital_exam_rival",
+      "deck_tier": "exam",
+      "intended_stage": "wuzhuangyuan",
+      "expected_player_realm": 10,
+      "card_ids": [
+        "exam_focus",
+        "capital_exam_edge",
+        "parry_answer"
+      ],
+      "behavior_tags": [
+        "exam",
+        "capital"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_wuzhuangyuan_exam_001",
+        "slot_wuzhuangyuan_exam_002",
+        "slot_wuzhuangyuan_exam_003",
+        "slot_wuzhuangyuan_exam_004",
+        "slot_wuzhuangyuan_exam_005"
+      ]
+    }
+  ]
+}

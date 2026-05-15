@@ -1,0 +1,29 @@
+{
+  "content_pool_pack_id": "dungeon_pool_pack_001",
+  "progression_template_id": "dungeon_progression_v1_3",
+  "pool_version": "0_1",
+  "pool_status": "skeleton",
+  "supports_map_instance": true,
+  "supports_fixed_sequence": false,
+  "compatible_with_existing_big_map_adapter": true,
+  "pack_identity": {
+    "content_pool_pack_id": "dungeon_pool_pack_001",
+    "progression_template_id": "dungeon_progression_v1_3",
+    "pool_version": "0_1"
+  },
+  "targets": {
+    "big_map_candidate_pool_target": 30,
+    "big_map_normal_candidate_target_range": [
+      20,
+      24
+    ],
+    "big_map_elite_candidate_target_range": [
+      8,
+      10
+    ],
+    "rare_event_candidate_target_range": [
+      2,
+      3
+    ]
+  }
+}

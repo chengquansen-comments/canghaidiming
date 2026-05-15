@@ -1,0 +1,50 @@
+{
+  "content_pool_pack_id": "dungeon_pool_pack_001",
+  "martial_xp_thresholds": {
+    "1": 0,
+    "2": 8,
+    "3": 18,
+    "4": 30,
+    "5": 44,
+    "6": 60,
+    "7": 78,
+    "8": 98,
+    "9": 120,
+    "10": 145
+  },
+  "martial_xp_rewards_by_battle_type": {
+    "prologue": 3,
+    "weapon_trial": 5,
+    "formal_exam": 6,
+    "big_map_normal": 8,
+    "big_map_elite": 12,
+    "rare_event": 10,
+    "boss": 16,
+    "capital_exam": 14
+  },
+  "lightness_cap_rules": {
+    "lightness_max": 4,
+    "normal_lightness_cap": 2,
+    "lightness_3_requires_rare_unlock": true,
+    "lightness_4_requires_rare_chain": true,
+    "lightness_not_direct_battle_xp": true
+  },
+  "realm_10_bonus": {
+    "required_martial_realm": 10,
+    "bonus_flags": [
+      "true_route_candidate",
+      "wuzhuangyuan_candidate"
+    ]
+  },
+  "route_growth_expectations": {
+    "normal_route_target_realm_range": [
+      8,
+      9
+    ],
+    "elite_route_target_realm": 10,
+    "true_route_target_realm_range": [
+      9,
+      10
+    ]
+  }
+}

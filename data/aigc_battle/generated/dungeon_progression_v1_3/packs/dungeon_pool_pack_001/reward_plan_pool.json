@@ -1,0 +1,285 @@
+{
+  "content_pool_pack_id": "dungeon_pool_pack_001",
+  "pool_status": "skeleton",
+  "reward_plans": [
+    {
+      "reward_plan_id": "reward_prologue_story",
+      "reward_type": "story",
+      "reward_tier": "prologue",
+      "card_rewards": [],
+      "martial_xp": 3,
+      "weapon_xp": 0,
+      "lightness_reward_type": "none",
+      "military_merit_reward": 0,
+      "clean_reputation_delta": 0,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_prologue_001"
+      ]
+    },
+    {
+      "reward_plan_id": "reward_wuju_weapon_basic",
+      "reward_type": "card_pick",
+      "reward_tier": "wuju_basic",
+      "card_rewards": [
+        "spear_basic_thrust",
+        "blade_front_cut"
+      ],
+      "martial_xp": 5,
+      "weapon_xp": 4,
+      "lightness_reward_type": "practice",
+      "military_merit_reward": 0,
+      "clean_reputation_delta": 0,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_wuju_001",
+        "slot_wuju_002"
+      ]
+    },
+    {
+      "reward_plan_id": "reward_wuju_exam_mobility",
+      "reward_type": "card_pick",
+      "reward_tier": "wuju_exam",
+      "card_rewards": [
+        "light_step",
+        "exam_focus"
+      ],
+      "martial_xp": 5,
+      "weapon_xp": 1,
+      "lightness_reward_type": "unlock_1",
+      "military_merit_reward": 0,
+      "clean_reputation_delta": 0,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_wuju_003"
+      ]
+    },
+    {
+      "reward_plan_id": "reward_wuju_exam_weapon",
+      "reward_type": "card_pick",
+      "reward_tier": "wuju_exam",
+      "card_rewards": [
+        "spear_line_press",
+        "blade_counter_step"
+      ],
+      "martial_xp": 7,
+      "weapon_xp": 3,
+      "lightness_reward_type": "none",
+      "military_merit_reward": 1,
+      "clean_reputation_delta": 0,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_wuju_004",
+        "slot_wuju_005"
+      ]
+    },
+    {
+      "reward_plan_id": "reward_bigmap_common_growth",
+      "reward_type": "card_pick",
+      "reward_tier": "normal",
+      "card_rewards": [
+        "guard_hold",
+        "light_step"
+      ],
+      "martial_xp": 8,
+      "weapon_xp": 3,
+      "lightness_reward_type": "none",
+      "military_merit_reward": 1,
+      "clean_reputation_delta": 0,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_001",
+        "slot_bigmap_normal_002",
+        "slot_bigmap_normal_003",
+        "slot_bigmap_normal_004"
+      ]
+    },
+    {
+      "reward_plan_id": "reward_bigmap_common_case",
+      "reward_type": "card_pick",
+      "reward_tier": "normal",
+      "card_rewards": [
+        "old_case_fragment"
+      ],
+      "martial_xp": 9,
+      "weapon_xp": 3,
+      "lightness_reward_type": "none",
+      "military_merit_reward": 1,
+      "clean_reputation_delta": 0,
+      "old_case_clue_delta": 1,
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_005",
+        "slot_bigmap_normal_006",
+        "slot_bigmap_normal_009",
+        "slot_bigmap_normal_010"
+      ]
+    },
+    {
+      "reward_plan_id": "reward_bigmap_common_reputation",
+      "reward_type": "card_pick",
+      "reward_tier": "normal",
+      "card_rewards": [
+        "guard_hold"
+      ],
+      "martial_xp": 9,
+      "weapon_xp": 4,
+      "lightness_reward_type": "none",
+      "military_merit_reward": 1,
+      "clean_reputation_delta": 1,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_007",
+        "slot_bigmap_normal_008"
+      ]
+    },
+    {
+      "reward_plan_id": "reward_bigmap_elite_power",
+      "reward_type": "card_pick",
+      "reward_tier": "elite",
+      "card_rewards": [
+        "parry_answer",
+        "spear_line_press"
+      ],
+      "martial_xp": 12,
+      "weapon_xp": 5,
+      "lightness_reward_type": "none",
+      "military_merit_reward": 2,
+      "clean_reputation_delta": 0,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_elite_001",
+        "slot_bigmap_elite_002"
+      ]
+    },
+    {
+      "reward_plan_id": "reward_bigmap_elite_case",
+      "reward_type": "card_pick",
+      "reward_tier": "elite",
+      "card_rewards": [
+        "old_case_fragment",
+        "parry_answer"
+      ],
+      "martial_xp": 12,
+      "weapon_xp": 5,
+      "lightness_reward_type": "none",
+      "military_merit_reward": 1,
+      "clean_reputation_delta": 0,
+      "old_case_clue_delta": 2,
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_elite_003"
+      ]
+    },
+    {
+      "reward_plan_id": "reward_bigmap_elite_breakthrough",
+      "reward_type": "card_pick",
+      "reward_tier": "elite",
+      "card_rewards": [
+        "reed_drift",
+        "parry_answer"
+      ],
+      "martial_xp": 13,
+      "weapon_xp": 5,
+      "lightness_reward_type": "rare_unlock",
+      "military_merit_reward": 2,
+      "clean_reputation_delta": 1,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_elite_004",
+        "slot_bigmap_elite_005"
+      ]
+    },
+    {
+      "reward_plan_id": "reward_rare_event_breakthrough",
+      "reward_type": "card_pick",
+      "reward_tier": "rare",
+      "card_rewards": [
+        "reed_drift"
+      ],
+      "martial_xp": 10,
+      "weapon_xp": 4,
+      "lightness_reward_type": "rare_chain",
+      "military_merit_reward": 0,
+      "clean_reputation_delta": 1,
+      "old_case_clue_delta": 1,
+      "compatible_battle_slot_ids": [
+        "slot_rare_event_001",
+        "slot_rare_event_002"
+      ]
+    },
+    {
+      "reward_plan_id": "reward_normal_boss",
+      "reward_type": "boss_reward",
+      "reward_tier": "boss",
+      "card_rewards": [
+        "boss_reward_placeholder"
+      ],
+      "martial_xp": 16,
+      "weapon_xp": 6,
+      "lightness_reward_type": "none",
+      "military_merit_reward": 3,
+      "clean_reputation_delta": 2,
+      "old_case_clue_delta": 1,
+      "compatible_battle_slot_ids": [
+        "slot_normal_boss_001"
+      ]
+    },
+    {
+      "reward_plan_id": "reward_true_boss_gate",
+      "reward_type": "boss_reward",
+      "reward_tier": "boss",
+      "card_rewards": [
+        "boss_reward_placeholder",
+        "old_case_fragment"
+      ],
+      "martial_xp": 17,
+      "weapon_xp": 6,
+      "lightness_reward_type": "none",
+      "military_merit_reward": 3,
+      "clean_reputation_delta": 2,
+      "old_case_clue_delta": 2,
+      "compatible_battle_slot_ids": [
+        "slot_true_boss_001"
+      ]
+    },
+    {
+      "reward_plan_id": "reward_true_boss_final",
+      "reward_type": "boss_reward",
+      "reward_tier": "boss",
+      "card_rewards": [
+        "boss_reward_placeholder",
+        "reed_drift"
+      ],
+      "martial_xp": 18,
+      "weapon_xp": 6,
+      "lightness_reward_type": "rare_chain",
+      "military_merit_reward": 4,
+      "clean_reputation_delta": 2,
+      "old_case_clue_delta": 2,
+      "compatible_battle_slot_ids": [
+        "slot_true_boss_002"
+      ]
+    },
+    {
+      "reward_plan_id": "reward_capital_exam",
+      "reward_type": "exam_reward",
+      "reward_tier": "exam",
+      "card_rewards": [
+        "capital_exam_edge",
+        "exam_focus"
+      ],
+      "martial_xp": 14,
+      "weapon_xp": 5,
+      "lightness_reward_type": "none",
+      "military_merit_reward": 2,
+      "clean_reputation_delta": 1,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_wuzhuangyuan_exam_001",
+        "slot_wuzhuangyuan_exam_002",
+        "slot_wuzhuangyuan_exam_003",
+        "slot_wuzhuangyuan_exam_004",
+        "slot_wuzhuangyuan_exam_005"
+      ]
+    }
+  ]
+}

@@ -446,3 +446,11 @@ v2 目标是 `full sequence reward / progression closure`：
 
 - Dashboard 新增 `Pack 内容` 一级页签，用于查看 selected pack 的战斗序列、每场战斗、敌人卡组、奖励与总卡池。
 - `Pack 内容` 页只读，不提供写操作；管理动作仍集中在 `管理动作` 页签。
+
+## DUNGEON-1：Progression Template + Content Pool Pack
+
+- DUNGEON-1 已新增 `dungeon_progression_v1_3` progression template 与 `dungeon_pool_pack_001` skeleton content pool pack。
+- Dungeon 副本主模型不再使用 fixed sequence；`sequence_template` 仅保留 legacy 兼容语义。
+- content pool 采用离线生成、离线校验、离线 probe，不允许运行时直接生成未审核 battle/deck/reward/boss 内容。
+- 后续实时层只基于已验收 content pool 生成 `map_instance / route_state / node_materialized_loadout`。
+- DUNGEON-2 将实现 `map_instance + existing_big_map_adapter`，继续接回现有 big map UI / route state / battle entry。

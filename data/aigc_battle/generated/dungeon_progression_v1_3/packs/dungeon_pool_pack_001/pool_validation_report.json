@@ -1,0 +1,162 @@
+{
+  "validator": "aigc_dungeon_progression_validator",
+  "progression_template_path": "data/aigc_battle/progression_templates/dungeon_progression_v1_3.json",
+  "pack_dir": "data/aigc_battle/generated/dungeon_progression_v1_3/packs/dungeon_pool_pack_001",
+  "summary": {
+    "prologue_slot_count": 1,
+    "wuju_slot_count": 5,
+    "big_map_normal_candidate_count": 10,
+    "big_map_elite_candidate_count": 5,
+    "rare_event_candidate_count": 2,
+    "normal_boss_count": 1,
+    "true_boss_count": 2,
+    "wuzhuangyuan_exam_count": 5,
+    "card_pool_count": 12,
+    "enemy_deck_pool_count": 17,
+    "reward_plan_pool_count": 15,
+    "operation_node_pool_count": 9
+  },
+  "checks": {
+    "prologue_fixed_battle_count": {
+      "passed": true,
+      "actual": 1,
+      "expected": 1,
+      "reason": ""
+    },
+    "wuju_fixed_battle_count": {
+      "passed": true,
+      "actual": 5,
+      "expected": 5,
+      "reason": ""
+    },
+    "big_map_battle_count_target": {
+      "passed": true,
+      "actual": 15,
+      "expected": 15,
+      "reason": ""
+    },
+    "big_map_battle_count_min": {
+      "passed": true,
+      "actual": 14,
+      "expected": 14,
+      "reason": ""
+    },
+    "big_map_battle_count_max": {
+      "passed": true,
+      "actual": 16,
+      "expected": 16,
+      "reason": ""
+    },
+    "big_map_candidate_pool_target": {
+      "passed": true,
+      "actual": 30,
+      "expected": 30,
+      "reason": ""
+    },
+    "normal_route_target_total": {
+      "passed": true,
+      "actual": 22,
+      "expected": 22,
+      "reason": ""
+    },
+    "true_route_target_total": {
+      "passed": true,
+      "actual": 23,
+      "expected": 23,
+      "reason": ""
+    },
+    "wuzhuangyuan_route_target_total": {
+      "passed": true,
+      "actual": 26,
+      "expected": 26,
+      "reason": ""
+    },
+    "martial_realm_max": {
+      "passed": true,
+      "actual": 10,
+      "expected": 10,
+      "reason": ""
+    },
+    "lightness_max": {
+      "passed": true,
+      "actual": 4,
+      "expected": 4,
+      "reason": ""
+    },
+    "normal_lightness_cap": {
+      "passed": true,
+      "actual": 2,
+      "expected": 2,
+      "reason": ""
+    },
+    "no_fixed_linear_sequence": {
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "reason": ""
+    },
+    "route_choice_required": {
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "reason": ""
+    },
+    "all_battle_slot_enemy_deck_refs_exist": {
+      "passed": true,
+      "actual": [],
+      "expected": [],
+      "reason": ""
+    },
+    "all_battle_slot_reward_plan_refs_exist": {
+      "passed": true,
+      "actual": [],
+      "expected": [],
+      "reason": ""
+    },
+    "all_reward_card_refs_exist_or_placeholder_allowed": {
+      "passed": true,
+      "actual": [],
+      "expected": [],
+      "reason": ""
+    },
+    "operation_node_pool_exists": {
+      "passed": true,
+      "actual": 9,
+      "expected": ">0",
+      "reason": ""
+    },
+    "existing_big_map_adapter_fields_exist": {
+      "passed": true,
+      "actual": [],
+      "expected": [],
+      "reason": ""
+    },
+    "current_release_unchanged": {
+      "passed": true,
+      "actual": "c79c57cd675fb0a50767ce9101a73ad42df70b981a4b55cf552babbbe577341c",
+      "expected": "c79c57cd675fb0a50767ce9101a73ad42df70b981a4b55cf552babbbe577341c",
+      "reason": ""
+    },
+    "active_profile_matches_current_release": {
+      "passed": true,
+      "actual": {
+        "active_mechanic_profile_id": "weapon_followup_v0_1",
+        "active_content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+        "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json"
+      },
+      "expected": {
+        "mechanic_profile_id": "weapon_followup_v0_1",
+        "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+        "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json"
+      },
+      "reason": ""
+    },
+    "fallback_release_unchanged": {
+      "passed": true,
+      "actual": "32d8518870cf647df997d4ff8493b8891c996ced87fbd6d7e28beb47bbe06803",
+      "expected": "32d8518870cf647df997d4ff8493b8891c996ced87fbd6d7e28beb47bbe06803",
+      "reason": ""
+    }
+  },
+  "all_checks_passed": true
+}

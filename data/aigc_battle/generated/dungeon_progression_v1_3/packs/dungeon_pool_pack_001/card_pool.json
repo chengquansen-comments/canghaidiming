@@ -1,0 +1,174 @@
+{
+  "content_pool_pack_id": "dungeon_pool_pack_001",
+  "pool_status": "skeleton",
+  "cards": [
+    {
+      "card_id": "spear_basic_thrust",
+      "name": "中平刺",
+      "card_type": "attack",
+      "weapon_style": "spear",
+      "difficulty_tier": "basic",
+      "realm_requirement": 1,
+      "cost": 1,
+      "effect_summary": "稳定中距突刺。",
+      "tags": [
+        "spear",
+        "basic"
+      ]
+    },
+    {
+      "card_id": "spear_line_press",
+      "name": "压线进枪",
+      "card_type": "attack",
+      "weapon_style": "spear",
+      "difficulty_tier": "basic",
+      "realm_requirement": 1,
+      "cost": 1,
+      "effect_summary": "控距并施压。",
+      "tags": [
+        "spear",
+        "distance_control"
+      ]
+    },
+    {
+      "card_id": "blade_front_cut",
+      "name": "迎门斩",
+      "card_type": "attack",
+      "weapon_style": "blade",
+      "difficulty_tier": "basic",
+      "realm_requirement": 1,
+      "cost": 1,
+      "effect_summary": "近身快斩。",
+      "tags": [
+        "blade",
+        "basic"
+      ]
+    },
+    {
+      "card_id": "blade_counter_step",
+      "name": "错步反刀",
+      "card_type": "attack",
+      "weapon_style": "blade",
+      "difficulty_tier": "basic",
+      "realm_requirement": 2,
+      "cost": 1,
+      "effect_summary": "防反转攻。",
+      "tags": [
+        "blade",
+        "counter"
+      ]
+    },
+    {
+      "card_id": "guard_hold",
+      "name": "守架定势",
+      "card_type": "defense",
+      "weapon_style": "generic",
+      "difficulty_tier": "basic",
+      "realm_requirement": 1,
+      "cost": 1,
+      "effect_summary": "提供基础防御。",
+      "tags": [
+        "defense",
+        "generic"
+      ]
+    },
+    {
+      "card_id": "parry_answer",
+      "name": "拨架应手",
+      "card_type": "defense",
+      "weapon_style": "generic",
+      "difficulty_tier": "mid",
+      "realm_requirement": 3,
+      "cost": 1,
+      "effect_summary": "格挡后反制。",
+      "tags": [
+        "defense",
+        "counter"
+      ]
+    },
+    {
+      "card_id": "light_step",
+      "name": "轻身换位",
+      "card_type": "movement",
+      "weapon_style": "generic",
+      "difficulty_tier": "basic",
+      "realm_requirement": 1,
+      "cost": 1,
+      "effect_summary": "基础位移。",
+      "tags": [
+        "movement",
+        "lightness"
+      ]
+    },
+    {
+      "card_id": "reed_drift",
+      "name": "苇上漂",
+      "card_type": "movement",
+      "weapon_style": "generic",
+      "difficulty_tier": "rare",
+      "realm_requirement": 5,
+      "cost": 1,
+      "effect_summary": "稀有轻功突破占位。",
+      "tags": [
+        "movement",
+        "lightness",
+        "rare_unlock"
+      ]
+    },
+    {
+      "card_id": "exam_focus",
+      "name": "试场定神",
+      "card_type": "skill",
+      "weapon_style": "generic",
+      "difficulty_tier": "mid",
+      "realm_requirement": 4,
+      "cost": 1,
+      "effect_summary": "武举考试奖励占位。",
+      "tags": [
+        "exam_reward"
+      ]
+    },
+    {
+      "card_id": "capital_exam_edge",
+      "name": "殿试锋芒",
+      "card_type": "skill",
+      "weapon_style": "generic",
+      "difficulty_tier": "high",
+      "realm_requirement": 8,
+      "cost": 2,
+      "effect_summary": "武状元路线奖励占位。",
+      "tags": [
+        "exam_reward",
+        "wuzhuangyuan"
+      ]
+    },
+    {
+      "card_id": "boss_reward_placeholder",
+      "name": "海门遗式",
+      "card_type": "reward",
+      "weapon_style": "generic",
+      "difficulty_tier": "boss",
+      "realm_requirement": 8,
+      "cost": 2,
+      "effect_summary": "Boss 奖励占位卡。",
+      "tags": [
+        "boss_reward",
+        "placeholder"
+      ]
+    },
+    {
+      "card_id": "old_case_fragment",
+      "name": "旧案残页",
+      "card_type": "skill",
+      "weapon_style": "generic",
+      "difficulty_tier": "mid",
+      "realm_requirement": 3,
+      "cost": 1,
+      "effect_summary": "旧案推进奖励占位。",
+      "tags": [
+        "old_case",
+        "reward"
+      ]
+    }
+  ]
+}

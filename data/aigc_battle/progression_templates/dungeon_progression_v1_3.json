@@ -1,0 +1,102 @@
+{
+  "progression_template_id": "dungeon_progression_v1_3",
+  "template_version": 1,
+  "template_status": "skeleton",
+  "source_plan": "PROGRESSION_BATTLE_COUNT_PLAN_V1_3_副本",
+  "supports_map_instance": true,
+  "supports_fixed_sequence": false,
+  "compatible_with_existing_big_map_adapter": true,
+  "segments": {
+    "prologue": {
+      "fixed_battle_count": 1
+    },
+    "wuju": {
+      "fixed_battle_count": 5,
+      "weapon_trial_count": 2,
+      "formal_exam_count": 3
+    },
+    "big_map": {
+      "battle_count_target": 15,
+      "battle_count_min": 14,
+      "battle_count_max": 16,
+      "normal_battle_count_range": [
+        10,
+        12
+      ],
+      "elite_battle_count_range": [
+        3,
+        5
+      ],
+      "operation_node_count_target": 8,
+      "operation_node_count_range": [
+        7,
+        10
+      ],
+      "candidate_pool_target": 30,
+      "operation_ratio_target": [
+        0.3,
+        0.4
+      ]
+    }
+  },
+  "ending_routes": {
+    "normal": {
+      "boss_count": 1,
+      "target_total_battles": 22,
+      "target_realm_range": [
+        8,
+        9
+      ]
+    },
+    "true": {
+      "boss_count": 2,
+      "target_total_battles": 23,
+      "target_realm_range": [
+        9,
+        10
+      ]
+    },
+    "wuzhuangyuan": {
+      "exam_count": 5,
+      "target_total_battles": 26,
+      "required_martial_realm": 10,
+      "required_military_merit": "high"
+    }
+  },
+  "growth_model": {
+    "martial_realm_max": 10,
+    "martial_xp_thresholds": {
+      "1": 0,
+      "2": 8,
+      "3": 18,
+      "4": 30,
+      "5": 44,
+      "6": 60,
+      "7": 78,
+      "8": 98,
+      "9": 120,
+      "10": 145
+    },
+    "normal_route_target_realm_range": [
+      8,
+      9
+    ],
+    "elite_route_target_realm": 10
+  },
+  "lightness_model": {
+    "lightness_max": 4,
+    "normal_lightness_cap": 2,
+    "lightness_3_requires_rare_unlock": true,
+    "lightness_4_requires_rare_chain": true,
+    "lightness_not_direct_battle_xp": true
+  },
+  "big_map_constraints": {
+    "no_fixed_linear_sequence": true,
+    "route_choice_required": true,
+    "max_consecutive_normal_battles": 3,
+    "max_consecutive_elite_related_battles": 2,
+    "elite_after_requires_operation_candidate": true,
+    "boss_before_requires_prepare_node": true,
+    "wuzhuangyuan_before_requires_capital_prepare_node": true
+  }
+}
