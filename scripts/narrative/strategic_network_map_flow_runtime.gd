@@ -6,6 +6,7 @@ const StrategicNetworkMapConfirm := preload("res://scripts/strategic_network_map
 const StrategicNetworkMapBattleResult := preload("res://scripts/strategic_network_map_battle_result.gd")
 const NetworkMapGenerator := preload("res://scripts/strategic_network_map_generator.gd")
 const AigcDungeonBigMapLoader := preload("res://scripts/aigc_dungeon_big_map_loader.gd")
+const AigcDungeonRouteBranchEvaluator := preload("res://scripts/aigc_dungeon_route_branch_evaluator.gd")
 const NarrativeBattleContext := preload("res://scripts/narrative_battle_context.gd")
 
 static func on_network_node_clicked(c, map_graph_id: String) -> void:
@@ -45,11 +46,25 @@ static func execute_network_non_combat_node(c, node: Dictionary) -> void:
 		return
 	c._apply_strategic_node(StrategicNetworkMapRuntime.runtime_node_for_effects(node))
 	StrategicNetworkMapRuntime.complete_node(graph, node)
+	if AigcDungeonRouteBranchEvaluator.is_branch_gate_node(node):
+		var branch_result: Dictionary = AigcDungeonRouteBranchEvaluator.evaluate_route_branch(c.strategic_state, c.strategic_state.get("dungeon_route_rules", {}), node, graph)
+		AigcDungeonRouteBranchEvaluator.apply_branch_result(graph, c.strategic_state, branch_result, node)
+	elif AigcDungeonRouteBranchEvaluator.is_route_branch_node(node):
+		AigcDungeonRouteBranchEvaluator.apply_selected_route_choice(graph, c.strategic_state, node)
 	StrategicNetworkMapRuntime.refresh_node_states(graph)
 	c._sync_network_state_from_graph(graph)
 	var result_text := str(node.get("result_text", ""))
 	if result_text.is_empty():
 		result_text = "你记下了这一处海疆线索。"
+	if AigcDungeonRouteBranchEvaluator.is_branch_gate_node(node):
+		var available_routes: Array = c.strategic_state.get("available_ending_routes", [])
+		var route_flags: Dictionary = c.strategic_state.get("route_flags", {})
+		result_text = "终路已显：%s｜player_choice_required=%s" % [
+			",".join(available_routes),
+			str(route_flags.get("player_choice_required", false)),
+		]
+	elif AigcDungeonRouteBranchEvaluator.is_route_branch_node(node):
+		result_text = "路线已定：%s" % str(c.strategic_state.get("selected_ending_route", ""))
 	c.last_hint = result_text
 	c._save_narrative_state_to_context()
 	c._render()

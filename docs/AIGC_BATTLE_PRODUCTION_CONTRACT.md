@@ -189,3 +189,11 @@
 - AIGC dungeon 节点选择后仍必须走现有 `encounter_id / battle_id / combat_pool_id` battle bridge 契约。
 - DUNGEON-5 不重做大地图 UI，不改 scene，不改 battle core。
 - DUNGEON-5 仍不允许修改 `current_release / active_profile / fallback_release`。
+
+## DUNGEON-6 Contract Addendum
+
+- 已新增 route branch evaluator 与 Godot headless route branching probe。
+- normal / true / wuzhuangyuan 多路线同时满足时必须由玩家选择，不得自动决策。
+- `route_branch` 必须通过原大地图节点与 `available_node_ids` 表达，不重做 UI。
+- DUNGEON-6 仍不允许修改 `current_release / active_profile / fallback_release`。
+- DUNGEON-6 仍不改 scene，不改 battle core，不扩完整正式内容池。

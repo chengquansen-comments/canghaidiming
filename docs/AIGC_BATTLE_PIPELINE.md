@@ -486,3 +486,11 @@ v2 目标是 `full sequence reward / progression closure`：
 - 玩家选择节点后继续走现有 `battle bridge -> narrative_battle_context -> MainVisual` 入口。
 - 不重做大地图 UI，不改 battle core。
 - DUNGEON-6 将实现普通 / 真结局 / 武状元路线分流。
+
+## DUNGEON-6：Route Branching Runtime Probe
+
+- DUNGEON-6 已完成普通 / 真结局 / 武状元路线分流 probe。
+- 多路线同时满足时由玩家选择，系统不自动决定。
+- `route_branch` 继续通过原大地图节点选择表达，不重做 UI。
+- 本轮仍未扩完整正式内容池。
+- 后续可进入 DUNGEON-7：正式池扩容 / 路线内容补全 / 存档回写。

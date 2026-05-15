@@ -1,0 +1,28 @@
+# Dungeon Route Branch Probe
+
+- route_branch_runtime_ready: `True`
+- route_branch_evaluator_ready: `True`
+- baseline_normal_only_pass: `True`
+- true_route_unlock_checked: `True`
+- wuzhuangyuan_route_unlock_checked: `True`
+- multiple_route_choice_supported: `True`
+- player_choice_decides_route: `True`
+- route_branch_node_visible: `True`
+- route_options_mapped_to_next_nodes: `True`
+- normal_route_available: `True`
+- true_route_available: `True`
+- wuzhuangyuan_route_available: `True`
+- normal_boss_path_available: `True`
+- true_boss_path_available: `True`
+- wuzhuangyuan_exam_path_available: `True`
+- selected_route_updates_route_flags: `True`
+- visited_path_records_route_choice: `True`
+- route_state_after_route_choice_ready: `True`
+- dashboard_route_branch_view_ready: `True`
+- no_fixed_sequence_runtime_path: `True`
+- current_release_unchanged: `True`
+- active_profile_matches_current_release: `True`
+- fallback_release_unchanged: `True`
+- scene_unchanged: `True`
+- combat_core_untouched: `True`
+- probe_pass: `True`

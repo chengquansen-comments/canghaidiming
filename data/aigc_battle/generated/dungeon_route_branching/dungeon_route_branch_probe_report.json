@@ -1,0 +1,176 @@
+{
+  "generated_at": "2026-05-15T11:14:38.908259+00:00",
+  "probe": "aigc_dungeon_route_branch_probe",
+  "fields": {
+    "route_branch_runtime_ready": true,
+    "route_branch_evaluator_ready": true,
+    "baseline_normal_only_pass": true,
+    "true_route_unlock_checked": true,
+    "wuzhuangyuan_route_unlock_checked": true,
+    "multiple_route_choice_supported": true,
+    "player_choice_decides_route": true,
+    "route_branch_node_visible": true,
+    "route_options_mapped_to_next_nodes": true,
+    "normal_route_available": true,
+    "true_route_available": true,
+    "wuzhuangyuan_route_available": true,
+    "normal_boss_path_available": true,
+    "true_boss_path_available": true,
+    "wuzhuangyuan_exam_path_available": true,
+    "selected_route_updates_route_flags": true,
+    "visited_path_records_route_choice": true,
+    "route_state_after_route_choice_ready": true,
+    "dashboard_route_branch_view_ready": true,
+    "no_fixed_sequence_runtime_path": true,
+    "current_release_unchanged": true,
+    "active_profile_matches_current_release": true,
+    "fallback_release_unchanged": true,
+    "scene_unchanged": true,
+    "combat_core_untouched": true,
+    "probe_pass": true
+  },
+  "runtime_report": {
+    "case_a": {
+      "available_route_options": [
+        "normal"
+      ],
+      "multiple_route_choice_supported": true,
+      "normal_boss_path_available": true,
+      "normal_route_available": true,
+      "pass": true,
+      "player_choice_required": false,
+      "route_branch_node_visible": true,
+      "route_options_mapped_to_next_nodes": true,
+      "route_state_after_route_choice_ready": false,
+      "selected_ending_route": "normal",
+      "true_boss_path_available": true,
+      "true_route_available": false,
+      "visited_path_records_route_choice": false,
+      "wuzhuangyuan_exam_path_available": true,
+      "wuzhuangyuan_route_available": false
+    },
+    "case_b": {
+      "available_route_options": [
+        "normal",
+        "true"
+      ],
+      "multiple_route_choice_supported": true,
+      "normal_boss_path_available": true,
+      "normal_route_available": true,
+      "pass": true,
+      "player_choice_required": true,
+      "route_branch_node_visible": true,
+      "route_options_mapped_to_next_nodes": true,
+      "route_state_after_route_choice_ready": false,
+      "selected_ending_route": "",
+      "true_boss_path_available": true,
+      "true_route_available": true,
+      "visited_path_records_route_choice": false,
+      "wuzhuangyuan_exam_path_available": true,
+      "wuzhuangyuan_route_available": false
+    },
+    "case_c": {
+      "available_route_options": [
+        "normal",
+        "wuzhuangyuan"
+      ],
+      "multiple_route_choice_supported": true,
+      "normal_boss_path_available": true,
+      "normal_route_available": true,
+      "pass": true,
+      "player_choice_required": true,
+      "route_branch_node_visible": true,
+      "route_options_mapped_to_next_nodes": true,
+      "route_state_after_route_choice_ready": false,
+      "selected_ending_route": "",
+      "true_boss_path_available": true,
+      "true_route_available": false,
+      "visited_path_records_route_choice": false,
+      "wuzhuangyuan_exam_path_available": true,
+      "wuzhuangyuan_route_available": true
+    },
+    "case_d": {
+      "available_route_options": [
+        "normal",
+        "true",
+        "wuzhuangyuan"
+      ],
+      "multiple_route_choice_supported": true,
+      "normal_boss_path_available": true,
+      "normal_route_available": true,
+      "pass": true,
+      "player_choice_required": true,
+      "route_branch_node_visible": true,
+      "route_options_mapped_to_next_nodes": true,
+      "route_state_after_route_choice_ready": false,
+      "selected_ending_route": "",
+      "true_boss_path_available": true,
+      "true_route_available": true,
+      "visited_path_records_route_choice": false,
+      "wuzhuangyuan_exam_path_available": true,
+      "wuzhuangyuan_route_available": true
+    },
+    "case_d_true_choice": {
+      "available_route_options": [
+        "normal",
+        "true",
+        "wuzhuangyuan"
+      ],
+      "multiple_route_choice_supported": true,
+      "next_route_node_ids": [
+        "node_true_boss_001"
+      ],
+      "normal_boss_path_available": true,
+      "normal_route_available": true,
+      "pass": true,
+      "player_choice_required": true,
+      "route_branch_node_visible": true,
+      "route_options_mapped_to_next_nodes": true,
+      "route_state_after_route_choice_ready": true,
+      "selected_ending_route": "true",
+      "true_boss_path_available": true,
+      "true_route_available": true,
+      "visited_path_records_route_choice": true,
+      "wuzhuangyuan_exam_path_available": true,
+      "wuzhuangyuan_route_available": true
+    },
+    "case_d_wuzhuangyuan_choice": {
+      "available_route_options": [
+        "normal",
+        "true",
+        "wuzhuangyuan"
+      ],
+      "multiple_route_choice_supported": true,
+      "next_route_node_ids": [
+        "node_wuzhuangyuan_exam_001"
+      ],
+      "normal_boss_path_available": true,
+      "normal_route_available": true,
+      "pass": true,
+      "player_choice_required": true,
+      "route_branch_node_visible": true,
+      "route_options_mapped_to_next_nodes": true,
+      "route_state_after_route_choice_ready": true,
+      "selected_ending_route": "wuzhuangyuan",
+      "true_boss_path_available": true,
+      "true_route_available": true,
+      "visited_path_records_route_choice": true,
+      "wuzhuangyuan_exam_path_available": true,
+      "wuzhuangyuan_route_available": true
+    },
+    "no_fixed_sequence_runtime_path": true,
+    "route_branch_evaluator_ready": true,
+    "route_branch_runtime_ready": true
+  },
+  "current_release_summary": {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+    "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json"
+  },
+  "active_profile_summary": {
+    "active_mechanic_profile_id": "weapon_followup_v0_1",
+    "active_content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+    "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json"
+  },
+  "probe_pass": true
+}

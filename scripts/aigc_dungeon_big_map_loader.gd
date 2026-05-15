@@ -5,6 +5,7 @@ const StrategicNetworkMapRuntime := preload("res://scripts/strategic_network_map
 const BIG_MAP_COMPATIBLE_PATH := "res://data/aigc_battle/generated/dungeon_maps/big_map_compatible_seed_1001.json"
 const ROUTE_STATE_PATH := "res://data/aigc_battle/generated/dungeon_maps/route_state_seed_1001_initial.json"
 const MAP_INSTANCE_PATH := "res://data/aigc_battle/generated/dungeon_maps/map_seed_1001.json"
+const ROUTE_RULES_PATH := "res://data/aigc_battle/generated/dungeon_progression_v1_3/packs/dungeon_pool_pack_001/route_rules.json"
 const LOADOUT_PATH := "res://data/aigc_battle/generated/dungeon_node_materializer/selected_node_materialized_loadout.json"
 const BATTLE_ENTRY_REQUEST_PATH := "res://data/aigc_battle/generated/dungeon_node_materializer/selected_node_battle_entry_request.json"
 
@@ -57,6 +58,7 @@ static func load_runtime_bundle() -> Dictionary:
 	var graph: Dictionary = (graph_result.get("data", {}) as Dictionary).duplicate(true)
 	var route_state: Dictionary = (route_result.get("data", {}) as Dictionary).duplicate(true)
 	var map_instance := _optional_json_dict(MAP_INSTANCE_PATH)
+	var route_rules := _optional_json_dict(ROUTE_RULES_PATH)
 	var loadout := _optional_json_dict(LOADOUT_PATH)
 	var battle_entry_request := _optional_json_dict(BATTLE_ENTRY_REQUEST_PATH)
 	var validation_errors := _validate_graph(graph)
@@ -73,6 +75,7 @@ static func load_runtime_bundle() -> Dictionary:
 		"network_map": graph,
 		"route_state": route_state,
 		"map_instance": map_instance,
+		"route_rules": route_rules,
 		"selected_loadout": loadout,
 		"selected_battle_entry_request": battle_entry_request,
 	}
@@ -83,13 +86,22 @@ static func apply_bundle_to_state(strategic_state: Dictionary, bundle: Dictionar
 		return false
 	var graph: Dictionary = (bundle.get("network_map", {}) as Dictionary).duplicate(true)
 	var route_state: Dictionary = (bundle.get("route_state", {}) as Dictionary).duplicate(true)
+	var route_rules: Dictionary = (bundle.get("route_rules", {}) as Dictionary).duplicate(true)
 	StrategicNetworkMapRuntime.sync_mirror_fields(strategic_state, graph)
 	strategic_state["active"] = true
 	strategic_state["network_map"] = graph
+	strategic_state["dungeon_route_rules"] = route_rules
 	strategic_state["visited_path_order"] = (graph.get("visited_path_order", route_state.get("visited_path_order", [])) as Array).duplicate(true)
 	strategic_state["battle_count_so_far"] = int(graph.get("battle_count_so_far", route_state.get("battle_count_so_far", 0)))
 	strategic_state["elite_count_so_far"] = int(graph.get("elite_count_so_far", route_state.get("elite_count_so_far", 0)))
 	strategic_state["operation_count_so_far"] = int(graph.get("operation_count_so_far", route_state.get("operation_count_so_far", 0)))
+	strategic_state["selected_ending_route"] = str(graph.get("selected_ending_route", route_state.get("selected_ending_route", "")))
+	strategic_state["available_ending_routes"] = (graph.get("available_ending_routes", route_state.get("available_ending_routes", [])) as Array).duplicate(true)
+	strategic_state["locked_ending_routes"] = (graph.get("locked_ending_routes", route_state.get("locked_ending_routes", [])) as Array).duplicate(true)
+	strategic_state["route_lock_reasons"] = (graph.get("route_lock_reasons", route_state.get("route_lock_reasons", {})) as Dictionary).duplicate(true)
+	strategic_state["route_branch_pending"] = bool(graph.get("route_branch_pending", route_state.get("route_branch_pending", false)))
+	strategic_state["route_branch_node_id"] = str(graph.get("route_branch_node_id", route_state.get("route_branch_node_id", "")))
+	strategic_state["route_choice_locked"] = bool(graph.get("route_choice_locked", route_state.get("route_choice_locked", false)))
 	strategic_state["route_flags"] = (graph.get("route_flags", route_state.get("route_flags", {})) as Dictionary).duplicate(true)
 	strategic_state["lightness_level"] = int(graph.get("lightness_level", route_state.get("lightness_level", strategic_state.get("lightness_level", 1))))
 	strategic_state["old_case_progress"] = int(graph.get("old_case_progress", route_state.get("old_case_progress", strategic_state.get("old_case_progress", 0))))
@@ -112,6 +124,13 @@ static func apply_route_state_to_graph(graph: Dictionary, route_state: Dictionar
 	graph["battle_count_so_far"] = int(route_state.get("battle_count_so_far", graph.get("battle_count_so_far", 0)))
 	graph["elite_count_so_far"] = int(route_state.get("elite_count_so_far", graph.get("elite_count_so_far", 0)))
 	graph["operation_count_so_far"] = int(route_state.get("operation_count_so_far", graph.get("operation_count_so_far", 0)))
+	graph["selected_ending_route"] = str(route_state.get("selected_ending_route", graph.get("selected_ending_route", "")))
+	graph["available_ending_routes"] = _string_array(route_state.get("available_ending_routes", graph.get("available_ending_routes", [])))
+	graph["locked_ending_routes"] = _string_array(route_state.get("locked_ending_routes", graph.get("locked_ending_routes", [])))
+	graph["route_lock_reasons"] = (route_state.get("route_lock_reasons", graph.get("route_lock_reasons", {})) as Dictionary).duplicate(true)
+	graph["route_branch_pending"] = bool(route_state.get("route_branch_pending", graph.get("route_branch_pending", false)))
+	graph["route_branch_node_id"] = str(route_state.get("route_branch_node_id", graph.get("route_branch_node_id", "")))
+	graph["route_choice_locked"] = bool(route_state.get("route_choice_locked", graph.get("route_choice_locked", false)))
 	graph["route_flags"] = (route_state.get("route_flags", graph.get("route_flags", {})) as Dictionary).duplicate(true)
 	graph["lightness_level"] = int(route_state.get("lightness_level", graph.get("lightness_level", 1)))
 	graph["old_case_progress"] = int(route_state.get("old_case_progress", graph.get("old_case_progress", 0)))
