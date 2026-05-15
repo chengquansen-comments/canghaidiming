@@ -1,0 +1,140 @@
+{
+  "mechanic_profile_id": "clue_pressure_v0_1",
+  "content_pack_id": "clue_pressure_v0_1_formal_sequence_pack_001",
+  "target_sequence_id": "formal_sequence_mvp_v1",
+  "formal_encounter_total_count": 9,
+  "tier_counts": {
+    "early": 2,
+    "mid": 2,
+    "late": 2,
+    "boss": 3
+  },
+  "encounter_kind_counts": {
+    "normal": 1,
+    "elite": 4,
+    "boss_lite": 1,
+    "boss": 3
+  },
+  "deck_power_by_encounter": [
+    {
+      "formal_encounter_id": "enc_beach_ambush",
+      "sequence_position": 1,
+      "encounter_tier": "early",
+      "encounter_kind": "normal",
+      "target_power_min": 22,
+      "target_power_max": 32,
+      "deck_power_score": 22.8,
+      "reward_tier": "early"
+    },
+    {
+      "formal_encounter_id": "enc_fishing_village_embers",
+      "sequence_position": 2,
+      "encounter_tier": "early",
+      "encounter_kind": "elite",
+      "target_power_min": 22,
+      "target_power_max": 32,
+      "deck_power_score": 27.6,
+      "reward_tier": "mid"
+    },
+    {
+      "formal_encounter_id": "enc_transport_officer",
+      "sequence_position": 3,
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "target_power_min": 32,
+      "target_power_max": 44,
+      "deck_power_score": 33.2,
+      "reward_tier": "mid"
+    },
+    {
+      "formal_encounter_id": "enc_mutiny_camp",
+      "sequence_position": 4,
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "target_power_min": 32,
+      "target_power_max": 44,
+      "deck_power_score": 33.2,
+      "reward_tier": "advanced"
+    },
+    {
+      "formal_encounter_id": "enc_wakou_boss",
+      "sequence_position": 5,
+      "encounter_tier": "late",
+      "encounter_kind": "elite",
+      "target_power_min": 42,
+      "target_power_max": 52,
+      "deck_power_score": 49.2,
+      "reward_tier": "advanced"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_spear_trial",
+      "sequence_position": 6,
+      "encounter_tier": "late",
+      "encounter_kind": "boss_lite",
+      "target_power_min": 42,
+      "target_power_max": 52,
+      "deck_power_score": 43.2,
+      "reward_tier": "rare"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_blade_trial",
+      "sequence_position": 7,
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "target_power_min": 53,
+      "target_power_max": 60,
+      "deck_power_score": 53.8,
+      "reward_tier": "boss"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_final_duel",
+      "sequence_position": 8,
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "target_power_min": 53,
+      "target_power_max": 60,
+      "deck_power_score": 53.8,
+      "reward_tier": "rare"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_gu_chengyue",
+      "sequence_position": 9,
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "target_power_min": 53,
+      "target_power_max": 60,
+      "deck_power_score": 53.8,
+      "reward_tier": "boss"
+    }
+  ],
+  "early_avg_power": 25.2,
+  "mid_avg_power": 33.2,
+  "late_avg_power": 46.2,
+  "boss_avg_power": 53.8,
+  "min_late_avg_power_over_early": 20.0,
+  "late_avg_power_over_early": 21.0,
+  "all_decks_within_power_range": true,
+  "elite_decks_stronger_than_normal": true,
+  "boss_decks_stronger_than_late_or_elite": true,
+  "boss_decks_stronger_than_elite": true,
+  "sequence_balance_curve_ready": true,
+  "sequence_balance_pass": true,
+  "no_elite_detected": false,
+  "no_boss_detected": false,
+  "rebuild_uses_snapshot": false,
+  "snapshot_source_path": "",
+  "adjusted_or_flagged_encounters": [],
+  "rebuild_uses_real_telemetry": false,
+  "real_telemetry_snapshot_path": "",
+  "telemetry_rebuild_adjustments": [],
+  "snapshot_rebuild_pass": true,
+  "sequence_template_id": "bossrush_9_v1",
+  "build_variant": "matrix_001",
+  "stage_counts": {
+    "early": 2,
+    "mid": 2,
+    "late": 2,
+    "boss": 3
+  },
+  "total_encounter_count": 9
+}

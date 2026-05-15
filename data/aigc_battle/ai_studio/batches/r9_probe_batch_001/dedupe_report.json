@@ -1,0 +1,21 @@
+{
+  "batch_id": "r9_probe_batch_001",
+  "duplicate_candidate_count": 1,
+  "unique_candidate_count": 12,
+  "groups_by_mechanic": {
+    "weapon_followup_v0_1": 9,
+    "clue_pressure_v0_1": 4
+  },
+  "groups_by_template": {
+    "formal_sequence_12_fast_v1": 5,
+    "bossrush_9_v1": 8
+  },
+  "groups_by_type": {
+    "card_candidate": 4,
+    "deck_candidate": 3,
+    "reward_candidate": 3,
+    "battle_slot_candidate": 3
+  },
+  "candidate_versioning_ready": true,
+  "candidate_grouping_ready": true
+}

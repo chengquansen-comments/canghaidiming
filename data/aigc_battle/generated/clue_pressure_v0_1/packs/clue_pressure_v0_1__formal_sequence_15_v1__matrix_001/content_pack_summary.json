@@ -1,0 +1,88 @@
+{
+  "mechanic_profile_id": "clue_pressure_v0_1",
+  "sequence_template_id": "formal_sequence_15_v1",
+  "build_variant": "matrix_001",
+  "content_pack_id": "clue_pressure_v0_1__formal_sequence_15_v1__matrix_001",
+  "target_sequence_id": "formal_sequence_mvp_v1",
+  "formal_encounter_total_count": 15,
+  "generated_battle_slot_count": 15,
+  "generated_deck_count": 15,
+  "generated_card_count": 80,
+  "generated_reward_count": 15,
+  "replacement_mode": "full_sequence",
+  "total_encounter_count": 15,
+  "stage_counts": {
+    "early": 4,
+    "mid": 4,
+    "late": 4,
+    "boss": 3
+  },
+  "runtime_primitives_used": [
+    "clue_pressure"
+  ],
+  "opening_pressure_slot_count": 0,
+  "weapon_followup_card_count": 0,
+  "weapon_followup_deck_count": 0,
+  "weapon_followup_slot_count": 0,
+  "weapon_followup_chain_count": 0,
+  "realm_eligibility_rule_enabled": true,
+  "deck_card_realm_eligibility_valid": true,
+  "invalid_realm_card_count": 0,
+  "clue_pressure_slot_count": 15,
+  "clue_pressure_trigger_count": 15,
+  "clue_pressure_effect_counts": {
+    "reduce_enemy_momentum": 3,
+    "expose_enemy_weakness": 5,
+    "reduce_enemy_guard": 4,
+    "reduce_next_enemy_attack": 3
+  },
+  "clue_tag_counts": {
+    "witness_statement": 2,
+    "coastal_smuggling": 4,
+    "old_case": 3,
+    "sealed_document": 7,
+    "military_order": 3,
+    "firearm_trace": 3
+  },
+  "clue_pressure_density_by_tier": {
+    "boss": 1.0,
+    "early": 1.0,
+    "late": 1.0,
+    "mid": 1.0
+  },
+  "max_wujing": 0,
+  "max_closing_form_tier": 0,
+  "card_count_by_wujing": {
+    "1": 32,
+    "2": 16,
+    "3": 16,
+    "4": 16
+  },
+  "card_count_by_closing_form_tier": {
+    "1": 32,
+    "2": 16,
+    "3": 16,
+    "4": 16
+  },
+  "dual_weapon_slot_count": 0,
+  "dual_weapon_deck_count": 0,
+  "dual_weapon_ratio": 0.0,
+  "weapon_loadout_counts": {},
+  "realm_stage_counts": {},
+  "seven_realm_card_count": 0,
+  "dual_weapon_synergy_count": 0,
+  "rebuild_uses_snapshot": false,
+  "snapshot_source_path": "",
+  "flagged_deck_count": 0,
+  "flagged_deck_ids": [],
+  "rebuild_uses_real_telemetry": false,
+  "real_telemetry_snapshot_path": "",
+  "telemetry_rebuild_adjustments": [],
+  "adjusted_or_flagged_encounters": [],
+  "pack_identity": {
+    "sequence_template_id": "formal_sequence_15_v1",
+    "mechanic_profile_id": "clue_pressure_v0_1",
+    "build_variant": "matrix_001",
+    "content_pack_id": "clue_pressure_v0_1__formal_sequence_15_v1__matrix_001"
+  }
+}

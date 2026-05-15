@@ -1,7 +1,7 @@
 # 内容包明细：weapon_followup_v0_1 / weapon_followup_balance_release_007
 
 - pack_storage_mode: profile_pack_dir
-- is_active_pack: true
+- is_active_pack: false
 - sequence_template_id: formal_sequence_15_v1
 - template_usage_recommendation: standard_run
 - matrix_slot: True
@@ -29,7 +29,7 @@
 - balance_release: true
 - source_pack_id: weapon_followup_v0_1_formal_sequence_pack_001
 - playable_balance_gate_pass: true
-- current_release_is_balanced: true
+- current_release_is_balanced: false
 - win_rate_delta_from_source: 0.7555
 - too_hard_delta_from_source: -11
 

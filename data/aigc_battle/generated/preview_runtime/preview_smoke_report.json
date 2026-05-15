@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-05-13T11:20:32.573308+00:00",
+  "preview_pack_resolved": true,
+  "preview_channel_ready": true,
+  "preview_active_profile_written": true,
+  "preview_smoke_started": true,
+  "preview_formal_entry_smoke_pass": true,
+  "preview_mechanic_profile_id": "weapon_followup_v0_1",
+  "preview_content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+  "preview_generated_loadout_count": 12,
+  "preview_expected_encounter_count": 12,
+  "preview_fallback_loadout_count": 0,
+  "preview_reward_coverage_complete": true,
+  "preview_runtime_manifest_loaded": true,
+  "preview_pack_identity_valid": true,
+  "current_release_unchanged": true,
+  "restore_current_ready": true,
+  "active_profile_matches_current_after_restore": true,
+  "smoke_pass": true
+}

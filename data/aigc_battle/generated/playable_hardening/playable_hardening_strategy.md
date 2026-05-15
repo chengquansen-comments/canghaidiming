@@ -1,0 +1,8 @@
+# Playable Hardening Strategy
+
+- playable_hardening_ready: `False`
+- recommended_fast_candidate: ``
+- recommended_bossrush_candidate: ``
+- targets_ready_for_release_candidate: `[]`
+- targets_needing_more_balance: `['weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_013', 'weapon_followup_v0_1__bossrush_9_v1__hardened_007']`
+

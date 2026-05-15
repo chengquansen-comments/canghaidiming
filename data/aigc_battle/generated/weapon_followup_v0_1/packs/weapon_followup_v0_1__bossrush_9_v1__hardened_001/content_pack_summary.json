@@ -1,0 +1,99 @@
+{
+  "mechanic_profile_id": "weapon_followup_v0_1",
+  "sequence_template_id": "bossrush_9_v1",
+  "build_variant": "hardened_001",
+  "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_001",
+  "target_sequence_id": "formal_sequence_mvp_v1",
+  "formal_encounter_total_count": 9,
+  "generated_battle_slot_count": 9,
+  "generated_deck_count": 9,
+  "generated_card_count": 40,
+  "generated_reward_count": 9,
+  "replacement_mode": "full_sequence",
+  "total_encounter_count": 9,
+  "stage_counts": {
+    "early": 2,
+    "mid": 2,
+    "late": 2,
+    "boss": 3
+  },
+  "runtime_primitives_used": [
+    "weapon_followup"
+  ],
+  "opening_pressure_slot_count": 0,
+  "weapon_followup_card_count": 40,
+  "weapon_followup_deck_count": 9,
+  "weapon_followup_slot_count": 9,
+  "weapon_followup_chain_count": 47,
+  "realm_eligibility_rule_enabled": true,
+  "deck_card_realm_eligibility_valid": true,
+  "invalid_realm_card_count": 0,
+  "clue_pressure_slot_count": 0,
+  "clue_pressure_trigger_count": 0,
+  "clue_pressure_effect_counts": {},
+  "clue_tag_counts": {},
+  "clue_pressure_density_by_tier": {
+    "boss": 0.0,
+    "early": 0.0,
+    "late": 0.0,
+    "mid": 0.0
+  },
+  "max_wujing": 0,
+  "max_closing_form_tier": 0,
+  "card_count_by_wujing": {
+    "1": 16,
+    "2": 8,
+    "3": 8,
+    "4": 8
+  },
+  "card_count_by_closing_form_tier": {
+    "1": 16,
+    "2": 8,
+    "3": 8,
+    "4": 8
+  },
+  "dual_weapon_slot_count": 0,
+  "dual_weapon_deck_count": 0,
+  "dual_weapon_ratio": 0.0,
+  "weapon_loadout_counts": {},
+  "realm_stage_counts": {},
+  "seven_realm_card_count": 0,
+  "dual_weapon_synergy_count": 0,
+  "rebuild_uses_snapshot": false,
+  "snapshot_source_path": "",
+  "flagged_deck_count": 0,
+  "flagged_deck_ids": [],
+  "rebuild_uses_real_telemetry": false,
+  "real_telemetry_snapshot_path": "",
+  "telemetry_rebuild_adjustments": [],
+  "adjusted_or_flagged_encounters": [],
+  "pack_identity": {
+    "sequence_template_id": "bossrush_9_v1",
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "build_variant": "matrix_001",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_001"
+  },
+  "playable_hardening": true,
+  "hardening_target": "bossrush",
+  "source_matrix_pack_id": "weapon_followup_v0_1__bossrush_9_v1__matrix_001",
+  "source_pack_id": "weapon_followup_v0_1__bossrush_9_v1__matrix_001",
+  "recommended_release_mode": "bossrush",
+  "applied_recommendation_count": 26,
+  "skipped_recommendation_count": 0,
+  "deck_power_delta_summary": {
+    "count": 9,
+    "avg_delta": 0.64,
+    "min_delta": -3.2,
+    "max_delta": 3.6
+  },
+  "reward_tier_delta_summary": {
+    "shifted_reward_count": 2,
+    "upgraded_only": true
+  },
+  "followup_density_delta_summary": {
+    "count": 9,
+    "avg_delta": 0.0,
+    "min_delta": 0.0,
+    "max_delta": 0.0
+  }
+}

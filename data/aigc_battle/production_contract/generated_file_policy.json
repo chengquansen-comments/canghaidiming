@@ -1,0 +1,55 @@
+{
+  "generated_file_policy_ready": true,
+  "must_commit": [
+    "data/aigc_battle/sequence_templates/*.json",
+    "data/aigc_battle/mechanics/*/mechanic_profile.json",
+    "data/aigc_battle/mechanics/*/content_recipe.json",
+    "data/aigc_battle/generated/{profile}/packs/{pack}/runtime_manifest.json",
+    "data/aigc_battle/generated/{profile}/packs/{pack}/validation_report.json",
+    "data/aigc_battle/release_channels/current_release.json",
+    "data/aigc_battle/release_channels/fallback_release.json",
+    "data/aigc_battle/runtime/active_profile.json",
+    "data/aigc_battle/pack_resolver.json",
+    "data/aigc_battle/production_contract/*.json",
+    "docs/AIGC_BATTLE_PRODUCTION_CONTRACT.md"
+  ],
+  "commit_when_stage_delivered": [
+    "data/aigc_battle/generated/preview_runtime/*_report.json",
+    "data/aigc_battle/generated/preview_runtime/*_report.md",
+    "data/aigc_battle/generated/acceptance/*_report.json",
+    "data/aigc_battle/generated/acceptance/*_report.md",
+    "data/aigc_battle/generated/promotion/*_report.json",
+    "data/aigc_battle/generated/promotion/*_report.md",
+    "data/aigc_battle/generated/release_switch/*_report.json",
+    "data/aigc_battle/generated/release_switch/*_report.md",
+    "data/aigc_battle/generated/ai_studio/*_report.json",
+    "data/aigc_battle/generated/ai_studio/*_report.md",
+    "data/aigc_battle/generated/template_portfolio/*_report.json",
+    "data/aigc_battle/generated/template_portfolio/*_report.md",
+    "data/aigc_battle/generated/mechanic_template_matrix/*_report.json",
+    "data/aigc_battle/generated/mechanic_template_matrix/*_report.md",
+    "data/aigc_battle/generated/production_closeout/*_report.json",
+    "data/aigc_battle/generated/production_closeout/*_report.md"
+  ],
+  "local_or_cleanable": [
+    "data/aigc_battle/generated/**/latest_*_report.json",
+    "data/aigc_battle/generated/**/latest_*_report.md",
+    "data/aigc_battle/generated/**/tmp_*.json",
+    "data/aigc_battle/generated/**/debug_*.json",
+    "/tmp/aigc_*_check.json"
+  ],
+  "never_overwrite_without_gate": [
+    "data/aigc_battle/release_channels/current_release.json",
+    "data/aigc_battle/release_channels/fallback_release.json",
+    "data/aigc_battle/runtime/active_profile.json",
+    "data/aigc_battle/release/release_manifest_*.json",
+    "data/aigc_battle/generated/**/packs/**/archived/**",
+    "data/aigc_battle/promotion/human_review_notes/*.json"
+  ],
+  "policy_notes": [
+    "runtime_manifest 只能由 export_runtime_manifest.py 生成",
+    "current_release / active_profile 只能由 release switch / safe switch 写入",
+    "closeout 只允许清理 deprecated inventory 中明确 safe_to_delete_now 的 local_cleanable 项",
+    "本轮只冻结规则，不做大规模清理"
+  ]
+}

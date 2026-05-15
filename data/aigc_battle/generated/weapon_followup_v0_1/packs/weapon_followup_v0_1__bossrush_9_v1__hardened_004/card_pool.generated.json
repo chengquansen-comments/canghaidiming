@@ -1,0 +1,1694 @@
+[
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_spearman_early_strike",
+    "id": "weapon_followup_v0_1_spearman_early_strike",
+    "name": "中平刺",
+    "card_type": "attack",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "attack",
+    "gain": 0,
+    "break": 0,
+    "damage": 5,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 5
+      }
+    ],
+    "tags": [
+      "early",
+      "spearman",
+      "attack",
+      "measured",
+      "technique"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "power_score": 5.0,
+    "followup_group": "spearman_early_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_momentum": 1
+    },
+    "followup_chain_role": "opener"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_spearman_early_guard",
+    "id": "weapon_followup_v0_1_spearman_early_guard",
+    "name": "圆架守",
+    "card_type": "defense",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "guard",
+    "gain": 0,
+    "break": 0,
+    "damage": 0,
+    "guard": 4,
+    "effects": [
+      {
+        "type": "gain_block",
+        "value": 4
+      }
+    ],
+    "tags": [
+      "early",
+      "spearman",
+      "defense",
+      "anchor"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "power_score": 4.0,
+    "followup_group": "spearman_early_chain",
+    "followup_trigger": "",
+    "followup_bonus": {
+      "bonus_block": 1
+    },
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_spearman_early_pressure",
+    "id": "weapon_followup_v0_1_spearman_early_pressure",
+    "name": "压杆逼势",
+    "card_type": "skill",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "feint",
+    "gain": 0,
+    "break": 3,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "break_momentum",
+        "value": 3
+      }
+    ],
+    "tags": [
+      "early",
+      "spearman",
+      "skill",
+      "pressure",
+      "technique"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "power_score": 2.4,
+    "followup_group": "spearman_early_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_momentum": 1
+    },
+    "followup_chain_role": "linker"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_spearman_early_focus",
+    "id": "weapon_followup_v0_1_spearman_early_focus",
+    "name": "压线整势",
+    "card_type": "skill",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "feint",
+    "gain": 3,
+    "break": 0,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "gain_momentum",
+        "value": 3
+      }
+    ],
+    "tags": [
+      "early",
+      "spearman",
+      "skill",
+      "setup",
+      "technique"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "power_score": 2.4,
+    "followup_group": "spearman_early_chain",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_spearman_early_finisher",
+    "id": "weapon_followup_v0_1_spearman_early_finisher",
+    "name": "穿线追刺",
+    "card_type": "attack",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 2,
+    "min": 0,
+    "max": 4,
+    "role": "attack",
+    "gain": 1,
+    "break": 2,
+    "damage": 4,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 4
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 2
+      }
+    ],
+    "tags": [
+      "early",
+      "spearman",
+      "attack",
+      "high_pressure",
+      "technique",
+      "closing_form"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "power_score": 6.4,
+    "followup_group": "spearman_early_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_damage": 1,
+      "bonus_block": 0
+    },
+    "followup_chain_role": "finisher"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_spearman_mid_strike",
+    "id": "weapon_followup_v0_1_spearman_mid_strike",
+    "name": "穿线枪",
+    "card_type": "attack",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "attack",
+    "gain": 0,
+    "break": 0,
+    "damage": 6,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 6
+      }
+    ],
+    "tags": [
+      "mid",
+      "spearman",
+      "attack",
+      "measured",
+      "technique"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 2,
+    "closing_form_tier": 2,
+    "power_score": 6.0,
+    "followup_group": "spearman_mid_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_momentum": 1
+    },
+    "followup_chain_role": "opener"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_spearman_mid_guard",
+    "id": "weapon_followup_v0_1_spearman_mid_guard",
+    "name": "回枪固守",
+    "card_type": "defense",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "guard",
+    "gain": 0,
+    "break": 0,
+    "damage": 0,
+    "guard": 5,
+    "effects": [
+      {
+        "type": "gain_block",
+        "value": 5
+      }
+    ],
+    "tags": [
+      "mid",
+      "spearman",
+      "defense",
+      "anchor"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "power_score": 5.0,
+    "followup_group": "spearman_mid_chain",
+    "followup_trigger": "",
+    "followup_bonus": {
+      "bonus_block": 2
+    },
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_spearman_mid_pressure",
+    "id": "weapon_followup_v0_1_spearman_mid_pressure",
+    "name": "封线破势",
+    "card_type": "skill",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "feint",
+    "gain": 0,
+    "break": 4,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "break_momentum",
+        "value": 4
+      }
+    ],
+    "tags": [
+      "mid",
+      "spearman",
+      "skill",
+      "pressure",
+      "technique"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 2,
+    "closing_form_tier": 2,
+    "power_score": 3.2,
+    "followup_group": "spearman_mid_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_momentum": 2
+    },
+    "followup_chain_role": "linker"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_spearman_mid_focus",
+    "id": "weapon_followup_v0_1_spearman_mid_focus",
+    "name": "稳步蓄势",
+    "card_type": "skill",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "feint",
+    "gain": 3,
+    "break": 0,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "gain_momentum",
+        "value": 3
+      }
+    ],
+    "tags": [
+      "mid",
+      "spearman",
+      "skill",
+      "setup",
+      "technique"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 2,
+    "closing_form_tier": 2,
+    "power_score": 2.4,
+    "followup_group": "spearman_mid_chain",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_spearman_mid_finisher",
+    "id": "weapon_followup_v0_1_spearman_mid_finisher",
+    "name": "抢线突穿",
+    "card_type": "attack",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 2,
+    "min": 0,
+    "max": 4,
+    "role": "attack",
+    "gain": 1,
+    "break": 2,
+    "damage": 5,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 5
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 2
+      }
+    ],
+    "tags": [
+      "mid",
+      "spearman",
+      "attack",
+      "high_pressure",
+      "technique",
+      "closing_form"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 2,
+    "closing_form_tier": 2,
+    "power_score": 7.4,
+    "followup_group": "spearman_mid_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_damage": 2,
+      "bonus_block": 1
+    },
+    "followup_chain_role": "finisher"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_spearman_late_strike",
+    "id": "weapon_followup_v0_1_spearman_late_strike",
+    "name": "贯潮枪",
+    "card_type": "attack",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 2,
+    "min": 0,
+    "max": 4,
+    "role": "attack",
+    "gain": 0,
+    "break": 0,
+    "damage": 8,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 8
+      }
+    ],
+    "tags": [
+      "late",
+      "spearman",
+      "attack",
+      "high_pressure",
+      "technique"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 3,
+    "closing_form_tier": 3,
+    "power_score": 8.0,
+    "followup_group": "spearman_late_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_momentum": 1
+    },
+    "followup_chain_role": "opener"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_spearman_late_guard",
+    "id": "weapon_followup_v0_1_spearman_late_guard",
+    "name": "沉肩守线",
+    "card_type": "defense",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "guard",
+    "gain": 0,
+    "break": 0,
+    "damage": 0,
+    "guard": 6,
+    "effects": [
+      {
+        "type": "gain_block",
+        "value": 6
+      }
+    ],
+    "tags": [
+      "late",
+      "spearman",
+      "defense",
+      "anchor"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "power_score": 6.0,
+    "followup_group": "spearman_late_chain",
+    "followup_trigger": "",
+    "followup_bonus": {
+      "bonus_block": 3
+    },
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_spearman_late_pressure",
+    "id": "weapon_followup_v0_1_spearman_late_pressure",
+    "name": "压营断势",
+    "card_type": "skill",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 2,
+    "min": 0,
+    "max": 4,
+    "role": "feint",
+    "gain": 0,
+    "break": 7,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "break_momentum",
+        "value": 7
+      }
+    ],
+    "tags": [
+      "late",
+      "spearman",
+      "skill",
+      "pressure",
+      "high_pressure",
+      "technique"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 3,
+    "closing_form_tier": 3,
+    "power_score": 5.6,
+    "followup_group": "spearman_late_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_momentum": 2
+    },
+    "followup_chain_role": "linker"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_spearman_late_focus",
+    "id": "weapon_followup_v0_1_spearman_late_focus",
+    "name": "逼线聚势",
+    "card_type": "skill",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "feint",
+    "gain": 3,
+    "break": 0,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "gain_momentum",
+        "value": 3
+      }
+    ],
+    "tags": [
+      "late",
+      "spearman",
+      "skill",
+      "setup",
+      "technique"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 3,
+    "closing_form_tier": 3,
+    "power_score": 2.4,
+    "followup_group": "spearman_late_chain",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_spearman_late_finisher",
+    "id": "weapon_followup_v0_1_spearman_late_finisher",
+    "name": "潮头追命",
+    "card_type": "attack",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 2,
+    "min": 0,
+    "max": 4,
+    "role": "attack",
+    "gain": 0,
+    "break": 2,
+    "damage": 6,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 6
+      },
+      {
+        "type": "break_momentum",
+        "value": 2
+      }
+    ],
+    "tags": [
+      "late",
+      "spearman",
+      "attack",
+      "high_pressure",
+      "technique",
+      "closing_form"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 3,
+    "closing_form_tier": 3,
+    "power_score": 7.6,
+    "followup_group": "spearman_late_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_damage": 3,
+      "bonus_block": 2
+    },
+    "followup_chain_role": "finisher"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_spearman_boss_strike",
+    "id": "weapon_followup_v0_1_spearman_boss_strike",
+    "name": "断潮重枪",
+    "card_type": "attack",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 2,
+    "min": 0,
+    "max": 4,
+    "role": "attack",
+    "gain": 0,
+    "break": 0,
+    "damage": 8,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 8
+      }
+    ],
+    "tags": [
+      "boss",
+      "spearman",
+      "attack",
+      "boss_tag",
+      "high_pressure",
+      "technique"
+    ],
+    "difficulty_tier": "boss",
+    "required_wujing": 4,
+    "closing_form_tier": 4,
+    "power_score": 8.0,
+    "followup_group": "spearman_boss_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_momentum": 1
+    },
+    "followup_chain_role": "opener"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_spearman_boss_guard",
+    "id": "weapon_followup_v0_1_spearman_boss_guard",
+    "name": "大架封线",
+    "card_type": "defense",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "guard",
+    "gain": 0,
+    "break": 0,
+    "damage": 0,
+    "guard": 7,
+    "effects": [
+      {
+        "type": "gain_block",
+        "value": 7
+      }
+    ],
+    "tags": [
+      "boss",
+      "spearman",
+      "defense",
+      "boss_tag",
+      "anchor"
+    ],
+    "difficulty_tier": "boss",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "power_score": 7.0,
+    "followup_group": "spearman_boss_chain",
+    "followup_trigger": "",
+    "followup_bonus": {
+      "bonus_block": 4
+    },
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_spearman_boss_pressure",
+    "id": "weapon_followup_v0_1_spearman_boss_pressure",
+    "name": "锁营夺势",
+    "card_type": "skill",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 2,
+    "min": 0,
+    "max": 4,
+    "role": "feint",
+    "gain": 0,
+    "break": 8,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "break_momentum",
+        "value": 8
+      }
+    ],
+    "tags": [
+      "boss",
+      "spearman",
+      "skill",
+      "boss_tag",
+      "high_pressure",
+      "technique"
+    ],
+    "difficulty_tier": "boss",
+    "required_wujing": 4,
+    "closing_form_tier": 4,
+    "power_score": 6.4,
+    "followup_group": "spearman_boss_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_momentum": 2
+    },
+    "followup_chain_role": "linker"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_spearman_boss_focus",
+    "id": "weapon_followup_v0_1_spearman_boss_focus",
+    "name": "裂阵聚势",
+    "card_type": "skill",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "feint",
+    "gain": 4,
+    "break": 0,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "gain_momentum",
+        "value": 4
+      }
+    ],
+    "tags": [
+      "boss",
+      "spearman",
+      "skill",
+      "boss_tag",
+      "setup",
+      "technique"
+    ],
+    "difficulty_tier": "boss",
+    "required_wujing": 4,
+    "closing_form_tier": 4,
+    "power_score": 3.2,
+    "followup_group": "spearman_boss_chain",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_spearman_boss_finisher",
+    "id": "weapon_followup_v0_1_spearman_boss_finisher",
+    "name": "贯心落潮",
+    "card_type": "attack",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 2,
+    "min": 0,
+    "max": 4,
+    "role": "attack",
+    "gain": 1,
+    "break": 0,
+    "damage": 7,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 7
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      }
+    ],
+    "tags": [
+      "boss",
+      "spearman",
+      "attack",
+      "boss_tag",
+      "high_pressure",
+      "technique",
+      "closing_form"
+    ],
+    "difficulty_tier": "boss",
+    "required_wujing": 4,
+    "closing_form_tier": 4,
+    "power_score": 7.8,
+    "followup_group": "spearman_boss_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_damage": 4,
+      "bonus_block": 3
+    },
+    "followup_chain_role": "finisher"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_blademaster_early_strike",
+    "id": "weapon_followup_v0_1_blademaster_early_strike",
+    "name": "贴步快斩",
+    "card_type": "attack",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "attack",
+    "gain": 0,
+    "break": 0,
+    "damage": 5,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 5
+      }
+    ],
+    "tags": [
+      "early",
+      "blademaster",
+      "attack",
+      "measured",
+      "technique"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "power_score": 5.0,
+    "followup_group": "blademaster_early_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_momentum": 1
+    },
+    "followup_chain_role": "opener"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_blademaster_early_guard",
+    "id": "weapon_followup_v0_1_blademaster_early_guard",
+    "name": "藏锋格",
+    "card_type": "defense",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "guard",
+    "gain": 0,
+    "break": 0,
+    "damage": 0,
+    "guard": 4,
+    "effects": [
+      {
+        "type": "gain_block",
+        "value": 4
+      }
+    ],
+    "tags": [
+      "early",
+      "blademaster",
+      "defense",
+      "anchor"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "power_score": 4.0,
+    "followup_group": "blademaster_early_chain",
+    "followup_trigger": "",
+    "followup_bonus": {
+      "bonus_block": 1
+    },
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_blademaster_early_pressure",
+    "id": "weapon_followup_v0_1_blademaster_early_pressure",
+    "name": "逼身断势",
+    "card_type": "skill",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "feint",
+    "gain": 0,
+    "break": 3,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "break_momentum",
+        "value": 3
+      }
+    ],
+    "tags": [
+      "early",
+      "blademaster",
+      "skill",
+      "pressure",
+      "technique"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "power_score": 2.4,
+    "followup_group": "blademaster_early_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_momentum": 1
+    },
+    "followup_chain_role": "linker"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_blademaster_early_focus",
+    "id": "weapon_followup_v0_1_blademaster_early_focus",
+    "name": "短促换气",
+    "card_type": "skill",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "feint",
+    "gain": 3,
+    "break": 0,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "gain_momentum",
+        "value": 3
+      }
+    ],
+    "tags": [
+      "early",
+      "blademaster",
+      "skill",
+      "setup",
+      "technique"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "power_score": 2.4,
+    "followup_group": "blademaster_early_chain",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_blademaster_early_finisher",
+    "id": "weapon_followup_v0_1_blademaster_early_finisher",
+    "name": "贴身追斩",
+    "card_type": "attack",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 2,
+    "min": 0,
+    "max": 2,
+    "role": "attack",
+    "gain": 1,
+    "break": 2,
+    "damage": 4,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 4
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 2
+      }
+    ],
+    "tags": [
+      "early",
+      "blademaster",
+      "attack",
+      "high_pressure",
+      "technique",
+      "closing_form"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "power_score": 6.4,
+    "followup_group": "blademaster_early_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_damage": 1,
+      "bonus_block": 0
+    },
+    "followup_chain_role": "finisher"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_blademaster_mid_strike",
+    "id": "weapon_followup_v0_1_blademaster_mid_strike",
+    "name": "追影斩",
+    "card_type": "attack",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "attack",
+    "gain": 0,
+    "break": 0,
+    "damage": 6,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 6
+      }
+    ],
+    "tags": [
+      "mid",
+      "blademaster",
+      "attack",
+      "measured",
+      "technique"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 2,
+    "closing_form_tier": 2,
+    "power_score": 6.0,
+    "followup_group": "blademaster_mid_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_momentum": 1
+    },
+    "followup_chain_role": "opener"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_blademaster_mid_guard",
+    "id": "weapon_followup_v0_1_blademaster_mid_guard",
+    "name": "折腕收锋",
+    "card_type": "defense",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "guard",
+    "gain": 0,
+    "break": 0,
+    "damage": 0,
+    "guard": 5,
+    "effects": [
+      {
+        "type": "gain_block",
+        "value": 5
+      }
+    ],
+    "tags": [
+      "mid",
+      "blademaster",
+      "defense",
+      "anchor"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "power_score": 5.0,
+    "followup_group": "blademaster_mid_chain",
+    "followup_trigger": "",
+    "followup_bonus": {
+      "bonus_block": 2
+    },
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_blademaster_mid_pressure",
+    "id": "weapon_followup_v0_1_blademaster_mid_pressure",
+    "name": "贴身压势",
+    "card_type": "skill",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "feint",
+    "gain": 0,
+    "break": 4,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "break_momentum",
+        "value": 4
+      }
+    ],
+    "tags": [
+      "mid",
+      "blademaster",
+      "skill",
+      "pressure",
+      "technique"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 2,
+    "closing_form_tier": 2,
+    "power_score": 3.2,
+    "followup_group": "blademaster_mid_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_momentum": 2
+    },
+    "followup_chain_role": "linker"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_blademaster_mid_focus",
+    "id": "weapon_followup_v0_1_blademaster_mid_focus",
+    "name": "步内聚势",
+    "card_type": "skill",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "feint",
+    "gain": 3,
+    "break": 0,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "gain_momentum",
+        "value": 3
+      }
+    ],
+    "tags": [
+      "mid",
+      "blademaster",
+      "skill",
+      "setup",
+      "technique"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 2,
+    "closing_form_tier": 2,
+    "power_score": 2.4,
+    "followup_group": "blademaster_mid_chain",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_blademaster_mid_finisher",
+    "id": "weapon_followup_v0_1_blademaster_mid_finisher",
+    "name": "欺身落刃",
+    "card_type": "attack",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 2,
+    "min": 0,
+    "max": 2,
+    "role": "attack",
+    "gain": 1,
+    "break": 2,
+    "damage": 5,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 5
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 2
+      }
+    ],
+    "tags": [
+      "mid",
+      "blademaster",
+      "attack",
+      "high_pressure",
+      "technique",
+      "closing_form"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 2,
+    "closing_form_tier": 2,
+    "power_score": 7.4,
+    "followup_group": "blademaster_mid_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_damage": 2,
+      "bonus_block": 1
+    },
+    "followup_chain_role": "finisher"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_blademaster_late_strike",
+    "id": "weapon_followup_v0_1_blademaster_late_strike",
+    "name": "断潮重斩",
+    "card_type": "attack",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 2,
+    "min": 0,
+    "max": 2,
+    "role": "attack",
+    "gain": 0,
+    "break": 0,
+    "damage": 8,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 8
+      }
+    ],
+    "tags": [
+      "late",
+      "blademaster",
+      "attack",
+      "high_pressure",
+      "technique"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 3,
+    "closing_form_tier": 3,
+    "power_score": 8.0,
+    "followup_group": "blademaster_late_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_momentum": 1
+    },
+    "followup_chain_role": "opener"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_blademaster_late_guard",
+    "id": "weapon_followup_v0_1_blademaster_late_guard",
+    "name": "沉锋稳架",
+    "card_type": "defense",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "guard",
+    "gain": 0,
+    "break": 0,
+    "damage": 0,
+    "guard": 6,
+    "effects": [
+      {
+        "type": "gain_block",
+        "value": 6
+      }
+    ],
+    "tags": [
+      "late",
+      "blademaster",
+      "defense",
+      "anchor"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "power_score": 6.0,
+    "followup_group": "blademaster_late_chain",
+    "followup_trigger": "",
+    "followup_bonus": {
+      "bonus_block": 3
+    },
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_blademaster_late_pressure",
+    "id": "weapon_followup_v0_1_blademaster_late_pressure",
+    "name": "逼命压锋",
+    "card_type": "skill",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 2,
+    "min": 0,
+    "max": 2,
+    "role": "feint",
+    "gain": 0,
+    "break": 7,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "break_momentum",
+        "value": 7
+      }
+    ],
+    "tags": [
+      "late",
+      "blademaster",
+      "skill",
+      "pressure",
+      "high_pressure",
+      "technique"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 3,
+    "closing_form_tier": 3,
+    "power_score": 5.6,
+    "followup_group": "blademaster_late_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_momentum": 2
+    },
+    "followup_chain_role": "linker"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_blademaster_late_focus",
+    "id": "weapon_followup_v0_1_blademaster_late_focus",
+    "name": "近身蓄势",
+    "card_type": "skill",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "feint",
+    "gain": 3,
+    "break": 0,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "gain_momentum",
+        "value": 3
+      }
+    ],
+    "tags": [
+      "late",
+      "blademaster",
+      "skill",
+      "setup",
+      "technique"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 3,
+    "closing_form_tier": 3,
+    "power_score": 2.4,
+    "followup_group": "blademaster_late_chain",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_blademaster_late_finisher",
+    "id": "weapon_followup_v0_1_blademaster_late_finisher",
+    "name": "断潮夺命",
+    "card_type": "attack",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 2,
+    "min": 0,
+    "max": 2,
+    "role": "attack",
+    "gain": 0,
+    "break": 2,
+    "damage": 6,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 6
+      },
+      {
+        "type": "break_momentum",
+        "value": 2
+      }
+    ],
+    "tags": [
+      "late",
+      "blademaster",
+      "attack",
+      "high_pressure",
+      "technique",
+      "closing_form"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 3,
+    "closing_form_tier": 3,
+    "power_score": 7.6,
+    "followup_group": "blademaster_late_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_damage": 3,
+      "bonus_block": 2
+    },
+    "followup_chain_role": "finisher"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_blademaster_boss_strike",
+    "id": "weapon_followup_v0_1_blademaster_boss_strike",
+    "name": "裂波断首",
+    "card_type": "attack",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 2,
+    "min": 0,
+    "max": 2,
+    "role": "attack",
+    "gain": 0,
+    "break": 0,
+    "damage": 8,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 8
+      }
+    ],
+    "tags": [
+      "boss",
+      "blademaster",
+      "attack",
+      "boss_tag",
+      "high_pressure",
+      "technique"
+    ],
+    "difficulty_tier": "boss",
+    "required_wujing": 4,
+    "closing_form_tier": 4,
+    "power_score": 8.0,
+    "followup_group": "blademaster_boss_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_momentum": 1
+    },
+    "followup_chain_role": "opener"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_blademaster_boss_guard",
+    "id": "weapon_followup_v0_1_blademaster_boss_guard",
+    "name": "沉锋锁门",
+    "card_type": "defense",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "guard",
+    "gain": 0,
+    "break": 0,
+    "damage": 0,
+    "guard": 7,
+    "effects": [
+      {
+        "type": "gain_block",
+        "value": 7
+      }
+    ],
+    "tags": [
+      "boss",
+      "blademaster",
+      "defense",
+      "boss_tag",
+      "anchor"
+    ],
+    "difficulty_tier": "boss",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "power_score": 7.0,
+    "followup_group": "blademaster_boss_chain",
+    "followup_trigger": "",
+    "followup_bonus": {
+      "bonus_block": 4
+    },
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_blademaster_boss_pressure",
+    "id": "weapon_followup_v0_1_blademaster_boss_pressure",
+    "name": "逼宫断势",
+    "card_type": "skill",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 2,
+    "min": 0,
+    "max": 2,
+    "role": "feint",
+    "gain": 0,
+    "break": 8,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "break_momentum",
+        "value": 8
+      }
+    ],
+    "tags": [
+      "boss",
+      "blademaster",
+      "skill",
+      "boss_tag",
+      "high_pressure",
+      "technique"
+    ],
+    "difficulty_tier": "boss",
+    "required_wujing": 4,
+    "closing_form_tier": 4,
+    "power_score": 6.4,
+    "followup_group": "blademaster_boss_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_momentum": 2
+    },
+    "followup_chain_role": "linker"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_blademaster_boss_focus",
+    "id": "weapon_followup_v0_1_blademaster_boss_focus",
+    "name": "血潮聚锋",
+    "card_type": "skill",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "feint",
+    "gain": 4,
+    "break": 0,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "gain_momentum",
+        "value": 4
+      }
+    ],
+    "tags": [
+      "boss",
+      "blademaster",
+      "skill",
+      "boss_tag",
+      "setup",
+      "technique"
+    ],
+    "difficulty_tier": "boss",
+    "required_wujing": 4,
+    "closing_form_tier": 4,
+    "power_score": 3.2,
+    "followup_group": "blademaster_boss_chain",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+    "card_id": "weapon_followup_v0_1_blademaster_boss_finisher",
+    "id": "weapon_followup_v0_1_blademaster_boss_finisher",
+    "name": "追潮绝斩",
+    "card_type": "attack",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 2,
+    "min": 0,
+    "max": 2,
+    "role": "attack",
+    "gain": 1,
+    "break": 0,
+    "damage": 7,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 7
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      }
+    ],
+    "tags": [
+      "boss",
+      "blademaster",
+      "attack",
+      "boss_tag",
+      "high_pressure",
+      "technique",
+      "closing_form"
+    ],
+    "difficulty_tier": "boss",
+    "required_wujing": 4,
+    "closing_form_tier": 4,
+    "power_score": 7.8,
+    "followup_group": "blademaster_boss_chain",
+    "followup_trigger": "same_weapon_previous_card",
+    "followup_bonus": {
+      "bonus_damage": 4,
+      "bonus_block": 3
+    },
+    "followup_chain_role": "finisher"
+  }
+]

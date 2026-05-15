@@ -1,0 +1,14 @@
+{
+  "generated_at": "2026-05-13T00:45:36.253099+00:00",
+  "release_candidate_valid": true,
+  "set_current_ready": true,
+  "formal_entry_uses_new_current": true,
+  "generated_loadout_count": 12,
+  "expected_encounter_count": 12,
+  "fallback_loadout_count": 0,
+  "reward_coverage_complete": true,
+  "active_profile_matches_current_release": true,
+  "current_profile_id": "weapon_followup_v0_1",
+  "current_content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+  "smoke_pass": true
+}

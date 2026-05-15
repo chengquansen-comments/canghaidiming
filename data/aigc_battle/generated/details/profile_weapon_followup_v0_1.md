@@ -2,7 +2,7 @@
 
 - display_name: 武器追击机制
 - version: 0.1.0
-- active_pack_id: weapon_followup_balance_release_007
+- active_pack_id: weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005
 - target_sequence_id: formal_sequence_mvp_v1
 - replacement_mode: full_sequence
 - runtime_primitives: weapon_followup
@@ -16,6 +16,8 @@
 
 ## content packs
 - weapon_followup_v0_1_formal_sequence_pack_001 | mode=profile_root | active=false | export=true
+- r9_bossrush_candidate_pack_001 | mode=profile_pack_dir | active=false | export=true
+- r9_fast_candidate_pack_001 | mode=profile_pack_dir | active=false | export=true
 - snapshot_pack_id_required | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_ai_candidate_pack_001 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_ai_candidate_pack_probe_001 | mode=profile_pack_dir | active=false | export=true
@@ -26,14 +28,39 @@
 - weapon_followup_balance_release_004 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_balance_release_005 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_balance_release_006 | mode=profile_pack_dir | active=false | export=true
-- weapon_followup_balance_release_007 | mode=profile_pack_dir | active=true | export=true
+- weapon_followup_balance_release_007 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_eval_rebuild_001 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_eval_rebuild_002 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_eval_rebuild_003 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_real_rebuild_001 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__bossrush_9_v1__hardened_001 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__bossrush_9_v1__hardened_002 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__bossrush_9_v1__hardened_003 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__bossrush_9_v1__hardened_004 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__bossrush_9_v1__hardened_005 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__bossrush_9_v1__hardened_006 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__bossrush_9_v1__hardened_007 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_v0_1__bossrush_9_v1__matrix_001 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_v0_1__bossrush_9_v1__portfolio_001 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_v0_1__elite_heavy_15_v1__portfolio_001 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_v0_1__formal_sequence_12_fast_v1__baseline_001 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_001 | mode=profile_pack_dir | active=false | export=false
+- weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_002 | mode=profile_pack_dir | active=false | export=false
+- weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_003 | mode=profile_pack_dir | active=false | export=false
+- weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_004 | mode=profile_pack_dir | active=false | export=false
+- weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_005 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_006 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_007 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_008 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_009 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_010 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_011 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_012 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_013 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001 | mode=profile_pack_dir | active=false | export=true
 - weapon_followup_v0_1__formal_sequence_12_fast_v1__portfolio_001 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_001 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_002 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_003 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_004 | mode=profile_pack_dir | active=false | export=true
+- weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005 | mode=profile_pack_dir | active=true | export=true

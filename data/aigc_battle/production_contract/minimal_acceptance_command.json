@@ -1,0 +1,28 @@
+{
+  "minimal_acceptance_command_ready": true,
+  "command_list": [
+    "python3 tools/aigc_battle/build_pack_resolver.py",
+    "python3 tools/aigc_battle/aigc_acceptance_run.py --profile weapon_followup_v0_1 --pack weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005 --samples 1 --allow-current",
+    "python3 tools/aigc_battle/aigc_release_switch_smoke_probe.py --profile weapon_followup_v0_1 --pack weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+    "python3 tools/aigc_battle/aigc_preview_restore_probe.py",
+    "python3 tools/aigc_battle/aigc_candidate_promotion_probe.py",
+    "python3 tools/aigc_battle/aigc_release_rollback_probe.py",
+    "git diff --check"
+  ],
+  "must_run_serially": true,
+  "forbids_parallel": true,
+  "expected_reports": [
+    "data/aigc_battle/generated/acceptance/latest_acceptance_report.json",
+    "data/aigc_battle/generated/release_switch/release_switch_smoke_report.json",
+    "data/aigc_battle/generated/promotion/candidate_promotion_probe_report.json",
+    "data/aigc_battle/generated/release_switch/release_rollback_probe_report.json"
+  ],
+  "pass_conditions": [
+    "current release acceptance pass",
+    "current release smoke pass",
+    "preview restore pass",
+    "promotion negative cases pass",
+    "release rollback/fallback dry-run pass",
+    "git diff --check pass"
+  ]
+}

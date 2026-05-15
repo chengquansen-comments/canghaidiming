@@ -1,0 +1,22 @@
+{
+  "generated_at": "2026-05-12T09:33:46.210635+00:00",
+  "preview_runtime_control_ready": true,
+  "preview_channel_ready": true,
+  "previewable_pack_count": 55,
+  "selected_preview_profile_id": "weapon_followup_v0_1",
+  "selected_preview_content_pack_id": "r9_fast_candidate_pack_001",
+  "preview_pack_resolved_by_pack_resolver": true,
+  "preview_switch_ready": true,
+  "preview_formal_entry_smoke_pass": true,
+  "preview_expected_encounter_count": 12,
+  "preview_generated_loadout_count": 12,
+  "preview_fallback_loadout_count": 0,
+  "preview_reward_coverage_complete": true,
+  "restore_current_ready": true,
+  "preview_failure_restore_ready": true,
+  "preview_history_ready": true,
+  "dashboard_preview_api_ready": true,
+  "current_release_unchanged": true,
+  "active_profile_matches_current_after_restore": true,
+  "probe_pass": true
+}

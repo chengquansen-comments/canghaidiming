@@ -82,6 +82,69 @@ def main() -> int:
                 'mechanic_trigger_rate': float(pack_review.get('evaluation_summary', {}).get('runtime_primitive_trigger_rate', 0)),
                 'actionability_score': int(pack_review.get('evaluation_summary', {}).get('actionability_score', 0)),
                 'needs_rebuild': bool(pack_review.get('evaluation_summary', {}).get('needs_rebuild', False)),
+                'playable_hardening': bool(pack_review.get('playable_hardening_summary', {}).get('playable_hardening', False)),
+                'hardening_target': str(pack_review.get('playable_hardening_summary', {}).get('hardening_target', '')),
+                'target_gate_pass': bool(pack_review.get('playable_hardening_summary', {}).get('target_gate_pass', False)),
+                'smoke_pass': bool(pack_review.get('playable_hardening_summary', {}).get('smoke_pass', False)),
+                'ai_studio_candidate_pack': bool(pack_review.get('ai_studio_summary', {}).get('ai_studio_candidate_pack', False)),
+                'candidate_batch_id': str(pack_review.get('ai_studio_summary', {}).get('candidate_batch_id', '')),
+                'ai_studio_variant_type': str(pack_review.get('ai_studio_summary', {}).get('ai_studio_variant_type', '')),
+                'previewable': bool(pack_review.get('preview_summary', {}).get('previewable', False)),
+                'preview_source_channel': str(pack_review.get('preview_summary', {}).get('preview_source_channel', '')),
+                'preview_status': str(pack_review.get('preview_summary', {}).get('preview_status', '')),
+                'last_preview_smoke_pass': bool(pack_review.get('preview_summary', {}).get('last_preview_smoke_pass', False)),
+                'latest_acceptance_pass': bool(pack_review.get('acceptance_summary', {}).get('latest_acceptance_pass', False)),
+                'latest_acceptance_risk_level': str(pack_review.get('acceptance_summary', {}).get('latest_acceptance_risk_level', '')),
+                'latest_acceptance_recommendation': str(pack_review.get('acceptance_summary', {}).get('latest_acceptance_recommendation', '')),
+                'acceptance_required_before_candidate': bool(pack_review.get('acceptance_summary', {}).get('acceptance_required_before_candidate', True)),
+                'human_review_status': str(pack_review.get('promotion_summary', {}).get('human_review_status', '')),
+                'promotion_allowed': bool(pack_review.get('promotion_summary', {}).get('promotion_allowed', False)),
+                'release_candidate_status': bool(pack_review.get('promotion_summary', {}).get('release_candidate_status', False)),
+                'acceptance_required_before_promotion': bool(pack_review.get('promotion_summary', {}).get('acceptance_required_before_promotion', True)),
+                'human_review_required_before_promotion': bool(pack_review.get('promotion_summary', {}).get('human_review_required_before_promotion', True)),
+                'release_switch_allowed': bool(pack_review.get('promotion_summary', {}).get('release_switch_allowed', False)),
+                'release_candidate_valid': bool(pack_review.get('promotion_summary', {}).get('release_candidate_valid', False)),
+                'can_set_current': bool(pack_review.get('promotion_summary', {}).get('can_set_current', False)),
+                'can_rollback': bool(pack_review.get('promotion_summary', {}).get('can_rollback', False)),
+                'current_release_marker': bool(pack_review.get('promotion_summary', {}).get('current_release_marker', False)),
+                'previous_current_marker': bool(pack_review.get('promotion_summary', {}).get('previous_current_marker', False)),
+                'fallback_release_marker': bool(pack_review.get('promotion_summary', {}).get('fallback_release_marker', False)),
+                'resolver_channel_consistency_valid': bool(pack_review.get('promotion_summary', {}).get('resolver_channel_consistency_valid', False)),
+                'production_contract_ready': bool(pack_review.get('production_contract_summary', {}).get('production_contract_ready', False)),
+                'schema_manifest_path': str(pack_review.get('production_contract_summary', {}).get('schema_manifest_path', '')),
+                'generated_file_policy_path': str(pack_review.get('production_contract_summary', {}).get('generated_file_policy_path', '')),
+                'minimal_acceptance_command_path': str(pack_review.get('production_contract_summary', {}).get('minimal_acceptance_command_path', '')),
+                'deprecated_probe_inventory_path': str(pack_review.get('production_contract_summary', {}).get('deprecated_probe_inventory_path', '')),
+                'production_contract_doc_path': str(pack_review.get('production_contract_summary', {}).get('production_contract_doc_path', '')),
+                'production_closeout_ready': bool(pack_review.get('production_closeout_summary', {}).get('production_closeout_ready', False)),
+                'current_landed_pack': str(pack_review.get('production_closeout_summary', {}).get('current_landed_pack', '')),
+                'current_sequence_template': str(pack_review.get('production_closeout_summary', {}).get('current_sequence_template', '')),
+                'current_encounter_count': int(pack_review.get('production_closeout_summary', {}).get('current_encounter_count', 0) or 0),
+                'previous_current_pack': str(pack_review.get('production_closeout_summary', {}).get('previous_current_pack', '')),
+                'closeout_report_path': str(pack_review.get('production_closeout_summary', {}).get('closeout_report_path', '')),
+                'cleanup_report_path': str(pack_review.get('production_closeout_summary', {}).get('cleanup_report_path', '')),
+                'final_acceptance_status': str(pack_review.get('production_closeout_summary', {}).get('final_acceptance_status', '')),
+                'display_status': str(pack_review.get('dashboard_display_summary', {}).get('display_status', 'review')),
+                'display_status_rank': int(pack_review.get('dashboard_display_summary', {}).get('display_status_rank', 999) or 999),
+                'display_badge': str(pack_review.get('dashboard_display_summary', {}).get('display_badge', '')),
+                'display_reason': str(pack_review.get('dashboard_display_summary', {}).get('display_reason', '')),
+                'primary_action_hint': str(pack_review.get('dashboard_display_summary', {}).get('primary_action_hint', '')),
+                'risk_level': str(pack_review.get('dashboard_display_summary', {}).get('risk_level', '')),
+                'blocking_reasons': pack_review.get('dashboard_display_summary', {}).get('blocking_reasons', []),
+                'warning_reasons': pack_review.get('dashboard_display_summary', {}).get('warning_reasons', []),
+                'release_drill_pack': bool(pack_review.get('release_drill_summary', {}).get('release_drill_pack', False)),
+                'release_drill_source_pack_id': str(pack_review.get('release_drill_summary', {}).get('release_drill_source_pack_id', '')),
+                'release_drill_acceptance_status': str(pack_review.get('release_drill_summary', {}).get('release_drill_acceptance_status', '')),
+                'release_drill_promotion_status': str(pack_review.get('release_drill_summary', {}).get('release_drill_promotion_status', '')),
+                'release_drill_dry_run_switch_status': bool(pack_review.get('release_drill_summary', {}).get('release_drill_dry_run_switch_status', False)),
+                'release_drill_report_path': str(pack_review.get('release_drill_summary', {}).get('release_drill_report_path', '')),
+                'release_landing_current': bool(pack_review.get('release_landing_summary', {}).get('release_landing_current', False)),
+                'landed_from_release_drill': bool(pack_review.get('release_landing_summary', {}).get('landed_from_release_drill', False)),
+                'previous_current_pack_id': str(pack_review.get('release_landing_summary', {}).get('previous_current_pack_id', '')),
+                'new_current_pack_id': str(pack_review.get('release_landing_summary', {}).get('new_current_pack_id', '')),
+                'release_landing_report_path': str(pack_review.get('release_landing_summary', {}).get('release_landing_report_path', '')),
+                'gameplay_entry_verified': bool(pack_review.get('release_landing_summary', {}).get('gameplay_entry_verified', False)),
+                'warning_current': bool(pack_review.get('release_landing_summary', {}).get('warning_current', False)),
             })
             compare_rows.append(build_compare_row(pack_review))
             all_risks.extend(pack_review['all_risks'])
@@ -186,6 +249,14 @@ def build_pack_review(index_payload: dict[str, Any], profile_id: str, pack_entry
     evaluation = detail.get('evaluation_summary', {}) if isinstance(detail.get('evaluation_summary', {}), dict) else {}
     rebuild_recommendation_summary = detail.get('rebuild_recommendation_summary', {}) if isinstance(detail.get('rebuild_recommendation_summary', {}), dict) else {}
     balance_release_summary = detail.get('balance_release_summary', {}) if isinstance(detail.get('balance_release_summary', {}), dict) else {}
+    playable_hardening_summary = detail.get('playable_hardening_summary', {}) if isinstance(detail.get('playable_hardening_summary', {}), dict) else {}
+    ai_studio_summary = detail.get('ai_studio_summary', {}) if isinstance(detail.get('ai_studio_summary', {}), dict) else {}
+    preview_summary = detail.get('preview_summary', {}) if isinstance(detail.get('preview_summary', {}), dict) else {}
+    acceptance_summary = detail.get('acceptance_summary', {}) if isinstance(detail.get('acceptance_summary', {}), dict) else {}
+    promotion_summary = detail.get('promotion_summary', {}) if isinstance(detail.get('promotion_summary', {}), dict) else {}
+    production_contract_summary = detail.get('production_contract_summary', {}) if isinstance(detail.get('production_contract_summary', {}), dict) else {}
+    release_drill_summary = detail.get('release_drill_summary', {}) if isinstance(detail.get('release_drill_summary', {}), dict) else {}
+    release_landing_summary = detail.get('release_landing_summary', {}) if isinstance(detail.get('release_landing_summary', {}), dict) else {}
     cards = detail.get('card_pool_detail', [])
     sequences = detail.get('sequence_detail', [])
 
@@ -388,7 +459,7 @@ def build_pack_review(index_payload: dict[str, Any], profile_id: str, pack_entry
     risk_summary = summarize_risks(all_risks)
     health_summary = build_health_summary(detail, risk_summary)
     review_notes = load_review_notes(profile_id, content_pack_id)
-    release_status = release_lib.get_release_status(profile_id, content_pack_id)
+    release_status = safe_release_status(profile_id, content_pack_id)
     active_history_summary = build_active_history_summary(profile_id, content_pack_id)
     factory_log_summary = build_factory_log_summary(profile_id, content_pack_id)
     run_pacing_view = [
@@ -479,6 +550,14 @@ def build_pack_review(index_payload: dict[str, Any], profile_id: str, pack_entry
         'needs_balance_before_release': bool(detail.get('needs_balance_before_release', False)),
         'ready_for_candidate_review': bool(detail.get('ready_for_candidate_review', False)),
         'balance_release_summary': balance_release_summary,
+        'playable_hardening_summary': playable_hardening_summary,
+        'ai_studio_summary': ai_studio_summary,
+        'release_drill_summary': release_drill_summary,
+        'release_landing_summary': release_landing_summary,
+        'preview_summary': preview_summary,
+        'acceptance_summary': acceptance_summary,
+        'promotion_summary': promotion_summary,
+        'production_contract_summary': production_contract_summary,
         'review_report_path': to_relative(review_report_md_path(profile_id, content_pack_id)),
         'review_notes_summary': review_notes,
         'review_status': review_notes.get('review_status', 'pending'),
@@ -739,6 +818,69 @@ def build_compare_row(pack_review: dict[str, Any]) -> dict[str, Any]:
         'template_release_strategy': pack_review.get('template_release_strategy', {}),
         'needs_balance_before_release': bool(pack_review.get('needs_balance_before_release', False)),
         'ready_for_candidate_review': bool(pack_review.get('ready_for_candidate_review', False)),
+        'ai_studio_candidate_pack': bool(pack_review.get('ai_studio_summary', {}).get('ai_studio_candidate_pack', False)),
+        'candidate_batch_id': str(pack_review.get('ai_studio_summary', {}).get('candidate_batch_id', '')),
+        'ai_studio_variant_type': str(pack_review.get('ai_studio_summary', {}).get('ai_studio_variant_type', '')),
+        'candidate_quality_summary': pack_review.get('ai_studio_summary', {}).get('candidate_quality_summary', {}),
+        'candidate_pack_compare_summary': pack_review.get('ai_studio_summary', {}).get('candidate_pack_compare_summary', {}),
+        'previewable': bool(pack_review.get('preview_summary', {}).get('previewable', False)),
+        'preview_source_channel': str(pack_review.get('preview_summary', {}).get('preview_source_channel', '')),
+        'preview_status': str(pack_review.get('preview_summary', {}).get('preview_status', '')),
+        'last_preview_smoke_pass': bool(pack_review.get('preview_summary', {}).get('last_preview_smoke_pass', False)),
+        'latest_acceptance_pass': bool(pack_review.get('acceptance_summary', {}).get('latest_acceptance_pass', False)),
+        'latest_acceptance_risk_level': str(pack_review.get('acceptance_summary', {}).get('latest_acceptance_risk_level', '')),
+        'latest_acceptance_recommendation': str(pack_review.get('acceptance_summary', {}).get('latest_acceptance_recommendation', '')),
+        'acceptance_required_before_candidate': bool(pack_review.get('acceptance_summary', {}).get('acceptance_required_before_candidate', True)),
+        'human_review_status': str(pack_review.get('promotion_summary', {}).get('human_review_status', '')),
+        'human_review_note_path': str(pack_review.get('promotion_summary', {}).get('human_review_note_path', '')),
+        'latest_promotion_report_path': str(pack_review.get('promotion_summary', {}).get('latest_promotion_report_path', '')),
+        'promotion_allowed': bool(pack_review.get('promotion_summary', {}).get('promotion_allowed', False)),
+        'release_candidate_status': bool(pack_review.get('promotion_summary', {}).get('release_candidate_status', False)),
+        'acceptance_required_before_promotion': bool(pack_review.get('promotion_summary', {}).get('acceptance_required_before_promotion', True)),
+        'human_review_required_before_promotion': bool(pack_review.get('promotion_summary', {}).get('human_review_required_before_promotion', True)),
+        'release_switch_allowed': bool(pack_review.get('promotion_summary', {}).get('release_switch_allowed', False)),
+        'release_candidate_valid': bool(pack_review.get('promotion_summary', {}).get('release_candidate_valid', False)),
+        'can_set_current': bool(pack_review.get('promotion_summary', {}).get('can_set_current', False)),
+        'can_rollback': bool(pack_review.get('promotion_summary', {}).get('can_rollback', False)),
+        'current_release_marker': bool(pack_review.get('promotion_summary', {}).get('current_release_marker', False)),
+        'previous_current_marker': bool(pack_review.get('promotion_summary', {}).get('previous_current_marker', False)),
+        'fallback_release_marker': bool(pack_review.get('promotion_summary', {}).get('fallback_release_marker', False)),
+        'resolver_channel_consistency_valid': bool(pack_review.get('promotion_summary', {}).get('resolver_channel_consistency_valid', False)),
+        'production_contract_ready': bool(pack_review.get('production_contract_summary', {}).get('production_contract_ready', False)),
+        'schema_manifest_path': str(pack_review.get('production_contract_summary', {}).get('schema_manifest_path', '')),
+        'generated_file_policy_path': str(pack_review.get('production_contract_summary', {}).get('generated_file_policy_path', '')),
+        'minimal_acceptance_command_path': str(pack_review.get('production_contract_summary', {}).get('minimal_acceptance_command_path', '')),
+        'deprecated_probe_inventory_path': str(pack_review.get('production_contract_summary', {}).get('deprecated_probe_inventory_path', '')),
+        'production_contract_doc_path': str(pack_review.get('production_contract_summary', {}).get('production_contract_doc_path', '')),
+        'production_closeout_ready': bool(pack_review.get('production_closeout_summary', {}).get('production_closeout_ready', False)),
+        'current_landed_pack': str(pack_review.get('production_closeout_summary', {}).get('current_landed_pack', '')),
+        'current_sequence_template': str(pack_review.get('production_closeout_summary', {}).get('current_sequence_template', '')),
+        'current_encounter_count': int(pack_review.get('production_closeout_summary', {}).get('current_encounter_count', 0) or 0),
+        'previous_current_pack': str(pack_review.get('production_closeout_summary', {}).get('previous_current_pack', '')),
+        'closeout_report_path': str(pack_review.get('production_closeout_summary', {}).get('closeout_report_path', '')),
+        'cleanup_report_path': str(pack_review.get('production_closeout_summary', {}).get('cleanup_report_path', '')),
+        'final_acceptance_status': str(pack_review.get('production_closeout_summary', {}).get('final_acceptance_status', '')),
+        'display_status': str(pack_review.get('dashboard_display_summary', {}).get('display_status', 'review')),
+        'display_status_rank': int(pack_review.get('dashboard_display_summary', {}).get('display_status_rank', 999) or 999),
+        'display_badge': str(pack_review.get('dashboard_display_summary', {}).get('display_badge', '')),
+        'display_reason': str(pack_review.get('dashboard_display_summary', {}).get('display_reason', '')),
+        'primary_action_hint': str(pack_review.get('dashboard_display_summary', {}).get('primary_action_hint', '')),
+        'risk_level': str(pack_review.get('dashboard_display_summary', {}).get('risk_level', '')),
+        'blocking_reasons': pack_review.get('dashboard_display_summary', {}).get('blocking_reasons', []),
+        'warning_reasons': pack_review.get('dashboard_display_summary', {}).get('warning_reasons', []),
+        'release_drill_pack': bool(pack_review.get('release_drill_summary', {}).get('release_drill_pack', False)),
+        'release_drill_source_pack_id': str(pack_review.get('release_drill_summary', {}).get('release_drill_source_pack_id', '')),
+        'release_drill_acceptance_status': str(pack_review.get('release_drill_summary', {}).get('release_drill_acceptance_status', '')),
+        'release_drill_promotion_status': str(pack_review.get('release_drill_summary', {}).get('release_drill_promotion_status', '')),
+        'release_drill_dry_run_switch_status': bool(pack_review.get('release_drill_summary', {}).get('release_drill_dry_run_switch_status', False)),
+        'release_drill_report_path': str(pack_review.get('release_drill_summary', {}).get('release_drill_report_path', '')),
+        'release_landing_current': bool(pack_review.get('release_landing_summary', {}).get('release_landing_current', False)),
+        'landed_from_release_drill': bool(pack_review.get('release_landing_summary', {}).get('landed_from_release_drill', False)),
+        'previous_current_pack_id': str(pack_review.get('release_landing_summary', {}).get('previous_current_pack_id', '')),
+        'new_current_pack_id': str(pack_review.get('release_landing_summary', {}).get('new_current_pack_id', '')),
+        'release_landing_report_path': str(pack_review.get('release_landing_summary', {}).get('release_landing_report_path', '')),
+        'gameplay_entry_verified': bool(pack_review.get('release_landing_summary', {}).get('gameplay_entry_verified', False)),
+        'warning_current': bool(pack_review.get('release_landing_summary', {}).get('warning_current', False)),
     }
 
 
@@ -1268,6 +1410,20 @@ def load_optional_json(relative_path: str) -> dict[str, Any]:
     if not path.exists():
         return {}
     return json.loads(path.read_text(encoding='utf-8'))
+
+
+def safe_release_status(profile_id: str, content_pack_id: str) -> dict[str, Any]:
+    try:
+        return release_lib.get_release_status(profile_id, content_pack_id)
+    except SystemExit:
+        return {
+            'mechanic_profile_id': profile_id,
+            'content_pack_id': content_pack_id,
+            'release_status': 'reviewing',
+            'frozen': False,
+            'rollback_available': False,
+            'playable_hardening': False,
+        }
 
 
 def build_active_history_summary(profile_id: str, content_pack_id: str) -> dict[str, Any]:

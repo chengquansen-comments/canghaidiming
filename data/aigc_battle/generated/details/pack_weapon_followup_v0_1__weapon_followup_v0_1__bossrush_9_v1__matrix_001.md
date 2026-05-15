@@ -19,11 +19,11 @@
 - sequence_balance_pass: true
 - template_mechanic_pack_binding_valid: true
 - deck_card_realm_eligibility_valid: true
-- evaluation_event_count: 36
+- evaluation_event_count: 414
 - win_rate: 0.4444
 - avg_turn_count: 8.7222
 - rebuild_recommendation_count: 30
-- stage_metrics: {'early_win_rate': 1.0, 'early_avg_turn_count': 8.25, 'early_stage_event_count': 8, 'early_stage_too_hard_count': 0, 'early_stage_too_long_count': 8, 'early_stage_reward_mismatch_count': 0, 'mid_win_rate': 1.0, 'mid_avg_turn_count': 8.5, 'mid_stage_event_count': 8, 'mid_stage_too_hard_count': 0, 'mid_stage_too_long_count': 8, 'mid_stage_reward_mismatch_count': 4, 'late_win_rate': 0.0, 'late_avg_turn_count': 9.0, 'late_stage_event_count': 8, 'late_stage_too_hard_count': 8, 'late_stage_too_long_count': 8, 'late_stage_reward_mismatch_count': 8, 'boss_win_rate': 0.0, 'boss_avg_turn_count': 9.0, 'boss_stage_event_count': 12, 'boss_stage_too_hard_count': 12, 'boss_stage_too_long_count': 12, 'boss_stage_reward_mismatch_count': 4}
+- stage_metrics: {'early_win_rate': 0.9239, 'early_avg_turn_count': 8.7065, 'early_stage_event_count': 92, 'early_stage_too_hard_count': 7, 'early_stage_too_long_count': 92, 'early_stage_reward_mismatch_count': 0, 'mid_win_rate': 1.0, 'mid_avg_turn_count': 8.6522, 'mid_stage_event_count': 92, 'mid_stage_too_hard_count': 0, 'mid_stage_too_long_count': 92, 'mid_stage_reward_mismatch_count': 46, 'late_win_rate': 0.1522, 'late_avg_turn_count': 9.3804, 'late_stage_event_count': 92, 'late_stage_too_hard_count': 92, 'late_stage_too_long_count': 92, 'late_stage_reward_mismatch_count': 92, 'boss_win_rate': 0.0, 'boss_avg_turn_count': 9.0, 'boss_stage_event_count': 138, 'boss_stage_too_hard_count': 138, 'boss_stage_too_long_count': 138, 'boss_stage_reward_mismatch_count': 46}
 
 ## Balance Release
 - balance_release: false

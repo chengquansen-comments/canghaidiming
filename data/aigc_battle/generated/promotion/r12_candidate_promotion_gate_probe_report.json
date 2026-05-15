@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-05-12T10:26:29.898110+00:00",
+  "candidate_promotion_gate_ready": true,
+  "acceptance_required_before_promotion": true,
+  "human_review_required_before_promotion": true,
+  "current_reference_promotion_ready": true,
+  "current_reference_marked_release_candidate": true,
+  "ai_studio_warning_pack_blocked": true,
+  "missing_acceptance_pack_blocked": true,
+  "release_candidate_mark_ready": true,
+  "promotion_history_ready": true,
+  "dashboard_promotion_api_ready": true,
+  "current_release_unchanged": true,
+  "active_profile_matches_current_release": true,
+  "probe_exit_ok": true,
+  "probe_pass": true
+}

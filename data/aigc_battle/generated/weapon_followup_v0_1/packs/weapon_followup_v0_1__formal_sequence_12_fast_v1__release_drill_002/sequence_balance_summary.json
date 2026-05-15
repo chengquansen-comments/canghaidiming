@@ -1,0 +1,181 @@
+{
+  "mechanic_profile_id": "weapon_followup_v0_1",
+  "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_002",
+  "target_sequence_id": "formal_sequence_mvp_v1",
+  "formal_encounter_total_count": 12,
+  "tier_counts": {
+    "early": 3,
+    "mid": 3,
+    "late": 3,
+    "boss": 3
+  },
+  "encounter_kind_counts": {
+    "normal": 3,
+    "elite": 6,
+    "boss": 3
+  },
+  "deck_power_by_encounter": [
+    {
+      "formal_encounter_id": "enc_beach_ambush",
+      "sequence_position": 1,
+      "encounter_tier": "early",
+      "encounter_kind": "normal",
+      "target_power_min": 22,
+      "target_power_max": 28,
+      "deck_power_score": 22.8,
+      "reward_tier": "early"
+    },
+    {
+      "formal_encounter_id": "enc_fishing_village_embers",
+      "sequence_position": 2,
+      "encounter_tier": "early",
+      "encounter_kind": "normal",
+      "target_power_min": 22,
+      "target_power_max": 28,
+      "deck_power_score": 22.8,
+      "reward_tier": "early"
+    },
+    {
+      "formal_encounter_id": "enc_transport_officer",
+      "sequence_position": 3,
+      "encounter_tier": "early",
+      "encounter_kind": "elite",
+      "target_power_min": 22,
+      "target_power_max": 28,
+      "deck_power_score": 27.6,
+      "reward_tier": "early"
+    },
+    {
+      "formal_encounter_id": "enc_mutiny_camp",
+      "sequence_position": 4,
+      "encounter_tier": "mid",
+      "encounter_kind": "normal",
+      "target_power_min": 30,
+      "target_power_max": 34,
+      "deck_power_score": 30.0,
+      "reward_tier": "mid"
+    },
+    {
+      "formal_encounter_id": "enc_wakou_boss",
+      "sequence_position": 5,
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "target_power_min": 30,
+      "target_power_max": 34,
+      "deck_power_score": 33.2,
+      "reward_tier": "mid"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_spear_trial",
+      "sequence_position": 6,
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "target_power_min": 30,
+      "target_power_max": 34,
+      "deck_power_score": 33.2,
+      "reward_tier": "mid"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_blade_trial",
+      "sequence_position": 7,
+      "encounter_tier": "late",
+      "encounter_kind": "elite",
+      "target_power_min": 43,
+      "target_power_max": 52,
+      "deck_power_score": 50.8,
+      "reward_tier": "late"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_final_duel",
+      "sequence_position": 8,
+      "encounter_tier": "late",
+      "encounter_kind": "elite",
+      "target_power_min": 43,
+      "target_power_max": 52,
+      "deck_power_score": 50.8,
+      "reward_tier": "late"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_gu_chengyue",
+      "sequence_position": 9,
+      "encounter_tier": "late",
+      "encounter_kind": "elite",
+      "target_power_min": 43,
+      "target_power_max": 52,
+      "deck_power_score": 50.8,
+      "reward_tier": "late"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_shen_zhaoye",
+      "sequence_position": 10,
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "target_power_min": 53,
+      "target_power_max": 56,
+      "deck_power_score": 54.6,
+      "reward_tier": "boss"
+    },
+    {
+      "formal_encounter_id": "enc_wuke_qi_heng",
+      "sequence_position": 11,
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "target_power_min": 53,
+      "target_power_max": 56,
+      "deck_power_score": 54.6,
+      "reward_tier": "boss"
+    },
+    {
+      "formal_encounter_id": "enc_ch2_reed_ambush",
+      "sequence_position": 12,
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "target_power_min": 53,
+      "target_power_max": 56,
+      "deck_power_score": 54.6,
+      "reward_tier": "boss"
+    }
+  ],
+  "early_avg_power": 24.4,
+  "mid_avg_power": 32.13,
+  "late_avg_power": 50.8,
+  "boss_avg_power": 54.6,
+  "min_late_avg_power_over_early": 20.0,
+  "late_avg_power_over_early": 26.4,
+  "all_decks_within_power_range": true,
+  "elite_decks_stronger_than_normal": true,
+  "boss_decks_stronger_than_late_or_elite": true,
+  "boss_decks_stronger_than_elite": true,
+  "sequence_balance_curve_ready": true,
+  "sequence_balance_pass": true,
+  "no_elite_detected": false,
+  "no_boss_detected": false,
+  "weapon_followup_curve_ready": true,
+  "early_avg_followup_density": 0.46,
+  "mid_avg_followup_density": 0.58,
+  "late_avg_followup_density": 0.75,
+  "boss_avg_followup_density": 0.75,
+  "rebuild_uses_snapshot": false,
+  "snapshot_source_path": "",
+  "adjusted_or_flagged_encounters": [],
+  "rebuild_uses_real_telemetry": false,
+  "real_telemetry_snapshot_path": "",
+  "telemetry_rebuild_adjustments": [],
+  "snapshot_rebuild_pass": true,
+  "sequence_template_id": "formal_sequence_12_fast_v1",
+  "build_variant": "release_drill_002",
+  "stage_counts": {
+    "early": 3,
+    "mid": 3,
+    "late": 3,
+    "boss": 3
+  },
+  "total_encounter_count": 12,
+  "generated_loadout_count": 12,
+  "fallback_loadout_count": 0,
+  "reward_coverage_complete": true,
+  "playable_hardening": true,
+  "hardening_target": "fast",
+  "source_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_013",
+  "release_drill_pack": true
+}

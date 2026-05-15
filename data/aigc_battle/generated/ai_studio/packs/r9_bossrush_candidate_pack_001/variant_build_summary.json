@@ -1,0 +1,14 @@
+{
+  "content_pack_id": "r9_bossrush_candidate_pack_001",
+  "mechanic_profile_id": "weapon_followup_v0_1",
+  "sequence_template_id": "bossrush_9_v1",
+  "candidate_batch_id": "r9_probe_batch_001",
+  "candidate_source_trace": [
+    "r9_boss_card_001",
+    "r9_boss_deck_001",
+    "r9_boss_reward_001",
+    "r9_boss_slot_001"
+  ],
+  "deterministic_fill_used": true,
+  "ai_studio_variant_type": "bossrush"
+}

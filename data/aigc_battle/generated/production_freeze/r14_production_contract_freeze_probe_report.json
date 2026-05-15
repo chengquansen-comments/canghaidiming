@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-05-12T11:36:17.747629+00:00",
+  "production_contract_frozen": true,
+  "schema_manifest_ready": true,
+  "generated_file_policy_ready": true,
+  "minimal_acceptance_command_ready": true,
+  "deprecated_probe_inventory_ready": true,
+  "production_contract_doc_ready": true,
+  "dashboard_production_contract_api_ready": true,
+  "current_release_acceptance_pass": true,
+  "preview_restore_pass": true,
+  "promotion_negative_cases_pass": true,
+  "release_switch_negative_cases_pass": true,
+  "current_release_unchanged": true,
+  "active_profile_matches_current_release": true,
+  "probe_pass": true
+}

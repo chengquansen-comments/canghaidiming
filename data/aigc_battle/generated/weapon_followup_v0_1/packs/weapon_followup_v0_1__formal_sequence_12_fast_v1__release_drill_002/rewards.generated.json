@@ -1,0 +1,242 @@
+[
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_002",
+    "reward_plan_id": "weapon_followup_v0_1_reward_001",
+    "reward_type": "card_pick",
+    "reward_tier": "early",
+    "sequence_position": 1,
+    "encounter_tier": "early",
+    "reward_items": [
+      {
+        "item_id": "basic_reward_card_001",
+        "quantity": 1
+      }
+    ],
+    "source": {
+      "formal_encounter_id": "enc_beach_ambush",
+      "formal_battle_id": "first_act_beach_ambush"
+    }
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_002",
+    "reward_plan_id": "weapon_followup_v0_1_reward_002",
+    "reward_type": "card_pick",
+    "reward_tier": "early",
+    "sequence_position": 2,
+    "encounter_tier": "early",
+    "reward_items": [
+      {
+        "item_id": "basic_reward_card_002",
+        "quantity": 1
+      }
+    ],
+    "source": {
+      "formal_encounter_id": "enc_fishing_village_embers",
+      "formal_battle_id": "first_act_fishing_village_embers"
+    }
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_002",
+    "reward_plan_id": "weapon_followup_v0_1_reward_003",
+    "reward_type": "card_pick",
+    "reward_tier": "early",
+    "sequence_position": 3,
+    "encounter_tier": "early",
+    "reward_items": [
+      {
+        "item_id": "basic_reward_card_003",
+        "quantity": 1
+      }
+    ],
+    "source": {
+      "formal_encounter_id": "enc_transport_officer",
+      "formal_battle_id": "first_act_transport_officer"
+    }
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_002",
+    "reward_plan_id": "weapon_followup_v0_1_reward_004",
+    "reward_type": "card_pick",
+    "reward_tier": "mid",
+    "sequence_position": 4,
+    "encounter_tier": "mid",
+    "reward_items": [
+      {
+        "item_id": "basic_reward_card_004",
+        "quantity": 1
+      }
+    ],
+    "source": {
+      "formal_encounter_id": "enc_mutiny_camp",
+      "formal_battle_id": "first_act_mutiny_camp"
+    }
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_002",
+    "reward_plan_id": "weapon_followup_v0_1_reward_005",
+    "reward_type": "card_pick",
+    "reward_tier": "mid",
+    "sequence_position": 5,
+    "encounter_tier": "mid",
+    "reward_items": [
+      {
+        "item_id": "basic_reward_card_005",
+        "quantity": 1
+      }
+    ],
+    "source": {
+      "formal_encounter_id": "enc_wakou_boss",
+      "formal_battle_id": "first_act_wakou_boss"
+    }
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_002",
+    "reward_plan_id": "weapon_followup_v0_1_reward_006",
+    "reward_type": "card_pick",
+    "reward_tier": "mid",
+    "sequence_position": 6,
+    "encounter_tier": "mid",
+    "reward_items": [
+      {
+        "item_id": "basic_reward_card_006",
+        "quantity": 1
+      }
+    ],
+    "source": {
+      "formal_encounter_id": "enc_wuke_spear_trial",
+      "formal_battle_id": "wuke_spear_trial"
+    }
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_002",
+    "reward_plan_id": "weapon_followup_v0_1_reward_007",
+    "reward_type": "card_pick",
+    "reward_tier": "late",
+    "sequence_position": 7,
+    "encounter_tier": "late",
+    "reward_items": [
+      {
+        "item_id": "basic_reward_card_007",
+        "quantity": 1
+      }
+    ],
+    "source": {
+      "formal_encounter_id": "enc_wuke_blade_trial",
+      "formal_battle_id": "wuke_blade_trial"
+    }
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_002",
+    "reward_plan_id": "weapon_followup_v0_1_reward_008",
+    "reward_type": "card_pick",
+    "reward_tier": "late",
+    "sequence_position": 8,
+    "encounter_tier": "late",
+    "reward_items": [
+      {
+        "item_id": "basic_reward_card_008",
+        "quantity": 1
+      }
+    ],
+    "source": {
+      "formal_encounter_id": "enc_wuke_final_duel",
+      "formal_battle_id": "wuke_final_duel"
+    }
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_002",
+    "reward_plan_id": "weapon_followup_v0_1_reward_009",
+    "reward_type": "card_pick",
+    "reward_tier": "late",
+    "sequence_position": 9,
+    "encounter_tier": "late",
+    "reward_items": [
+      {
+        "item_id": "basic_reward_card_009",
+        "quantity": 1
+      }
+    ],
+    "source": {
+      "formal_encounter_id": "enc_wuke_gu_chengyue",
+      "formal_battle_id": "wuke_gu_chengyue"
+    }
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_002",
+    "reward_plan_id": "weapon_followup_v0_1_reward_010",
+    "reward_type": "resource",
+    "reward_tier": "boss",
+    "sequence_position": 10,
+    "encounter_tier": "boss",
+    "reward_items": [
+      {
+        "item_id": "boss_reward_token",
+        "quantity": 1
+      },
+      {
+        "item_id": "resource_merit",
+        "quantity": 3
+      }
+    ],
+    "source": {
+      "formal_encounter_id": "enc_wuke_shen_zhaoye",
+      "formal_battle_id": "wuke_shen_zhaoye"
+    }
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_002",
+    "reward_plan_id": "weapon_followup_v0_1_reward_011",
+    "reward_type": "resource",
+    "reward_tier": "boss",
+    "sequence_position": 11,
+    "encounter_tier": "boss",
+    "reward_items": [
+      {
+        "item_id": "boss_reward_token",
+        "quantity": 1
+      },
+      {
+        "item_id": "resource_merit",
+        "quantity": 3
+      }
+    ],
+    "source": {
+      "formal_encounter_id": "enc_wuke_qi_heng",
+      "formal_battle_id": "wuke_qi_heng"
+    }
+  },
+  {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_002",
+    "reward_plan_id": "weapon_followup_v0_1_reward_012",
+    "reward_type": "resource",
+    "reward_tier": "boss",
+    "sequence_position": 12,
+    "encounter_tier": "boss",
+    "reward_items": [
+      {
+        "item_id": "boss_reward_token",
+        "quantity": 1
+      },
+      {
+        "item_id": "resource_merit",
+        "quantity": 3
+      }
+    ],
+    "source": {
+      "formal_encounter_id": "enc_ch2_reed_ambush",
+      "formal_battle_id": "chapter2_reed_ambush"
+    }
+  }
+]

@@ -1,0 +1,1122 @@
+{
+  "generated_at": "2026-05-12T07:24:04.324003+00:00",
+  "target": "fast",
+  "mechanic_profile_id": "weapon_followup_v0_1",
+  "source_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+  "recommendation_count": 33,
+  "recommendations": [
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__reduce_overused_card__weapon_followup_v0_1_spearman_boss_strike",
+      "severity": "medium",
+      "action_type": "reduce_overused_card",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "formal_encounter_id": "",
+      "generated_deck_id": "",
+      "card_id": "weapon_followup_v0_1_spearman_boss_strike",
+      "reward_plan_id": "",
+      "reason": "card_overused",
+      "evidence": {
+        "card_id": "weapon_followup_v0_1_spearman_boss_strike",
+        "event_count": 258
+      },
+      "suggested_delta": {
+        "replacement_strategy": "same_style_lower_usage_card"
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__reduce_overused_card__weapon_followup_v0_1_blademaster_late_finisher",
+      "severity": "medium",
+      "action_type": "reduce_overused_card",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "formal_encounter_id": "",
+      "generated_deck_id": "",
+      "card_id": "weapon_followup_v0_1_blademaster_late_finisher",
+      "reward_plan_id": "",
+      "reason": "card_overused",
+      "evidence": {
+        "card_id": "weapon_followup_v0_1_blademaster_late_finisher",
+        "event_count": 185
+      },
+      "suggested_delta": {
+        "replacement_strategy": "same_style_lower_usage_card"
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__reduce_overused_card__weapon_followup_v0_1_blademaster_boss_strike",
+      "severity": "medium",
+      "action_type": "reduce_overused_card",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "formal_encounter_id": "",
+      "generated_deck_id": "",
+      "card_id": "weapon_followup_v0_1_blademaster_boss_strike",
+      "reward_plan_id": "",
+      "reason": "card_overused",
+      "evidence": {
+        "card_id": "weapon_followup_v0_1_blademaster_boss_strike",
+        "event_count": 175
+      },
+      "suggested_delta": {
+        "replacement_strategy": "same_style_lower_usage_card"
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__reduce_overused_card__weapon_followup_v0_1_blademaster_early_strike",
+      "severity": "medium",
+      "action_type": "reduce_overused_card",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "formal_encounter_id": "",
+      "generated_deck_id": "",
+      "card_id": "weapon_followup_v0_1_blademaster_early_strike",
+      "reward_plan_id": "",
+      "reason": "card_overused",
+      "evidence": {
+        "card_id": "weapon_followup_v0_1_blademaster_early_strike",
+        "event_count": 166
+      },
+      "suggested_delta": {
+        "replacement_strategy": "same_style_lower_usage_card"
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__reduce_overused_card__weapon_followup_v0_1_blademaster_late_strike",
+      "severity": "medium",
+      "action_type": "reduce_overused_card",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "formal_encounter_id": "",
+      "generated_deck_id": "",
+      "card_id": "weapon_followup_v0_1_blademaster_late_strike",
+      "reward_plan_id": "",
+      "reason": "card_overused",
+      "evidence": {
+        "card_id": "weapon_followup_v0_1_blademaster_late_strike",
+        "event_count": 166
+      },
+      "suggested_delta": {
+        "replacement_strategy": "same_style_lower_usage_card"
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__reduce_overused_card__weapon_followup_v0_1_spearman_mid_strike",
+      "severity": "medium",
+      "action_type": "reduce_overused_card",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "formal_encounter_id": "",
+      "generated_deck_id": "",
+      "card_id": "weapon_followup_v0_1_spearman_mid_strike",
+      "reward_plan_id": "",
+      "reason": "card_overused",
+      "evidence": {
+        "card_id": "weapon_followup_v0_1_spearman_mid_strike",
+        "event_count": 134
+      },
+      "suggested_delta": {
+        "replacement_strategy": "same_style_lower_usage_card"
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__reduce_overused_card__weapon_followup_v0_1_spearman_boss_finisher",
+      "severity": "medium",
+      "action_type": "reduce_overused_card",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "formal_encounter_id": "",
+      "generated_deck_id": "",
+      "card_id": "weapon_followup_v0_1_spearman_boss_finisher",
+      "reward_plan_id": "",
+      "reason": "card_overused",
+      "evidence": {
+        "card_id": "weapon_followup_v0_1_spearman_boss_finisher",
+        "event_count": 134
+      },
+      "suggested_delta": {
+        "replacement_strategy": "same_style_lower_usage_card"
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__reduce_overused_card__weapon_followup_v0_1_blademaster_late_pressure",
+      "severity": "medium",
+      "action_type": "reduce_overused_card",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "formal_encounter_id": "",
+      "generated_deck_id": "",
+      "card_id": "weapon_followup_v0_1_blademaster_late_pressure",
+      "reward_plan_id": "",
+      "reason": "card_overused",
+      "evidence": {
+        "card_id": "weapon_followup_v0_1_blademaster_late_pressure",
+        "event_count": 120
+      },
+      "suggested_delta": {
+        "replacement_strategy": "same_style_lower_usage_card"
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__reduce_enemy_pressure__weapon_followup_v0_1_slot_001",
+      "severity": "medium",
+      "action_type": "reduce_enemy_pressure",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "lower_stage_power",
+      "formal_encounter_id": "enc_beach_ambush",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_001",
+      "generated_deck_id": "weapon_followup_v0_1_deck_001",
+      "reward_plan_id": "weapon_followup_v0_1_reward_001",
+      "reason": "too_hard",
+      "evidence": {
+        "formal_encounter_id": "enc_beach_ambush",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_001",
+        "generated_deck_id": "weapon_followup_v0_1_deck_001",
+        "reward_plan_id": "weapon_followup_v0_1_reward_001",
+        "reason": "too_hard",
+        "evidence": {
+          "win_rate": 0.3833,
+          "avg_turn_count": 11.65,
+          "avg_player_hp_end": 0.3833,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      "suggested_delta": {
+        "power_bias": -2
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__reduce_enemy_pressure__weapon_followup_v0_1_slot_003",
+      "severity": "medium",
+      "action_type": "reduce_enemy_pressure",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "lower_stage_power",
+      "formal_encounter_id": "enc_transport_officer",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_003",
+      "generated_deck_id": "weapon_followup_v0_1_deck_003",
+      "reward_plan_id": "weapon_followup_v0_1_reward_003",
+      "reason": "too_hard",
+      "evidence": {
+        "formal_encounter_id": "enc_transport_officer",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_003",
+        "generated_deck_id": "weapon_followup_v0_1_deck_003",
+        "reward_plan_id": "weapon_followup_v0_1_reward_003",
+        "reason": "too_hard",
+        "evidence": {
+          "win_rate": 0.3833,
+          "avg_turn_count": 9.35,
+          "avg_player_hp_end": 4.2167,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      "suggested_delta": {
+        "power_bias": -2
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__reduce_enemy_pressure__weapon_followup_v0_1_slot_004",
+      "severity": "medium",
+      "action_type": "reduce_enemy_pressure",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "lower_stage_power",
+      "formal_encounter_id": "enc_mutiny_camp",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_004",
+      "generated_deck_id": "weapon_followup_v0_1_deck_004",
+      "reward_plan_id": "weapon_followup_v0_1_reward_004",
+      "reason": "too_hard",
+      "evidence": {
+        "formal_encounter_id": "enc_mutiny_camp",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_004",
+        "generated_deck_id": "weapon_followup_v0_1_deck_004",
+        "reward_plan_id": "weapon_followup_v0_1_reward_004",
+        "reason": "too_hard",
+        "evidence": {
+          "win_rate": 0.8833,
+          "avg_turn_count": 9.6167,
+          "avg_player_hp_end": 3.7667,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      "suggested_delta": {
+        "power_bias": -2
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__reduce_enemy_pressure__weapon_followup_v0_1_slot_007",
+      "severity": "medium",
+      "action_type": "reduce_enemy_pressure",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "lower_stage_power",
+      "formal_encounter_id": "enc_wuke_blade_trial",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_007",
+      "generated_deck_id": "weapon_followup_v0_1_deck_007",
+      "reward_plan_id": "weapon_followup_v0_1_reward_007",
+      "reason": "too_hard",
+      "evidence": {
+        "formal_encounter_id": "enc_wuke_blade_trial",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_007",
+        "generated_deck_id": "weapon_followup_v0_1_deck_007",
+        "reward_plan_id": "weapon_followup_v0_1_reward_007",
+        "reason": "too_hard",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 9.0,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      "suggested_delta": {
+        "power_bias": -2
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__reduce_enemy_pressure__weapon_followup_v0_1_slot_008",
+      "severity": "medium",
+      "action_type": "reduce_enemy_pressure",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "lower_stage_power",
+      "formal_encounter_id": "enc_wuke_final_duel",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_008",
+      "generated_deck_id": "weapon_followup_v0_1_deck_008",
+      "reward_plan_id": "weapon_followup_v0_1_reward_008",
+      "reason": "too_hard",
+      "evidence": {
+        "formal_encounter_id": "enc_wuke_final_duel",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_008",
+        "generated_deck_id": "weapon_followup_v0_1_deck_008",
+        "reward_plan_id": "weapon_followup_v0_1_reward_008",
+        "reason": "too_hard",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 9.8833,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      "suggested_delta": {
+        "power_bias": -2
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__reduce_enemy_pressure__weapon_followup_v0_1_slot_009",
+      "severity": "medium",
+      "action_type": "reduce_enemy_pressure",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "lower_stage_power",
+      "formal_encounter_id": "enc_wuke_gu_chengyue",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_009",
+      "generated_deck_id": "weapon_followup_v0_1_deck_009",
+      "reward_plan_id": "weapon_followup_v0_1_reward_009",
+      "reason": "too_hard",
+      "evidence": {
+        "formal_encounter_id": "enc_wuke_gu_chengyue",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_009",
+        "generated_deck_id": "weapon_followup_v0_1_deck_009",
+        "reward_plan_id": "weapon_followup_v0_1_reward_009",
+        "reason": "too_hard",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 9.8833,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      "suggested_delta": {
+        "power_bias": -2
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__reduce_enemy_pressure__weapon_followup_v0_1_slot_010",
+      "severity": "medium",
+      "action_type": "reduce_enemy_pressure",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "lower_stage_power",
+      "formal_encounter_id": "enc_wuke_shen_zhaoye",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_010",
+      "generated_deck_id": "weapon_followup_v0_1_deck_010",
+      "reward_plan_id": "weapon_followup_v0_1_reward_010",
+      "reason": "too_hard",
+      "evidence": {
+        "formal_encounter_id": "enc_wuke_shen_zhaoye",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_010",
+        "generated_deck_id": "weapon_followup_v0_1_deck_010",
+        "reward_plan_id": "weapon_followup_v0_1_reward_010",
+        "reason": "too_hard",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 9.0,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      "suggested_delta": {
+        "power_bias": -2
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__reduce_enemy_pressure__weapon_followup_v0_1_slot_011",
+      "severity": "medium",
+      "action_type": "reduce_enemy_pressure",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "lower_stage_power",
+      "formal_encounter_id": "enc_wuke_qi_heng",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_011",
+      "generated_deck_id": "weapon_followup_v0_1_deck_011",
+      "reward_plan_id": "weapon_followup_v0_1_reward_011",
+      "reason": "too_hard",
+      "evidence": {
+        "formal_encounter_id": "enc_wuke_qi_heng",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_011",
+        "generated_deck_id": "weapon_followup_v0_1_deck_011",
+        "reward_plan_id": "weapon_followup_v0_1_reward_011",
+        "reason": "too_hard",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 9.0,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      "suggested_delta": {
+        "power_bias": -2
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__reduce_enemy_pressure__weapon_followup_v0_1_slot_012",
+      "severity": "medium",
+      "action_type": "reduce_enemy_pressure",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "lower_stage_power",
+      "formal_encounter_id": "enc_ch2_reed_ambush",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_012",
+      "generated_deck_id": "weapon_followup_v0_1_deck_012",
+      "reward_plan_id": "weapon_followup_v0_1_reward_012",
+      "reason": "too_hard",
+      "evidence": {
+        "formal_encounter_id": "enc_ch2_reed_ambush",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_012",
+        "generated_deck_id": "weapon_followup_v0_1_deck_012",
+        "reward_plan_id": "weapon_followup_v0_1_reward_012",
+        "reason": "too_hard",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 9.0,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      "suggested_delta": {
+        "power_bias": -2
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__reduce_defensive_drag__weapon_followup_v0_1_slot_001",
+      "severity": "medium",
+      "action_type": "reduce_defensive_drag",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "lower_stage_power",
+      "formal_encounter_id": "enc_beach_ambush",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_001",
+      "generated_deck_id": "weapon_followup_v0_1_deck_001",
+      "reward_plan_id": "weapon_followup_v0_1_reward_001",
+      "reason": "too_long",
+      "evidence": {
+        "formal_encounter_id": "enc_beach_ambush",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_001",
+        "generated_deck_id": "weapon_followup_v0_1_deck_001",
+        "reward_plan_id": "weapon_followup_v0_1_reward_001",
+        "reason": "too_long",
+        "evidence": {
+          "win_rate": 0.3833,
+          "avg_turn_count": 11.65,
+          "avg_player_hp_end": 0.3833,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      "suggested_delta": {
+        "drag_bias": -1
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__reduce_defensive_drag__weapon_followup_v0_1_slot_002",
+      "severity": "medium",
+      "action_type": "reduce_defensive_drag",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "lower_stage_power",
+      "formal_encounter_id": "enc_fishing_village_embers",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_002",
+      "generated_deck_id": "weapon_followup_v0_1_deck_002",
+      "reward_plan_id": "weapon_followup_v0_1_reward_002",
+      "reason": "too_long",
+      "evidence": {
+        "formal_encounter_id": "enc_fishing_village_embers",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_002",
+        "generated_deck_id": "weapon_followup_v0_1_deck_002",
+        "reward_plan_id": "weapon_followup_v0_1_reward_002",
+        "reason": "too_long",
+        "evidence": {
+          "win_rate": 0.8833,
+          "avg_turn_count": 8.5833,
+          "avg_player_hp_end": 17.55,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      "suggested_delta": {
+        "drag_bias": -1
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__reduce_defensive_drag__weapon_followup_v0_1_slot_003",
+      "severity": "medium",
+      "action_type": "reduce_defensive_drag",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "lower_stage_power",
+      "formal_encounter_id": "enc_transport_officer",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_003",
+      "generated_deck_id": "weapon_followup_v0_1_deck_003",
+      "reward_plan_id": "weapon_followup_v0_1_reward_003",
+      "reason": "too_long",
+      "evidence": {
+        "formal_encounter_id": "enc_transport_officer",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_003",
+        "generated_deck_id": "weapon_followup_v0_1_deck_003",
+        "reward_plan_id": "weapon_followup_v0_1_reward_003",
+        "reason": "too_long",
+        "evidence": {
+          "win_rate": 0.3833,
+          "avg_turn_count": 9.35,
+          "avg_player_hp_end": 4.2167,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      "suggested_delta": {
+        "drag_bias": -1
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__reduce_defensive_drag__weapon_followup_v0_1_slot_004",
+      "severity": "medium",
+      "action_type": "reduce_defensive_drag",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "lower_stage_power",
+      "formal_encounter_id": "enc_mutiny_camp",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_004",
+      "generated_deck_id": "weapon_followup_v0_1_deck_004",
+      "reward_plan_id": "weapon_followup_v0_1_reward_004",
+      "reason": "too_long",
+      "evidence": {
+        "formal_encounter_id": "enc_mutiny_camp",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_004",
+        "generated_deck_id": "weapon_followup_v0_1_deck_004",
+        "reward_plan_id": "weapon_followup_v0_1_reward_004",
+        "reason": "too_long",
+        "evidence": {
+          "win_rate": 0.8833,
+          "avg_turn_count": 9.6167,
+          "avg_player_hp_end": 3.7667,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      "suggested_delta": {
+        "drag_bias": -1
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__reduce_defensive_drag__weapon_followup_v0_1_slot_005",
+      "severity": "medium",
+      "action_type": "reduce_defensive_drag",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "lower_stage_power",
+      "formal_encounter_id": "enc_wakou_boss",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_005",
+      "generated_deck_id": "weapon_followup_v0_1_deck_005",
+      "reward_plan_id": "weapon_followup_v0_1_reward_005",
+      "reason": "too_long",
+      "evidence": {
+        "formal_encounter_id": "enc_wakou_boss",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_005",
+        "generated_deck_id": "weapon_followup_v0_1_deck_005",
+        "reward_plan_id": "weapon_followup_v0_1_reward_005",
+        "reason": "too_long",
+        "evidence": {
+          "win_rate": 1.0,
+          "avg_turn_count": 8.6167,
+          "avg_player_hp_end": 13.65,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      "suggested_delta": {
+        "drag_bias": -1
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__reduce_defensive_drag__weapon_followup_v0_1_slot_006",
+      "severity": "medium",
+      "action_type": "reduce_defensive_drag",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "lower_stage_power",
+      "formal_encounter_id": "enc_wuke_spear_trial",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_006",
+      "generated_deck_id": "weapon_followup_v0_1_deck_006",
+      "reward_plan_id": "weapon_followup_v0_1_reward_006",
+      "reason": "too_long",
+      "evidence": {
+        "formal_encounter_id": "enc_wuke_spear_trial",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_006",
+        "generated_deck_id": "weapon_followup_v0_1_deck_006",
+        "reward_plan_id": "weapon_followup_v0_1_reward_006",
+        "reason": "too_long",
+        "evidence": {
+          "win_rate": 1.0,
+          "avg_turn_count": 8.6167,
+          "avg_player_hp_end": 13.65,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      "suggested_delta": {
+        "drag_bias": -1
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__reduce_defensive_drag__weapon_followup_v0_1_slot_007",
+      "severity": "medium",
+      "action_type": "reduce_defensive_drag",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "lower_stage_power",
+      "formal_encounter_id": "enc_wuke_blade_trial",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_007",
+      "generated_deck_id": "weapon_followup_v0_1_deck_007",
+      "reward_plan_id": "weapon_followup_v0_1_reward_007",
+      "reason": "too_long",
+      "evidence": {
+        "formal_encounter_id": "enc_wuke_blade_trial",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_007",
+        "generated_deck_id": "weapon_followup_v0_1_deck_007",
+        "reward_plan_id": "weapon_followup_v0_1_reward_007",
+        "reason": "too_long",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 9.0,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      "suggested_delta": {
+        "drag_bias": -1
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__reduce_defensive_drag__weapon_followup_v0_1_slot_008",
+      "severity": "medium",
+      "action_type": "reduce_defensive_drag",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "lower_stage_power",
+      "formal_encounter_id": "enc_wuke_final_duel",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_008",
+      "generated_deck_id": "weapon_followup_v0_1_deck_008",
+      "reward_plan_id": "weapon_followup_v0_1_reward_008",
+      "reason": "too_long",
+      "evidence": {
+        "formal_encounter_id": "enc_wuke_final_duel",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_008",
+        "generated_deck_id": "weapon_followup_v0_1_deck_008",
+        "reward_plan_id": "weapon_followup_v0_1_reward_008",
+        "reason": "too_long",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 9.8833,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      "suggested_delta": {
+        "drag_bias": -1
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__reduce_defensive_drag__weapon_followup_v0_1_slot_009",
+      "severity": "medium",
+      "action_type": "reduce_defensive_drag",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "lower_stage_power",
+      "formal_encounter_id": "enc_wuke_gu_chengyue",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_009",
+      "generated_deck_id": "weapon_followup_v0_1_deck_009",
+      "reward_plan_id": "weapon_followup_v0_1_reward_009",
+      "reason": "too_long",
+      "evidence": {
+        "formal_encounter_id": "enc_wuke_gu_chengyue",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_009",
+        "generated_deck_id": "weapon_followup_v0_1_deck_009",
+        "reward_plan_id": "weapon_followup_v0_1_reward_009",
+        "reason": "too_long",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 9.8833,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      "suggested_delta": {
+        "drag_bias": -1
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__reduce_defensive_drag__weapon_followup_v0_1_slot_010",
+      "severity": "medium",
+      "action_type": "reduce_defensive_drag",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "lower_stage_power",
+      "formal_encounter_id": "enc_wuke_shen_zhaoye",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_010",
+      "generated_deck_id": "weapon_followup_v0_1_deck_010",
+      "reward_plan_id": "weapon_followup_v0_1_reward_010",
+      "reason": "too_long",
+      "evidence": {
+        "formal_encounter_id": "enc_wuke_shen_zhaoye",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_010",
+        "generated_deck_id": "weapon_followup_v0_1_deck_010",
+        "reward_plan_id": "weapon_followup_v0_1_reward_010",
+        "reason": "too_long",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 9.0,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      "suggested_delta": {
+        "drag_bias": -1
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__reduce_defensive_drag__weapon_followup_v0_1_slot_011",
+      "severity": "medium",
+      "action_type": "reduce_defensive_drag",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "lower_stage_power",
+      "formal_encounter_id": "enc_wuke_qi_heng",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_011",
+      "generated_deck_id": "weapon_followup_v0_1_deck_011",
+      "reward_plan_id": "weapon_followup_v0_1_reward_011",
+      "reason": "too_long",
+      "evidence": {
+        "formal_encounter_id": "enc_wuke_qi_heng",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_011",
+        "generated_deck_id": "weapon_followup_v0_1_deck_011",
+        "reward_plan_id": "weapon_followup_v0_1_reward_011",
+        "reason": "too_long",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 9.0,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      "suggested_delta": {
+        "drag_bias": -1
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__reduce_defensive_drag__weapon_followup_v0_1_slot_012",
+      "severity": "medium",
+      "action_type": "reduce_defensive_drag",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "lower_stage_power",
+      "formal_encounter_id": "enc_ch2_reed_ambush",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_012",
+      "generated_deck_id": "weapon_followup_v0_1_deck_012",
+      "reward_plan_id": "weapon_followup_v0_1_reward_012",
+      "reason": "too_long",
+      "evidence": {
+        "formal_encounter_id": "enc_ch2_reed_ambush",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_012",
+        "generated_deck_id": "weapon_followup_v0_1_deck_012",
+        "reward_plan_id": "weapon_followup_v0_1_reward_012",
+        "reason": "too_long",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 9.0,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      "suggested_delta": {
+        "drag_bias": -1
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__increase_deck_power__enc_fishing_village_embers",
+      "severity": "medium",
+      "action_type": "increase_deck_power",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "increase_stage_mechanic_density",
+      "formal_encounter_id": "enc_fishing_village_embers",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_002",
+      "generated_deck_id": "weapon_followup_v0_1_deck_002",
+      "reward_plan_id": "weapon_followup_v0_1_reward_002",
+      "reason": "preserve_pressure_in_long_easy_encounter",
+      "evidence": {
+        "sample_count": 2,
+        "win_rate": 1.0,
+        "avg_turn_count": 8.0,
+        "avg_player_hp_end": 20.0,
+        "avg_enemy_hp_end": 0.0,
+        "avg_damage_taken": 16.0,
+        "avg_damage_dealt": 39.0,
+        "avg_cards_played": 8.0,
+        "avg_enemy_cards_played": 7.0,
+        "avg_hp_delta": -16.0,
+        "runtime_primitive_trigger_rate": 1.0,
+        "weapon_followup_trigger_rate": 1.0,
+        "clue_pressure_trigger_rate": 0.0,
+        "dual_weapon_usage_rate": 0.0,
+        "reward_claim_rate": 1.0,
+        "telemetry_detail_level_summary": {
+          "real": 2
+        },
+        "mechanism_underused_count": 0,
+        "too_easy_count": 0,
+        "too_hard_count": 0,
+        "too_long_count": 2,
+        "burst_damage_count": 1,
+        "reward_mismatch_count": 0,
+        "card_dead_count": 0,
+        "runtime_primitive_enabled_rate": 1.0,
+        "formal_encounter_id": "enc_fishing_village_embers",
+        "formal_battle_id": "first_act_fishing_village_embers",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_002",
+        "generated_deck_id": "weapon_followup_v0_1_deck_002",
+        "reward_plan_id": "weapon_followup_v0_1_reward_002",
+        "encounter_tier": "early",
+        "encounter_kind": "normal",
+        "sequence_position": 2,
+        "runtime_primitives": [
+          "weapon_followup"
+        ],
+        "player_wujing_cap": 2,
+        "deck_power_score": 22.8,
+        "reward_tier": "early"
+      },
+      "suggested_delta": {
+        "power_bias": 1,
+        "goal": "lower_turns_without_flattening_pressure"
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__increase_deck_power__enc_mutiny_camp",
+      "severity": "medium",
+      "action_type": "increase_deck_power",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "increase_stage_mechanic_density",
+      "formal_encounter_id": "enc_mutiny_camp",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_004",
+      "generated_deck_id": "weapon_followup_v0_1_deck_004",
+      "reward_plan_id": "weapon_followup_v0_1_reward_004",
+      "reason": "preserve_pressure_in_long_easy_encounter",
+      "evidence": {
+        "sample_count": 2,
+        "win_rate": 1.0,
+        "avg_turn_count": 9.5,
+        "avg_player_hp_end": 4.0,
+        "avg_enemy_hp_end": 0.0,
+        "avg_damage_taken": 36.0,
+        "avg_damage_dealt": 51.0,
+        "avg_cards_played": 9.5,
+        "avg_enemy_cards_played": 8.5,
+        "avg_hp_delta": -36.0,
+        "runtime_primitive_trigger_rate": 1.0,
+        "weapon_followup_trigger_rate": 1.0,
+        "clue_pressure_trigger_rate": 0.0,
+        "dual_weapon_usage_rate": 0.0,
+        "reward_claim_rate": 1.0,
+        "telemetry_detail_level_summary": {
+          "real": 2
+        },
+        "mechanism_underused_count": 0,
+        "too_easy_count": 0,
+        "too_hard_count": 2,
+        "too_long_count": 2,
+        "burst_damage_count": 2,
+        "reward_mismatch_count": 0,
+        "card_dead_count": 0,
+        "runtime_primitive_enabled_rate": 1.0,
+        "formal_encounter_id": "enc_mutiny_camp",
+        "formal_battle_id": "first_act_mutiny_camp",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_004",
+        "generated_deck_id": "weapon_followup_v0_1_deck_004",
+        "reward_plan_id": "weapon_followup_v0_1_reward_004",
+        "encounter_tier": "mid",
+        "encounter_kind": "normal",
+        "sequence_position": 4,
+        "runtime_primitives": [
+          "weapon_followup"
+        ],
+        "player_wujing_cap": 3,
+        "deck_power_score": 30.0,
+        "reward_tier": "mid"
+      },
+      "suggested_delta": {
+        "power_bias": 1,
+        "goal": "lower_turns_without_flattening_pressure"
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__increase_deck_power__enc_wakou_boss",
+      "severity": "medium",
+      "action_type": "increase_deck_power",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "increase_stage_mechanic_density",
+      "formal_encounter_id": "enc_wakou_boss",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_005",
+      "generated_deck_id": "weapon_followup_v0_1_deck_005",
+      "reward_plan_id": "weapon_followup_v0_1_reward_005",
+      "reason": "preserve_pressure_in_long_easy_encounter",
+      "evidence": {
+        "sample_count": 2,
+        "win_rate": 1.0,
+        "avg_turn_count": 8.5,
+        "avg_player_hp_end": 14.0,
+        "avg_enemy_hp_end": 0.0,
+        "avg_damage_taken": 30.0,
+        "avg_damage_dealt": 56.0,
+        "avg_cards_played": 8.5,
+        "avg_enemy_cards_played": 7.5,
+        "avg_hp_delta": -30.0,
+        "runtime_primitive_trigger_rate": 1.0,
+        "weapon_followup_trigger_rate": 1.0,
+        "clue_pressure_trigger_rate": 0.0,
+        "dual_weapon_usage_rate": 0.0,
+        "reward_claim_rate": 1.0,
+        "telemetry_detail_level_summary": {
+          "real": 2
+        },
+        "mechanism_underused_count": 0,
+        "too_easy_count": 0,
+        "too_hard_count": 0,
+        "too_long_count": 2,
+        "burst_damage_count": 2,
+        "reward_mismatch_count": 0,
+        "card_dead_count": 0,
+        "runtime_primitive_enabled_rate": 1.0,
+        "formal_encounter_id": "enc_wakou_boss",
+        "formal_battle_id": "first_act_wakou_boss",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_005",
+        "generated_deck_id": "weapon_followup_v0_1_deck_005",
+        "reward_plan_id": "weapon_followup_v0_1_reward_005",
+        "encounter_tier": "mid",
+        "encounter_kind": "elite",
+        "sequence_position": 5,
+        "runtime_primitives": [
+          "weapon_followup"
+        ],
+        "player_wujing_cap": 4,
+        "deck_power_score": 33.2,
+        "reward_tier": "mid"
+      },
+      "suggested_delta": {
+        "power_bias": 1,
+        "goal": "lower_turns_without_flattening_pressure"
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    },
+    {
+      "recommendation_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001__fast__increase_deck_power__enc_wuke_spear_trial",
+      "severity": "medium",
+      "action_type": "increase_deck_power",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+      "sequence_template_id": "",
+      "stage": "",
+      "stage_level_action": "increase_stage_mechanic_density",
+      "formal_encounter_id": "enc_wuke_spear_trial",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_006",
+      "generated_deck_id": "weapon_followup_v0_1_deck_006",
+      "reward_plan_id": "weapon_followup_v0_1_reward_006",
+      "reason": "preserve_pressure_in_long_easy_encounter",
+      "evidence": {
+        "sample_count": 2,
+        "win_rate": 1.0,
+        "avg_turn_count": 8.5,
+        "avg_player_hp_end": 14.0,
+        "avg_enemy_hp_end": 0.0,
+        "avg_damage_taken": 30.0,
+        "avg_damage_dealt": 56.0,
+        "avg_cards_played": 8.5,
+        "avg_enemy_cards_played": 7.5,
+        "avg_hp_delta": -30.0,
+        "runtime_primitive_trigger_rate": 1.0,
+        "weapon_followup_trigger_rate": 1.0,
+        "clue_pressure_trigger_rate": 0.0,
+        "dual_weapon_usage_rate": 0.0,
+        "reward_claim_rate": 1.0,
+        "telemetry_detail_level_summary": {
+          "real": 2
+        },
+        "mechanism_underused_count": 0,
+        "too_easy_count": 0,
+        "too_hard_count": 0,
+        "too_long_count": 2,
+        "burst_damage_count": 2,
+        "reward_mismatch_count": 0,
+        "card_dead_count": 0,
+        "runtime_primitive_enabled_rate": 1.0,
+        "formal_encounter_id": "enc_wuke_spear_trial",
+        "formal_battle_id": "wuke_spear_trial",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_006",
+        "generated_deck_id": "weapon_followup_v0_1_deck_006",
+        "reward_plan_id": "weapon_followup_v0_1_reward_006",
+        "encounter_tier": "mid",
+        "encounter_kind": "elite",
+        "sequence_position": 6,
+        "runtime_primitives": [
+          "weapon_followup"
+        ],
+        "player_wujing_cap": 4,
+        "deck_power_score": 33.2,
+        "reward_tier": "mid"
+      },
+      "suggested_delta": {
+        "power_bias": 1,
+        "goal": "lower_turns_without_flattening_pressure"
+      },
+      "safe_to_auto_apply": true,
+      "requires_designer_review": false
+    }
+  ]
+}

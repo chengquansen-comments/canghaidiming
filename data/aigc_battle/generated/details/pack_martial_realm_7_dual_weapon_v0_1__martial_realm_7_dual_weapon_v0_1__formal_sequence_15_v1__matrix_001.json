@@ -10737,5 +10737,199 @@
   "original_content_pack_id": null,
   "snapshot_content_pack_id": null,
   "balance_release_summary": {},
+  "playable_hardening_summary": {},
+  "ai_studio_summary": {},
+  "release_drill_summary": {
+    "release_drill_pack": false,
+    "release_drill_source_pack_id": "",
+    "release_drill_acceptance_status": "",
+    "release_drill_promotion_status": "",
+    "release_drill_dry_run_switch_status": false,
+    "release_drill_report_path": "",
+    "warning_accepted_by_probe": false
+  },
+  "release_landing_summary": {
+    "release_landing_current": false,
+    "landed_from_release_drill": false,
+    "previous_current_pack_id": "",
+    "new_current_pack_id": "",
+    "release_landing_report_path": "",
+    "gameplay_entry_verified": false,
+    "warning_current": false,
+    "warning_current_allowed": false
+  },
+  "preview_summary": {
+    "previewable": true,
+    "preview_source_channel": "",
+    "preview_status": "idle",
+    "last_preview_smoke_pass": false,
+    "preview_smoke_report_path": "data/aigc_battle/generated/preview_runtime/preview_smoke_report.json"
+  },
+  "acceptance_summary": {
+    "latest_acceptance_report_path": "",
+    "latest_acceptance_pass": false,
+    "latest_acceptance_risk_level": "",
+    "latest_acceptance_recommendation": "",
+    "acceptance_required_before_candidate": true
+  },
+  "promotion_summary": {
+    "latest_promotion_report_path": "",
+    "human_review_status": "",
+    "human_review_note_path": "",
+    "promotion_allowed": false,
+    "release_candidate_status": false,
+    "acceptance_required_before_promotion": true,
+    "human_review_required_before_promotion": true,
+    "release_switch_allowed": false,
+    "release_candidate_valid": false,
+    "latest_release_switch_report_path": "",
+    "can_set_current": false,
+    "can_rollback": false,
+    "current_release_marker": false,
+    "previous_current_marker": false,
+    "fallback_release_marker": false,
+    "resolver_channel_consistency_valid": true
+  },
+  "production_contract_summary": {
+    "production_contract_ready": true,
+    "schema_manifest_path": "data/aigc_battle/production_contract/schema_manifest.json",
+    "generated_file_policy_path": "data/aigc_battle/production_contract/generated_file_policy.json",
+    "minimal_acceptance_command_path": "data/aigc_battle/production_contract/minimal_acceptance_command.json",
+    "deprecated_probe_inventory_path": "data/aigc_battle/production_contract/deprecated_probe_inventory.json",
+    "production_contract_doc_path": "docs/AIGC_BATTLE_PRODUCTION_CONTRACT.md"
+  },
+  "production_closeout_summary": {
+    "production_closeout_ready": true,
+    "current_landed_pack": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+    "current_sequence_template": "formal_sequence_12_fast_v1",
+    "current_encounter_count": 15,
+    "previous_current_pack": "weapon_followup_balance_release_007",
+    "closeout_report_path": "data/aigc_battle/generated/production_closeout/r17_production_closeout_probe_report.json",
+    "cleanup_report_path": "data/aigc_battle/generated/production_closeout/production_closeout_cleanup_report.json",
+    "final_acceptance_status": "pass",
+    "closeout_probe_pass": true
+  },
+  "dashboard_display_summary": {
+    "display_status": "matrix_review",
+    "display_status_rank": 8,
+    "display_badge": "矩阵审核",
+    "display_reason": "Mechanic × Template Matrix 评估包，未进入正式晋级链路；阻断：missing_acceptance, missing_human_review",
+    "primary_action_hint": "转 hardening 或 acceptance",
+    "risk_level": "fail",
+    "blocking_reasons": [
+      "missing_acceptance",
+      "missing_human_review"
+    ],
+    "warning_reasons": [],
+    "identity_group": {
+      "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+      "sequence_template_id": "formal_sequence_15_v1",
+      "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_15_v1__matrix_001",
+      "build_variant": "matrix_001",
+      "runtime_manifest_path": "data/aigc_battle/generated/martial_realm_7_dual_weapon_v0_1/packs/martial_realm_7_dual_weapon_v0_1__formal_sequence_15_v1__matrix_001/runtime_manifest.json"
+    },
+    "runtime_group": {
+      "encounter_count": 15,
+      "generated_loadout_count": 15,
+      "fallback_loadout_count": 0,
+      "reward_coverage_complete": true,
+      "runtime_manifest_loaded": true
+    },
+    "acceptance_group": {
+      "acceptance_pass": false,
+      "risk_level": "",
+      "recommendation": "",
+      "win_rate": 0.1333,
+      "avg_turn_count": 10.3333,
+      "too_hard": 0,
+      "too_long": 0,
+      "reward_mismatch": 0
+    },
+    "review_promotion_group": {
+      "human_review_status": "未生成 / 不适用",
+      "promotion_allowed": false,
+      "promoted_to_release_candidate": false,
+      "promotion_report_path": "未生成 / 不适用"
+    },
+    "release_group": {
+      "current_release_marker": false,
+      "previous_current_marker": false,
+      "fallback_release_marker": false,
+      "release_landing_current": false,
+      "gameplay_entry_verified": false,
+      "release_switch_report_path": "未生成 / 不适用"
+    },
+    "reports_group": {
+      "validation_report": "data/aigc_battle/generated/martial_realm_7_dual_weapon_v0_1/packs/martial_realm_7_dual_weapon_v0_1__formal_sequence_15_v1__matrix_001/validation_report.json",
+      "acceptance_report": "未生成 / 不适用",
+      "promotion_report": "未生成 / 不适用",
+      "release_switch_report": "未生成 / 不适用",
+      "release_landing_report": "未生成 / 不适用",
+      "production_closeout_report": "data/aigc_battle/generated/production_closeout/r17_production_closeout_probe_report.json"
+    },
+    "production_timeline": [
+      {
+        "stage": "build",
+        "status": "pass",
+        "reason": "pack 已存在"
+      },
+      {
+        "stage": "validate",
+        "status": "pass",
+        "reason": "ready_for_runtime_export"
+      },
+      {
+        "stage": "export",
+        "status": "pass",
+        "reason": "runtime_manifest"
+      },
+      {
+        "stage": "preview",
+        "status": "missing",
+        "reason": "preview smoke"
+      },
+      {
+        "stage": "acceptance",
+        "status": "missing",
+        "reason": "fail"
+      },
+      {
+        "stage": "human_review",
+        "status": "missing",
+        "reason": "未生成"
+      },
+      {
+        "stage": "promotion",
+        "status": "not_applicable",
+        "reason": "promotion gate"
+      },
+      {
+        "stage": "release_switch",
+        "status": "not_applicable",
+        "reason": "release switch / current"
+      },
+      {
+        "stage": "gameplay_verification",
+        "status": "not_applicable",
+        "reason": "formal entry / current gameplay"
+      },
+      {
+        "stage": "closeout",
+        "status": "not_applicable",
+        "reason": "production closeout"
+      }
+    ],
+    "risk_board_entry": {
+      "pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_15_v1__matrix_001",
+      "display_status": "matrix_review",
+      "risk_level": "fail",
+      "blocking_reasons": [
+        "missing_acceptance",
+        "missing_human_review"
+      ],
+      "warning_reasons": [],
+      "next_recommended_step": "转 hardening 或 acceptance"
+    }
+  },
   "template_mechanic_pack_binding_valid": true
 }

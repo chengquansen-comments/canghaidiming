@@ -1,0 +1,37 @@
+{
+  "generated_at": "2026-05-13T00:45:11.355798+00:00",
+  "cleanup_plan_ready": true,
+  "current_release_pack": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+  "active_profile_pack": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+  "fallback_release_pack": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+  "resolver_entry_count": 75,
+  "generated_file_policy_ready": true,
+  "local_cleanable_count_before": 2,
+  "safe_cleanup_candidates": [
+    "data/aigc_battle/generated/acceptance/latest_acceptance_report.json",
+    "data/aigc_battle/generated/acceptance/latest_acceptance_report.md"
+  ],
+  "protected_file_count": 19,
+  "protected_paths": [
+    "data/aigc_battle/acceptance",
+    "data/aigc_battle/generated/aigc_content_index.html",
+    "data/aigc_battle/generated/aigc_content_index.json",
+    "data/aigc_battle/generated/aigc_content_index.md",
+    "data/aigc_battle/generated/details",
+    "data/aigc_battle/generated/posture_opening_pressure_v0_1",
+    "data/aigc_battle/generated/posture_opening_pressure_v0_1/runtime_manifest.json",
+    "data/aigc_battle/generated/release_landing",
+    "data/aigc_battle/generated/review",
+    "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_007",
+    "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+    "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json",
+    "data/aigc_battle/pack_resolver.json",
+    "data/aigc_battle/production_contract",
+    "data/aigc_battle/promotion",
+    "data/aigc_battle/release_channels/current_release.json",
+    "data/aigc_battle/release_channels/fallback_release.json",
+    "data/aigc_battle/release_switch",
+    "data/aigc_battle/runtime/active_profile.json"
+  ],
+  "report_ready": true
+}

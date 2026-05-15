@@ -1,0 +1,272 @@
+{
+  "schema_manifest_version": "r14_v1",
+  "frozen_at": "2026-05-12T11:35:45.992294+00:00",
+  "schemas": {
+    "pack_resolver_entry": {
+      "required_fields": [
+        "sequence_template_id",
+        "mechanic_profile_id",
+        "content_pack_id",
+        "build_variant",
+        "channel",
+        "runtime_manifest_path",
+        "validation_report_path",
+        "resolver_entry_valid"
+      ],
+      "optional_fields": [
+        "release_status",
+        "active",
+        "fallback",
+        "source_pack_id",
+        "pack_identity",
+        "previewable",
+        "release_candidate_valid",
+        "release_switch_allowed"
+      ],
+      "prohibited_fields": [
+        "arbitrary_runtime_manifest_path",
+        "arbitrary_current_release_path",
+        "arbitrary_active_profile_path",
+        "shell_command",
+        "external_url",
+        "unsafe_file_path"
+      ]
+    },
+    "current_release": {
+      "required_fields": [
+        "mechanic_profile_id",
+        "content_pack_id",
+        "sequence_template_id",
+        "build_variant",
+        "runtime_manifest_path"
+      ],
+      "compatibility_aliases": {
+        "active_mechanic_profile_id": "mechanic_profile_id",
+        "active_content_pack_id": "content_pack_id"
+      },
+      "optional_fields": [
+        "channel",
+        "pack_identity",
+        "release_status",
+        "release_manifest_path",
+        "activated_at",
+        "fallback_profile_id",
+        "fallback_content_pack_id"
+      ],
+      "prohibited_fields": [
+        "arbitrary_runtime_manifest_path",
+        "arbitrary_current_release_path",
+        "arbitrary_active_profile_path",
+        "shell_command",
+        "external_url",
+        "unsafe_file_path"
+      ]
+    },
+    "fallback_release": {
+      "required_fields": [
+        "mechanic_profile_id",
+        "content_pack_id",
+        "runtime_manifest_path"
+      ],
+      "compatibility_aliases": {
+        "fallback_mechanic_profile_id": "mechanic_profile_id",
+        "fallback_content_pack_id": "content_pack_id",
+        "active_mechanic_profile_id": "mechanic_profile_id",
+        "active_content_pack_id": "content_pack_id"
+      },
+      "optional_fields": [
+        "channel",
+        "sequence_template_id",
+        "build_variant",
+        "pack_identity",
+        "release_status",
+        "reason"
+      ],
+      "prohibited_fields": [
+        "arbitrary_runtime_manifest_path",
+        "arbitrary_current_release_path",
+        "arbitrary_active_profile_path",
+        "shell_command",
+        "external_url",
+        "unsafe_file_path"
+      ]
+    },
+    "active_profile": {
+      "required_fields": [
+        "active_mechanic_profile_id",
+        "active_content_pack_id",
+        "runtime_manifest_path"
+      ],
+      "optional_fields": [
+        "target_sequence_id",
+        "replacement_mode",
+        "fallback_story_battle_loader"
+      ],
+      "prohibited_fields": [
+        "arbitrary_runtime_manifest_path",
+        "arbitrary_current_release_path",
+        "arbitrary_active_profile_path",
+        "shell_command",
+        "external_url",
+        "unsafe_file_path"
+      ]
+    },
+    "preview_profile": {
+      "required_fields": [
+        "preview_enabled",
+        "preview_channel",
+        "preview_content_pack_id",
+        "preview_status",
+        "restore_target_profile_id",
+        "restore_target_content_pack_id"
+      ],
+      "optional_fields": [
+        "preview_mechanic_profile_id",
+        "preview_sequence_template_id",
+        "preview_build_variant",
+        "preview_runtime_manifest_path",
+        "preview_validation_report_path",
+        "preview_source_channel",
+        "preview_started_at",
+        "preview_started_by",
+        "current_release_snapshot_path",
+        "active_profile_snapshot",
+        "preview_reason"
+      ],
+      "prohibited_fields": [
+        "arbitrary_runtime_manifest_path",
+        "arbitrary_current_release_path",
+        "arbitrary_active_profile_path",
+        "shell_command",
+        "external_url",
+        "unsafe_file_path"
+      ]
+    },
+    "acceptance_report": {
+      "required_fields": [
+        "pack_resolved",
+        "validate_pass",
+        "export_pass",
+        "preview_formal_entry_smoke_pass",
+        "fallback_loadout_count",
+        "reward_coverage_complete",
+        "evaluation_ready",
+        "risk_level",
+        "acceptance_recommendation",
+        "current_release_unchanged",
+        "active_profile_matches_current_release",
+        "acceptance_pass"
+      ],
+      "optional_fields": [
+        "pack_resolved_by_pack_resolver",
+        "runtime_manifest_path",
+        "validation_report_path",
+        "mechanic_trigger_rate",
+        "acceptance_error"
+      ],
+      "prohibited_fields": [
+        "arbitrary_runtime_manifest_path",
+        "arbitrary_current_release_path",
+        "arbitrary_active_profile_path",
+        "shell_command",
+        "external_url",
+        "unsafe_file_path"
+      ]
+    },
+    "human_review_note": {
+      "required_fields": [
+        "mechanic_profile_id",
+        "content_pack_id",
+        "reviewer",
+        "status",
+        "note",
+        "review_note_valid"
+      ],
+      "optional_fields": [
+        "sequence_template_id",
+        "build_variant",
+        "created_at",
+        "source_acceptance_report_path"
+      ],
+      "prohibited_fields": [
+        "arbitrary_runtime_manifest_path",
+        "arbitrary_current_release_path",
+        "arbitrary_active_profile_path",
+        "shell_command",
+        "external_url",
+        "unsafe_file_path"
+      ]
+    },
+    "promotion_report": {
+      "required_fields": [
+        "acceptance_report_found",
+        "acceptance_pass",
+        "human_review_note_found",
+        "human_review_status",
+        "human_review_accepted",
+        "promotion_allowed",
+        "promoted_to_release_candidate",
+        "current_release_unchanged"
+      ],
+      "optional_fields": [
+        "release_gate_policy_pass",
+        "release_candidate_manifest_path",
+        "active_profile_matches_current_release",
+        "promotion_error"
+      ],
+      "prohibited_fields": [
+        "arbitrary_runtime_manifest_path",
+        "arbitrary_current_release_path",
+        "arbitrary_active_profile_path",
+        "shell_command",
+        "external_url",
+        "unsafe_file_path"
+      ]
+    },
+    "release_switch_report": {
+      "required_fields": [
+        "release_candidate_valid",
+        "current_release_written",
+        "formal_entry_smoke_pass",
+        "fallback_loadout_count",
+        "reward_coverage_complete",
+        "rollback_available",
+        "current_release_matches_active_profile"
+      ],
+      "compatibility_aliases": {
+        "set_current_ready": "current_release_written"
+      },
+      "optional_fields": [
+        "action",
+        "target_profile_id",
+        "target_content_pack_id",
+        "active_profile_written",
+        "rollback_performed",
+        "switch_allowed",
+        "switch_error"
+      ],
+      "prohibited_fields": [
+        "arbitrary_runtime_manifest_path",
+        "arbitrary_current_release_path",
+        "arbitrary_active_profile_path",
+        "shell_command",
+        "external_url",
+        "unsafe_file_path"
+      ]
+    }
+  },
+  "prohibited_fields": [
+    "arbitrary_runtime_manifest_path",
+    "arbitrary_current_release_path",
+    "arbitrary_active_profile_path",
+    "shell_command",
+    "external_url",
+    "unsafe_file_path"
+  ],
+  "compatibility_policy": {
+    "allow_additive_optional_fields": true,
+    "forbid_required_field_removal_without_version_bump": true,
+    "forbid_unsafe_path_fields": true
+  },
+  "schema_manifest_ready": true
+}

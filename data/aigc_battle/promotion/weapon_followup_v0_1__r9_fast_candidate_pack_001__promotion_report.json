@@ -1,0 +1,29 @@
+{
+  "promotion_run_id": "promotion_weapon_followup_v0_1_r9_fast_candidate_pack_001_1778671232",
+  "timestamp": "2026-05-13T11:20:32.703338+00:00",
+  "mechanic_profile_id": "weapon_followup_v0_1",
+  "sequence_template_id": "formal_sequence_12_fast_v1",
+  "content_pack_id": "r9_fast_candidate_pack_001",
+  "build_variant": "ai_studio_001",
+  "source_channel": "ai_studio_review",
+  "acceptance_report_path": "data/aigc_battle/acceptance/weapon_followup_v0_1__r9_fast_candidate_pack_001__acceptance_report.json",
+  "human_review_note_path": "data/aigc_battle/promotion/human_review_notes/weapon_followup_v0_1__r9_fast_candidate_pack_001.json",
+  "pack_resolved": true,
+  "acceptance_report_found": true,
+  "acceptance_pass": true,
+  "acceptance_risk_level": "warning",
+  "acceptance_recommendation": "needs_balance",
+  "human_review_note_found": true,
+  "human_review_status": "needs_balance",
+  "human_review_accepted": false,
+  "release_gate_policy_pass": false,
+  "promotion_allowed": false,
+  "promoted_to_release_candidate": false,
+  "release_candidate_manifest_path": "",
+  "current_release_unchanged": true,
+  "active_profile_matches_current_release": true,
+  "promotion_error": "",
+  "blocked_reasons": [
+    "human_review_not_accepted"
+  ]
+}

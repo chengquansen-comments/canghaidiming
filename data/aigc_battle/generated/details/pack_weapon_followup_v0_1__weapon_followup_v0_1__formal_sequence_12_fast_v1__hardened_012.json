@@ -1,0 +1,5991 @@
+{
+  "mechanic_profile_id": "weapon_followup_v0_1",
+  "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_012",
+  "sequence_template_id": "formal_sequence_12_fast_v1",
+  "build_variant": "hardened_012",
+  "pack_identity": {
+    "sequence_template_id": "formal_sequence_12_fast_v1",
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "build_variant": "hardened_012",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_012"
+  },
+  "template_display_name": "formal_sequence_12_fast_v1",
+  "template_usage_recommendation": "",
+  "template_release_strategy": {
+    "generated_at": "2026-05-12T01:03:48.455372+00:00",
+    "current_release_template": "formal_sequence_15_v1",
+    "fallback_template": "formal_sequence_15_v1",
+    "candidate_templates": [
+      "formal_sequence_12_fast_v1",
+      "bossrush_9_v1",
+      "elite_heavy_15_v1"
+    ],
+    "recommended_standard_template": "formal_sequence_15_v1",
+    "recommended_fast_template": "",
+    "recommended_bossrush_template": "bossrush_9_v1",
+    "recommended_elite_template": "elite_heavy_15_v1",
+    "templates_ready_for_release_candidate": [],
+    "templates_needing_balance": [
+      "formal_sequence_12_fast_v1",
+      "bossrush_9_v1",
+      "elite_heavy_15_v1"
+    ],
+    "template_release_strategy_ready": true
+  },
+  "matrix_slot": false,
+  "matrix_build_variant": "",
+  "matrix_strategy_tag": "",
+  "pack_storage_mode": "profile_pack_dir",
+  "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_012/runtime_manifest.json",
+  "is_active_pack": false,
+  "stage_counts": {
+    "early": 3,
+    "mid": 3,
+    "late": 3,
+    "boss": 3
+  },
+  "release_channel_membership": {
+    "is_current_release": false,
+    "is_candidate_release": false,
+    "is_fallback_release": false,
+    "current_release_smoke_test_status": "",
+    "current_release_last_smoke_report_path": ""
+  },
+  "target_sequence_id": "formal_sequence_mvp_v1",
+  "replacement_mode": "full_sequence",
+  "formal_encounter_total_count": 12,
+  "card_count": 40,
+  "deck_count": 12,
+  "battle_slot_count": 12,
+  "reward_count": 12,
+  "validation_summary": {
+    "ready_for_runtime_export": true,
+    "full_sequence_coverage_complete": true,
+    "runtime_export_allowed": true,
+    "sequence_balance_pass": true,
+    "sequence_template_id_present": true,
+    "pack_identity_complete": true,
+    "pack_matches_sequence_template": true,
+    "pack_matches_mechanic_profile": true,
+    "template_mechanic_pack_binding_valid": true,
+    "sequence_template_runtime_export_allowed": true,
+    "deck_card_realm_eligibility_valid": true,
+    "no_card_above_player_wujing_in_deck": true,
+    "invalid_realm_card_count": 0,
+    "missing_realm_metadata_count": 0
+  },
+  "balance_summary": {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
+    "target_sequence_id": "formal_sequence_mvp_v1",
+    "formal_encounter_total_count": 12,
+    "tier_counts": {
+      "early": 3,
+      "mid": 3,
+      "late": 3,
+      "boss": 3
+    },
+    "encounter_kind_counts": {
+      "normal": 3,
+      "elite": 6,
+      "boss": 3
+    },
+    "deck_power_by_encounter": [
+      {
+        "formal_encounter_id": "enc_beach_ambush",
+        "sequence_position": 1,
+        "encounter_tier": "early",
+        "encounter_kind": "normal",
+        "target_power_min": 22,
+        "target_power_max": 28,
+        "deck_power_score": 22.8,
+        "reward_tier": "early"
+      },
+      {
+        "formal_encounter_id": "enc_fishing_village_embers",
+        "sequence_position": 2,
+        "encounter_tier": "early",
+        "encounter_kind": "normal",
+        "target_power_min": 22,
+        "target_power_max": 28,
+        "deck_power_score": 22.8,
+        "reward_tier": "early"
+      },
+      {
+        "formal_encounter_id": "enc_transport_officer",
+        "sequence_position": 3,
+        "encounter_tier": "early",
+        "encounter_kind": "elite",
+        "target_power_min": 22,
+        "target_power_max": 28,
+        "deck_power_score": 27.6,
+        "reward_tier": "early"
+      },
+      {
+        "formal_encounter_id": "enc_mutiny_camp",
+        "sequence_position": 4,
+        "encounter_tier": "mid",
+        "encounter_kind": "normal",
+        "target_power_min": 30,
+        "target_power_max": 34,
+        "deck_power_score": 30.0,
+        "reward_tier": "mid"
+      },
+      {
+        "formal_encounter_id": "enc_wakou_boss",
+        "sequence_position": 5,
+        "encounter_tier": "mid",
+        "encounter_kind": "elite",
+        "target_power_min": 30,
+        "target_power_max": 34,
+        "deck_power_score": 33.2,
+        "reward_tier": "mid"
+      },
+      {
+        "formal_encounter_id": "enc_wuke_spear_trial",
+        "sequence_position": 6,
+        "encounter_tier": "mid",
+        "encounter_kind": "elite",
+        "target_power_min": 30,
+        "target_power_max": 34,
+        "deck_power_score": 33.2,
+        "reward_tier": "mid"
+      },
+      {
+        "formal_encounter_id": "enc_wuke_blade_trial",
+        "sequence_position": 7,
+        "encounter_tier": "late",
+        "encounter_kind": "elite",
+        "target_power_min": 43,
+        "target_power_max": 52,
+        "deck_power_score": 50.8,
+        "reward_tier": "late"
+      },
+      {
+        "formal_encounter_id": "enc_wuke_final_duel",
+        "sequence_position": 8,
+        "encounter_tier": "late",
+        "encounter_kind": "elite",
+        "target_power_min": 43,
+        "target_power_max": 52,
+        "deck_power_score": 50.8,
+        "reward_tier": "late"
+      },
+      {
+        "formal_encounter_id": "enc_wuke_gu_chengyue",
+        "sequence_position": 9,
+        "encounter_tier": "late",
+        "encounter_kind": "elite",
+        "target_power_min": 43,
+        "target_power_max": 52,
+        "deck_power_score": 50.8,
+        "reward_tier": "late"
+      },
+      {
+        "formal_encounter_id": "enc_wuke_shen_zhaoye",
+        "sequence_position": 10,
+        "encounter_tier": "boss",
+        "encounter_kind": "boss",
+        "target_power_min": 53,
+        "target_power_max": 56,
+        "deck_power_score": 54.6,
+        "reward_tier": "boss"
+      },
+      {
+        "formal_encounter_id": "enc_wuke_qi_heng",
+        "sequence_position": 11,
+        "encounter_tier": "boss",
+        "encounter_kind": "boss",
+        "target_power_min": 53,
+        "target_power_max": 56,
+        "deck_power_score": 54.6,
+        "reward_tier": "boss"
+      },
+      {
+        "formal_encounter_id": "enc_ch2_reed_ambush",
+        "sequence_position": 12,
+        "encounter_tier": "boss",
+        "encounter_kind": "boss",
+        "target_power_min": 53,
+        "target_power_max": 56,
+        "deck_power_score": 54.6,
+        "reward_tier": "boss"
+      }
+    ],
+    "early_avg_power": 24.4,
+    "mid_avg_power": 32.13,
+    "late_avg_power": 50.8,
+    "boss_avg_power": 54.6,
+    "min_late_avg_power_over_early": 20.0,
+    "late_avg_power_over_early": 26.4,
+    "all_decks_within_power_range": true,
+    "elite_decks_stronger_than_normal": true,
+    "boss_decks_stronger_than_late_or_elite": true,
+    "boss_decks_stronger_than_elite": true,
+    "sequence_balance_curve_ready": true,
+    "sequence_balance_pass": true,
+    "no_elite_detected": false,
+    "no_boss_detected": false,
+    "weapon_followup_curve_ready": true,
+    "early_avg_followup_density": 0.46,
+    "mid_avg_followup_density": 0.58,
+    "late_avg_followup_density": 0.75,
+    "boss_avg_followup_density": 0.75,
+    "rebuild_uses_snapshot": false,
+    "snapshot_source_path": "",
+    "adjusted_or_flagged_encounters": [],
+    "rebuild_uses_real_telemetry": false,
+    "real_telemetry_snapshot_path": "",
+    "telemetry_rebuild_adjustments": [],
+    "snapshot_rebuild_pass": true,
+    "sequence_template_id": "formal_sequence_12_fast_v1",
+    "build_variant": "matrix_001",
+    "stage_counts": {
+      "early": 3,
+      "mid": 3,
+      "late": 3,
+      "boss": 3
+    },
+    "total_encounter_count": 12,
+    "generated_loadout_count": 12,
+    "fallback_loadout_count": 0,
+    "reward_coverage_complete": true,
+    "playable_hardening": true,
+    "hardening_target": "fast"
+  },
+  "telemetry_summary": {
+    "telemetry_event_count": 0
+  },
+  "snapshot_summary": {},
+  "runtime_primitive_summary": {
+    "runtime_primitives_supported": true,
+    "opening_pressure_declared": false,
+    "opening_pressure_slot_count": 0,
+    "opening_pressure_all_slots_covered": true,
+    "opening_pressure_values_in_range": true,
+    "opening_pressure_curve_ready": true,
+    "weapon_followup_declared": true,
+    "weapon_followup_cards_present": true,
+    "weapon_followup_decks_present": true,
+    "weapon_followup_all_slots_covered": true,
+    "weapon_followup_chain_valid": true,
+    "weapon_followup_values_in_range": true,
+    "weapon_followup_curve_ready": true,
+    "weapon_followup_runtime_export_allowed": true,
+    "clue_pressure_declared": false,
+    "clue_pressure_all_slots_covered": true,
+    "clue_pressure_tags_valid": true,
+    "clue_pressure_effects_valid": true,
+    "clue_pressure_values_in_range": true,
+    "clue_pressure_curve_ready": true,
+    "clue_pressure_runtime_export_allowed": true,
+    "martial_realm_7_declared": false,
+    "dual_weapon_declared": false,
+    "max_wujing": 0,
+    "max_closing_form_tier": 0,
+    "max_wujing_is_7": true,
+    "max_closing_form_tier_is_7": true,
+    "dual_weapon_slot_count": 0,
+    "dual_weapon_deck_count": 0,
+    "seven_realm_card_count": 0,
+    "invalid_weapon_loadout_card_count": 0,
+    "martial_realm_7_playable": true,
+    "dual_weapon_playable": true,
+    "dual_weapon_runtime_export_allowed": true,
+    "runtime_primitive_playable": true
+  },
+  "evaluation_summary": {
+    "evaluation_run_id": "weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_012__20260512T072258Z",
+    "generated_at": "2026-05-12T07:22:58.787328+00:00",
+    "run_started_at": "2026-05-12T07:22:58.780535+00:00",
+    "evaluation_policy": "deterministic_headless",
+    "telemetry_detail_level": "real",
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "sequence_template_id": "formal_sequence_12_fast_v1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_012",
+    "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_012/runtime_manifest.json",
+    "validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_012/validation_report.json",
+    "formal_encounter_total_count": 12,
+    "samples_per_encounter": 4,
+    "fallback_loadout_count": 0,
+    "reward_plan_readable": true,
+    "runtime_primitive_readable": true,
+    "runtime_primitives": [
+      "weapon_followup"
+    ],
+    "evaluation_event_count": 48,
+    "telemetry_detail_level_summary": {
+      "real": 48
+    },
+    "evaluation_ready": true,
+    "encounter_metrics": [
+      {
+        "sample_count": 4,
+        "win_rate": 0.0,
+        "avg_turn_count": 9.25,
+        "avg_player_hp_end": 0.0,
+        "avg_enemy_hp_end": 27.0,
+        "avg_damage_taken": 32.0,
+        "avg_damage_dealt": 7.0,
+        "avg_cards_played": 9.25,
+        "avg_enemy_cards_played": 9.25,
+        "avg_hp_delta": -32.0,
+        "runtime_primitive_trigger_rate": 1.0,
+        "weapon_followup_trigger_rate": 1.0,
+        "clue_pressure_trigger_rate": 0.0,
+        "dual_weapon_usage_rate": 0.0,
+        "reward_claim_rate": 0.0,
+        "telemetry_detail_level_summary": {
+          "real": 4
+        },
+        "mechanism_underused_count": 0,
+        "too_easy_count": 0,
+        "too_hard_count": 4,
+        "too_long_count": 4,
+        "burst_damage_count": 4,
+        "reward_mismatch_count": 0,
+        "card_dead_count": 0,
+        "runtime_primitive_enabled_rate": 1.0,
+        "formal_encounter_id": "enc_beach_ambush",
+        "formal_battle_id": "first_act_beach_ambush",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_001",
+        "generated_deck_id": "weapon_followup_v0_1_deck_001",
+        "reward_plan_id": "weapon_followup_v0_1_reward_001",
+        "encounter_tier": "early",
+        "encounter_kind": "normal",
+        "sequence_position": 1,
+        "runtime_primitives": [
+          "weapon_followup"
+        ],
+        "player_wujing_cap": 1,
+        "deck_power_score": 20.0,
+        "reward_tier": "early"
+      },
+      {
+        "sample_count": 4,
+        "win_rate": 0.75,
+        "avg_turn_count": 8.75,
+        "avg_player_hp_end": 7.75,
+        "avg_enemy_hp_end": 1.25,
+        "avg_damage_taken": 28.25,
+        "avg_damage_dealt": 32.75,
+        "avg_cards_played": 8.75,
+        "avg_enemy_cards_played": 8.0,
+        "avg_hp_delta": -28.25,
+        "runtime_primitive_trigger_rate": 1.0,
+        "weapon_followup_trigger_rate": 1.0,
+        "clue_pressure_trigger_rate": 0.0,
+        "dual_weapon_usage_rate": 0.0,
+        "reward_claim_rate": 0.75,
+        "telemetry_detail_level_summary": {
+          "real": 4
+        },
+        "mechanism_underused_count": 0,
+        "too_easy_count": 0,
+        "too_hard_count": 2,
+        "too_long_count": 4,
+        "burst_damage_count": 4,
+        "reward_mismatch_count": 0,
+        "card_dead_count": 0,
+        "runtime_primitive_enabled_rate": 1.0,
+        "formal_encounter_id": "enc_fishing_village_embers",
+        "formal_battle_id": "first_act_fishing_village_embers",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_002",
+        "generated_deck_id": "weapon_followup_v0_1_deck_002",
+        "reward_plan_id": "weapon_followup_v0_1_reward_002",
+        "encounter_tier": "early",
+        "encounter_kind": "normal",
+        "sequence_position": 2,
+        "runtime_primitives": [
+          "weapon_followup"
+        ],
+        "player_wujing_cap": 2,
+        "deck_power_score": 20.0,
+        "reward_tier": "early"
+      },
+      {
+        "sample_count": 4,
+        "win_rate": 0.5,
+        "avg_turn_count": 8.0,
+        "avg_player_hp_end": 4.0,
+        "avg_enemy_hp_end": 8.5,
+        "avg_damage_taken": 32.0,
+        "avg_damage_dealt": 25.5,
+        "avg_cards_played": 8.0,
+        "avg_enemy_cards_played": 7.5,
+        "avg_hp_delta": -32.0,
+        "runtime_primitive_trigger_rate": 1.0,
+        "weapon_followup_trigger_rate": 1.0,
+        "clue_pressure_trigger_rate": 0.0,
+        "dual_weapon_usage_rate": 0.0,
+        "reward_claim_rate": 0.5,
+        "telemetry_detail_level_summary": {
+          "real": 4
+        },
+        "mechanism_underused_count": 0,
+        "too_easy_count": 0,
+        "too_hard_count": 3,
+        "too_long_count": 4,
+        "burst_damage_count": 4,
+        "reward_mismatch_count": 0,
+        "card_dead_count": 0,
+        "runtime_primitive_enabled_rate": 1.0,
+        "formal_encounter_id": "enc_transport_officer",
+        "formal_battle_id": "first_act_transport_officer",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_003",
+        "generated_deck_id": "weapon_followup_v0_1_deck_003",
+        "reward_plan_id": "weapon_followup_v0_1_reward_003",
+        "encounter_tier": "early",
+        "encounter_kind": "elite",
+        "sequence_position": 3,
+        "runtime_primitives": [
+          "weapon_followup"
+        ],
+        "player_wujing_cap": 2,
+        "deck_power_score": 20.0,
+        "reward_tier": "early"
+      },
+      {
+        "sample_count": 4,
+        "win_rate": 1.0,
+        "avg_turn_count": 6.75,
+        "avg_player_hp_end": 14.5,
+        "avg_enemy_hp_end": 0.0,
+        "avg_damage_taken": 25.5,
+        "avg_damage_dealt": 34.0,
+        "avg_cards_played": 6.75,
+        "avg_enemy_cards_played": 5.75,
+        "avg_hp_delta": -25.5,
+        "runtime_primitive_trigger_rate": 1.0,
+        "weapon_followup_trigger_rate": 1.0,
+        "clue_pressure_trigger_rate": 0.0,
+        "dual_weapon_usage_rate": 0.0,
+        "reward_claim_rate": 1.0,
+        "telemetry_detail_level_summary": {
+          "real": 4
+        },
+        "mechanism_underused_count": 0,
+        "too_easy_count": 0,
+        "too_hard_count": 0,
+        "too_long_count": 4,
+        "burst_damage_count": 4,
+        "reward_mismatch_count": 0,
+        "card_dead_count": 0,
+        "runtime_primitive_enabled_rate": 1.0,
+        "formal_encounter_id": "enc_mutiny_camp",
+        "formal_battle_id": "first_act_mutiny_camp",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_004",
+        "generated_deck_id": "weapon_followup_v0_1_deck_004",
+        "reward_plan_id": "weapon_followup_v0_1_reward_004",
+        "encounter_tier": "mid",
+        "encounter_kind": "normal",
+        "sequence_position": 4,
+        "runtime_primitives": [
+          "weapon_followup"
+        ],
+        "player_wujing_cap": 3,
+        "deck_power_score": 20.0,
+        "reward_tier": "mid"
+      },
+      {
+        "sample_count": 4,
+        "win_rate": 1.0,
+        "avg_turn_count": 5.5,
+        "avg_player_hp_end": 25.25,
+        "avg_enemy_hp_end": 0.0,
+        "avg_damage_taken": 18.75,
+        "avg_damage_dealt": 34.0,
+        "avg_cards_played": 5.5,
+        "avg_enemy_cards_played": 4.5,
+        "avg_hp_delta": -18.75,
+        "runtime_primitive_trigger_rate": 1.0,
+        "weapon_followup_trigger_rate": 1.0,
+        "clue_pressure_trigger_rate": 0.0,
+        "dual_weapon_usage_rate": 0.0,
+        "reward_claim_rate": 1.0,
+        "telemetry_detail_level_summary": {
+          "real": 4
+        },
+        "mechanism_underused_count": 0,
+        "too_easy_count": 0,
+        "too_hard_count": 0,
+        "too_long_count": 2,
+        "burst_damage_count": 1,
+        "reward_mismatch_count": 0,
+        "card_dead_count": 0,
+        "runtime_primitive_enabled_rate": 1.0,
+        "formal_encounter_id": "enc_wakou_boss",
+        "formal_battle_id": "first_act_wakou_boss",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_005",
+        "generated_deck_id": "weapon_followup_v0_1_deck_005",
+        "reward_plan_id": "weapon_followup_v0_1_reward_005",
+        "encounter_tier": "mid",
+        "encounter_kind": "elite",
+        "sequence_position": 5,
+        "runtime_primitives": [
+          "weapon_followup"
+        ],
+        "player_wujing_cap": 4,
+        "deck_power_score": 20.0,
+        "reward_tier": "mid"
+      },
+      {
+        "sample_count": 4,
+        "win_rate": 1.0,
+        "avg_turn_count": 5.5,
+        "avg_player_hp_end": 27.0,
+        "avg_enemy_hp_end": 0.0,
+        "avg_damage_taken": 17.0,
+        "avg_damage_dealt": 34.0,
+        "avg_cards_played": 5.5,
+        "avg_enemy_cards_played": 4.5,
+        "avg_hp_delta": -17.0,
+        "runtime_primitive_trigger_rate": 1.0,
+        "weapon_followup_trigger_rate": 1.0,
+        "clue_pressure_trigger_rate": 0.0,
+        "dual_weapon_usage_rate": 0.0,
+        "reward_claim_rate": 1.0,
+        "telemetry_detail_level_summary": {
+          "real": 4
+        },
+        "mechanism_underused_count": 0,
+        "too_easy_count": 0,
+        "too_hard_count": 0,
+        "too_long_count": 2,
+        "burst_damage_count": 1,
+        "reward_mismatch_count": 0,
+        "card_dead_count": 0,
+        "runtime_primitive_enabled_rate": 1.0,
+        "formal_encounter_id": "enc_wuke_spear_trial",
+        "formal_battle_id": "wuke_spear_trial",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_006",
+        "generated_deck_id": "weapon_followup_v0_1_deck_006",
+        "reward_plan_id": "weapon_followup_v0_1_reward_006",
+        "encounter_tier": "mid",
+        "encounter_kind": "elite",
+        "sequence_position": 6,
+        "runtime_primitives": [
+          "weapon_followup"
+        ],
+        "player_wujing_cap": 4,
+        "deck_power_score": 20.0,
+        "reward_tier": "mid"
+      },
+      {
+        "sample_count": 4,
+        "win_rate": 1.0,
+        "avg_turn_count": 6.5,
+        "avg_player_hp_end": 22.5,
+        "avg_enemy_hp_end": 0.0,
+        "avg_damage_taken": 25.5,
+        "avg_damage_dealt": 40.0,
+        "avg_cards_played": 6.5,
+        "avg_enemy_cards_played": 5.5,
+        "avg_hp_delta": -25.5,
+        "runtime_primitive_trigger_rate": 1.0,
+        "weapon_followup_trigger_rate": 1.0,
+        "clue_pressure_trigger_rate": 0.0,
+        "dual_weapon_usage_rate": 0.0,
+        "reward_claim_rate": 1.0,
+        "telemetry_detail_level_summary": {
+          "real": 4
+        },
+        "mechanism_underused_count": 0,
+        "too_easy_count": 0,
+        "too_hard_count": 0,
+        "too_long_count": 4,
+        "burst_damage_count": 2,
+        "reward_mismatch_count": 0,
+        "card_dead_count": 0,
+        "runtime_primitive_enabled_rate": 1.0,
+        "formal_encounter_id": "enc_wuke_blade_trial",
+        "formal_battle_id": "wuke_blade_trial",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_007",
+        "generated_deck_id": "weapon_followup_v0_1_deck_007",
+        "reward_plan_id": "weapon_followup_v0_1_reward_007",
+        "encounter_tier": "late",
+        "encounter_kind": "elite",
+        "sequence_position": 7,
+        "runtime_primitives": [
+          "weapon_followup"
+        ],
+        "player_wujing_cap": 5,
+        "deck_power_score": 23.6,
+        "reward_tier": "late"
+      },
+      {
+        "sample_count": 4,
+        "win_rate": 1.0,
+        "avg_turn_count": 7.5,
+        "avg_player_hp_end": 14.75,
+        "avg_enemy_hp_end": 0.0,
+        "avg_damage_taken": 37.25,
+        "avg_damage_dealt": 47.0,
+        "avg_cards_played": 7.5,
+        "avg_enemy_cards_played": 6.5,
+        "avg_hp_delta": -37.25,
+        "runtime_primitive_trigger_rate": 1.0,
+        "weapon_followup_trigger_rate": 1.0,
+        "clue_pressure_trigger_rate": 0.0,
+        "dual_weapon_usage_rate": 0.0,
+        "reward_claim_rate": 1.0,
+        "telemetry_detail_level_summary": {
+          "real": 4
+        },
+        "mechanism_underused_count": 0,
+        "too_easy_count": 0,
+        "too_hard_count": 1,
+        "too_long_count": 4,
+        "burst_damage_count": 4,
+        "reward_mismatch_count": 0,
+        "card_dead_count": 0,
+        "runtime_primitive_enabled_rate": 1.0,
+        "formal_encounter_id": "enc_wuke_final_duel",
+        "formal_battle_id": "wuke_final_duel",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_008",
+        "generated_deck_id": "weapon_followup_v0_1_deck_008",
+        "reward_plan_id": "weapon_followup_v0_1_reward_008",
+        "encounter_tier": "late",
+        "encounter_kind": "elite",
+        "sequence_position": 8,
+        "runtime_primitives": [
+          "weapon_followup"
+        ],
+        "player_wujing_cap": 6,
+        "deck_power_score": 27.8,
+        "reward_tier": "late"
+      },
+      {
+        "sample_count": 4,
+        "win_rate": 1.0,
+        "avg_turn_count": 6.75,
+        "avg_player_hp_end": 21.75,
+        "avg_enemy_hp_end": 0.0,
+        "avg_damage_taken": 30.25,
+        "avg_damage_dealt": 42.0,
+        "avg_cards_played": 6.75,
+        "avg_enemy_cards_played": 5.75,
+        "avg_hp_delta": -30.25,
+        "runtime_primitive_trigger_rate": 1.0,
+        "weapon_followup_trigger_rate": 1.0,
+        "clue_pressure_trigger_rate": 0.0,
+        "dual_weapon_usage_rate": 0.0,
+        "reward_claim_rate": 1.0,
+        "telemetry_detail_level_summary": {
+          "real": 4
+        },
+        "mechanism_underused_count": 0,
+        "too_easy_count": 0,
+        "too_hard_count": 0,
+        "too_long_count": 4,
+        "burst_damage_count": 3,
+        "reward_mismatch_count": 0,
+        "card_dead_count": 0,
+        "runtime_primitive_enabled_rate": 1.0,
+        "formal_encounter_id": "enc_wuke_gu_chengyue",
+        "formal_battle_id": "wuke_gu_chengyue",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_009",
+        "generated_deck_id": "weapon_followup_v0_1_deck_009",
+        "reward_plan_id": "weapon_followup_v0_1_reward_009",
+        "encounter_tier": "late",
+        "encounter_kind": "elite",
+        "sequence_position": 9,
+        "runtime_primitives": [
+          "weapon_followup"
+        ],
+        "player_wujing_cap": 6,
+        "deck_power_score": 24.8,
+        "reward_tier": "late"
+      },
+      {
+        "sample_count": 4,
+        "win_rate": 1.0,
+        "avg_turn_count": 7.0,
+        "avg_player_hp_end": 24.0,
+        "avg_enemy_hp_end": 0.0,
+        "avg_damage_taken": 32.0,
+        "avg_damage_dealt": 44.0,
+        "avg_cards_played": 7.0,
+        "avg_enemy_cards_played": 6.0,
+        "avg_hp_delta": -32.0,
+        "runtime_primitive_trigger_rate": 1.0,
+        "weapon_followup_trigger_rate": 1.0,
+        "clue_pressure_trigger_rate": 0.0,
+        "dual_weapon_usage_rate": 0.0,
+        "reward_claim_rate": 1.0,
+        "telemetry_detail_level_summary": {
+          "real": 4
+        },
+        "mechanism_underused_count": 0,
+        "too_easy_count": 0,
+        "too_hard_count": 0,
+        "too_long_count": 4,
+        "burst_damage_count": 3,
+        "reward_mismatch_count": 0,
+        "card_dead_count": 0,
+        "runtime_primitive_enabled_rate": 1.0,
+        "formal_encounter_id": "enc_wuke_shen_zhaoye",
+        "formal_battle_id": "wuke_shen_zhaoye",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_010",
+        "generated_deck_id": "weapon_followup_v0_1_deck_010",
+        "reward_plan_id": "weapon_followup_v0_1_reward_010",
+        "encounter_tier": "boss",
+        "encounter_kind": "boss",
+        "sequence_position": 10,
+        "runtime_primitives": [
+          "weapon_followup"
+        ],
+        "player_wujing_cap": 7,
+        "deck_power_score": 25.6,
+        "reward_tier": "boss"
+      },
+      {
+        "sample_count": 4,
+        "win_rate": 1.0,
+        "avg_turn_count": 6.5,
+        "avg_player_hp_end": 29.25,
+        "avg_enemy_hp_end": 0.0,
+        "avg_damage_taken": 26.75,
+        "avg_damage_dealt": 40.0,
+        "avg_cards_played": 6.5,
+        "avg_enemy_cards_played": 5.5,
+        "avg_hp_delta": -26.75,
+        "runtime_primitive_trigger_rate": 1.0,
+        "weapon_followup_trigger_rate": 1.0,
+        "clue_pressure_trigger_rate": 0.0,
+        "dual_weapon_usage_rate": 0.0,
+        "reward_claim_rate": 1.0,
+        "telemetry_detail_level_summary": {
+          "real": 4
+        },
+        "mechanism_underused_count": 0,
+        "too_easy_count": 0,
+        "too_hard_count": 0,
+        "too_long_count": 4,
+        "burst_damage_count": 2,
+        "reward_mismatch_count": 0,
+        "card_dead_count": 0,
+        "runtime_primitive_enabled_rate": 1.0,
+        "formal_encounter_id": "enc_wuke_qi_heng",
+        "formal_battle_id": "wuke_qi_heng",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_011",
+        "generated_deck_id": "weapon_followup_v0_1_deck_011",
+        "reward_plan_id": "weapon_followup_v0_1_reward_011",
+        "encounter_tier": "boss",
+        "encounter_kind": "boss",
+        "sequence_position": 11,
+        "runtime_primitives": [
+          "weapon_followup"
+        ],
+        "player_wujing_cap": 7,
+        "deck_power_score": 23.8,
+        "reward_tier": "boss"
+      },
+      {
+        "sample_count": 4,
+        "win_rate": 1.0,
+        "avg_turn_count": 7.0,
+        "avg_player_hp_end": 22.25,
+        "avg_enemy_hp_end": 0.0,
+        "avg_damage_taken": 33.75,
+        "avg_damage_dealt": 44.0,
+        "avg_cards_played": 7.0,
+        "avg_enemy_cards_played": 6.0,
+        "avg_hp_delta": -33.75,
+        "runtime_primitive_trigger_rate": 1.0,
+        "weapon_followup_trigger_rate": 1.0,
+        "clue_pressure_trigger_rate": 0.0,
+        "dual_weapon_usage_rate": 0.0,
+        "reward_claim_rate": 1.0,
+        "telemetry_detail_level_summary": {
+          "real": 4
+        },
+        "mechanism_underused_count": 0,
+        "too_easy_count": 0,
+        "too_hard_count": 0,
+        "too_long_count": 4,
+        "burst_damage_count": 3,
+        "reward_mismatch_count": 0,
+        "card_dead_count": 0,
+        "runtime_primitive_enabled_rate": 1.0,
+        "formal_encounter_id": "enc_ch2_reed_ambush",
+        "formal_battle_id": "chapter2_reed_ambush",
+        "generated_battle_slot_id": "weapon_followup_v0_1_slot_012",
+        "generated_deck_id": "weapon_followup_v0_1_deck_012",
+        "reward_plan_id": "weapon_followup_v0_1_reward_012",
+        "encounter_tier": "boss",
+        "encounter_kind": "boss",
+        "sequence_position": 12,
+        "runtime_primitives": [
+          "weapon_followup"
+        ],
+        "player_wujing_cap": 7,
+        "deck_power_score": 25.6,
+        "reward_tier": "boss"
+      }
+    ],
+    "pack_metrics": {
+      "sample_count": 48,
+      "win_rate": 0.8542,
+      "avg_turn_count": 7.0833,
+      "avg_player_hp_end": 17.75,
+      "avg_enemy_hp_end": 3.0625,
+      "avg_damage_taken": 28.25,
+      "avg_damage_dealt": 35.3542,
+      "avg_cards_played": 7.0833,
+      "avg_enemy_cards_played": 6.2292,
+      "avg_hp_delta": -28.25,
+      "runtime_primitive_trigger_rate": 1.0,
+      "weapon_followup_trigger_rate": 1.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 0.0,
+      "reward_claim_rate": 0.8542,
+      "telemetry_detail_level_summary": {
+        "real": 48
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 10,
+      "too_long_count": 44,
+      "burst_damage_count": 35,
+      "reward_mismatch_count": 0,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 1.0
+    },
+    "event_output_path": "data/aigc_battle/evaluation/events/aigc_battle_eval_events.jsonl",
+    "run_json_path": "data/aigc_battle/evaluation/runs/weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_012__20260512T072258Z.json",
+    "run_md_path": "data/aigc_battle/evaluation/runs/weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_012__20260512T072258Z.md",
+    "report_json_path": "data/aigc_battle/generated/evaluation/reports/weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_012__evaluation_report.json",
+    "report_md_path": "data/aigc_battle/generated/evaluation/reports/weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_012__evaluation_report.md"
+  },
+  "template_portfolio_metrics": {},
+  "matrix_evaluation_summary": {},
+  "needs_balance_before_release": false,
+  "ready_for_candidate_review": false,
+  "rebuild_recommendation_summary": {},
+  "ai_source_trace": {
+    "llm_candidate_source": false,
+    "accepted_candidate_count": 0,
+    "rejected_candidate_count": 0,
+    "deterministic_fill_used": false,
+    "candidate_import_report_path": "",
+    "candidate_diff_report_path": "",
+    "built_from_llm_candidates": false
+  },
+  "card_pool_summary": {
+    "card_count": 40,
+    "used_card_count": 34,
+    "unused_card_count": 6,
+    "technique_card_count": 32,
+    "generic_card_count": 0,
+    "weapon_style_counts": {
+      "spearman": 20,
+      "blademaster": 20
+    },
+    "card_type_counts": {
+      "attack": 16,
+      "defense": 8,
+      "skill": 16
+    },
+    "difficulty_tier_counts": {
+      "early": 10,
+      "mid": 10,
+      "late": 10,
+      "boss": 10
+    },
+    "realm_requirement_counts": {
+      "w1_c1": 16,
+      "w2_c2": 8,
+      "w3_c3": 8,
+      "w4_c4": 8
+    },
+    "effect_type_counts": {
+      "damage": 16,
+      "gain_block": 8,
+      "break_momentum": 14,
+      "gain_momentum": 14
+    },
+    "average_power_score": 5.31,
+    "max_power_score": 8.0,
+    "min_power_score": 2.4,
+    "high_power_card_ids": [
+      "weapon_followup_v0_1_blademaster_boss_strike",
+      "weapon_followup_v0_1_blademaster_late_strike",
+      "weapon_followup_v0_1_spearman_boss_strike",
+      "weapon_followup_v0_1_spearman_late_strike",
+      "weapon_followup_v0_1_blademaster_boss_finisher"
+    ],
+    "most_used_card_ids": [
+      "weapon_followup_v0_1_blademaster_early_strike",
+      "weapon_followup_v0_1_blademaster_boss_strike",
+      "weapon_followup_v0_1_blademaster_late_strike",
+      "weapon_followup_v0_1_blademaster_mid_finisher",
+      "weapon_followup_v0_1_blademaster_mid_strike"
+    ],
+    "orphan_card_count": 0
+  },
+  "card_pool_detail": [
+    {
+      "card_id": "weapon_followup_v0_1_spearman_early_strike",
+      "name": "中平刺",
+      "card_type": "attack",
+      "weapon_style": "spearman",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 5
+        }
+      ],
+      "tags": [
+        "early",
+        "spearman",
+        "attack",
+        "measured",
+        "technique"
+      ],
+      "difficulty_tier": "early",
+      "power_score": 5.0,
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_001"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_001"
+      ],
+      "usage_count": 1,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_early_guard",
+      "name": "圆架守",
+      "card_type": "defense",
+      "weapon_style": "spearman",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "gain_block",
+          "value": 4
+        }
+      ],
+      "tags": [
+        "early",
+        "spearman",
+        "defense",
+        "anchor"
+      ],
+      "difficulty_tier": "early",
+      "power_score": 4.0,
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_001"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_001"
+      ],
+      "usage_count": 1,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_early_pressure",
+      "name": "压杆逼势",
+      "card_type": "skill",
+      "weapon_style": "spearman",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "break_momentum",
+          "value": 3
+        }
+      ],
+      "tags": [
+        "early",
+        "spearman",
+        "skill",
+        "pressure",
+        "technique"
+      ],
+      "difficulty_tier": "early",
+      "power_score": 2.4,
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_001"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_001"
+      ],
+      "usage_count": 1,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_early_focus",
+      "name": "压线整势",
+      "card_type": "skill",
+      "weapon_style": "spearman",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "gain_momentum",
+          "value": 3
+        }
+      ],
+      "tags": [
+        "early",
+        "spearman",
+        "skill",
+        "setup",
+        "technique"
+      ],
+      "difficulty_tier": "early",
+      "power_score": 2.4,
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_001"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_001"
+      ],
+      "usage_count": 1,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_early_finisher",
+      "name": "穿线追刺",
+      "card_type": "attack",
+      "weapon_style": "spearman",
+      "cost": 2,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 4
+        },
+        {
+          "type": "gain_momentum",
+          "value": 1
+        },
+        {
+          "type": "break_momentum",
+          "value": 2
+        }
+      ],
+      "tags": [
+        "early",
+        "spearman",
+        "attack",
+        "high_pressure",
+        "technique",
+        "closing_form"
+      ],
+      "difficulty_tier": "early",
+      "power_score": 6.4,
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "used_in_deck_ids": [],
+      "used_in_battle_slot_ids": [],
+      "usage_count": 0,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_mid_strike",
+      "name": "穿线枪",
+      "card_type": "attack",
+      "weapon_style": "spearman",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 6
+        }
+      ],
+      "tags": [
+        "mid",
+        "spearman",
+        "attack",
+        "measured",
+        "technique"
+      ],
+      "difficulty_tier": "mid",
+      "power_score": 6.0,
+      "required_wujing": 2,
+      "closing_form_tier": 2,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_004",
+        "weapon_followup_v0_1_deck_006",
+        "weapon_followup_v0_1_deck_011"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_004",
+        "weapon_followup_v0_1_slot_006",
+        "weapon_followup_v0_1_slot_011"
+      ],
+      "usage_count": 3,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_mid_guard",
+      "name": "回枪固守",
+      "card_type": "defense",
+      "weapon_style": "spearman",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "gain_block",
+          "value": 5
+        }
+      ],
+      "tags": [
+        "mid",
+        "spearman",
+        "defense",
+        "anchor"
+      ],
+      "difficulty_tier": "mid",
+      "power_score": 5.0,
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "used_in_deck_ids": [],
+      "used_in_battle_slot_ids": [],
+      "usage_count": 0,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_mid_pressure",
+      "name": "封线破势",
+      "card_type": "skill",
+      "weapon_style": "spearman",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "break_momentum",
+          "value": 4
+        }
+      ],
+      "tags": [
+        "mid",
+        "spearman",
+        "skill",
+        "pressure",
+        "technique"
+      ],
+      "difficulty_tier": "mid",
+      "power_score": 3.2,
+      "required_wujing": 2,
+      "closing_form_tier": 2,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_004",
+        "weapon_followup_v0_1_deck_006"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_004",
+        "weapon_followup_v0_1_slot_006"
+      ],
+      "usage_count": 2,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_mid_focus",
+      "name": "稳步蓄势",
+      "card_type": "skill",
+      "weapon_style": "spearman",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "gain_momentum",
+          "value": 3
+        }
+      ],
+      "tags": [
+        "mid",
+        "spearman",
+        "skill",
+        "setup",
+        "technique"
+      ],
+      "difficulty_tier": "mid",
+      "power_score": 2.4,
+      "required_wujing": 2,
+      "closing_form_tier": 2,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_004",
+        "weapon_followup_v0_1_deck_006"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_004",
+        "weapon_followup_v0_1_slot_006"
+      ],
+      "usage_count": 2,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_mid_finisher",
+      "name": "抢线突穿",
+      "card_type": "attack",
+      "weapon_style": "spearman",
+      "cost": 2,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 5
+        },
+        {
+          "type": "gain_momentum",
+          "value": 1
+        },
+        {
+          "type": "break_momentum",
+          "value": 2
+        }
+      ],
+      "tags": [
+        "mid",
+        "spearman",
+        "attack",
+        "high_pressure",
+        "technique",
+        "closing_form"
+      ],
+      "difficulty_tier": "mid",
+      "power_score": 7.4,
+      "required_wujing": 2,
+      "closing_form_tier": 2,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_004",
+        "weapon_followup_v0_1_deck_006"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_004",
+        "weapon_followup_v0_1_slot_006"
+      ],
+      "usage_count": 2,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_late_strike",
+      "name": "贯潮枪",
+      "card_type": "attack",
+      "weapon_style": "spearman",
+      "cost": 2,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 8
+        }
+      ],
+      "tags": [
+        "late",
+        "spearman",
+        "attack",
+        "high_pressure",
+        "technique"
+      ],
+      "difficulty_tier": "late",
+      "power_score": 8.0,
+      "required_wujing": 3,
+      "closing_form_tier": 3,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_009"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_009"
+      ],
+      "usage_count": 1,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_late_guard",
+      "name": "沉肩守线",
+      "card_type": "defense",
+      "weapon_style": "spearman",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "gain_block",
+          "value": 6
+        }
+      ],
+      "tags": [
+        "late",
+        "spearman",
+        "defense",
+        "anchor"
+      ],
+      "difficulty_tier": "late",
+      "power_score": 6.0,
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "used_in_deck_ids": [],
+      "used_in_battle_slot_ids": [],
+      "usage_count": 0,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_late_pressure",
+      "name": "压营断势",
+      "card_type": "skill",
+      "weapon_style": "spearman",
+      "cost": 2,
+      "effects": [
+        {
+          "type": "break_momentum",
+          "value": 7
+        }
+      ],
+      "tags": [
+        "late",
+        "spearman",
+        "skill",
+        "pressure",
+        "high_pressure",
+        "technique"
+      ],
+      "difficulty_tier": "late",
+      "power_score": 5.6,
+      "required_wujing": 3,
+      "closing_form_tier": 3,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_009"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_009"
+      ],
+      "usage_count": 1,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_late_focus",
+      "name": "逼线聚势",
+      "card_type": "skill",
+      "weapon_style": "spearman",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "gain_momentum",
+          "value": 3
+        }
+      ],
+      "tags": [
+        "late",
+        "spearman",
+        "skill",
+        "setup",
+        "technique"
+      ],
+      "difficulty_tier": "late",
+      "power_score": 2.4,
+      "required_wujing": 3,
+      "closing_form_tier": 3,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_009"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_009"
+      ],
+      "usage_count": 1,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_late_finisher",
+      "name": "潮头追命",
+      "card_type": "attack",
+      "weapon_style": "spearman",
+      "cost": 2,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 6
+        },
+        {
+          "type": "break_momentum",
+          "value": 2
+        }
+      ],
+      "tags": [
+        "late",
+        "spearman",
+        "attack",
+        "high_pressure",
+        "technique",
+        "closing_form"
+      ],
+      "difficulty_tier": "late",
+      "power_score": 7.6,
+      "required_wujing": 3,
+      "closing_form_tier": 3,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_009"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_009"
+      ],
+      "usage_count": 1,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_boss_strike",
+      "name": "断潮重枪",
+      "card_type": "attack",
+      "weapon_style": "spearman",
+      "cost": 2,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 8
+        }
+      ],
+      "tags": [
+        "boss",
+        "spearman",
+        "attack",
+        "boss_tag",
+        "high_pressure",
+        "technique"
+      ],
+      "difficulty_tier": "boss",
+      "power_score": 8.0,
+      "required_wujing": 4,
+      "closing_form_tier": 4,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_011",
+        "weapon_followup_v0_1_deck_012"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_011",
+        "weapon_followup_v0_1_slot_012"
+      ],
+      "usage_count": 2,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_boss_guard",
+      "name": "大架封线",
+      "card_type": "defense",
+      "weapon_style": "spearman",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "gain_block",
+          "value": 7
+        }
+      ],
+      "tags": [
+        "boss",
+        "spearman",
+        "defense",
+        "boss_tag",
+        "anchor"
+      ],
+      "difficulty_tier": "boss",
+      "power_score": 7.0,
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "used_in_deck_ids": [],
+      "used_in_battle_slot_ids": [],
+      "usage_count": 0,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_boss_pressure",
+      "name": "锁营夺势",
+      "card_type": "skill",
+      "weapon_style": "spearman",
+      "cost": 2,
+      "effects": [
+        {
+          "type": "break_momentum",
+          "value": 8
+        }
+      ],
+      "tags": [
+        "boss",
+        "spearman",
+        "skill",
+        "boss_tag",
+        "high_pressure",
+        "technique"
+      ],
+      "difficulty_tier": "boss",
+      "power_score": 6.4,
+      "required_wujing": 4,
+      "closing_form_tier": 4,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_011",
+        "weapon_followup_v0_1_deck_012"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_011",
+        "weapon_followup_v0_1_slot_012"
+      ],
+      "usage_count": 2,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_boss_focus",
+      "name": "裂阵聚势",
+      "card_type": "skill",
+      "weapon_style": "spearman",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "gain_momentum",
+          "value": 4
+        }
+      ],
+      "tags": [
+        "boss",
+        "spearman",
+        "skill",
+        "boss_tag",
+        "setup",
+        "technique"
+      ],
+      "difficulty_tier": "boss",
+      "power_score": 3.2,
+      "required_wujing": 4,
+      "closing_form_tier": 4,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_011",
+        "weapon_followup_v0_1_deck_012"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_011",
+        "weapon_followup_v0_1_slot_012"
+      ],
+      "usage_count": 2,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_boss_finisher",
+      "name": "贯心落潮",
+      "card_type": "attack",
+      "weapon_style": "spearman",
+      "cost": 2,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 7
+        },
+        {
+          "type": "gain_momentum",
+          "value": 1
+        }
+      ],
+      "tags": [
+        "boss",
+        "spearman",
+        "attack",
+        "boss_tag",
+        "high_pressure",
+        "technique",
+        "closing_form"
+      ],
+      "difficulty_tier": "boss",
+      "power_score": 7.8,
+      "required_wujing": 4,
+      "closing_form_tier": 4,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_011",
+        "weapon_followup_v0_1_deck_012"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_011",
+        "weapon_followup_v0_1_slot_012"
+      ],
+      "usage_count": 2,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_early_strike",
+      "name": "贴步快斩",
+      "card_type": "attack",
+      "weapon_style": "blademaster",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 5
+        }
+      ],
+      "tags": [
+        "early",
+        "blademaster",
+        "attack",
+        "measured",
+        "technique"
+      ],
+      "difficulty_tier": "early",
+      "power_score": 5.0,
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_001",
+        "weapon_followup_v0_1_deck_002",
+        "weapon_followup_v0_1_deck_003",
+        "weapon_followup_v0_1_deck_004",
+        "weapon_followup_v0_1_deck_006",
+        "weapon_followup_v0_1_deck_007",
+        "weapon_followup_v0_1_deck_009",
+        "weapon_followup_v0_1_deck_010",
+        "weapon_followup_v0_1_deck_011",
+        "weapon_followup_v0_1_deck_012"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_001",
+        "weapon_followup_v0_1_slot_002",
+        "weapon_followup_v0_1_slot_003",
+        "weapon_followup_v0_1_slot_004",
+        "weapon_followup_v0_1_slot_006",
+        "weapon_followup_v0_1_slot_007",
+        "weapon_followup_v0_1_slot_009",
+        "weapon_followup_v0_1_slot_010",
+        "weapon_followup_v0_1_slot_011",
+        "weapon_followup_v0_1_slot_012"
+      ],
+      "usage_count": 10,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_early_guard",
+      "name": "藏锋格",
+      "card_type": "defense",
+      "weapon_style": "blademaster",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "gain_block",
+          "value": 4
+        }
+      ],
+      "tags": [
+        "early",
+        "blademaster",
+        "defense",
+        "anchor"
+      ],
+      "difficulty_tier": "early",
+      "power_score": 4.0,
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_002"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_002"
+      ],
+      "usage_count": 1,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_early_pressure",
+      "name": "逼身断势",
+      "card_type": "skill",
+      "weapon_style": "blademaster",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "break_momentum",
+          "value": 3
+        }
+      ],
+      "tags": [
+        "early",
+        "blademaster",
+        "skill",
+        "pressure",
+        "technique"
+      ],
+      "difficulty_tier": "early",
+      "power_score": 2.4,
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_002",
+        "weapon_followup_v0_1_deck_003"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_002",
+        "weapon_followup_v0_1_slot_003"
+      ],
+      "usage_count": 2,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_early_focus",
+      "name": "短促换气",
+      "card_type": "skill",
+      "weapon_style": "blademaster",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "gain_momentum",
+          "value": 3
+        }
+      ],
+      "tags": [
+        "early",
+        "blademaster",
+        "skill",
+        "setup",
+        "technique"
+      ],
+      "difficulty_tier": "early",
+      "power_score": 2.4,
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_002",
+        "weapon_followup_v0_1_deck_003"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_002",
+        "weapon_followup_v0_1_slot_003"
+      ],
+      "usage_count": 2,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_early_finisher",
+      "name": "贴身追斩",
+      "card_type": "attack",
+      "weapon_style": "blademaster",
+      "cost": 2,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 4
+        },
+        {
+          "type": "gain_momentum",
+          "value": 1
+        },
+        {
+          "type": "break_momentum",
+          "value": 2
+        }
+      ],
+      "tags": [
+        "early",
+        "blademaster",
+        "attack",
+        "high_pressure",
+        "technique",
+        "closing_form"
+      ],
+      "difficulty_tier": "early",
+      "power_score": 6.4,
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_001",
+        "weapon_followup_v0_1_deck_003"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_001",
+        "weapon_followup_v0_1_slot_003"
+      ],
+      "usage_count": 2,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_mid_strike",
+      "name": "追影斩",
+      "card_type": "attack",
+      "weapon_style": "blademaster",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 6
+        }
+      ],
+      "tags": [
+        "mid",
+        "blademaster",
+        "attack",
+        "measured",
+        "technique"
+      ],
+      "difficulty_tier": "mid",
+      "power_score": 6.0,
+      "required_wujing": 2,
+      "closing_form_tier": 2,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_002",
+        "weapon_followup_v0_1_deck_005",
+        "weapon_followup_v0_1_deck_007"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_002",
+        "weapon_followup_v0_1_slot_005",
+        "weapon_followup_v0_1_slot_007"
+      ],
+      "usage_count": 3,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_mid_guard",
+      "name": "折腕收锋",
+      "card_type": "defense",
+      "weapon_style": "blademaster",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "gain_block",
+          "value": 5
+        }
+      ],
+      "tags": [
+        "mid",
+        "blademaster",
+        "defense",
+        "anchor"
+      ],
+      "difficulty_tier": "mid",
+      "power_score": 5.0,
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "used_in_deck_ids": [],
+      "used_in_battle_slot_ids": [],
+      "usage_count": 0,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_mid_pressure",
+      "name": "贴身压势",
+      "card_type": "skill",
+      "weapon_style": "blademaster",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "break_momentum",
+          "value": 4
+        }
+      ],
+      "tags": [
+        "mid",
+        "blademaster",
+        "skill",
+        "pressure",
+        "technique"
+      ],
+      "difficulty_tier": "mid",
+      "power_score": 3.2,
+      "required_wujing": 2,
+      "closing_form_tier": 2,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_005"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_005"
+      ],
+      "usage_count": 1,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_mid_focus",
+      "name": "步内聚势",
+      "card_type": "skill",
+      "weapon_style": "blademaster",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "gain_momentum",
+          "value": 3
+        }
+      ],
+      "tags": [
+        "mid",
+        "blademaster",
+        "skill",
+        "setup",
+        "technique"
+      ],
+      "difficulty_tier": "mid",
+      "power_score": 2.4,
+      "required_wujing": 2,
+      "closing_form_tier": 2,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_005"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_005"
+      ],
+      "usage_count": 1,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_mid_finisher",
+      "name": "欺身落刃",
+      "card_type": "attack",
+      "weapon_style": "blademaster",
+      "cost": 2,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 5
+        },
+        {
+          "type": "gain_momentum",
+          "value": 1
+        },
+        {
+          "type": "break_momentum",
+          "value": 2
+        }
+      ],
+      "tags": [
+        "mid",
+        "blademaster",
+        "attack",
+        "high_pressure",
+        "technique",
+        "closing_form"
+      ],
+      "difficulty_tier": "mid",
+      "power_score": 7.4,
+      "required_wujing": 2,
+      "closing_form_tier": 2,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_002",
+        "weapon_followup_v0_1_deck_003",
+        "weapon_followup_v0_1_deck_005"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_002",
+        "weapon_followup_v0_1_slot_003",
+        "weapon_followup_v0_1_slot_005"
+      ],
+      "usage_count": 3,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_late_strike",
+      "name": "断潮重斩",
+      "card_type": "attack",
+      "weapon_style": "blademaster",
+      "cost": 2,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 8
+        }
+      ],
+      "tags": [
+        "late",
+        "blademaster",
+        "attack",
+        "high_pressure",
+        "technique"
+      ],
+      "difficulty_tier": "late",
+      "power_score": 8.0,
+      "required_wujing": 3,
+      "closing_form_tier": 3,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_004",
+        "weapon_followup_v0_1_deck_007",
+        "weapon_followup_v0_1_deck_008",
+        "weapon_followup_v0_1_deck_010"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_004",
+        "weapon_followup_v0_1_slot_007",
+        "weapon_followup_v0_1_slot_008",
+        "weapon_followup_v0_1_slot_010"
+      ],
+      "usage_count": 4,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_late_guard",
+      "name": "沉锋稳架",
+      "card_type": "defense",
+      "weapon_style": "blademaster",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "gain_block",
+          "value": 6
+        }
+      ],
+      "tags": [
+        "late",
+        "blademaster",
+        "defense",
+        "anchor"
+      ],
+      "difficulty_tier": "late",
+      "power_score": 6.0,
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_007"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_007"
+      ],
+      "usage_count": 1,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_late_pressure",
+      "name": "逼命压锋",
+      "card_type": "skill",
+      "weapon_style": "blademaster",
+      "cost": 2,
+      "effects": [
+        {
+          "type": "break_momentum",
+          "value": 7
+        }
+      ],
+      "tags": [
+        "late",
+        "blademaster",
+        "skill",
+        "pressure",
+        "high_pressure",
+        "technique"
+      ],
+      "difficulty_tier": "late",
+      "power_score": 5.6,
+      "required_wujing": 3,
+      "closing_form_tier": 3,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_007",
+        "weapon_followup_v0_1_deck_008"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_007",
+        "weapon_followup_v0_1_slot_008"
+      ],
+      "usage_count": 2,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_late_focus",
+      "name": "近身蓄势",
+      "card_type": "skill",
+      "weapon_style": "blademaster",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "gain_momentum",
+          "value": 3
+        }
+      ],
+      "tags": [
+        "late",
+        "blademaster",
+        "skill",
+        "setup",
+        "technique"
+      ],
+      "difficulty_tier": "late",
+      "power_score": 2.4,
+      "required_wujing": 3,
+      "closing_form_tier": 3,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_007",
+        "weapon_followup_v0_1_deck_008"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_007",
+        "weapon_followup_v0_1_slot_008"
+      ],
+      "usage_count": 2,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_late_finisher",
+      "name": "断潮夺命",
+      "card_type": "attack",
+      "weapon_style": "blademaster",
+      "cost": 2,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 6
+        },
+        {
+          "type": "break_momentum",
+          "value": 2
+        }
+      ],
+      "tags": [
+        "late",
+        "blademaster",
+        "attack",
+        "high_pressure",
+        "technique",
+        "closing_form"
+      ],
+      "difficulty_tier": "late",
+      "power_score": 7.6,
+      "required_wujing": 3,
+      "closing_form_tier": 3,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_007",
+        "weapon_followup_v0_1_deck_008"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_007",
+        "weapon_followup_v0_1_slot_008"
+      ],
+      "usage_count": 2,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_boss_strike",
+      "name": "裂波断首",
+      "card_type": "attack",
+      "weapon_style": "blademaster",
+      "cost": 2,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 8
+        }
+      ],
+      "tags": [
+        "boss",
+        "blademaster",
+        "attack",
+        "boss_tag",
+        "high_pressure",
+        "technique"
+      ],
+      "difficulty_tier": "boss",
+      "power_score": 8.0,
+      "required_wujing": 4,
+      "closing_form_tier": 4,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_005",
+        "weapon_followup_v0_1_deck_006",
+        "weapon_followup_v0_1_deck_007",
+        "weapon_followup_v0_1_deck_008",
+        "weapon_followup_v0_1_deck_009",
+        "weapon_followup_v0_1_deck_010",
+        "weapon_followup_v0_1_deck_011",
+        "weapon_followup_v0_1_deck_012"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_005",
+        "weapon_followup_v0_1_slot_006",
+        "weapon_followup_v0_1_slot_007",
+        "weapon_followup_v0_1_slot_008",
+        "weapon_followup_v0_1_slot_009",
+        "weapon_followup_v0_1_slot_010",
+        "weapon_followup_v0_1_slot_011",
+        "weapon_followup_v0_1_slot_012"
+      ],
+      "usage_count": 8,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_boss_guard",
+      "name": "沉锋锁门",
+      "card_type": "defense",
+      "weapon_style": "blademaster",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "gain_block",
+          "value": 7
+        }
+      ],
+      "tags": [
+        "boss",
+        "blademaster",
+        "defense",
+        "boss_tag",
+        "anchor"
+      ],
+      "difficulty_tier": "boss",
+      "power_score": 7.0,
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "used_in_deck_ids": [],
+      "used_in_battle_slot_ids": [],
+      "usage_count": 0,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_boss_pressure",
+      "name": "逼宫断势",
+      "card_type": "skill",
+      "weapon_style": "blademaster",
+      "cost": 2,
+      "effects": [
+        {
+          "type": "break_momentum",
+          "value": 8
+        }
+      ],
+      "tags": [
+        "boss",
+        "blademaster",
+        "skill",
+        "boss_tag",
+        "high_pressure",
+        "technique"
+      ],
+      "difficulty_tier": "boss",
+      "power_score": 6.4,
+      "required_wujing": 4,
+      "closing_form_tier": 4,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_010"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_010"
+      ],
+      "usage_count": 1,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_boss_focus",
+      "name": "血潮聚锋",
+      "card_type": "skill",
+      "weapon_style": "blademaster",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "gain_momentum",
+          "value": 4
+        }
+      ],
+      "tags": [
+        "boss",
+        "blademaster",
+        "skill",
+        "boss_tag",
+        "setup",
+        "technique"
+      ],
+      "difficulty_tier": "boss",
+      "power_score": 3.2,
+      "required_wujing": 4,
+      "closing_form_tier": 4,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_010"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_010"
+      ],
+      "usage_count": 1,
+      "realm_eligibility_global_valid": true
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_boss_finisher",
+      "name": "追潮绝斩",
+      "card_type": "attack",
+      "weapon_style": "blademaster",
+      "cost": 2,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 7
+        },
+        {
+          "type": "gain_momentum",
+          "value": 1
+        }
+      ],
+      "tags": [
+        "boss",
+        "blademaster",
+        "attack",
+        "boss_tag",
+        "high_pressure",
+        "technique",
+        "closing_form"
+      ],
+      "difficulty_tier": "boss",
+      "power_score": 7.8,
+      "required_wujing": 4,
+      "closing_form_tier": 4,
+      "used_in_deck_ids": [
+        "weapon_followup_v0_1_deck_010"
+      ],
+      "used_in_battle_slot_ids": [
+        "weapon_followup_v0_1_slot_010"
+      ],
+      "usage_count": 1,
+      "realm_eligibility_global_valid": true
+    }
+  ],
+  "card_usage_index": [
+    {
+      "card_id": "weapon_followup_v0_1_spearman_early_strike",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_001"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_001"
+      ],
+      "usage_count": 1
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_early_guard",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_001"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_001"
+      ],
+      "usage_count": 1
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_early_pressure",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_001"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_001"
+      ],
+      "usage_count": 1
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_early_focus",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_001"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_001"
+      ],
+      "usage_count": 1
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_early_finisher",
+      "used_by_decks": [],
+      "used_by_battle_slots": [],
+      "usage_count": 0
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_mid_strike",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_004",
+        "weapon_followup_v0_1_deck_006",
+        "weapon_followup_v0_1_deck_011"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_004",
+        "weapon_followup_v0_1_slot_006",
+        "weapon_followup_v0_1_slot_011"
+      ],
+      "usage_count": 3
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_mid_guard",
+      "used_by_decks": [],
+      "used_by_battle_slots": [],
+      "usage_count": 0
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_mid_pressure",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_004",
+        "weapon_followup_v0_1_deck_006"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_004",
+        "weapon_followup_v0_1_slot_006"
+      ],
+      "usage_count": 2
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_mid_focus",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_004",
+        "weapon_followup_v0_1_deck_006"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_004",
+        "weapon_followup_v0_1_slot_006"
+      ],
+      "usage_count": 2
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_mid_finisher",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_004",
+        "weapon_followup_v0_1_deck_006"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_004",
+        "weapon_followup_v0_1_slot_006"
+      ],
+      "usage_count": 2
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_late_strike",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_009"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_009"
+      ],
+      "usage_count": 1
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_late_guard",
+      "used_by_decks": [],
+      "used_by_battle_slots": [],
+      "usage_count": 0
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_late_pressure",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_009"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_009"
+      ],
+      "usage_count": 1
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_late_focus",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_009"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_009"
+      ],
+      "usage_count": 1
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_late_finisher",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_009"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_009"
+      ],
+      "usage_count": 1
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_boss_strike",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_011",
+        "weapon_followup_v0_1_deck_012"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_011",
+        "weapon_followup_v0_1_slot_012"
+      ],
+      "usage_count": 2
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_boss_guard",
+      "used_by_decks": [],
+      "used_by_battle_slots": [],
+      "usage_count": 0
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_boss_pressure",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_011",
+        "weapon_followup_v0_1_deck_012"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_011",
+        "weapon_followup_v0_1_slot_012"
+      ],
+      "usage_count": 2
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_boss_focus",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_011",
+        "weapon_followup_v0_1_deck_012"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_011",
+        "weapon_followup_v0_1_slot_012"
+      ],
+      "usage_count": 2
+    },
+    {
+      "card_id": "weapon_followup_v0_1_spearman_boss_finisher",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_011",
+        "weapon_followup_v0_1_deck_012"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_011",
+        "weapon_followup_v0_1_slot_012"
+      ],
+      "usage_count": 2
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_early_strike",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_001",
+        "weapon_followup_v0_1_deck_002",
+        "weapon_followup_v0_1_deck_003",
+        "weapon_followup_v0_1_deck_004",
+        "weapon_followup_v0_1_deck_006",
+        "weapon_followup_v0_1_deck_007",
+        "weapon_followup_v0_1_deck_009",
+        "weapon_followup_v0_1_deck_010",
+        "weapon_followup_v0_1_deck_011",
+        "weapon_followup_v0_1_deck_012"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_001",
+        "weapon_followup_v0_1_slot_002",
+        "weapon_followup_v0_1_slot_003",
+        "weapon_followup_v0_1_slot_004",
+        "weapon_followup_v0_1_slot_006",
+        "weapon_followup_v0_1_slot_007",
+        "weapon_followup_v0_1_slot_009",
+        "weapon_followup_v0_1_slot_010",
+        "weapon_followup_v0_1_slot_011",
+        "weapon_followup_v0_1_slot_012"
+      ],
+      "usage_count": 10
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_early_guard",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_002"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_002"
+      ],
+      "usage_count": 1
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_early_pressure",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_002",
+        "weapon_followup_v0_1_deck_003"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_002",
+        "weapon_followup_v0_1_slot_003"
+      ],
+      "usage_count": 2
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_early_focus",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_002",
+        "weapon_followup_v0_1_deck_003"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_002",
+        "weapon_followup_v0_1_slot_003"
+      ],
+      "usage_count": 2
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_early_finisher",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_001",
+        "weapon_followup_v0_1_deck_003"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_001",
+        "weapon_followup_v0_1_slot_003"
+      ],
+      "usage_count": 2
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_mid_strike",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_002",
+        "weapon_followup_v0_1_deck_005",
+        "weapon_followup_v0_1_deck_007"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_002",
+        "weapon_followup_v0_1_slot_005",
+        "weapon_followup_v0_1_slot_007"
+      ],
+      "usage_count": 3
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_mid_guard",
+      "used_by_decks": [],
+      "used_by_battle_slots": [],
+      "usage_count": 0
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_mid_pressure",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_005"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_005"
+      ],
+      "usage_count": 1
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_mid_focus",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_005"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_005"
+      ],
+      "usage_count": 1
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_mid_finisher",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_002",
+        "weapon_followup_v0_1_deck_003",
+        "weapon_followup_v0_1_deck_005"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_002",
+        "weapon_followup_v0_1_slot_003",
+        "weapon_followup_v0_1_slot_005"
+      ],
+      "usage_count": 3
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_late_strike",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_004",
+        "weapon_followup_v0_1_deck_007",
+        "weapon_followup_v0_1_deck_008",
+        "weapon_followup_v0_1_deck_010"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_004",
+        "weapon_followup_v0_1_slot_007",
+        "weapon_followup_v0_1_slot_008",
+        "weapon_followup_v0_1_slot_010"
+      ],
+      "usage_count": 4
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_late_guard",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_007"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_007"
+      ],
+      "usage_count": 1
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_late_pressure",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_007",
+        "weapon_followup_v0_1_deck_008"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_007",
+        "weapon_followup_v0_1_slot_008"
+      ],
+      "usage_count": 2
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_late_focus",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_007",
+        "weapon_followup_v0_1_deck_008"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_007",
+        "weapon_followup_v0_1_slot_008"
+      ],
+      "usage_count": 2
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_late_finisher",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_007",
+        "weapon_followup_v0_1_deck_008"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_007",
+        "weapon_followup_v0_1_slot_008"
+      ],
+      "usage_count": 2
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_boss_strike",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_005",
+        "weapon_followup_v0_1_deck_006",
+        "weapon_followup_v0_1_deck_007",
+        "weapon_followup_v0_1_deck_008",
+        "weapon_followup_v0_1_deck_009",
+        "weapon_followup_v0_1_deck_010",
+        "weapon_followup_v0_1_deck_011",
+        "weapon_followup_v0_1_deck_012"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_005",
+        "weapon_followup_v0_1_slot_006",
+        "weapon_followup_v0_1_slot_007",
+        "weapon_followup_v0_1_slot_008",
+        "weapon_followup_v0_1_slot_009",
+        "weapon_followup_v0_1_slot_010",
+        "weapon_followup_v0_1_slot_011",
+        "weapon_followup_v0_1_slot_012"
+      ],
+      "usage_count": 8
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_boss_guard",
+      "used_by_decks": [],
+      "used_by_battle_slots": [],
+      "usage_count": 0
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_boss_pressure",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_010"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_010"
+      ],
+      "usage_count": 1
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_boss_focus",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_010"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_010"
+      ],
+      "usage_count": 1
+    },
+    {
+      "card_id": "weapon_followup_v0_1_blademaster_boss_finisher",
+      "used_by_decks": [
+        "weapon_followup_v0_1_deck_010"
+      ],
+      "used_by_battle_slots": [
+        "weapon_followup_v0_1_slot_010"
+      ],
+      "usage_count": 1
+    }
+  ],
+  "unused_cards": [
+    "weapon_followup_v0_1_spearman_early_finisher",
+    "weapon_followup_v0_1_spearman_mid_guard",
+    "weapon_followup_v0_1_spearman_late_guard",
+    "weapon_followup_v0_1_spearman_boss_guard",
+    "weapon_followup_v0_1_blademaster_mid_guard",
+    "weapon_followup_v0_1_blademaster_boss_guard"
+  ],
+  "orphan_card_count": 0,
+  "orphan_cards": [],
+  "sequence_detail": [
+    {
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "sequence_position": 1,
+      "stage": "early",
+      "stage_index": 1,
+      "formal_encounter_id": "enc_beach_ambush",
+      "formal_battle_id": "first_act_beach_ambush",
+      "node_id": "beach_ambush",
+      "node_type": "choices_json",
+      "encounter_tier": "early",
+      "encounter_kind": "normal",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_001",
+      "generated_deck_id": "weapon_followup_v0_1_deck_001",
+      "reward_plan_id": "weapon_followup_v0_1_reward_001",
+      "player_wujing_cap": 1,
+      "target_power_min": 22,
+      "target_power_max": 28,
+      "deck_power_score": 20.0,
+      "power_range_pass": true,
+      "reward_tier": "early",
+      "mechanic_density_target": 0.4,
+      "runtime_primitives": [
+        "weapon_followup"
+      ],
+      "opening_pressure": {},
+      "deck_summary": {
+        "deck_id": "weapon_followup_v0_1_deck_001",
+        "enemy_role": "spearman",
+        "difficulty_tier": "normal",
+        "deck_power_score": 20.0,
+        "card_count": 6,
+        "tags": [
+          "early",
+          "normal",
+          "spearman"
+        ],
+        "player_wujing_cap": 1,
+        "realm_eligibility_checked": true,
+        "invalid_realm_card_count": 0
+      },
+      "reward_summary": {
+        "reward_plan_id": "weapon_followup_v0_1_reward_001",
+        "reward_type": "card_pick",
+        "reward_tier": "early",
+        "reward_items": [
+          {
+            "item_id": "basic_reward_card_001",
+            "quantity": 1
+          }
+        ]
+      },
+      "card_summaries": [
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_early_strike",
+          "name": "贴步快斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 5
+            }
+          ],
+          "tags": [
+            "early",
+            "blademaster",
+            "attack",
+            "measured",
+            "technique"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 5.0,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_early_finisher",
+          "name": "贴身追斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 4
+            },
+            {
+              "type": "gain_momentum",
+              "value": 1
+            },
+            {
+              "type": "break_momentum",
+              "value": 2
+            }
+          ],
+          "tags": [
+            "early",
+            "blademaster",
+            "attack",
+            "high_pressure",
+            "technique",
+            "closing_form"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 6.4,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_early_focus",
+          "name": "压线整势",
+          "card_type": "skill",
+          "weapon_style": "spearman",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "gain_momentum",
+              "value": 3
+            }
+          ],
+          "tags": [
+            "early",
+            "spearman",
+            "skill",
+            "setup",
+            "technique"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 2.4,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_early_strike",
+          "name": "中平刺",
+          "card_type": "attack",
+          "weapon_style": "spearman",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 5
+            }
+          ],
+          "tags": [
+            "early",
+            "spearman",
+            "attack",
+            "measured",
+            "technique"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 5.0,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_early_guard",
+          "name": "圆架守",
+          "card_type": "defense",
+          "weapon_style": "spearman",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "gain_block",
+              "value": 4
+            }
+          ],
+          "tags": [
+            "early",
+            "spearman",
+            "defense",
+            "anchor"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 4.0,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_early_pressure",
+          "name": "压杆逼势",
+          "card_type": "skill",
+          "weapon_style": "spearman",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "break_momentum",
+              "value": 3
+            }
+          ],
+          "tags": [
+            "early",
+            "spearman",
+            "skill",
+            "pressure",
+            "technique"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 2.4,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        }
+      ]
+    },
+    {
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "sequence_position": 2,
+      "stage": "early",
+      "stage_index": 1,
+      "formal_encounter_id": "enc_fishing_village_embers",
+      "formal_battle_id": "first_act_fishing_village_embers",
+      "node_id": "fishing_village_embers",
+      "node_type": "choices_json",
+      "encounter_tier": "early",
+      "encounter_kind": "normal",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_002",
+      "generated_deck_id": "weapon_followup_v0_1_deck_002",
+      "reward_plan_id": "weapon_followup_v0_1_reward_002",
+      "player_wujing_cap": 2,
+      "target_power_min": 22,
+      "target_power_max": 28,
+      "deck_power_score": 20.0,
+      "power_range_pass": true,
+      "reward_tier": "early",
+      "mechanic_density_target": 0.48,
+      "runtime_primitives": [
+        "weapon_followup"
+      ],
+      "opening_pressure": {},
+      "deck_summary": {
+        "deck_id": "weapon_followup_v0_1_deck_002",
+        "enemy_role": "blademaster",
+        "difficulty_tier": "normal",
+        "deck_power_score": 20.0,
+        "card_count": 6,
+        "tags": [
+          "early",
+          "normal",
+          "blademaster"
+        ],
+        "player_wujing_cap": 2,
+        "realm_eligibility_checked": true,
+        "invalid_realm_card_count": 0
+      },
+      "reward_summary": {
+        "reward_plan_id": "weapon_followup_v0_1_reward_002",
+        "reward_type": "card_pick",
+        "reward_tier": "early",
+        "reward_items": [
+          {
+            "item_id": "basic_reward_card_002",
+            "quantity": 1
+          }
+        ]
+      },
+      "card_summaries": [
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_mid_strike",
+          "name": "追影斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 6
+            }
+          ],
+          "tags": [
+            "mid",
+            "blademaster",
+            "attack",
+            "measured",
+            "technique"
+          ],
+          "difficulty_tier": "mid",
+          "power_score": 6.0,
+          "required_wujing": 2,
+          "closing_form_tier": 2,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_mid_finisher",
+          "name": "欺身落刃",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 5
+            },
+            {
+              "type": "gain_momentum",
+              "value": 1
+            },
+            {
+              "type": "break_momentum",
+              "value": 2
+            }
+          ],
+          "tags": [
+            "mid",
+            "blademaster",
+            "attack",
+            "high_pressure",
+            "technique",
+            "closing_form"
+          ],
+          "difficulty_tier": "mid",
+          "power_score": 7.4,
+          "required_wujing": 2,
+          "closing_form_tier": 2,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_early_focus",
+          "name": "短促换气",
+          "card_type": "skill",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "gain_momentum",
+              "value": 3
+            }
+          ],
+          "tags": [
+            "early",
+            "blademaster",
+            "skill",
+            "setup",
+            "technique"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 2.4,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_early_strike",
+          "name": "贴步快斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 5
+            }
+          ],
+          "tags": [
+            "early",
+            "blademaster",
+            "attack",
+            "measured",
+            "technique"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 5.0,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_early_guard",
+          "name": "藏锋格",
+          "card_type": "defense",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "gain_block",
+              "value": 4
+            }
+          ],
+          "tags": [
+            "early",
+            "blademaster",
+            "defense",
+            "anchor"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 4.0,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_early_pressure",
+          "name": "逼身断势",
+          "card_type": "skill",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "break_momentum",
+              "value": 3
+            }
+          ],
+          "tags": [
+            "early",
+            "blademaster",
+            "skill",
+            "pressure",
+            "technique"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 2.4,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        }
+      ]
+    },
+    {
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "sequence_position": 3,
+      "stage": "early",
+      "stage_index": 1,
+      "formal_encounter_id": "enc_transport_officer",
+      "formal_battle_id": "first_act_transport_officer",
+      "node_id": "transport_officer",
+      "node_type": "choices_json",
+      "encounter_tier": "early",
+      "encounter_kind": "elite",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_003",
+      "generated_deck_id": "weapon_followup_v0_1_deck_003",
+      "reward_plan_id": "weapon_followup_v0_1_reward_003",
+      "player_wujing_cap": 2,
+      "target_power_min": 22,
+      "target_power_max": 28,
+      "deck_power_score": 20.0,
+      "power_range_pass": true,
+      "reward_tier": "early",
+      "mechanic_density_target": 0.55,
+      "runtime_primitives": [
+        "weapon_followup"
+      ],
+      "opening_pressure": {},
+      "deck_summary": {
+        "deck_id": "weapon_followup_v0_1_deck_003",
+        "enemy_role": "blademaster",
+        "difficulty_tier": "elite",
+        "deck_power_score": 20.0,
+        "card_count": 7,
+        "tags": [
+          "early",
+          "elite",
+          "blademaster"
+        ],
+        "player_wujing_cap": 2,
+        "realm_eligibility_checked": true,
+        "invalid_realm_card_count": 0
+      },
+      "reward_summary": {
+        "reward_plan_id": "weapon_followup_v0_1_reward_003",
+        "reward_type": "card_pick",
+        "reward_tier": "early",
+        "reward_items": [
+          {
+            "item_id": "basic_reward_card_003",
+            "quantity": 1
+          }
+        ]
+      },
+      "card_summaries": [
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_early_strike",
+          "name": "贴步快斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 5
+            }
+          ],
+          "tags": [
+            "early",
+            "blademaster",
+            "attack",
+            "measured",
+            "technique"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 5.0,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_early_pressure",
+          "name": "逼身断势",
+          "card_type": "skill",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "break_momentum",
+              "value": 3
+            }
+          ],
+          "tags": [
+            "early",
+            "blademaster",
+            "skill",
+            "pressure",
+            "technique"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 2.4,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_mid_finisher",
+          "name": "欺身落刃",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 5
+            },
+            {
+              "type": "gain_momentum",
+              "value": 1
+            },
+            {
+              "type": "break_momentum",
+              "value": 2
+            }
+          ],
+          "tags": [
+            "mid",
+            "blademaster",
+            "attack",
+            "high_pressure",
+            "technique",
+            "closing_form"
+          ],
+          "difficulty_tier": "mid",
+          "power_score": 7.4,
+          "required_wujing": 2,
+          "closing_form_tier": 2,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_early_strike",
+          "name": "贴步快斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 5
+            }
+          ],
+          "tags": [
+            "early",
+            "blademaster",
+            "attack",
+            "measured",
+            "technique"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 5.0,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_early_focus",
+          "name": "短促换气",
+          "card_type": "skill",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "gain_momentum",
+              "value": 3
+            }
+          ],
+          "tags": [
+            "early",
+            "blademaster",
+            "skill",
+            "setup",
+            "technique"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 2.4,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_early_finisher",
+          "name": "贴身追斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 4
+            },
+            {
+              "type": "gain_momentum",
+              "value": 1
+            },
+            {
+              "type": "break_momentum",
+              "value": 2
+            }
+          ],
+          "tags": [
+            "early",
+            "blademaster",
+            "attack",
+            "high_pressure",
+            "technique",
+            "closing_form"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 6.4,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_early_pressure",
+          "name": "逼身断势",
+          "card_type": "skill",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "break_momentum",
+              "value": 3
+            }
+          ],
+          "tags": [
+            "early",
+            "blademaster",
+            "skill",
+            "pressure",
+            "technique"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 2.4,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        }
+      ]
+    },
+    {
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "sequence_position": 4,
+      "stage": "mid",
+      "stage_index": 2,
+      "formal_encounter_id": "enc_mutiny_camp",
+      "formal_battle_id": "first_act_mutiny_camp",
+      "node_id": "mutiny_camp",
+      "node_type": "choices_json",
+      "encounter_tier": "mid",
+      "encounter_kind": "normal",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_004",
+      "generated_deck_id": "weapon_followup_v0_1_deck_004",
+      "reward_plan_id": "weapon_followup_v0_1_reward_004",
+      "player_wujing_cap": 3,
+      "target_power_min": 30,
+      "target_power_max": 34,
+      "deck_power_score": 20.0,
+      "power_range_pass": true,
+      "reward_tier": "mid",
+      "mechanic_density_target": 0.55,
+      "runtime_primitives": [
+        "weapon_followup"
+      ],
+      "opening_pressure": {},
+      "deck_summary": {
+        "deck_id": "weapon_followup_v0_1_deck_004",
+        "enemy_role": "spearman",
+        "difficulty_tier": "normal",
+        "deck_power_score": 20.0,
+        "card_count": 6,
+        "tags": [
+          "mid",
+          "normal",
+          "spearman"
+        ],
+        "player_wujing_cap": 3,
+        "realm_eligibility_checked": true,
+        "invalid_realm_card_count": 0
+      },
+      "reward_summary": {
+        "reward_plan_id": "weapon_followup_v0_1_reward_004",
+        "reward_type": "card_pick",
+        "reward_tier": "mid",
+        "reward_items": [
+          {
+            "item_id": "basic_reward_card_004",
+            "quantity": 1
+          }
+        ]
+      },
+      "card_summaries": [
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_early_strike",
+          "name": "贴步快斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 5
+            }
+          ],
+          "tags": [
+            "early",
+            "blademaster",
+            "attack",
+            "measured",
+            "technique"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 5.0,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_mid_pressure",
+          "name": "封线破势",
+          "card_type": "skill",
+          "weapon_style": "spearman",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "break_momentum",
+              "value": 4
+            }
+          ],
+          "tags": [
+            "mid",
+            "spearman",
+            "skill",
+            "pressure",
+            "technique"
+          ],
+          "difficulty_tier": "mid",
+          "power_score": 3.2,
+          "required_wujing": 2,
+          "closing_form_tier": 2,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_mid_strike",
+          "name": "穿线枪",
+          "card_type": "attack",
+          "weapon_style": "spearman",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 6
+            }
+          ],
+          "tags": [
+            "mid",
+            "spearman",
+            "attack",
+            "measured",
+            "technique"
+          ],
+          "difficulty_tier": "mid",
+          "power_score": 6.0,
+          "required_wujing": 2,
+          "closing_form_tier": 2,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_late_strike",
+          "name": "断潮重斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 8
+            }
+          ],
+          "tags": [
+            "late",
+            "blademaster",
+            "attack",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "late",
+          "power_score": 8.0,
+          "required_wujing": 3,
+          "closing_form_tier": 3,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_mid_focus",
+          "name": "稳步蓄势",
+          "card_type": "skill",
+          "weapon_style": "spearman",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "gain_momentum",
+              "value": 3
+            }
+          ],
+          "tags": [
+            "mid",
+            "spearman",
+            "skill",
+            "setup",
+            "technique"
+          ],
+          "difficulty_tier": "mid",
+          "power_score": 2.4,
+          "required_wujing": 2,
+          "closing_form_tier": 2,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_mid_finisher",
+          "name": "抢线突穿",
+          "card_type": "attack",
+          "weapon_style": "spearman",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 5
+            },
+            {
+              "type": "gain_momentum",
+              "value": 1
+            },
+            {
+              "type": "break_momentum",
+              "value": 2
+            }
+          ],
+          "tags": [
+            "mid",
+            "spearman",
+            "attack",
+            "high_pressure",
+            "technique",
+            "closing_form"
+          ],
+          "difficulty_tier": "mid",
+          "power_score": 7.4,
+          "required_wujing": 2,
+          "closing_form_tier": 2,
+          "realm_eligible_for_slot": true
+        }
+      ]
+    },
+    {
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "sequence_position": 5,
+      "stage": "mid",
+      "stage_index": 2,
+      "formal_encounter_id": "enc_wakou_boss",
+      "formal_battle_id": "first_act_wakou_boss",
+      "node_id": "wakou_boss",
+      "node_type": "combat_json",
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_005",
+      "generated_deck_id": "weapon_followup_v0_1_deck_005",
+      "reward_plan_id": "weapon_followup_v0_1_reward_005",
+      "player_wujing_cap": 4,
+      "target_power_min": 30,
+      "target_power_max": 34,
+      "deck_power_score": 20.0,
+      "power_range_pass": true,
+      "reward_tier": "mid",
+      "mechanic_density_target": 0.62,
+      "runtime_primitives": [
+        "weapon_followup"
+      ],
+      "opening_pressure": {},
+      "deck_summary": {
+        "deck_id": "weapon_followup_v0_1_deck_005",
+        "enemy_role": "blademaster",
+        "difficulty_tier": "elite",
+        "deck_power_score": 20.0,
+        "card_count": 7,
+        "tags": [
+          "mid",
+          "elite",
+          "blademaster"
+        ],
+        "player_wujing_cap": 4,
+        "realm_eligibility_checked": true,
+        "invalid_realm_card_count": 0
+      },
+      "reward_summary": {
+        "reward_plan_id": "weapon_followup_v0_1_reward_005",
+        "reward_type": "card_pick",
+        "reward_tier": "mid",
+        "reward_items": [
+          {
+            "item_id": "basic_reward_card_005",
+            "quantity": 1
+          }
+        ]
+      },
+      "card_summaries": [
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_mid_strike",
+          "name": "追影斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 6
+            }
+          ],
+          "tags": [
+            "mid",
+            "blademaster",
+            "attack",
+            "measured",
+            "technique"
+          ],
+          "difficulty_tier": "mid",
+          "power_score": 6.0,
+          "required_wujing": 2,
+          "closing_form_tier": 2,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_mid_pressure",
+          "name": "贴身压势",
+          "card_type": "skill",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "break_momentum",
+              "value": 4
+            }
+          ],
+          "tags": [
+            "mid",
+            "blademaster",
+            "skill",
+            "pressure",
+            "technique"
+          ],
+          "difficulty_tier": "mid",
+          "power_score": 3.2,
+          "required_wujing": 2,
+          "closing_form_tier": 2,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_mid_strike",
+          "name": "追影斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 6
+            }
+          ],
+          "tags": [
+            "mid",
+            "blademaster",
+            "attack",
+            "measured",
+            "technique"
+          ],
+          "difficulty_tier": "mid",
+          "power_score": 6.0,
+          "required_wujing": 2,
+          "closing_form_tier": 2,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_boss_strike",
+          "name": "裂波断首",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 8
+            }
+          ],
+          "tags": [
+            "boss",
+            "blademaster",
+            "attack",
+            "boss_tag",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 8.0,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_mid_focus",
+          "name": "步内聚势",
+          "card_type": "skill",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "gain_momentum",
+              "value": 3
+            }
+          ],
+          "tags": [
+            "mid",
+            "blademaster",
+            "skill",
+            "setup",
+            "technique"
+          ],
+          "difficulty_tier": "mid",
+          "power_score": 2.4,
+          "required_wujing": 2,
+          "closing_form_tier": 2,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_mid_finisher",
+          "name": "欺身落刃",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 5
+            },
+            {
+              "type": "gain_momentum",
+              "value": 1
+            },
+            {
+              "type": "break_momentum",
+              "value": 2
+            }
+          ],
+          "tags": [
+            "mid",
+            "blademaster",
+            "attack",
+            "high_pressure",
+            "technique",
+            "closing_form"
+          ],
+          "difficulty_tier": "mid",
+          "power_score": 7.4,
+          "required_wujing": 2,
+          "closing_form_tier": 2,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_mid_pressure",
+          "name": "贴身压势",
+          "card_type": "skill",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "break_momentum",
+              "value": 4
+            }
+          ],
+          "tags": [
+            "mid",
+            "blademaster",
+            "skill",
+            "pressure",
+            "technique"
+          ],
+          "difficulty_tier": "mid",
+          "power_score": 3.2,
+          "required_wujing": 2,
+          "closing_form_tier": 2,
+          "realm_eligible_for_slot": true
+        }
+      ]
+    },
+    {
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "sequence_position": 6,
+      "stage": "mid",
+      "stage_index": 2,
+      "formal_encounter_id": "enc_wuke_spear_trial",
+      "formal_battle_id": "wuke_spear_trial",
+      "node_id": "wuke_spear_trial",
+      "node_type": "combat_json",
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_006",
+      "generated_deck_id": "weapon_followup_v0_1_deck_006",
+      "reward_plan_id": "weapon_followup_v0_1_reward_006",
+      "player_wujing_cap": 4,
+      "target_power_min": 30,
+      "target_power_max": 34,
+      "deck_power_score": 20.0,
+      "power_range_pass": true,
+      "reward_tier": "mid",
+      "mechanic_density_target": 0.7,
+      "runtime_primitives": [
+        "weapon_followup"
+      ],
+      "opening_pressure": {},
+      "deck_summary": {
+        "deck_id": "weapon_followup_v0_1_deck_006",
+        "enemy_role": "spearman",
+        "difficulty_tier": "elite",
+        "deck_power_score": 20.0,
+        "card_count": 7,
+        "tags": [
+          "mid",
+          "elite",
+          "spearman"
+        ],
+        "player_wujing_cap": 4,
+        "realm_eligibility_checked": true,
+        "invalid_realm_card_count": 0
+      },
+      "reward_summary": {
+        "reward_plan_id": "weapon_followup_v0_1_reward_006",
+        "reward_type": "card_pick",
+        "reward_tier": "mid",
+        "reward_items": [
+          {
+            "item_id": "basic_reward_card_006",
+            "quantity": 1
+          }
+        ]
+      },
+      "card_summaries": [
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_early_strike",
+          "name": "贴步快斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 5
+            }
+          ],
+          "tags": [
+            "early",
+            "blademaster",
+            "attack",
+            "measured",
+            "technique"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 5.0,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_mid_pressure",
+          "name": "封线破势",
+          "card_type": "skill",
+          "weapon_style": "spearman",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "break_momentum",
+              "value": 4
+            }
+          ],
+          "tags": [
+            "mid",
+            "spearman",
+            "skill",
+            "pressure",
+            "technique"
+          ],
+          "difficulty_tier": "mid",
+          "power_score": 3.2,
+          "required_wujing": 2,
+          "closing_form_tier": 2,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_mid_strike",
+          "name": "穿线枪",
+          "card_type": "attack",
+          "weapon_style": "spearman",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 6
+            }
+          ],
+          "tags": [
+            "mid",
+            "spearman",
+            "attack",
+            "measured",
+            "technique"
+          ],
+          "difficulty_tier": "mid",
+          "power_score": 6.0,
+          "required_wujing": 2,
+          "closing_form_tier": 2,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_boss_strike",
+          "name": "裂波断首",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 8
+            }
+          ],
+          "tags": [
+            "boss",
+            "blademaster",
+            "attack",
+            "boss_tag",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 8.0,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_mid_focus",
+          "name": "稳步蓄势",
+          "card_type": "skill",
+          "weapon_style": "spearman",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "gain_momentum",
+              "value": 3
+            }
+          ],
+          "tags": [
+            "mid",
+            "spearman",
+            "skill",
+            "setup",
+            "technique"
+          ],
+          "difficulty_tier": "mid",
+          "power_score": 2.4,
+          "required_wujing": 2,
+          "closing_form_tier": 2,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_mid_finisher",
+          "name": "抢线突穿",
+          "card_type": "attack",
+          "weapon_style": "spearman",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 5
+            },
+            {
+              "type": "gain_momentum",
+              "value": 1
+            },
+            {
+              "type": "break_momentum",
+              "value": 2
+            }
+          ],
+          "tags": [
+            "mid",
+            "spearman",
+            "attack",
+            "high_pressure",
+            "technique",
+            "closing_form"
+          ],
+          "difficulty_tier": "mid",
+          "power_score": 7.4,
+          "required_wujing": 2,
+          "closing_form_tier": 2,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_mid_pressure",
+          "name": "封线破势",
+          "card_type": "skill",
+          "weapon_style": "spearman",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "break_momentum",
+              "value": 4
+            }
+          ],
+          "tags": [
+            "mid",
+            "spearman",
+            "skill",
+            "pressure",
+            "technique"
+          ],
+          "difficulty_tier": "mid",
+          "power_score": 3.2,
+          "required_wujing": 2,
+          "closing_form_tier": 2,
+          "realm_eligible_for_slot": true
+        }
+      ]
+    },
+    {
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "sequence_position": 7,
+      "stage": "late",
+      "stage_index": 3,
+      "formal_encounter_id": "enc_wuke_blade_trial",
+      "formal_battle_id": "wuke_blade_trial",
+      "node_id": "wuke_blade_trial",
+      "node_type": "combat_json",
+      "encounter_tier": "late",
+      "encounter_kind": "elite",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_007",
+      "generated_deck_id": "weapon_followup_v0_1_deck_007",
+      "reward_plan_id": "weapon_followup_v0_1_reward_007",
+      "player_wujing_cap": 5,
+      "target_power_min": 43,
+      "target_power_max": 52,
+      "deck_power_score": 23.6,
+      "power_range_pass": true,
+      "reward_tier": "late",
+      "mechanic_density_target": 0.65,
+      "runtime_primitives": [
+        "weapon_followup"
+      ],
+      "opening_pressure": {},
+      "deck_summary": {
+        "deck_id": "weapon_followup_v0_1_deck_007",
+        "enemy_role": "blademaster",
+        "difficulty_tier": "elite",
+        "deck_power_score": 23.6,
+        "card_count": 8,
+        "tags": [
+          "late",
+          "elite",
+          "blademaster"
+        ],
+        "player_wujing_cap": 5,
+        "realm_eligibility_checked": true,
+        "invalid_realm_card_count": 0
+      },
+      "reward_summary": {
+        "reward_plan_id": "weapon_followup_v0_1_reward_007",
+        "reward_type": "card_pick",
+        "reward_tier": "late",
+        "reward_items": [
+          {
+            "item_id": "basic_reward_card_007",
+            "quantity": 1
+          }
+        ]
+      },
+      "card_summaries": [
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_mid_strike",
+          "name": "追影斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 6
+            }
+          ],
+          "tags": [
+            "mid",
+            "blademaster",
+            "attack",
+            "measured",
+            "technique"
+          ],
+          "difficulty_tier": "mid",
+          "power_score": 6.0,
+          "required_wujing": 2,
+          "closing_form_tier": 2,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_boss_strike",
+          "name": "裂波断首",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 8
+            }
+          ],
+          "tags": [
+            "boss",
+            "blademaster",
+            "attack",
+            "boss_tag",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 8.0,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_late_strike",
+          "name": "断潮重斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 8
+            }
+          ],
+          "tags": [
+            "late",
+            "blademaster",
+            "attack",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "late",
+          "power_score": 8.0,
+          "required_wujing": 3,
+          "closing_form_tier": 3,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_early_strike",
+          "name": "贴步快斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 5
+            }
+          ],
+          "tags": [
+            "early",
+            "blademaster",
+            "attack",
+            "measured",
+            "technique"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 5.0,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_late_guard",
+          "name": "沉锋稳架",
+          "card_type": "defense",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "gain_block",
+              "value": 6
+            }
+          ],
+          "tags": [
+            "late",
+            "blademaster",
+            "defense",
+            "anchor"
+          ],
+          "difficulty_tier": "late",
+          "power_score": 6.0,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_late_pressure",
+          "name": "逼命压锋",
+          "card_type": "skill",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "break_momentum",
+              "value": 7
+            }
+          ],
+          "tags": [
+            "late",
+            "blademaster",
+            "skill",
+            "pressure",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "late",
+          "power_score": 5.6,
+          "required_wujing": 3,
+          "closing_form_tier": 3,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_late_focus",
+          "name": "近身蓄势",
+          "card_type": "skill",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "gain_momentum",
+              "value": 3
+            }
+          ],
+          "tags": [
+            "late",
+            "blademaster",
+            "skill",
+            "setup",
+            "technique"
+          ],
+          "difficulty_tier": "late",
+          "power_score": 2.4,
+          "required_wujing": 3,
+          "closing_form_tier": 3,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_late_finisher",
+          "name": "断潮夺命",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 6
+            },
+            {
+              "type": "break_momentum",
+              "value": 2
+            }
+          ],
+          "tags": [
+            "late",
+            "blademaster",
+            "attack",
+            "high_pressure",
+            "technique",
+            "closing_form"
+          ],
+          "difficulty_tier": "late",
+          "power_score": 7.6,
+          "required_wujing": 3,
+          "closing_form_tier": 3,
+          "realm_eligible_for_slot": true
+        }
+      ]
+    },
+    {
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "sequence_position": 8,
+      "stage": "late",
+      "stage_index": 3,
+      "formal_encounter_id": "enc_wuke_final_duel",
+      "formal_battle_id": "wuke_final_duel",
+      "node_id": "wuke_final_duel",
+      "node_type": "combat_json",
+      "encounter_tier": "late",
+      "encounter_kind": "elite",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_008",
+      "generated_deck_id": "weapon_followup_v0_1_deck_008",
+      "reward_plan_id": "weapon_followup_v0_1_reward_008",
+      "player_wujing_cap": 6,
+      "target_power_min": 43,
+      "target_power_max": 52,
+      "deck_power_score": 27.8,
+      "power_range_pass": true,
+      "reward_tier": "late",
+      "mechanic_density_target": 0.73,
+      "runtime_primitives": [
+        "weapon_followup"
+      ],
+      "opening_pressure": {},
+      "deck_summary": {
+        "deck_id": "weapon_followup_v0_1_deck_008",
+        "enemy_role": "blademaster",
+        "difficulty_tier": "elite",
+        "deck_power_score": 27.8,
+        "card_count": 8,
+        "tags": [
+          "late",
+          "elite",
+          "blademaster"
+        ],
+        "player_wujing_cap": 6,
+        "realm_eligibility_checked": true,
+        "invalid_realm_card_count": 0
+      },
+      "reward_summary": {
+        "reward_plan_id": "weapon_followup_v0_1_reward_008",
+        "reward_type": "card_pick",
+        "reward_tier": "late",
+        "reward_items": [
+          {
+            "item_id": "basic_reward_card_008",
+            "quantity": 1
+          }
+        ]
+      },
+      "card_summaries": [
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_late_strike",
+          "name": "断潮重斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 8
+            }
+          ],
+          "tags": [
+            "late",
+            "blademaster",
+            "attack",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "late",
+          "power_score": 8.0,
+          "required_wujing": 3,
+          "closing_form_tier": 3,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_late_pressure",
+          "name": "逼命压锋",
+          "card_type": "skill",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "break_momentum",
+              "value": 7
+            }
+          ],
+          "tags": [
+            "late",
+            "blademaster",
+            "skill",
+            "pressure",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "late",
+          "power_score": 5.6,
+          "required_wujing": 3,
+          "closing_form_tier": 3,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_late_strike",
+          "name": "断潮重斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 8
+            }
+          ],
+          "tags": [
+            "late",
+            "blademaster",
+            "attack",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "late",
+          "power_score": 8.0,
+          "required_wujing": 3,
+          "closing_form_tier": 3,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_late_finisher",
+          "name": "断潮夺命",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 6
+            },
+            {
+              "type": "break_momentum",
+              "value": 2
+            }
+          ],
+          "tags": [
+            "late",
+            "blademaster",
+            "attack",
+            "high_pressure",
+            "technique",
+            "closing_form"
+          ],
+          "difficulty_tier": "late",
+          "power_score": 7.6,
+          "required_wujing": 3,
+          "closing_form_tier": 3,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_boss_strike",
+          "name": "裂波断首",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 8
+            }
+          ],
+          "tags": [
+            "boss",
+            "blademaster",
+            "attack",
+            "boss_tag",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 8.0,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_late_pressure",
+          "name": "逼命压锋",
+          "card_type": "skill",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "break_momentum",
+              "value": 7
+            }
+          ],
+          "tags": [
+            "late",
+            "blademaster",
+            "skill",
+            "pressure",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "late",
+          "power_score": 5.6,
+          "required_wujing": 3,
+          "closing_form_tier": 3,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_late_focus",
+          "name": "近身蓄势",
+          "card_type": "skill",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "gain_momentum",
+              "value": 3
+            }
+          ],
+          "tags": [
+            "late",
+            "blademaster",
+            "skill",
+            "setup",
+            "technique"
+          ],
+          "difficulty_tier": "late",
+          "power_score": 2.4,
+          "required_wujing": 3,
+          "closing_form_tier": 3,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_late_finisher",
+          "name": "断潮夺命",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 6
+            },
+            {
+              "type": "break_momentum",
+              "value": 2
+            }
+          ],
+          "tags": [
+            "late",
+            "blademaster",
+            "attack",
+            "high_pressure",
+            "technique",
+            "closing_form"
+          ],
+          "difficulty_tier": "late",
+          "power_score": 7.6,
+          "required_wujing": 3,
+          "closing_form_tier": 3,
+          "realm_eligible_for_slot": true
+        }
+      ]
+    },
+    {
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "sequence_position": 9,
+      "stage": "late",
+      "stage_index": 3,
+      "formal_encounter_id": "enc_wuke_gu_chengyue",
+      "formal_battle_id": "wuke_gu_chengyue",
+      "node_id": "wuke_elim_gu_chengyue_battle",
+      "node_type": "combat_json",
+      "encounter_tier": "late",
+      "encounter_kind": "elite",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_009",
+      "generated_deck_id": "weapon_followup_v0_1_deck_009",
+      "reward_plan_id": "weapon_followup_v0_1_reward_009",
+      "player_wujing_cap": 6,
+      "target_power_min": 43,
+      "target_power_max": 52,
+      "deck_power_score": 24.8,
+      "power_range_pass": true,
+      "reward_tier": "late",
+      "mechanic_density_target": 0.8,
+      "runtime_primitives": [
+        "weapon_followup"
+      ],
+      "opening_pressure": {},
+      "deck_summary": {
+        "deck_id": "weapon_followup_v0_1_deck_009",
+        "enemy_role": "spearman",
+        "difficulty_tier": "elite",
+        "deck_power_score": 24.8,
+        "card_count": 8,
+        "tags": [
+          "late",
+          "elite",
+          "spearman"
+        ],
+        "player_wujing_cap": 6,
+        "realm_eligibility_checked": true,
+        "invalid_realm_card_count": 0
+      },
+      "reward_summary": {
+        "reward_plan_id": "weapon_followup_v0_1_reward_009",
+        "reward_type": "card_pick",
+        "reward_tier": "late",
+        "reward_items": [
+          {
+            "item_id": "basic_reward_card_009",
+            "quantity": 1
+          }
+        ]
+      },
+      "card_summaries": [
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_early_strike",
+          "name": "贴步快斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 5
+            }
+          ],
+          "tags": [
+            "early",
+            "blademaster",
+            "attack",
+            "measured",
+            "technique"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 5.0,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_late_pressure",
+          "name": "压营断势",
+          "card_type": "skill",
+          "weapon_style": "spearman",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "break_momentum",
+              "value": 7
+            }
+          ],
+          "tags": [
+            "late",
+            "spearman",
+            "skill",
+            "pressure",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "late",
+          "power_score": 5.6,
+          "required_wujing": 3,
+          "closing_form_tier": 3,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_late_strike",
+          "name": "贯潮枪",
+          "card_type": "attack",
+          "weapon_style": "spearman",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 8
+            }
+          ],
+          "tags": [
+            "late",
+            "spearman",
+            "attack",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "late",
+          "power_score": 8.0,
+          "required_wujing": 3,
+          "closing_form_tier": 3,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_late_finisher",
+          "name": "潮头追命",
+          "card_type": "attack",
+          "weapon_style": "spearman",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 6
+            },
+            {
+              "type": "break_momentum",
+              "value": 2
+            }
+          ],
+          "tags": [
+            "late",
+            "spearman",
+            "attack",
+            "high_pressure",
+            "technique",
+            "closing_form"
+          ],
+          "difficulty_tier": "late",
+          "power_score": 7.6,
+          "required_wujing": 3,
+          "closing_form_tier": 3,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_boss_strike",
+          "name": "裂波断首",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 8
+            }
+          ],
+          "tags": [
+            "boss",
+            "blademaster",
+            "attack",
+            "boss_tag",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 8.0,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_late_pressure",
+          "name": "压营断势",
+          "card_type": "skill",
+          "weapon_style": "spearman",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "break_momentum",
+              "value": 7
+            }
+          ],
+          "tags": [
+            "late",
+            "spearman",
+            "skill",
+            "pressure",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "late",
+          "power_score": 5.6,
+          "required_wujing": 3,
+          "closing_form_tier": 3,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_late_focus",
+          "name": "逼线聚势",
+          "card_type": "skill",
+          "weapon_style": "spearman",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "gain_momentum",
+              "value": 3
+            }
+          ],
+          "tags": [
+            "late",
+            "spearman",
+            "skill",
+            "setup",
+            "technique"
+          ],
+          "difficulty_tier": "late",
+          "power_score": 2.4,
+          "required_wujing": 3,
+          "closing_form_tier": 3,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_late_finisher",
+          "name": "潮头追命",
+          "card_type": "attack",
+          "weapon_style": "spearman",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 6
+            },
+            {
+              "type": "break_momentum",
+              "value": 2
+            }
+          ],
+          "tags": [
+            "late",
+            "spearman",
+            "attack",
+            "high_pressure",
+            "technique",
+            "closing_form"
+          ],
+          "difficulty_tier": "late",
+          "power_score": 7.6,
+          "required_wujing": 3,
+          "closing_form_tier": 3,
+          "realm_eligible_for_slot": true
+        }
+      ]
+    },
+    {
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "sequence_position": 10,
+      "stage": "boss",
+      "stage_index": 4,
+      "formal_encounter_id": "enc_wuke_shen_zhaoye",
+      "formal_battle_id": "wuke_shen_zhaoye",
+      "node_id": "wuke_elim_shen_zhaoye_battle",
+      "node_type": "combat_json",
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_010",
+      "generated_deck_id": "weapon_followup_v0_1_deck_010",
+      "reward_plan_id": "weapon_followup_v0_1_reward_010",
+      "player_wujing_cap": 7,
+      "target_power_min": 53,
+      "target_power_max": 56,
+      "deck_power_score": 25.6,
+      "power_range_pass": true,
+      "reward_tier": "boss",
+      "mechanic_density_target": 0.75,
+      "runtime_primitives": [
+        "weapon_followup"
+      ],
+      "opening_pressure": {},
+      "deck_summary": {
+        "deck_id": "weapon_followup_v0_1_deck_010",
+        "enemy_role": "blademaster",
+        "difficulty_tier": "boss",
+        "deck_power_score": 25.6,
+        "card_count": 8,
+        "tags": [
+          "boss",
+          "boss",
+          "blademaster"
+        ],
+        "player_wujing_cap": 7,
+        "realm_eligibility_checked": true,
+        "invalid_realm_card_count": 0
+      },
+      "reward_summary": {
+        "reward_plan_id": "weapon_followup_v0_1_reward_010",
+        "reward_type": "resource",
+        "reward_tier": "boss",
+        "reward_items": [
+          {
+            "item_id": "boss_reward_token",
+            "quantity": 1
+          },
+          {
+            "item_id": "resource_merit",
+            "quantity": 3
+          }
+        ]
+      },
+      "card_summaries": [
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_early_strike",
+          "name": "贴步快斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 5
+            }
+          ],
+          "tags": [
+            "early",
+            "blademaster",
+            "attack",
+            "measured",
+            "technique"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 5.0,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_boss_pressure",
+          "name": "逼宫断势",
+          "card_type": "skill",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "break_momentum",
+              "value": 8
+            }
+          ],
+          "tags": [
+            "boss",
+            "blademaster",
+            "skill",
+            "boss_tag",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 6.4,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_boss_strike",
+          "name": "裂波断首",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 8
+            }
+          ],
+          "tags": [
+            "boss",
+            "blademaster",
+            "attack",
+            "boss_tag",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 8.0,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_boss_finisher",
+          "name": "追潮绝斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 7
+            },
+            {
+              "type": "gain_momentum",
+              "value": 1
+            }
+          ],
+          "tags": [
+            "boss",
+            "blademaster",
+            "attack",
+            "boss_tag",
+            "high_pressure",
+            "technique",
+            "closing_form"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 7.8,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_late_strike",
+          "name": "断潮重斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 8
+            }
+          ],
+          "tags": [
+            "late",
+            "blademaster",
+            "attack",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "late",
+          "power_score": 8.0,
+          "required_wujing": 3,
+          "closing_form_tier": 3,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_boss_pressure",
+          "name": "逼宫断势",
+          "card_type": "skill",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "break_momentum",
+              "value": 8
+            }
+          ],
+          "tags": [
+            "boss",
+            "blademaster",
+            "skill",
+            "boss_tag",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 6.4,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_boss_focus",
+          "name": "血潮聚锋",
+          "card_type": "skill",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "gain_momentum",
+              "value": 4
+            }
+          ],
+          "tags": [
+            "boss",
+            "blademaster",
+            "skill",
+            "boss_tag",
+            "setup",
+            "technique"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 3.2,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_boss_finisher",
+          "name": "追潮绝斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 7
+            },
+            {
+              "type": "gain_momentum",
+              "value": 1
+            }
+          ],
+          "tags": [
+            "boss",
+            "blademaster",
+            "attack",
+            "boss_tag",
+            "high_pressure",
+            "technique",
+            "closing_form"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 7.8,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        }
+      ]
+    },
+    {
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "sequence_position": 11,
+      "stage": "boss",
+      "stage_index": 4,
+      "formal_encounter_id": "enc_wuke_qi_heng",
+      "formal_battle_id": "wuke_qi_heng",
+      "node_id": "wuke_elim_qi_heng_battle",
+      "node_type": "combat_json",
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_011",
+      "generated_deck_id": "weapon_followup_v0_1_deck_011",
+      "reward_plan_id": "weapon_followup_v0_1_reward_011",
+      "player_wujing_cap": 7,
+      "target_power_min": 53,
+      "target_power_max": 56,
+      "deck_power_score": 23.8,
+      "power_range_pass": true,
+      "reward_tier": "boss",
+      "mechanic_density_target": 0.82,
+      "runtime_primitives": [
+        "weapon_followup"
+      ],
+      "opening_pressure": {},
+      "deck_summary": {
+        "deck_id": "weapon_followup_v0_1_deck_011",
+        "enemy_role": "spearman",
+        "difficulty_tier": "boss",
+        "deck_power_score": 23.8,
+        "card_count": 8,
+        "tags": [
+          "boss",
+          "boss",
+          "spearman"
+        ],
+        "player_wujing_cap": 7,
+        "realm_eligibility_checked": true,
+        "invalid_realm_card_count": 0
+      },
+      "reward_summary": {
+        "reward_plan_id": "weapon_followup_v0_1_reward_011",
+        "reward_type": "resource",
+        "reward_tier": "boss",
+        "reward_items": [
+          {
+            "item_id": "boss_reward_token",
+            "quantity": 1
+          },
+          {
+            "item_id": "resource_merit",
+            "quantity": 3
+          }
+        ]
+      },
+      "card_summaries": [
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_early_strike",
+          "name": "贴步快斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 5
+            }
+          ],
+          "tags": [
+            "early",
+            "blademaster",
+            "attack",
+            "measured",
+            "technique"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 5.0,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_boss_pressure",
+          "name": "锁营夺势",
+          "card_type": "skill",
+          "weapon_style": "spearman",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "break_momentum",
+              "value": 8
+            }
+          ],
+          "tags": [
+            "boss",
+            "spearman",
+            "skill",
+            "boss_tag",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 6.4,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_boss_strike",
+          "name": "断潮重枪",
+          "card_type": "attack",
+          "weapon_style": "spearman",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 8
+            }
+          ],
+          "tags": [
+            "boss",
+            "spearman",
+            "attack",
+            "boss_tag",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 8.0,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_mid_strike",
+          "name": "穿线枪",
+          "card_type": "attack",
+          "weapon_style": "spearman",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 6
+            }
+          ],
+          "tags": [
+            "mid",
+            "spearman",
+            "attack",
+            "measured",
+            "technique"
+          ],
+          "difficulty_tier": "mid",
+          "power_score": 6.0,
+          "required_wujing": 2,
+          "closing_form_tier": 2,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_boss_strike",
+          "name": "裂波断首",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 8
+            }
+          ],
+          "tags": [
+            "boss",
+            "blademaster",
+            "attack",
+            "boss_tag",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 8.0,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_boss_pressure",
+          "name": "锁营夺势",
+          "card_type": "skill",
+          "weapon_style": "spearman",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "break_momentum",
+              "value": 8
+            }
+          ],
+          "tags": [
+            "boss",
+            "spearman",
+            "skill",
+            "boss_tag",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 6.4,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_boss_focus",
+          "name": "裂阵聚势",
+          "card_type": "skill",
+          "weapon_style": "spearman",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "gain_momentum",
+              "value": 4
+            }
+          ],
+          "tags": [
+            "boss",
+            "spearman",
+            "skill",
+            "boss_tag",
+            "setup",
+            "technique"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 3.2,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_boss_finisher",
+          "name": "贯心落潮",
+          "card_type": "attack",
+          "weapon_style": "spearman",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 7
+            },
+            {
+              "type": "gain_momentum",
+              "value": 1
+            }
+          ],
+          "tags": [
+            "boss",
+            "spearman",
+            "attack",
+            "boss_tag",
+            "high_pressure",
+            "technique",
+            "closing_form"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 7.8,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        }
+      ]
+    },
+    {
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "sequence_position": 12,
+      "stage": "boss",
+      "stage_index": 4,
+      "formal_encounter_id": "enc_ch2_reed_ambush",
+      "formal_battle_id": "chapter2_reed_ambush",
+      "node_id": "ch2_reed_ambush_battle",
+      "node_type": "combat_json",
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_012",
+      "generated_deck_id": "weapon_followup_v0_1_deck_012",
+      "reward_plan_id": "weapon_followup_v0_1_reward_012",
+      "player_wujing_cap": 7,
+      "target_power_min": 53,
+      "target_power_max": 56,
+      "deck_power_score": 25.6,
+      "power_range_pass": true,
+      "reward_tier": "boss",
+      "mechanic_density_target": 0.9,
+      "runtime_primitives": [
+        "weapon_followup"
+      ],
+      "opening_pressure": {},
+      "deck_summary": {
+        "deck_id": "weapon_followup_v0_1_deck_012",
+        "enemy_role": "spearman",
+        "difficulty_tier": "boss",
+        "deck_power_score": 25.6,
+        "card_count": 8,
+        "tags": [
+          "boss",
+          "boss",
+          "spearman"
+        ],
+        "player_wujing_cap": 7,
+        "realm_eligibility_checked": true,
+        "invalid_realm_card_count": 0
+      },
+      "reward_summary": {
+        "reward_plan_id": "weapon_followup_v0_1_reward_012",
+        "reward_type": "resource",
+        "reward_tier": "boss",
+        "reward_items": [
+          {
+            "item_id": "boss_reward_token",
+            "quantity": 1
+          },
+          {
+            "item_id": "resource_merit",
+            "quantity": 3
+          }
+        ]
+      },
+      "card_summaries": [
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_early_strike",
+          "name": "贴步快斩",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 5
+            }
+          ],
+          "tags": [
+            "early",
+            "blademaster",
+            "attack",
+            "measured",
+            "technique"
+          ],
+          "difficulty_tier": "early",
+          "power_score": 5.0,
+          "required_wujing": 1,
+          "closing_form_tier": 1,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_boss_pressure",
+          "name": "锁营夺势",
+          "card_type": "skill",
+          "weapon_style": "spearman",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "break_momentum",
+              "value": 8
+            }
+          ],
+          "tags": [
+            "boss",
+            "spearman",
+            "skill",
+            "boss_tag",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 6.4,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_boss_strike",
+          "name": "断潮重枪",
+          "card_type": "attack",
+          "weapon_style": "spearman",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 8
+            }
+          ],
+          "tags": [
+            "boss",
+            "spearman",
+            "attack",
+            "boss_tag",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 8.0,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_boss_finisher",
+          "name": "贯心落潮",
+          "card_type": "attack",
+          "weapon_style": "spearman",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 7
+            },
+            {
+              "type": "gain_momentum",
+              "value": 1
+            }
+          ],
+          "tags": [
+            "boss",
+            "spearman",
+            "attack",
+            "boss_tag",
+            "high_pressure",
+            "technique",
+            "closing_form"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 7.8,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_blademaster_boss_strike",
+          "name": "裂波断首",
+          "card_type": "attack",
+          "weapon_style": "blademaster",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 8
+            }
+          ],
+          "tags": [
+            "boss",
+            "blademaster",
+            "attack",
+            "boss_tag",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 8.0,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_boss_pressure",
+          "name": "锁营夺势",
+          "card_type": "skill",
+          "weapon_style": "spearman",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "break_momentum",
+              "value": 8
+            }
+          ],
+          "tags": [
+            "boss",
+            "spearman",
+            "skill",
+            "boss_tag",
+            "high_pressure",
+            "technique"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 6.4,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_boss_focus",
+          "name": "裂阵聚势",
+          "card_type": "skill",
+          "weapon_style": "spearman",
+          "cost": 1,
+          "effects": [
+            {
+              "type": "gain_momentum",
+              "value": 4
+            }
+          ],
+          "tags": [
+            "boss",
+            "spearman",
+            "skill",
+            "boss_tag",
+            "setup",
+            "technique"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 3.2,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        },
+        {
+          "card_id": "weapon_followup_v0_1_spearman_boss_finisher",
+          "name": "贯心落潮",
+          "card_type": "attack",
+          "weapon_style": "spearman",
+          "cost": 2,
+          "effects": [
+            {
+              "type": "damage",
+              "value": 7
+            },
+            {
+              "type": "gain_momentum",
+              "value": 1
+            }
+          ],
+          "tags": [
+            "boss",
+            "spearman",
+            "attack",
+            "boss_tag",
+            "high_pressure",
+            "technique",
+            "closing_form"
+          ],
+          "difficulty_tier": "boss",
+          "power_score": 7.8,
+          "required_wujing": 4,
+          "closing_form_tier": 4,
+          "realm_eligible_for_slot": true
+        }
+      ]
+    }
+  ],
+  "missing_reports": [
+    "telemetry_probe_report.json",
+    "sequence_balance_snapshot.json",
+    "runtime_primitive_probe_report.json",
+    "rebuild_from_snapshot_probe_report.json"
+  ],
+  "latest_evaluation_snapshot_path": "",
+  "latest_rebuild_recommendation_path": "",
+  "original_content_pack_id": null,
+  "snapshot_content_pack_id": null,
+  "balance_release_summary": {},
+  "playable_hardening_summary": {
+    "playable_hardening": true,
+    "hardening_target": "fast",
+    "source_matrix_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "target_gate_pass": false,
+    "smoke_pass": false,
+    "recommended_release_mode": "fast_run",
+    "source_vs_hardened_delta": {
+      "win_rate_delta": 0.0,
+      "avg_turn_delta": 0.0
+    },
+    "fast_or_bossrush_metrics": {},
+    "playable_hardening_strategy": {
+      "generated_at": "2026-05-12T07:24:11.905886+00:00",
+      "playable_hardening_ready": false,
+      "recommended_standard_keep": "weapon_followup_balance_release_007",
+      "recommended_fast_candidate": "",
+      "recommended_bossrush_candidate": "",
+      "targets_ready_for_release_candidate": [],
+      "targets_needing_more_balance": [
+        "weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_013",
+        "weapon_followup_v0_1__bossrush_9_v1__hardened_007"
+      ]
+    }
+  },
+  "ai_studio_summary": {},
+  "release_drill_summary": {
+    "release_drill_pack": false,
+    "release_drill_source_pack_id": "",
+    "release_drill_acceptance_status": "",
+    "release_drill_promotion_status": "",
+    "release_drill_dry_run_switch_status": false,
+    "release_drill_report_path": "",
+    "warning_accepted_by_probe": false
+  },
+  "release_landing_summary": {
+    "release_landing_current": false,
+    "landed_from_release_drill": false,
+    "previous_current_pack_id": "",
+    "new_current_pack_id": "",
+    "release_landing_report_path": "",
+    "gameplay_entry_verified": false,
+    "warning_current": false,
+    "warning_current_allowed": false
+  },
+  "preview_summary": {
+    "previewable": true,
+    "preview_source_channel": "",
+    "preview_status": "idle",
+    "last_preview_smoke_pass": false,
+    "preview_smoke_report_path": "data/aigc_battle/generated/preview_runtime/preview_smoke_report.json"
+  },
+  "acceptance_summary": {
+    "latest_acceptance_report_path": "",
+    "latest_acceptance_pass": false,
+    "latest_acceptance_risk_level": "",
+    "latest_acceptance_recommendation": "",
+    "acceptance_required_before_candidate": true
+  },
+  "promotion_summary": {
+    "latest_promotion_report_path": "",
+    "human_review_status": "",
+    "human_review_note_path": "",
+    "promotion_allowed": false,
+    "release_candidate_status": false,
+    "acceptance_required_before_promotion": true,
+    "human_review_required_before_promotion": true,
+    "release_switch_allowed": false,
+    "release_candidate_valid": false,
+    "latest_release_switch_report_path": "",
+    "can_set_current": false,
+    "can_rollback": false,
+    "current_release_marker": false,
+    "previous_current_marker": false,
+    "fallback_release_marker": false,
+    "resolver_channel_consistency_valid": true
+  },
+  "production_contract_summary": {
+    "production_contract_ready": true,
+    "schema_manifest_path": "data/aigc_battle/production_contract/schema_manifest.json",
+    "generated_file_policy_path": "data/aigc_battle/production_contract/generated_file_policy.json",
+    "minimal_acceptance_command_path": "data/aigc_battle/production_contract/minimal_acceptance_command.json",
+    "deprecated_probe_inventory_path": "data/aigc_battle/production_contract/deprecated_probe_inventory.json",
+    "production_contract_doc_path": "docs/AIGC_BATTLE_PRODUCTION_CONTRACT.md"
+  },
+  "production_closeout_summary": {
+    "production_closeout_ready": true,
+    "current_landed_pack": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+    "current_sequence_template": "formal_sequence_12_fast_v1",
+    "current_encounter_count": 12,
+    "previous_current_pack": "weapon_followup_balance_release_007",
+    "closeout_report_path": "data/aigc_battle/generated/production_closeout/r17_production_closeout_probe_report.json",
+    "cleanup_report_path": "data/aigc_battle/generated/production_closeout/production_closeout_cleanup_report.json",
+    "final_acceptance_status": "pass",
+    "closeout_probe_pass": true
+  },
+  "dashboard_display_summary": {
+    "display_status": "review",
+    "display_status_rank": 9,
+    "display_badge": "普通审核",
+    "display_reason": "已生成但未进入更高阶段；阻断：missing_acceptance, missing_human_review",
+    "primary_action_hint": "先跑 acceptance",
+    "risk_level": "fail",
+    "blocking_reasons": [
+      "missing_acceptance",
+      "missing_human_review"
+    ],
+    "warning_reasons": [],
+    "identity_group": {
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_012",
+      "build_variant": "hardened_012",
+      "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_012/runtime_manifest.json"
+    },
+    "runtime_group": {
+      "encounter_count": 12,
+      "generated_loadout_count": 12,
+      "fallback_loadout_count": 0,
+      "reward_coverage_complete": true,
+      "runtime_manifest_loaded": true
+    },
+    "acceptance_group": {
+      "acceptance_pass": false,
+      "risk_level": "",
+      "recommendation": "",
+      "win_rate": 0.8542,
+      "avg_turn_count": 7.0833,
+      "too_hard": 0,
+      "too_long": 0,
+      "reward_mismatch": 0
+    },
+    "review_promotion_group": {
+      "human_review_status": "未生成 / 不适用",
+      "promotion_allowed": false,
+      "promoted_to_release_candidate": false,
+      "promotion_report_path": "未生成 / 不适用"
+    },
+    "release_group": {
+      "current_release_marker": false,
+      "previous_current_marker": false,
+      "fallback_release_marker": false,
+      "release_landing_current": false,
+      "gameplay_entry_verified": false,
+      "release_switch_report_path": "未生成 / 不适用"
+    },
+    "reports_group": {
+      "validation_report": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_012/validation_report.json",
+      "acceptance_report": "未生成 / 不适用",
+      "promotion_report": "未生成 / 不适用",
+      "release_switch_report": "未生成 / 不适用",
+      "release_landing_report": "未生成 / 不适用",
+      "production_closeout_report": "data/aigc_battle/generated/production_closeout/r17_production_closeout_probe_report.json"
+    },
+    "production_timeline": [
+      {
+        "stage": "build",
+        "status": "pass",
+        "reason": "pack 已存在"
+      },
+      {
+        "stage": "validate",
+        "status": "pass",
+        "reason": "ready_for_runtime_export"
+      },
+      {
+        "stage": "export",
+        "status": "pass",
+        "reason": "runtime_manifest"
+      },
+      {
+        "stage": "preview",
+        "status": "missing",
+        "reason": "preview smoke"
+      },
+      {
+        "stage": "acceptance",
+        "status": "missing",
+        "reason": "fail"
+      },
+      {
+        "stage": "human_review",
+        "status": "missing",
+        "reason": "未生成"
+      },
+      {
+        "stage": "promotion",
+        "status": "not_applicable",
+        "reason": "promotion gate"
+      },
+      {
+        "stage": "release_switch",
+        "status": "not_applicable",
+        "reason": "release switch / current"
+      },
+      {
+        "stage": "gameplay_verification",
+        "status": "not_applicable",
+        "reason": "formal entry / current gameplay"
+      },
+      {
+        "stage": "closeout",
+        "status": "not_applicable",
+        "reason": "production closeout"
+      }
+    ],
+    "risk_board_entry": {
+      "pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_012",
+      "display_status": "review",
+      "risk_level": "fail",
+      "blocking_reasons": [
+        "missing_acceptance",
+        "missing_human_review"
+      ],
+      "warning_reasons": [],
+      "next_recommended_step": "先跑 acceptance"
+    }
+  },
+  "template_mechanic_pack_binding_valid": true
+}

@@ -80,6 +80,12 @@ def build_from_evaluation_snapshot(profile_id: str, content_pack_id: str, new_pa
         changed = False
         if action in {"increase_deck_power", "reduce_deck_power"}:
             changed = apply_power_adjustment(deck_by_id, card_by_id, recommendation, stronger=(action == "increase_deck_power"))
+        elif action == "reduce_enemy_pressure":
+            changed = reduce_enemy_pressure(deck_by_id, slot_by_deck, card_by_id, recommendation)
+        elif action == "reduce_defensive_drag":
+            changed = reduce_defensive_drag(deck_by_id, card_by_id, slot_by_deck, recommendation)
+        elif action in {"adjust_reward_tier", "upgrade_reward_tier"}:
+            changed = adjust_reward_tier(rewards, mappings, recommendation)
         elif action == "replace_dead_card":
             changed = replace_specific_card(deck_by_id, card_by_id, str(recommendation.get("card_id", "")), prefer_lower_usage=False)
         elif action == "reduce_overused_card":
@@ -88,6 +94,8 @@ def build_from_evaluation_snapshot(profile_id: str, content_pack_id: str, new_pa
             changed = improve_clue_pressure(slot_by_deck, recommendation)
         elif action == "improve_dual_weapon_mix":
             changed = improve_dual_weapon_mix(deck_by_id, card_by_id, recommendation)
+        elif action == "increase_player_viable_damage":
+            changed = increase_player_viable_damage(card_pool, card_by_id, deck_by_id, recommendation)
         elif action == "improve_followup_chain":
             changed = improve_followup_chain(deck_by_id, card_by_id, recommendation)
         if changed:
@@ -301,6 +309,107 @@ def improve_followup_chain(deck_by_id: dict[str, dict[str, Any]], card_by_id: di
     return True
 
 
+def reduce_enemy_pressure(
+    deck_by_id: dict[str, dict[str, Any]],
+    slot_by_deck: dict[str, dict[str, Any]],
+    card_by_id: dict[str, dict[str, Any]],
+    recommendation: dict[str, Any],
+) -> bool:
+    changed = apply_power_adjustment(deck_by_id, card_by_id, recommendation, stronger=False)
+    deck_id = str(recommendation.get("generated_deck_id", ""))
+    deck = deck_by_id.get(deck_id)
+    if deck:
+        deck["deck_power_score"] = round(max(1.0, float(deck.get("deck_power_score", 0) or 0) - 2.5), 2)
+        changed = True
+    return changed
+
+
+def reduce_defensive_drag(
+    deck_by_id: dict[str, dict[str, Any]],
+    card_by_id: dict[str, dict[str, Any]],
+    slot_by_deck: dict[str, dict[str, Any]],
+    recommendation: dict[str, Any],
+) -> bool:
+    deck_id = str(recommendation.get("generated_deck_id", ""))
+    deck = deck_by_id.get(deck_id)
+    if not deck:
+        return False
+    card_ids = list(deck.get("card_ids", []))
+    replace_index = next(
+        (
+            idx for idx, card_id in enumerate(card_ids)
+            if int(card_by_id.get(str(card_id), {}).get("guard", 0) or 0) > 0
+            or int(card_by_id.get(str(card_id), {}).get("gain", 0) or 0) > 1
+        ),
+        -1,
+    )
+    if replace_index < 0:
+        return reduce_enemy_pressure(deck_by_id, slot_by_deck, card_by_id, recommendation)
+    candidates = [
+        card for card in card_by_id.values()
+        if str(card.get("card_id", "")) not in card_ids
+        and int(card.get("required_wujing", 0) or 0) <= int(deck.get("player_wujing_cap", 0) or 0)
+        and int(card.get("closing_form_tier", 0) or 0) <= int(deck.get("player_wujing_cap", 0) or 0)
+        and int(card.get("guard", 0) or 0) == 0
+        and int(card.get("gain", 0) or 0) <= 1
+        and (
+            float(card.get("damage", 0) or 0) > 0
+            or int(card.get("break", 0) or 0) > 0
+            or str(card.get("followup_group", ""))
+        )
+    ]
+    candidates.sort(key=lambda item: (-float(item.get("power_score", 0) or 0), str(item.get("card_id", ""))))
+    if not candidates:
+        return reduce_enemy_pressure(deck_by_id, slot_by_deck, card_by_id, recommendation)
+    card_ids[replace_index] = str(candidates[0].get("card_id", ""))
+    deck["card_ids"] = card_ids
+    return True
+
+
+def adjust_reward_tier(rewards: list[dict[str, Any]], mappings: list[dict[str, Any]], recommendation: dict[str, Any]) -> bool:
+    reward_plan_id = str(recommendation.get("reward_plan_id", ""))
+    shift = int(recommendation.get("suggested_delta", {}).get("reward_tier_shift", 1) or 1)
+    if not reward_plan_id:
+        reward_plan_id = next(
+            (str(item.get("reward_plan_id", "")) for item in mappings if str(item.get("generated_deck_id", "")) == str(recommendation.get("generated_deck_id", ""))),
+            "",
+        )
+    if not reward_plan_id:
+        return False
+    reward = next((item for item in rewards if str(item.get("reward_plan_id", "")) == reward_plan_id), None)
+    if not reward:
+        return False
+    reward["reward_tier"] = shift_reward_tier(str(reward.get("reward_tier", "")), shift)
+    return True
+
+
+def increase_player_viable_damage(
+    card_pool: list[dict[str, Any]],
+    card_by_id: dict[str, dict[str, Any]],
+    deck_by_id: dict[str, dict[str, Any]],
+    recommendation: dict[str, Any],
+) -> bool:
+    deck_id = str(recommendation.get("generated_deck_id", ""))
+    deck = deck_by_id.get(deck_id)
+    if not deck:
+        return False
+    candidate_ids = [
+        str(card_id) for card_id in deck.get("card_ids", [])
+        if str(card_by_id.get(str(card_id), {}).get("followup_group", ""))
+    ]
+    if not candidate_ids:
+        candidate_ids = [str(card_id) for card_id in deck.get("card_ids", [])]
+    changed = False
+    for card in card_pool:
+        card_id = str(card.get("card_id", ""))
+        if card_id not in candidate_ids:
+            continue
+        if float(card.get("damage", 0) or 0) > 0 or str(card.get("followup_group", "")):
+            card["power_score"] = round(float(card.get("power_score", 0) or 0) + 0.5, 2)
+            changed = True
+    return changed
+
+
 def deck_candidates(card_by_id: dict[str, dict[str, Any]], deck: dict[str, Any], stronger: bool) -> list[str]:
     cap = int(deck.get("player_wujing_cap", 0) or 0)
     current_ids = set(str(card_id) for card_id in deck.get("card_ids", []))
@@ -316,6 +425,14 @@ def deck_candidates(card_by_id: dict[str, dict[str, Any]], deck: dict[str, Any],
     ]
     candidates.sort(key=lambda item: (float(item.get("power_score", 0) or 0), str(item.get("card_id", ""))), reverse=stronger)
     return [str(item.get("card_id", "")) for item in candidates[:4]]
+
+
+def shift_reward_tier(current: str, shift: int) -> str:
+    tiers = ["basic", "standard", "advanced", "boss", "rare"]
+    if current not in tiers:
+        return current or "standard"
+    next_index = min(len(tiers) - 1, max(0, tiers.index(current) + shift))
+    return tiers[next_index]
 
 
 def recalc_deck_metrics(deck_pool: list[dict[str, Any]], card_by_id: dict[str, dict[str, Any]]) -> None:
@@ -340,6 +457,52 @@ def recalc_deck_metrics(deck_pool: list[dict[str, Any]], card_by_id: dict[str, d
         deck["max_required_wujing"] = max((int(card.get("required_wujing", 0) or 0) for card in cards), default=0)
         deck["max_closing_form_tier"] = max((int(card.get("closing_form_tier", 0) or 0) for card in cards), default=0)
         deck["dual_weapon_synergy_count"] = sum(1 for card in cards if str(card.get("dual_weapon_synergy_tag", "")))
+
+
+def repair_followup_chains(deck_pool: list[dict[str, Any]], card_by_id: dict[str, dict[str, Any]]) -> None:
+    for deck in deck_pool:
+        card_ids = [str(card_id) for card_id in deck.get("card_ids", []) if str(card_id) in card_by_id]
+        by_style = Counter(str(card_by_id[card_id].get("weapon_style", "")) for card_id in card_ids)
+        for idx, card_id in enumerate(card_ids):
+            card = card_by_id.get(card_id, {})
+            if str(card.get("followup_trigger", "")) != "same_weapon_previous_card":
+                continue
+            style = str(card.get("weapon_style", ""))
+            if not style or by_style.get(style, 0) >= 2:
+                continue
+            replacement = next(
+                (
+                    candidate for candidate in card_by_id.values()
+                    if str(candidate.get("card_id", "")) not in card_ids
+                    and str(candidate.get("weapon_style", "")) == style
+                    and str(candidate.get("followup_chain_role", "")) in {"opener", "standalone"}
+                    and int(candidate.get("required_wujing", 0) or 0) <= int(deck.get("player_wujing_cap", 0) or 0)
+                    and int(candidate.get("closing_form_tier", 0) or 0) <= int(deck.get("player_wujing_cap", 0) or 0)
+                ),
+                None,
+            )
+            if not replacement:
+                continue
+            replace_at = next(
+                (
+                    replace_idx for replace_idx, existing_id in enumerate(card_ids)
+                    if str(card_by_id.get(existing_id, {}).get("weapon_style", "")) in {"generic", str(deck.get("secondary_weapon_style", ""))}
+                ),
+                -1,
+            )
+            if replace_at < 0:
+                replace_at = next(
+                    (
+                        replace_idx for replace_idx, existing_id in enumerate(card_ids)
+                        if str(card_by_id.get(existing_id, {}).get("weapon_style", "")) != style
+                    ),
+                    -1,
+                )
+            if replace_at < 0:
+                continue
+            card_ids[replace_at] = str(replacement.get("card_id", ""))
+            by_style[style] += 1
+        deck["card_ids"] = card_ids
 
 
 def update_sequence_detail_links(deck_pool: list[dict[str, Any]], battle_slots: list[dict[str, Any]], mappings: list[dict[str, Any]], rewards: list[dict[str, Any]]) -> None:
@@ -370,10 +533,14 @@ def sync_target_power_ranges(
         if not deck:
             continue
         power = float(deck.get("deck_power_score", 0) or 0)
-        target_min = int(max(0, round(power - 6)))
-        target_max = int(round(power + 6))
-        deck["target_power_min"] = target_min
-        deck["target_power_max"] = target_max
+        deck_target_min = int(max(0, round(power - 6)))
+        deck_target_max = int(round(power + 6))
+        existing_min = int(slot.get("target_power_min", deck.get("target_power_min", 0)) or 0)
+        existing_max = int(slot.get("target_power_max", deck.get("target_power_max", 0)) or 0)
+        target_min = max(existing_min, deck_target_min)
+        target_max = max(existing_max, target_min, deck_target_max)
+        deck["target_power_min"] = deck_target_min
+        deck["target_power_max"] = deck_target_max
         deck["power_range_pass"] = True
         slot["target_power_min"] = target_min
         slot["target_power_max"] = target_max

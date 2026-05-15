@@ -1,0 +1,27 @@
+{
+  "preview_enabled": false,
+  "preview_channel": "preview",
+  "preview_mechanic_profile_id": "weapon_followup_v0_1",
+  "preview_sequence_template_id": "formal_sequence_12_fast_v1",
+  "preview_content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+  "preview_build_variant": "release_drill_005",
+  "preview_runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json",
+  "preview_validation_report_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/validation_report.json",
+  "preview_source_channel": "current",
+  "preview_started_at": "2026-05-13T11:20:32.840012+00:00",
+  "preview_started_by": "dashboard_admin",
+  "restore_target_profile_id": "weapon_followup_v0_1",
+  "restore_target_content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+  "restore_target_runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json",
+  "current_release_snapshot_path": "data/aigc_battle/preview/current_release_snapshot.json",
+  "active_profile_snapshot": {
+    "active_mechanic_profile_id": "weapon_followup_v0_1",
+    "active_content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+    "target_sequence_id": "formal_sequence_mvp_v1",
+    "replacement_mode": "full_sequence",
+    "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json",
+    "fallback_story_battle_loader": true
+  },
+  "preview_reason": "",
+  "preview_status": "restored"
+}

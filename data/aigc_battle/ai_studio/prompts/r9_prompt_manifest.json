@@ -1,0 +1,53 @@
+{
+  "generated_at": "2026-05-12T09:01:16.172986+00:00",
+  "prompt_count": 4,
+  "schema_count": 4,
+  "offline_mode_default": true,
+  "online_llm_adapter_supported": false,
+  "online_mode_requires_explicit_future_config": true,
+  "llm_never_writes_runtime_manifest": true,
+  "llm_never_writes_active_profile": true,
+  "prompts": [
+    {
+      "prompt_id": "standard_repair_prompt",
+      "prompt_type": "standard_repair",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "formal_sequence_15_v1",
+      "source_pack_id": "weapon_followup_balance_release_007",
+      "recommended_release_mode": "standard_run",
+      "markdown_path": "data/aigc_battle/ai_studio/prompts/standard_repair_prompt.md",
+      "schema_path": "data/aigc_battle/ai_studio/prompts/standard_repair_prompt.schema.json"
+    },
+    {
+      "prompt_id": "fast_repair_prompt",
+      "prompt_type": "fast_repair",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "source_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_013",
+      "recommended_release_mode": "fast_run",
+      "markdown_path": "data/aigc_battle/ai_studio/prompts/fast_repair_prompt.md",
+      "schema_path": "data/aigc_battle/ai_studio/prompts/fast_repair_prompt.schema.json"
+    },
+    {
+      "prompt_id": "bossrush_repair_prompt",
+      "prompt_type": "bossrush_repair",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "source_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_007",
+      "recommended_release_mode": "bossrush",
+      "markdown_path": "data/aigc_battle/ai_studio/prompts/bossrush_repair_prompt.md",
+      "schema_path": "data/aigc_battle/ai_studio/prompts/bossrush_repair_prompt.schema.json"
+    },
+    {
+      "prompt_id": "mechanic_showcase_prompt",
+      "prompt_type": "mechanic_showcase",
+      "mechanic_profile_id": "clue_pressure_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "source_pack_id": "clue_pressure_v0_1__bossrush_9_v1__matrix_001",
+      "recommended_release_mode": "showcase",
+      "markdown_path": "data/aigc_battle/ai_studio/prompts/mechanic_showcase_prompt.md",
+      "schema_path": "data/aigc_battle/ai_studio/prompts/mechanic_showcase_prompt.schema.json"
+    }
+  ],
+  "prompt_studio_ready": true
+}

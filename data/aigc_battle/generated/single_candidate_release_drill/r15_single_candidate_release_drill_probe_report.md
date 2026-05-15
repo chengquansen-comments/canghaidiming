@@ -1,0 +1,21 @@
+# R15 Single Candidate Release Drill Probe
+
+- single_candidate_release_drill_ready: `True`
+- selected_non_current_pack_ready: `True`
+- target_pack_generated: `True`
+- target_pack_validated: `True`
+- target_pack_exported: `True`
+- target_preview_smoke_pass: `True`
+- target_acceptance_ready: `True`
+- target_acceptance_pass: `True`
+- human_review_note_ready: `True`
+- promotion_gate_checked: `True`
+- marked_release_candidate: `True`
+- dry_run_switch_ready: `True`
+- rollback_previous_current_ready: `True`
+- rollback_fallback_ready: `True`
+- current_release_unchanged: `True`
+- active_profile_matches_current_release: `True`
+- fallback_release_unchanged: `True`
+- partial_pass: `False`
+- probe_pass: `True`

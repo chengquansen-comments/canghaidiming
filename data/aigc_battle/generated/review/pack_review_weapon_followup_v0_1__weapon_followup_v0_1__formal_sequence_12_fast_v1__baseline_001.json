@@ -7761,6 +7761,67 @@
   "needs_balance_before_release": false,
   "ready_for_candidate_review": false,
   "balance_release_summary": {},
+  "playable_hardening_summary": {},
+  "ai_studio_summary": {},
+  "release_drill_summary": {
+    "release_drill_pack": false,
+    "release_drill_source_pack_id": "",
+    "release_drill_acceptance_status": "",
+    "release_drill_promotion_status": "",
+    "release_drill_dry_run_switch_status": false,
+    "release_drill_report_path": "",
+    "warning_accepted_by_probe": false
+  },
+  "release_landing_summary": {
+    "release_landing_current": false,
+    "landed_from_release_drill": false,
+    "previous_current_pack_id": "",
+    "new_current_pack_id": "",
+    "release_landing_report_path": "",
+    "gameplay_entry_verified": false,
+    "warning_current": false,
+    "warning_current_allowed": false
+  },
+  "preview_summary": {
+    "previewable": true,
+    "preview_source_channel": "",
+    "preview_status": "idle",
+    "last_preview_smoke_pass": false,
+    "preview_smoke_report_path": "data/aigc_battle/generated/preview_runtime/preview_smoke_report.json"
+  },
+  "acceptance_summary": {
+    "latest_acceptance_report_path": "",
+    "latest_acceptance_pass": false,
+    "latest_acceptance_risk_level": "",
+    "latest_acceptance_recommendation": "",
+    "acceptance_required_before_candidate": true
+  },
+  "promotion_summary": {
+    "latest_promotion_report_path": "",
+    "human_review_status": "",
+    "human_review_note_path": "",
+    "promotion_allowed": false,
+    "release_candidate_status": false,
+    "acceptance_required_before_promotion": true,
+    "human_review_required_before_promotion": true,
+    "release_switch_allowed": false,
+    "release_candidate_valid": false,
+    "latest_release_switch_report_path": "",
+    "can_set_current": false,
+    "can_rollback": false,
+    "current_release_marker": false,
+    "previous_current_marker": false,
+    "fallback_release_marker": false,
+    "resolver_channel_consistency_valid": true
+  },
+  "production_contract_summary": {
+    "production_contract_ready": true,
+    "schema_manifest_path": "data/aigc_battle/production_contract/schema_manifest.json",
+    "generated_file_policy_path": "data/aigc_battle/production_contract/generated_file_policy.json",
+    "minimal_acceptance_command_path": "data/aigc_battle/production_contract/minimal_acceptance_command.json",
+    "deprecated_probe_inventory_path": "data/aigc_battle/production_contract/deprecated_probe_inventory.json",
+    "production_contract_doc_path": "docs/AIGC_BATTLE_PRODUCTION_CONTRACT.md"
+  },
   "review_report_path": "data/aigc_battle/generated/review/review_report_weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__baseline_001.md",
   "review_notes_summary": {
     "mechanic_profile_id": "weapon_followup_v0_1",

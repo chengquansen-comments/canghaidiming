@@ -1,7 +1,7 @@
 # Pack 审核表：weapon_followup_v0_1 / weapon_followup_balance_release_007
 
 ## 包基本信息
-- active: 是
+- active: 否
 - pack_storage_mode: `profile_pack_dir`
 - runtime_manifest_path: `data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_007/runtime_manifest.json`
 - target_sequence_id: `formal_sequence_mvp_v1`

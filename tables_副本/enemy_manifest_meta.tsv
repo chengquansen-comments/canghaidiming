@@ -1,6 +1,0 @@
-key	value
-version	3
-purpose	Enemy stat, identity, deck, AI intent weights, phase behavior and reward configuration for narrative battles.
-rule	Narrative nodes only reference enemy_id / encounter_id / battle_id. Full enemy data lives here.
-runtime_note	Deck, intent_weights and phase_behaviors are configured here. Runtime loaders should prefer these fields over hardcoded enemy card tables.
-aligned_with	data/narrative_mvp_nodes.json version 2

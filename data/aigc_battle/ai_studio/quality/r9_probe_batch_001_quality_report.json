@@ -1,0 +1,57 @@
+{
+  "batch_id": "r9_probe_batch_001",
+  "scored_candidate_count": 12,
+  "high_quality_candidate_count": 12,
+  "medium_quality_candidate_count": 0,
+  "low_quality_candidate_count": 0,
+  "promote_ready_candidate_count": 12,
+  "candidate_quality_score_ready": true,
+  "top_candidates": [
+    {
+      "candidate_id": "r9_boss_card_001",
+      "candidate_type": "card_candidate",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "final_candidate_quality_score": 94.3,
+      "quality_tier": "high",
+      "promote_ready": true
+    },
+    {
+      "candidate_id": "r9_boss_slot_001",
+      "candidate_type": "battle_slot_candidate",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "final_candidate_quality_score": 94.3,
+      "quality_tier": "high",
+      "promote_ready": true
+    },
+    {
+      "candidate_id": "r9_fast_card_001",
+      "candidate_type": "card_candidate",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "final_candidate_quality_score": 94.3,
+      "quality_tier": "high",
+      "promote_ready": true
+    },
+    {
+      "candidate_id": "r9_fast_slot_001",
+      "candidate_type": "battle_slot_candidate",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "final_candidate_quality_score": 94.3,
+      "quality_tier": "high",
+      "promote_ready": true
+    },
+    {
+      "candidate_id": "r9_showcase_card_001",
+      "candidate_type": "card_candidate",
+      "mechanic_profile_id": "clue_pressure_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "final_candidate_quality_score": 93.7,
+      "quality_tier": "high",
+      "promote_ready": true
+    }
+  ],
+  "rejected_or_low_score_reasons": []
+}

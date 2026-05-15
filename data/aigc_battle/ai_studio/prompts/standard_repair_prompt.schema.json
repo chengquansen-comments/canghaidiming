@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AIGC Battle AI Studio Candidate JSONL line",
+  "type": "object",
+  "required": [
+    "candidate_id",
+    "candidate_type",
+    "mechanic_profile_id",
+    "sequence_template_id"
+  ],
+  "properties": {
+    "candidate_id": {
+      "type": "string"
+    },
+    "candidate_type": {
+      "type": "string",
+      "enum": [
+        "card_candidate",
+        "deck_candidate",
+        "reward_candidate",
+        "battle_slot_candidate",
+        "sequence_adjustment_candidate",
+        "balance_adjustment_candidate"
+      ]
+    },
+    "mechanic_profile_id": {
+      "const": "weapon_followup_v0_1"
+    },
+    "sequence_template_id": {
+      "const": "formal_sequence_15_v1"
+    }
+  },
+  "additionalProperties": true
+}

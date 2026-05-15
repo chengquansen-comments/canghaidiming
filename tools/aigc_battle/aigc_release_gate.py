@@ -23,6 +23,7 @@ REVIEW_NOTES_DIR = ROOT / 'data' / 'aigc_battle' / 'review_notes'
 DETAILS_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'details'
 RELEASE_SMOKE_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'release_smoke'
 BALANCE_RELEASE_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'balance_release'
+PLAYABLE_HARDENING_DIR = ROOT / 'data' / 'aigc_battle' / 'generated' / 'playable_hardening'
 RUNTIME_DIR = ROOT / 'data' / 'aigc_battle' / 'runtime'
 PACK_RESOLVER_PATH = ROOT / 'data' / 'aigc_battle' / 'pack_resolver.json'
 
@@ -148,6 +149,7 @@ def freeze_pack(profile_id: str, content_pack_id: str) -> dict[str, Any]:
 
 def mark_release_candidate(profile_id: str, content_pack_id: str) -> dict[str, Any]:
     ensure_balance_release_gate(profile_id, content_pack_id)
+    ensure_playable_hardening_gate(profile_id, content_pack_id)
     manifest = get_release_status(profile_id, content_pack_id)
     if not manifest.get('frozen', False):
         raise SystemExit('mark release candidate blocked: pack is not frozen')
@@ -280,6 +282,8 @@ def build_release_manifest(profile_id: str, content_pack_id: str) -> dict[str, A
     )
     pack_identity = template_lib.build_pack_identity(sequence_template_id, profile_id, build_variant, content_pack_id)
     balance_report = load_balance_release_evaluation_report(profile_id, content_pack_id)
+    hardening_report = load_playable_hardening_evaluation_report(profile_id, content_pack_id)
+    hardening_smoke = load_playable_hardening_smoke_report(profile_id, content_pack_id)
     return {
         'mechanic_profile_id': profile_id,
         'content_pack_id': content_pack_id,
@@ -324,6 +328,14 @@ def build_release_manifest(profile_id: str, content_pack_id: str) -> dict[str, A
         'balanced_win_rate': float(balance_report.get('balanced_win_rate', 0) or 0),
         'too_hard_candidates_reduced': bool(balance_report.get('too_hard_candidates_reduced', False)),
         'activated_as_current_release': is_active and bool(pack_summary.get('balance_release', False)),
+        'playable_hardening': bool(pack_summary.get('playable_hardening', False)),
+        'hardening_target': str(pack_summary.get('hardening_target', '')),
+        'source_matrix_pack_id': str(pack_summary.get('source_matrix_pack_id', '')),
+        'hardening_evaluation_report_path': hardening_report.get('report_path', ''),
+        'target_gate_pass': bool(hardening_report.get('target_gate_pass', False)),
+        'smoke_pass': bool(hardening_smoke.get('smoke_pass', False)),
+        'recommended_release_mode': str(pack_summary.get('recommended_release_mode', '')),
+        'current_release_unchanged': bool(pack_summary.get('playable_hardening', False)),
     }
 
 
@@ -633,6 +645,16 @@ def ensure_balance_release_gate(profile_id: str, content_pack_id: str) -> None:
         raise SystemExit('balance release blocked: playable_balance_gate_pass is false')
 
 
+def ensure_playable_hardening_gate(profile_id: str, content_pack_id: str) -> None:
+    manifest = get_release_status(profile_id, content_pack_id)
+    if not manifest.get('playable_hardening', False):
+        return
+    if not manifest.get('target_gate_pass', False):
+        raise SystemExit('playable hardening blocked: target_gate_pass is false')
+    if not manifest.get('smoke_pass', False):
+        raise SystemExit('playable hardening blocked: smoke_pass is false')
+
+
 def load_balance_release_evaluation_report(profile_id: str, content_pack_id: str) -> dict[str, Any]:
     path = BALANCE_RELEASE_DIR / 'balance_release_evaluation_report.json'
     if not path.exists():
@@ -643,6 +665,29 @@ def load_balance_release_evaluation_report(profile_id: str, content_pack_id: str
     if str(payload.get('source_profile_id', profile_id)) != profile_id:
         return {'report_path': '', 'playable_balance_gate_pass': False}
     return {'report_path': to_relative(path), **payload}
+
+
+def load_playable_hardening_evaluation_report(profile_id: str, content_pack_id: str) -> dict[str, Any]:
+    path = PLAYABLE_HARDENING_DIR / 'hardened_candidates_evaluation_report.json'
+    if not path.exists():
+        return {'report_path': '', 'target_gate_pass': False}
+    payload = read_json(path)
+    if str(payload.get('fast_hardened_pack_id', '')) == content_pack_id:
+        return {'report_path': to_relative(path), 'target_gate_pass': bool(payload.get('fast_target_gate_pass', False)), **payload}
+    if str(payload.get('bossrush_hardened_pack_id', '')) == content_pack_id:
+        return {'report_path': to_relative(path), 'target_gate_pass': bool(payload.get('bossrush_target_gate_pass', False)), **payload}
+    return {'report_path': '', 'target_gate_pass': False}
+
+
+def load_playable_hardening_smoke_report(profile_id: str, content_pack_id: str) -> dict[str, Any]:
+    for name in ['fast_hardened_smoke_report.json', 'bossrush_hardened_smoke_report.json']:
+        path = PLAYABLE_HARDENING_DIR / name
+        if not path.exists():
+            continue
+        payload = read_json(path)
+        if str(payload.get('mechanic_profile_id', profile_id)) == profile_id and str(payload.get('content_pack_id', '')) == content_pack_id:
+            return {'report_path': to_relative(path), **payload}
+    return {'report_path': '', 'smoke_pass': False}
 
 
 def ensure_pack_resolver_entry(channel: str, validated: dict[str, Any]) -> None:

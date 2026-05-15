@@ -1,0 +1,1271 @@
+{
+  "generated_at": "2026-05-12T01:23:39.735703+00:00",
+  "snapshot_path": "data/aigc_battle/evaluation/snapshots/martial_realm_7_dual_weapon_v0_1__martial_realm_7_dual_weapon_v0_1__bossrush_9_v1__matrix_001__evaluation_snapshot.json",
+  "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+  "content_pack_id": "martial_realm_7_dual_weapon_v0_1__bossrush_9_v1__matrix_001",
+  "evaluation_event_count": 36,
+  "sequence_template_id": "bossrush_9_v1",
+  "telemetry_detail_level_summary": {
+    "real": 36
+  },
+  "formal_encounter_coverage": {
+    "expected": 9,
+    "covered": 9,
+    "coverage_complete": true
+  },
+  "encounter_metrics": {
+    "enc_beach_ambush": {
+      "sample_count": 4,
+      "win_rate": 0.5,
+      "avg_turn_count": 11.5,
+      "avg_player_hp_end": 7.0,
+      "avg_enemy_hp_end": 0.5,
+      "avg_damage_taken": 29.0,
+      "avg_damage_dealt": 50.5,
+      "avg_cards_played": 11.5,
+      "avg_enemy_cards_played": 11.0,
+      "avg_hp_delta": -29.0,
+      "runtime_primitive_trigger_rate": 0.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 0.0,
+      "reward_claim_rate": 0.5,
+      "telemetry_detail_level_summary": {
+        "real": 4
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 2,
+      "too_long_count": 4,
+      "burst_damage_count": 4,
+      "reward_mismatch_count": 0,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 0.0,
+      "formal_encounter_id": "enc_beach_ambush",
+      "formal_battle_id": "first_act_beach_ambush",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_001",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_001",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_001",
+      "encounter_tier": "early",
+      "encounter_kind": "normal",
+      "sequence_position": 1,
+      "runtime_primitives": [
+        "martial_realm_7",
+        "dual_weapon"
+      ],
+      "player_wujing_cap": 2,
+      "deck_power_score": 0.0,
+      "reward_tier": "early"
+    },
+    "enc_fishing_village_embers": {
+      "sample_count": 4,
+      "win_rate": 1.0,
+      "avg_turn_count": 10.0,
+      "avg_player_hp_end": 17.5,
+      "avg_enemy_hp_end": 0.0,
+      "avg_damage_taken": 22.5,
+      "avg_damage_dealt": 51.0,
+      "avg_cards_played": 10.0,
+      "avg_enemy_cards_played": 9.0,
+      "avg_hp_delta": -22.5,
+      "runtime_primitive_trigger_rate": 0.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 0.0,
+      "reward_claim_rate": 1.0,
+      "telemetry_detail_level_summary": {
+        "real": 4
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 0,
+      "too_long_count": 4,
+      "burst_damage_count": 4,
+      "reward_mismatch_count": 0,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 0.0,
+      "formal_encounter_id": "enc_fishing_village_embers",
+      "formal_battle_id": "first_act_fishing_village_embers",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_002",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_002",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_002",
+      "encounter_tier": "early",
+      "encounter_kind": "elite",
+      "sequence_position": 2,
+      "runtime_primitives": [
+        "martial_realm_7",
+        "dual_weapon"
+      ],
+      "player_wujing_cap": 3,
+      "deck_power_score": 0.0,
+      "reward_tier": "mid"
+    },
+    "enc_transport_officer": {
+      "sample_count": 4,
+      "win_rate": 0.0,
+      "avg_turn_count": 11.0,
+      "avg_player_hp_end": 0.0,
+      "avg_enemy_hp_end": 18.5,
+      "avg_damage_taken": 44.0,
+      "avg_damage_dealt": 62.5,
+      "avg_cards_played": 11.0,
+      "avg_enemy_cards_played": 11.0,
+      "avg_hp_delta": -44.0,
+      "runtime_primitive_trigger_rate": 0.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 0.0,
+      "reward_claim_rate": 0.0,
+      "telemetry_detail_level_summary": {
+        "real": 4
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 4,
+      "too_long_count": 4,
+      "burst_damage_count": 4,
+      "reward_mismatch_count": 0,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 0.0,
+      "formal_encounter_id": "enc_transport_officer",
+      "formal_battle_id": "first_act_transport_officer",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_003",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_003",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_003",
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "sequence_position": 3,
+      "runtime_primitives": [
+        "martial_realm_7",
+        "dual_weapon"
+      ],
+      "player_wujing_cap": 4,
+      "deck_power_score": 0.0,
+      "reward_tier": "mid"
+    },
+    "enc_mutiny_camp": {
+      "sample_count": 4,
+      "win_rate": 1.0,
+      "avg_turn_count": 9.0,
+      "avg_player_hp_end": 26.0,
+      "avg_enemy_hp_end": 0.0,
+      "avg_damage_taken": 22.0,
+      "avg_damage_dealt": 74.0,
+      "avg_cards_played": 9.0,
+      "avg_enemy_cards_played": 8.0,
+      "avg_hp_delta": -22.0,
+      "runtime_primitive_trigger_rate": 0.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 0.0,
+      "reward_claim_rate": 1.0,
+      "telemetry_detail_level_summary": {
+        "real": 4
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 0,
+      "too_long_count": 4,
+      "burst_damage_count": 2,
+      "reward_mismatch_count": 4,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 0.0,
+      "formal_encounter_id": "enc_mutiny_camp",
+      "formal_battle_id": "first_act_mutiny_camp",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_004",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_004",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_004",
+      "encounter_tier": "mid",
+      "encounter_kind": "elite",
+      "sequence_position": 4,
+      "runtime_primitives": [
+        "martial_realm_7",
+        "dual_weapon"
+      ],
+      "player_wujing_cap": 5,
+      "deck_power_score": 0.0,
+      "reward_tier": "advanced"
+    },
+    "enc_wakou_boss": {
+      "sample_count": 4,
+      "win_rate": 1.0,
+      "avg_turn_count": 10.0,
+      "avg_player_hp_end": 5.0,
+      "avg_enemy_hp_end": 0.0,
+      "avg_damage_taken": 43.0,
+      "avg_damage_dealt": 79.0,
+      "avg_cards_played": 10.0,
+      "avg_enemy_cards_played": 9.0,
+      "avg_hp_delta": -43.0,
+      "runtime_primitive_trigger_rate": 1.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 1.0,
+      "reward_claim_rate": 1.0,
+      "telemetry_detail_level_summary": {
+        "real": 4
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 4,
+      "too_long_count": 4,
+      "burst_damage_count": 4,
+      "reward_mismatch_count": 4,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 1.0,
+      "formal_encounter_id": "enc_wakou_boss",
+      "formal_battle_id": "first_act_wakou_boss",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_005",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_005",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_005",
+      "encounter_tier": "late",
+      "encounter_kind": "elite",
+      "sequence_position": 5,
+      "runtime_primitives": [
+        "martial_realm_7",
+        "dual_weapon"
+      ],
+      "player_wujing_cap": 5,
+      "deck_power_score": 0.0,
+      "reward_tier": "advanced"
+    },
+    "enc_wuke_spear_trial": {
+      "sample_count": 4,
+      "win_rate": 0.0,
+      "avg_turn_count": 9.0,
+      "avg_player_hp_end": 0.0,
+      "avg_enemy_hp_end": 13.0,
+      "avg_damage_taken": 52.0,
+      "avg_damage_dealt": 77.0,
+      "avg_cards_played": 9.0,
+      "avg_enemy_cards_played": 9.0,
+      "avg_hp_delta": -52.0,
+      "runtime_primitive_trigger_rate": 1.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 1.0,
+      "reward_claim_rate": 0.0,
+      "telemetry_detail_level_summary": {
+        "real": 4
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 4,
+      "too_long_count": 4,
+      "burst_damage_count": 4,
+      "reward_mismatch_count": 4,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 1.0,
+      "formal_encounter_id": "enc_wuke_spear_trial",
+      "formal_battle_id": "wuke_spear_trial",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_006",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_006",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_006",
+      "encounter_tier": "late",
+      "encounter_kind": "boss_lite",
+      "sequence_position": 6,
+      "runtime_primitives": [
+        "martial_realm_7",
+        "dual_weapon"
+      ],
+      "player_wujing_cap": 6,
+      "deck_power_score": 0.0,
+      "reward_tier": "rare"
+    },
+    "enc_wuke_blade_trial": {
+      "sample_count": 4,
+      "win_rate": 0.0,
+      "avg_turn_count": 9.0,
+      "avg_player_hp_end": 0.0,
+      "avg_enemy_hp_end": 47.5,
+      "avg_damage_taken": 56.0,
+      "avg_damage_dealt": 66.5,
+      "avg_cards_played": 9.0,
+      "avg_enemy_cards_played": 9.0,
+      "avg_hp_delta": -56.0,
+      "runtime_primitive_trigger_rate": 1.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 1.0,
+      "reward_claim_rate": 0.0,
+      "telemetry_detail_level_summary": {
+        "real": 4
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 4,
+      "too_long_count": 4,
+      "burst_damage_count": 4,
+      "reward_mismatch_count": 0,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 1.0,
+      "formal_encounter_id": "enc_wuke_blade_trial",
+      "formal_battle_id": "wuke_blade_trial",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_007",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_007",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_007",
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "sequence_position": 7,
+      "runtime_primitives": [
+        "martial_realm_7",
+        "dual_weapon"
+      ],
+      "player_wujing_cap": 7,
+      "deck_power_score": 0.0,
+      "reward_tier": "boss"
+    },
+    "enc_wuke_final_duel": {
+      "sample_count": 4,
+      "win_rate": 0.0,
+      "avg_turn_count": 9.0,
+      "avg_player_hp_end": 0.0,
+      "avg_enemy_hp_end": 47.5,
+      "avg_damage_taken": 56.0,
+      "avg_damage_dealt": 66.5,
+      "avg_cards_played": 9.0,
+      "avg_enemy_cards_played": 9.0,
+      "avg_hp_delta": -56.0,
+      "runtime_primitive_trigger_rate": 1.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 1.0,
+      "reward_claim_rate": 0.0,
+      "telemetry_detail_level_summary": {
+        "real": 4
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 4,
+      "too_long_count": 4,
+      "burst_damage_count": 4,
+      "reward_mismatch_count": 4,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 1.0,
+      "formal_encounter_id": "enc_wuke_final_duel",
+      "formal_battle_id": "wuke_final_duel",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_008",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_008",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_008",
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "sequence_position": 8,
+      "runtime_primitives": [
+        "martial_realm_7",
+        "dual_weapon"
+      ],
+      "player_wujing_cap": 7,
+      "deck_power_score": 0.0,
+      "reward_tier": "rare"
+    },
+    "enc_wuke_gu_chengyue": {
+      "sample_count": 4,
+      "win_rate": 0.0,
+      "avg_turn_count": 9.0,
+      "avg_player_hp_end": 0.0,
+      "avg_enemy_hp_end": 47.5,
+      "avg_damage_taken": 56.0,
+      "avg_damage_dealt": 66.5,
+      "avg_cards_played": 9.0,
+      "avg_enemy_cards_played": 9.0,
+      "avg_hp_delta": -56.0,
+      "runtime_primitive_trigger_rate": 1.0,
+      "weapon_followup_trigger_rate": 0.0,
+      "clue_pressure_trigger_rate": 0.0,
+      "dual_weapon_usage_rate": 1.0,
+      "reward_claim_rate": 0.0,
+      "telemetry_detail_level_summary": {
+        "real": 4
+      },
+      "mechanism_underused_count": 0,
+      "too_easy_count": 0,
+      "too_hard_count": 4,
+      "too_long_count": 4,
+      "burst_damage_count": 4,
+      "reward_mismatch_count": 0,
+      "card_dead_count": 0,
+      "runtime_primitive_enabled_rate": 1.0,
+      "formal_encounter_id": "enc_wuke_gu_chengyue",
+      "formal_battle_id": "wuke_gu_chengyue",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_009",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_009",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_009",
+      "encounter_tier": "boss",
+      "encounter_kind": "boss",
+      "sequence_position": 9,
+      "runtime_primitives": [
+        "martial_realm_7",
+        "dual_weapon"
+      ],
+      "player_wujing_cap": 7,
+      "deck_power_score": 0.0,
+      "reward_tier": "boss"
+    }
+  },
+  "pack_metrics": {
+    "sample_count": 18,
+    "win_rate": 0.3889,
+    "avg_turn_count": 9.7222,
+    "avg_player_hp_end": 6.1667,
+    "avg_enemy_hp_end": 19.3889,
+    "avg_damage_taken": 42.2778,
+    "avg_damage_dealt": 65.9444,
+    "avg_cards_played": 9.7222,
+    "avg_enemy_cards_played": 9.3333,
+    "avg_hp_delta": -42.2778,
+    "runtime_primitive_trigger_rate": 0.5556,
+    "weapon_followup_trigger_rate": 0.0,
+    "clue_pressure_trigger_rate": 0.0,
+    "dual_weapon_usage_rate": 0.5556,
+    "reward_claim_rate": 0.3889,
+    "telemetry_detail_level_summary": {
+      "real": 18
+    },
+    "mechanism_underused_count": 0,
+    "too_easy_count": 0,
+    "too_hard_count": 13,
+    "too_long_count": 18,
+    "burst_damage_count": 17,
+    "reward_mismatch_count": 8,
+    "card_dead_count": 0,
+    "runtime_primitive_enabled_rate": 0.5556
+  },
+  "stage_metrics": {
+    "early_win_rate": 0.75,
+    "early_avg_turn_count": 10.75,
+    "early_stage_event_count": 8,
+    "early_stage_too_hard_count": 2,
+    "early_stage_too_long_count": 8,
+    "early_stage_reward_mismatch_count": 0,
+    "mid_win_rate": 0.5,
+    "mid_avg_turn_count": 10.0,
+    "mid_stage_event_count": 8,
+    "mid_stage_too_hard_count": 4,
+    "mid_stage_too_long_count": 8,
+    "mid_stage_reward_mismatch_count": 4,
+    "late_win_rate": 0.5,
+    "late_avg_turn_count": 9.5,
+    "late_stage_event_count": 8,
+    "late_stage_too_hard_count": 8,
+    "late_stage_too_long_count": 8,
+    "late_stage_reward_mismatch_count": 8,
+    "boss_win_rate": 0.0,
+    "boss_avg_turn_count": 9.0,
+    "boss_stage_event_count": 12,
+    "boss_stage_too_hard_count": 12,
+    "boss_stage_too_long_count": 12,
+    "boss_stage_reward_mismatch_count": 4
+  },
+  "mechanic_metrics": {
+    "runtime_primitive_trigger_rate": 0.5556,
+    "weapon_followup_trigger_rate": 0.0,
+    "clue_pressure_trigger_rate": 0.0,
+    "dual_weapon_usage_rate": 0.5556
+  },
+  "card_metrics": {
+    "used_card_count": 59,
+    "card_usage_counts": {
+      "martial_realm_7_dual_weapon_v0_1_spearman_4_finisher": 14,
+      "martial_realm_7_dual_weapon_v0_1_spearman_3_finisher": 12,
+      "martial_realm_7_dual_weapon_v0_1_spearman_3_strike": 12,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_4_finisher": 12,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_5_strike": 12,
+      "martial_realm_7_dual_weapon_v0_1_spearman_7_strike": 12,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_7_finisher": 12,
+      "martial_realm_7_dual_weapon_v0_1_spearman_7_finisher": 12,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_7_pressure": 12,
+      "martial_realm_7_dual_weapon_v0_1_spearman_7_pressure": 12,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_7_guard": 12,
+      "martial_realm_7_dual_weapon_v0_1_spearman_7_guard": 12,
+      "martial_realm_7_dual_weapon_v0_1_generic_7_bridge": 12,
+      "martial_realm_7_dual_weapon_v0_1_generic_7_focus": 12,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_1_finisher": 8,
+      "martial_realm_7_dual_weapon_v0_1_spearman_1_finisher": 8,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_2_finisher": 8,
+      "martial_realm_7_dual_weapon_v0_1_spearman_2_finisher": 8,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_1_strike": 8,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_2_strike": 8,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_4_strike": 8,
+      "martial_realm_7_dual_weapon_v0_1_spearman_4_strike": 8,
+      "martial_realm_7_dual_weapon_v0_1_spearman_4_guard": 8,
+      "martial_realm_7_dual_weapon_v0_1_spearman_4_pressure": 8,
+      "martial_realm_7_dual_weapon_v0_1_spearman_3_guard": 8,
+      "martial_realm_7_dual_weapon_v0_1_spearman_5_strike": 8,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_5_finisher": 8,
+      "martial_realm_7_dual_weapon_v0_1_spearman_5_finisher": 8,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_5_pressure": 8,
+      "martial_realm_7_dual_weapon_v0_1_spearman_5_pressure": 8,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_6_strike": 8,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_3_finisher": 6,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_7_strike": 6,
+      "martial_realm_7_dual_weapon_v0_1_spearman_1_strike": 4,
+      "martial_realm_7_dual_weapon_v0_1_spearman_2_strike": 4,
+      "martial_realm_7_dual_weapon_v0_1_spearman_1_guard": 4,
+      "martial_realm_7_dual_weapon_v0_1_spearman_2_guard": 4,
+      "martial_realm_7_dual_weapon_v0_1_spearman_1_pressure": 4,
+      "martial_realm_7_dual_weapon_v0_1_spearman_2_pressure": 4,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_3_strike": 4,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_1_guard": 4,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_2_guard": 4,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_1_pressure": 4,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_2_pressure": 4,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_4_guard": 4,
+      "martial_realm_7_dual_weapon_v0_1_generic_4_bridge": 4,
+      "martial_realm_7_dual_weapon_v0_1_spearman_5_guard": 4,
+      "martial_realm_7_dual_weapon_v0_1_generic_5_bridge": 4,
+      "martial_realm_7_dual_weapon_v0_1_generic_5_focus": 4,
+      "martial_realm_7_dual_weapon_v0_1_spearman_6_strike": 4,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_6_finisher": 4,
+      "martial_realm_7_dual_weapon_v0_1_spearman_6_finisher": 4,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_6_pressure": 4,
+      "martial_realm_7_dual_weapon_v0_1_spearman_6_pressure": 4,
+      "martial_realm_7_dual_weapon_v0_1_spearman_6_guard": 4,
+      "martial_realm_7_dual_weapon_v0_1_generic_6_bridge": 4,
+      "martial_realm_7_dual_weapon_v0_1_generic_6_focus": 4,
+      "martial_realm_7_dual_weapon_v0_1_generic_1_bridge": 2,
+      "martial_realm_7_dual_weapon_v0_1_blademaster_3_guard": 2
+    },
+    "card_overused_candidates": [
+      {
+        "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_7_finisher",
+        "event_count": 12
+      },
+      {
+        "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_7_pressure",
+        "event_count": 12
+      },
+      {
+        "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_7_finisher",
+        "event_count": 12
+      },
+      {
+        "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_7_guard",
+        "event_count": 12
+      },
+      {
+        "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_7_pressure",
+        "event_count": 12
+      },
+      {
+        "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_7_strike",
+        "event_count": 12
+      },
+      {
+        "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_4_finisher",
+        "event_count": 10
+      },
+      {
+        "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_2_finisher",
+        "event_count": 8
+      },
+      {
+        "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_1_finisher",
+        "event_count": 6
+      },
+      {
+        "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_1_finisher",
+        "event_count": 6
+      },
+      {
+        "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_4_finisher",
+        "event_count": 6
+      },
+      {
+        "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_7_strike",
+        "event_count": 6
+      }
+    ],
+    "card_dead_candidates": []
+  },
+  "deck_metrics": {
+    "deck_underperform_candidates": [
+      {
+        "formal_encounter_id": "enc_beach_ambush",
+        "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_001",
+        "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_001",
+        "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_001",
+        "reason": "deck_underperform",
+        "evidence": {
+          "win_rate": 0.5,
+          "avg_turn_count": 11.5,
+          "avg_player_hp_end": 7.0,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_transport_officer",
+        "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_003",
+        "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_003",
+        "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_003",
+        "reason": "deck_underperform",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 11.0,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_wakou_boss",
+        "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_005",
+        "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_005",
+        "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_005",
+        "reason": "deck_underperform",
+        "evidence": {
+          "win_rate": 1.0,
+          "avg_turn_count": 10.0,
+          "avg_player_hp_end": 5.0,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_wuke_spear_trial",
+        "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_006",
+        "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_006",
+        "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_006",
+        "reason": "deck_underperform",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 9.0,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_wuke_blade_trial",
+        "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_007",
+        "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_007",
+        "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_007",
+        "reason": "deck_underperform",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 9.0,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_wuke_final_duel",
+        "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_008",
+        "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_008",
+        "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_008",
+        "reason": "deck_underperform",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 9.0,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_wuke_gu_chengyue",
+        "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_009",
+        "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_009",
+        "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_009",
+        "reason": "deck_underperform",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 9.0,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      }
+    ]
+  },
+  "reward_metrics": {
+    "reward_claim_rate": 0.3889,
+    "reward_mismatch_candidates": [
+      {
+        "formal_encounter_id": "enc_mutiny_camp",
+        "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_004",
+        "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_004",
+        "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_004",
+        "reason": "reward_mismatch",
+        "evidence": {
+          "win_rate": 1.0,
+          "avg_turn_count": 9.0,
+          "avg_player_hp_end": 26.0,
+          "runtime_primitive_trigger_rate": 0.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_wakou_boss",
+        "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_005",
+        "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_005",
+        "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_005",
+        "reason": "reward_mismatch",
+        "evidence": {
+          "win_rate": 1.0,
+          "avg_turn_count": 10.0,
+          "avg_player_hp_end": 5.0,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_wuke_spear_trial",
+        "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_006",
+        "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_006",
+        "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_006",
+        "reason": "reward_mismatch",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 9.0,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      },
+      {
+        "formal_encounter_id": "enc_wuke_final_duel",
+        "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_008",
+        "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_008",
+        "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_008",
+        "reason": "reward_mismatch",
+        "evidence": {
+          "win_rate": 0.0,
+          "avg_turn_count": 9.0,
+          "avg_player_hp_end": 0.0,
+          "runtime_primitive_trigger_rate": 1.0
+        }
+      }
+    ]
+  },
+  "too_easy_candidates": [],
+  "too_hard_candidates": [
+    {
+      "formal_encounter_id": "enc_beach_ambush",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_001",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_001",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_001",
+      "reason": "too_hard",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.5,
+        "avg_player_hp_end": 7.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_transport_officer",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_003",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_003",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_003",
+      "reason": "too_hard",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wakou_boss",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_005",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_005",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_005",
+      "reason": "too_hard",
+      "evidence": {
+        "win_rate": 1.0,
+        "avg_turn_count": 10.0,
+        "avg_player_hp_end": 5.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_spear_trial",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_006",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_006",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_006",
+      "reason": "too_hard",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_blade_trial",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_007",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_007",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_007",
+      "reason": "too_hard",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_final_duel",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_008",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_008",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_008",
+      "reason": "too_hard",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_gu_chengyue",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_009",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_009",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_009",
+      "reason": "too_hard",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    }
+  ],
+  "too_long_candidates": [
+    {
+      "formal_encounter_id": "enc_beach_ambush",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_001",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_001",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_001",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.5,
+        "avg_player_hp_end": 7.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_fishing_village_embers",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_002",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_002",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_002",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 1.0,
+        "avg_turn_count": 10.0,
+        "avg_player_hp_end": 17.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_transport_officer",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_003",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_003",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_003",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_mutiny_camp",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_004",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_004",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_004",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 1.0,
+        "avg_turn_count": 9.0,
+        "avg_player_hp_end": 26.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wakou_boss",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_005",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_005",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_005",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 1.0,
+        "avg_turn_count": 10.0,
+        "avg_player_hp_end": 5.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_spear_trial",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_006",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_006",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_006",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_blade_trial",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_007",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_007",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_007",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_final_duel",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_008",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_008",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_008",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_gu_chengyue",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_009",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_009",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_009",
+      "reason": "too_long",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    }
+  ],
+  "burst_damage_candidates": [
+    {
+      "formal_encounter_id": "enc_beach_ambush",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_001",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_001",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_001",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.5,
+        "avg_player_hp_end": 7.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_fishing_village_embers",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_002",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_002",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_002",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 1.0,
+        "avg_turn_count": 10.0,
+        "avg_player_hp_end": 17.5,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_transport_officer",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_003",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_003",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_003",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_mutiny_camp",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_004",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_004",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_004",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 1.0,
+        "avg_turn_count": 9.0,
+        "avg_player_hp_end": 26.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wakou_boss",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_005",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_005",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_005",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 1.0,
+        "avg_turn_count": 10.0,
+        "avg_player_hp_end": 5.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_spear_trial",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_006",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_006",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_006",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_blade_trial",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_007",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_007",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_007",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_final_duel",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_008",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_008",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_008",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_gu_chengyue",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_009",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_009",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_009",
+      "reason": "burst_damage",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    }
+  ],
+  "reward_mismatch_candidates": [
+    {
+      "formal_encounter_id": "enc_mutiny_camp",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_004",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_004",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_004",
+      "reason": "reward_mismatch",
+      "evidence": {
+        "win_rate": 1.0,
+        "avg_turn_count": 9.0,
+        "avg_player_hp_end": 26.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wakou_boss",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_005",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_005",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_005",
+      "reason": "reward_mismatch",
+      "evidence": {
+        "win_rate": 1.0,
+        "avg_turn_count": 10.0,
+        "avg_player_hp_end": 5.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_spear_trial",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_006",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_006",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_006",
+      "reason": "reward_mismatch",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_final_duel",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_008",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_008",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_008",
+      "reason": "reward_mismatch",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    }
+  ],
+  "mechanism_underused_candidates": [],
+  "card_overused_candidates": [
+    {
+      "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_7_finisher",
+      "event_count": 12
+    },
+    {
+      "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_7_pressure",
+      "event_count": 12
+    },
+    {
+      "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_7_finisher",
+      "event_count": 12
+    },
+    {
+      "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_7_guard",
+      "event_count": 12
+    },
+    {
+      "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_7_pressure",
+      "event_count": 12
+    },
+    {
+      "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_7_strike",
+      "event_count": 12
+    },
+    {
+      "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_4_finisher",
+      "event_count": 10
+    },
+    {
+      "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_2_finisher",
+      "event_count": 8
+    },
+    {
+      "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_1_finisher",
+      "event_count": 6
+    },
+    {
+      "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_1_finisher",
+      "event_count": 6
+    },
+    {
+      "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_4_finisher",
+      "event_count": 6
+    },
+    {
+      "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_7_strike",
+      "event_count": 6
+    }
+  ],
+  "card_dead_candidates": [],
+  "deck_underperform_candidates": [
+    {
+      "formal_encounter_id": "enc_beach_ambush",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_001",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_001",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_001",
+      "reason": "deck_underperform",
+      "evidence": {
+        "win_rate": 0.5,
+        "avg_turn_count": 11.5,
+        "avg_player_hp_end": 7.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_transport_officer",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_003",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_003",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_003",
+      "reason": "deck_underperform",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 11.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 0.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wakou_boss",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_005",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_005",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_005",
+      "reason": "deck_underperform",
+      "evidence": {
+        "win_rate": 1.0,
+        "avg_turn_count": 10.0,
+        "avg_player_hp_end": 5.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_spear_trial",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_006",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_006",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_006",
+      "reason": "deck_underperform",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_blade_trial",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_007",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_007",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_007",
+      "reason": "deck_underperform",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_final_duel",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_008",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_008",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_008",
+      "reason": "deck_underperform",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    },
+    {
+      "formal_encounter_id": "enc_wuke_gu_chengyue",
+      "generated_battle_slot_id": "martial_realm_7_dual_weapon_v0_1_slot_009",
+      "generated_deck_id": "martial_realm_7_dual_weapon_v0_1_deck_009",
+      "reward_plan_id": "martial_realm_7_dual_weapon_v0_1_reward_009",
+      "reason": "deck_underperform",
+      "evidence": {
+        "win_rate": 0.0,
+        "avg_turn_count": 9.0,
+        "avg_player_hp_end": 0.0,
+        "runtime_primitive_trigger_rate": 1.0
+      }
+    }
+  ],
+  "rebuild_recommendation_count": 32,
+  "snapshot_ready": true,
+  "real_metrics_ready": true,
+  "actionability_score": 100,
+  "source_runtime_manifest_path": "data/aigc_battle/generated/martial_realm_7_dual_weapon_v0_1/packs/martial_realm_7_dual_weapon_v0_1__bossrush_9_v1__matrix_001/runtime_manifest.json",
+  "source_balance_summary_path": "data/aigc_battle/generated/martial_realm_7_dual_weapon_v0_1/packs/martial_realm_7_dual_weapon_v0_1__bossrush_9_v1__matrix_001/sequence_balance_summary.json",
+  "sequence_balance_pass": true,
+  "mechanic_compare_row": {}
+}

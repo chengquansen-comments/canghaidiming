@@ -1,0 +1,19 @@
+{
+  "generated_at": "2026-05-12T09:01:32.701905+00:00",
+  "prompt_studio_ready": true,
+  "candidate_batch_import_ready": true,
+  "invalid_candidate_rejected": true,
+  "duplicate_candidate_detected": true,
+  "candidate_grouping_ready": true,
+  "candidate_versioning_ready": true,
+  "candidate_quality_score_ready": true,
+  "promote_ready_candidates_found": true,
+  "multi_candidate_pack_build_ready": true,
+  "candidate_pack_compare_ready": true,
+  "dashboard_ai_studio_ready": true,
+  "online_llm_adapter_guarded_stub_ready": true,
+  "llm_never_writes_runtime_manifest": true,
+  "llm_never_writes_active_profile": true,
+  "current_release_unchanged": true,
+  "probe_pass": true
+}

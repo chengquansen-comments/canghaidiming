@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-05-12T07:24:11.958570+00:00",
+  "target": "fast",
+  "mechanic_profile_id": "weapon_followup_v0_1",
+  "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_013",
+  "runtime_manifest_exists": true,
+  "validation_ready_for_runtime_export": true,
+  "sequence_template_id": "formal_sequence_12_fast_v1",
+  "total_encounter_count": 12,
+  "generated_loadout_count": 12,
+  "fallback_loadout_count": 0,
+  "reward_coverage_complete": true,
+  "weapon_followup_runtime_ready": true,
+  "formal_generated_route_resolved": true,
+  "current_release_unchanged": true,
+  "smoke_pass": true
+}

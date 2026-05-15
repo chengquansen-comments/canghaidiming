@@ -1,0 +1,41 @@
+{
+  "release_switch_run_id": "release_switch_weapon_followup_v0_1_weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005_1778671232",
+  "timestamp": "2026-05-13T11:20:32.767054+00:00",
+  "action": "set_current",
+  "target_profile_id": "weapon_followup_v0_1",
+  "target_content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+  "target_sequence_template_id": "formal_sequence_12_fast_v1",
+  "target_build_variant": "release_drill_005",
+  "release_candidate_valid": true,
+  "promotion_report_found": true,
+  "acceptance_report_found": true,
+  "human_review_accepted": true,
+  "dry_run": true,
+  "idempotent_current_activation": true,
+  "previous_current": {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005"
+  },
+  "new_current": {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005"
+  },
+  "fallback_release": {
+    "mechanic_profile_id": "posture_opening_pressure_v0_1",
+    "content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001"
+  },
+  "current_release_written": false,
+  "active_profile_written": false,
+  "formal_entry_smoke_pass": false,
+  "formal_entry_uses_new_current": false,
+  "generated_loadout_count": 0,
+  "expected_encounter_count": 0,
+  "fallback_loadout_count": 0,
+  "reward_coverage_complete": false,
+  "rollback_available": true,
+  "rollback_performed": false,
+  "current_release_matches_active_profile": true,
+  "switch_allowed": true,
+  "switch_error": "",
+  "report_ready": true
+}

@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-05-13T00:45:41.325176+00:00",
+  "previous_current_rollback_ready": true,
+  "fallback_rollback_ready": true,
+  "fallback_pack_resolved": true,
+  "rollback_history_ready": true,
+  "active_profile_matches_current_release": true,
+  "current_release": {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005"
+  },
+  "fallback_release": {
+    "mechanic_profile_id": "posture_opening_pressure_v0_1",
+    "content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001"
+  },
+  "probe_pass": true
+}

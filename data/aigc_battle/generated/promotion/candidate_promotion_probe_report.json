@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-05-13T00:45:41.269080+00:00",
+  "current_reference_promotion_ready": true,
+  "ai_studio_warning_pack_blocked": true,
+  "missing_acceptance_pack_blocked": true,
+  "human_review_required": true,
+  "acceptance_required": true,
+  "release_candidate_mark_ready": true,
+  "current_release_unchanged": true,
+  "active_profile_matches_current_release": true,
+  "probe_pass": true
+}

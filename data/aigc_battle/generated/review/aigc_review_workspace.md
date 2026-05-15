@@ -1,21 +1,22 @@
 # AIGC Battle Review Workspace
 
 - active_profile_id: `weapon_followup_v0_1`
-- active_content_pack_id: `weapon_followup_balance_release_007`
+- active_content_pack_id: `weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005`
 - profile_count: `7`
-- content_pack_count: `38`
-- active_pack_review_path: `data/aigc_battle/generated/review/pack_review_weapon_followup_v0_1__weapon_followup_balance_release_007.json`
+- content_pack_count: `66`
+- active_pack_review_path: `data/aigc_battle/generated/review/pack_review_weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005.json`
 
 ## 全局风险摘要
-- risk_count: `1736`
-- fail_count: `6`
-- warning_count: `1229`
+- risk_count: `2931`
+- fail_count: `14`
+- warning_count: `2107`
 
 ## 推荐审核顺序
 - `clue_pressure_v0_1` / `clue_pressure_v0_1_formal_sequence_pack_001` | status=`warning` | score=`0` | risk=`81`
 - `clue_pressure_v0_1` / `clue_pressure_v0_1__formal_sequence_15_v1__matrix_001` | status=`warning` | score=`0` | risk=`73`
 - `clue_pressure_v0_1` / `clue_pressure_v0_1__formal_sequence_12_fast_v1__matrix_001` | status=`warning` | score=`0` | risk=`69`
 - `martial_realm_7_dual_weapon_v0_1` / `martial_realm_7_dual_weapon_v0_1_formal_sequence_pack_001` | status=`warning` | score=`0` | risk=`69`
+- `clue_pressure_v0_1` / `r9_showcase_candidate_pack_001` | status=`warning` | score=`0` | risk=`66`
 - `weapon_followup_v0_1` / `weapon_followup_balance_release_004` | status=`warning` | score=`0` | risk=`65`
 - `weapon_followup_v0_1` / `weapon_followup_balance_release_005` | status=`warning` | score=`0` | risk=`65`
 - `weapon_followup_v0_1` / `weapon_followup_balance_release_006` | status=`warning` | score=`0` | risk=`65`
@@ -24,29 +25,56 @@
 - `martial_realm_7_dual_weapon_v0_1` / `martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001` | status=`warning` | score=`13` | risk=`53`
 - `martial_realm_7_dual_weapon_v0_1` / `martial_realm_7_dual_weapon_v0_1__formal_sequence_15_v1__matrix_001` | status=`warning` | score=`25` | risk=`50`
 - `weapon_followup_v0_1` / `weapon_followup_balance_release_003` | status=`warning` | score=`29` | risk=`48`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_008` | status=`warning` | score=`25` | risk=`47`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_009` | status=`warning` | score=`25` | risk=`47`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_010` | status=`warning` | score=`25` | risk=`47`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_011` | status=`warning` | score=`25` | risk=`47`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_012` | status=`warning` | score=`25` | risk=`47`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_013` | status=`warning` | score=`25` | risk=`47`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_001` | status=`warning` | score=`25` | risk=`47`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_002` | status=`warning` | score=`25` | risk=`47`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_003` | status=`warning` | score=`25` | risk=`47`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_004` | status=`warning` | score=`25` | risk=`47`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005` | status=`warning` | score=`25` | risk=`47`
 - `martial_realm_7_dual_weapon_v0_1` / `martial_realm_7_dual_weapon_v0_1__bossrush_9_v1__matrix_001` | status=`warning` | score=`23` | risk=`45`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_007` | status=`warning` | score=`29` | risk=`45`
 - `weapon_followup_v0_1` / `weapon_followup_balance_release_001` | status=`warning` | score=`39` | risk=`43`
 - `weapon_followup_v0_1` / `weapon_followup_balance_release_002` | status=`warning` | score=`39` | risk=`43`
 - `weapon_followup_v0_1` / `weapon_followup_eval_rebuild_002` | status=`warning` | score=`39` | risk=`43`
 - `weapon_followup_v0_1` / `weapon_followup_eval_rebuild_003` | status=`warning` | score=`39` | risk=`43`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__bossrush_9_v1__hardened_004` | status=`warning` | score=`29` | risk=`42`
 - `weapon_followup_v0_1` / `weapon_followup_eval_rebuild_001` | status=`warning` | score=`41` | risk=`42`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__bossrush_9_v1__hardened_002` | status=`warning` | score=`31` | risk=`41`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__bossrush_9_v1__hardened_003` | status=`warning` | score=`31` | risk=`41`
 - `weapon_followup_v0_1` / `weapon_followup_v0_1__elite_heavy_15_v1__portfolio_001` | status=`warning` | score=`43` | risk=`41`
 - `weapon_followup_v0_1` / `weapon_followup_v0_1_formal_sequence_pack_001` | status=`warning` | score=`43` | risk=`41`
 - `weapon_followup_v0_1` / `snapshot_pack_id_required` | status=`warning` | score=`45` | risk=`41`
 - `weapon_followup_v0_1` / `weapon_followup_real_rebuild_001` | status=`warning` | score=`45` | risk=`41`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__bossrush_9_v1__hardened_005` | status=`warning` | score=`33` | risk=`40`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__bossrush_9_v1__hardened_006` | status=`warning` | score=`33` | risk=`40`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__bossrush_9_v1__hardened_007` | status=`warning` | score=`33` | risk=`40`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_005` | status=`warning` | score=`41` | risk=`39`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_006` | status=`warning` | score=`41` | risk=`39`
 - `posture_opening_pressure_v0_1` / `posture_opening_pressure_p1_probe_snapshot_001` | status=`warning` | score=`58` | risk=`38`
 - `posture_opening_pressure_v0_1` / `posture_opening_pressure_p1_probe_snapshot_002` | status=`warning` | score=`58` | risk=`38`
 - `posture_opening_pressure_v0_1` / `posture_opening_pressure_snapshot_001` | status=`warning` | score=`58` | risk=`38`
 - `posture_opening_pressure_v0_1` / `snapshot_pack_id_required` | status=`warning` | score=`58` | risk=`38`
 - `posture_tuned_v0_1b` / `posture_tuned_v0_1b_formal_sequence_pack_001` | status=`warning` | score=`21` | risk=`37`
 - `posture_opening_pressure_v0_1` / `posture_opening_pressure_v0_1_formal_sequence_pack_001` | status=`warning` | score=`58` | risk=`37`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__bossrush_9_v1__hardened_001` | status=`warning` | score=`41` | risk=`36`
 - `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__baseline_001` | status=`warning` | score=`61` | risk=`29`
 - `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__portfolio_001` | status=`warning` | score=`61` | risk=`29`
+- `weapon_followup_v0_1` / `r9_fast_candidate_pack_001` | status=`warning` | score=`63` | risk=`28`
 - `posture_llm_candidate_v0_1` / `posture_llm_candidate_v0_1_formal_sequence_pack_001` | status=`warning` | score=`43` | risk=`27`
 - `posture_basic_v0_1` / `posture_basic_v0_1_formal_sequence_pack_001` | status=`warning` | score=`43` | risk=`26`
 - `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001` | status=`warning` | score=`67` | risk=`26`
 - `weapon_followup_v0_1` / `weapon_followup_v0_1__bossrush_9_v1__portfolio_001` | status=`warning` | score=`65` | risk=`24`
+- `weapon_followup_v0_1` / `r9_bossrush_candidate_pack_001` | status=`warning` | score=`67` | risk=`23`
 - `weapon_followup_v0_1` / `weapon_followup_v0_1__bossrush_9_v1__matrix_001` | status=`warning` | score=`71` | risk=`21`
 - `weapon_followup_v0_1` / `weapon_followup_ai_candidate_pack_001` | status=`fail` | score=`39` | risk=`46`
 - `weapon_followup_v0_1` / `weapon_followup_ai_candidate_pack_probe_001` | status=`fail` | score=`39` | risk=`46`
 - `weapon_followup_v0_1` / `weapon_followup_ai_candidate_pack_probe_002` | status=`fail` | score=`39` | risk=`46`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_003` | status=`fail` | score=`0` | risk=`41`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_004` | status=`fail` | score=`0` | risk=`41`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_001` | status=`fail` | score=`0` | risk=`38`
+- `weapon_followup_v0_1` / `weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_002` | status=`fail` | score=`0` | risk=`38`

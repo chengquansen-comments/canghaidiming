@@ -1,0 +1,321 @@
+{
+  "batch_id": "r9_probe_batch_001",
+  "duplicate_candidate_count": 1,
+  "unique_candidate_count": 12,
+  "groups_by_mechanic": {
+    "weapon_followup_v0_1": 9,
+    "clue_pressure_v0_1": 4
+  },
+  "groups_by_template": {
+    "formal_sequence_12_fast_v1": 5,
+    "bossrush_9_v1": 8
+  },
+  "groups_by_type": {
+    "card_candidate": 4,
+    "deck_candidate": 3,
+    "reward_candidate": 3,
+    "battle_slot_candidate": 3
+  },
+  "candidate_versioning_ready": true,
+  "candidate_grouping_ready": true,
+  "unique_candidates": [
+    {
+      "candidate_id": "r9_fast_card_001",
+      "candidate_type": "card_candidate",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "studio_target": "fast",
+      "card_id": "weapon_followup_v0_1_fast_linker_001",
+      "name": "疾潮追击",
+      "card_type": "attack",
+      "weapon_style": "spearman",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 5
+        }
+      ],
+      "tags": [
+        "fast",
+        "repair"
+      ],
+      "difficulty_tier": "mid",
+      "power_score": 5.6,
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "runtime_effects": [
+        "damage"
+      ],
+      "followup_group": "spearman_early_chain",
+      "followup_trigger": "same_weapon_previous_card",
+      "followup_chain_role": "linker",
+      "candidate_signature": "{\"candidate_type\": \"card_candidate\", \"card_id\": \"weapon_followup_v0_1_fast_linker_001\", \"card_type\": \"attack\", \"closing_form_tier\": 1, \"cost\": 1, \"difficulty_tier\": \"mid\", \"effects\": [{\"type\": \"damage\", \"value\": 5}], \"followup_chain_role\": \"linker\", \"followup_group\": \"spearman_early_chain\", \"followup_trigger\": \"same_weapon_previous_card\", \"mechanic_profile_id\": \"weapon_followup_v0_1\", \"name\": \"疾潮追击\", \"power_score\": 5.6, \"required_wujing\": 1, \"runtime_effects\": [\"damage\"], \"sequence_template_id\": \"formal_sequence_12_fast_v1\", \"studio_target\": \"fast\", \"tags\": [\"fast\", \"repair\"], \"weapon_style\": \"spearman\"}",
+      "version_tag": "v1"
+    },
+    {
+      "candidate_id": "r9_fast_deck_001",
+      "candidate_type": "deck_candidate",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "studio_target": "fast",
+      "deck_id": "weapon_followup_v0_1_deck_001",
+      "encounter_tier": "early",
+      "enemy_role": "spearman",
+      "card_refs": [
+        "r9_fast_card_001",
+        "weapon_followup_v0_1_spearman_early_guard",
+        "weapon_followup_v0_1_spearman_early_focus",
+        "weapon_followup_v0_1_spearman_early_pressure"
+      ],
+      "deck_power_score": 24.0,
+      "target_power_min": 22,
+      "target_power_max": 28,
+      "followup_chain_count": 2,
+      "followup_density": 0.5,
+      "followup_groups": [
+        "spearman_early_chain"
+      ],
+      "candidate_signature": "{\"candidate_type\": \"deck_candidate\", \"card_refs\": [\"r9_fast_card_001\", \"weapon_followup_v0_1_spearman_early_guard\", \"weapon_followup_v0_1_spearman_early_focus\", \"weapon_followup_v0_1_spearman_early_pressure\"], \"deck_id\": \"weapon_followup_v0_1_deck_001\", \"deck_power_score\": 24.0, \"encounter_tier\": \"early\", \"enemy_role\": \"spearman\", \"followup_chain_count\": 2, \"followup_density\": 0.5, \"followup_groups\": [\"spearman_early_chain\"], \"mechanic_profile_id\": \"weapon_followup_v0_1\", \"sequence_template_id\": \"formal_sequence_12_fast_v1\", \"studio_target\": \"fast\", \"target_power_max\": 28, \"target_power_min\": 22}",
+      "version_tag": "v1"
+    },
+    {
+      "candidate_id": "r9_fast_reward_001",
+      "candidate_type": "reward_candidate",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "studio_target": "fast",
+      "reward_plan_id": "weapon_followup_v0_1_reward_001",
+      "reward_type": "card_pick",
+      "reward_tier": "early",
+      "reward_items": [
+        {
+          "item_id": "fast_reward_card_001",
+          "quantity": 1
+        }
+      ],
+      "candidate_signature": "{\"candidate_type\": \"reward_candidate\", \"mechanic_profile_id\": \"weapon_followup_v0_1\", \"reward_items\": [{\"item_id\": \"fast_reward_card_001\", \"quantity\": 1}], \"reward_plan_id\": \"weapon_followup_v0_1_reward_001\", \"reward_tier\": \"early\", \"reward_type\": \"card_pick\", \"sequence_template_id\": \"formal_sequence_12_fast_v1\", \"studio_target\": \"fast\"}",
+      "version_tag": "v1"
+    },
+    {
+      "candidate_id": "r9_fast_slot_001",
+      "candidate_type": "battle_slot_candidate",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "studio_target": "fast",
+      "formal_encounter_id": "enc_beach_ambush",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_001",
+      "deck_id": "weapon_followup_v0_1_deck_001",
+      "reward_plan_id": "weapon_followup_v0_1_reward_001",
+      "encounter_tier": "early",
+      "player_wujing_cap": 1,
+      "target_power_min": 22,
+      "target_power_max": 28,
+      "runtime_primitives": [
+        "weapon_followup"
+      ],
+      "candidate_signature": "{\"candidate_type\": \"battle_slot_candidate\", \"deck_id\": \"weapon_followup_v0_1_deck_001\", \"encounter_tier\": \"early\", \"formal_encounter_id\": \"enc_beach_ambush\", \"generated_battle_slot_id\": \"weapon_followup_v0_1_slot_001\", \"mechanic_profile_id\": \"weapon_followup_v0_1\", \"player_wujing_cap\": 1, \"reward_plan_id\": \"weapon_followup_v0_1_reward_001\", \"runtime_primitives\": [\"weapon_followup\"], \"sequence_template_id\": \"formal_sequence_12_fast_v1\", \"studio_target\": \"fast\", \"target_power_max\": 28, \"target_power_min\": 22}",
+      "version_tag": "v1"
+    },
+    {
+      "candidate_id": "r9_boss_card_001",
+      "candidate_type": "card_candidate",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "studio_target": "bossrush",
+      "card_id": "weapon_followup_v0_1_boss_linker_001",
+      "name": "裂潮追命",
+      "card_type": "attack",
+      "weapon_style": "blademaster",
+      "cost": 2,
+      "effects": [
+        {
+          "type": "damage",
+          "value": 7
+        }
+      ],
+      "tags": [
+        "bossrush",
+        "repair"
+      ],
+      "difficulty_tier": "late",
+      "power_score": 6.4,
+      "required_wujing": 2,
+      "closing_form_tier": 2,
+      "runtime_effects": [
+        "damage"
+      ],
+      "followup_group": "blade_mid_chain",
+      "followup_trigger": "same_weapon_previous_card",
+      "followup_chain_role": "linker",
+      "candidate_signature": "{\"candidate_type\": \"card_candidate\", \"card_id\": \"weapon_followup_v0_1_boss_linker_001\", \"card_type\": \"attack\", \"closing_form_tier\": 2, \"cost\": 2, \"difficulty_tier\": \"late\", \"effects\": [{\"type\": \"damage\", \"value\": 7}], \"followup_chain_role\": \"linker\", \"followup_group\": \"blade_mid_chain\", \"followup_trigger\": \"same_weapon_previous_card\", \"mechanic_profile_id\": \"weapon_followup_v0_1\", \"name\": \"裂潮追命\", \"power_score\": 6.4, \"required_wujing\": 2, \"runtime_effects\": [\"damage\"], \"sequence_template_id\": \"bossrush_9_v1\", \"studio_target\": \"bossrush\", \"tags\": [\"bossrush\", \"repair\"], \"weapon_style\": \"blademaster\"}",
+      "version_tag": "v1"
+    },
+    {
+      "candidate_id": "r9_boss_deck_001",
+      "candidate_type": "deck_candidate",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "studio_target": "bossrush",
+      "deck_id": "weapon_followup_v0_1_deck_001",
+      "encounter_tier": "early",
+      "enemy_role": "blademaster",
+      "card_refs": [
+        "r9_boss_card_001",
+        "weapon_followup_v0_1_spearman_early_guard",
+        "weapon_followup_v0_1_spearman_early_focus",
+        "weapon_followup_v0_1_spearman_early_pressure"
+      ],
+      "deck_power_score": 25.0,
+      "target_power_min": 22,
+      "target_power_max": 32,
+      "followup_chain_count": 2,
+      "followup_density": 0.5,
+      "followup_groups": [
+        "blade_mid_chain"
+      ],
+      "candidate_signature": "{\"candidate_type\": \"deck_candidate\", \"card_refs\": [\"r9_boss_card_001\", \"weapon_followup_v0_1_spearman_early_guard\", \"weapon_followup_v0_1_spearman_early_focus\", \"weapon_followup_v0_1_spearman_early_pressure\"], \"deck_id\": \"weapon_followup_v0_1_deck_001\", \"deck_power_score\": 25.0, \"encounter_tier\": \"early\", \"enemy_role\": \"blademaster\", \"followup_chain_count\": 2, \"followup_density\": 0.5, \"followup_groups\": [\"blade_mid_chain\"], \"mechanic_profile_id\": \"weapon_followup_v0_1\", \"sequence_template_id\": \"bossrush_9_v1\", \"studio_target\": \"bossrush\", \"target_power_max\": 32, \"target_power_min\": 22}",
+      "version_tag": "v1"
+    },
+    {
+      "candidate_id": "r9_boss_reward_001",
+      "candidate_type": "reward_candidate",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "studio_target": "bossrush",
+      "reward_plan_id": "weapon_followup_v0_1_reward_001",
+      "reward_type": "card_pick",
+      "reward_tier": "standard",
+      "reward_items": [
+        {
+          "item_id": "bossrush_reward_card_001",
+          "quantity": 1
+        }
+      ],
+      "candidate_signature": "{\"candidate_type\": \"reward_candidate\", \"mechanic_profile_id\": \"weapon_followup_v0_1\", \"reward_items\": [{\"item_id\": \"bossrush_reward_card_001\", \"quantity\": 1}], \"reward_plan_id\": \"weapon_followup_v0_1_reward_001\", \"reward_tier\": \"standard\", \"reward_type\": \"card_pick\", \"sequence_template_id\": \"bossrush_9_v1\", \"studio_target\": \"bossrush\"}",
+      "version_tag": "v1"
+    },
+    {
+      "candidate_id": "r9_boss_slot_001",
+      "candidate_type": "battle_slot_candidate",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "studio_target": "bossrush",
+      "formal_encounter_id": "enc_beach_ambush",
+      "generated_battle_slot_id": "weapon_followup_v0_1_slot_001",
+      "deck_id": "weapon_followup_v0_1_deck_001",
+      "reward_plan_id": "weapon_followup_v0_1_reward_001",
+      "encounter_tier": "early",
+      "player_wujing_cap": 2,
+      "target_power_min": 22,
+      "target_power_max": 32,
+      "runtime_primitives": [
+        "weapon_followup"
+      ],
+      "candidate_signature": "{\"candidate_type\": \"battle_slot_candidate\", \"deck_id\": \"weapon_followup_v0_1_deck_001\", \"encounter_tier\": \"early\", \"formal_encounter_id\": \"enc_beach_ambush\", \"generated_battle_slot_id\": \"weapon_followup_v0_1_slot_001\", \"mechanic_profile_id\": \"weapon_followup_v0_1\", \"player_wujing_cap\": 2, \"reward_plan_id\": \"weapon_followup_v0_1_reward_001\", \"runtime_primitives\": [\"weapon_followup\"], \"sequence_template_id\": \"bossrush_9_v1\", \"studio_target\": \"bossrush\", \"target_power_max\": 32, \"target_power_min\": 22}",
+      "version_tag": "v1"
+    },
+    {
+      "candidate_id": "r9_showcase_card_001",
+      "candidate_type": "card_candidate",
+      "mechanic_profile_id": "clue_pressure_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "studio_target": "showcase",
+      "card_id": "clue_pressure_v0_1_showcase_strike_001",
+      "name": "案卷破绽",
+      "card_type": "skill",
+      "weapon_style": "generic",
+      "cost": 1,
+      "effects": [
+        {
+          "type": "gain_momentum",
+          "value": 1
+        }
+      ],
+      "tags": [
+        "showcase",
+        "clue"
+      ],
+      "difficulty_tier": "mid",
+      "power_score": 4.4,
+      "required_wujing": 1,
+      "closing_form_tier": 1,
+      "runtime_effects": [
+        "gain_momentum"
+      ],
+      "candidate_signature": "{\"candidate_type\": \"card_candidate\", \"card_id\": \"clue_pressure_v0_1_showcase_strike_001\", \"card_type\": \"skill\", \"closing_form_tier\": 1, \"cost\": 1, \"difficulty_tier\": \"mid\", \"effects\": [{\"type\": \"gain_momentum\", \"value\": 1}], \"mechanic_profile_id\": \"clue_pressure_v0_1\", \"name\": \"案卷破绽\", \"power_score\": 4.4, \"required_wujing\": 1, \"runtime_effects\": [\"gain_momentum\"], \"sequence_template_id\": \"bossrush_9_v1\", \"studio_target\": \"showcase\", \"tags\": [\"showcase\", \"clue\"], \"weapon_style\": \"generic\"}",
+      "version_tag": "v1"
+    },
+    {
+      "candidate_id": "r9_showcase_deck_001",
+      "candidate_type": "deck_candidate",
+      "mechanic_profile_id": "clue_pressure_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "studio_target": "showcase",
+      "deck_id": "clue_pressure_v0_1_deck_001",
+      "encounter_tier": "early",
+      "enemy_role": "spearman",
+      "card_refs": [
+        "r9_showcase_card_001",
+        "clue_pressure_v0_1_spearman_early_guard",
+        "clue_pressure_v0_1_spearman_early_focus",
+        "clue_pressure_v0_1_spearman_early_pressure"
+      ],
+      "deck_power_score": 22.0,
+      "target_power_min": 22,
+      "target_power_max": 32,
+      "candidate_signature": "{\"candidate_type\": \"deck_candidate\", \"card_refs\": [\"r9_showcase_card_001\", \"clue_pressure_v0_1_spearman_early_guard\", \"clue_pressure_v0_1_spearman_early_focus\", \"clue_pressure_v0_1_spearman_early_pressure\"], \"deck_id\": \"clue_pressure_v0_1_deck_001\", \"deck_power_score\": 22.0, \"encounter_tier\": \"early\", \"enemy_role\": \"spearman\", \"mechanic_profile_id\": \"clue_pressure_v0_1\", \"sequence_template_id\": \"bossrush_9_v1\", \"studio_target\": \"showcase\", \"target_power_max\": 32, \"target_power_min\": 22}",
+      "version_tag": "v1"
+    },
+    {
+      "candidate_id": "r9_showcase_reward_001",
+      "candidate_type": "reward_candidate",
+      "mechanic_profile_id": "clue_pressure_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "studio_target": "showcase",
+      "reward_plan_id": "clue_pressure_v0_1_reward_001",
+      "reward_type": "card_pick",
+      "reward_tier": "early",
+      "reward_items": [
+        {
+          "item_id": "showcase_clue_reward_001",
+          "quantity": 1
+        }
+      ],
+      "candidate_signature": "{\"candidate_type\": \"reward_candidate\", \"mechanic_profile_id\": \"clue_pressure_v0_1\", \"reward_items\": [{\"item_id\": \"showcase_clue_reward_001\", \"quantity\": 1}], \"reward_plan_id\": \"clue_pressure_v0_1_reward_001\", \"reward_tier\": \"early\", \"reward_type\": \"card_pick\", \"sequence_template_id\": \"bossrush_9_v1\", \"studio_target\": \"showcase\"}",
+      "version_tag": "v1"
+    },
+    {
+      "candidate_id": "r9_showcase_slot_001",
+      "candidate_type": "battle_slot_candidate",
+      "mechanic_profile_id": "clue_pressure_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "studio_target": "showcase",
+      "formal_encounter_id": "enc_beach_ambush",
+      "generated_battle_slot_id": "clue_pressure_v0_1_slot_001",
+      "deck_id": "clue_pressure_v0_1_deck_001",
+      "reward_plan_id": "clue_pressure_v0_1_reward_001",
+      "encounter_tier": "early",
+      "player_wujing_cap": 2,
+      "target_power_min": 22,
+      "target_power_max": 32,
+      "runtime_primitives": [
+        "clue_pressure"
+      ],
+      "clue_pressure": {
+        "enabled": true,
+        "clue_tags": [
+          "old_case",
+          "witness_statement"
+        ],
+        "required_clue_count": 1,
+        "pressure_effect": "reduce_enemy_guard",
+        "pressure_value": 1,
+        "trigger_timing": "battle_start",
+        "narrative_hint": "旧案口供松动敌方防线。"
+      },
+      "candidate_signature": "{\"candidate_type\": \"battle_slot_candidate\", \"clue_pressure\": {\"clue_tags\": [\"old_case\", \"witness_statement\"], \"enabled\": true, \"narrative_hint\": \"旧案口供松动敌方防线。\", \"pressure_effect\": \"reduce_enemy_guard\", \"pressure_value\": 1, \"required_clue_count\": 1, \"trigger_timing\": \"battle_start\"}, \"deck_id\": \"clue_pressure_v0_1_deck_001\", \"encounter_tier\": \"early\", \"formal_encounter_id\": \"enc_beach_ambush\", \"generated_battle_slot_id\": \"clue_pressure_v0_1_slot_001\", \"mechanic_profile_id\": \"clue_pressure_v0_1\", \"player_wujing_cap\": 2, \"reward_plan_id\": \"clue_pressure_v0_1_reward_001\", \"runtime_primitives\": [\"clue_pressure\"], \"sequence_template_id\": \"bossrush_9_v1\", \"studio_target\": \"showcase\", \"target_power_max\": 32, \"target_power_min\": 22}",
+      "version_tag": "v1"
+    }
+  ]
+}

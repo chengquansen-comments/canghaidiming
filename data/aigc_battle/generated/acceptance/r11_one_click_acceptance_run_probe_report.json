@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-05-12T09:59:28.708193+00:00",
+  "one_click_acceptance_run_ready": true,
+  "acceptance_cli_ready": true,
+  "current_reference_acceptance_ready": true,
+  "ai_studio_pack_acceptance_ready": true,
+  "invalid_pack_rejected": true,
+  "pack_resolved_by_pack_resolver": true,
+  "validate_pass": true,
+  "export_pass": true,
+  "preview_smoke_pass": true,
+  "evaluation_ready": true,
+  "risk_summary_ready": true,
+  "acceptance_report_ready": true,
+  "dashboard_acceptance_api_ready": true,
+  "current_release_unchanged": true,
+  "active_profile_matches_current_release": true,
+  "acceptance_probe_exit_ok": true,
+  "probe_pass": true
+}

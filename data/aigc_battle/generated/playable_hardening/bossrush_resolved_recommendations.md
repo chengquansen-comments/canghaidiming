@@ -1,0 +1,33 @@
+# bossrush Resolved Hardening Recommendations
+
+- recommendation_count: `29`
+
+- `reduce_overused_card` | encounter=- | deck=-
+- `reduce_overused_card` | encounter=- | deck=-
+- `reduce_overused_card` | encounter=- | deck=-
+- `reduce_overused_card` | encounter=- | deck=-
+- `reduce_overused_card` | encounter=- | deck=-
+- `reduce_overused_card` | encounter=- | deck=-
+- `reduce_overused_card` | encounter=- | deck=-
+- `reduce_overused_card` | encounter=- | deck=-
+- `reduce_enemy_pressure` | encounter=enc_wakou_boss | deck=weapon_followup_v0_1_deck_005
+- `reduce_enemy_pressure` | encounter=enc_wuke_spear_trial | deck=weapon_followup_v0_1_deck_006
+- `reduce_enemy_pressure` | encounter=enc_wuke_blade_trial | deck=weapon_followup_v0_1_deck_007
+- `reduce_enemy_pressure` | encounter=enc_wuke_final_duel | deck=weapon_followup_v0_1_deck_008
+- `reduce_enemy_pressure` | encounter=enc_wuke_gu_chengyue | deck=weapon_followup_v0_1_deck_009
+- `reduce_defensive_drag` | encounter=enc_beach_ambush | deck=weapon_followup_v0_1_deck_001
+- `reduce_defensive_drag` | encounter=enc_fishing_village_embers | deck=weapon_followup_v0_1_deck_002
+- `reduce_defensive_drag` | encounter=enc_transport_officer | deck=weapon_followup_v0_1_deck_003
+- `reduce_defensive_drag` | encounter=enc_mutiny_camp | deck=weapon_followup_v0_1_deck_004
+- `reduce_defensive_drag` | encounter=enc_wakou_boss | deck=weapon_followup_v0_1_deck_005
+- `reduce_defensive_drag` | encounter=enc_wuke_spear_trial | deck=weapon_followup_v0_1_deck_006
+- `reduce_defensive_drag` | encounter=enc_wuke_blade_trial | deck=weapon_followup_v0_1_deck_007
+- `reduce_defensive_drag` | encounter=enc_wuke_final_duel | deck=weapon_followup_v0_1_deck_008
+- `reduce_defensive_drag` | encounter=enc_wuke_gu_chengyue | deck=weapon_followup_v0_1_deck_009
+- `upgrade_reward_tier` | encounter=enc_mutiny_camp | deck=weapon_followup_v0_1_deck_004
+- `upgrade_reward_tier` | encounter=enc_wakou_boss | deck=weapon_followup_v0_1_deck_005
+- `upgrade_reward_tier` | encounter=enc_wuke_spear_trial | deck=weapon_followup_v0_1_deck_006
+- `upgrade_reward_tier` | encounter=enc_wuke_final_duel | deck=weapon_followup_v0_1_deck_008
+- `increase_deck_power` | encounter=enc_fishing_village_embers | deck=weapon_followup_v0_1_deck_002
+- `increase_deck_power` | encounter=enc_transport_officer | deck=weapon_followup_v0_1_deck_003
+- `increase_deck_power` | encounter=enc_mutiny_camp | deck=weapon_followup_v0_1_deck_004

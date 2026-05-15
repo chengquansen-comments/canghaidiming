@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-05-12T07:24:12.008017+00:00",
+  "target": "bossrush",
+  "mechanic_profile_id": "weapon_followup_v0_1",
+  "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_007",
+  "runtime_manifest_exists": true,
+  "validation_ready_for_runtime_export": true,
+  "sequence_template_id": "bossrush_9_v1",
+  "total_encounter_count": 9,
+  "generated_loadout_count": 9,
+  "fallback_loadout_count": 0,
+  "reward_coverage_complete": true,
+  "weapon_followup_runtime_ready": true,
+  "formal_generated_route_resolved": true,
+  "current_release_unchanged": true,
+  "smoke_pass": true
+}

@@ -4,7 +4,7 @@
   "release_status": "accepted",
   "frozen": true,
   "frozen_at": "2026-05-11T07:02:41.062260+00:00",
-  "activated_at": "",
+  "activated_at": "2026-05-12T13:27:49.832093+00:00",
   "archived_at": "",
   "review_status": "accepted",
   "release_candidate_id": "",
@@ -19,5 +19,5 @@
   "suggested_git_commit_command": "git commit -am \"release: posture_opening_pressure_v0_1__posture_opening_pressure_v0_1_formal_sequence_pack_001\"",
   "suggested_git_tag_command": "git tag aigc-release/posture_opening_pressure_v0_1__posture_opening_pressure_v0_1_formal_sequence_pack_001",
   "created_at": "2026-05-11T07:02:41.062165+00:00",
-  "updated_at": "2026-05-11T07:19:05.054575+00:00"
+  "updated_at": "2026-05-12T13:29:04.289679+00:00"
 }

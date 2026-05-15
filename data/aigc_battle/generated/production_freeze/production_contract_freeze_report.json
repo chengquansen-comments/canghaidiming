@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-05-12T11:35:46.079526+00:00",
+  "schema_manifest_ready": true,
+  "generated_file_policy_ready": true,
+  "minimal_acceptance_command_ready": true,
+  "deprecated_probe_inventory_ready": true,
+  "production_contract_doc_ready": true,
+  "current_release_unchanged": true,
+  "active_profile_matches_current_release": true,
+  "fallback_release_unchanged": true,
+  "production_contract_frozen": true
+}

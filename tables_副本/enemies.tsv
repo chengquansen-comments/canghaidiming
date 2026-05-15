@@ -1,7 +1,0 @@
-id	name	title	max_hp	max_momentum	start_distance	preferred_ranges	passive
-captain_boss	百户枪官	Boss	72	10	2	2|3	优势距离开始回合时 +1 势；崩塌后下回合额外恢复 1 势。
-dual_ronin	双刀浪人	精英敌人	50	10	2	1|2	每回合恢复 4 势，且被打断后下回合额外抽招。
-firearms_officer	哨官火器队	精英敌人	48	10	2	3	若保持远距，攻击伤害 +2。
-militia_spear	乡勇枪兵	普通敌人	38	9	2	2|3	在优势距离开始回合时额外 +1 势。
-raider	倭寇短刀手	普通敌人	34	8	2	1	势恢复额外 +1，擅长贴身连斩。
-shield_blade	牌刀兵	普通敌人	42	9	2	1	格挡完成度高，容易打出完美格挡。

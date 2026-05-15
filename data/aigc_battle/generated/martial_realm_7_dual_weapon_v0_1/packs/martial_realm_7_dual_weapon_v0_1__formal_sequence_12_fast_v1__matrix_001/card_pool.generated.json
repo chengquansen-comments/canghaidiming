@@ -1,0 +1,3396 @@
+[
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_1_strike",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_1_strike",
+    "name": "中平刺·1境",
+    "card_type": "attack",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "attack",
+    "gain": 0,
+    "break": 0,
+    "damage": 5,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 5
+      }
+    ],
+    "tags": [
+      "early",
+      "spearman",
+      "attack",
+      "technique",
+      "realm_1_2"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "realm_band": "realm_1_2",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 4.42,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_1_guard",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_1_guard",
+    "name": "圆架守·1境",
+    "card_type": "defense",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "guard",
+    "gain": 0,
+    "break": 0,
+    "damage": 0,
+    "guard": 4,
+    "effects": [
+      {
+        "type": "gain_block",
+        "value": 4
+      }
+    ],
+    "tags": [
+      "early",
+      "spearman",
+      "defense",
+      "technique",
+      "realm_1_2"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "realm_band": "realm_1_2",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 3.54,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_1_pressure",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_1_pressure",
+    "name": "压杆逼势·1境",
+    "card_type": "skill",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "feint",
+    "gain": 0,
+    "break": 3,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "break_momentum",
+        "value": 3
+      }
+    ],
+    "tags": [
+      "early",
+      "spearman",
+      "skill",
+      "technique",
+      "realm_1_2",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "realm_band": "realm_1_2",
+    "dual_weapon_synergy_tag": "spear_to_blade",
+    "power_score": 2.12,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_1_finisher",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_1_finisher",
+    "name": "穿线追刺·1境",
+    "card_type": "attack",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 2,
+    "min": 0,
+    "max": 4,
+    "role": "attack",
+    "gain": 1,
+    "break": 2,
+    "damage": 4,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 4
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 2
+      }
+    ],
+    "tags": [
+      "early",
+      "spearman",
+      "attack",
+      "technique",
+      "realm_1_2",
+      "closing_form",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "realm_band": "realm_1_2",
+    "dual_weapon_synergy_tag": "spear_to_blade",
+    "power_score": 5.66,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_2_strike",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_2_strike",
+    "name": "中平刺·2境",
+    "card_type": "attack",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "attack",
+    "gain": 0,
+    "break": 0,
+    "damage": 5,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 5
+      }
+    ],
+    "tags": [
+      "early",
+      "spearman",
+      "attack",
+      "technique",
+      "realm_1_2"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 2,
+    "closing_form_tier": 2,
+    "realm_band": "realm_1_2",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 3.9,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_2_guard",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_2_guard",
+    "name": "圆架守·2境",
+    "card_type": "defense",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "guard",
+    "gain": 0,
+    "break": 0,
+    "damage": 0,
+    "guard": 4,
+    "effects": [
+      {
+        "type": "gain_block",
+        "value": 4
+      }
+    ],
+    "tags": [
+      "early",
+      "spearman",
+      "defense",
+      "technique",
+      "realm_1_2"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 2,
+    "closing_form_tier": 2,
+    "realm_band": "realm_1_2",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 3.12,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_2_pressure",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_2_pressure",
+    "name": "压杆逼势·2境",
+    "card_type": "skill",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "feint",
+    "gain": 0,
+    "break": 3,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "break_momentum",
+        "value": 3
+      }
+    ],
+    "tags": [
+      "early",
+      "spearman",
+      "skill",
+      "technique",
+      "realm_1_2",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 2,
+    "closing_form_tier": 2,
+    "realm_band": "realm_1_2",
+    "dual_weapon_synergy_tag": "spear_to_blade",
+    "power_score": 2.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_2_finisher",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_2_finisher",
+    "name": "穿线追刺·2境",
+    "card_type": "attack",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 2,
+    "min": 0,
+    "max": 4,
+    "role": "attack",
+    "gain": 1,
+    "break": 2,
+    "damage": 4,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 4
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 2
+      }
+    ],
+    "tags": [
+      "early",
+      "spearman",
+      "attack",
+      "technique",
+      "realm_1_2",
+      "closing_form",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 2,
+    "closing_form_tier": 2,
+    "realm_band": "realm_1_2",
+    "dual_weapon_synergy_tag": "spear_to_blade",
+    "power_score": 4.99,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_3_strike",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_3_strike",
+    "name": "穿线枪·3境",
+    "card_type": "attack",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "attack",
+    "gain": 0,
+    "break": 0,
+    "damage": 7,
+    "guard": 1,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 7
+      },
+      {
+        "type": "gain_block",
+        "value": 1
+      }
+    ],
+    "tags": [
+      "mid",
+      "spearman",
+      "attack",
+      "technique",
+      "realm_3_4"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 3,
+    "closing_form_tier": 3,
+    "realm_band": "realm_3_4",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 5.2,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_3_guard",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_3_guard",
+    "name": "回枪固守·3境",
+    "card_type": "defense",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "guard",
+    "gain": 0,
+    "break": 0,
+    "damage": 1,
+    "guard": 6,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 1
+      },
+      {
+        "type": "gain_block",
+        "value": 6
+      }
+    ],
+    "tags": [
+      "mid",
+      "spearman",
+      "defense",
+      "technique",
+      "realm_3_4"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 3,
+    "closing_form_tier": 3,
+    "realm_band": "realm_3_4",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 4.55,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_3_pressure",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_3_pressure",
+    "name": "封线破势·3境",
+    "card_type": "skill",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "feint",
+    "gain": 0,
+    "break": 4,
+    "damage": 1,
+    "guard": 1,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 1
+      },
+      {
+        "type": "gain_block",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 4
+      }
+    ],
+    "tags": [
+      "mid",
+      "spearman",
+      "skill",
+      "technique",
+      "realm_3_4",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 3,
+    "closing_form_tier": 3,
+    "realm_band": "realm_3_4",
+    "dual_weapon_synergy_tag": "spear_to_blade",
+    "power_score": 3.38,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_3_finisher",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_3_finisher",
+    "name": "抢线突穿·3境",
+    "card_type": "attack",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 2,
+    "min": 0,
+    "max": 4,
+    "role": "attack",
+    "gain": 1,
+    "break": 2,
+    "damage": 6,
+    "guard": 1,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 6
+      },
+      {
+        "type": "gain_block",
+        "value": 1
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 2
+      }
+    ],
+    "tags": [
+      "mid",
+      "spearman",
+      "attack",
+      "technique",
+      "realm_3_4",
+      "closing_form",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 3,
+    "closing_form_tier": 3,
+    "realm_band": "realm_3_4",
+    "dual_weapon_synergy_tag": "spear_to_blade",
+    "power_score": 6.11,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_4_strike",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_4_strike",
+    "name": "穿线枪·4境",
+    "card_type": "attack",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "attack",
+    "gain": 0,
+    "break": 1,
+    "damage": 8,
+    "guard": 2,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 8
+      },
+      {
+        "type": "gain_block",
+        "value": 2
+      },
+      {
+        "type": "break_momentum",
+        "value": 1
+      }
+    ],
+    "tags": [
+      "mid",
+      "spearman",
+      "attack",
+      "technique",
+      "realm_3_4"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 4,
+    "closing_form_tier": 4,
+    "realm_band": "realm_3_4",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 6.46,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_4_guard",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_4_guard",
+    "name": "回枪固守·4境",
+    "card_type": "defense",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "guard",
+    "gain": 0,
+    "break": 1,
+    "damage": 2,
+    "guard": 7,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 2
+      },
+      {
+        "type": "gain_block",
+        "value": 7
+      },
+      {
+        "type": "break_momentum",
+        "value": 1
+      }
+    ],
+    "tags": [
+      "mid",
+      "spearman",
+      "defense",
+      "technique",
+      "realm_3_4"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 4,
+    "closing_form_tier": 4,
+    "realm_band": "realm_3_4",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 5.86,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_4_pressure",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_4_pressure",
+    "name": "封线破势·4境",
+    "card_type": "skill",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "feint",
+    "gain": 0,
+    "break": 5,
+    "damage": 2,
+    "guard": 2,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 2
+      },
+      {
+        "type": "gain_block",
+        "value": 2
+      },
+      {
+        "type": "break_momentum",
+        "value": 5
+      }
+    ],
+    "tags": [
+      "mid",
+      "spearman",
+      "skill",
+      "technique",
+      "realm_3_4",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 4,
+    "closing_form_tier": 4,
+    "realm_band": "realm_3_4",
+    "dual_weapon_synergy_tag": "spear_to_blade",
+    "power_score": 4.78,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_4_finisher",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_4_finisher",
+    "name": "抢线突穿·4境",
+    "card_type": "attack",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 2,
+    "min": 0,
+    "max": 4,
+    "role": "attack",
+    "gain": 1,
+    "break": 3,
+    "damage": 7,
+    "guard": 2,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 7
+      },
+      {
+        "type": "gain_block",
+        "value": 2
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 3
+      }
+    ],
+    "tags": [
+      "mid",
+      "spearman",
+      "attack",
+      "technique",
+      "realm_3_4",
+      "closing_form",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 4,
+    "closing_form_tier": 4,
+    "realm_band": "realm_3_4",
+    "dual_weapon_synergy_tag": "spear_to_blade",
+    "power_score": 7.3,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_5_strike",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_5_strike",
+    "name": "贯潮枪·5境",
+    "card_type": "attack",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 2,
+    "min": 0,
+    "max": 4,
+    "role": "attack",
+    "gain": 0,
+    "break": 2,
+    "damage": 11,
+    "guard": 3,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 11
+      },
+      {
+        "type": "gain_block",
+        "value": 3
+      },
+      {
+        "type": "break_momentum",
+        "value": 2
+      }
+    ],
+    "tags": [
+      "late",
+      "spearman",
+      "attack",
+      "technique",
+      "realm_5_6"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 5,
+    "closing_form_tier": 5,
+    "realm_band": "realm_5_6",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 7.3,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_5_guard",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_5_guard",
+    "name": "沉肩守线·5境",
+    "card_type": "defense",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "guard",
+    "gain": 0,
+    "break": 2,
+    "damage": 3,
+    "guard": 9,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 3
+      },
+      {
+        "type": "gain_block",
+        "value": 9
+      },
+      {
+        "type": "break_momentum",
+        "value": 2
+      }
+    ],
+    "tags": [
+      "late",
+      "spearman",
+      "defense",
+      "technique",
+      "realm_5_6"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 5,
+    "closing_form_tier": 5,
+    "realm_band": "realm_5_6",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 6.36,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_5_pressure",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_5_pressure",
+    "name": "压营断势·5境",
+    "card_type": "skill",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 2,
+    "min": 0,
+    "max": 4,
+    "role": "feint",
+    "gain": 1,
+    "break": 9,
+    "damage": 3,
+    "guard": 3,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 3
+      },
+      {
+        "type": "gain_block",
+        "value": 3
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 9
+      }
+    ],
+    "tags": [
+      "late",
+      "spearman",
+      "skill",
+      "technique",
+      "realm_5_6",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 5,
+    "closing_form_tier": 5,
+    "realm_band": "realm_5_6",
+    "dual_weapon_synergy_tag": "spear_to_blade",
+    "power_score": 6.55,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_5_finisher",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_5_finisher",
+    "name": "潮头追命·5境",
+    "card_type": "attack",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 2,
+    "min": 0,
+    "max": 4,
+    "role": "attack",
+    "gain": 0,
+    "break": 4,
+    "damage": 9,
+    "guard": 3,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 9
+      },
+      {
+        "type": "gain_block",
+        "value": 3
+      },
+      {
+        "type": "break_momentum",
+        "value": 4
+      }
+    ],
+    "tags": [
+      "late",
+      "spearman",
+      "attack",
+      "technique",
+      "realm_5_6",
+      "closing_form",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 5,
+    "closing_form_tier": 5,
+    "realm_band": "realm_5_6",
+    "dual_weapon_synergy_tag": "spear_to_blade",
+    "power_score": 7.11,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_6_strike",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_6_strike",
+    "name": "贯潮枪·6境",
+    "card_type": "attack",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 2,
+    "min": 0,
+    "max": 4,
+    "role": "attack",
+    "gain": 0,
+    "break": 3,
+    "damage": 12,
+    "guard": 4,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 12
+      },
+      {
+        "type": "gain_block",
+        "value": 4
+      },
+      {
+        "type": "break_momentum",
+        "value": 3
+      }
+    ],
+    "tags": [
+      "late",
+      "spearman",
+      "attack",
+      "technique",
+      "realm_5_6"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 6,
+    "closing_form_tier": 6,
+    "realm_band": "realm_5_6",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 8.13,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_6_guard",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_6_guard",
+    "name": "沉肩守线·6境",
+    "card_type": "defense",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "guard",
+    "gain": 0,
+    "break": 3,
+    "damage": 4,
+    "guard": 10,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 4
+      },
+      {
+        "type": "gain_block",
+        "value": 10
+      },
+      {
+        "type": "break_momentum",
+        "value": 3
+      }
+    ],
+    "tags": [
+      "late",
+      "spearman",
+      "defense",
+      "technique",
+      "realm_5_6"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 6,
+    "closing_form_tier": 6,
+    "realm_band": "realm_5_6",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 7.25,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_6_pressure",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_6_pressure",
+    "name": "压营断势·6境",
+    "card_type": "skill",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 2,
+    "min": 0,
+    "max": 4,
+    "role": "feint",
+    "gain": 1,
+    "break": 10,
+    "damage": 4,
+    "guard": 4,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 4
+      },
+      {
+        "type": "gain_block",
+        "value": 4
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 10
+      }
+    ],
+    "tags": [
+      "late",
+      "spearman",
+      "skill",
+      "technique",
+      "realm_5_6",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 6,
+    "closing_form_tier": 6,
+    "realm_band": "realm_5_6",
+    "dual_weapon_synergy_tag": "spear_to_blade",
+    "power_score": 7.43,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_6_finisher",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_6_finisher",
+    "name": "潮头追命·6境",
+    "card_type": "attack",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 2,
+    "min": 0,
+    "max": 4,
+    "role": "attack",
+    "gain": 0,
+    "break": 5,
+    "damage": 10,
+    "guard": 4,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 10
+      },
+      {
+        "type": "gain_block",
+        "value": 4
+      },
+      {
+        "type": "break_momentum",
+        "value": 5
+      }
+    ],
+    "tags": [
+      "late",
+      "spearman",
+      "attack",
+      "technique",
+      "realm_5_6",
+      "closing_form",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 6,
+    "closing_form_tier": 6,
+    "realm_band": "realm_5_6",
+    "dual_weapon_synergy_tag": "spear_to_blade",
+    "power_score": 7.96,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_7_strike",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_7_strike",
+    "name": "断潮重枪·7境",
+    "card_type": "attack",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 2,
+    "min": 0,
+    "max": 4,
+    "role": "attack",
+    "gain": 0,
+    "break": 4,
+    "damage": 13,
+    "guard": 5,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 13
+      },
+      {
+        "type": "gain_block",
+        "value": 5
+      },
+      {
+        "type": "break_momentum",
+        "value": 4
+      }
+    ],
+    "tags": [
+      "boss",
+      "spearman",
+      "attack",
+      "technique",
+      "realm_7"
+    ],
+    "difficulty_tier": "boss",
+    "required_wujing": 7,
+    "closing_form_tier": 7,
+    "realm_band": "realm_7",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 9.92,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_7_guard",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_7_guard",
+    "name": "大架封线·7境",
+    "card_type": "defense",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 1,
+    "min": 0,
+    "max": 4,
+    "role": "guard",
+    "gain": 0,
+    "break": 4,
+    "damage": 5,
+    "guard": 12,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 5
+      },
+      {
+        "type": "gain_block",
+        "value": 12
+      },
+      {
+        "type": "break_momentum",
+        "value": 4
+      }
+    ],
+    "tags": [
+      "boss",
+      "spearman",
+      "defense",
+      "technique",
+      "realm_7"
+    ],
+    "difficulty_tier": "boss",
+    "required_wujing": 7,
+    "closing_form_tier": 7,
+    "realm_band": "realm_7",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 9.45,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_7_pressure",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_7_pressure",
+    "name": "锁营夺势·7境",
+    "card_type": "skill",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 2,
+    "min": 0,
+    "max": 4,
+    "role": "feint",
+    "gain": 1,
+    "break": 12,
+    "damage": 5,
+    "guard": 5,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 5
+      },
+      {
+        "type": "gain_block",
+        "value": 5
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 12
+      }
+    ],
+    "tags": [
+      "boss",
+      "spearman",
+      "skill",
+      "technique",
+      "realm_7",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "boss",
+    "required_wujing": 7,
+    "closing_form_tier": 7,
+    "realm_band": "realm_7",
+    "dual_weapon_synergy_tag": "spear_to_blade",
+    "power_score": 9.55,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_spearman_7_finisher",
+    "id": "martial_realm_7_dual_weapon_v0_1_spearman_7_finisher",
+    "name": "贯心落潮·7境",
+    "card_type": "attack",
+    "weapon_style": "spearman",
+    "style": "枪",
+    "cost": 2,
+    "min": 0,
+    "max": 4,
+    "role": "attack",
+    "gain": 1,
+    "break": 4,
+    "damage": 12,
+    "guard": 5,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 12
+      },
+      {
+        "type": "gain_block",
+        "value": 5
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 4
+      }
+    ],
+    "tags": [
+      "boss",
+      "spearman",
+      "attack",
+      "technique",
+      "realm_7",
+      "closing_form",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "boss",
+    "required_wujing": 7,
+    "closing_form_tier": 7,
+    "realm_band": "realm_7",
+    "dual_weapon_synergy_tag": "spear_to_blade",
+    "power_score": 9.83,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_1_strike",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_1_strike",
+    "name": "贴步快斩·1境",
+    "card_type": "attack",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "attack",
+    "gain": 0,
+    "break": 0,
+    "damage": 5,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 5
+      }
+    ],
+    "tags": [
+      "early",
+      "blademaster",
+      "attack",
+      "technique",
+      "realm_1_2"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "realm_band": "realm_1_2",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 4.42,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_1_guard",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_1_guard",
+    "name": "藏锋格·1境",
+    "card_type": "defense",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "guard",
+    "gain": 0,
+    "break": 0,
+    "damage": 0,
+    "guard": 4,
+    "effects": [
+      {
+        "type": "gain_block",
+        "value": 4
+      }
+    ],
+    "tags": [
+      "early",
+      "blademaster",
+      "defense",
+      "technique",
+      "realm_1_2"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "realm_band": "realm_1_2",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 3.54,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_1_pressure",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_1_pressure",
+    "name": "逼身断势·1境",
+    "card_type": "skill",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "feint",
+    "gain": 0,
+    "break": 3,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "break_momentum",
+        "value": 3
+      }
+    ],
+    "tags": [
+      "early",
+      "blademaster",
+      "skill",
+      "technique",
+      "realm_1_2",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "realm_band": "realm_1_2",
+    "dual_weapon_synergy_tag": "blade_to_spear",
+    "power_score": 2.12,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_1_finisher",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_1_finisher",
+    "name": "贴身追斩·1境",
+    "card_type": "attack",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 2,
+    "min": 0,
+    "max": 2,
+    "role": "attack",
+    "gain": 1,
+    "break": 2,
+    "damage": 4,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 4
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 2
+      }
+    ],
+    "tags": [
+      "early",
+      "blademaster",
+      "attack",
+      "technique",
+      "realm_1_2",
+      "closing_form",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "realm_band": "realm_1_2",
+    "dual_weapon_synergy_tag": "blade_to_spear",
+    "power_score": 5.66,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_2_strike",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_2_strike",
+    "name": "贴步快斩·2境",
+    "card_type": "attack",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "attack",
+    "gain": 0,
+    "break": 0,
+    "damage": 5,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 5
+      }
+    ],
+    "tags": [
+      "early",
+      "blademaster",
+      "attack",
+      "technique",
+      "realm_1_2"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 2,
+    "closing_form_tier": 2,
+    "realm_band": "realm_1_2",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 3.9,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_2_guard",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_2_guard",
+    "name": "藏锋格·2境",
+    "card_type": "defense",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "guard",
+    "gain": 0,
+    "break": 0,
+    "damage": 0,
+    "guard": 4,
+    "effects": [
+      {
+        "type": "gain_block",
+        "value": 4
+      }
+    ],
+    "tags": [
+      "early",
+      "blademaster",
+      "defense",
+      "technique",
+      "realm_1_2"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 2,
+    "closing_form_tier": 2,
+    "realm_band": "realm_1_2",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 3.12,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_2_pressure",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_2_pressure",
+    "name": "逼身断势·2境",
+    "card_type": "skill",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "feint",
+    "gain": 0,
+    "break": 3,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "break_momentum",
+        "value": 3
+      }
+    ],
+    "tags": [
+      "early",
+      "blademaster",
+      "skill",
+      "technique",
+      "realm_1_2",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 2,
+    "closing_form_tier": 2,
+    "realm_band": "realm_1_2",
+    "dual_weapon_synergy_tag": "blade_to_spear",
+    "power_score": 2.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_2_finisher",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_2_finisher",
+    "name": "贴身追斩·2境",
+    "card_type": "attack",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 2,
+    "min": 0,
+    "max": 2,
+    "role": "attack",
+    "gain": 1,
+    "break": 2,
+    "damage": 4,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 4
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 2
+      }
+    ],
+    "tags": [
+      "early",
+      "blademaster",
+      "attack",
+      "technique",
+      "realm_1_2",
+      "closing_form",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 2,
+    "closing_form_tier": 2,
+    "realm_band": "realm_1_2",
+    "dual_weapon_synergy_tag": "blade_to_spear",
+    "power_score": 4.99,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_3_strike",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_3_strike",
+    "name": "追影斩·3境",
+    "card_type": "attack",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "attack",
+    "gain": 0,
+    "break": 0,
+    "damage": 7,
+    "guard": 1,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 7
+      },
+      {
+        "type": "gain_block",
+        "value": 1
+      }
+    ],
+    "tags": [
+      "mid",
+      "blademaster",
+      "attack",
+      "technique",
+      "realm_3_4"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 3,
+    "closing_form_tier": 3,
+    "realm_band": "realm_3_4",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 5.2,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_3_guard",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_3_guard",
+    "name": "折腕收锋·3境",
+    "card_type": "defense",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "guard",
+    "gain": 0,
+    "break": 0,
+    "damage": 1,
+    "guard": 6,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 1
+      },
+      {
+        "type": "gain_block",
+        "value": 6
+      }
+    ],
+    "tags": [
+      "mid",
+      "blademaster",
+      "defense",
+      "technique",
+      "realm_3_4"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 3,
+    "closing_form_tier": 3,
+    "realm_band": "realm_3_4",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 4.55,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_3_pressure",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_3_pressure",
+    "name": "贴身压势·3境",
+    "card_type": "skill",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "feint",
+    "gain": 0,
+    "break": 4,
+    "damage": 1,
+    "guard": 1,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 1
+      },
+      {
+        "type": "gain_block",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 4
+      }
+    ],
+    "tags": [
+      "mid",
+      "blademaster",
+      "skill",
+      "technique",
+      "realm_3_4",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 3,
+    "closing_form_tier": 3,
+    "realm_band": "realm_3_4",
+    "dual_weapon_synergy_tag": "blade_to_spear",
+    "power_score": 3.38,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_3_finisher",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_3_finisher",
+    "name": "欺身落刃·3境",
+    "card_type": "attack",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 2,
+    "min": 0,
+    "max": 2,
+    "role": "attack",
+    "gain": 1,
+    "break": 2,
+    "damage": 6,
+    "guard": 1,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 6
+      },
+      {
+        "type": "gain_block",
+        "value": 1
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 2
+      }
+    ],
+    "tags": [
+      "mid",
+      "blademaster",
+      "attack",
+      "technique",
+      "realm_3_4",
+      "closing_form",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 3,
+    "closing_form_tier": 3,
+    "realm_band": "realm_3_4",
+    "dual_weapon_synergy_tag": "blade_to_spear",
+    "power_score": 6.11,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_4_strike",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_4_strike",
+    "name": "追影斩·4境",
+    "card_type": "attack",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "attack",
+    "gain": 0,
+    "break": 1,
+    "damage": 8,
+    "guard": 2,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 8
+      },
+      {
+        "type": "gain_block",
+        "value": 2
+      },
+      {
+        "type": "break_momentum",
+        "value": 1
+      }
+    ],
+    "tags": [
+      "mid",
+      "blademaster",
+      "attack",
+      "technique",
+      "realm_3_4"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 4,
+    "closing_form_tier": 4,
+    "realm_band": "realm_3_4",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 6.46,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_4_guard",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_4_guard",
+    "name": "折腕收锋·4境",
+    "card_type": "defense",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "guard",
+    "gain": 0,
+    "break": 1,
+    "damage": 2,
+    "guard": 7,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 2
+      },
+      {
+        "type": "gain_block",
+        "value": 7
+      },
+      {
+        "type": "break_momentum",
+        "value": 1
+      }
+    ],
+    "tags": [
+      "mid",
+      "blademaster",
+      "defense",
+      "technique",
+      "realm_3_4"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 4,
+    "closing_form_tier": 4,
+    "realm_band": "realm_3_4",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 5.86,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_4_pressure",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_4_pressure",
+    "name": "贴身压势·4境",
+    "card_type": "skill",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "feint",
+    "gain": 0,
+    "break": 5,
+    "damage": 2,
+    "guard": 2,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 2
+      },
+      {
+        "type": "gain_block",
+        "value": 2
+      },
+      {
+        "type": "break_momentum",
+        "value": 5
+      }
+    ],
+    "tags": [
+      "mid",
+      "blademaster",
+      "skill",
+      "technique",
+      "realm_3_4",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 4,
+    "closing_form_tier": 4,
+    "realm_band": "realm_3_4",
+    "dual_weapon_synergy_tag": "blade_to_spear",
+    "power_score": 4.78,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_4_finisher",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_4_finisher",
+    "name": "欺身落刃·4境",
+    "card_type": "attack",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 2,
+    "min": 0,
+    "max": 2,
+    "role": "attack",
+    "gain": 1,
+    "break": 3,
+    "damage": 7,
+    "guard": 2,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 7
+      },
+      {
+        "type": "gain_block",
+        "value": 2
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 3
+      }
+    ],
+    "tags": [
+      "mid",
+      "blademaster",
+      "attack",
+      "technique",
+      "realm_3_4",
+      "closing_form",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 4,
+    "closing_form_tier": 4,
+    "realm_band": "realm_3_4",
+    "dual_weapon_synergy_tag": "blade_to_spear",
+    "power_score": 7.3,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_5_strike",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_5_strike",
+    "name": "断潮重斩·5境",
+    "card_type": "attack",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 2,
+    "min": 0,
+    "max": 2,
+    "role": "attack",
+    "gain": 0,
+    "break": 2,
+    "damage": 11,
+    "guard": 3,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 11
+      },
+      {
+        "type": "gain_block",
+        "value": 3
+      },
+      {
+        "type": "break_momentum",
+        "value": 2
+      }
+    ],
+    "tags": [
+      "late",
+      "blademaster",
+      "attack",
+      "technique",
+      "realm_5_6"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 5,
+    "closing_form_tier": 5,
+    "realm_band": "realm_5_6",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 7.3,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_5_guard",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_5_guard",
+    "name": "沉锋稳架·5境",
+    "card_type": "defense",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "guard",
+    "gain": 0,
+    "break": 2,
+    "damage": 3,
+    "guard": 9,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 3
+      },
+      {
+        "type": "gain_block",
+        "value": 9
+      },
+      {
+        "type": "break_momentum",
+        "value": 2
+      }
+    ],
+    "tags": [
+      "late",
+      "blademaster",
+      "defense",
+      "technique",
+      "realm_5_6"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 5,
+    "closing_form_tier": 5,
+    "realm_band": "realm_5_6",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 6.36,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_5_pressure",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_5_pressure",
+    "name": "逼命压锋·5境",
+    "card_type": "skill",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 2,
+    "min": 0,
+    "max": 2,
+    "role": "feint",
+    "gain": 1,
+    "break": 9,
+    "damage": 3,
+    "guard": 3,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 3
+      },
+      {
+        "type": "gain_block",
+        "value": 3
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 9
+      }
+    ],
+    "tags": [
+      "late",
+      "blademaster",
+      "skill",
+      "technique",
+      "realm_5_6",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 5,
+    "closing_form_tier": 5,
+    "realm_band": "realm_5_6",
+    "dual_weapon_synergy_tag": "blade_to_spear",
+    "power_score": 6.55,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_5_finisher",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_5_finisher",
+    "name": "断潮夺命·5境",
+    "card_type": "attack",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 2,
+    "min": 0,
+    "max": 2,
+    "role": "attack",
+    "gain": 0,
+    "break": 4,
+    "damage": 9,
+    "guard": 3,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 9
+      },
+      {
+        "type": "gain_block",
+        "value": 3
+      },
+      {
+        "type": "break_momentum",
+        "value": 4
+      }
+    ],
+    "tags": [
+      "late",
+      "blademaster",
+      "attack",
+      "technique",
+      "realm_5_6",
+      "closing_form",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 5,
+    "closing_form_tier": 5,
+    "realm_band": "realm_5_6",
+    "dual_weapon_synergy_tag": "blade_to_spear",
+    "power_score": 7.11,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_6_strike",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_6_strike",
+    "name": "断潮重斩·6境",
+    "card_type": "attack",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 2,
+    "min": 0,
+    "max": 2,
+    "role": "attack",
+    "gain": 0,
+    "break": 3,
+    "damage": 12,
+    "guard": 4,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 12
+      },
+      {
+        "type": "gain_block",
+        "value": 4
+      },
+      {
+        "type": "break_momentum",
+        "value": 3
+      }
+    ],
+    "tags": [
+      "late",
+      "blademaster",
+      "attack",
+      "technique",
+      "realm_5_6"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 6,
+    "closing_form_tier": 6,
+    "realm_band": "realm_5_6",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 8.13,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_6_guard",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_6_guard",
+    "name": "沉锋稳架·6境",
+    "card_type": "defense",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "guard",
+    "gain": 0,
+    "break": 3,
+    "damage": 4,
+    "guard": 10,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 4
+      },
+      {
+        "type": "gain_block",
+        "value": 10
+      },
+      {
+        "type": "break_momentum",
+        "value": 3
+      }
+    ],
+    "tags": [
+      "late",
+      "blademaster",
+      "defense",
+      "technique",
+      "realm_5_6"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 6,
+    "closing_form_tier": 6,
+    "realm_band": "realm_5_6",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 7.25,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_6_pressure",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_6_pressure",
+    "name": "逼命压锋·6境",
+    "card_type": "skill",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 2,
+    "min": 0,
+    "max": 2,
+    "role": "feint",
+    "gain": 1,
+    "break": 10,
+    "damage": 4,
+    "guard": 4,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 4
+      },
+      {
+        "type": "gain_block",
+        "value": 4
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 10
+      }
+    ],
+    "tags": [
+      "late",
+      "blademaster",
+      "skill",
+      "technique",
+      "realm_5_6",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 6,
+    "closing_form_tier": 6,
+    "realm_band": "realm_5_6",
+    "dual_weapon_synergy_tag": "blade_to_spear",
+    "power_score": 7.43,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_6_finisher",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_6_finisher",
+    "name": "断潮夺命·6境",
+    "card_type": "attack",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 2,
+    "min": 0,
+    "max": 2,
+    "role": "attack",
+    "gain": 0,
+    "break": 5,
+    "damage": 10,
+    "guard": 4,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 10
+      },
+      {
+        "type": "gain_block",
+        "value": 4
+      },
+      {
+        "type": "break_momentum",
+        "value": 5
+      }
+    ],
+    "tags": [
+      "late",
+      "blademaster",
+      "attack",
+      "technique",
+      "realm_5_6",
+      "closing_form",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 6,
+    "closing_form_tier": 6,
+    "realm_band": "realm_5_6",
+    "dual_weapon_synergy_tag": "blade_to_spear",
+    "power_score": 7.96,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_7_strike",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_7_strike",
+    "name": "裂波断首·7境",
+    "card_type": "attack",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 2,
+    "min": 0,
+    "max": 2,
+    "role": "attack",
+    "gain": 0,
+    "break": 4,
+    "damage": 13,
+    "guard": 5,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 13
+      },
+      {
+        "type": "gain_block",
+        "value": 5
+      },
+      {
+        "type": "break_momentum",
+        "value": 4
+      }
+    ],
+    "tags": [
+      "boss",
+      "blademaster",
+      "attack",
+      "technique",
+      "realm_7"
+    ],
+    "difficulty_tier": "boss",
+    "required_wujing": 7,
+    "closing_form_tier": 7,
+    "realm_band": "realm_7",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 9.92,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_7_guard",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_7_guard",
+    "name": "沉锋锁门·7境",
+    "card_type": "defense",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 1,
+    "min": 0,
+    "max": 2,
+    "role": "guard",
+    "gain": 0,
+    "break": 4,
+    "damage": 5,
+    "guard": 12,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 5
+      },
+      {
+        "type": "gain_block",
+        "value": 12
+      },
+      {
+        "type": "break_momentum",
+        "value": 4
+      }
+    ],
+    "tags": [
+      "boss",
+      "blademaster",
+      "defense",
+      "technique",
+      "realm_7"
+    ],
+    "difficulty_tier": "boss",
+    "required_wujing": 7,
+    "closing_form_tier": 7,
+    "realm_band": "realm_7",
+    "dual_weapon_synergy_tag": "",
+    "power_score": 9.45,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_7_pressure",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_7_pressure",
+    "name": "逼宫断势·7境",
+    "card_type": "skill",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 2,
+    "min": 0,
+    "max": 2,
+    "role": "feint",
+    "gain": 1,
+    "break": 12,
+    "damage": 5,
+    "guard": 5,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 5
+      },
+      {
+        "type": "gain_block",
+        "value": 5
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 12
+      }
+    ],
+    "tags": [
+      "boss",
+      "blademaster",
+      "skill",
+      "technique",
+      "realm_7",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "boss",
+    "required_wujing": 7,
+    "closing_form_tier": 7,
+    "realm_band": "realm_7",
+    "dual_weapon_synergy_tag": "blade_to_spear",
+    "power_score": 9.55,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_blademaster_7_finisher",
+    "id": "martial_realm_7_dual_weapon_v0_1_blademaster_7_finisher",
+    "name": "追潮绝斩·7境",
+    "card_type": "attack",
+    "weapon_style": "blademaster",
+    "style": "刀",
+    "cost": 2,
+    "min": 0,
+    "max": 2,
+    "role": "attack",
+    "gain": 1,
+    "break": 4,
+    "damage": 12,
+    "guard": 5,
+    "effects": [
+      {
+        "type": "damage",
+        "value": 12
+      },
+      {
+        "type": "gain_block",
+        "value": 5
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 4
+      }
+    ],
+    "tags": [
+      "boss",
+      "blademaster",
+      "attack",
+      "technique",
+      "realm_7",
+      "closing_form",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "boss",
+    "required_wujing": 7,
+    "closing_form_tier": 7,
+    "realm_band": "realm_7",
+    "dual_weapon_synergy_tag": "blade_to_spear",
+    "power_score": 9.83,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_generic_1_bridge",
+    "id": "martial_realm_7_dual_weapon_v0_1_generic_1_bridge",
+    "name": "转锋借势·1境",
+    "card_type": "skill",
+    "weapon_style": "generic",
+    "style": "杂",
+    "cost": 1,
+    "min": 0,
+    "max": 3,
+    "role": "feint",
+    "gain": 1,
+    "break": 2,
+    "damage": 0,
+    "guard": 2,
+    "effects": [
+      {
+        "type": "gain_block",
+        "value": 2
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 2
+      }
+    ],
+    "tags": [
+      "early",
+      "generic",
+      "skill",
+      "technique",
+      "realm_1_2",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "realm_band": "realm_1_2",
+    "dual_weapon_synergy_tag": "generic_bridge",
+    "power_score": 3.89,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_generic_1_focus",
+    "id": "martial_realm_7_dual_weapon_v0_1_generic_1_focus",
+    "name": "并势换手·1境",
+    "card_type": "skill",
+    "weapon_style": "generic",
+    "style": "杂",
+    "cost": 1,
+    "min": 0,
+    "max": 3,
+    "role": "feint",
+    "gain": 2,
+    "break": 1,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "gain_momentum",
+        "value": 2
+      },
+      {
+        "type": "break_momentum",
+        "value": 1
+      }
+    ],
+    "tags": [
+      "early",
+      "generic",
+      "skill",
+      "technique",
+      "realm_1_2",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 1,
+    "closing_form_tier": 1,
+    "realm_band": "realm_1_2",
+    "dual_weapon_synergy_tag": "finishing_form",
+    "power_score": 2.12,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_generic_2_bridge",
+    "id": "martial_realm_7_dual_weapon_v0_1_generic_2_bridge",
+    "name": "转锋借势·2境",
+    "card_type": "skill",
+    "weapon_style": "generic",
+    "style": "杂",
+    "cost": 1,
+    "min": 0,
+    "max": 3,
+    "role": "feint",
+    "gain": 1,
+    "break": 2,
+    "damage": 0,
+    "guard": 2,
+    "effects": [
+      {
+        "type": "gain_block",
+        "value": 2
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 2
+      }
+    ],
+    "tags": [
+      "early",
+      "generic",
+      "skill",
+      "technique",
+      "realm_1_2",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 2,
+    "closing_form_tier": 2,
+    "realm_band": "realm_1_2",
+    "dual_weapon_synergy_tag": "generic_bridge",
+    "power_score": 3.43,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_generic_2_focus",
+    "id": "martial_realm_7_dual_weapon_v0_1_generic_2_focus",
+    "name": "并势换手·2境",
+    "card_type": "skill",
+    "weapon_style": "generic",
+    "style": "杂",
+    "cost": 1,
+    "min": 0,
+    "max": 3,
+    "role": "feint",
+    "gain": 2,
+    "break": 1,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "gain_momentum",
+        "value": 2
+      },
+      {
+        "type": "break_momentum",
+        "value": 1
+      }
+    ],
+    "tags": [
+      "early",
+      "generic",
+      "skill",
+      "technique",
+      "realm_1_2",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "early",
+    "required_wujing": 2,
+    "closing_form_tier": 2,
+    "realm_band": "realm_1_2",
+    "dual_weapon_synergy_tag": "finishing_form",
+    "power_score": 2.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_generic_3_bridge",
+    "id": "martial_realm_7_dual_weapon_v0_1_generic_3_bridge",
+    "name": "转锋借势·3境",
+    "card_type": "skill",
+    "weapon_style": "generic",
+    "style": "杂",
+    "cost": 1,
+    "min": 0,
+    "max": 3,
+    "role": "feint",
+    "gain": 1,
+    "break": 2,
+    "damage": 0,
+    "guard": 2,
+    "effects": [
+      {
+        "type": "gain_block",
+        "value": 2
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 2
+      }
+    ],
+    "tags": [
+      "mid",
+      "generic",
+      "skill",
+      "technique",
+      "realm_3_4",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 3,
+    "closing_form_tier": 3,
+    "realm_band": "realm_3_4",
+    "dual_weapon_synergy_tag": "generic_bridge",
+    "power_score": 2.86,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_generic_3_focus",
+    "id": "martial_realm_7_dual_weapon_v0_1_generic_3_focus",
+    "name": "并势换手·3境",
+    "card_type": "skill",
+    "weapon_style": "generic",
+    "style": "杂",
+    "cost": 1,
+    "min": 0,
+    "max": 3,
+    "role": "feint",
+    "gain": 2,
+    "break": 1,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "gain_momentum",
+        "value": 2
+      },
+      {
+        "type": "break_momentum",
+        "value": 1
+      }
+    ],
+    "tags": [
+      "mid",
+      "generic",
+      "skill",
+      "technique",
+      "realm_3_4",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 3,
+    "closing_form_tier": 3,
+    "realm_band": "realm_3_4",
+    "dual_weapon_synergy_tag": "finishing_form",
+    "power_score": 2.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_generic_4_bridge",
+    "id": "martial_realm_7_dual_weapon_v0_1_generic_4_bridge",
+    "name": "转锋借势·4境",
+    "card_type": "skill",
+    "weapon_style": "generic",
+    "style": "杂",
+    "cost": 1,
+    "min": 0,
+    "max": 3,
+    "role": "feint",
+    "gain": 1,
+    "break": 2,
+    "damage": 0,
+    "guard": 3,
+    "effects": [
+      {
+        "type": "gain_block",
+        "value": 3
+      },
+      {
+        "type": "gain_momentum",
+        "value": 1
+      },
+      {
+        "type": "break_momentum",
+        "value": 2
+      }
+    ],
+    "tags": [
+      "mid",
+      "generic",
+      "skill",
+      "technique",
+      "realm_3_4",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 4,
+    "closing_form_tier": 4,
+    "realm_band": "realm_3_4",
+    "dual_weapon_synergy_tag": "generic_bridge",
+    "power_score": 3.23,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_generic_4_focus",
+    "id": "martial_realm_7_dual_weapon_v0_1_generic_4_focus",
+    "name": "并势换手·4境",
+    "card_type": "skill",
+    "weapon_style": "generic",
+    "style": "杂",
+    "cost": 1,
+    "min": 0,
+    "max": 3,
+    "role": "feint",
+    "gain": 2,
+    "break": 1,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "gain_momentum",
+        "value": 2
+      },
+      {
+        "type": "break_momentum",
+        "value": 1
+      }
+    ],
+    "tags": [
+      "mid",
+      "generic",
+      "skill",
+      "technique",
+      "realm_3_4",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "mid",
+    "required_wujing": 4,
+    "closing_form_tier": 4,
+    "realm_band": "realm_3_4",
+    "dual_weapon_synergy_tag": "finishing_form",
+    "power_score": 2.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_generic_5_bridge",
+    "id": "martial_realm_7_dual_weapon_v0_1_generic_5_bridge",
+    "name": "转锋借势·5境",
+    "card_type": "skill",
+    "weapon_style": "generic",
+    "style": "杂",
+    "cost": 1,
+    "min": 0,
+    "max": 3,
+    "role": "feint",
+    "gain": 2,
+    "break": 3,
+    "damage": 0,
+    "guard": 4,
+    "effects": [
+      {
+        "type": "gain_block",
+        "value": 4
+      },
+      {
+        "type": "gain_momentum",
+        "value": 2
+      },
+      {
+        "type": "break_momentum",
+        "value": 3
+      }
+    ],
+    "tags": [
+      "late",
+      "generic",
+      "skill",
+      "technique",
+      "realm_5_6",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 5,
+    "closing_form_tier": 5,
+    "realm_band": "realm_5_6",
+    "dual_weapon_synergy_tag": "generic_bridge",
+    "power_score": 3.74,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_generic_5_focus",
+    "id": "martial_realm_7_dual_weapon_v0_1_generic_5_focus",
+    "name": "并势换手·5境",
+    "card_type": "skill",
+    "weapon_style": "generic",
+    "style": "杂",
+    "cost": 1,
+    "min": 0,
+    "max": 3,
+    "role": "feint",
+    "gain": 3,
+    "break": 1,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "gain_momentum",
+        "value": 3
+      },
+      {
+        "type": "break_momentum",
+        "value": 1
+      }
+    ],
+    "tags": [
+      "late",
+      "generic",
+      "skill",
+      "technique",
+      "realm_5_6",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 5,
+    "closing_form_tier": 5,
+    "realm_band": "realm_5_6",
+    "dual_weapon_synergy_tag": "finishing_form",
+    "power_score": 2.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_generic_6_bridge",
+    "id": "martial_realm_7_dual_weapon_v0_1_generic_6_bridge",
+    "name": "转锋借势·6境",
+    "card_type": "skill",
+    "weapon_style": "generic",
+    "style": "杂",
+    "cost": 1,
+    "min": 0,
+    "max": 3,
+    "role": "feint",
+    "gain": 3,
+    "break": 4,
+    "damage": 0,
+    "guard": 5,
+    "effects": [
+      {
+        "type": "gain_block",
+        "value": 5
+      },
+      {
+        "type": "gain_momentum",
+        "value": 3
+      },
+      {
+        "type": "break_momentum",
+        "value": 4
+      }
+    ],
+    "tags": [
+      "late",
+      "generic",
+      "skill",
+      "technique",
+      "realm_5_6",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 6,
+    "closing_form_tier": 6,
+    "realm_band": "realm_5_6",
+    "dual_weapon_synergy_tag": "generic_bridge",
+    "power_score": 4.69,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_generic_6_focus",
+    "id": "martial_realm_7_dual_weapon_v0_1_generic_6_focus",
+    "name": "并势换手·6境",
+    "card_type": "skill",
+    "weapon_style": "generic",
+    "style": "杂",
+    "cost": 1,
+    "min": 0,
+    "max": 3,
+    "role": "feint",
+    "gain": 4,
+    "break": 2,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "gain_momentum",
+        "value": 4
+      },
+      {
+        "type": "break_momentum",
+        "value": 2
+      }
+    ],
+    "tags": [
+      "late",
+      "generic",
+      "skill",
+      "technique",
+      "realm_5_6",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "late",
+    "required_wujing": 6,
+    "closing_form_tier": 6,
+    "realm_band": "realm_5_6",
+    "dual_weapon_synergy_tag": "finishing_form",
+    "power_score": 2.12,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_generic_7_bridge",
+    "id": "martial_realm_7_dual_weapon_v0_1_generic_7_bridge",
+    "name": "转锋借势·7境",
+    "card_type": "skill",
+    "weapon_style": "generic",
+    "style": "杂",
+    "cost": 1,
+    "min": 0,
+    "max": 3,
+    "role": "feint",
+    "gain": 4,
+    "break": 5,
+    "damage": 0,
+    "guard": 6,
+    "effects": [
+      {
+        "type": "gain_block",
+        "value": 6
+      },
+      {
+        "type": "gain_momentum",
+        "value": 4
+      },
+      {
+        "type": "break_momentum",
+        "value": 5
+      }
+    ],
+    "tags": [
+      "boss",
+      "generic",
+      "skill",
+      "technique",
+      "realm_7",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "boss",
+    "required_wujing": 7,
+    "closing_form_tier": 7,
+    "realm_band": "realm_7",
+    "dual_weapon_synergy_tag": "generic_bridge",
+    "power_score": 6.18,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  },
+  {
+    "mechanic_profile_id": "martial_realm_7_dual_weapon_v0_1",
+    "content_pack_id": "martial_realm_7_dual_weapon_v0_1__formal_sequence_12_fast_v1__matrix_001",
+    "card_id": "martial_realm_7_dual_weapon_v0_1_generic_7_focus",
+    "id": "martial_realm_7_dual_weapon_v0_1_generic_7_focus",
+    "name": "并势换手·7境",
+    "card_type": "skill",
+    "weapon_style": "generic",
+    "style": "杂",
+    "cost": 1,
+    "min": 0,
+    "max": 3,
+    "role": "feint",
+    "gain": 5,
+    "break": 3,
+    "damage": 0,
+    "guard": 0,
+    "effects": [
+      {
+        "type": "gain_momentum",
+        "value": 5
+      },
+      {
+        "type": "break_momentum",
+        "value": 3
+      }
+    ],
+    "tags": [
+      "boss",
+      "generic",
+      "skill",
+      "technique",
+      "realm_7",
+      "dual_weapon"
+    ],
+    "difficulty_tier": "boss",
+    "required_wujing": 7,
+    "closing_form_tier": 7,
+    "realm_band": "realm_7",
+    "dual_weapon_synergy_tag": "finishing_form",
+    "power_score": 3.0,
+    "followup_group": "",
+    "followup_trigger": "",
+    "followup_bonus": {},
+    "followup_chain_role": "standalone"
+  }
+]

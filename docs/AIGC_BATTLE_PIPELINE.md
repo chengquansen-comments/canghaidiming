@@ -42,6 +42,43 @@ Godot 只读 `active_profile.json` 和 `runtime_manifest.json`。正式流程解
 
 v2 补 full sequence reward / progression closure。
 
+## R11：One-Click Acceptance Run
+
+- `R11` 是任何 pack 进入 candidate / release 流程前的统一实跑验收入口。
+- `acceptance run` 串行执行：`resolve -> validate -> export -> preview smoke -> evaluation -> risk -> restore -> report`。
+- `acceptance` 不允许 `set-current`。
+- `acceptance` 不允许 `activate-current`。
+- `acceptance` 不允许 `mark release candidate`。
+- `acceptance` 失败也必须 `restore current`。
+- `acceptance` 只接受 `pack_resolver` 中可解析的包。
+- 所有脚本必须串行执行，禁止并行。
+
+## R12：Candidate Promotion Gate
+
+- `R12` 在 `acceptance report + human review note` 之上建立 candidate promotion gate。
+- 任何 pack 想 `mark release candidate`，必须先满足：
+  - `acceptance_pass=true`
+  - `risk_level != fail`
+  - `acceptance_recommendation != reject`
+  - `human_review_note.status = accepted`
+  - `release gate policy pass`
+- promotion 只允许 `mark release candidate`，不允许 `set-current`，不允许 `activate-current`。
+- 没有 acceptance report、acceptance 失败、risk 为 `fail`、human review 缺失或不是 `accepted` 的 pack，都必须阻断 promotion。
+- `warning / needs_balance / reject` pack 不允许绕过 promotion gate 进入 release candidate。
+- promotion 必须写 `promotion report` 与 `promotion history`，并验证 `current_release` 与 `active_profile` 保持不变。
+- 所有脚本必须串行执行，禁止并行。
+
+## R13：Release Switch Console
+
+- `R13` 为已经通过 promotion gate 的 `release_candidate` 提供受控的 release switch console / CLI。
+- 只有 `release_candidate` 才能 `set-current`；`needs_balance`、缺 promotion report、缺 acceptance report 的 pack 一律不能切 current。
+- `set-current` 只能通过 release switch 工具写 `current_release.json` 与 `active_profile.json`，不允许手工修改。
+- `set-current` 后必须执行 formal entry smoke；如果 smoke 失败，必须自动 rollback。
+- `fallback_release` 只作为 rollback 目标，不允许被覆盖。
+- release switch 必须写 `release_switch_history` 与最新 switch report。
+- preview / acceptance / promotion 都是前置层，release switch 不允许绕过这些 gate。
+- 所有脚本必须串行执行，禁止并行。
+
 ## v2 奖励闭环
 
 v2 目标是 `full sequence reward / progression closure`：
@@ -238,3 +275,174 @@ v2 目标是 `full sequence reward / progression closure`：
 - 输出 `matrix_build_report`、`matrix_evaluation_report`、`matrix_release_strategy`。
 - current release 保持 `weapon_followup_v0_1 / weapon_followup_balance_release_007 / formal_sequence_15_v1` 不变。
 - matrix pack 只进入 `matrix_review` / `review` 观察层，不自动 set-current，不自动 activate。
+
+## R8：Playable Content Hardening
+
+- R8 从 R7 的 matrix strategy 中选出 `fast-run` 与 `bossrush` 两个方向，对 `weapon_followup` 做 playable hardening。
+- hardening source 分别是 `weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001` 与 `weapon_followup_v0_1__bossrush_9_v1__matrix_001`。
+- hardening target 分别生成 `...__hardened_00x` pack，要求经过 evaluate / snapshot / recommendation / conflict resolve / build / validate / export / smoke 的完整串行链路。
+- `fast` 目标关注 `win_rate`、`avg_turn_count<=7.0`、`too_hard<=4`、`too_long<=4`、`weapon_followup_trigger_rate>=0.60`。
+- `bossrush` 目标关注 `win_rate`、`avg_turn_count<=8.0`、`too_hard<=4`、`too_long<=4`、`reward_mismatch<=2`、`weapon_followup_trigger_rate>=0.70`。
+- 只有 `target_gate_pass=true` 且 `smoke_pass=true` 时，hardened candidate 才允许 mark release candidate。
+- R8 不自动 set-current，不自动 activate-current；current release 必须继续保持 `weapon_followup_v0_1 / weapon_followup_balance_release_007 / formal_sequence_15_v1 / balance_release_007`。
+- fallback release 继续保持 `posture_opening_pressure_v0_1`，不能用来掩盖 hardened candidate 失败。
+- dashboard / review / resolver 需要显示 `playable_hardening`、`hardening_target`、`source_matrix_pack_id`、`target_gate_pass`、`smoke_pass` 与 hardening strategy。
+- 所有 hardening build / evaluate / smoke / probe 都必须串行执行，禁止并行。
+
+## R9：AI Content Studio
+
+- R9 将已有 offline LLM candidate import 升级为 AI Content Studio，覆盖 `prompt / candidate batch / dedupe / quality score / multi-pack build / compare`。
+- Prompt Studio 只导出 prompt 与 schema，不联网，不读取 API key，不调用在线模型。
+- LLM 或外部生成器只能写 `candidates JSONL`，不能写 `runtime_manifest`、`active_profile` 或 Godot 代码。
+- candidate 必须先经过 `import / validate / dedupe / quality score / diff / build / export / review`，不能绕过 validator / release gate。
+- AI Studio 默认构建 `fast repair`、`bossrush repair`、`mechanic showcase` 三类 candidate pack variants，并进入 `ai_studio_review`。
+- candidate pack compare 只做轻量 evaluation 与排序，不自动 mark release candidate，不自动 set-current。
+- online adapter 只保留 guarded stub：
+  - `online_llm_adapter_supported=false`
+  - `offline_mode_default=true`
+  - `online_mode_requires_explicit_future_config=true`
+  - `llm_never_writes_runtime_manifest=true`
+  - `llm_never_writes_active_profile=true`
+- current release 必须继续保持 `weapon_followup_v0_1 / weapon_followup_balance_release_007 / formal_sequence_15_v1 / balance_release_007`。
+- 所有 AI Studio import / score / build / validate / export / probe 都必须串行执行，禁止并行。
+
+## R10：Preview Runtime Control
+
+- R10 新增 preview channel，用于策划临时试跑 `review / matrix_review / ai_studio_review / release_candidate / fallback / current` pack。
+- preview 只允许写 `preview_profile.json` 与 `preview_history.jsonl`，不允许修改 `current_release.json` 或 `fallback_release.json`。
+- preview pack 必须先通过 `pack_resolver` 校验，且必须存在 `validation_report`、`runtime_manifest`、`ready_for_runtime_export=true`。
+- preview smoke 必须检查：
+  - generated loadout 数量匹配预期 encounter 数量
+  - `fallback_loadout_count=0`
+  - reward coverage 完整
+  - runtime manifest / pack identity 可读
+- preview smoke 默认在完成后 restore current；preview 失败也必须 restore current。
+- dashboard / CLI 都复用同一套 preview 校验与 restore 逻辑，不单独写旁路逻辑。
+- current release 继续保持 `weapon_followup_v0_1 / weapon_followup_balance_release_007 / formal_sequence_15_v1 / balance_release_007` 不变。
+- 所有 preview / smoke / restore / probe 必须串行执行，禁止并行。
+
+## R14：Production Contract Freeze
+
+- R14 冻结生产契约，不新增机制、不新增模板、不生成新 gameplay pack、不切 current。
+- 冻结产物包括：
+  - `schema_manifest.json`
+  - `generated_file_policy.json`
+  - `minimal_acceptance_command.json`
+  - `deprecated_probe_inventory.json`
+  - `docs/AIGC_BATTLE_PRODUCTION_CONTRACT.md`
+- 后续任何 pack 晋级都必须继续走：
+  - `build -> validate -> export -> preview -> acceptance -> human review -> promotion -> release switch -> smoke -> rollback`
+- `runtime_manifest` 不允许直接写；`current_release.json` 不允许直接写；`active_profile.json` 不允许并行脚本竞争写入。
+- `acceptance -> human review -> promotion -> release switch` 现在是唯一合法晋级链路。
+- production contract API 只读暴露 schema / generated file policy / minimal acceptance / deprecated probes，用于审计和收口。
+- 所有 active_profile / current_release 相关脚本必须串行执行，禁止并行。
+
+## R15：Single Candidate Release Drill
+
+- R15 只选择一个 `formal_sequence_12_fast_v1` 的非 current fast-run 包，验证它能否走完生产链路。
+- 默认 source 优先级：
+  - `r9_fast_candidate_pack_001`
+  - `weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_013`
+  - `weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001`
+- R15 目标 pack 使用 `weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_00x` 命名，不覆盖 existing / frozen / archived pack。
+- R15 默认只做 `dry-run release switch`，不实际 `set-current`；只有显式传 `--allow-actual-switch` 才允许真实切换。
+- R15 合并并串行执行：
+  - build
+  - validate
+  - export
+  - preview smoke
+  - acceptance
+  - human review
+  - promotion
+  - dry-run switch
+  - rollback dry-run
+- R15 必须遵守 R14 生产契约，不能直接写 `runtime_manifest`、`current_release`、`active_profile`。
+- R15 的目标不是替换 current，而是证明一个非 current 包能够进入 `release_candidate` 并具备可切换性。
+- 所有脚本必须串行执行，禁止并行。
+
+## R16：Release Landing & Gameplay Verification
+
+- R16 将 R15 产出的 fast-run release candidate 真正切为 `current release`。
+- 当前目标包固定为：
+  - `weapon_followup_v0_1 / weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005 / formal_sequence_12_fast_v1 / release_drill_005`
+- R16 合并并串行执行：
+  - pre-switch acceptance
+  - dry-run set-current
+  - actual set-current
+  - formal entry smoke
+  - gameplay entry verification
+  - post-switch acceptance
+  - rollback previous / fallback dry-run
+- R16 成功后，`current_release` 与 `active_profile` 必须都指向 `release_drill_005`。
+- 若 set-current / smoke / post-switch acceptance 任一失败，必须立即 rollback previous current。
+- `fallback_release` 不允许被覆盖。
+- R16 不新增机制、不新增模板、不修改 scene、不修改 battle core。
+- 所有脚本必须串行执行，禁止并行。
+
+## R17：Production Closeout
+
+- R17 不再扩功能，只做最终生产收口。
+- 当前正式 current 固定为：
+  - `weapon_followup_v0_1 / weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005 / formal_sequence_12_fast_v1 / release_drill_005`
+- 当前正式 sequence template 为 `formal_sequence_12_fast_v1`，正式战斗数为 `12`。
+- `weapon_followup_balance_release_007` 现在是 previous current / rollback candidate，不再显示为 active current。
+- `fallback_release` 继续保持 `posture_opening_pressure_v0_1 / posture_opening_pressure_v0_1_formal_sequence_pack_001`。
+- R17 只做四件事：
+  - 修正 resolver / dashboard 状态一致性
+  - 清理 R14 标记的 `local_cleanable` 安全临时项
+  - 更新 production contract / pipeline 文档
+  - 跑最终生产验收并封版当前 AIGC Battle 生产链路
+- R17 不新增机制、不新增模板、不生成新 gameplay pack、不切 current、不改 scene、不改 battle core。
+- 所有 `active_profile / current_release / preview / release switch` 相关脚本仍必须串行执行，禁止并行。
+- R17 之后不再继续 R 系列功能扩张；后续建议转入：
+  - 玩家体验调优
+  - 线索破防机制实装
+  - 七境双武器正式玩法
+  - AI 内容质量提升
+
+## D1：Dashboard Display Logic Polish
+
+- D1 只做 dashboard 展示逻辑优化，不新增生产能力，不新增 pack，不切 current。
+- dashboard 首屏必须明确显示当前正式运行包：
+  - `weapon_followup_v0_1 / weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005 / formal_sequence_12_fast_v1 / release_drill_005`
+- dashboard 必须统一展示：
+  - `current`
+  - `previous_current`
+  - `fallback`
+  - `release_candidate`
+  - `ready_for_review`
+  - `needs_balance`
+  - `ai_studio_review`
+  - `matrix_review`
+- `weapon_followup_balance_release_007` 必须显示为 previous current / rollback candidate。
+- `r9_fast_candidate_pack_001` 必须继续显示为 `needs_balance / warning / 非 release-ready`。
+- D1 只增加只读展示与只读 API，不新增任何 dashboard 写操作。
+
+## D2：Dashboard Interaction Closeout
+
+- D2 已补齐搜索、状态筛选、详情联动、复制 pack_id、Reports 折叠。
+- Dashboard 仍保持只读，不提供 current / preview / promotion / release switch 写操作。
+- Dashboard 优化线阶段性收口。
+
+## D3：Dashboard Overview Merge & Filters
+
+- D3 已把 Pack 列表与 Pack 对比收口到“总览”唯一主表。
+- D3 新增 `profileStatus / Profile / Template` 三个本地筛选，并支持与搜索组合过滤。
+
+## D4：Dashboard Selection State Unification + Legacy Compare Removal
+
+- D4 已完成 Dashboard 单一 `selected pack` 状态源收口。
+- 总览选择现在会同步运行态 / 审核 / 卡池 / 卡组 / 详情 / Timeline / Risk。
+- 点击 Current / Active 可回到当前正式包。
+- 旧 Pack Compare 兼容占位已删除，Dashboard 仍保持只读，不提供 current / preview / promotion / release switch 写操作。
+
+## A3：Dashboard Top-Level Tab Reorganization
+
+- Dashboard 一级页签已调整为：`总览 / 运行态 / Pack 详情 / 时间线与风险 / 管理动作`。
+- 管理动作页仍默认只读，使用 `--admin-write` 启动后才启用按钮。
+- 所有写操作仍只走 `/api/admin/*`，Dashboard 不直接写 `current_release / active_profile / runtime_manifest`。
+
+## A4：Pack Content Drilldown
+
+- Dashboard 新增 `Pack 内容` 一级页签，用于查看 selected pack 的战斗序列、每场战斗、敌人卡组、奖励与总卡池。
+- `Pack 内容` 页只读，不提供写操作；管理动作仍集中在 `管理动作` 页签。

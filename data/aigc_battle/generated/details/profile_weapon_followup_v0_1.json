@@ -2,8 +2,8 @@
   "mechanic_profile_id": "weapon_followup_v0_1",
   "display_name": "武器追击机制",
   "version": "0.1.0",
-  "content_pack_count": 22,
-  "active_pack_id": "weapon_followup_balance_release_007",
+  "content_pack_count": 49,
+  "active_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
   "resources": [
     "hp",
     "posture",
@@ -167,14 +167,34 @@
   "replacement_mode": "full_sequence",
   "content_recipe_id": "weapon_followup_formal_sequence_recipe",
   "validation_gate_summary": {
-    "ready_packs": 22,
-    "total_packs": 22,
-    "active_pack_id": "weapon_followup_balance_release_007"
+    "ready_packs": 45,
+    "total_packs": 49,
+    "active_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005"
   },
   "profile_pack_list": [
     {
       "content_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
       "pack_storage_mode": "profile_root",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "r9_bossrush_candidate_pack_001",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "r9_fast_candidate_pack_001",
+      "pack_storage_mode": "profile_pack_dir",
       "is_active_pack": false,
       "ready_for_runtime_export": true,
       "sequence_balance_pass": true,
@@ -285,7 +305,7 @@
     {
       "content_pack_id": "weapon_followup_balance_release_007",
       "pack_storage_mode": "profile_pack_dir",
-      "is_active_pack": true,
+      "is_active_pack": false,
       "ready_for_runtime_export": true,
       "sequence_balance_pass": true,
       "runtime_primitives": [
@@ -324,6 +344,76 @@
     },
     {
       "content_pack_id": "weapon_followup_real_rebuild_001",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_001",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_002",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_003",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_004",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_005",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_006",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__bossrush_9_v1__hardened_007",
       "pack_storage_mode": "profile_pack_dir",
       "is_active_pack": false,
       "ready_for_runtime_export": true,
@@ -373,6 +463,136 @@
       ]
     },
     {
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_001",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": false,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_002",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": false,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_003",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": false,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_004",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": false,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_005",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_006",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_007",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_008",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_009",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_010",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_011",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_012",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__hardened_013",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
       "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__matrix_001",
       "pack_storage_mode": "profile_pack_dir",
       "is_active_pack": false,
@@ -386,6 +606,56 @@
       "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__portfolio_001",
       "pack_storage_mode": "profile_pack_dir",
       "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_001",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_002",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_003",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_004",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "weapon_followup"
+      ]
+    },
+    {
+      "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": true,
       "ready_for_runtime_export": true,
       "sequence_balance_pass": true,
       "runtime_primitives": [

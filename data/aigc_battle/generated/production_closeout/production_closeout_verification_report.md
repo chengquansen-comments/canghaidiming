@@ -1,0 +1,23 @@
+# Production Closeout Verification Report
+
+- generated_at: `2026-05-13T00:45:41.330256+00:00`
+- production_closeout_ready: `True`
+- resolver_channel_consistency_fixed: `True`
+- current_release_marker_correct: `True`
+- previous_current_marker_correct: `True`
+- fallback_release_marker_correct: `True`
+- warning_pack_still_blocked: `True`
+- final_current_acceptance_pass: `True`
+- final_current_smoke_pass: `True`
+- final_preview_restore_pass: `True`
+- final_promotion_negative_cases_pass: `True`
+- final_release_rollback_pass: `True`
+- active_profile_matches_current_release: `True`
+- fallback_release_unchanged: `True`
+- current_release_is_release_drill_005: `True`
+- current_landed_pack: `weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005`
+- current_sequence_template: `formal_sequence_12_fast_v1`
+- current_encounter_count: `12`
+- previous_current_pack: `weapon_followup_balance_release_007`
+- final_acceptance_status: `pass`
+- report_ready: `True`

@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-05-12T09:01:32.714493+00:00",
+  "ai_content_studio_ready": true,
+  "prompt_studio_ready": true,
+  "candidate_batch_import_ready": true,
+  "candidate_dedup_ready": true,
+  "candidate_grouping_ready": true,
+  "candidate_versioning_ready": true,
+  "candidate_quality_score_ready": true,
+  "candidate_batch_build_ready": true,
+  "multi_candidate_pack_build_ready": true,
+  "candidate_pack_compare_ready": true,
+  "invalid_candidate_rejected": true,
+  "duplicate_candidate_detected": true,
+  "online_llm_adapter_guarded_stub_ready": true,
+  "dashboard_ai_studio_ready": true,
+  "current_release_unchanged": true,
+  "active_profile_matches_current_release": true,
+  "probe_pass": true
+}

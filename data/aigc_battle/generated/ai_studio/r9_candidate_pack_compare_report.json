@@ -1,0 +1,71 @@
+{
+  "generated_at": "2026-05-12T09:01:28.286943+00:00",
+  "batch_id": "r9_probe_batch_001",
+  "compared_pack_count": 3,
+  "evaluated_pack_count": 3,
+  "best_candidate_pack": {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "sequence_template_id": "bossrush_9_v1",
+    "content_pack_id": "r9_bossrush_candidate_pack_001"
+  },
+  "fastest_candidate_pack": {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "sequence_template_id": "bossrush_9_v1",
+    "content_pack_id": "r9_bossrush_candidate_pack_001"
+  },
+  "safest_candidate_pack": {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "sequence_template_id": "bossrush_9_v1",
+    "content_pack_id": "r9_bossrush_candidate_pack_001"
+  },
+  "highest_mechanic_fit_pack": {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "sequence_template_id": "bossrush_9_v1",
+    "content_pack_id": "r9_bossrush_candidate_pack_001"
+  },
+  "candidate_packs_needing_balance": [],
+  "candidate_packs_ready_for_review": [
+    "r9_fast_candidate_pack_001",
+    "r9_bossrush_candidate_pack_001",
+    "r9_showcase_candidate_pack_001"
+  ],
+  "candidate_pack_compare_ready": true,
+  "rows": [
+    {
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "content_pack_id": "r9_fast_candidate_pack_001",
+      "total_encounter_count": 12,
+      "evaluation_event_count": 24,
+      "win_rate": 0.375,
+      "avg_turn_count": 9.375,
+      "avg_player_hp_end": 4.2917,
+      "runtime_primitive_trigger_rate": 1.0,
+      "mechanic_trigger_rate": 1.0
+    },
+    {
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "content_pack_id": "r9_bossrush_candidate_pack_001",
+      "total_encounter_count": 9,
+      "evaluation_event_count": 18,
+      "win_rate": 0.4444,
+      "avg_turn_count": 8.8889,
+      "avg_player_hp_end": 7.1667,
+      "runtime_primitive_trigger_rate": 1.0,
+      "mechanic_trigger_rate": 1.0
+    },
+    {
+      "mechanic_profile_id": "clue_pressure_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "content_pack_id": "r9_showcase_candidate_pack_001",
+      "total_encounter_count": 9,
+      "evaluation_event_count": 18,
+      "win_rate": 0.3889,
+      "avg_turn_count": 11.0,
+      "avg_player_hp_end": 7.2222,
+      "runtime_primitive_trigger_rate": 1.0,
+      "mechanic_trigger_rate": 1.0
+    }
+  ]
+}

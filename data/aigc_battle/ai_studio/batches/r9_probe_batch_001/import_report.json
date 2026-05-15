@@ -1,0 +1,29 @@
+{
+  "batch_id": "r9_probe_batch_001",
+  "input_candidate_count": 16,
+  "accepted_candidate_count": 13,
+  "rejected_candidate_count": 3,
+  "accepted_by_type": {
+    "card_candidate": 4,
+    "deck_candidate": 3,
+    "reward_candidate": 3,
+    "battle_slot_candidate": 3
+  },
+  "rejected_by_type": {
+    "card_candidate": 2,
+    "reward_candidate": 1
+  },
+  "rejection_reasons": {
+    "unsupported_effect_rejected": 1,
+    "required_wujing_realm_invalid": 1,
+    "closing_form_tier_realm_invalid": 1,
+    "unsafe_field_rejected": 1,
+    "path_traversal_field": 1
+  },
+  "unsafe_field_rejected": 1,
+  "unsupported_effect_rejected": 1,
+  "realm_invalid_rejected": 2,
+  "ready_for_quality_score": true,
+  "accepted_candidates_path": "data/aigc_battle/ai_studio/batches/r9_probe_batch_001/accepted_candidates.jsonl",
+  "rejected_candidates_path": "data/aigc_battle/ai_studio/batches/r9_probe_batch_001/rejected_candidates.jsonl"
+}

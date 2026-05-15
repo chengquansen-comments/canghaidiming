@@ -17,7 +17,7 @@
     },
     "stage_counts": {},
     "template_mechanic_pack_binding_valid": true,
-    "is_active_pack": true,
+    "is_active_pack": false,
     "pack_storage_mode": "profile_pack_dir",
     "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_007/runtime_manifest.json",
     "target_sequence_id": "formal_sequence_mvp_v1",
@@ -8414,7 +8414,7 @@
   "balance_release_summary": {
     "balance_release": true,
     "source_pack_id": "weapon_followup_v0_1_formal_sequence_pack_001",
-    "current_release_is_balanced": true,
+    "current_release_is_balanced": false,
     "balance_evaluation_summary": {
       "playable_balance_gate_pass": true,
       "absolute_win_rate_still_low": false,
@@ -8455,6 +8455,67 @@
       "max_delta": 0.0
     }
   },
+  "playable_hardening_summary": {},
+  "ai_studio_summary": {},
+  "release_drill_summary": {
+    "release_drill_pack": false,
+    "release_drill_source_pack_id": "",
+    "release_drill_acceptance_status": "",
+    "release_drill_promotion_status": "release_candidate",
+    "release_drill_dry_run_switch_status": false,
+    "release_drill_report_path": "",
+    "warning_accepted_by_probe": false
+  },
+  "release_landing_summary": {
+    "release_landing_current": false,
+    "landed_from_release_drill": false,
+    "previous_current_pack_id": "",
+    "new_current_pack_id": "",
+    "release_landing_report_path": "",
+    "gameplay_entry_verified": false,
+    "warning_current": false,
+    "warning_current_allowed": false
+  },
+  "preview_summary": {
+    "previewable": true,
+    "preview_source_channel": "",
+    "preview_status": "idle",
+    "last_preview_smoke_pass": false,
+    "preview_smoke_report_path": "data/aigc_battle/generated/preview_runtime/preview_smoke_report.json"
+  },
+  "acceptance_summary": {
+    "latest_acceptance_report_path": "data/aigc_battle/acceptance/weapon_followup_v0_1__weapon_followup_balance_release_007__acceptance_report.json",
+    "latest_acceptance_pass": true,
+    "latest_acceptance_risk_level": "pass",
+    "latest_acceptance_recommendation": "current_reference_pass",
+    "acceptance_required_before_candidate": true
+  },
+  "promotion_summary": {
+    "latest_promotion_report_path": "data/aigc_battle/promotion/weapon_followup_v0_1__weapon_followup_balance_release_007__promotion_report.json",
+    "human_review_status": "accepted",
+    "human_review_note_path": "data/aigc_battle/promotion/human_review_notes/weapon_followup_v0_1__weapon_followup_balance_release_007.json",
+    "promotion_allowed": true,
+    "release_candidate_status": true,
+    "acceptance_required_before_promotion": true,
+    "human_review_required_before_promotion": true,
+    "release_switch_allowed": true,
+    "release_candidate_valid": true,
+    "latest_release_switch_report_path": "",
+    "can_set_current": true,
+    "can_rollback": false,
+    "current_release_marker": false,
+    "previous_current_marker": true,
+    "fallback_release_marker": false,
+    "resolver_channel_consistency_valid": true
+  },
+  "production_contract_summary": {
+    "production_contract_ready": true,
+    "schema_manifest_path": "data/aigc_battle/production_contract/schema_manifest.json",
+    "generated_file_policy_path": "data/aigc_battle/production_contract/generated_file_policy.json",
+    "minimal_acceptance_command_path": "data/aigc_battle/production_contract/minimal_acceptance_command.json",
+    "deprecated_probe_inventory_path": "data/aigc_battle/production_contract/deprecated_probe_inventory.json",
+    "production_contract_doc_path": "docs/AIGC_BATTLE_PRODUCTION_CONTRACT.md"
+  },
   "review_report_path": "data/aigc_battle/generated/review/review_report_weapon_followup_v0_1__weapon_followup_balance_release_007.md",
   "review_notes_summary": {
     "mechanic_profile_id": "weapon_followup_v0_1",
@@ -8482,27 +8543,27 @@
   "candidate_diff_summary": {},
   "candidate_rejection_summary": {},
   "ai_pack_ready_for_review": false,
-  "release_status": "active",
+  "release_status": "release_candidate",
   "frozen": true,
-  "release_candidate": false,
-  "active_release": true,
+  "release_candidate": true,
+  "active_release": false,
   "archived": false,
-  "rollback_available": true,
+  "rollback_available": false,
   "suggested_git_commands": {
     "suggested_git_commit_command": "git commit -am \"release: weapon_followup_v0_1__weapon_followup_balance_release_007\"",
     "suggested_git_tag_command": "git tag aigc-release/weapon_followup_v0_1__weapon_followup_balance_release_007"
   },
   "active_history_summary": {
-    "switch_count": 7,
+    "switch_count": 74,
     "latest_switch": {
-      "timestamp": "2026-05-11T12:29:43.249458Z",
+      "timestamp": "2026-05-12T13:24:18.866842Z",
       "previous_profile_id": "weapon_followup_v0_1",
-      "previous_content_pack_id": "weapon_followup_balance_release_007",
-      "previous_runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_007/runtime_manifest.json",
+      "previous_content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+      "previous_runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json",
       "next_profile_id": "weapon_followup_v0_1",
       "next_content_pack_id": "weapon_followup_balance_release_007",
       "next_runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_balance_release_007/runtime_manifest.json",
-      "switch_source": "release_channel_current",
+      "switch_source": "preview_restore",
       "dry_run": false
     }
   },

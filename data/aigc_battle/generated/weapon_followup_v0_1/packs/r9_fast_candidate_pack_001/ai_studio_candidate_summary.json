@@ -1,0 +1,12 @@
+{
+  "candidate_batch_id": "r9_probe_batch_001",
+  "selected_candidate_ids": [
+    "r9_fast_card_001",
+    "r9_fast_deck_001",
+    "r9_fast_reward_001",
+    "r9_fast_slot_001"
+  ],
+  "selected_candidate_count": 4,
+  "deterministic_fill_used": true,
+  "ai_studio_variant_type": "fast"
+}

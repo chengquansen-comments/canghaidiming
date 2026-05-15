@@ -2,7 +2,7 @@
   "mechanic_profile_id": "clue_pressure_v0_1",
   "display_name": "线索破防机制",
   "version": "0.1.0",
-  "content_pack_count": 4,
+  "content_pack_count": 5,
   "active_pack_id": "",
   "resources": [
     "hp",
@@ -246,8 +246,8 @@
   "replacement_mode": "full_sequence",
   "content_recipe_id": "clue_pressure_v0_1_formal_sequence_recipe",
   "validation_gate_summary": {
-    "ready_packs": 4,
-    "total_packs": 4,
+    "ready_packs": 5,
+    "total_packs": 5,
     "active_pack_id": ""
   },
   "profile_pack_list": [
@@ -283,6 +283,16 @@
     },
     {
       "content_pack_id": "clue_pressure_v0_1__formal_sequence_15_v1__matrix_001",
+      "pack_storage_mode": "profile_pack_dir",
+      "is_active_pack": false,
+      "ready_for_runtime_export": true,
+      "sequence_balance_pass": true,
+      "runtime_primitives": [
+        "clue_pressure"
+      ]
+    },
+    {
+      "content_pack_id": "r9_showcase_candidate_pack_001",
       "pack_storage_mode": "profile_pack_dir",
       "is_active_pack": false,
       "ready_for_runtime_export": true,

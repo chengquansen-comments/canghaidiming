@@ -1,0 +1,41 @@
+{
+  "batch_id": "r9_probe_batch_001",
+  "requested_variant_count": 3,
+  "built_variant_count": 3,
+  "validated_variant_count": 3,
+  "exported_variant_count": 3,
+  "failed_variant_count": 0,
+  "built_variants": [
+    {
+      "content_pack_id": "r9_fast_candidate_pack_001",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "formal_sequence_12_fast_v1",
+      "deterministic_fill_used": true,
+      "selected_candidate_count": 4,
+      "generated_dir": "data/aigc_battle/generated/weapon_followup_v0_1/packs/r9_fast_candidate_pack_001"
+    },
+    {
+      "content_pack_id": "r9_bossrush_candidate_pack_001",
+      "mechanic_profile_id": "weapon_followup_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "deterministic_fill_used": true,
+      "selected_candidate_count": 4,
+      "generated_dir": "data/aigc_battle/generated/weapon_followup_v0_1/packs/r9_bossrush_candidate_pack_001"
+    },
+    {
+      "content_pack_id": "r9_showcase_candidate_pack_001",
+      "mechanic_profile_id": "clue_pressure_v0_1",
+      "sequence_template_id": "bossrush_9_v1",
+      "deterministic_fill_used": true,
+      "selected_candidate_count": 4,
+      "generated_dir": "data/aigc_battle/generated/clue_pressure_v0_1/packs/r9_showcase_candidate_pack_001"
+    }
+  ],
+  "deterministic_fill_used_by_pack": {
+    "r9_fast_candidate_pack_001": true,
+    "r9_bossrush_candidate_pack_001": true,
+    "r9_showcase_candidate_pack_001": true
+  },
+  "candidate_source_trace_ready": true,
+  "ai_studio_pack_build_ready": true
+}

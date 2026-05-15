@@ -19,3 +19,4 @@
 - clue_pressure_v0_1__bossrush_9_v1__matrix_001 | mode=profile_pack_dir | active=false | export=true
 - clue_pressure_v0_1__formal_sequence_12_fast_v1__matrix_001 | mode=profile_pack_dir | active=false | export=true
 - clue_pressure_v0_1__formal_sequence_15_v1__matrix_001 | mode=profile_pack_dir | active=false | export=true
+- r9_showcase_candidate_pack_001 | mode=profile_pack_dir | active=false | export=true

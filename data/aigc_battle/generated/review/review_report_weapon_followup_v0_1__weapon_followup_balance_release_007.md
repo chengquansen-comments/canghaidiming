@@ -1,7 +1,7 @@
 # AIGC Battle 审核报告：weapon_followup_v0_1 / weapon_followup_balance_release_007
 
 ## 1. 包基本信息
-- active: 是
+- active: 否
 - pack_storage_mode: `profile_pack_dir`
 - target_sequence_id: `formal_sequence_mvp_v1`
 - replacement_mode: `full_sequence`
