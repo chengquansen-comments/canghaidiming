@@ -205,3 +205,11 @@
 - restore 后必须能继续通过原大地图 runtime 推进，不得回退到 fixed sequence。
 - DUNGEON-7 仍不允许修改 `current_release / active_profile / fallback_release`。
 - DUNGEON-7 仍不改 scene，不改 battle core；本轮不等于正式完整存档系统。
+
+## DUNGEON-8 Contract Addendum
+
+- 已新增 AIGC dungeon formal save bridge，用于 `route_state` 到 save payload 的最小 export / import / validate。
+- `wuzhuangyuan` 路线 restore 后必须保持 `selected_ending_route=wuzhuangyuan`，并能继续进入后续 exam path。
+- true 路线 save / restore regression 不得被本轮 bridge 破坏。
+- DUNGEON-8 仍不允许修改 `current_release / active_profile / fallback_release`。
+- DUNGEON-8 仍不改 scene，不改 battle core；本轮仍不是完整用户存档 UI。

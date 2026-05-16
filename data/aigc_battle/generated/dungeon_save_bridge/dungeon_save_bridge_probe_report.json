@@ -1,0 +1,287 @@
+{
+  "generated_at": "2026-05-16T03:13:17.451238+00:00",
+  "probe": "aigc_dungeon_save_bridge_probe",
+  "fields": {
+    "formal_save_bridge_ready": true,
+    "save_payload_schema_ready": true,
+    "route_state_export_to_save_ready": true,
+    "route_state_import_from_save_ready": true,
+    "save_payload_validation_ready": true,
+    "wuzhuangyuan_route_snapshot_ready": true,
+    "wuzhuangyuan_route_restore_ready": true,
+    "wuzhuangyuan_continue_after_restore_ready": true,
+    "wuzhuangyuan_selected_route_persisted": true,
+    "wuzhuangyuan_available_nodes_restored": true,
+    "wuzhuangyuan_exam_path_continue_ready": true,
+    "true_route_regression_pass": true,
+    "true_route_selected_route_persisted": true,
+    "true_route_continue_after_restore_ready": true,
+    "visited_path_order_saved": true,
+    "visited_path_order_restored": true,
+    "selected_ending_route_saved": true,
+    "selected_ending_route_restored": true,
+    "route_flags_saved": true,
+    "route_flags_restored": true,
+    "available_nodes_saved": true,
+    "available_nodes_restored": true,
+    "battle_count_so_far_saved": true,
+    "elite_count_so_far_saved": true,
+    "operation_count_so_far_saved": true,
+    "no_fixed_sequence_runtime_path": true,
+    "dashboard_save_bridge_view_ready": true,
+    "current_release_unchanged": true,
+    "active_profile_matches_current_release": true,
+    "fallback_release_unchanged": true,
+    "scene_unchanged": true,
+    "combat_core_untouched": true,
+    "probe_pass": true
+  },
+  "wuzhuangyuan_summary": {
+    "available_node_ids": [
+      "node_wuzhuangyuan_exam_003"
+    ],
+    "available_route_nodes_after_branch": [
+      "node_route_normal",
+      "node_route_wuzhuangyuan"
+    ],
+    "battle_count_so_far": 23,
+    "branch_step": {
+      "available_node_ids_after": [
+        "node_route_normal",
+        "node_route_wuzhuangyuan"
+      ],
+      "available_node_ids_before": [
+        "node_boss_gate"
+      ],
+      "battle_request_ready": false,
+      "current_node_after": "node_boss_gate",
+      "current_node_before": "node_bigmap_30_00",
+      "node_type": "boss_gate",
+      "selected_node_id": "node_boss_gate",
+      "validation_pass": true
+    },
+    "continue_step": {
+      "available_node_ids_after": [
+        "node_wuzhuangyuan_exam_003"
+      ],
+      "available_node_ids_before": [
+        "node_wuzhuangyuan_exam_002"
+      ],
+      "battle_request_ready": true,
+      "current_node_after": "node_wuzhuangyuan_exam_002",
+      "current_node_before": "node_wuzhuangyuan_exam_001",
+      "node_type": "wuzhuangyuan_exam",
+      "selected_node_id": "node_wuzhuangyuan_exam_002",
+      "validation_pass": true
+    },
+    "current_node_id": "node_wuzhuangyuan_exam_002",
+    "elite_count_so_far": 6,
+    "operation_count_so_far": 10,
+    "pre_branch_last_node": "node_bigmap_30_00",
+    "restored_payload_path": "res://data/aigc_battle/generated/dungeon_save_bridge/aigc_dungeon_restored_from_save_payload.json",
+    "route_choice_locked": true,
+    "route_name": "wuzhuangyuan",
+    "route_step": {
+      "available_node_ids_after": [
+        "node_wuzhuangyuan_exam_001"
+      ],
+      "available_node_ids_before": [
+        "node_route_normal",
+        "node_route_wuzhuangyuan"
+      ],
+      "battle_request_ready": false,
+      "current_node_after": "node_route_wuzhuangyuan",
+      "current_node_before": "node_boss_gate",
+      "node_type": "route_branch",
+      "selected_node_id": "node_route_wuzhuangyuan",
+      "validation_pass": true
+    },
+    "route_target_step": {
+      "available_node_ids_after": [
+        "node_wuzhuangyuan_exam_002"
+      ],
+      "available_node_ids_before": [
+        "node_wuzhuangyuan_exam_001"
+      ],
+      "battle_request_ready": true,
+      "current_node_after": "node_wuzhuangyuan_exam_001",
+      "current_node_before": "node_route_wuzhuangyuan",
+      "node_type": "wuzhuangyuan_exam",
+      "selected_node_id": "node_wuzhuangyuan_exam_001",
+      "validation_pass": true
+    },
+    "save_payload_path": "res://data/aigc_battle/generated/dungeon_save_bridge/wuzhuangyuan_route_save_payload.json",
+    "save_schema_version": "aigc_dungeon_save_v0_1",
+    "selected_ending_route": "wuzhuangyuan",
+    "visited_path_order": [
+      "node_start",
+      "node_prologue_001",
+      "node_wuju_001",
+      "node_wuju_002",
+      "node_wuju_003",
+      "node_wuju_004",
+      "node_wuju_005",
+      "node_bigmap_07_00",
+      "node_bigmap_08_00",
+      "node_bigmap_09_00",
+      "node_bigmap_10_00",
+      "node_bigmap_11_00",
+      "node_bigmap_12_00",
+      "node_bigmap_13_00",
+      "node_bigmap_14_00",
+      "node_bigmap_15_00",
+      "node_bigmap_16_00",
+      "node_bigmap_17_00",
+      "node_bigmap_18_00",
+      "node_bigmap_19_00",
+      "node_bigmap_20_00",
+      "node_bigmap_21_00",
+      "node_bigmap_22_00",
+      "node_bigmap_23_00",
+      "node_bigmap_24_00",
+      "node_bigmap_25_00",
+      "node_bigmap_26_00",
+      "node_bigmap_27_00",
+      "node_bigmap_28_00",
+      "node_bigmap_29_00",
+      "node_bigmap_30_00",
+      "node_boss_gate",
+      "node_route_wuzhuangyuan",
+      "node_wuzhuangyuan_exam_001",
+      "node_wuzhuangyuan_exam_002"
+    ]
+  },
+  "true_route_summary": {
+    "available_node_ids": [
+      "node_true_boss_002"
+    ],
+    "available_route_nodes_after_branch": [
+      "node_route_normal",
+      "node_route_true",
+      "node_route_wuzhuangyuan"
+    ],
+    "battle_count_so_far": 22,
+    "branch_step": {
+      "available_node_ids_after": [
+        "node_route_normal",
+        "node_route_true",
+        "node_route_wuzhuangyuan"
+      ],
+      "available_node_ids_before": [
+        "node_boss_gate"
+      ],
+      "battle_request_ready": false,
+      "current_node_after": "node_boss_gate",
+      "current_node_before": "node_bigmap_30_00",
+      "node_type": "boss_gate",
+      "selected_node_id": "node_boss_gate",
+      "validation_pass": true
+    },
+    "continue_step": {
+      "available_node_ids_after": [
+        "node_true_boss_002"
+      ],
+      "available_node_ids_before": [
+        "node_true_boss_002"
+      ],
+      "battle_request_ready": true,
+      "current_node_after": "node_true_boss_001",
+      "current_node_before": "node_true_boss_001",
+      "node_type": "true_boss",
+      "selected_node_id": "node_true_boss_001",
+      "validation_pass": true
+    },
+    "current_node_id": "node_true_boss_001",
+    "elite_count_so_far": 5,
+    "operation_count_so_far": 10,
+    "pre_branch_last_node": "node_bigmap_30_00",
+    "restored_payload_path": "",
+    "route_choice_locked": true,
+    "route_name": "true",
+    "route_step": {
+      "available_node_ids_after": [
+        "node_true_boss_001"
+      ],
+      "available_node_ids_before": [
+        "node_route_normal",
+        "node_route_true",
+        "node_route_wuzhuangyuan"
+      ],
+      "battle_request_ready": false,
+      "current_node_after": "node_route_true",
+      "current_node_before": "node_boss_gate",
+      "node_type": "route_branch",
+      "selected_node_id": "node_route_true",
+      "validation_pass": true
+    },
+    "route_target_step": {
+      "available_node_ids_after": [
+        "node_true_boss_002"
+      ],
+      "available_node_ids_before": [
+        "node_true_boss_001"
+      ],
+      "battle_request_ready": true,
+      "current_node_after": "node_true_boss_001",
+      "current_node_before": "node_route_true",
+      "node_type": "true_boss",
+      "selected_node_id": "node_true_boss_001",
+      "validation_pass": true
+    },
+    "save_payload_path": "res://data/aigc_battle/generated/dungeon_save_bridge/true_route_regression_save_payload.json",
+    "save_schema_version": "aigc_dungeon_save_v0_1",
+    "selected_ending_route": "true",
+    "visited_path_order": [
+      "node_start",
+      "node_prologue_001",
+      "node_wuju_001",
+      "node_wuju_002",
+      "node_wuju_003",
+      "node_wuju_004",
+      "node_wuju_005",
+      "node_bigmap_07_00",
+      "node_bigmap_08_00",
+      "node_bigmap_09_00",
+      "node_bigmap_10_00",
+      "node_bigmap_11_00",
+      "node_bigmap_12_00",
+      "node_bigmap_13_00",
+      "node_bigmap_14_00",
+      "node_bigmap_15_00",
+      "node_bigmap_16_00",
+      "node_bigmap_17_00",
+      "node_bigmap_18_00",
+      "node_bigmap_19_00",
+      "node_bigmap_20_00",
+      "node_bigmap_21_00",
+      "node_bigmap_22_00",
+      "node_bigmap_23_00",
+      "node_bigmap_24_00",
+      "node_bigmap_25_00",
+      "node_bigmap_26_00",
+      "node_bigmap_27_00",
+      "node_bigmap_28_00",
+      "node_bigmap_29_00",
+      "node_bigmap_30_00",
+      "node_boss_gate",
+      "node_route_true",
+      "node_true_boss_001"
+    ]
+  },
+  "validation_report": {
+    "errors": [],
+    "no_fixed_sequence": true,
+    "ok": true
+  },
+  "current_release_summary": {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+    "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json"
+  },
+  "active_profile_summary": {
+    "active_mechanic_profile_id": "weapon_followup_v0_1",
+    "active_content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+    "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json"
+  },
+  "probe_pass": true
+}

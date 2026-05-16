@@ -1,0 +1,35 @@
+# Dungeon Save Bridge Probe
+
+- formal_save_bridge_ready: `True`
+- save_payload_schema_ready: `True`
+- route_state_export_to_save_ready: `True`
+- route_state_import_from_save_ready: `True`
+- save_payload_validation_ready: `True`
+- wuzhuangyuan_route_snapshot_ready: `True`
+- wuzhuangyuan_route_restore_ready: `True`
+- wuzhuangyuan_continue_after_restore_ready: `True`
+- wuzhuangyuan_selected_route_persisted: `True`
+- wuzhuangyuan_available_nodes_restored: `True`
+- wuzhuangyuan_exam_path_continue_ready: `True`
+- true_route_regression_pass: `True`
+- true_route_selected_route_persisted: `True`
+- true_route_continue_after_restore_ready: `True`
+- visited_path_order_saved: `True`
+- visited_path_order_restored: `True`
+- selected_ending_route_saved: `True`
+- selected_ending_route_restored: `True`
+- route_flags_saved: `True`
+- route_flags_restored: `True`
+- available_nodes_saved: `True`
+- available_nodes_restored: `True`
+- battle_count_so_far_saved: `True`
+- elite_count_so_far_saved: `True`
+- operation_count_so_far_saved: `True`
+- no_fixed_sequence_runtime_path: `True`
+- dashboard_save_bridge_view_ready: `True`
+- current_release_unchanged: `True`
+- active_profile_matches_current_release: `True`
+- fallback_release_unchanged: `True`
+- scene_unchanged: `True`
+- combat_core_untouched: `True`
+- probe_pass: `True`

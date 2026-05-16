@@ -506,3 +506,15 @@ v2 目标是 `full sequence reward / progression closure`：
   - DUNGEON-8 正式内容池扩容
   - DUNGEON-8 路线内容补全
   - DUNGEON-8 正式存档接入
+
+## DUNGEON-8：Formal Save Bridge + Wuzhuangyuan Persistence Drill
+
+- DUNGEON-8 已完成 AIGC `route_state` formal save bridge 最小实现。
+- save payload 可 export / import / validate。
+- `wuzhuangyuan` 路线可保存、恢复、继续推进。
+- true 路线 D7 回归通过。
+- 本轮仍不是完整用户存档 UI。
+- 后续可进入：
+  - DUNGEON-9 正式内容池扩容
+  - DUNGEON-9 路线内容补全
+  - DUNGEON-9 正式存档系统接入

@@ -1,0 +1,7 @@
+{
+	"errors": [],
+	"ok": true,
+	"path": "res://data/aigc_battle/generated/dungeon_save_bridge/wuzhuangyuan_route_save_payload.json",
+	"save_schema_version": "aigc_dungeon_save_v0_1",
+	"selected_ending_route": "wuzhuangyuan"
+}
