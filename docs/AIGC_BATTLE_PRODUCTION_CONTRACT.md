@@ -197,3 +197,11 @@
 - `route_branch` 必须通过原大地图节点与 `available_node_ids` 表达，不重做 UI。
 - DUNGEON-6 仍不允许修改 `current_release / active_profile / fallback_release`。
 - DUNGEON-6 仍不改 scene，不改 battle core，不扩完整正式内容池。
+
+## DUNGEON-7 Contract Addendum
+
+- 已新增轻量 `route_state` snapshot / restore 与 multi-step runtime drill probe。
+- `visited_path_order`、`selected_ending_route`、`route_flags` 必须在 restore 后保持不丢失。
+- restore 后必须能继续通过原大地图 runtime 推进，不得回退到 fixed sequence。
+- DUNGEON-7 仍不允许修改 `current_release / active_profile / fallback_release`。
+- DUNGEON-7 仍不改 scene，不改 battle core；本轮不等于正式完整存档系统。

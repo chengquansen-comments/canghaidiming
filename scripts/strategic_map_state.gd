@@ -25,6 +25,7 @@ static func default_state() -> Dictionary:
 		"current_node_id": "",
 		"selected_node_id": "",
 		"completed_node_ids": [],
+		"visited_node_ids": [],
 		"available_node_ids": [],
 		"visited_path_order": [],
 		"pending_map_node_id": "",

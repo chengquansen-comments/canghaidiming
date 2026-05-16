@@ -91,6 +91,7 @@ static func apply_bundle_to_state(strategic_state: Dictionary, bundle: Dictionar
 	strategic_state["active"] = true
 	strategic_state["network_map"] = graph
 	strategic_state["dungeon_route_rules"] = route_rules
+	strategic_state["visited_node_ids"] = (graph.get("visited_node_ids", route_state.get("visited_node_ids", route_state.get("completed_node_ids", []))) as Array).duplicate(true)
 	strategic_state["visited_path_order"] = (graph.get("visited_path_order", route_state.get("visited_path_order", [])) as Array).duplicate(true)
 	strategic_state["battle_count_so_far"] = int(graph.get("battle_count_so_far", route_state.get("battle_count_so_far", 0)))
 	strategic_state["elite_count_so_far"] = int(graph.get("elite_count_so_far", route_state.get("elite_count_so_far", 0)))
@@ -116,6 +117,7 @@ static func apply_route_state_to_graph(graph: Dictionary, route_state: Dictionar
 	graph["current_node_id"] = str(route_state.get("current_node_id", graph.get("current_node_id", "")))
 	graph["selected_node_id"] = str(route_state.get("selected_node_id", graph.get("selected_node_id", "")))
 	graph["completed_node_ids"] = _string_array(route_state.get("completed_node_ids", graph.get("completed_node_ids", [])))
+	graph["visited_node_ids"] = _string_array(route_state.get("visited_node_ids", graph.get("visited_node_ids", route_state.get("completed_node_ids", []))))
 	graph["available_node_ids"] = _string_array(route_state.get("available_next_node_ids", graph.get("available_node_ids", [])))
 	graph["pending_map_node_id"] = str(route_state.get("pending_map_node_id", graph.get("pending_map_node_id", "")))
 	graph["pending_result_text"] = str(route_state.get("pending_result_text", graph.get("pending_result_text", "")))

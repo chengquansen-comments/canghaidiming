@@ -65,15 +65,19 @@ static func complete_node(graph: Dictionary, node: Dictionary) -> void:
 	if node_id.is_empty():
 		return
 	var completed: Array = graph.get("completed_node_ids", [])
+	var visited: Array = graph.get("visited_node_ids", [])
 	var was_completed := completed.has(node_id)
 	if not completed.has(node_id):
 		completed.append(node_id)
+	if not visited.has(node_id):
+		visited.append(node_id)
 	var outgoing: Array = []
 	for item in node.get("outgoing", []):
 		var out_id := str(item)
 		if not out_id.is_empty():
 			outgoing.append(out_id)
 	graph["completed_node_ids"] = completed
+	graph["visited_node_ids"] = visited
 	graph["current_node_id"] = node_id
 	graph["current_layer"] = int(node.get("layer", 0)) + 1
 	var valid_outgoing := valid_available_ids(graph, outgoing)
@@ -131,6 +135,7 @@ static func sync_mirror_fields(strategic_state: Dictionary, graph: Dictionary) -
 	strategic_state["selected_node_id"] = str(graph.get("selected_node_id", ""))
 	strategic_state["available_node_ids"] = (graph.get("available_node_ids", []) as Array).duplicate(true)
 	strategic_state["completed_node_ids"] = (graph.get("completed_node_ids", []) as Array).duplicate(true)
+	strategic_state["visited_node_ids"] = (graph.get("visited_node_ids", graph.get("completed_node_ids", [])) as Array).duplicate(true)
 	strategic_state["visited_path_order"] = (graph.get("visited_path_order", []) as Array).duplicate(true)
 	strategic_state["current_node_id"] = str(graph.get("current_node_id", ""))
 	strategic_state["pending_map_node_id"] = str(graph.get("pending_map_node_id", ""))

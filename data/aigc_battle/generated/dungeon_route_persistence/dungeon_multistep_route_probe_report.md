@@ -1,0 +1,29 @@
+# Dungeon Multistep Route Probe
+
+- multistep_route_drill_ready: `True`
+- route_state_store_ready: `True`
+- route_state_snapshot_written: `True`
+- route_state_snapshot_valid: `True`
+- route_state_restore_ready: `True`
+- battle_node_step_pass: `True`
+- operation_node_step_pass: `True`
+- route_branch_step_pass: `True`
+- selected_route_persisted: `True`
+- selected_route_after_restore: `True`
+- visited_path_recorded: `True`
+- visited_path_persisted: `True`
+- available_nodes_updated_each_step: `True`
+- available_nodes_restored_after_reload: `True`
+- battle_count_so_far_persisted: `True`
+- elite_count_so_far_persisted: `True`
+- operation_count_so_far_persisted: `True`
+- route_flags_persisted: `True`
+- continue_after_restore_ready: `True`
+- dashboard_route_persistence_view_ready: `True`
+- no_fixed_sequence_runtime_path: `True`
+- current_release_unchanged: `True`
+- active_profile_matches_current_release: `True`
+- fallback_release_unchanged: `True`
+- scene_unchanged: `True`
+- combat_core_untouched: `True`
+- probe_pass: `True`

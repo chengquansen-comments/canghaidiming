@@ -494,3 +494,15 @@ v2 目标是 `full sequence reward / progression closure`：
 - `route_branch` 继续通过原大地图节点选择表达，不重做 UI。
 - 本轮仍未扩完整正式内容池。
 - 后续可进入 DUNGEON-7：正式池扩容 / 路线内容补全 / 存档回写。
+
+## DUNGEON-7：Route Persistence & Multi-step Runtime Drill
+
+- DUNGEON-7 已完成多步 route drill。
+- `route_state` 可 snapshot / restore。
+- `visited_path_order`、`selected_ending_route`、`route_flags` 可持久化。
+- reload 后可继续推进。
+- 本轮仍不是正式完整存档系统。
+- 后续可进入：
+  - DUNGEON-8 正式内容池扩容
+  - DUNGEON-8 路线内容补全
+  - DUNGEON-8 正式存档接入
