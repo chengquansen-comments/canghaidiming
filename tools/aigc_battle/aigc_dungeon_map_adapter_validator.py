@@ -37,6 +37,18 @@ def _node_index(nodes: list[dict[str, Any]], id_key: str) -> dict[str, dict[str,
     return {str(node[id_key]): node for node in nodes}
 
 
+def _is_combat_node_type(node_type: str) -> bool:
+    return node_type in {
+        "prologue_battle",
+        "wuju_battle",
+        "battle_normal",
+        "battle_elite",
+        "normal_boss",
+        "true_boss",
+        "wuzhuangyuan_exam",
+    }
+
+
 def _choose_next(current_id: str, nodes_by_id: dict[str, dict[str, Any]], strategy: str) -> str | None:
     outgoing = list(nodes_by_id[current_id].get("outgoing_node_ids", []))
     if not outgoing:
@@ -145,13 +157,47 @@ def main() -> None:
     compatible_nodes_ready = all(all(field in node for field in node_required) for node in compatible_nodes)
     compatible_map_graph_ready = all(str(node.get("map_graph_id", "")) for node in compatible_nodes)
     compatible_battle_fields_ready = True
+    story_beat_ids: list[str] = []
+    missing_story_beat_nodes: list[str] = []
+    generic_result_nodes: list[str] = []
+    difficulty_mismatch_nodes: list[str] = []
     for node in compatible_nodes:
         node_type = str(node.get("node_type", ""))
         if node_type not in {"combat_common", "combat_elite"}:
             continue
         if not str(node.get("encounter_id", "")) or not str(node.get("battle_id", "")) or not str(node.get("combat_pool_id", "")):
             compatible_battle_fields_ready = False
-            break
+        story_beat_id = str(node.get("story_beat_id", ""))
+        if not story_beat_id:
+            missing_story_beat_nodes.append(str(node.get("map_graph_id", "")))
+        else:
+            story_beat_ids.append(story_beat_id)
+        title = str(node.get("title", ""))
+        if str(node.get("result_text", "")) == "%s 已定。" % title:
+            generic_result_nodes.append(str(node.get("map_graph_id", "")))
+        source_node = nodes_by_id.get(str(node.get("map_graph_id", "")), {})
+        if (
+            int(node.get("enemy_martial_level", 0)) != int(source_node.get("enemy_martial_level", 0))
+            or int(node.get("recommended_martial_min", 0)) != int(source_node.get("recommended_martial_min", 0))
+            or int(node.get("recommended_martial_max", 0)) != int(source_node.get("recommended_martial_max", 0))
+        ):
+            difficulty_mismatch_nodes.append(str(node.get("map_graph_id", "")))
+
+    map_story_beat_ids = []
+    map_missing_story_beats = []
+    for node in map_nodes:
+        if not _is_combat_node_type(str(node.get("node_type", ""))):
+            continue
+        story_beat_id = str(node.get("story_beat_id", ""))
+        if not story_beat_id:
+            map_missing_story_beats.append(str(node.get("node_id", "")))
+        else:
+            map_story_beat_ids.append(story_beat_id)
+
+    story_beat_ids_unique = len(map_story_beat_ids) == len(set(map_story_beat_ids))
+    compatible_story_beat_fields_ready = not missing_story_beat_nodes and not map_missing_story_beats
+    compatible_result_text_preserved = not generic_result_nodes
+    compatible_battle_difficulty_ready = not difficulty_mismatch_nodes
 
     sampled_routes = [
         _sample_path(map_instance, "first"),
@@ -195,6 +241,10 @@ def main() -> None:
             "big_map_compatible_nodes_ready": compatible_nodes_ready,
             "compatible_map_graph_id_ready": compatible_map_graph_ready,
             "compatible_battle_entry_fields_ready": compatible_battle_fields_ready,
+            "story_beat_ids_unique": story_beat_ids_unique,
+            "compatible_story_beat_fields_ready": compatible_story_beat_fields_ready,
+            "compatible_result_text_preserved": compatible_result_text_preserved,
+            "compatible_battle_difficulty_ready": compatible_battle_difficulty_ready,
             "sampled_route_metrics_ready": sampled_ready,
             "sampled_big_map_battle_count_between_14_and_16": sampled_battle_count_ok,
             "sampled_operation_count_between_7_and_10": sampled_operation_count_ok,
@@ -210,6 +260,10 @@ def main() -> None:
             "edge_errors": edge_errors,
             "non_terminal_outgoing_errors": non_terminal_outgoing_errors,
             "incoming_errors": incoming_errors,
+            "missing_story_beat_nodes": missing_story_beat_nodes,
+            "map_missing_story_beats": map_missing_story_beats,
+            "generic_result_nodes": generic_result_nodes,
+            "difficulty_mismatch_nodes": difficulty_mismatch_nodes,
         },
     }
     report["all_checks_passed"] = all(bool(value) for value in report["checks"].values())

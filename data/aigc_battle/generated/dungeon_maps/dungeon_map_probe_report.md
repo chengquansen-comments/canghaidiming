@@ -18,6 +18,10 @@
 - `compatible_network_map_nodes_ready=true`
 - `compatible_map_graph_id_ready=true`
 - `compatible_battle_entry_fields_ready=true`
+- `story_beat_binding_ready=true`
+- `compatible_story_beat_fields_ready=true`
+- `compatible_result_text_preserved=true`
+- `compatible_battle_difficulty_ready=true`
 - `existing_big_map_node_schema_compatible=true`
 - `current_release_unchanged=true`
 - `active_profile_matches_current_release=true`

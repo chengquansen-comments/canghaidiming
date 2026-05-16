@@ -7,6 +7,7 @@ const StrategicNetworkMapBattleResult := preload("res://scripts/strategic_networ
 const NetworkMapGenerator := preload("res://scripts/strategic_network_map_generator.gd")
 const AigcDungeonBigMapLoader := preload("res://scripts/aigc_dungeon_big_map_loader.gd")
 const AigcDungeonRouteBranchEvaluator := preload("res://scripts/aigc_dungeon_route_branch_evaluator.gd")
+const AigcDungeonFormalSaveSlotStore := preload("res://scripts/aigc_dungeon_formal_save_slot_store.gd")
 const NarrativeBattleContext := preload("res://scripts/narrative_battle_context.gd")
 
 static func on_network_node_clicked(c, map_graph_id: String) -> void:
@@ -99,6 +100,7 @@ static func consume_network_node_battle(c, source_id: String, result: String) ->
 	if bool(outcome.get("completed", false)) and not node.is_empty():
 		c._apply_strategic_node(StrategicNetworkMapRuntime.runtime_node_for_effects(node))
 		NarrativeBattleContext.apply_player_growth("battle_win", 0, 0, 0, true)
+		_apply_route_ending_if_needed(c, graph, node)
 	if bool(outcome.get("mutated", false)):
 		c._sync_network_state_from_graph(graph)
 
@@ -147,3 +149,105 @@ static func ensure_network_map_for_state(c, warn_if_regenerated: bool = false) -
 	var network_map: Dictionary = NetworkMapGenerator.generate_network_map(c.strategic_config, c.strategic_state, seed_value)
 	c._sync_network_state_from_graph(network_map)
 	print(NetworkMapGenerator.summarize_network_map(network_map))
+
+static func save_dungeon_route_slot(c, slot_id: String = "slot_001") -> Dictionary:
+	ensure_network_map_for_state(c)
+	var graph: Dictionary = c.strategic_state.get("network_map", {}) as Dictionary
+	if graph.is_empty():
+		return {
+			"ok": false,
+			"error": "network_map_missing",
+		}
+	if not AigcDungeonBigMapLoader.is_dungeon_profile_active():
+		return {
+			"ok": false,
+			"error": "dungeon_profile_not_active",
+		}
+	var metadata := {
+		"map_instance_id": str(graph.get("map_instance_id", "")),
+		"content_pool_pack_id": "dungeon_pool_pack_001",
+		"progression_template_id": "dungeon_progression_v1_3",
+		"seed": int(graph.get("seed", 0)),
+	}
+	var result := AigcDungeonFormalSaveSlotStore.save_slot(slot_id, c.strategic_state, graph, metadata)
+	if bool(result.get("ok", false)):
+		c.last_hint = "已保存副本路线：%s" % str(result.get("slot_id", slot_id))
+	else:
+		c.last_hint = "副本路线保存失败：%s" % str(result.get("error", result.get("errors", [])))
+	c._save_narrative_state_to_context()
+	c._render()
+	return result
+
+static func restore_dungeon_route_slot(c, slot_id: String = "slot_001") -> Dictionary:
+	ensure_network_map_for_state(c)
+	var graph: Dictionary = c.strategic_state.get("network_map", {}) as Dictionary
+	if graph.is_empty():
+		return {
+			"ok": false,
+			"error": "network_map_missing",
+		}
+	if not AigcDungeonBigMapLoader.is_dungeon_profile_active():
+		return {
+			"ok": false,
+			"error": "dungeon_profile_not_active",
+		}
+	var restore_result := AigcDungeonFormalSaveSlotStore.restore_slot(slot_id, graph)
+	if not bool(restore_result.get("ok", false)):
+		c.last_hint = "副本路线读取失败：%s" % str(restore_result.get("errors", []))
+		c._render()
+		return restore_result
+	var route_state := restore_result.get("route_state", {}) as Dictionary
+	AigcDungeonBigMapLoader.apply_route_state_to_graph(graph, route_state)
+	var valid_available := StrategicNetworkMapRuntime.valid_available_ids(graph, graph.get("available_node_ids", []))
+	if valid_available.is_empty() or str(graph.get("selected_node_id", "")) == str(graph.get("current_node_id", "")):
+		var current_node := StrategicNetworkMapRuntime.find_node(graph, str(graph.get("current_node_id", "")))
+		var by_id := StrategicNetworkMapRuntime.node_by_id(graph)
+		var completed: Array = graph.get("completed_node_ids", [])
+		var outgoing: Array = []
+		for item in current_node.get("outgoing", []):
+			var node_id := str(item)
+			if not node_id.is_empty() and by_id.has(node_id) and not completed.has(node_id):
+				outgoing.append(node_id)
+		graph["available_node_ids"] = outgoing
+		StrategicNetworkMapRuntime.refresh_node_states(graph)
+	else:
+		graph["available_node_ids"] = valid_available
+	StrategicNetworkMapRuntime.ensure_selected_node(graph)
+	c._sync_network_state_from_graph(graph)
+	c.last_hint = "已恢复副本路线：%s" % slot_id
+	c._save_narrative_state_to_context()
+	c._render()
+	return {
+		"ok": true,
+		"slot_id": slot_id,
+		"route_state": route_state,
+	}
+
+static func _apply_route_ending_if_needed(c, graph: Dictionary, node: Dictionary) -> bool:
+	var ending_variant = node.get("ending_result", {})
+	if not (ending_variant is Dictionary):
+		return false
+	var ending_result: Dictionary = (ending_variant as Dictionary).duplicate(true)
+	if ending_result.is_empty() or not bool(ending_result.get("final_node", false)):
+		return false
+	var node_id := str(node.get("map_graph_id", ""))
+	var route := str(ending_result.get("route", graph.get("selected_ending_route", c.strategic_state.get("selected_ending_route", ""))))
+	if route.is_empty():
+		route = "normal"
+	ending_result["route"] = route
+	ending_result["source_node_id"] = node_id
+	graph["ending_result"] = ending_result.duplicate(true)
+	graph["selected_ending_route"] = route
+	graph["route_choice_locked"] = true
+	graph["route_complete"] = true
+	graph["map_complete"] = true
+	graph["available_node_ids"] = []
+	graph["selected_node_id"] = node_id
+	c.strategic_state["ending_result"] = ending_result.duplicate(true)
+	c.strategic_state["selected_ending_route"] = route
+	c.strategic_state["route_choice_locked"] = true
+	c.strategic_state["route_complete"] = true
+	c.strategic_state["active"] = false
+	c.strategic_state["completed"] = true
+	c.last_hint = str(ending_result.get("result_text", node.get("result_text", "路线已收束。")))
+	return true

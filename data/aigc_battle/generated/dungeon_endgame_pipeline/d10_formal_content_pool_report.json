@@ -1,0 +1,37 @@
+{
+  "generated_at": "2026-05-16T03:54:09.903303+00:00",
+  "step": "DUNGEON-10",
+  "added": {
+    "cards": 0,
+    "battle_slots": 0,
+    "enemy_decks": 0,
+    "reward_plans": 0
+  },
+  "fields": {
+    "formal_content_pool_expanded": true,
+    "big_map_normal_candidate_count_ready": true,
+    "big_map_elite_candidate_count_ready": true,
+    "rare_event_candidate_count_ready": true,
+    "enemy_deck_count_target_ready": true,
+    "reward_plan_refs_valid": true,
+    "card_refs_valid": true,
+    "supports_map_instance": true,
+    "supports_fixed_sequence_false": true,
+    "current_release_unchanged": true,
+    "active_profile_matches_current_release": true,
+    "fallback_release_unchanged": true,
+    "scene_unchanged": true,
+    "combat_core_untouched": true,
+    "d10_pass": true
+  },
+  "details": {
+    "big_map_normal_candidate_count": 20,
+    "big_map_elite_candidate_count": 8,
+    "rare_event_candidate_count": 3,
+    "enemy_deck_count": 36,
+    "reward_plan_count": 34,
+    "card_count": 38,
+    "slot_ref_errors": [],
+    "card_ref_errors": []
+  }
+}

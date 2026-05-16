@@ -251,63 +251,6 @@
       ]
     },
     {
-      "enemy_deck_id": "deck_normal_boss_surface",
-      "enemy_archetype": "surface_pirate_boss",
-      "deck_tier": "boss",
-      "intended_stage": "normal_ending",
-      "expected_player_realm": 8,
-      "card_ids": [
-        "blade_front_cut",
-        "parry_answer",
-        "boss_reward_placeholder"
-      ],
-      "behavior_tags": [
-        "boss",
-        "normal_ending"
-      ],
-      "compatible_battle_slot_ids": [
-        "slot_normal_boss_001"
-      ]
-    },
-    {
-      "enemy_deck_id": "deck_true_boss_gatekeeper",
-      "enemy_archetype": "true_gatekeeper",
-      "deck_tier": "boss",
-      "intended_stage": "true_ending",
-      "expected_player_realm": 9,
-      "card_ids": [
-        "spear_line_press",
-        "parry_answer",
-        "boss_reward_placeholder"
-      ],
-      "behavior_tags": [
-        "boss",
-        "true_ending"
-      ],
-      "compatible_battle_slot_ids": [
-        "slot_true_boss_001"
-      ]
-    },
-    {
-      "enemy_deck_id": "deck_true_boss_final",
-      "enemy_archetype": "true_final_boss",
-      "deck_tier": "boss",
-      "intended_stage": "true_ending",
-      "expected_player_realm": 10,
-      "card_ids": [
-        "blade_counter_step",
-        "parry_answer",
-        "boss_reward_placeholder"
-      ],
-      "behavior_tags": [
-        "boss",
-        "true_final"
-      ],
-      "compatible_battle_slot_ids": [
-        "slot_true_boss_002"
-      ]
-    },
-    {
       "enemy_deck_id": "deck_capital_exam_series",
       "enemy_archetype": "capital_exam_rival",
       "deck_tier": "exam",
@@ -329,6 +272,469 @@
         "slot_wuzhuangyuan_exam_004",
         "slot_wuzhuangyuan_exam_005"
       ]
+    },
+    {
+      "enemy_deck_id": "deck_normal_boss_coastal_raider_leader",
+      "enemy_archetype": "coastal_raider_leader",
+      "deck_tier": "boss",
+      "intended_stage": "ending_normal",
+      "expected_player_realm": 8,
+      "card_ids": [
+        "boss_pressure_attack",
+        "boss_guard_break",
+        "guard_hold",
+        "parry_answer"
+      ],
+      "behavior_tags": [
+        "boss",
+        "coastal",
+        "pressure"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_normal_boss_coastal_closure"
+      ],
+      "deck_role_summary": "海防收束线首领，擅长中距离压迫与破架。",
+      "pressure_profile": "中高压，偏正面压制与守架惩罚。"
+    },
+    {
+      "enemy_deck_id": "deck_true_boss_old_case_gatekeeper",
+      "enemy_archetype": "old_case_gatekeeper",
+      "deck_tier": "boss",
+      "intended_stage": "ending_true_gate",
+      "expected_player_realm": 9,
+      "card_ids": [
+        "boss_old_case_counter",
+        "boss_guard_break",
+        "parry_answer",
+        "light_step"
+      ],
+      "behavior_tags": [
+        "boss",
+        "old_case",
+        "counter"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_true_boss_old_case_gatekeeper"
+      ],
+      "deck_role_summary": "真结局第一关守门人，专盯破绽与守架空档。",
+      "pressure_profile": "高压反制，鼓励玩家稳态处理。"
+    },
+    {
+      "enemy_deck_id": "deck_true_boss_firearm_shadow",
+      "enemy_archetype": "firearm_shadow",
+      "deck_tier": "boss_final",
+      "intended_stage": "ending_true_final",
+      "expected_player_realm": 10,
+      "card_ids": [
+        "boss_firearm_charge",
+        "boss_old_case_counter",
+        "light_step",
+        "reed_drift"
+      ],
+      "behavior_tags": [
+        "boss",
+        "true_final",
+        "firearm"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_true_boss_firearm_shadow"
+      ],
+      "deck_role_summary": "火器暗线真 Boss，以位移和火器节奏压迫。",
+      "pressure_profile": "高压混合，兼具位移、火器、反制。"
+    },
+    {
+      "enemy_deck_id": "deck_wz01_capital_weapon_review",
+      "enemy_archetype": "capital_weapon_reviewer",
+      "deck_tier": "exam",
+      "intended_stage": "wuzhuangyuan_exam_1",
+      "expected_player_realm": 10,
+      "card_ids": [
+        "exam_spear_review",
+        "guard_hold",
+        "exam_focus"
+      ],
+      "behavior_tags": [
+        "exam",
+        "spear",
+        "measured"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_wz01_capital_weapon_review"
+      ],
+      "deck_role_summary": "入京校阅官，考核基础兵器规范。",
+      "pressure_profile": "中压，重规范与基本功审查。"
+    },
+    {
+      "enemy_deck_id": "deck_wz02_footwork_trial",
+      "enemy_archetype": "footwork_trial_officer",
+      "deck_tier": "exam",
+      "intended_stage": "wuzhuangyuan_exam_2",
+      "expected_player_realm": 10,
+      "card_ids": [
+        "exam_footwork_shift",
+        "light_step",
+        "reed_drift"
+      ],
+      "behavior_tags": [
+        "exam",
+        "footwork",
+        "mobility"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_wz02_footwork_trial"
+      ],
+      "deck_role_summary": "步战较艺考官，以步法和身位试压。",
+      "pressure_profile": "中压机动，强调位移与距离。"
+    },
+    {
+      "enemy_deck_id": "deck_wz03_mixed_weapon_exam",
+      "enemy_archetype": "mixed_weapon_examiner",
+      "deck_tier": "exam_elite",
+      "intended_stage": "wuzhuangyuan_exam_3",
+      "expected_player_realm": 10,
+      "card_ids": [
+        "exam_mixed_weapon_pressure",
+        "exam_spear_review",
+        "exam_blade_review"
+      ],
+      "behavior_tags": [
+        "exam",
+        "mixed_weapon",
+        "adaptive"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_wz03_mixed_weapon_exam"
+      ],
+      "deck_role_summary": "马步兵械混编考校者，连续切换攻击距离。",
+      "pressure_profile": "中高压，多段距离转换。"
+    },
+    {
+      "enemy_deck_id": "deck_wz04_duel_chain",
+      "enemy_archetype": "duel_chain_veteran",
+      "deck_tier": "exam_elite",
+      "intended_stage": "wuzhuangyuan_exam_4",
+      "expected_player_realm": 10,
+      "card_ids": [
+        "exam_duel_chain_pressure",
+        "parry_answer",
+        "exam_footwork_shift"
+      ],
+      "behavior_tags": [
+        "exam",
+        "duel_chain",
+        "stamina"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_wz04_duel_chain"
+      ],
+      "deck_role_summary": "擂台连胜老手，擅长拖入连续压力。",
+      "pressure_profile": "高压连战，持续逼迫资源交换。"
+    },
+    {
+      "enemy_deck_id": "deck_wz05_imperial_final_examiner",
+      "enemy_archetype": "imperial_final_examiner",
+      "deck_tier": "exam_final",
+      "intended_stage": "wuzhuangyuan_exam_5",
+      "expected_player_realm": 10,
+      "card_ids": [
+        "exam_final_form",
+        "exam_mixed_weapon_pressure",
+        "boss_guard_break",
+        "exam_blade_review"
+      ],
+      "behavior_tags": [
+        "exam",
+        "final",
+        "imperial"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_wz05_imperial_final_examiner"
+      ],
+      "deck_role_summary": "殿前终试主考，要求完整武艺与稳态应对。",
+      "pressure_profile": "终盘高压，综合检验攻守步法。"
+    },
+    {
+      "enemy_deck_id": "deck_bigmap_normal_coast_watch_011",
+      "enemy_archetype": "coast_watch",
+      "deck_tier": "normal_mid",
+      "intended_stage": "big_map",
+      "expected_player_realm": 5,
+      "card_ids": [
+        "coast_patrol_cut",
+        "harbor_guard_stance"
+      ],
+      "behavior_tags": [
+        "normal",
+        "coast_watch"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_011"
+      ],
+      "deck_role_summary": "海哨巡线",
+      "pressure_profile": "steady_route_pressure"
+    },
+    {
+      "enemy_deck_id": "deck_bigmap_normal_salt_route_012",
+      "enemy_archetype": "salt_smuggler",
+      "deck_tier": "normal_mid",
+      "intended_stage": "big_map",
+      "expected_player_realm": 5,
+      "card_ids": [
+        "salt_smuggler_feint",
+        "coast_patrol_cut"
+      ],
+      "behavior_tags": [
+        "normal",
+        "salt_route"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_012"
+      ],
+      "deck_role_summary": "盐路截查",
+      "pressure_profile": "steady_route_pressure"
+    },
+    {
+      "enemy_deck_id": "deck_bigmap_normal_river_escort_013",
+      "enemy_archetype": "escort",
+      "deck_tier": "normal_mid",
+      "intended_stage": "big_map",
+      "expected_player_realm": 6,
+      "card_ids": [
+        "escort_blade_check",
+        "harbor_guard_stance"
+      ],
+      "behavior_tags": [
+        "normal",
+        "river_escort"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_013"
+      ],
+      "deck_role_summary": "河口押运",
+      "pressure_profile": "steady_route_pressure"
+    },
+    {
+      "enemy_deck_id": "deck_bigmap_normal_harbor_veteran_014",
+      "enemy_archetype": "harbor_guard",
+      "deck_tier": "normal_mid",
+      "intended_stage": "big_map",
+      "expected_player_realm": 6,
+      "card_ids": [
+        "harbor_guard_stance",
+        "watchtower_counter"
+      ],
+      "behavior_tags": [
+        "normal",
+        "harbor_veteran"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_014"
+      ],
+      "deck_role_summary": "老港守备",
+      "pressure_profile": "steady_route_pressure"
+    },
+    {
+      "enemy_deck_id": "deck_bigmap_normal_case_informant_015",
+      "enemy_archetype": "case_informant",
+      "deck_tier": "normal_mid",
+      "intended_stage": "big_map",
+      "expected_player_realm": 6,
+      "card_ids": [
+        "case_file_pressure",
+        "salt_smuggler_feint"
+      ],
+      "behavior_tags": [
+        "normal",
+        "case_informant"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_015"
+      ],
+      "deck_role_summary": "旧案线人",
+      "pressure_profile": "steady_route_pressure"
+    },
+    {
+      "enemy_deck_id": "deck_bigmap_normal_militia_wall_016",
+      "enemy_archetype": "militia",
+      "deck_tier": "normal_mid",
+      "intended_stage": "big_map",
+      "expected_player_realm": 7,
+      "card_ids": [
+        "militia_spear_wall",
+        "sea_gate_riposte"
+      ],
+      "behavior_tags": [
+        "normal",
+        "militia_wall"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_016"
+      ],
+      "deck_role_summary": "乡勇枪阵",
+      "pressure_profile": "steady_route_pressure"
+    },
+    {
+      "enemy_deck_id": "deck_bigmap_normal_beacon_runner_017",
+      "enemy_archetype": "beacon_runner",
+      "deck_tier": "normal_mid",
+      "intended_stage": "big_map",
+      "expected_player_realm": 7,
+      "card_ids": [
+        "beacon_signal_shot",
+        "salt_smuggler_feint"
+      ],
+      "behavior_tags": [
+        "normal",
+        "beacon_runner"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_017"
+      ],
+      "deck_role_summary": "烽号传骑",
+      "pressure_profile": "steady_route_pressure"
+    },
+    {
+      "enemy_deck_id": "deck_bigmap_normal_salt_duelist_018",
+      "enemy_archetype": "duelist",
+      "deck_tier": "normal_mid",
+      "intended_stage": "big_map",
+      "expected_player_realm": 7,
+      "card_ids": [
+        "escort_blade_check",
+        "watchtower_counter"
+      ],
+      "behavior_tags": [
+        "normal",
+        "salt_duelist"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_018"
+      ],
+      "deck_role_summary": "盐道刀客",
+      "pressure_profile": "steady_route_pressure"
+    },
+    {
+      "enemy_deck_id": "deck_bigmap_normal_dock_chainmen_019",
+      "enemy_archetype": "dock_chainmen",
+      "deck_tier": "normal_mid",
+      "intended_stage": "big_map",
+      "expected_player_realm": 8,
+      "card_ids": [
+        "dock_chain_hook",
+        "harbor_guard_stance"
+      ],
+      "behavior_tags": [
+        "normal",
+        "dock_chainmen"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_019"
+      ],
+      "deck_role_summary": "码头链手",
+      "pressure_profile": "steady_route_pressure"
+    },
+    {
+      "enemy_deck_id": "deck_bigmap_normal_coastal_rearguard_020",
+      "enemy_archetype": "coastal_guard",
+      "deck_tier": "normal_mid",
+      "intended_stage": "big_map",
+      "expected_player_realm": 8,
+      "card_ids": [
+        "sea_gate_riposte",
+        "coast_patrol_cut"
+      ],
+      "behavior_tags": [
+        "normal",
+        "coastal_rearguard"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_020"
+      ],
+      "deck_role_summary": "海防殿后",
+      "pressure_profile": "steady_route_pressure"
+    },
+    {
+      "enemy_deck_id": "deck_bigmap_elite_sea_gate_commander_006",
+      "enemy_archetype": "elite_commander",
+      "deck_tier": "elite",
+      "intended_stage": "big_map",
+      "expected_player_realm": 8,
+      "card_ids": [
+        "elite_command_mark",
+        "elite_shield_break",
+        "sea_gate_riposte"
+      ],
+      "behavior_tags": [
+        "elite",
+        "sea_gate_commander"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_elite_006"
+      ],
+      "deck_role_summary": "海门校尉",
+      "pressure_profile": "elite_spike_pressure"
+    },
+    {
+      "enemy_deck_id": "deck_bigmap_elite_fireline_captain_007",
+      "enemy_archetype": "elite_fireline",
+      "deck_tier": "elite",
+      "intended_stage": "big_map",
+      "expected_player_realm": 9,
+      "card_ids": [
+        "elite_fireline_pressure",
+        "beacon_signal_shot",
+        "elite_command_mark"
+      ],
+      "behavior_tags": [
+        "elite",
+        "fireline_captain"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_elite_007"
+      ],
+      "deck_role_summary": "火线把总",
+      "pressure_profile": "elite_spike_pressure"
+    },
+    {
+      "enemy_deck_id": "deck_bigmap_elite_old_case_blade_008",
+      "enemy_archetype": "elite_old_case",
+      "deck_tier": "elite",
+      "intended_stage": "big_map",
+      "expected_player_realm": 9,
+      "card_ids": [
+        "elite_old_case_snare",
+        "boss_old_case_counter",
+        "watchtower_counter"
+      ],
+      "behavior_tags": [
+        "elite",
+        "old_case_blade"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_elite_008"
+      ],
+      "deck_role_summary": "旧案刀影",
+      "pressure_profile": "elite_spike_pressure"
+    },
+    {
+      "enemy_deck_id": "deck_rare_lightness_informant_003",
+      "enemy_archetype": "rare_lightness",
+      "deck_tier": "rare",
+      "intended_stage": "big_map",
+      "expected_player_realm": 7,
+      "card_ids": [
+        "rare_lightness_trace",
+        "rare_hidden_warrant"
+      ],
+      "behavior_tags": [
+        "rare",
+        "lightness_informant"
+      ],
+      "compatible_battle_slot_ids": [
+        "slot_rare_event_003"
+      ],
+      "deck_role_summary": "轻身奇遇",
+      "pressure_profile": "rare_route_unlock"
     }
   ]
 }

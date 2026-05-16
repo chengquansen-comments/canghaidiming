@@ -22,6 +22,10 @@
     "big_map_compatible_nodes_ready": true,
     "compatible_map_graph_id_ready": true,
     "compatible_battle_entry_fields_ready": true,
+    "story_beat_ids_unique": true,
+    "compatible_story_beat_fields_ready": true,
+    "compatible_result_text_preserved": true,
+    "compatible_battle_difficulty_ready": true,
     "sampled_route_metrics_ready": true,
     "sampled_big_map_battle_count_between_14_and_16": true,
     "sampled_operation_count_between_7_and_10": true,
@@ -235,7 +239,11 @@
   "errors": {
     "edge_errors": [],
     "non_terminal_outgoing_errors": [],
-    "incoming_errors": []
+    "incoming_errors": [],
+    "missing_story_beat_nodes": [],
+    "map_missing_story_beats": [],
+    "generic_result_nodes": [],
+    "difficulty_mismatch_nodes": []
   },
   "all_checks_passed": true
 }

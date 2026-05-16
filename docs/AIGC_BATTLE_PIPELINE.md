@@ -460,6 +460,8 @@ v2 目标是 `full sequence reward / progression closure`：
 - DUNGEON-2 已生成 `map_instance + initial route_state + big_map compatible network_map` 的离线产物。
 - DUNGEON-2 明确不是 fixed sequence；验证依据是 sampled route metrics，而不是全图节点总数。
 - sampled route metrics 只衡量单条可行路径在 big map 段的 battle / operation / elite 分布。
+- battle node 已补唯一 `story_beat_id`，地图点不再只是复用 `battle_slot`，而是“剧情事件实例 + 战斗内容绑定”。
+- `big_map_compatible` 现已保留实例化后的 `title / preview_text / result_text / story_beat_id` 与战斗强度字段，不再统一压平成泛化文本。
 - DUNGEON-3 将实现 `node_materializer + battle entry bridge`。
 - 当前仍未接入 Godot runtime。
 
@@ -468,6 +470,7 @@ v2 目标是 `full sequence reward / progression closure`：
 - DUNGEON-3 已实现离线 `node_materializer + battle entry bridge request`。
 - battle node 可解析 `battle_slot / enemy_deck / reward_plan`；operation node 可解析 `operation_node`。
 - battle entry request 继续沿用现有 `encounter_id / battle_id / combat_pool_id` 契约。
+- battle entry request 已补 `source_story_beat_id`，后续战斗返回可追溯到唯一剧情事件。
 - DUNGEON-3 仍未接入 Godot runtime。
 - DUNGEON-4 将实现 Dashboard `Pack 内容 + 地图实例 / node detail` 展示。
 
@@ -518,3 +521,65 @@ v2 目标是 `full sequence reward / progression closure`：
   - DUNGEON-9 正式内容池扩容
   - DUNGEON-9 路线内容补全
   - DUNGEON-9 正式存档系统接入
+
+## DUNGEON-9：Route Content Completion
+
+- DUNGEON-9 已完成三路线关键内容补齐。
+- normal route 已有普通 Boss 最小正式内容。
+- true route 已有双 Boss 链最小正式内容。
+- `wuzhuangyuan` route 已有 5 场考试战最小正式内容。
+- 仍未扩完整 `42-48` 正式内容池。
+- 后续可进入：
+  - DUNGEON-10 正式内容池扩容
+  - DUNGEON-10 结局演出 / 奖励收束
+  - DUNGEON-10 正式存档系统接入
+
+## DUNGEON-10 至 DUNGEON-15：Endgame Pipeline
+
+- DUNGEON-10 已将 big map normal / elite / rare 候选池补到目标下限，并保持 deck / reward / card refs 闭合。
+- DUNGEON-11 已补 route ending reward closure 与 final node ending_result 标记，仍不新增 scene。
+- DUNGEON-12 已生成 formal save slot bridge payload，仍不接用户存档 UI。
+- DUNGEON-13 已生成 `dungeon_progression_v1_3_rc_001` candidate manifest，但不执行 promotion。
+- DUNGEON-14 已生成 full route QA matrix，覆盖 normal / true / wuzhuangyuan / save-restore / multistep persistence。
+- DUNGEON-15 已完成 promotion dry-run 报告，验证 current / active / fallback 保护链仍未被修改。
+
+## DUNGEON Final Promotion
+
+- `dungeon_progression_v1_3_rc_001` 已通过受控 promotion flow 进入 `current_release / active_profile`。
+- AIGC dungeon loader 已改为 release/profile gated，只有 current 与 active 同时指向 dungeon profile 时才加载 dungeon big map。
+- `fallback_release` 已捕获 promotion 前的 `weapon_followup_v0_1`，rollback drill 已通过。
+- post-promotion `route_content / save_bridge / godot_big_map` probes 已通过。
+
+## DUNGEON-16：Formal Save Slot Store
+
+- 已新增无 UI 的 formal save slot store，通过 `user://aigc_dungeon/save_slots/slot_001.json` 写入 AIGC dungeon save payload。
+- formal save slot probe 已验证 `write / read / validate / restore / continue after restore`。
+- 本轮仍不新增用户存档 UI，不改 scene，不改 battle core。
+
+## DUNGEON-17：Save Slot Runtime Controls
+
+- 已在 strategic network map flow runtime 增加 `save_dungeon_route_slot / restore_dungeon_route_slot`。
+- save slot runtime probe 已验证：正式 dungeon 入口加载后可保存、推进、恢复到保存点，并继续推进。
+- 该阶段仍不新增 scene；后续 UI 只需调用 runtime controls。
+
+## DUNGEON-18：Save Slot Overlay Controls
+
+- 已在现有大地图 overlay footer 动态增加 `保存副本路线 / 读取副本路线`。
+- 按钮只在 AIGC dungeon `network_map` 上显示，非 dungeon 图不显示。
+- 按钮调用 DUNGEON-17 的 runtime controls，不绕过 save payload validation。
+- 本轮不改 scene，不重做大地图 UI，不改 battle core。
+
+## DUNGEON-19：Entry Smoke Probe
+
+- 已完成 Godot headless 入口冒烟：加载 AIGC dungeon map、渲染现有 overlay、显示 available nodes。
+- 已验证 overlay 中保存 / 读取路线按钮可见且回调到正式 save slot runtime。
+- 已验证保存后推进、读取恢复到保存节点、恢复后继续推进。
+- 本轮仍不改 scene，不接新 UI scene，不改 battle core。
+
+## DUNGEON-20 至 DUNGEON-24：Full Play Loop & Ending Lock
+
+- 已完成完整玩家循环 probe：AIGC map 入口、battle request、battle result return、route_state 推进。
+- normal / true / `wuzhuangyuan` 三路线均可从 route_branch 走到终点并写入 `ending_result`。
+- 路线战斗数已回归 v1.3 目标：normal=22、true=23、`wuzhuangyuan`=26。
+- true 路线中途 save / restore / continue 已通过。
+- 最终 release lock report 已纳入 full play loop probe。

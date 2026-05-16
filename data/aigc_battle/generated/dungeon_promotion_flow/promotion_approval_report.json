@@ -1,0 +1,14 @@
+{
+  "generated_at": "2026-05-16T03:54:10.725478+00:00",
+  "approval_source": "user_requested_terminal_flow",
+  "candidate_id": "dungeon_progression_v1_3_rc_001",
+  "fields": {
+    "content_experience_approved": true,
+    "save_scope_approved": true,
+    "ending_scope_approved": true,
+    "technical_gate_pass": true,
+    "release_guard_pass": true,
+    "approval_pass": true
+  },
+  "review_report_path": "data/aigc_battle/generated/dungeon_promotion_review/promotion_review_checklist_report.json"
+}

@@ -15,6 +15,7 @@
     "reward_card_refs_exist": true,
     "battle_entry_request_has_bridge_ids": true,
     "battle_entry_request_has_source_ids": true,
+    "battle_entry_request_has_source_story_beat_id": true,
     "operation_node_resolves_operation_node_id": true,
     "route_state_after_choice_valid": true,
     "available_next_node_ids_valid": true,

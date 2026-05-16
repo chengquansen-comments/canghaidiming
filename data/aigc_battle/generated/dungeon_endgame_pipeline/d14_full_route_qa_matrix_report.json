@@ -1,0 +1,60 @@
+{
+  "generated_at": "2026-05-16T03:54:09.913943+00:00",
+  "step": "DUNGEON-14",
+  "fields": {
+    "full_route_qa_matrix_ready": true,
+    "normal_route_qa_pass": true,
+    "true_route_qa_pass": true,
+    "wuzhuangyuan_route_qa_pass": true,
+    "save_restore_qa_pass": true,
+    "qa_matrix_all_pass": true,
+    "current_release_unchanged": true,
+    "active_profile_matches_current_release": true,
+    "fallback_release_unchanged": true,
+    "scene_unchanged": true,
+    "combat_core_untouched": true,
+    "d14_pass": true
+  },
+  "qa_matrix": [
+    {
+      "case_id": "content_pool_expansion",
+      "pass": true
+    },
+    {
+      "case_id": "ending_reward_closure",
+      "pass": true
+    },
+    {
+      "case_id": "formal_save_slot_bridge",
+      "pass": true
+    },
+    {
+      "case_id": "release_candidate_packaging",
+      "pass": true
+    },
+    {
+      "case_id": "normal_route_content",
+      "pass": true
+    },
+    {
+      "case_id": "true_route_content",
+      "pass": true
+    },
+    {
+      "case_id": "wuzhuangyuan_route_content",
+      "pass": true
+    },
+    {
+      "case_id": "save_bridge_wuzhuangyuan",
+      "pass": true
+    },
+    {
+      "case_id": "save_bridge_true_regression",
+      "pass": true
+    },
+    {
+      "case_id": "multistep_route_persistence",
+      "pass": true
+    }
+  ]
+}

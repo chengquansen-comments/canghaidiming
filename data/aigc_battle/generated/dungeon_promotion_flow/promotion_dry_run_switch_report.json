@@ -1,0 +1,49 @@
+{
+  "generated_at": "2026-05-16T03:54:10.834638+00:00",
+  "candidate_id": "dungeon_progression_v1_3_rc_001",
+  "fields": {
+    "promotion_dry_run_ready": true,
+    "approval_pass": true,
+    "plan_pass": true,
+    "target_current_is_dungeon": true,
+    "target_active_matches_target_current": true,
+    "rollback_target_ready": true,
+    "current_release_unchanged": true,
+    "active_profile_unchanged": true,
+    "fallback_release_unchanged": true,
+    "dry_run_pass": true
+  },
+  "target_current": {
+    "channel": "current",
+    "mechanic_profile_id": "dungeon_progression_v1_3",
+    "content_pack_id": "dungeon_pool_pack_001",
+    "progression_template_id": "dungeon_progression_v1_3",
+    "content_pool_pack_id": "dungeon_pool_pack_001",
+    "release_candidate_id": "dungeon_progression_v1_3_rc_001",
+    "runtime_entry": "aigc_dungeon_big_map",
+    "runtime_manifest_path": "data/aigc_battle/generated/dungeon_endgame_pipeline/dungeon_progression_v1_3_rc_001_manifest.json",
+    "map_instance_path": "data/aigc_battle/generated/dungeon_maps/map_seed_1001.json",
+    "big_map_compatible_path": "data/aigc_battle/generated/dungeon_maps/big_map_compatible_seed_1001.json",
+    "route_state_initial_path": "data/aigc_battle/generated/dungeon_maps/route_state_seed_1001_initial.json",
+    "release_status": "active",
+    "activated_at": "2026-05-16T03:54:10.834290+00:00",
+    "formal_entry_enabled": true,
+    "fallback_enabled": true,
+    "fallback_profile_id": "weapon_followup_v0_1",
+    "fallback_content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+    "fallback_runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json",
+    "smoke_test_status": "pending_post_promotion_probe",
+    "last_smoke_report_path": "data/aigc_battle/generated/dungeon_promotion_flow/final_release_lock_report.json"
+  },
+  "target_active_profile": {
+    "active_mechanic_profile_id": "dungeon_progression_v1_3",
+    "active_content_pack_id": "dungeon_pool_pack_001",
+    "runtime_manifest_path": "data/aigc_battle/generated/dungeon_endgame_pipeline/dungeon_progression_v1_3_rc_001_manifest.json",
+    "runtime_entry": "aigc_dungeon_big_map",
+    "release_candidate_id": "dungeon_progression_v1_3_rc_001",
+    "map_instance_path": "data/aigc_battle/generated/dungeon_maps/map_seed_1001.json",
+    "big_map_compatible_path": "data/aigc_battle/generated/dungeon_maps/big_map_compatible_seed_1001.json",
+    "route_state_initial_path": "data/aigc_battle/generated/dungeon_maps/route_state_seed_1001_initial.json",
+    "activated_at": "2026-05-16T03:54:10.834526+00:00"
+  }
+}

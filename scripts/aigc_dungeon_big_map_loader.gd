@@ -1,6 +1,7 @@
 extends RefCounted
 
 const StrategicNetworkMapRuntime := preload("res://scripts/strategic_network_map_runtime.gd")
+const AigcDungeonRouteBranchEvaluator := preload("res://scripts/aigc_dungeon_route_branch_evaluator.gd")
 
 const BIG_MAP_COMPATIBLE_PATH := "res://data/aigc_battle/generated/dungeon_maps/big_map_compatible_seed_1001.json"
 const ROUTE_STATE_PATH := "res://data/aigc_battle/generated/dungeon_maps/route_state_seed_1001_initial.json"
@@ -8,6 +9,10 @@ const MAP_INSTANCE_PATH := "res://data/aigc_battle/generated/dungeon_maps/map_se
 const ROUTE_RULES_PATH := "res://data/aigc_battle/generated/dungeon_progression_v1_3/packs/dungeon_pool_pack_001/route_rules.json"
 const LOADOUT_PATH := "res://data/aigc_battle/generated/dungeon_node_materializer/selected_node_materialized_loadout.json"
 const BATTLE_ENTRY_REQUEST_PATH := "res://data/aigc_battle/generated/dungeon_node_materializer/selected_node_battle_entry_request.json"
+const ACTIVE_PROFILE_PATH := "res://data/aigc_battle/runtime/active_profile.json"
+const CURRENT_RELEASE_PATH := "res://data/aigc_battle/release_channels/current_release.json"
+const DUNGEON_PROFILE_ID := "dungeon_progression_v1_3"
+const DUNGEON_CONTENT_PACK_ID := "dungeon_pool_pack_001"
 
 const ROOT_REQUIRED_FIELDS := [
 	"run_id",
@@ -137,12 +142,23 @@ static func apply_route_state_to_graph(graph: Dictionary, route_state: Dictionar
 	graph["lightness_level"] = int(route_state.get("lightness_level", graph.get("lightness_level", 1)))
 	graph["old_case_progress"] = int(route_state.get("old_case_progress", graph.get("old_case_progress", 0)))
 	graph["aigc_dungeon_runtime"] = true
+	AigcDungeonRouteBranchEvaluator.refresh_route_presentation(graph, route_state)
 	StrategicNetworkMapRuntime.ensure_selected_node(graph)
 	StrategicNetworkMapRuntime.refresh_node_states(graph)
 
 
 static func has_compatible_map_file() -> bool:
-	return FileAccess.file_exists(BIG_MAP_COMPATIBLE_PATH)
+	return is_dungeon_profile_active() and FileAccess.file_exists(BIG_MAP_COMPATIBLE_PATH)
+
+
+static func is_dungeon_profile_active() -> bool:
+	var active := _optional_json_dict(ACTIVE_PROFILE_PATH)
+	var current := _optional_json_dict(CURRENT_RELEASE_PATH)
+	var active_profile_id := str(active.get("active_mechanic_profile_id", active.get("mechanic_profile_id", "")))
+	var active_pack_id := str(active.get("active_content_pack_id", active.get("content_pack_id", "")))
+	var current_profile_id := str(current.get("mechanic_profile_id", ""))
+	var current_pack_id := str(current.get("content_pack_id", ""))
+	return active_profile_id == DUNGEON_PROFILE_ID and active_pack_id == DUNGEON_CONTENT_PACK_ID and current_profile_id == DUNGEON_PROFILE_ID and current_pack_id == DUNGEON_CONTENT_PACK_ID
 
 
 static func _validate_graph(graph: Dictionary) -> Array[String]:

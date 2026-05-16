@@ -1,0 +1,48 @@
+{
+  "generated_at": "2026-05-16T03:54:09.910270+00:00",
+  "step": "DUNGEON-11",
+  "fields": {
+    "ending_reward_closure_ready": true,
+    "normal_ending_closure_ready": true,
+    "true_ending_closure_ready": true,
+    "wuzhuangyuan_ending_closure_ready": true,
+    "ending_nodes_marked": true,
+    "no_new_scene_required": true,
+    "current_release_unchanged": true,
+    "active_profile_matches_current_release": true,
+    "fallback_release_unchanged": true,
+    "scene_unchanged": true,
+    "combat_core_untouched": true,
+    "d11_pass": true
+  },
+  "ending_closures": {
+    "reward_normal_boss_closure": {
+      "ending_route": "normal",
+      "ending_title": "奉命收束",
+      "final_flags": [
+        "normal_route_complete",
+        "coastal_case_closed"
+      ],
+      "reward_summary": "军功与清望稳定结算，旧案不强制揭底。"
+    },
+    "reward_true_boss_firearm_truth": {
+      "ending_route": "true",
+      "ending_title": "追旧案",
+      "final_flags": [
+        "true_route_complete",
+        "truth_revealed",
+        "firearm_shadow_resolved"
+      ],
+      "reward_summary": "旧案线索收束，清望与军功同步提升。"
+    },
+    "reward_wz05_imperial_final_examiner": {
+      "ending_route": "wuzhuangyuan",
+      "ending_title": "殿前夺魁",
+      "final_flags": [
+        "wuzhuangyuan_route_complete",
+        "capital_exam_passed"
+      ],
+      "reward_summary": "武状元考试完成，军功转入朝廷认可。"
+    }
+  }
+}

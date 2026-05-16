@@ -1,5 +1,7 @@
 extends RefCounted
 
+const StrategicNetworkMapRuntime := preload("res://scripts/strategic_network_map_runtime.gd")
+
 const ROUTE_NORMAL := "normal"
 const ROUTE_TRUE := "true"
 const ROUTE_WUZHUANGYUAN := "wuzhuangyuan"
@@ -7,6 +9,16 @@ const ROUTE_WUZHUANGYUAN := "wuzhuangyuan"
 const TRUE_OLD_CASE_THRESHOLD := 3
 const TRUE_CASE_CLUE_THRESHOLD := 2
 const WUZHUANGYUAN_MILITARY_HIGH_THRESHOLD := 9
+const ROUTE_NORMAL_PRESENTATION_IDS := ["node_route_normal", "node_normal_boss"]
+const ROUTE_TRUE_PRESENTATION_IDS := ["node_route_true", "node_true_boss_001", "node_true_boss_002"]
+const ROUTE_WUZHUANGYUAN_PRESENTATION_IDS := [
+	"node_route_wuzhuangyuan",
+	"node_wuzhuangyuan_exam_001",
+	"node_wuzhuangyuan_exam_002",
+	"node_wuzhuangyuan_exam_003",
+	"node_wuzhuangyuan_exam_004",
+	"node_wuzhuangyuan_exam_005",
+]
 
 
 static func evaluate_route_branch(route_state: Dictionary, route_rules: Dictionary, current_node: Dictionary = {}, graph: Dictionary = {}) -> Dictionary:
@@ -90,6 +102,7 @@ static func apply_branch_result(graph: Dictionary, strategic_state: Dictionary, 
 	strategic_state["selected_ending_route"] = str(graph.get("selected_ending_route", ""))
 	strategic_state["route_choice_locked"] = bool(graph.get("route_choice_locked", false))
 	strategic_state["route_flags"] = route_flags.duplicate(true)
+	refresh_route_presentation(graph, strategic_state)
 
 
 static func apply_selected_route_choice(graph: Dictionary, strategic_state: Dictionary, route_node: Dictionary) -> void:
@@ -111,6 +124,41 @@ static func apply_selected_route_choice(graph: Dictionary, strategic_state: Dict
 	strategic_state["route_branch_pending"] = false
 	strategic_state["route_choice_locked"] = true
 	strategic_state["route_flags"] = route_flags
+	refresh_route_presentation(graph, strategic_state)
+	var next_ids := StrategicNetworkMapRuntime.valid_available_ids(graph, route_node.get("outgoing", []))
+	graph["available_node_ids"] = next_ids
+	graph["selected_node_id"] = str(next_ids[0]) if not next_ids.is_empty() else str(graph.get("current_node_id", ""))
+	strategic_state["available_node_ids"] = next_ids.duplicate(true)
+	strategic_state["selected_node_id"] = str(graph.get("selected_node_id", ""))
+
+
+static func refresh_route_presentation(graph: Dictionary, strategic_state: Dictionary) -> void:
+	var selected_route := str(graph.get("selected_ending_route", strategic_state.get("selected_ending_route", "")))
+	var branch_pending := bool(graph.get("route_branch_pending", strategic_state.get("route_branch_pending", false)))
+	var available_routes := _string_array(graph.get("available_ending_routes", strategic_state.get("available_ending_routes", [])))
+	var visible_ids := ["node_boss_gate"]
+	if branch_pending:
+		for route_key in available_routes:
+			visible_ids.append_array(_presentation_ids_for_route(route_key, true))
+	elif selected_route == ROUTE_TRUE or selected_route == ROUTE_WUZHUANGYUAN:
+		visible_ids.append_array(_presentation_ids_for_route(selected_route, false))
+	else:
+		visible_ids.append_array(_presentation_ids_for_route(ROUTE_NORMAL, false))
+	var visible_lookup := {}
+	for node_id in visible_ids:
+		visible_lookup[str(node_id)] = true
+	var nodes: Array = graph.get("nodes", [])
+	for i in range(nodes.size()):
+		if not (nodes[i] is Dictionary):
+			continue
+		var node := (nodes[i] as Dictionary).duplicate(true)
+		var node_id := str(node.get("map_graph_id", ""))
+		if _is_route_presentation_node(node_id):
+			node["hidden"] = not visible_lookup.has(node_id)
+		else:
+			node["hidden"] = false
+		nodes[i] = node
+	graph["nodes"] = nodes
 
 
 static func route_key_for_node(node: Dictionary) -> String:
@@ -139,6 +187,22 @@ static func is_route_branch_node(node: Dictionary) -> bool:
 	if aigc_node_type == "route_branch":
 		return true
 	return not route_key_for_node(node).is_empty() and str(node.get("map_graph_id", "")).begins_with("node_route_")
+
+
+static func _presentation_ids_for_route(route_key: String, include_only_choice_node: bool) -> Array:
+	match route_key:
+		ROUTE_TRUE:
+			return [ROUTE_TRUE_PRESENTATION_IDS[0]] if include_only_choice_node else ROUTE_TRUE_PRESENTATION_IDS.duplicate()
+		ROUTE_WUZHUANGYUAN:
+			return [ROUTE_WUZHUANGYUAN_PRESENTATION_IDS[0]] if include_only_choice_node else ROUTE_WUZHUANGYUAN_PRESENTATION_IDS.duplicate()
+		_:
+			return [ROUTE_NORMAL_PRESENTATION_IDS[0]] if include_only_choice_node else ROUTE_NORMAL_PRESENTATION_IDS.duplicate()
+
+
+static func _is_route_presentation_node(node_id: String) -> bool:
+	return ROUTE_NORMAL_PRESENTATION_IDS.has(node_id) \
+		or ROUTE_TRUE_PRESENTATION_IDS.has(node_id) \
+		or ROUTE_WUZHUANGYUAN_PRESENTATION_IDS.has(node_id)
 
 
 static func available_node_ids_to_route_keys(graph: Dictionary, available_node_ids: Array) -> Array[String]:

@@ -1,0 +1,24 @@
+# Route Content Validation Report
+
+- `normal_boss_node_exists=true`
+- `true_boss_1_node_exists=true`
+- `true_boss_2_node_exists=true`
+- `wuzhuangyuan_exam_nodes_exist=true`
+- `route_endpoint_nodes_bound=true`
+- `route_endpoint_battle_slots_ready=true`
+- `route_endpoint_enemy_decks_ready=true`
+- `route_endpoint_reward_plans_ready=true`
+- `route_endpoint_card_refs_valid=true`
+- `route_endpoint_reward_refs_valid=true`
+- `compatible_battle_entry_fields_ready=true`
+- `non_zero_recommended_martial_ranges=true`
+- `normal_boss_content_ready=true`
+- `true_boss_chain_content_ready=true`
+- `wuzhuangyuan_exam_chain_content_ready=true`
+- `no_fixed_sequence_main_model=true`
+- `current_release_unchanged=true`
+- `active_profile_matches_current=true`
+- `fallback_release_unchanged=true`
+- `scene_unchanged=true`
+- `combat_core_untouched=true`
+- `all_checks_passed=true`

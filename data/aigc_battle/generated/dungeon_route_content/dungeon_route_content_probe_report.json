@@ -1,0 +1,217 @@
+{
+  "generated_at": "2026-05-16T05:36:29.707824+00:00",
+  "probe": "aigc_dungeon_route_content_probe",
+  "fields": {
+    "route_content_completion_ready": true,
+    "normal_route_content_ready": true,
+    "true_route_content_ready": true,
+    "wuzhuangyuan_route_content_ready": true,
+    "normal_boss_content_ready": true,
+    "true_boss_chain_content_ready": true,
+    "wuzhuangyuan_exam_chain_content_ready": true,
+    "wuzhuangyuan_exam_count": 5,
+    "route_endpoint_nodes_bound": true,
+    "route_endpoint_battle_slots_ready": true,
+    "route_endpoint_enemy_decks_ready": true,
+    "route_endpoint_reward_plans_ready": true,
+    "route_endpoint_card_refs_valid": true,
+    "route_endpoint_reward_refs_valid": true,
+    "compatible_battle_entry_fields_ready": true,
+    "non_zero_recommended_martial_ranges": true,
+    "normal_boss_materialized": true,
+    "true_boss_chain_materialized": true,
+    "wuzhuangyuan_exam_materialized": true,
+    "battle_entry_requests_ready": true,
+    "save_bridge_regression_pass": true,
+    "dashboard_route_content_view_ready": true,
+    "no_fixed_sequence_runtime_path": true,
+    "current_release_unchanged": true,
+    "active_profile_matches_current_release": true,
+    "fallback_release_unchanged": true,
+    "scene_unchanged": true,
+    "combat_core_untouched": true,
+    "probe_pass": true
+  },
+  "validator_summary": {
+    "generated_at": "2026-05-16T05:36:29.156359+00:00",
+    "validator": "aigc_dungeon_route_content_validator",
+    "fields": {
+      "normal_boss_node_exists": true,
+      "true_boss_1_node_exists": true,
+      "true_boss_2_node_exists": true,
+      "wuzhuangyuan_exam_nodes_exist": true,
+      "route_endpoint_nodes_bound": true,
+      "route_endpoint_battle_slots_ready": true,
+      "route_endpoint_enemy_decks_ready": true,
+      "route_endpoint_reward_plans_ready": true,
+      "route_endpoint_card_refs_valid": true,
+      "route_endpoint_reward_refs_valid": true,
+      "compatible_battle_entry_fields_ready": true,
+      "non_zero_recommended_martial_ranges": true,
+      "normal_boss_content_ready": true,
+      "true_boss_chain_content_ready": true,
+      "wuzhuangyuan_exam_chain_content_ready": true,
+      "no_fixed_sequence_main_model": true,
+      "current_release_unchanged": true,
+      "active_profile_matches_current": true,
+      "fallback_release_unchanged": true,
+      "scene_unchanged": true,
+      "combat_core_untouched": true,
+      "all_checks_passed": true
+    },
+    "endpoint_details": [
+      {
+        "node_id": "node_normal_boss",
+        "battle_slot_id": "slot_normal_boss_coastal_closure",
+        "enemy_deck_id": "deck_normal_boss_coastal_raider_leader",
+        "reward_plan_id": "reward_normal_boss_closure",
+        "encounter_id": "enc_normal_boss_coastal_closure",
+        "battle_id": "normal_boss_coastal_closure",
+        "combat_pool_id": "boss_normal_pool"
+      },
+      {
+        "node_id": "node_true_boss_001",
+        "battle_slot_id": "slot_true_boss_old_case_gatekeeper",
+        "enemy_deck_id": "deck_true_boss_old_case_gatekeeper",
+        "reward_plan_id": "reward_true_boss_gatekeeper",
+        "encounter_id": "enc_true_boss_old_case_gatekeeper",
+        "battle_id": "true_boss_old_case_gatekeeper",
+        "combat_pool_id": "boss_true_pool"
+      },
+      {
+        "node_id": "node_true_boss_002",
+        "battle_slot_id": "slot_true_boss_firearm_shadow",
+        "enemy_deck_id": "deck_true_boss_firearm_shadow",
+        "reward_plan_id": "reward_true_boss_firearm_truth",
+        "encounter_id": "enc_true_boss_firearm_shadow",
+        "battle_id": "true_boss_firearm_shadow",
+        "combat_pool_id": "boss_true_final_pool"
+      },
+      {
+        "node_id": "node_wuzhuangyuan_exam_001",
+        "battle_slot_id": "slot_wz01_capital_weapon_review",
+        "enemy_deck_id": "deck_wz01_capital_weapon_review",
+        "reward_plan_id": "reward_wz01_capital_weapon_review",
+        "encounter_id": "enc_wz01_capital_weapon_review",
+        "battle_id": "wz01_capital_weapon_review",
+        "combat_pool_id": "wuzhuangyuan_exam_pool"
+      },
+      {
+        "node_id": "node_wuzhuangyuan_exam_002",
+        "battle_slot_id": "slot_wz02_footwork_trial",
+        "enemy_deck_id": "deck_wz02_footwork_trial",
+        "reward_plan_id": "reward_wz02_footwork_trial",
+        "encounter_id": "enc_wz02_footwork_trial",
+        "battle_id": "wz02_footwork_trial",
+        "combat_pool_id": "wuzhuangyuan_exam_pool"
+      },
+      {
+        "node_id": "node_wuzhuangyuan_exam_003",
+        "battle_slot_id": "slot_wz03_mixed_weapon_exam",
+        "enemy_deck_id": "deck_wz03_mixed_weapon_exam",
+        "reward_plan_id": "reward_wz03_mixed_weapon_exam",
+        "encounter_id": "enc_wz03_mixed_weapon_exam",
+        "battle_id": "wz03_mixed_weapon_exam",
+        "combat_pool_id": "wuzhuangyuan_exam_pool"
+      },
+      {
+        "node_id": "node_wuzhuangyuan_exam_004",
+        "battle_slot_id": "slot_wz04_duel_chain",
+        "enemy_deck_id": "deck_wz04_duel_chain",
+        "reward_plan_id": "reward_wz04_duel_chain",
+        "encounter_id": "enc_wz04_duel_chain",
+        "battle_id": "wz04_duel_chain",
+        "combat_pool_id": "wuzhuangyuan_exam_pool"
+      },
+      {
+        "node_id": "node_wuzhuangyuan_exam_005",
+        "battle_slot_id": "slot_wz05_imperial_final_examiner",
+        "enemy_deck_id": "deck_wz05_imperial_final_examiner",
+        "reward_plan_id": "reward_wz05_imperial_final_examiner",
+        "encounter_id": "enc_wz05_imperial_final_examiner",
+        "battle_id": "wz05_imperial_final_examiner",
+        "combat_pool_id": "wuzhuangyuan_final_pool"
+      }
+    ],
+    "errors": [],
+    "card_ref_errors": [],
+    "reward_ref_errors": []
+  },
+  "materialized_nodes": {
+    "node_normal_boss": {
+      "battle_slot_id": "slot_normal_boss_coastal_closure",
+      "enemy_deck_id": "deck_normal_boss_coastal_raider_leader",
+      "reward_plan_id": "reward_normal_boss_closure",
+      "encounter_id": "enc_normal_boss_coastal_closure",
+      "battle_id": "normal_boss_coastal_closure",
+      "combat_pool_id": "boss_normal_pool"
+    },
+    "node_true_boss_001": {
+      "battle_slot_id": "slot_true_boss_old_case_gatekeeper",
+      "enemy_deck_id": "deck_true_boss_old_case_gatekeeper",
+      "reward_plan_id": "reward_true_boss_gatekeeper",
+      "encounter_id": "enc_true_boss_old_case_gatekeeper",
+      "battle_id": "true_boss_old_case_gatekeeper",
+      "combat_pool_id": "boss_true_pool"
+    },
+    "node_true_boss_002": {
+      "battle_slot_id": "slot_true_boss_firearm_shadow",
+      "enemy_deck_id": "deck_true_boss_firearm_shadow",
+      "reward_plan_id": "reward_true_boss_firearm_truth",
+      "encounter_id": "enc_true_boss_firearm_shadow",
+      "battle_id": "true_boss_firearm_shadow",
+      "combat_pool_id": "boss_true_final_pool"
+    },
+    "node_wuzhuangyuan_exam_001": {
+      "battle_slot_id": "slot_wz01_capital_weapon_review",
+      "enemy_deck_id": "deck_wz01_capital_weapon_review",
+      "reward_plan_id": "reward_wz01_capital_weapon_review",
+      "encounter_id": "enc_wz01_capital_weapon_review",
+      "battle_id": "wz01_capital_weapon_review",
+      "combat_pool_id": "wuzhuangyuan_exam_pool"
+    },
+    "node_wuzhuangyuan_exam_002": {
+      "battle_slot_id": "slot_wz02_footwork_trial",
+      "enemy_deck_id": "deck_wz02_footwork_trial",
+      "reward_plan_id": "reward_wz02_footwork_trial",
+      "encounter_id": "enc_wz02_footwork_trial",
+      "battle_id": "wz02_footwork_trial",
+      "combat_pool_id": "wuzhuangyuan_exam_pool"
+    },
+    "node_wuzhuangyuan_exam_003": {
+      "battle_slot_id": "slot_wz03_mixed_weapon_exam",
+      "enemy_deck_id": "deck_wz03_mixed_weapon_exam",
+      "reward_plan_id": "reward_wz03_mixed_weapon_exam",
+      "encounter_id": "enc_wz03_mixed_weapon_exam",
+      "battle_id": "wz03_mixed_weapon_exam",
+      "combat_pool_id": "wuzhuangyuan_exam_pool"
+    },
+    "node_wuzhuangyuan_exam_004": {
+      "battle_slot_id": "slot_wz04_duel_chain",
+      "enemy_deck_id": "deck_wz04_duel_chain",
+      "reward_plan_id": "reward_wz04_duel_chain",
+      "encounter_id": "enc_wz04_duel_chain",
+      "battle_id": "wz04_duel_chain",
+      "combat_pool_id": "wuzhuangyuan_exam_pool"
+    },
+    "node_wuzhuangyuan_exam_005": {
+      "battle_slot_id": "slot_wz05_imperial_final_examiner",
+      "enemy_deck_id": "deck_wz05_imperial_final_examiner",
+      "reward_plan_id": "reward_wz05_imperial_final_examiner",
+      "encounter_id": "enc_wz05_imperial_final_examiner",
+      "battle_id": "wz05_imperial_final_examiner",
+      "combat_pool_id": "wuzhuangyuan_final_pool"
+    }
+  },
+  "path_reachability": {
+    "normal_boss": true,
+    "true_boss_chain": true,
+    "wuzhuangyuan_exam_chain": true
+  },
+  "save_bridge_regression": {
+    "probe_pass": true,
+    "wuzhuangyuan_selected_ending_route": "wuzhuangyuan",
+    "true_selected_ending_route": "true"
+  },
+  "probe_pass": true
+}

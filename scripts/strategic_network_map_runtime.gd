@@ -39,6 +39,8 @@ static func valid_available_ids(graph: Dictionary, candidate_ids: Array) -> Arra
 			push_warning("network_map outgoing points to missing node: %s" % node_id)
 			continue
 		var node: Dictionary = by_id[node_id] as Dictionary
+		if bool(node.get("hidden", false)):
+			continue
 		var state := str(node.get("state", "locked"))
 		if state == "completed" or state == "unreachable":
 			continue
@@ -108,7 +110,9 @@ static func refresh_node_states(graph: Dictionary) -> void:
 		var node := nodes[i] as Dictionary
 		var node_id := str(node.get("map_graph_id", ""))
 		var layer := int(node.get("layer", 0))
-		if completed.has(node_id):
+		if bool(node.get("hidden", false)):
+			node["state"] = "hidden"
+		elif completed.has(node_id):
 			node["state"] = "completed"
 		elif available.has(node_id):
 			node["state"] = "available"

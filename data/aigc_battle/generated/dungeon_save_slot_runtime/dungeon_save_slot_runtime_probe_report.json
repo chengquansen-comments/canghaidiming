@@ -1,0 +1,43 @@
+{
+  "generated_at": "2026-05-16T04:10:01.656917+00:00",
+  "probe": "aigc_dungeon_save_slot_runtime_probe",
+  "fields": {
+    "save_slot_runtime_controls_ready": true,
+    "release_gate_active": true,
+    "initial_load_ready": true,
+    "flow_save_slot_ready": true,
+    "state_mutated_after_save": true,
+    "flow_restore_slot_ready": true,
+    "restored_to_saved_node": true,
+    "continue_after_flow_restore_ready": true,
+    "slot_cleared": true,
+    "current_release_unchanged": true,
+    "active_profile_unchanged": true,
+    "active_profile_matches_current_release": true,
+    "fallback_release_unchanged": true,
+    "scene_unchanged": true,
+    "combat_core_untouched": true,
+    "probe_pass": true
+  },
+  "runtime_report": {
+    "continue_after_flow_restore_ready": true,
+    "continued_current_node_id": "node_prologue_001",
+    "errors": [],
+    "flow_restore_slot_ready": true,
+    "flow_save_slot_ready": true,
+    "initial_load_ready": true,
+    "mutated_current_node_id": "node_prologue_001",
+    "release_gate_active": true,
+    "restored_available_node_ids": [
+      "node_prologue_001"
+    ],
+    "restored_current_node_id": "node_start",
+    "restored_selected_node_id": "node_prologue_001",
+    "restored_to_saved_node": true,
+    "save_slot_runtime_controls_ready": true,
+    "saved_current_node_id": "node_start",
+    "slot_cleared": true,
+    "state_mutated_after_save": true
+  },
+  "probe_pass": true
+}

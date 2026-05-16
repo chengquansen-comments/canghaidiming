@@ -164,6 +164,8 @@
 
 - 已新增离线 `map_instance / route_state_initial / big_map_compatible` 产物，用于 existing big map adapter 验证。
 - DUNGEON-2 不以全图节点总数代表单局长度；必须使用 sampled route metrics 校验 big map 路径长度与战斗结构。
+- DUNGEON-2 的战斗节点必须携带唯一 `story_beat_id`，并保留实例化后的 `title / preview_text / result_text`，不得再把 compatible map 压平成共享槽文案。
+- `big_map_compatible` 必须保真导出 `story_beat_id` 与战斗强度字段，不允许统一写成 0 或泛化结果文本。
 - DUNGEON-2 仍不允许修改 `current_release / active_profile / fallback_release`。
 - DUNGEON-2 仍未接入 Godot runtime，不改 scene，不改 battle core。
 
@@ -172,6 +174,7 @@
 - 已新增离线 `selected_node_materialized_loadout / battle_entry_request / route_state_after_choice` 产物。
 - battle node 必须解析到 `battle_slot / enemy_deck / reward_plan`，operation node 必须解析到 `operation_node`。
 - battle entry request 仍必须兼容现有 `encounter_id / battle_id / combat_pool_id` bridge 契约。
+- battle entry request 额外保留 `source_story_beat_id`，用于把战斗返回结果绑定回唯一剧情事件。
 - DUNGEON-3 仍不允许修改 `current_release / active_profile / fallback_release`。
 - DUNGEON-3 仍未接入 Godot runtime，不改 scene，不改 battle core。
 
@@ -213,3 +216,62 @@
 - true 路线 save / restore regression 不得被本轮 bridge 破坏。
 - DUNGEON-8 仍不允许修改 `current_release / active_profile / fallback_release`。
 - DUNGEON-8 仍不改 scene，不改 battle core；本轮仍不是完整用户存档 UI。
+
+## DUNGEON-9 Contract Addendum
+
+- 已新增 normal / true / `wuzhuangyuan` 三路线关键 battle endpoint 的最小正式内容闭环。
+- route endpoint 必须闭合到 `battle_slot / enemy_deck / reward_plan / card refs / encounter_id / battle_id / combat_pool_id`。
+- route endpoint 的 `enemy_martial_level / recommended_martial_min / recommended_martial_max` 不得继续为 `0`。
+- DUNGEON-9 仍不允许修改 `current_release / active_profile / fallback_release`。
+- DUNGEON-9 仍不改 scene，不改 battle core；本轮仍不是完整内容池扩容。
+
+## DUNGEON-10 至 DUNGEON-15 Contract Addendum
+
+- DUNGEON-10 允许扩充离线 content pool，但必须保持 `supports_map_instance=true` 与 `supports_fixed_sequence=false`。
+- DUNGEON-11 的结局收束只写数据与报告，不新增 scene，不接演出系统。
+- DUNGEON-12 的 formal save slot bridge 只生成 generated payload，不写用户 save slot UI。
+- DUNGEON-13 的 release candidate manifest 只能是 candidate，不得 `set-current`。
+- DUNGEON-14 的 QA matrix 必须覆盖 normal / true / `wuzhuangyuan` 与 save / restore 回归。
+- DUNGEON-15 的 promotion dry-run 必须验证 current / active / fallback 未变，并把 promotion 保持为人工动作。
+
+## DUNGEON Final Promotion Contract Addendum
+
+- Dungeon runtime entry 必须由 `current_release + active_profile` 同时指向 `dungeon_progression_v1_3 / dungeon_pool_pack_001` 才可启用。
+- `scripts/aigc_dungeon_big_map_loader.gd` 不得再仅凭 generated map 文件存在而抢占大地图入口。
+- promotion 必须先写 backup，再写 `current_release / active_profile / fallback_release`，并生成 promotion result 与 final lock report。
+- fallback 必须指向 promotion 前的旧 current release，rollback drill 必须能模拟恢复旧 active profile。
+- post-promotion 必须通过 route content、save bridge、Godot big map probe。
+
+## DUNGEON-16 Contract Addendum
+
+- formal save slot store 允许写入 `user://aigc_dungeon/save_slots/*.json`，但不得新增存档 UI 或 scene。
+- slot payload 必须包裹 `aigc_dungeon_save_v0_1` save payload，并通过 existing network_map validation。
+- restore 后必须能继续通过原大地图 runtime 推进，不得回退 fixed sequence。
+- DUNGEON-16 仍不改 battle core，不改 scene，不修改 release channel。
+
+## DUNGEON-17 Contract Addendum
+
+- strategic network map flow runtime 可暴露无 UI 的 `save_dungeon_route_slot / restore_dungeon_route_slot`。
+- runtime restore 必须重建可选下一节点，避免从旧 graph state 恢复后丢失 available route。
+- save / restore runtime controls 不得直接切 scene，不得写 release channel。
+- 后续存档 UI 只能调用该 runtime control 层，不得绕过 save slot validation。
+
+## DUNGEON-18 Contract Addendum
+
+- save / load UI 入口只能作为现有大地图 overlay 的动态控件出现，不得新增 scene。
+- 动态按钮只允许调用 `save_dungeon_route_slot / restore_dungeon_route_slot`，不得直接写 route_state 或 save 文件。
+- 非 AIGC dungeon `network_map` 不显示 dungeon save / load 控件。
+- DUNGEON-18 仍不改 battle core，不修改 release channel。
+
+## DUNGEON-19 Contract Addendum
+
+- entry smoke 必须覆盖 release gate、AIGC map load、overlay render、available nodes、save/load button callback。
+- 保存 / 读取入口必须通过正式 save slot runtime，并验证 restore 后可继续推进。
+- entry smoke 不得新增 scene，不得直接调用 battle core，不得修改 release channel。
+
+## DUNGEON-20 至 DUNGEON-24 Contract Addendum
+
+- full play loop 必须覆盖 `battle request -> NarrativeBattleContext result -> network battle return -> route_state update`。
+- normal / true / `wuzhuangyuan` 终点节点必须写入 `ending_result`，并保持玩家选择路线不被系统覆盖。
+- route target battle count 必须保持 normal=22、true=23、`wuzhuangyuan`=26。
+- full play loop probe 必须进入 final release lock report；不得新增 scene，不得修改 battle core。

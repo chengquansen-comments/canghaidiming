@@ -31,7 +31,7 @@
 		],
 		"battle_count_so_far": 23,
 		"case_clues": 0,
-		"clean_reputation": 2,
+		"clean_reputation": 0,
 		"completed_node_ids": [
 			"node_start",
 			"node_prologue_001",
@@ -176,6 +176,6 @@
 	},
 	"save_schema_version": "aigc_dungeon_save_v0_1",
 	"save_source": "aigc_dungeon_save_bridge",
-	"saved_at_unix": 1778901197.2265,
+	"saved_at_unix": 1778909789.47455,
 	"seed": 1001
 }

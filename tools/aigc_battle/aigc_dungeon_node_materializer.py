@@ -228,6 +228,11 @@ def materialize_node(
         "map_graph_id": str(compatible_node.get("map_graph_id", "")),
         "node_type": node_type,
         "materialized_kind": kind,
+        "story_beat_id": str(node.get("story_beat_id", compatible_node.get("story_beat_id", ""))),
+        "story_arc": str(node.get("story_arc", compatible_node.get("story_arc", ""))),
+        "story_role": str(node.get("story_role", compatible_node.get("story_role", ""))),
+        "story_stage": str(node.get("story_stage", compatible_node.get("story_stage", ""))),
+        "story_variant": str(node.get("story_variant", compatible_node.get("story_variant", ""))),
         "battle_slot_id": battle_slot_id,
         "enemy_deck_id": enemy_deck_id,
         "reward_plan_id": reward_plan_id,
@@ -270,6 +275,7 @@ def materialize_node(
             "source_battle_slot_id": battle_slot_id,
             "source_enemy_deck_id": enemy_deck_id,
             "source_reward_plan_id": reward_plan_id,
+            "source_story_beat_id": str(node.get("story_beat_id", compatible_node.get("story_beat_id", ""))),
             "loadout_source": "aigc_dungeon_node_materializer",
         }
     else:

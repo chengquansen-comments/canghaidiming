@@ -99,6 +99,7 @@ def main() -> None:
         "reward_card_refs_exist": not reward_card_errors,
         "battle_entry_request_has_bridge_ids": kind != "battle" or all(bool(battle_entry_request.get(field, "")) for field in ["encounter_id", "battle_id", "combat_pool_id"]),
         "battle_entry_request_has_source_ids": kind != "battle" or all(bool(battle_entry_request.get(field, "")) for field in ["source_battle_slot_id", "source_enemy_deck_id", "source_reward_plan_id"]),
+        "battle_entry_request_has_source_story_beat_id": kind != "battle" or bool(battle_entry_request.get("source_story_beat_id", "")),
         "operation_node_resolves_operation_node_id": kind != "operation" or bool(operation_node),
         "route_state_after_choice_valid": str(route_state_after.get("current_node_id", "")) == node_id and node_id in [str(item) for item in route_state_after.get("visited_node_ids", [])],
         "available_next_node_ids_valid": available_next_valid,

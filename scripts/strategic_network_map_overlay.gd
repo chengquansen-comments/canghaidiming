@@ -14,6 +14,7 @@ var panel: PanelContainer = null
 var map_container: VBoxContainer = null
 var preview_container: VBoxContainer = null
 var footer_container: HBoxContainer = null
+var map_scroll: ScrollContainer = null
 var map_view: Control = null
 
 
@@ -137,13 +138,31 @@ func render_map_view(graph: Dictionary, progress_text: String, selected_node_id:
 	progress.add_theme_color_override("font_color", Color("d9c08c"))
 	map_container.add_child(progress)
 
+	map_scroll = ScrollContainer.new()
+	map_scroll.name = "NetworkMapScroll"
+	map_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	map_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	map_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_ALWAYS
+	map_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_ALWAYS
+	map_scroll.follow_focus = true
+	map_scroll.custom_minimum_size = Vector2(980, 540)
+	map_container.add_child(map_scroll)
+
 	map_view = StrategicNetworkMapView.new()
-	map_view.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	map_view.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	map_view.custom_minimum_size = Vector2(920, 520)
+	map_view.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	map_view.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	map_view.set_graph(graph, selected_node_id)
-	map_view.node_clicked.connect(node_clicked_callback)
-	map_container.add_child(map_view)
+	if node_clicked_callback.is_valid():
+		map_view.node_clicked.connect(node_clicked_callback)
+	map_view.pan_requested.connect(_on_map_pan_requested)
+	map_scroll.add_child(map_view)
+
+
+func _on_map_pan_requested(delta: Vector2) -> void:
+	if map_scroll == null:
+		return
+	map_scroll.scroll_horizontal = max(0, map_scroll.scroll_horizontal - int(delta.x))
+	map_scroll.scroll_vertical = max(0, map_scroll.scroll_vertical - int(delta.y))
 
 
 func render_preview_panel(preview_text: String, confirm_enabled: bool, confirm_callback: Callable) -> void:
@@ -170,7 +189,56 @@ func render_preview_panel(preview_text: String, confirm_enabled: bool, confirm_c
 	preview_container.add_child(confirm)
 
 
-func render_footer(state_text: String, fallback_callback: Callable) -> void:
+func render_dungeon_storage_panel(save_slot_callback: Callable, restore_slot_callback: Callable) -> void:
+	if preview_container == null:
+		return
+	var panel_box := VBoxContainer.new()
+	panel_box.name = "DungeonSaveSlotPanel"
+	panel_box.add_theme_constant_override("separation", 8)
+	preview_container.add_child(panel_box)
+
+	var title := Label.new()
+	title.text = "副本存档"
+	title.add_theme_font_size_override("font_size", 18)
+	title.add_theme_color_override("font_color", Color("f3dfb8"))
+	panel_box.add_child(title)
+
+	var hint := Label.new()
+	hint.text = "保存当前路线，或从正式 slot 继续本局。"
+	hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	hint.add_theme_font_size_override("font_size", 14)
+	hint.add_theme_color_override("font_color", Color("d9c08c"))
+	panel_box.add_child(hint)
+
+	var actions := HBoxContainer.new()
+	actions.add_theme_constant_override("separation", 8)
+	panel_box.add_child(actions)
+
+	if save_slot_callback.is_valid():
+		var save_slot := Button.new()
+		save_slot.name = "DungeonSaveSlotButton"
+		save_slot.text = "保存路线"
+		save_slot.custom_minimum_size = Vector2(0, 46)
+		save_slot.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		save_slot.pressed.connect(save_slot_callback)
+		actions.add_child(save_slot)
+
+	if restore_slot_callback.is_valid():
+		var restore_slot := Button.new()
+		restore_slot.name = "DungeonRestoreSlotButton"
+		restore_slot.text = "读取路线"
+		restore_slot.custom_minimum_size = Vector2(0, 46)
+		restore_slot.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		restore_slot.pressed.connect(restore_slot_callback)
+		actions.add_child(restore_slot)
+
+
+func render_footer(
+	state_text: String,
+	fallback_callback: Callable,
+	save_slot_callback: Callable = Callable(),
+	restore_slot_callback: Callable = Callable()
+) -> void:
 	if footer_container == null:
 		return
 	var state_label := Label.new()
@@ -185,6 +253,7 @@ func render_footer(state_text: String, fallback_callback: Callable) -> void:
 	fallback.custom_minimum_size = Vector2(220, 52)
 	fallback.pressed.connect(fallback_callback)
 	footer_container.add_child(fallback)
+
 
 
 func render_complete_panel(summary_text: String, boss_callback: Callable) -> void:

@@ -18,6 +18,10 @@
     "compatible_network_map_nodes_ready": true,
     "compatible_map_graph_id_ready": true,
     "compatible_battle_entry_fields_ready": true,
+    "story_beat_binding_ready": true,
+    "compatible_story_beat_fields_ready": true,
+    "compatible_result_text_preserved": true,
+    "compatible_battle_difficulty_ready": true,
     "existing_big_map_node_schema_compatible": true,
     "current_release_unchanged": true,
     "active_profile_matches_current_release": true,
@@ -27,14 +31,14 @@
     "probe_pass": true
   },
   "current_release_summary": {
-    "mechanic_profile_id": "weapon_followup_v0_1",
-    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
-    "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json"
+    "mechanic_profile_id": "dungeon_progression_v1_3",
+    "content_pack_id": "dungeon_pool_pack_001",
+    "runtime_manifest_path": "data/aigc_battle/generated/dungeon_endgame_pipeline/dungeon_progression_v1_3_rc_001_manifest.json"
   },
   "active_profile_summary": {
-    "active_mechanic_profile_id": "weapon_followup_v0_1",
-    "active_content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
-    "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json"
+    "active_mechanic_profile_id": "dungeon_progression_v1_3",
+    "active_content_pack_id": "dungeon_pool_pack_001",
+    "runtime_manifest_path": "data/aigc_battle/generated/dungeon_endgame_pipeline/dungeon_progression_v1_3_rc_001_manifest.json"
   },
   "sampled_routes": [
     {

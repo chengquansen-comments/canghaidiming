@@ -169,6 +169,380 @@
         "old_case",
         "reward"
       ]
+    },
+    {
+      "card_id": "boss_pressure_attack",
+      "name": "海门压斩",
+      "card_type": "attack",
+      "weapon_style": "generic",
+      "difficulty_tier": "boss",
+      "realm_requirement": 8,
+      "cost": 2,
+      "effect_summary": "高压进攻，逼迫对手提前交出防御。",
+      "tags": [
+        "boss",
+        "pressure",
+        "normal_route"
+      ]
+    },
+    {
+      "card_id": "boss_guard_break",
+      "name": "破架断门",
+      "card_type": "attack",
+      "weapon_style": "generic",
+      "difficulty_tier": "boss",
+      "realm_requirement": 8,
+      "cost": 2,
+      "effect_summary": "专破守架，命中后追加姿态压力。",
+      "tags": [
+        "boss",
+        "guard_break",
+        "normal_route"
+      ]
+    },
+    {
+      "card_id": "boss_firearm_charge",
+      "name": "火铳逼阵",
+      "card_type": "attack",
+      "weapon_style": "generic",
+      "difficulty_tier": "boss",
+      "realm_requirement": 9,
+      "cost": 2,
+      "effect_summary": "火器暗线起手，迫使玩家调整身位。",
+      "tags": [
+        "true_route",
+        "firearm",
+        "pressure"
+      ]
+    },
+    {
+      "card_id": "boss_old_case_counter",
+      "name": "旧案反扣",
+      "card_type": "skill",
+      "weapon_style": "generic",
+      "difficulty_tier": "boss",
+      "realm_requirement": 9,
+      "cost": 1,
+      "effect_summary": "针对贪攻的反制手，专吃破绽。",
+      "tags": [
+        "true_route",
+        "counter",
+        "old_case"
+      ]
+    },
+    {
+      "card_id": "exam_spear_review",
+      "name": "校阅定枪",
+      "card_type": "attack",
+      "weapon_style": "spear",
+      "difficulty_tier": "elite",
+      "realm_requirement": 10,
+      "cost": 1,
+      "effect_summary": "武举校阅式样的标准枪路，压测试场基本功。",
+      "tags": [
+        "exam",
+        "spear",
+        "wuzhuangyuan"
+      ]
+    },
+    {
+      "card_id": "exam_blade_review",
+      "name": "校阅试刀",
+      "card_type": "attack",
+      "weapon_style": "blade",
+      "difficulty_tier": "elite",
+      "realm_requirement": 10,
+      "cost": 1,
+      "effect_summary": "考官式样的规整刀路，要求稳定应对。",
+      "tags": [
+        "exam",
+        "blade",
+        "wuzhuangyuan"
+      ]
+    },
+    {
+      "card_id": "exam_footwork_shift",
+      "name": "步法换位",
+      "card_type": "movement",
+      "weapon_style": "generic",
+      "difficulty_tier": "elite",
+      "realm_requirement": 10,
+      "cost": 1,
+      "effect_summary": "以步法和轻功换边施压，考校站位。",
+      "tags": [
+        "exam",
+        "footwork",
+        "wuzhuangyuan"
+      ]
+    },
+    {
+      "card_id": "exam_mixed_weapon_pressure",
+      "name": "杂械连压",
+      "card_type": "attack",
+      "weapon_style": "generic",
+      "difficulty_tier": "boss",
+      "realm_requirement": 10,
+      "cost": 2,
+      "effect_summary": "多武器轮转施压，要求连续处理不同距离。",
+      "tags": [
+        "exam",
+        "mixed_weapon",
+        "wuzhuangyuan"
+      ]
+    },
+    {
+      "card_id": "exam_duel_chain_pressure",
+      "name": "连擂逼势",
+      "card_type": "skill",
+      "weapon_style": "generic",
+      "difficulty_tier": "boss",
+      "realm_requirement": 10,
+      "cost": 2,
+      "effect_summary": "连续擂台压迫，逼玩家在高姿态压力下出手。",
+      "tags": [
+        "exam",
+        "duel_chain",
+        "wuzhuangyuan"
+      ]
+    },
+    {
+      "card_id": "exam_final_form",
+      "name": "殿前定式",
+      "card_type": "skill",
+      "weapon_style": "generic",
+      "difficulty_tier": "boss",
+      "realm_requirement": 10,
+      "cost": 2,
+      "effect_summary": "殿前终试的定式总成，要求完整武艺展示。",
+      "tags": [
+        "exam",
+        "final",
+        "wuzhuangyuan"
+      ]
+    },
+    {
+      "card_id": "coast_patrol_cut",
+      "name": "海巡斜斩",
+      "card_type": "attack",
+      "weapon_style": "blade",
+      "difficulty_tier": "mid",
+      "realm_requirement": 4,
+      "cost": 1,
+      "effect_summary": "海防巡兵的标准压迫斩。",
+      "tags": [
+        "blade",
+        "coastal"
+      ]
+    },
+    {
+      "card_id": "salt_smuggler_feint",
+      "name": "盐路虚步",
+      "card_type": "skill",
+      "weapon_style": "movement",
+      "difficulty_tier": "mid",
+      "realm_requirement": 4,
+      "cost": 1,
+      "effect_summary": "短移后制造一次破绽窗口。",
+      "tags": [
+        "movement",
+        "smuggler"
+      ]
+    },
+    {
+      "card_id": "harbor_guard_stance",
+      "name": "港口守势",
+      "card_type": "defense",
+      "weapon_style": "guard",
+      "difficulty_tier": "mid",
+      "realm_requirement": 5,
+      "cost": 1,
+      "effect_summary": "获得护势并降低下次伤害。",
+      "tags": [
+        "defense",
+        "harbor"
+      ]
+    },
+    {
+      "card_id": "beacon_signal_shot",
+      "name": "烽号急射",
+      "card_type": "attack",
+      "weapon_style": "ranged",
+      "difficulty_tier": "mid",
+      "realm_requirement": 5,
+      "cost": 2,
+      "effect_summary": "远距牵制并施加压力标记。",
+      "tags": [
+        "ranged",
+        "signal"
+      ]
+    },
+    {
+      "card_id": "dock_chain_hook",
+      "name": "码头链钩",
+      "card_type": "attack",
+      "weapon_style": "chain",
+      "difficulty_tier": "mid",
+      "realm_requirement": 5,
+      "cost": 2,
+      "effect_summary": "拉近目标并削弱移动。",
+      "tags": [
+        "chain",
+        "dock"
+      ]
+    },
+    {
+      "card_id": "watchtower_counter",
+      "name": "望楼反击",
+      "card_type": "counter",
+      "weapon_style": "blade",
+      "difficulty_tier": "mid",
+      "realm_requirement": 6,
+      "cost": 1,
+      "effect_summary": "被攻击后追加一次反制。",
+      "tags": [
+        "counter",
+        "watchtower"
+      ]
+    },
+    {
+      "card_id": "case_file_pressure",
+      "name": "旧案压问",
+      "card_type": "skill",
+      "weapon_style": "case",
+      "difficulty_tier": "mid",
+      "realm_requirement": 6,
+      "cost": 1,
+      "effect_summary": "施加心防压力并提高破绽收益。",
+      "tags": [
+        "old_case",
+        "pressure"
+      ]
+    },
+    {
+      "card_id": "militia_spear_wall",
+      "name": "乡勇枪墙",
+      "card_type": "attack",
+      "weapon_style": "spear",
+      "difficulty_tier": "mid",
+      "realm_requirement": 6,
+      "cost": 2,
+      "effect_summary": "多段中距拦截。",
+      "tags": [
+        "spear",
+        "militia"
+      ]
+    },
+    {
+      "card_id": "escort_blade_check",
+      "name": "押运截刀",
+      "card_type": "attack",
+      "weapon_style": "blade",
+      "difficulty_tier": "mid",
+      "realm_requirement": 7,
+      "cost": 1,
+      "effect_summary": "稳定截击并保护后排。",
+      "tags": [
+        "blade",
+        "escort"
+      ]
+    },
+    {
+      "card_id": "sea_gate_riposte",
+      "name": "海门回击",
+      "card_type": "counter",
+      "weapon_style": "spear",
+      "difficulty_tier": "mid",
+      "realm_requirement": 7,
+      "cost": 2,
+      "effect_summary": "格挡成功后反刺。",
+      "tags": [
+        "spear",
+        "counter"
+      ]
+    },
+    {
+      "card_id": "elite_command_mark",
+      "name": "校尉令标",
+      "card_type": "skill",
+      "weapon_style": "command",
+      "difficulty_tier": "elite",
+      "realm_requirement": 8,
+      "cost": 1,
+      "effect_summary": "强化下一次队列攻击。",
+      "tags": [
+        "elite",
+        "command"
+      ]
+    },
+    {
+      "card_id": "elite_shield_break",
+      "name": "破盾重击",
+      "card_type": "attack",
+      "weapon_style": "polearm",
+      "difficulty_tier": "elite",
+      "realm_requirement": 8,
+      "cost": 2,
+      "effect_summary": "高压破防攻击。",
+      "tags": [
+        "elite",
+        "guard_break"
+      ]
+    },
+    {
+      "card_id": "elite_fireline_pressure",
+      "name": "火线逼迫",
+      "card_type": "attack",
+      "weapon_style": "ranged",
+      "difficulty_tier": "elite",
+      "realm_requirement": 9,
+      "cost": 2,
+      "effect_summary": "远距压迫并惩罚迟缓。",
+      "tags": [
+        "elite",
+        "firearm"
+      ]
+    },
+    {
+      "card_id": "elite_old_case_snare",
+      "name": "旧案圈套",
+      "card_type": "skill",
+      "weapon_style": "case",
+      "difficulty_tier": "elite",
+      "realm_requirement": 9,
+      "cost": 1,
+      "effect_summary": "根据旧案标记追加控制。",
+      "tags": [
+        "elite",
+        "old_case"
+      ]
+    },
+    {
+      "card_id": "rare_lightness_trace",
+      "name": "轻身留痕",
+      "card_type": "skill",
+      "weapon_style": "movement",
+      "difficulty_tier": "rare",
+      "realm_requirement": 7,
+      "cost": 0,
+      "effect_summary": "提供轻功突破线索。",
+      "tags": [
+        "rare",
+        "lightness"
+      ]
+    },
+    {
+      "card_id": "rare_hidden_warrant",
+      "name": "密令现形",
+      "card_type": "skill",
+      "weapon_style": "case",
+      "difficulty_tier": "rare",
+      "realm_requirement": 8,
+      "cost": 1,
+      "effect_summary": "揭示旧案线索并提高军功收益。",
+      "tags": [
+        "rare",
+        "old_case"
+      ]
     }
   ]
 }

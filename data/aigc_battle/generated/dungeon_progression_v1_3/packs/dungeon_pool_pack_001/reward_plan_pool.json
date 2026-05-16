@@ -207,59 +207,6 @@
       ]
     },
     {
-      "reward_plan_id": "reward_normal_boss",
-      "reward_type": "boss_reward",
-      "reward_tier": "boss",
-      "card_rewards": [
-        "boss_reward_placeholder"
-      ],
-      "martial_xp": 16,
-      "weapon_xp": 6,
-      "lightness_reward_type": "none",
-      "military_merit_reward": 3,
-      "clean_reputation_delta": 2,
-      "old_case_clue_delta": 1,
-      "compatible_battle_slot_ids": [
-        "slot_normal_boss_001"
-      ]
-    },
-    {
-      "reward_plan_id": "reward_true_boss_gate",
-      "reward_type": "boss_reward",
-      "reward_tier": "boss",
-      "card_rewards": [
-        "boss_reward_placeholder",
-        "old_case_fragment"
-      ],
-      "martial_xp": 17,
-      "weapon_xp": 6,
-      "lightness_reward_type": "none",
-      "military_merit_reward": 3,
-      "clean_reputation_delta": 2,
-      "old_case_clue_delta": 2,
-      "compatible_battle_slot_ids": [
-        "slot_true_boss_001"
-      ]
-    },
-    {
-      "reward_plan_id": "reward_true_boss_final",
-      "reward_type": "boss_reward",
-      "reward_tier": "boss",
-      "card_rewards": [
-        "boss_reward_placeholder",
-        "reed_drift"
-      ],
-      "martial_xp": 18,
-      "weapon_xp": 6,
-      "lightness_reward_type": "rare_chain",
-      "military_merit_reward": 4,
-      "clean_reputation_delta": 2,
-      "old_case_clue_delta": 2,
-      "compatible_battle_slot_ids": [
-        "slot_true_boss_002"
-      ]
-    },
-    {
       "reward_plan_id": "reward_capital_exam",
       "reward_type": "exam_reward",
       "reward_tier": "exam",
@@ -279,6 +226,486 @@
         "slot_wuzhuangyuan_exam_003",
         "slot_wuzhuangyuan_exam_004",
         "slot_wuzhuangyuan_exam_005"
+      ]
+    },
+    {
+      "reward_plan_id": "reward_normal_boss_closure",
+      "reward_type": "boss",
+      "reward_tier": "ending_normal",
+      "card_rewards": [
+        "boss_reward_placeholder"
+      ],
+      "martial_xp": 10,
+      "weapon_xp": 6,
+      "lightness_reward_type": "none",
+      "lightness_cap_unlock": "none",
+      "military_merit_reward": 3,
+      "clean_reputation_delta": 2,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_normal_boss_coastal_closure"
+      ],
+      "reward_source": "normal_route_boss",
+      "route_unlock_effects": [],
+      "ending_resolution": {
+        "ending_route": "normal",
+        "ending_title": "奉命收束",
+        "final_flags": [
+          "normal_route_complete",
+          "coastal_case_closed"
+        ],
+        "reward_summary": "军功与清望稳定结算，旧案不强制揭底。"
+      }
+    },
+    {
+      "reward_plan_id": "reward_true_boss_gatekeeper",
+      "reward_type": "boss",
+      "reward_tier": "ending_true_gate",
+      "card_rewards": [
+        "old_case_fragment"
+      ],
+      "martial_xp": 11,
+      "weapon_xp": 7,
+      "lightness_reward_type": "none",
+      "lightness_cap_unlock": "none",
+      "military_merit_reward": 3,
+      "clean_reputation_delta": 1,
+      "old_case_clue_delta": 1,
+      "compatible_battle_slot_ids": [
+        "slot_true_boss_old_case_gatekeeper"
+      ],
+      "reward_source": "true_route_gatekeeper",
+      "route_unlock_effects": [
+        "true_route_progress"
+      ]
+    },
+    {
+      "reward_plan_id": "reward_true_boss_firearm_truth",
+      "reward_type": "boss_final",
+      "reward_tier": "ending_true_final",
+      "card_rewards": [
+        "boss_firearm_charge"
+      ],
+      "martial_xp": 12,
+      "weapon_xp": 8,
+      "lightness_reward_type": "none",
+      "lightness_cap_unlock": "none",
+      "military_merit_reward": 4,
+      "clean_reputation_delta": 2,
+      "old_case_clue_delta": 2,
+      "compatible_battle_slot_ids": [
+        "slot_true_boss_firearm_shadow"
+      ],
+      "reward_source": "true_route_final",
+      "route_unlock_effects": [
+        "truth_revealed"
+      ],
+      "ending_resolution": {
+        "ending_route": "true",
+        "ending_title": "追旧案",
+        "final_flags": [
+          "true_route_complete",
+          "truth_revealed",
+          "firearm_shadow_resolved"
+        ],
+        "reward_summary": "旧案线索收束，清望与军功同步提升。"
+      }
+    },
+    {
+      "reward_plan_id": "reward_wz01_capital_weapon_review",
+      "reward_type": "exam",
+      "reward_tier": "wz01",
+      "card_rewards": [
+        "exam_spear_review"
+      ],
+      "martial_xp": 8,
+      "weapon_xp": 6,
+      "lightness_reward_type": "none",
+      "lightness_cap_unlock": "none",
+      "military_merit_reward": 2,
+      "clean_reputation_delta": 1,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_wz01_capital_weapon_review"
+      ],
+      "reward_source": "wuzhuangyuan_exam_1",
+      "route_unlock_effects": []
+    },
+    {
+      "reward_plan_id": "reward_wz02_footwork_trial",
+      "reward_type": "exam",
+      "reward_tier": "wz02",
+      "card_rewards": [
+        "exam_footwork_shift"
+      ],
+      "martial_xp": 8,
+      "weapon_xp": 6,
+      "lightness_reward_type": "refine",
+      "lightness_cap_unlock": "none",
+      "military_merit_reward": 2,
+      "clean_reputation_delta": 1,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_wz02_footwork_trial"
+      ],
+      "reward_source": "wuzhuangyuan_exam_2",
+      "route_unlock_effects": []
+    },
+    {
+      "reward_plan_id": "reward_wz03_mixed_weapon_exam",
+      "reward_type": "exam",
+      "reward_tier": "wz03",
+      "card_rewards": [
+        "exam_mixed_weapon_pressure"
+      ],
+      "martial_xp": 9,
+      "weapon_xp": 7,
+      "lightness_reward_type": "none",
+      "lightness_cap_unlock": "none",
+      "military_merit_reward": 2,
+      "clean_reputation_delta": 1,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_wz03_mixed_weapon_exam"
+      ],
+      "reward_source": "wuzhuangyuan_exam_3",
+      "route_unlock_effects": []
+    },
+    {
+      "reward_plan_id": "reward_wz04_duel_chain",
+      "reward_type": "exam",
+      "reward_tier": "wz04",
+      "card_rewards": [
+        "exam_duel_chain_pressure"
+      ],
+      "martial_xp": 9,
+      "weapon_xp": 7,
+      "lightness_reward_type": "none",
+      "lightness_cap_unlock": "none",
+      "military_merit_reward": 3,
+      "clean_reputation_delta": 1,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_wz04_duel_chain"
+      ],
+      "reward_source": "wuzhuangyuan_exam_4",
+      "route_unlock_effects": []
+    },
+    {
+      "reward_plan_id": "reward_wz05_imperial_final_examiner",
+      "reward_type": "exam_final",
+      "reward_tier": "wz05",
+      "card_rewards": [
+        "exam_final_form"
+      ],
+      "martial_xp": 10,
+      "weapon_xp": 8,
+      "lightness_reward_type": "none",
+      "lightness_cap_unlock": "none",
+      "military_merit_reward": 4,
+      "clean_reputation_delta": 2,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_wz05_imperial_final_examiner"
+      ],
+      "reward_source": "wuzhuangyuan_exam_5",
+      "route_unlock_effects": [
+        "wuzhuangyuan_route_complete"
+      ],
+      "ending_resolution": {
+        "ending_route": "wuzhuangyuan",
+        "ending_title": "殿前夺魁",
+        "final_flags": [
+          "wuzhuangyuan_route_complete",
+          "capital_exam_passed"
+        ],
+        "reward_summary": "武状元考试完成，军功转入朝廷认可。"
+      }
+    },
+    {
+      "reward_plan_id": "reward_bigmap_normal_coast_watch_011",
+      "reward_type": "battle",
+      "reward_tier": "big_map_normal",
+      "card_rewards": [
+        "coast_patrol_cut"
+      ],
+      "martial_xp": 5,
+      "weapon_xp": 3,
+      "lightness_reward_type": "none",
+      "lightness_cap_unlock": "none",
+      "military_merit_reward": 1,
+      "clean_reputation_delta": 1,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_011"
+      ],
+      "reward_source": "big_map_normal_expansion",
+      "route_unlock_effects": []
+    },
+    {
+      "reward_plan_id": "reward_bigmap_normal_salt_route_012",
+      "reward_type": "battle",
+      "reward_tier": "big_map_normal",
+      "card_rewards": [
+        "salt_smuggler_feint"
+      ],
+      "martial_xp": 5,
+      "weapon_xp": 3,
+      "lightness_reward_type": "none",
+      "lightness_cap_unlock": "none",
+      "military_merit_reward": 1,
+      "clean_reputation_delta": 1,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_012"
+      ],
+      "reward_source": "big_map_normal_expansion",
+      "route_unlock_effects": []
+    },
+    {
+      "reward_plan_id": "reward_bigmap_normal_river_escort_013",
+      "reward_type": "battle",
+      "reward_tier": "big_map_normal",
+      "card_rewards": [
+        "escort_blade_check"
+      ],
+      "martial_xp": 5,
+      "weapon_xp": 3,
+      "lightness_reward_type": "none",
+      "lightness_cap_unlock": "none",
+      "military_merit_reward": 1,
+      "clean_reputation_delta": 1,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_013"
+      ],
+      "reward_source": "big_map_normal_expansion",
+      "route_unlock_effects": []
+    },
+    {
+      "reward_plan_id": "reward_bigmap_normal_harbor_veteran_014",
+      "reward_type": "battle",
+      "reward_tier": "big_map_normal",
+      "card_rewards": [
+        "harbor_guard_stance"
+      ],
+      "martial_xp": 5,
+      "weapon_xp": 3,
+      "lightness_reward_type": "none",
+      "lightness_cap_unlock": "none",
+      "military_merit_reward": 1,
+      "clean_reputation_delta": 1,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_014"
+      ],
+      "reward_source": "big_map_normal_expansion",
+      "route_unlock_effects": []
+    },
+    {
+      "reward_plan_id": "reward_bigmap_normal_case_informant_015",
+      "reward_type": "battle",
+      "reward_tier": "big_map_normal",
+      "card_rewards": [
+        "case_file_pressure"
+      ],
+      "martial_xp": 5,
+      "weapon_xp": 3,
+      "lightness_reward_type": "none",
+      "lightness_cap_unlock": "none",
+      "military_merit_reward": 1,
+      "clean_reputation_delta": 1,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_015"
+      ],
+      "reward_source": "big_map_normal_expansion",
+      "route_unlock_effects": []
+    },
+    {
+      "reward_plan_id": "reward_bigmap_normal_militia_wall_016",
+      "reward_type": "battle",
+      "reward_tier": "big_map_normal",
+      "card_rewards": [
+        "militia_spear_wall"
+      ],
+      "martial_xp": 5,
+      "weapon_xp": 3,
+      "lightness_reward_type": "none",
+      "lightness_cap_unlock": "none",
+      "military_merit_reward": 1,
+      "clean_reputation_delta": 1,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_016"
+      ],
+      "reward_source": "big_map_normal_expansion",
+      "route_unlock_effects": []
+    },
+    {
+      "reward_plan_id": "reward_bigmap_normal_beacon_runner_017",
+      "reward_type": "battle",
+      "reward_tier": "big_map_normal",
+      "card_rewards": [
+        "beacon_signal_shot"
+      ],
+      "martial_xp": 5,
+      "weapon_xp": 3,
+      "lightness_reward_type": "none",
+      "lightness_cap_unlock": "none",
+      "military_merit_reward": 1,
+      "clean_reputation_delta": 1,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_017"
+      ],
+      "reward_source": "big_map_normal_expansion",
+      "route_unlock_effects": []
+    },
+    {
+      "reward_plan_id": "reward_bigmap_normal_salt_duelist_018",
+      "reward_type": "battle",
+      "reward_tier": "big_map_normal",
+      "card_rewards": [
+        "escort_blade_check"
+      ],
+      "martial_xp": 5,
+      "weapon_xp": 3,
+      "lightness_reward_type": "none",
+      "lightness_cap_unlock": "none",
+      "military_merit_reward": 1,
+      "clean_reputation_delta": 1,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_018"
+      ],
+      "reward_source": "big_map_normal_expansion",
+      "route_unlock_effects": []
+    },
+    {
+      "reward_plan_id": "reward_bigmap_normal_dock_chainmen_019",
+      "reward_type": "battle",
+      "reward_tier": "big_map_normal",
+      "card_rewards": [
+        "dock_chain_hook"
+      ],
+      "martial_xp": 5,
+      "weapon_xp": 3,
+      "lightness_reward_type": "none",
+      "lightness_cap_unlock": "none",
+      "military_merit_reward": 1,
+      "clean_reputation_delta": 1,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_019"
+      ],
+      "reward_source": "big_map_normal_expansion",
+      "route_unlock_effects": []
+    },
+    {
+      "reward_plan_id": "reward_bigmap_normal_coastal_rearguard_020",
+      "reward_type": "battle",
+      "reward_tier": "big_map_normal",
+      "card_rewards": [
+        "sea_gate_riposte"
+      ],
+      "martial_xp": 5,
+      "weapon_xp": 3,
+      "lightness_reward_type": "none",
+      "lightness_cap_unlock": "none",
+      "military_merit_reward": 1,
+      "clean_reputation_delta": 1,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_normal_020"
+      ],
+      "reward_source": "big_map_normal_expansion",
+      "route_unlock_effects": []
+    },
+    {
+      "reward_plan_id": "reward_bigmap_elite_sea_gate_commander_006",
+      "reward_type": "elite_battle",
+      "reward_tier": "big_map_elite",
+      "card_rewards": [
+        "elite_command_mark"
+      ],
+      "martial_xp": 8,
+      "weapon_xp": 5,
+      "lightness_reward_type": "none",
+      "lightness_cap_unlock": "none",
+      "military_merit_reward": 2,
+      "clean_reputation_delta": 1,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_elite_006"
+      ],
+      "reward_source": "big_map_elite_expansion",
+      "route_unlock_effects": []
+    },
+    {
+      "reward_plan_id": "reward_bigmap_elite_fireline_captain_007",
+      "reward_type": "elite_battle",
+      "reward_tier": "big_map_elite",
+      "card_rewards": [
+        "elite_fireline_pressure"
+      ],
+      "martial_xp": 8,
+      "weapon_xp": 5,
+      "lightness_reward_type": "none",
+      "lightness_cap_unlock": "none",
+      "military_merit_reward": 2,
+      "clean_reputation_delta": 1,
+      "old_case_clue_delta": 0,
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_elite_007"
+      ],
+      "reward_source": "big_map_elite_expansion",
+      "route_unlock_effects": [
+        "realm_10_pressure"
+      ]
+    },
+    {
+      "reward_plan_id": "reward_bigmap_elite_old_case_blade_008",
+      "reward_type": "elite_battle",
+      "reward_tier": "big_map_elite",
+      "card_rewards": [
+        "elite_old_case_snare"
+      ],
+      "martial_xp": 8,
+      "weapon_xp": 5,
+      "lightness_reward_type": "none",
+      "lightness_cap_unlock": "none",
+      "military_merit_reward": 2,
+      "clean_reputation_delta": 1,
+      "old_case_clue_delta": 1,
+      "compatible_battle_slot_ids": [
+        "slot_bigmap_elite_008"
+      ],
+      "reward_source": "big_map_elite_expansion",
+      "route_unlock_effects": [
+        "realm_10_pressure"
+      ]
+    },
+    {
+      "reward_plan_id": "reward_rare_event_lightness_informant_003",
+      "reward_type": "rare_event",
+      "reward_tier": "big_map_rare",
+      "card_rewards": [
+        "rare_lightness_trace"
+      ],
+      "martial_xp": 6,
+      "weapon_xp": 4,
+      "lightness_reward_type": "lightness_hint",
+      "lightness_cap_unlock": "lightness_cap_3",
+      "military_merit_reward": 1,
+      "clean_reputation_delta": 0,
+      "old_case_clue_delta": 1,
+      "compatible_battle_slot_ids": [
+        "slot_rare_event_003"
+      ],
+      "reward_source": "big_map_rare_expansion",
+      "route_unlock_effects": [
+        "lightness_cap_3_candidate"
       ]
     }
   ]

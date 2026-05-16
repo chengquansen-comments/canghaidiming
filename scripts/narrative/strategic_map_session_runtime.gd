@@ -11,6 +11,7 @@ const StrategicMapState := preload("res://scripts/strategic_map_state.gd")
 const StrategicMapGenerator := preload("res://scripts/strategic_map_generator.gd")
 const StrategicNetworkMapGenerator := preload("res://scripts/strategic_network_map_generator.gd")
 const StrategicNetworkMapRuntime := preload("res://scripts/strategic_network_map_runtime.gd")
+const AigcDungeonBigMapLoader := preload("res://scripts/aigc_dungeon_big_map_loader.gd")
 
 const BASE_SEED := 1701
 const MILITARY_SEED_WEIGHT := 17
@@ -27,6 +28,13 @@ static func build_initial_state(strategic_config: Dictionary, profile: Dictionar
 	state["case_clues"] = case_clues
 	state["martial_level"] = int(profile.get("martial_level", 1))
 	state = StrategicMapState.sync_card_state_from_profile(state, profile)
+	if AigcDungeonBigMapLoader.has_compatible_map_file():
+		var bundle := AigcDungeonBigMapLoader.load_runtime_bundle()
+		if bool(bundle.get("ok", false)):
+			AigcDungeonBigMapLoader.apply_bundle_to_state(state, bundle)
+			state["seed"] = int((bundle.get("network_map", {}) as Dictionary).get("seed", state["seed"]))
+			return state
+		push_error("AIGC dungeon session bootstrap failed: %s" % str(bundle.get("error", "unknown")))
 	state["current_map"] = StrategicMapGenerator.generate_map(strategic_config, state, int(state["seed"]))
 	var network_map := StrategicNetworkMapGenerator.generate_network_map(strategic_config, state, int(state["seed"]))
 	state["network_map"] = network_map

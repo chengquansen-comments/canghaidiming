@@ -1,0 +1,21 @@
+# Dungeon Full Play Loop Probe
+
+- `full_play_loop_ready=True`
+- `battle_request_entry_ready=True`
+- `battle_return_consumed=True`
+- `normal_route_completed=True`
+- `true_route_completed=True`
+- `wuzhuangyuan_route_completed=True`
+- `three_route_ending_results_ready=True`
+- `save_load_mid_route_ready=True`
+- `route_choice_player_driven=True`
+- `visited_path_recorded=True`
+- `available_nodes_updated=True`
+- `no_fixed_sequence_runtime_path=True`
+- `current_release_unchanged=True`
+- `active_profile_unchanged=True`
+- `active_profile_matches_current_release=True`
+- `fallback_release_unchanged=True`
+- `scene_unchanged=True`
+- `combat_core_untouched=True`
+- `probe_pass=True`

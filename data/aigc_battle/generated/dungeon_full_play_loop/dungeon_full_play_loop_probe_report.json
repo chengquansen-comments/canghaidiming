@@ -1,0 +1,123 @@
+{
+  "generated_at": "2026-05-16T06:10:31.795524+00:00",
+  "probe": "aigc_dungeon_full_play_loop_probe",
+  "fields": {
+    "full_play_loop_ready": true,
+    "battle_request_entry_ready": true,
+    "battle_return_consumed": true,
+    "normal_route_completed": true,
+    "true_route_completed": true,
+    "wuzhuangyuan_route_completed": true,
+    "three_route_ending_results_ready": true,
+    "save_load_mid_route_ready": true,
+    "route_choice_player_driven": true,
+    "visited_path_recorded": true,
+    "available_nodes_updated": true,
+    "no_fixed_sequence_runtime_path": true,
+    "current_release_unchanged": true,
+    "active_profile_unchanged": true,
+    "active_profile_matches_current_release": true,
+    "fallback_release_unchanged": true,
+    "scene_unchanged": true,
+    "combat_core_untouched": true,
+    "probe_pass": true
+  },
+  "runtime_report": {
+    "available_nodes_updated": true,
+    "battle_request_entry_ready": true,
+    "battle_return_consumed": true,
+    "errors": [],
+    "full_play_loop_ready": true,
+    "no_fixed_sequence_runtime_path": true,
+    "normal_route_completed": true,
+    "release_gate_active": true,
+    "route_choice_player_driven": true,
+    "route_reports": {
+      "entry": {
+        "available_after": [
+          "node_wuju_001"
+        ],
+        "available_nodes_updated": true,
+        "battle_count_so_far": 1,
+        "battle_request_entry_ready": true,
+        "battle_return_consumed": true,
+        "no_fixed_sequence_runtime_path": true,
+        "visited_path_recorded": true
+      },
+      "normal": {
+        "battle_count_so_far": 22,
+        "branch_options": [
+          "node_route_normal"
+        ],
+        "elite_count_so_far": 5,
+        "ending_result": {
+          "final_node": true,
+          "result_text": "这一战有了定数，路也跟着往前推了一格。",
+          "route": "normal",
+          "source_node_id": "node_normal_boss",
+          "title": "海门收束战"
+        },
+        "ending_route": "normal",
+        "operation_count_so_far": 10,
+        "player_choice_required": false,
+        "route_choice_locked": true,
+        "route_completed": true,
+        "save_load_mid_route_ready": true,
+        "selected_ending_route": "normal",
+        "visited_count": 34
+      },
+      "true": {
+        "battle_count_so_far": 23,
+        "branch_options": [
+          "node_route_normal",
+          "node_route_true"
+        ],
+        "elite_count_so_far": 6,
+        "ending_result": {
+          "final_node": true,
+          "result_text": "这一战有了定数，路也跟着往前推了一格。",
+          "route": "true",
+          "source_node_id": "node_true_boss_002",
+          "title": "火器暗影"
+        },
+        "ending_route": "true",
+        "operation_count_so_far": 10,
+        "player_choice_required": true,
+        "route_choice_locked": true,
+        "route_completed": true,
+        "save_load_mid_route_ready": true,
+        "selected_ending_route": "true",
+        "visited_count": 35
+      },
+      "wuzhuangyuan": {
+        "battle_count_so_far": 26,
+        "branch_options": [
+          "node_route_normal",
+          "node_route_wuzhuangyuan"
+        ],
+        "elite_count_so_far": 9,
+        "ending_result": {
+          "final_node": true,
+          "result_text": "这一战有了定数，路也跟着往前推了一格。",
+          "route": "wuzhuangyuan",
+          "source_node_id": "node_wuzhuangyuan_exam_005",
+          "title": "殿前终试"
+        },
+        "ending_route": "wuzhuangyuan",
+        "operation_count_so_far": 10,
+        "player_choice_required": true,
+        "route_choice_locked": true,
+        "route_completed": true,
+        "save_load_mid_route_ready": true,
+        "selected_ending_route": "wuzhuangyuan",
+        "visited_count": 38
+      }
+    },
+    "save_load_mid_route_ready": true,
+    "three_route_ending_results_ready": true,
+    "true_route_completed": true,
+    "visited_path_recorded": true,
+    "wuzhuangyuan_route_completed": true
+  },
+  "probe_pass": true
+}

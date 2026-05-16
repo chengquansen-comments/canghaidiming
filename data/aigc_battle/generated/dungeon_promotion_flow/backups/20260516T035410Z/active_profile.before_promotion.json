@@ -1,0 +1,8 @@
+{
+  "active_mechanic_profile_id": "weapon_followup_v0_1",
+  "active_content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+  "target_sequence_id": "formal_sequence_mvp_v1",
+  "replacement_mode": "full_sequence",
+  "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json",
+  "fallback_story_battle_loader": true
+}

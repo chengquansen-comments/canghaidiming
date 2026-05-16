@@ -28,6 +28,10 @@ class CandidateSpec:
     old_case_tags: list[str]
 
 
+def _slug(text: str) -> str:
+    return str(text).strip().lower().replace(" ", "_").replace("-", "_")
+
+
 def _read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -124,6 +128,161 @@ def _preview_for_slot(slot: dict[str, Any]) -> str:
     if slot.get("battle_type") == "capital_exam":
         return "京师试场只认强弱，不认侥幸。"
     return "路口有兵火气，也有你想要的东西。"
+
+
+def _result_for_slot(slot: dict[str, Any]) -> str:
+    battle_type = str(slot.get("battle_type", "battle"))
+    route_type = str(slot.get("route_type", ""))
+    if battle_type == "prologue":
+        return "你扛过了第一波杀意，海风里终于有了自己的立脚点。"
+    if "wuju" in slot.get("narrative_tags", []):
+        return "这一场不是白打，台下的人已经重新估量你。"
+    if battle_type == "elite":
+        return "硬仗拿下之后，前路不再只是寻常军情。"
+    if battle_type == "capital_exam":
+        return "试场记住了你的出手，下一场会更难也更近。"
+    if battle_type == "boss" and route_type == "normal":
+        return "普通结局：奉命收束海门事件。"
+    if battle_type == "boss" and route_type == "true":
+        return "真结局：旧案与火器暗线完成收束。"
+    if battle_type == "rare_event":
+        return "这一战留下的不是热血，而是后面会发作的余波。"
+    return "这一战有了定数，路也跟着往前推了一格。"
+
+
+def _story_arc_for_slot(slot: dict[str, Any], segment: str, node_type: str) -> str:
+    route_type = str(slot.get("route_type", ""))
+    tags = set(str(tag) for tag in slot.get("narrative_tags", []))
+    old_case_tags = set(str(tag) for tag in slot.get("old_case_tags", []))
+    if node_type == "true_boss" or route_type == "true" or old_case_tags:
+        return "old_case"
+    if node_type == "wuzhuangyuan_exam" or route_type == "wuzhuangyuan":
+        return "capital_exam"
+    if segment == "prologue":
+        return "prologue"
+    if segment == "wuju":
+        return "wuju"
+    if "frontline" in tags or "coast" in tags:
+        return "coastal_front"
+    if "public" in tags:
+        return "public_order"
+    return "military_pressure"
+
+
+def _story_stage_for_slot(slot: dict[str, Any], segment: str) -> str:
+    if segment in {"prologue", "wuju"}:
+        return segment
+    battle_type = str(slot.get("battle_type", "battle"))
+    if battle_type == "normal":
+        return "big_map"
+    if battle_type == "elite":
+        return "big_map_elite"
+    if battle_type == "rare_event":
+        return "big_map_rare"
+    if battle_type == "boss":
+        return "ending"
+    if battle_type == "capital_exam":
+        return "capital_exam"
+    return battle_type
+
+
+def _story_variant_for_slot(slot: dict[str, Any], lane: int) -> str:
+    archetype = _slug(str(slot.get("enemy_archetype", "unknown")))
+    battle_index = int(slot.get("battle_index", 0))
+    return f"{archetype}_b{battle_index:02d}_l{lane:02d}"
+
+
+def _story_title(node_id: str, slot: dict[str, Any], segment: str, node_type: str) -> str:
+    route_type = str(slot.get("route_type", ""))
+    if node_type == "normal_boss":
+        return "海门收束战"
+    if node_type == "true_boss":
+        if node_id.endswith("001"):
+            return "旧案守门人"
+        return "火器暗影"
+    if node_type == "wuzhuangyuan_exam":
+        fixed = {
+            "slot_wz01_capital_weapon_review": "入京校阅",
+            "slot_wz02_footwork_trial": "步战较艺",
+            "slot_wz03_mixed_weapon_exam": "马步兵械",
+            "slot_wz04_duel_chain": "擂台连胜",
+            "slot_wz05_imperial_final_examiner": "殿前终试",
+        }
+        return fixed.get(str(slot.get("battle_slot_id", "")), str(slot.get("enemy_archetype", "京师试战")).replace("_", " ").title())
+    if segment == "prologue":
+        return "海潮首战"
+    if segment == "wuju":
+        return str(slot.get("enemy_archetype", "武举试手")).replace("_", " ").title()
+    if route_type == "true":
+        return "旧案线追击"
+    if route_type == "wuzhuangyuan":
+        return "京师试战"
+    tags = set(str(tag) for tag in slot.get("narrative_tags", []))
+    if "coast" in tags:
+        return "海线接敌"
+    if "frontline" in tags:
+        return "前压军情"
+    return str(slot.get("enemy_archetype", "遭遇战")).replace("_", " ").title()
+
+
+def _story_preview(node_id: str, slot: dict[str, Any], segment: str, node_type: str) -> str:
+    if node_type == "normal_boss":
+        return "奉命收束海门之前，最后一层兵火气已经压到脸上。"
+    if node_type == "true_boss":
+        if node_id.endswith("001"):
+            return "旧案走到门口，不会自己开。"
+        return "暗线已经不剩遮掩，这一战之后要么见真相，要么全埋住。"
+    if node_type == "wuzhuangyuan_exam":
+        previews = {
+            "slot_wz01_capital_weapon_review": "京师先看你的兵器，不先看你的志气。",
+            "slot_wz02_footwork_trial": "步法一乱，后面的武艺都白讲。",
+            "slot_wz03_mixed_weapon_exam": "台上换手极快，不会只让你打一种兵器。",
+            "slot_wz04_duel_chain": "擂台不让你喘匀气，连胜本身就是试题。",
+            "slot_wz05_imperial_final_examiner": "殿前不认侥幸，最后一手就是你的名分。",
+        }
+        return previews.get(str(slot.get("battle_slot_id", "")), _preview_for_slot(slot))
+    if segment == "prologue":
+        return "伤口还没冷，潮线上已经有人来试你的命。"
+    if segment == "wuju":
+        return "武举场上，先被记住的是失手，不是侥幸。"
+    tags = set(str(tag) for tag in slot.get("narrative_tags", []))
+    if "coast" in tags:
+        return "海风里有埋伏味，这一格不是平推过去的。"
+    if "frontline" in tags:
+        return "前线压得很近，这一战打完才知道路还能不能往前。"
+    if "old_case" in tags or slot.get("old_case_tags"):
+        return "线索还没成形，但这场接敌已经带着旧案的影子。"
+    return _preview_for_slot(slot)
+
+
+def _story_result(node_id: str, slot: dict[str, Any], segment: str, node_type: str) -> str:
+    if node_type in {"normal_boss", "true_boss", "wuzhuangyuan_exam"}:
+        return _result_for_slot(slot)
+    if segment == "prologue":
+        return "你活过了潮边第一战，这张图才真正对你展开。"
+    if segment == "wuju":
+        return "这一手被记下，后面的路会按这个分量看你。"
+    if slot.get("old_case_tags"):
+        return "兵刃落下之后，线索没有消失，反而更清楚了一层。"
+    return _result_for_slot(slot)
+
+
+def _story_beat_for_battle(node_id: str, slot: dict[str, Any], segment: str, node_type: str, lane: int) -> dict[str, Any]:
+    story_arc = _story_arc_for_slot(slot, segment, node_type)
+    story_stage = _story_stage_for_slot(slot, segment)
+    story_variant = _story_variant_for_slot(slot, lane)
+    return {
+        "story_beat_id": f"beat_{_slug(node_id)}_{story_arc}_{story_variant}",
+        "story_arc": story_arc,
+        "story_role": str(slot.get("enemy_archetype", "unknown")),
+        "story_stage": story_stage,
+        "story_variant": story_variant,
+        "title": _story_title(node_id, slot, segment, node_type),
+        "preview_text": _story_preview(node_id, slot, segment, node_type),
+        "result_text": _story_result(node_id, slot, segment, node_type),
+        "entry_hint": _story_preview(node_id, slot, segment, node_type),
+        "exit_hint": _story_result(node_id, slot, segment, node_type),
+    }
 
 
 def _node_type_to_compatible(node_type: str) -> str:
@@ -297,19 +456,39 @@ def _build_node(node_id: str, layer_index: int, lane: int, spec: CandidateSpec, 
     compatible_combat_pool_id = ""
     effects: dict[str, Any] = {}
     tags = [spec.node_type]
+    story_beat_id = ""
+    story_arc = ""
+    story_role = ""
+    story_stage = ""
+    story_variant = ""
+    entry_hint = ""
+    exit_hint = ""
+    result_text = ""
     if spec.category == "battle":
         slot = slot_by_id[spec.ref_id]
+        story = _story_beat_for_battle(node_id, slot, "big_map", spec.node_type, lane)
         battle_slot_id = spec.ref_id
         compatible_encounter_id = str(slot.get("compatible_encounter_id", ""))
         compatible_battle_id = str(slot.get("compatible_battle_id", ""))
         compatible_combat_pool_id = str(slot.get("compatible_combat_pool_id", ""))
         effects = _battle_effects(slot)
+        story_beat_id = str(story["story_beat_id"])
+        story_arc = str(story["story_arc"])
+        story_role = str(story["story_role"])
+        story_stage = str(story["story_stage"])
+        story_variant = str(story["story_variant"])
+        spec.title = str(story["title"])
+        spec.preview_text = str(story["preview_text"])
+        result_text = str(story["result_text"])
+        entry_hint = str(story["entry_hint"])
+        exit_hint = str(story["exit_hint"])
         tags.extend(list(slot.get("narrative_tags", [])))
         tags.extend(list(slot.get("old_case_tags", [])))
     else:
         op = op_by_id[spec.ref_id]
         operation_node_id = spec.ref_id
         effects = _operation_effects(op)
+        result_text = "%s 已定。" % spec.title
         tags.extend(list(op.get("route_tags", [])))
         tags.extend(list(op.get("old_case_tags", [])))
     compatible_network_node_type = _node_type_to_compatible(spec.node_type)
@@ -323,17 +502,28 @@ def _build_node(node_id: str, layer_index: int, lane: int, spec: CandidateSpec, 
         "title": spec.title,
         "subtitle": spec.subtitle,
         "preview_text": spec.preview_text,
+        "result_text": result_text,
         "tags": sorted({tag for tag in tags if tag}),
         "route_tags": spec.route_tags,
         "old_case_tags": spec.old_case_tags,
         "battle_slot_id": battle_slot_id,
         "operation_node_id": operation_node_id,
+        "story_beat_id": story_beat_id,
+        "story_arc": story_arc,
+        "story_role": story_role,
+        "story_stage": story_stage,
+        "story_variant": story_variant,
+        "entry_hint": entry_hint,
+        "exit_hint": exit_hint,
         "materialized": True,
         "map_node_type_hint": compatible_network_node_type,
         "compatible_network_node_type": compatible_network_node_type,
         "compatible_encounter_id": compatible_encounter_id,
         "compatible_battle_id": compatible_battle_id,
         "compatible_combat_pool_id": compatible_combat_pool_id,
+        "enemy_martial_level": int(slot.get("enemy_martial_level", 0)) if spec.category == "battle" else 0,
+        "recommended_martial_min": int(slot.get("recommended_martial_min", 0)) if spec.category == "battle" else 0,
+        "recommended_martial_max": int(slot.get("recommended_martial_max", 0)) if spec.category == "battle" else 0,
         "primary_line": primary_line,
         "secondary_line": secondary_line,
         "effects": effects,
@@ -348,6 +538,69 @@ def _add_edge(nodes_by_id: dict[str, dict[str, Any]], edges: list[dict[str, str]
     if from_id not in nodes_by_id[to_id]["incoming_node_ids"]:
         nodes_by_id[to_id]["incoming_node_ids"].append(from_id)
     edges.append({"from_node_id": from_id, "to_node_id": to_id})
+
+
+def _build_fixed_battle_node(
+    *,
+    node_id: str,
+    segment: str,
+    node_type: str,
+    layer_index: int,
+    lane: int,
+    slot: dict[str, Any],
+    primary_line: str,
+    secondary_line: str,
+    tags: list[str],
+    route_tags: list[str],
+    old_case_tags: list[str],
+) -> dict[str, Any]:
+    story = _story_beat_for_battle(node_id, slot, segment, node_type, lane)
+    return {
+        "node_id": node_id,
+        "segment": segment,
+        "node_type": node_type,
+        "layer_index": layer_index,
+        "lane": lane,
+        "title": str(story["title"]),
+        "subtitle": _subtitle_for_slot(slot),
+        "preview_text": str(story["preview_text"]),
+        "result_text": str(story["result_text"]),
+        "tags": sorted({*tags, *slot.get("narrative_tags", []), *slot.get("old_case_tags", [])}),
+        "route_tags": route_tags,
+        "old_case_tags": old_case_tags,
+        "battle_slot_id": str(slot["battle_slot_id"]),
+        "operation_node_id": "",
+        "story_beat_id": str(story["story_beat_id"]),
+        "story_arc": str(story["story_arc"]),
+        "story_role": str(story["story_role"]),
+        "story_stage": str(story["story_stage"]),
+        "story_variant": str(story["story_variant"]),
+        "entry_hint": str(story["entry_hint"]),
+        "exit_hint": str(story["exit_hint"]),
+        "materialized": True,
+        "map_node_type_hint": str(slot.get("map_node_type_hint", "combat_common")),
+        "compatible_network_node_type": str(slot.get("compatible_network_node_type", "combat_common")),
+        "compatible_encounter_id": str(slot.get("compatible_encounter_id", "")),
+        "compatible_battle_id": str(slot.get("compatible_battle_id", "")),
+        "compatible_combat_pool_id": str(slot.get("compatible_combat_pool_id", "")),
+        "enemy_martial_level": int(slot.get("enemy_martial_level", 0)),
+        "recommended_martial_min": int(slot.get("recommended_martial_min", 0)),
+        "recommended_martial_max": int(slot.get("recommended_martial_max", 0)),
+        "primary_line": primary_line,
+        "secondary_line": secondary_line,
+        "effects": _battle_effects(slot),
+        "outgoing_node_ids": [],
+        "incoming_node_ids": [],
+    }
+
+
+def _build_ending_result(route: str, node: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "final_node": True,
+        "route": route,
+        "title": str(node.get("title", "")),
+        "result_text": str(node.get("result_text", "路线已收束。")),
+    }
 
 
 def generate_map(progression_id: str, pack_id: str, seed: int) -> dict[str, Any]:
@@ -422,32 +675,19 @@ def generate_map(progression_id: str, pack_id: str, seed: int) -> dict[str, Any]
     layer_cursor = 1
     for node_id, segment, node_type, slot_id in shared_chain:
         slot = slot_by_id[slot_id]
-        node = {
-            "node_id": node_id,
-            "segment": segment,
-            "node_type": node_type,
-            "layer_index": layer_cursor,
-            "lane": 0,
-            "title": str(slot.get("enemy_archetype", slot_id)).replace("_", " ").title(),
-            "subtitle": _subtitle_for_slot(slot),
-            "preview_text": _preview_for_slot(slot),
-            "tags": sorted({node_type, *slot.get("narrative_tags", []), *slot.get("old_case_tags", [])}),
-            "route_tags": list(slot.get("narrative_tags", [])),
-            "old_case_tags": list(slot.get("old_case_tags", [])),
-            "battle_slot_id": slot_id,
-            "operation_node_id": "",
-            "materialized": True,
-            "map_node_type_hint": str(slot.get("map_node_type_hint", "combat_common")),
-            "compatible_network_node_type": str(slot.get("compatible_network_node_type", "combat_common")),
-            "compatible_encounter_id": str(slot.get("compatible_encounter_id", "")),
-            "compatible_battle_id": str(slot.get("compatible_battle_id", "")),
-            "compatible_combat_pool_id": str(slot.get("compatible_combat_pool_id", "")),
-            "primary_line": "military",
-            "secondary_line": "old_case" if slot.get("old_case_tags") else "",
-            "effects": _battle_effects(slot),
-            "outgoing_node_ids": [],
-            "incoming_node_ids": [],
-        }
+        node = _build_fixed_battle_node(
+            node_id=node_id,
+            segment=segment,
+            node_type=node_type,
+            layer_index=layer_cursor,
+            lane=0,
+            slot=slot,
+            primary_line="military",
+            secondary_line="old_case" if slot.get("old_case_tags") else "",
+            tags=[node_type],
+            route_tags=list(slot.get("narrative_tags", [])),
+            old_case_tags=list(slot.get("old_case_tags", [])),
+        )
         push(node)
         _add_edge(nodes_by_id, edges, previous_id, node_id)
         layers.append({"layer_index": layer_cursor, "segment": segment, "node_ids": [node_id]})
@@ -562,9 +802,18 @@ def generate_map(progression_id: str, pack_id: str, seed: int) -> dict[str, Any]
     layers.append({"layer_index": layer_cursor, "segment": "route_branch", "node_ids": branch_ids})
     layer_cursor += 1
 
-    normal_boss_slot = _collect_slots(slots, "ending", "boss", "normal")[0]
-    true_boss_slots = _collect_slots(slots, "ending", "boss", "true")
-    exam_slots = _collect_slots(slots, "wuzhuangyuan", "capital_exam", "wuzhuangyuan")
+    normal_boss_slot = slot_by_id["slot_normal_boss_coastal_closure"]
+    true_boss_slots = [
+        slot_by_id["slot_true_boss_old_case_gatekeeper"],
+        slot_by_id["slot_true_boss_firearm_shadow"],
+    ]
+    exam_slots = [
+        slot_by_id["slot_wz01_capital_weapon_review"],
+        slot_by_id["slot_wz02_footwork_trial"],
+        slot_by_id["slot_wz03_mixed_weapon_exam"],
+        slot_by_id["slot_wz04_duel_chain"],
+        slot_by_id["slot_wz05_imperial_final_examiner"],
+    ]
 
     ending_nodes = [
         ("node_normal_boss", "normal_boss", normal_boss_slot["battle_slot_id"], "node_route_normal"),
@@ -574,96 +823,60 @@ def generate_map(progression_id: str, pack_id: str, seed: int) -> dict[str, Any]
     ending_ids = []
     for lane, (node_id, node_type, slot_id, parent_id) in enumerate(ending_nodes):
         slot = slot_by_id[slot_id]
-        node = {
-            "node_id": node_id,
-            "segment": "ending",
-            "node_type": node_type,
-            "layer_index": layer_cursor,
-            "lane": lane,
-            "title": str(slot.get("enemy_archetype", slot_id)).replace("_", " ").title(),
-            "subtitle": _subtitle_for_slot(slot),
-            "preview_text": _preview_for_slot(slot),
-            "tags": sorted({node_type, *slot.get("narrative_tags", [])}),
-            "route_tags": [str(slot.get("route_type", ""))],
-            "old_case_tags": list(slot.get("old_case_tags", [])),
-            "battle_slot_id": slot_id,
-            "operation_node_id": "",
-            "materialized": True,
-            "map_node_type_hint": str(slot.get("map_node_type_hint", "combat_elite")),
-            "compatible_network_node_type": str(slot.get("compatible_network_node_type", "combat_elite")),
-            "compatible_encounter_id": str(slot.get("compatible_encounter_id", "")),
-            "compatible_battle_id": str(slot.get("compatible_battle_id", "")),
-            "compatible_combat_pool_id": str(slot.get("compatible_combat_pool_id", "")),
-            "primary_line": "military",
-            "secondary_line": "old_case" if slot.get("old_case_tags") else "",
-            "effects": _battle_effects(slot),
-            "outgoing_node_ids": [],
-            "incoming_node_ids": [],
-        }
+        node = _build_fixed_battle_node(
+            node_id=node_id,
+            segment="ending",
+            node_type=node_type,
+            layer_index=layer_cursor,
+            lane=lane,
+            slot=slot,
+            primary_line="old_case" if node_type == "true_boss" else "military",
+            secondary_line="military" if node_type == "true_boss" else ("old_case" if slot.get("old_case_tags") else ""),
+            tags=[node_type],
+            route_tags=[str(slot.get("route_type", ""))],
+            old_case_tags=list(slot.get("old_case_tags", [])),
+        )
+        if node_id == "node_normal_boss":
+            node["ending_result"] = _build_ending_result("normal", node)
         push(node)
         ending_ids.append(node_id)
         _add_edge(nodes_by_id, edges, parent_id, node_id)
     layers.append({"layer_index": layer_cursor, "segment": "ending", "node_ids": ending_ids})
     layer_cursor += 1
 
-    node_true_boss_002 = {
-        "node_id": "node_true_boss_002",
-        "segment": "ending",
-        "node_type": "true_boss",
-        "layer_index": layer_cursor,
-        "lane": 0,
-        "title": str(true_boss_slots[1].get("enemy_archetype", "")).replace("_", " ").title(),
-        "subtitle": _subtitle_for_slot(true_boss_slots[1]),
-        "preview_text": _preview_for_slot(true_boss_slots[1]),
-        "tags": ["true_boss", "true_final"],
-        "route_tags": ["true"],
-        "old_case_tags": list(true_boss_slots[1].get("old_case_tags", [])),
-        "battle_slot_id": str(true_boss_slots[1]["battle_slot_id"]),
-        "operation_node_id": "",
-        "materialized": True,
-        "map_node_type_hint": str(true_boss_slots[1].get("map_node_type_hint", "combat_elite")),
-        "compatible_network_node_type": str(true_boss_slots[1].get("compatible_network_node_type", "combat_elite")),
-        "compatible_encounter_id": str(true_boss_slots[1].get("compatible_encounter_id", "")),
-        "compatible_battle_id": str(true_boss_slots[1].get("compatible_battle_id", "")),
-        "compatible_combat_pool_id": str(true_boss_slots[1].get("compatible_combat_pool_id", "")),
-        "primary_line": "old_case",
-        "secondary_line": "military",
-        "effects": _battle_effects(true_boss_slots[1]),
-        "outgoing_node_ids": [],
-        "incoming_node_ids": [],
-    }
+    node_true_boss_002 = _build_fixed_battle_node(
+        node_id="node_true_boss_002",
+        segment="ending",
+        node_type="true_boss",
+        layer_index=layer_cursor,
+        lane=0,
+        slot=true_boss_slots[1],
+        primary_line="old_case",
+        secondary_line="military",
+        tags=["true_boss", "true_final"],
+        route_tags=["true"],
+        old_case_tags=list(true_boss_slots[1].get("old_case_tags", [])),
+    )
+    node_true_boss_002["ending_result"] = _build_ending_result("true", node_true_boss_002)
     push(node_true_boss_002)
     _add_edge(nodes_by_id, edges, "node_true_boss_001", "node_true_boss_002")
 
     exam_layer_ids = ["node_wuzhuangyuan_exam_002"]
     layers.append({"layer_index": layer_cursor, "segment": "ending", "node_ids": ["node_true_boss_002", "node_wuzhuangyuan_exam_002"]})
     exam_2 = slot_by_id[str(exam_slots[1]["battle_slot_id"])]
-    node_exam_2 = {
-        "node_id": "node_wuzhuangyuan_exam_002",
-        "segment": "ending",
-        "node_type": "wuzhuangyuan_exam",
-        "layer_index": layer_cursor,
-        "lane": 1,
-        "title": str(exam_2.get("enemy_archetype", "")).replace("_", " ").title(),
-        "subtitle": _subtitle_for_slot(exam_2),
-        "preview_text": _preview_for_slot(exam_2),
-        "tags": ["wuzhuangyuan_exam", "capital"],
-        "route_tags": ["wuzhuangyuan"],
-        "old_case_tags": [],
-        "battle_slot_id": str(exam_2["battle_slot_id"]),
-        "operation_node_id": "",
-        "materialized": True,
-        "map_node_type_hint": str(exam_2.get("map_node_type_hint", "combat_elite")),
-        "compatible_network_node_type": str(exam_2.get("compatible_network_node_type", "combat_elite")),
-        "compatible_encounter_id": str(exam_2.get("compatible_encounter_id", "")),
-        "compatible_battle_id": str(exam_2.get("compatible_battle_id", "")),
-        "compatible_combat_pool_id": str(exam_2.get("compatible_combat_pool_id", "")),
-        "primary_line": "military",
-        "secondary_line": "",
-        "effects": _battle_effects(exam_2),
-        "outgoing_node_ids": [],
-        "incoming_node_ids": [],
-    }
+    node_exam_2 = _build_fixed_battle_node(
+        node_id="node_wuzhuangyuan_exam_002",
+        segment="ending",
+        node_type="wuzhuangyuan_exam",
+        layer_index=layer_cursor,
+        lane=1,
+        slot=exam_2,
+        primary_line="military",
+        secondary_line="",
+        tags=["wuzhuangyuan_exam", "capital"],
+        route_tags=["wuzhuangyuan"],
+        old_case_tags=[],
+    )
     push(node_exam_2)
     _add_edge(nodes_by_id, edges, "node_wuzhuangyuan_exam_001", "node_wuzhuangyuan_exam_002")
     layer_cursor += 1
@@ -671,32 +884,21 @@ def generate_map(progression_id: str, pack_id: str, seed: int) -> dict[str, Any]
     previous_exam_node = "node_wuzhuangyuan_exam_002"
     for index, slot in enumerate(exam_slots[2:], start=3):
         node_id = f"node_wuzhuangyuan_exam_{index:03d}"
-        node = {
-            "node_id": node_id,
-            "segment": "ending",
-            "node_type": "wuzhuangyuan_exam",
-            "layer_index": layer_cursor,
-            "lane": 0,
-            "title": str(slot.get("enemy_archetype", "")).replace("_", " ").title(),
-            "subtitle": _subtitle_for_slot(slot),
-            "preview_text": _preview_for_slot(slot),
-            "tags": ["wuzhuangyuan_exam", "capital"],
-            "route_tags": ["wuzhuangyuan"],
-            "old_case_tags": [],
-            "battle_slot_id": str(slot["battle_slot_id"]),
-            "operation_node_id": "",
-            "materialized": True,
-            "map_node_type_hint": str(slot.get("map_node_type_hint", "combat_elite")),
-            "compatible_network_node_type": str(slot.get("compatible_network_node_type", "combat_elite")),
-            "compatible_encounter_id": str(slot.get("compatible_encounter_id", "")),
-            "compatible_battle_id": str(slot.get("compatible_battle_id", "")),
-            "compatible_combat_pool_id": str(slot.get("compatible_combat_pool_id", "")),
-            "primary_line": "military",
-            "secondary_line": "",
-            "effects": _battle_effects(slot),
-            "outgoing_node_ids": [],
-            "incoming_node_ids": [],
-        }
+        node = _build_fixed_battle_node(
+            node_id=node_id,
+            segment="ending",
+            node_type="wuzhuangyuan_exam",
+            layer_index=layer_cursor,
+            lane=0,
+            slot=slot,
+            primary_line="military",
+            secondary_line="",
+            tags=["wuzhuangyuan_exam", "capital"],
+            route_tags=["wuzhuangyuan"],
+            old_case_tags=[],
+        )
+        if index == 5:
+            node["ending_result"] = _build_ending_result("wuzhuangyuan", node)
         push(node)
         _add_edge(nodes_by_id, edges, previous_exam_node, node_id)
         layers.append({"layer_index": layer_cursor, "segment": "ending", "node_ids": [node_id]})
@@ -763,16 +965,25 @@ def generate_map(progression_id: str, pack_id: str, seed: int) -> dict[str, Any]
             "primary_line": str(node.get("primary_line", "military")),
             "secondary_line": str(node.get("secondary_line", "")),
             "preview_text": str(node["preview_text"]),
-            "result_text": "%s 已定。" % title,
+            "result_text": str(node.get("result_text", "%s 已定。" % title)),
             "effects": dict(node.get("effects", {})),
             "tags": list(node.get("tags", [])),
+            "story_beat_id": str(node.get("story_beat_id", "")),
+            "story_arc": str(node.get("story_arc", "")),
+            "story_role": str(node.get("story_role", "")),
+            "story_stage": str(node.get("story_stage", "")),
+            "story_variant": str(node.get("story_variant", "")),
+            "entry_hint": str(node.get("entry_hint", "")),
+            "exit_hint": str(node.get("exit_hint", "")),
+            "ending_result": dict(node.get("ending_result", {})),
             "combat": {},
             "combat_pool_id": str(node.get("compatible_combat_pool_id", "")),
             "encounter_id": str(node.get("compatible_encounter_id", "")),
             "battle_id": str(node.get("compatible_battle_id", "")),
-            "enemy_martial_level": 0,
-            "recommended_martial_min": 0,
-            "recommended_martial_max": 0,
+            "enemy_martial_level": int(node.get("enemy_martial_level", 0)),
+            "recommended_martial_min": int(node.get("recommended_martial_min", 0)),
+            "recommended_martial_max": int(node.get("recommended_martial_max", 0)),
+            "source_battle_slot_id": str(node.get("battle_slot_id", "")),
             "debug_fallback": False,
             "outgoing": list(node.get("outgoing_node_ids", [])),
             "incoming": list(node.get("incoming_node_ids", [])),
@@ -806,6 +1017,7 @@ def generate_map(progression_id: str, pack_id: str, seed: int) -> dict[str, Any]
             "edge_count": len(edges),
             "route_choice_available": True,
             "available_next_node_ids": list(route_state["available_next_node_ids"]),
+            "story_beat_count": len([node for node in nodes if str(node.get("story_beat_id", ""))]),
         },
         "artifacts": {
             "map_instance_path": "data/aigc_battle/generated/dungeon_maps/map_seed_1001.json",

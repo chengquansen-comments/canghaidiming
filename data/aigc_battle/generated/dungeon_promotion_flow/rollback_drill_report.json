@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-05-16T03:54:12.704910+00:00",
+  "fields": {
+    "rollback_drill_ready": true,
+    "current_is_dungeon": true,
+    "fallback_release_available": true,
+    "simulated_active_matches_simulated_current": true,
+    "current_active_still_match": true,
+    "rollback_not_executed": true,
+    "rollback_drill_pass": true
+  },
+  "simulated_current_after_rollback": {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+    "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json",
+    "release_candidate_id": ""
+  },
+  "simulated_active_after_rollback": {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+    "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json",
+    "release_candidate_id": ""
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "channel": "current",
+  "mechanic_profile_id": "weapon_followup_v0_1",
+  "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+  "sequence_template_id": "formal_sequence_12_fast_v1",
+  "build_variant": "release_drill_005",
+  "pack_identity": {
+    "sequence_template_id": "formal_sequence_12_fast_v1",
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "build_variant": "release_drill_005",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005"
+  },
+  "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json",
+  "release_status": "active",
+  "release_manifest_path": "data/aigc_battle/release/release_manifest_weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005.json",
+  "review_report_path": "data/aigc_battle/generated/review/review_report_weapon_followup_v0_1__weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005.md",
+  "activated_at": "2026-05-13T00:45:29.123496+00:00",
+  "formal_entry_enabled": true,
+  "fallback_enabled": true,
+  "fallback_profile_id": "posture_opening_pressure_v0_1",
+  "fallback_content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+  "fallback_runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/runtime_manifest.json",
+  "smoke_test_status": "pass",
+  "last_smoke_report_path": "data/aigc_battle/generated/release_smoke/playable_release_smoke_report.json"
+}

@@ -1,0 +1,103 @@
+{
+  "generated_at": "2026-05-16T03:54:12.651536+00:00",
+  "report": "aigc_dungeon_promotion_review_checklist",
+  "fields": {
+    "promotion_review_checklist_ready": true,
+    "pipeline_pass": true,
+    "route_content_probe_pass": true,
+    "save_bridge_probe_pass": true,
+    "candidate_manifest_ready": true,
+    "candidate_not_promoted": false,
+    "candidate_promoted": true,
+    "candidate_promotion_state_consistent": true,
+    "manual_review_required": true,
+    "set_current_not_allowed_by_candidate": false,
+    "current_release_is_dungeon": true,
+    "content_pool_target_counts_ready": true,
+    "current_release_unchanged": true,
+    "active_profile_unchanged": true,
+    "active_profile_matches_current_release": true,
+    "fallback_release_unchanged": true,
+    "scene_unchanged": true,
+    "combat_core_untouched": true,
+    "blocking_items_ready_for_manual_decision": true,
+    "review_report_pass": true
+  },
+  "pool_summary": {
+    "battle_slot_count": 45,
+    "big_map_normal_candidate_count": 20,
+    "big_map_elite_candidate_count": 8,
+    "rare_event_candidate_count": 3,
+    "enemy_deck_count": 36,
+    "reward_plan_count": 34,
+    "card_count": 38
+  },
+  "candidate_summary": {
+    "release_candidate_id": "dungeon_progression_v1_3_rc_001",
+    "candidate_status": "promoted",
+    "promotion_policy": {
+      "requires_manual_review": true,
+      "set_current_allowed": true,
+      "rollback_target": "fallback_release"
+    },
+    "promotion_state": "post_promotion"
+  },
+  "current_release_summary": {
+    "mechanic_profile_id": "dungeon_progression_v1_3",
+    "content_pack_id": "dungeon_pool_pack_001",
+    "runtime_manifest_path": "data/aigc_battle/generated/dungeon_endgame_pipeline/dungeon_progression_v1_3_rc_001_manifest.json"
+  },
+  "active_profile_summary": {
+    "active_mechanic_profile_id": "dungeon_progression_v1_3",
+    "active_content_pack_id": "dungeon_pool_pack_001",
+    "runtime_manifest_path": "data/aigc_battle/generated/dungeon_endgame_pipeline/dungeon_progression_v1_3_rc_001_manifest.json"
+  },
+  "checklist": [
+    {
+      "item_id": "content_experience_review",
+      "title": "内容体验确认",
+      "status": "needs_human_review",
+      "owner": "design",
+      "evidence": "normal / elite / rare 池已达到目标下限，三路线关键战斗已闭合。",
+      "decision_needed": "确认敌人风格、奖励节奏、武状元考试口径是否符合项目叙事。"
+    },
+    {
+      "item_id": "technical_gate_review",
+      "title": "技术闸门确认",
+      "status": "pass",
+      "owner": "engineering",
+      "evidence": "D10-D15 pipeline_pass=true，route content probe_pass=true，save bridge probe_pass=true。",
+      "decision_needed": ""
+    },
+    {
+      "item_id": "release_guard_review",
+      "title": "发布保护确认",
+      "status": "pass",
+      "owner": "engineering",
+      "evidence": "candidate_status=generated_not_promoted，set_current_allowed=false，current / active / fallback 未变。",
+      "decision_needed": ""
+    },
+    {
+      "item_id": "save_scope_review",
+      "title": "存档范围确认",
+      "status": "needs_human_review",
+      "owner": "design_engineering",
+      "evidence": "Formal save slot bridge payload 已生成，但未接用户存档 UI。",
+      "decision_needed": "确认下一步是正式存档系统接入，还是继续只用 bridge payload 验证。"
+    },
+    {
+      "item_id": "ending_scope_review",
+      "title": "结局收束确认",
+      "status": "needs_human_review",
+      "owner": "design",
+      "evidence": "D11 已写 ending reward closure 与 final node ending_result。",
+      "decision_needed": "确认是否进入结局演出 / 奖励收束强化，或先 promotion candidate。"
+    }
+  ],
+  "next_decision_options": [
+    "继续做结局演出 / 奖励收束强化",
+    "继续做正式存档系统接入",
+    "进入人工 promotion 审批后再 set-current"
+  ],
+  "review_report_pass": true
+}

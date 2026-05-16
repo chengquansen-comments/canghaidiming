@@ -1,0 +1,16 @@
+{
+  "channel": "fallback",
+  "mechanic_profile_id": "posture_opening_pressure_v0_1",
+  "content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001",
+  "sequence_template_id": "formal_sequence_15_v1",
+  "build_variant": "baseline_001",
+  "pack_identity": {
+    "sequence_template_id": "formal_sequence_15_v1",
+    "mechanic_profile_id": "posture_opening_pressure_v0_1",
+    "build_variant": "baseline_001",
+    "content_pack_id": "posture_opening_pressure_v0_1_formal_sequence_pack_001"
+  },
+  "runtime_manifest_path": "data/aigc_battle/generated/posture_opening_pressure_v0_1/runtime_manifest.json",
+  "release_status": "accepted",
+  "reason": "rollback_target"
+}

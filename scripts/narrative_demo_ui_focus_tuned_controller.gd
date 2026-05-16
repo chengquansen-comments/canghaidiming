@@ -439,6 +439,12 @@ func _continue_legacy_linear_flow() -> void:
 	else:
 		super._advance_to_node(_flow_count() - 1, "继续旧线性流程。")
 
+func _save_dungeon_route_slot() -> void:
+	StrategicNetworkMapFlowRuntime.save_dungeon_route_slot(self, "slot_001")
+
+func _restore_dungeon_route_slot() -> void:
+	StrategicNetworkMapFlowRuntime.restore_dungeon_route_slot(self, "slot_001")
+
 func _find_flow_index_by_node_id(node_id: String) -> int:
 	for i in range(_flow_count()):
 		if _node_id_at(i) == node_id:

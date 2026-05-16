@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-05-16T03:54:09.912367+00:00",
+  "step": "DUNGEON-13",
+  "fields": {
+    "release_candidate_manifest_ready": true,
+    "candidate_not_promoted": true,
+    "candidate_paths_exist": true,
+    "manual_review_required": true,
+    "set_current_not_allowed": true,
+    "current_release_unchanged": true,
+    "active_profile_matches_current_release": true,
+    "fallback_release_unchanged": true,
+    "scene_unchanged": true,
+    "combat_core_untouched": true,
+    "d13_pass": true
+  },
+  "candidate_manifest_path": "data/aigc_battle/generated/dungeon_endgame_pipeline/dungeon_progression_v1_3_rc_001_manifest.json",
+  "candidate": {
+    "release_candidate_id": "dungeon_progression_v1_3_rc_001",
+    "candidate_status": "generated_not_promoted",
+    "progression_template_path": "data/aigc_battle/progression_templates/dungeon_progression_v1_3.json",
+    "content_pool_pack_path": "data/aigc_battle/generated/dungeon_progression_v1_3/packs/dungeon_pool_pack_001/content_pool_manifest.json",
+    "map_instance_path": "data/aigc_battle/generated/dungeon_maps/map_seed_1001.json",
+    "big_map_compatible_path": "data/aigc_battle/generated/dungeon_maps/big_map_compatible_seed_1001.json",
+    "validation_reports": {
+      "d10": "data/aigc_battle/generated/dungeon_endgame_pipeline/d10_formal_content_pool_report.json",
+      "d11": "data/aigc_battle/generated/dungeon_endgame_pipeline/d11_ending_reward_closure_report.json",
+      "d12": "data/aigc_battle/generated/dungeon_endgame_pipeline/d12_formal_save_slot_bridge_report.json",
+      "route_content": "data/aigc_battle/generated/dungeon_route_content/dungeon_route_content_probe_report.json",
+      "save_bridge": "data/aigc_battle/generated/dungeon_save_bridge/dungeon_save_bridge_probe_report.json"
+    },
+    "promotion_policy": {
+      "requires_manual_review": true,
+      "set_current_allowed": false,
+      "rollback_target": "fallback_release"
+    }
+  }
+}

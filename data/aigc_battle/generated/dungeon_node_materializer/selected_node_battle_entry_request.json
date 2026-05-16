@@ -11,5 +11,6 @@
   "source_battle_slot_id": "slot_prologue_001",
   "source_enemy_deck_id": "deck_prologue_tutorial_enemy",
   "source_reward_plan_id": "reward_prologue_story",
+  "source_story_beat_id": "beat_node_prologue_001_old_case_tutorial_raider_b01_l00",
   "loadout_source": "aigc_dungeon_node_materializer"
 }

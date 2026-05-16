@@ -1,0 +1,45 @@
+{
+  "generated_at": "2026-05-16T04:14:57.618514+00:00",
+  "candidate_id": "dungeon_progression_v1_3_rc_001",
+  "fields": {
+    "final_release_lock_ready": true,
+    "promotion_pass": true,
+    "rollback_drill_pass": true,
+    "route_content_probe_pass": true,
+    "save_bridge_probe_pass": true,
+    "formal_save_slot_probe_pass": true,
+    "save_slot_runtime_probe_pass": true,
+    "save_slot_ui_probe_pass": true,
+    "entry_smoke_probe_pass": true,
+    "full_play_loop_probe_pass": true,
+    "godot_big_map_probe_pass": true,
+    "current_release_is_dungeon": true,
+    "active_profile_matches_current_release": true,
+    "fallback_release_available": true,
+    "scene_unchanged": true,
+    "combat_core_untouched": true,
+    "lock_report_pass": true
+  },
+  "current_release_summary": {
+    "mechanic_profile_id": "dungeon_progression_v1_3",
+    "content_pack_id": "dungeon_pool_pack_001",
+    "runtime_manifest_path": "data/aigc_battle/generated/dungeon_endgame_pipeline/dungeon_progression_v1_3_rc_001_manifest.json",
+    "release_candidate_id": "dungeon_progression_v1_3_rc_001"
+  },
+  "active_profile_summary": {
+    "mechanic_profile_id": "dungeon_progression_v1_3",
+    "content_pack_id": "dungeon_pool_pack_001",
+    "runtime_manifest_path": "data/aigc_battle/generated/dungeon_endgame_pipeline/dungeon_progression_v1_3_rc_001_manifest.json",
+    "release_candidate_id": "dungeon_progression_v1_3_rc_001"
+  },
+  "fallback_release_summary": {
+    "mechanic_profile_id": "weapon_followup_v0_1",
+    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
+    "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json",
+    "release_candidate_id": ""
+  },
+  "known_limits": [
+    "Save/load route buttons are dynamic overlay controls, not a full save slot UI.",
+    "Ending presentation remains data-driven closure, not a bespoke scene sequence."
+  ]
+}

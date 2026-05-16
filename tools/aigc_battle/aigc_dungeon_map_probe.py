@@ -60,6 +60,10 @@ def main() -> None:
         "compatible_network_map_nodes_ready": bool(checks.get("big_map_compatible_nodes_ready", False)),
         "compatible_map_graph_id_ready": bool(checks.get("compatible_map_graph_id_ready", False)),
         "compatible_battle_entry_fields_ready": bool(checks.get("compatible_battle_entry_fields_ready", False)),
+        "story_beat_binding_ready": bool(checks.get("story_beat_ids_unique", False)) and bool(checks.get("compatible_story_beat_fields_ready", False)),
+        "compatible_story_beat_fields_ready": bool(checks.get("compatible_story_beat_fields_ready", False)),
+        "compatible_result_text_preserved": bool(checks.get("compatible_result_text_preserved", False)),
+        "compatible_battle_difficulty_ready": bool(checks.get("compatible_battle_difficulty_ready", False)),
         "existing_big_map_node_schema_compatible": bool(checks.get("big_map_compatible_root_fields_ready", False)) and bool(checks.get("big_map_compatible_nodes_ready", False)),
         "current_release_unchanged": bool(checks.get("current_release_unchanged", False)),
         "active_profile_matches_current_release": (

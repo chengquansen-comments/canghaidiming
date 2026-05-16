@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-16T03:13:17.451238+00:00",
+  "generated_at": "2026-05-16T05:36:29.686720+00:00",
   "probe": "aigc_dungeon_save_bridge_probe",
   "fields": {
     "formal_save_bridge_ready": true,
@@ -274,14 +274,14 @@
     "ok": true
   },
   "current_release_summary": {
-    "mechanic_profile_id": "weapon_followup_v0_1",
-    "content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
-    "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json"
+    "mechanic_profile_id": "dungeon_progression_v1_3",
+    "content_pack_id": "dungeon_pool_pack_001",
+    "runtime_manifest_path": "data/aigc_battle/generated/dungeon_endgame_pipeline/dungeon_progression_v1_3_rc_001_manifest.json"
   },
   "active_profile_summary": {
-    "active_mechanic_profile_id": "weapon_followup_v0_1",
-    "active_content_pack_id": "weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005",
-    "runtime_manifest_path": "data/aigc_battle/generated/weapon_followup_v0_1/packs/weapon_followup_v0_1__formal_sequence_12_fast_v1__release_drill_005/runtime_manifest.json"
+    "active_mechanic_profile_id": "dungeon_progression_v1_3",
+    "active_content_pack_id": "dungeon_pool_pack_001",
+    "runtime_manifest_path": "data/aigc_battle/generated/dungeon_endgame_pipeline/dungeon_progression_v1_3_rc_001_manifest.json"
   },
   "probe_pass": true
 }

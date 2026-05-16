@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-05-16T03:54:09.911659+00:00",
+  "step": "DUNGEON-12",
+  "fields": {
+    "formal_save_slot_bridge_ready": true,
+    "save_slot_schema_ready": true,
+    "route_state_embedded": true,
+    "restore_contract_ready": true,
+    "wuzhuangyuan_route_preserved": true,
+    "route_choice_locked_preserved": true,
+    "no_user_save_ui_added": true,
+    "current_release_unchanged": true,
+    "active_profile_matches_current_release": true,
+    "fallback_release_unchanged": true,
+    "scene_unchanged": true,
+    "combat_core_untouched": true,
+    "d12_pass": true
+  },
+  "slot_payload_path": "data/aigc_battle/generated/dungeon_endgame_pipeline/aigc_dungeon_formal_save_slot_bridge_payload.json"
+}

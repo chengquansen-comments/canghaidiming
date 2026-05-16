@@ -1,0 +1,31 @@
+# Route Content Probe Report
+
+- `route_content_completion_ready=True`
+- `normal_route_content_ready=True`
+- `true_route_content_ready=True`
+- `wuzhuangyuan_route_content_ready=True`
+- `normal_boss_content_ready=True`
+- `true_boss_chain_content_ready=True`
+- `wuzhuangyuan_exam_chain_content_ready=True`
+- `wuzhuangyuan_exam_count=5`
+- `route_endpoint_nodes_bound=True`
+- `route_endpoint_battle_slots_ready=True`
+- `route_endpoint_enemy_decks_ready=True`
+- `route_endpoint_reward_plans_ready=True`
+- `route_endpoint_card_refs_valid=True`
+- `route_endpoint_reward_refs_valid=True`
+- `compatible_battle_entry_fields_ready=True`
+- `non_zero_recommended_martial_ranges=True`
+- `normal_boss_materialized=True`
+- `true_boss_chain_materialized=True`
+- `wuzhuangyuan_exam_materialized=True`
+- `battle_entry_requests_ready=True`
+- `save_bridge_regression_pass=True`
+- `dashboard_route_content_view_ready=True`
+- `no_fixed_sequence_runtime_path=True`
+- `current_release_unchanged=True`
+- `active_profile_matches_current_release=True`
+- `fallback_release_unchanged=True`
+- `scene_unchanged=True`
+- `combat_core_untouched=True`
+- `probe_pass=True`

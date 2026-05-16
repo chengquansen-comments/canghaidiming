@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-05-16T06:10:31.218045+00:00",
+  "probe": "aigc_dungeon_entry_smoke_probe",
+  "fields": {
+    "entry_smoke_ready": true,
+    "release_gate_active": true,
+    "aigc_network_map_loaded": true,
+    "overlay_render_ready": true,
+    "available_next_nodes_visible": true,
+    "save_button_visible": true,
+    "restore_button_visible": true,
+    "save_button_pressed": true,
+    "restore_button_pressed": true,
+    "restored_to_saved_node": true,
+    "continue_after_restore_ready": true,
+    "current_release_unchanged": true,
+    "active_profile_unchanged": true,
+    "active_profile_matches_current_release": true,
+    "fallback_release_unchanged": true,
+    "scene_unchanged": true,
+    "combat_core_untouched": true,
+    "probe_pass": true
+  },
+  "runtime_report": {
+    "aigc_network_map_loaded": true,
+    "available_next_nodes_visible": true,
+    "continue_after_restore_ready": true,
+    "entry_smoke_ready": true,
+    "errors": [],
+    "no_scene_required": true,
+    "overlay_render_ready": true,
+    "release_gate_active": true,
+    "restore_button_pressed": true,
+    "restore_button_visible": true,
+    "restored_to_saved_node": true,
+    "save_button_pressed": true,
+    "save_button_visible": true,
+    "state_mutated_after_save": true
+  },
+  "probe_pass": true
+}

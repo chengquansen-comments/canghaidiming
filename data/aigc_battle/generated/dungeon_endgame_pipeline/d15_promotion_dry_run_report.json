@@ -1,0 +1,29 @@
+{
+  "generated_at": "2026-05-16T03:54:09.914902+00:00",
+  "step": "DUNGEON-15",
+  "fields": {
+    "promotion_dry_run_ready": true,
+    "candidate_manifest_valid": true,
+    "qa_matrix_pass": true,
+    "set_current_not_executed": true,
+    "rollback_target_ready": true,
+    "manual_promotion_required": true,
+    "current_release_unchanged": true,
+    "fallback_release_unchanged": true,
+    "active_profile_matches_current_release": true,
+    "scene_unchanged": true,
+    "combat_core_untouched": true,
+    "d15_pass": true
+  },
+  "dry_run_actions": [
+    "validate_candidate_manifest",
+    "validate_qa_matrix",
+    "verify_current_guard",
+    "verify_rollback_target"
+  ],
+  "blocked_actions": [
+    "set_current",
+    "write_active_profile",
+    "write_fallback_release"
+  ]
+}
