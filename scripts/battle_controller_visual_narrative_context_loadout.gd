@@ -172,6 +172,11 @@ func _apply_generated_manifest_enemy_config(enemy_config: Dictionary, generated_
 	enemy_config["generated_deck_id"] = str(generated_loadout.get("generated_deck_id", ""))
 	enemy_config["content_pack_id"] = str(generated_loadout.get("content_pack_id", ""))
 	enemy_config["enemy_source"] = "generated_manifest"
+	if not str(generated_loadout.get("enemy_weapon", "")).is_empty():
+		enemy_config["weapon"] = str(generated_loadout.get("enemy_weapon", ""))
+	if not str(generated_loadout.get("enemy_display_name", "")).is_empty():
+		enemy_config["display_name"] = str(generated_loadout.get("enemy_display_name", ""))
+		enemy_config["name"] = str(generated_loadout.get("enemy_display_name", ""))
 	return enemy_config
 
 func _story_battle_for_encounter(encounter_id: String) -> Dictionary:

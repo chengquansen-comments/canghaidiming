@@ -15,6 +15,14 @@ func _ready() -> void:
 		custom_minimum_size = StrategicNetworkMapStyle.DEFAULT_MINIMUM_SIZE
 	mouse_default_cursor_shape = Control.CURSOR_DRAG
 
+func node_canvas_pos(map_graph_id: String) -> Vector2:
+	if map_graph_id.is_empty():
+		return Vector2(-1.0, -1.0)
+	for node in _node_array():
+		if str(node.get("map_graph_id", "")) == map_graph_id:
+			return _node_pos(node)
+	return Vector2(-1.0, -1.0)
+
 func set_graph(new_graph: Dictionary, new_selected_node_id: String) -> void:
 	graph = new_graph.duplicate(true)
 	selected_node_id = new_selected_node_id
@@ -23,6 +31,8 @@ func set_graph(new_graph: Dictionary, new_selected_node_id: String) -> void:
 	queue_redraw()
 
 func _draw() -> void:
+	_draw_canvas_background()
+	_draw_layer_guides()
 	_draw_edges(false)
 	_draw_edges(true)
 	_draw_nodes()
@@ -71,6 +81,7 @@ func _draw_nodes() -> void:
 	var nodes := _node_array()
 	var font := get_theme_default_font()
 	var progress_ranges := _compute_progress_ranges(nodes)
+	var current_node_id := str(graph.get("current_node_id", ""))
 	for node in nodes:
 		var pos := _node_pos(node)
 		var node_type := str(node.get("node_type", ""))
@@ -78,9 +89,17 @@ func _draw_nodes() -> void:
 		var mark := str(meta.get("mark", "?"))
 		var base_color: Color = meta.get("color", Color(0.42, 0.42, 0.42))
 		var state := str(node.get("state", "locked"))
-		var is_selected := str(node.get("map_graph_id", "")) == selected_node_id
+		var node_id := str(node.get("map_graph_id", ""))
+		var is_selected := node_id == selected_node_id
+		var is_current := node_id == current_node_id
 		var fill_color := StrategicNetworkMapStyle.state_fill_color(base_color, state)
 		var outline_color := StrategicNetworkMapStyle.state_outline_color(state)
+		if state == "available" or state == "start":
+			draw_circle(
+				pos,
+				StrategicNetworkMapStyle.NODE_RADIUS + StrategicNetworkMapStyle.AVAILABLE_AURA_EXTRA_RADIUS,
+				StrategicNetworkMapStyle.available_aura_color()
+			)
 		if is_selected:
 			draw_circle(
 				pos,
@@ -89,11 +108,17 @@ func _draw_nodes() -> void:
 			)
 		draw_circle(pos, StrategicNetworkMapStyle.NODE_RADIUS + StrategicNetworkMapStyle.OUTLINE_EXTRA_RADIUS, outline_color)
 		draw_circle(pos, StrategicNetworkMapStyle.NODE_RADIUS, fill_color)
+		if is_current:
+			draw_circle(
+				pos + Vector2(0.0, -StrategicNetworkMapStyle.NODE_RADIUS - 13.0),
+				4.0,
+				StrategicNetworkMapStyle.current_node_dot_color()
+			)
 		if font != null:
 			_draw_centered_text(
 				font,
 				mark,
-				pos + Vector2(0.0, 8.0),
+				pos,
 				StrategicNetworkMapStyle.MARK_FONT_SIZE,
 				StrategicNetworkMapStyle.mark_color()
 			)
@@ -113,21 +138,40 @@ func _draw_legend() -> void:
 	var font := get_theme_default_font()
 	if font == null:
 		return
-	draw_string(
-		font,
-		Vector2(StrategicNetworkMapStyle.VIEW_PADDING, maxf(20.0, size.y - 12.0)),
+	var legend_lines := [
 		StrategicNetworkMapStyle.LEGEND_TEXT,
-		HORIZONTAL_ALIGNMENT_LEFT,
-		-1,
-		StrategicNetworkMapStyle.LEGEND_FONT_SIZE,
-		StrategicNetworkMapStyle.legend_color()
+		"朱线为已通塘报，朱圈为当前批选，淡朱外晕为可发牌前往。",
+		"角标：战=累计接战  倭=累计强敌  营=累计经营。拖动画布可平移，点击汛口查看右侧批注。",
+	]
+	var line_height := StrategicNetworkMapStyle.LEGEND_FONT_SIZE + 6.0
+	var panel_height := line_height * float(legend_lines.size()) + 18.0
+	var rect := Rect2(
+		Vector2(StrategicNetworkMapStyle.VIEW_PADDING - 14.0, size.y - panel_height - 12.0),
+		Vector2(size.x - (StrategicNetworkMapStyle.VIEW_PADDING - 14.0) * 2.0, panel_height)
 	)
+	draw_rect(rect, StrategicNetworkMapStyle.legend_panel_fill_color(), true)
+	draw_rect(rect, StrategicNetworkMapStyle.legend_panel_border_color(), false, 1.5)
+	var text_x := rect.position.x + 14.0
+	var text_y := rect.position.y + 22.0
+	for line in legend_lines:
+		draw_string(
+			font,
+			Vector2(text_x, text_y),
+			line,
+			HORIZONTAL_ALIGNMENT_LEFT,
+			-1,
+			StrategicNetworkMapStyle.LEGEND_FONT_SIZE,
+			StrategicNetworkMapStyle.legend_color()
+		)
+		text_y += line_height
 
 func _draw_centered_text(font: Font, text: String, center_pos: Vector2, font_size: int, color: Color) -> void:
 	var text_size := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
+	var ascent := font.get_ascent(font_size)
+	var descent := font.get_descent(font_size)
 	draw_string(
 		font,
-		center_pos + Vector2(-text_size.x * 0.5, text_size.y * 0.35),
+		center_pos + Vector2(-text_size.x * 0.5, (ascent - descent) * 0.5),
 		text,
 		HORIZONTAL_ALIGNMENT_LEFT,
 		-1,
@@ -143,11 +187,11 @@ func _draw_progress_badges(font: Font, node: Dictionary, pos: Vector2, progress_
 	var badges: Array[String] = []
 	var node_type := str(node.get("node_type", ""))
 	if _is_combat_node(node):
-		badges.append(_badge_exact_text("B", int(progress.get("battle_ref", 0))))
+		badges.append(_badge_exact_text("战", int(progress.get("battle_ref", 0))))
 		if node_type == "combat_elite":
-			badges.append(_badge_exact_text("E", int(progress.get("elite_ref", 0))))
+			badges.append(_badge_exact_text("倭", int(progress.get("elite_ref", 0))))
 	elif _is_operation_count_node(node):
-		badges.append(_badge_exact_text("O", int(progress.get("operation_ref", 0))))
+		badges.append(_badge_exact_text("营", int(progress.get("operation_ref", 0))))
 	if badges.is_empty():
 		return
 	var total_width := 0.0
@@ -180,6 +224,136 @@ func _draw_progress_badges(font: Font, node: Dictionary, pos: Vector2, progress_
 			StrategicNetworkMapStyle.badge_text_color()
 		)
 		cursor_x += box.x + StrategicNetworkMapStyle.BADGE_SPACING
+
+func _draw_canvas_background() -> void:
+	var rect := Rect2(Vector2.ZERO, size)
+	draw_rect(rect, StrategicNetworkMapStyle.background_fill_color(), true)
+	_draw_map_grid()
+	_draw_coast_wash()
+	_draw_sea_lines()
+	_draw_compass_rose()
+	_draw_map_seal()
+	draw_rect(rect, StrategicNetworkMapStyle.background_border_color(), false, 2.0)
+
+func _draw_layer_guides() -> void:
+	var font := get_theme_default_font()
+	var max_layer := _max_layer()
+	var top: float = maxf(12.0, StrategicNetworkMapStyle.CANVAS_PADDING_Y - StrategicNetworkMapStyle.HEADER_RESERVED_HEIGHT)
+	var bottom: float = size.y - StrategicNetworkMapStyle.LEGEND_RESERVED_HEIGHT - 18.0
+	var current_layer := int(graph.get("current_layer", 0))
+	for layer in range(max_layer + 1):
+		var x := StrategicNetworkMapStyle.CANVAS_PADDING_X + float(layer) * StrategicNetworkMapStyle.LAYER_GAP
+		var half_band := StrategicNetworkMapStyle.LAYER_GAP * 0.42
+		var left := x - half_band
+		var band_rect := Rect2(Vector2(left, top), Vector2(half_band * 2.0, bottom - top))
+		if layer == current_layer:
+			draw_rect(band_rect, StrategicNetworkMapStyle.current_layer_band_color(), true)
+			draw_rect(band_rect, StrategicNetworkMapStyle.current_layer_border_color(), false, 1.0)
+		else:
+			draw_line(
+				Vector2(x, top + 18.0),
+				Vector2(x, bottom),
+				StrategicNetworkMapStyle.layer_divider_color(),
+				1.0,
+				true
+			)
+		if font != null:
+			_draw_centered_text(
+				font,
+				StrategicNetworkMapStyle.layer_label(layer),
+				Vector2(x, top + 10.0),
+				StrategicNetworkMapStyle.LAYER_HEADER_FONT_SIZE,
+				StrategicNetworkMapStyle.layer_header_color(layer == current_layer)
+			)
+
+func _draw_map_grid() -> void:
+	var step := 72.0
+	var x := StrategicNetworkMapStyle.VIEW_PADDING
+	while x < size.x - StrategicNetworkMapStyle.VIEW_PADDING:
+		draw_line(
+			Vector2(x, StrategicNetworkMapStyle.VIEW_PADDING),
+			Vector2(x, size.y - StrategicNetworkMapStyle.LEGEND_RESERVED_HEIGHT),
+			StrategicNetworkMapStyle.grid_line_color(),
+			1.0,
+			true
+		)
+		x += step
+	var y := StrategicNetworkMapStyle.VIEW_PADDING
+	while y < size.y - StrategicNetworkMapStyle.LEGEND_RESERVED_HEIGHT:
+		draw_line(
+			Vector2(StrategicNetworkMapStyle.VIEW_PADDING, y),
+			Vector2(size.x - StrategicNetworkMapStyle.VIEW_PADDING, y),
+			StrategicNetworkMapStyle.grid_line_color(),
+			1.0,
+			true
+		)
+		y += step
+
+func _draw_coast_wash() -> void:
+	var coast: PackedVector2Array = PackedVector2Array([
+		Vector2(0.0, size.y * 0.25),
+		Vector2(size.x * 0.09, size.y * 0.30),
+		Vector2(size.x * 0.06, size.y * 0.42),
+		Vector2(size.x * 0.16, size.y * 0.54),
+		Vector2(size.x * 0.11, size.y * 0.68),
+		Vector2(size.x * 0.23, size.y * 0.80),
+		Vector2(size.x * 0.18, size.y),
+		Vector2(0.0, size.y),
+	])
+	draw_colored_polygon(coast, StrategicNetworkMapStyle.coast_fill_color())
+	for i in range(coast.size() - 2):
+		draw_line(
+			coast[i],
+			coast[i + 1],
+			StrategicNetworkMapStyle.coast_line_color(),
+			2.0,
+			true
+		)
+
+func _draw_sea_lines() -> void:
+	var wash := Rect2(Vector2(size.x * 0.22, 62.0), Vector2(size.x * 0.72, size.y - 170.0))
+	draw_rect(wash, StrategicNetworkMapStyle.sea_wash_color(), true)
+	for i in range(7):
+		var y := 115.0 + float(i) * 58.0
+		var start_x := size.x * 0.24 + float(i % 2) * 18.0
+		var end_x := size.x - StrategicNetworkMapStyle.VIEW_PADDING
+		var cursor := start_x
+		while cursor < end_x:
+			draw_arc(
+				Vector2(cursor + 20.0, y),
+				20.0,
+				0.05,
+				PI - 0.05,
+				16,
+				StrategicNetworkMapStyle.sea_line_color(),
+				1.2,
+				true
+			)
+			cursor += 52.0
+
+func _draw_compass_rose() -> void:
+	var font := get_theme_default_font()
+	var center := Vector2(size.x - 105.0, 92.0)
+	var color := StrategicNetworkMapStyle.compass_color()
+	draw_circle(center, 32.0, Color(color.r, color.g, color.b, 0.08))
+	draw_arc(center, 32.0, 0.0, TAU, 48, color, 1.5, true)
+	draw_line(center + Vector2(0.0, -38.0), center + Vector2(0.0, 38.0), color, 1.4, true)
+	draw_line(center + Vector2(-38.0, 0.0), center + Vector2(38.0, 0.0), color, 1.4, true)
+	draw_line(center + Vector2(-25.0, -25.0), center + Vector2(25.0, 25.0), color, 1.0, true)
+	draw_line(center + Vector2(25.0, -25.0), center + Vector2(-25.0, 25.0), color, 1.0, true)
+	if font != null:
+		_draw_centered_text(font, "北", center + Vector2(0.0, -50.0), 16, color)
+		_draw_centered_text(font, "海", center + Vector2(0.0, 4.0), 14, color)
+
+func _draw_map_seal() -> void:
+	var font := get_theme_default_font()
+	var rect := Rect2(Vector2(64.0, size.y - 148.0), Vector2(68.0, 68.0))
+	var color := StrategicNetworkMapStyle.seal_color()
+	draw_rect(rect, Color(color.r, color.g, color.b, 0.10), true)
+	draw_rect(rect, color, false, 2.0)
+	if font != null:
+		_draw_centered_text(font, "海防", rect.position + Vector2(34.0, 25.0), 15, color)
+		_draw_centered_text(font, "勘合", rect.position + Vector2(34.0, 49.0), 15, color)
 
 func _badge_exact_text(prefix: String, value: int) -> String:
 	if value <= 0:
@@ -364,3 +538,10 @@ func _layer_node_count(layer: int) -> int:
 		if int(node.get("layer", -1)) == layer:
 			count += 1
 	return max(1, count)
+
+func _max_layer() -> int:
+	var max_layer := 0
+	for item in _node_array():
+		var node := item as Dictionary
+		max_layer = maxi(max_layer, int(node.get("layer", 0)))
+	return max_layer

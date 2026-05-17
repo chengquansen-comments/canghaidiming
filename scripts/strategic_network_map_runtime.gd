@@ -3,6 +3,8 @@ extends RefCounted
 # Pure runtime helpers for strategic network-map state.
 # This file intentionally has no UI, scene switching, battle request, or narrative side effects.
 
+const StrategicMapState := preload("res://scripts/strategic_map_state.gd")
+
 static func find_node(graph: Dictionary, map_graph_id: String) -> Dictionary:
 	var nodes: Array = graph.get("nodes", [])
 	for item in nodes:
@@ -158,6 +160,13 @@ static func sync_mirror_fields(strategic_state: Dictionary, graph: Dictionary) -
 	strategic_state["route_flags"] = (graph.get("route_flags", strategic_state.get("route_flags", {})) as Dictionary).duplicate(true)
 	strategic_state["lightness_level"] = int(graph.get("lightness_level", strategic_state.get("lightness_level", 1)))
 	strategic_state["old_case_progress"] = int(graph.get("old_case_progress", strategic_state.get("old_case_progress", 0)))
+	for key in StrategicMapState.STORY_NUMERIC_FIELDS:
+		strategic_state[key] = int(graph.get(key, strategic_state.get(key, 0)))
+	for key in StrategicMapState.STORY_BOOLEAN_FIELDS:
+		strategic_state[key] = bool(graph.get(key, strategic_state.get(key, false)))
+	strategic_state["triggered_story_beat_ids"] = (graph.get("triggered_story_beat_ids", strategic_state.get("triggered_story_beat_ids", [])) as Array).duplicate(true)
+	strategic_state["story_exclusive_groups"] = (graph.get("story_exclusive_groups", strategic_state.get("story_exclusive_groups", [])) as Array).duplicate(true)
+	strategic_state["story_cooldowns"] = (graph.get("story_cooldowns", strategic_state.get("story_cooldowns", {})) as Dictionary).duplicate(true)
 
 
 static func _append_unique(graph: Dictionary, field: String, value: String) -> void:

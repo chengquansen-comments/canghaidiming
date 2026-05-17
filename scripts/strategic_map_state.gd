@@ -11,6 +11,27 @@ const MILITARY_TIER_THRESHOLDS := [0, 2, 5, 9, 14, 20]
 const MILITARY_TIER_TITLES := ["白身", "小旗", "总旗", "百户", "副千户", "千户"]
 const REPUTATION_TIER_THRESHOLDS := [0, 2, 5, 9, 13]
 const REPUTATION_TIER_TITLES := ["无名", "乡里可信", "义声初起", "江湖有名", "众望所归"]
+const STORY_NUMERIC_FIELDS := [
+	"military_merit",
+	"clean_reputation",
+	"case_clues",
+	"old_case_progress",
+	"route_bias_military",
+	"route_bias_reputation",
+	"route_bias_old_case",
+	"shen_respect",
+	"shen_suspicion",
+	"gu_trust",
+	"gu_affection",
+	"gu_identity_public_risk",
+	"qi_trust",
+	"truth_progress",
+	"military_rank_progress",
+	"public_reputation",
+]
+const STORY_BOOLEAN_FIELDS := [
+	"gu_identity_known",
+]
 
 static func default_state() -> Dictionary:
 	return {
@@ -49,14 +70,30 @@ static func default_state() -> Dictionary:
 			"multiple_route_choice_supported": false,
 			"player_choice_required": false,
 			"selected_ending_route": "",
-		},
-		"military_merit": 0,
-		"clean_reputation": 0,
-		"case_clues": 0,
-		"old_case_progress": 0,
-		"martial_level": INITIAL_MARTIAL_LEVEL,
-		"lightness_level": INITIAL_QINGGONG,
-		"owned_card_ids": [],
+			},
+			"military_merit": 0,
+			"clean_reputation": 0,
+			"case_clues": 0,
+			"old_case_progress": 0,
+			"route_bias_military": 0,
+			"route_bias_reputation": 0,
+			"route_bias_old_case": 0,
+			"shen_respect": 0,
+			"shen_suspicion": 0,
+			"gu_trust": 0,
+			"gu_affection": 0,
+			"gu_identity_known": false,
+			"gu_identity_public_risk": 0,
+			"qi_trust": 0,
+			"truth_progress": 0,
+			"military_rank_progress": 0,
+			"public_reputation": 0,
+			"triggered_story_beat_ids": [],
+			"story_exclusive_groups": [],
+			"story_cooldowns": {},
+			"martial_level": INITIAL_MARTIAL_LEVEL,
+			"lightness_level": INITIAL_QINGGONG,
+			"owned_card_ids": [],
 		"selected_loadout_ids": [],
 		"deck_slots": [],
 		"active_deck_index": 0,
@@ -66,11 +103,11 @@ static func default_state() -> Dictionary:
 
 static func apply_effects(state: Dictionary, effects: Dictionary) -> Dictionary:
 	var next_state := state.duplicate(true)
-	for key in ["military_merit", "clean_reputation", "case_clues"]:
-		next_state[key] = int(next_state.get(key, 0)) + int(effects.get(key, 0))
-	next_state["military_merit"] = max(0, int(next_state.get("military_merit", 0)))
-	next_state["clean_reputation"] = max(0, int(next_state.get("clean_reputation", 0)))
-	next_state["case_clues"] = max(0, int(next_state.get("case_clues", 0)))
+	for key in STORY_NUMERIC_FIELDS:
+		next_state[key] = max(0, int(next_state.get(key, 0)) + int(effects.get(key, 0)))
+	for key in STORY_BOOLEAN_FIELDS:
+		if effects.has(key):
+			next_state[key] = bool(effects.get(key, false))
 	next_state["martial_level"] = max(INITIAL_MARTIAL_LEVEL, int(next_state.get("martial_level", INITIAL_MARTIAL_LEVEL)))
 	if effects.has("card_rewards"):
 		next_state = apply_card_rewards(next_state, effects.get("card_rewards", []))

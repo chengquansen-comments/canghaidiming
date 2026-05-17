@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-16T03:58:03.709335+00:00",
+  "generated_at": "2026-05-16T12:45:15.213538+00:00",
   "probe": "aigc_dungeon_godot_big_map_probe",
   "fields": {
     "godot_big_map_loader_ready": true,
@@ -25,14 +25,15 @@
   },
   "runtime_report": {
     "after_choice_available_node_ids": [
-      "node_wuju_001"
+      "node_bigmap_07_00",
+      "node_bigmap_07_01"
     ],
     "after_choice_completed_node_ids": [
       "node_start",
       "node_prologue_001"
     ],
     "after_choice_current_node_id": "node_prologue_001",
-    "after_choice_selected_node_id": "node_wuju_001",
+    "after_choice_selected_node_id": "node_bigmap_07_00",
     "after_choice_visited_path_order": [
       "node_start",
       "node_prologue_001"
@@ -52,7 +53,8 @@
       "source_battle_slot_id": "slot_prologue_001",
       "source_enemy_deck_id": "deck_prologue_tutorial_enemy",
       "source_node_id": "node_prologue_001",
-      "source_reward_plan_id": "reward_prologue_story"
+      "source_reward_plan_id": "reward_prologue_story",
+      "source_story_beat_id": "beat_node_prologue_001_old_case_tutorial_raider_b01_l00"
     },
     "broken_ref_count": 0,
     "fallback_loadout_count": 0,

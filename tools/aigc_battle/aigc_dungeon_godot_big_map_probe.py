@@ -242,10 +242,11 @@ func _init() -> void:
 	report["after_choice_available_node_ids"] = (controller.strategic_state.get("available_node_ids", []) as Array).duplicate(true)
 	report["after_choice_completed_node_ids"] = (controller.strategic_state.get("completed_node_ids", []) as Array).duplicate(true)
 	report["after_choice_visited_path_order"] = (controller.strategic_state.get("visited_path_order", []) as Array).duplicate(true)
+	var expected_after_prologue: Array = ["node_bigmap_07_00", "node_bigmap_07_01"]
 	report["route_state_after_choice_ready"] = (
 		str(controller.strategic_state.get("current_node_id", "")) == "node_prologue_001"
-		and str(controller.strategic_state.get("selected_node_id", "")) == "node_wuju_001"
-		and (controller.strategic_state.get("available_node_ids", []) as Array) == ["node_wuju_001"]
+		and expected_after_prologue.has(str(controller.strategic_state.get("selected_node_id", "")))
+		and (controller.strategic_state.get("available_node_ids", []) as Array) == expected_after_prologue
 		and int(controller.strategic_state.get("battle_count_so_far", 0)) == 1
 		and int(controller.strategic_state.get("elite_count_so_far", 0)) == 0
 		and int(controller.strategic_state.get("operation_count_so_far", 0)) == 0

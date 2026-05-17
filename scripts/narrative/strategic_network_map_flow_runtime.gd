@@ -9,6 +9,7 @@ const AigcDungeonBigMapLoader := preload("res://scripts/aigc_dungeon_big_map_loa
 const AigcDungeonRouteBranchEvaluator := preload("res://scripts/aigc_dungeon_route_branch_evaluator.gd")
 const AigcDungeonFormalSaveSlotStore := preload("res://scripts/aigc_dungeon_formal_save_slot_store.gd")
 const NarrativeBattleContext := preload("res://scripts/narrative_battle_context.gd")
+const StrategicMapWukeGuard := preload("res://scripts/strategic_map_wuke_guard.gd")
 
 static func on_network_node_clicked(c, map_graph_id: String) -> void:
 	var graph_variant = c.strategic_state.get("network_map", {})
@@ -131,6 +132,18 @@ static func on_network_final_boss_pressed(c) -> void:
 static func ensure_network_map_for_state(c, warn_if_regenerated: bool = false) -> void:
 	var map_variant = c.strategic_state.get("network_map", {})
 	if map_variant is Dictionary and not (map_variant as Dictionary).is_empty():
+		var graph := map_variant as Dictionary
+		var removed_count := StrategicMapWukeGuard.sanitize_network_graph(graph)
+		if removed_count > 0:
+			StrategicNetworkMapRuntime.ensure_selected_node(graph)
+			StrategicNetworkMapRuntime.refresh_node_states(graph)
+			if c.has_method("_sync_network_state_from_graph"):
+				c._sync_network_state_from_graph(graph)
+			else:
+				StrategicNetworkMapRuntime.sync_mirror_fields(c.strategic_state, graph)
+			if c.has_method("_save_narrative_state_to_context"):
+				c._save_narrative_state_to_context()
+			push_warning("network_map restored with Wuke nodes; removed %d before render." % removed_count)
 		return
 	if AigcDungeonBigMapLoader.has_compatible_map_file():
 		var bundle := AigcDungeonBigMapLoader.load_runtime_bundle()

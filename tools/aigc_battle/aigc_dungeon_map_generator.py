@@ -540,6 +540,57 @@ def _add_edge(nodes_by_id: dict[str, dict[str, Any]], edges: list[dict[str, str]
     edges.append({"from_node_id": from_id, "to_node_id": to_id})
 
 
+def _is_wuju_map_node(node: dict[str, Any]) -> bool:
+    text_fields = [
+        "node_id",
+        "segment",
+        "story_arc",
+        "story_stage",
+        "story_role",
+        "story_beat_id",
+        "compatible_encounter_id",
+        "compatible_battle_id",
+        "battle_slot_id",
+    ]
+    for field in text_fields:
+        text = str(node.get(field, "")).lower()
+        if "wuju" in text or "wuke" in text:
+            return True
+    tags = [str(tag).lower() for tag in node.get("tags", [])]
+    return "wuju" in tags or "wuju_battle" in tags
+
+
+def _compatible_outgoing_ids(node: dict[str, Any], nodes_by_id: dict[str, dict[str, Any]]) -> list[str]:
+    result: list[str] = []
+    for target_id in node.get("outgoing_node_ids", []):
+        for visible_id in _visible_after_wuju(str(target_id), nodes_by_id, set()):
+            if visible_id not in result:
+                result.append(visible_id)
+    return result
+
+
+def _visible_after_wuju(node_id: str, nodes_by_id: dict[str, dict[str, Any]], visiting: set[str]) -> list[str]:
+    node = nodes_by_id.get(node_id)
+    if node is None:
+        return []
+    if not _is_wuju_map_node(node):
+        return [node_id]
+    if node_id in visiting:
+        return []
+    visiting.add(node_id)
+    result: list[str] = []
+    for next_id in node.get("outgoing_node_ids", []):
+        for visible_id in _visible_after_wuju(str(next_id), nodes_by_id, set(visiting)):
+            if visible_id not in result:
+                result.append(visible_id)
+    return result
+
+
+def _compatible_layer_remap(nodes: list[dict[str, Any]]) -> dict[int, int]:
+    visible_layers = sorted({int(node.get("layer_index", 0)) for node in nodes if not _is_wuju_map_node(node)})
+    return {layer: index for index, layer in enumerate(visible_layers)}
+
+
 def _build_fixed_battle_node(
     *,
     node_id: str,
@@ -946,17 +997,24 @@ def generate_map(progression_id: str, pack_id: str, seed: int) -> dict[str, Any]
         "edges": edges,
     }
 
+    compatible_layer_remap = _compatible_layer_remap(nodes)
     compatible_nodes = []
+    compatible_nodes_by_id: dict[str, dict[str, Any]] = {}
     for node in nodes:
+        if _is_wuju_map_node(node):
+            continue
+        source_layer = int(node["layer_index"])
+        compact_layer = int(compatible_layer_remap.get(source_layer, source_layer))
         compatible_node_type = str(node["compatible_network_node_type"])
         state = _node_type_to_state(str(node["node_type"]), str(node["node_id"]), route_state["available_next_node_ids"], route_state["completed_node_ids"])
-        x = 60.0 + float(node["layer_index"]) * 46.0
+        x = 60.0 + float(compact_layer) * 46.0
         y = 90.0 + float(node["lane"] + 1) * 78.0
         title = str(node["title"])
-        compatible_nodes.append({
+        compatible_node = {
             "map_graph_id": node["node_id"],
             "pool_node_id": node["battle_slot_id"] or node["operation_node_id"] or node["node_id"],
-            "layer": int(node["layer_index"]),
+            "layer": compact_layer,
+            "source_layer": source_layer,
             "lane": int(node["lane"]),
             "x": x,
             "y": y,
@@ -985,15 +1043,24 @@ def generate_map(progression_id: str, pack_id: str, seed: int) -> dict[str, Any]
             "recommended_martial_max": int(node.get("recommended_martial_max", 0)),
             "source_battle_slot_id": str(node.get("battle_slot_id", "")),
             "debug_fallback": False,
-            "outgoing": list(node.get("outgoing_node_ids", [])),
-            "incoming": list(node.get("incoming_node_ids", [])),
+            "outgoing": _compatible_outgoing_ids(node, nodes_by_id),
+            "incoming": [],
             "state": state,
-        })
+        }
+        compatible_nodes.append(compatible_node)
+        compatible_nodes_by_id[str(compatible_node["map_graph_id"])] = compatible_node
+
+    for compatible_node in compatible_nodes:
+        from_id = str(compatible_node["map_graph_id"])
+        for to_id in list(compatible_node.get("outgoing", [])):
+            target = compatible_nodes_by_id.get(str(to_id))
+            if target is not None and from_id not in target["incoming"]:
+                target["incoming"].append(from_id)
 
     compatible = {
         "run_id": route_state["run_id"],
         "seed": seed,
-        "layer_count": len(layers),
+        "layer_count": len(compatible_layer_remap),
         "current_layer": 1,
         "current_node_id": route_state["current_node_id"],
         "selected_node_id": route_state["selected_node_id"],

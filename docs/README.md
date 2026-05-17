@@ -7,9 +7,9 @@
 | 文档 | 状态 | 负责范围 |
 |---|---|---|
 | [NARRATIVE.md](NARRATIVE.md) | 活跃 | 叙事 TSV、节点 flow、变量、剧情战斗触发 |
-| [NARRATIVE_FLOW.md](NARRATIVE_FLOW.md) | 活跃 | 默认 flow、武举关系、海疆大势图、剧情战斗映射 |
+| [NARRATIVE_FLOW.md](NARRATIVE_FLOW.md) | 活跃 | 默认 flow、武举三锚点、AIGC 剧情池、海疆大势图、剧情战斗映射 |
 | [BATTLE.md](BATTLE.md) | 活跃 | 战斗配置主源、结算模式、位移朝向、验证命令 |
-| [UI_PIPELINE.md](UI_PIPELINE.md) | 活跃 | 视觉战斗 UI、预览、演出、缓存、Web UI |
+| [UI_PIPELINE.md](UI_PIPELINE.md) | 活跃 | 视觉战斗 UI、大地图 overlay、预览、演出、缓存、Web UI |
 | [ART_PIPELINE.md](ART_PIPELINE.md) | 活跃 | 美术素材目录、源图映射、资产验收 |
 | [ART_REFERENCE_PROMPTS.md](ART_REFERENCE_PROMPTS.md) | 附录 | 参考图与提示词口径 |
 | [ENGINEERING.md](ENGINEERING.md) | 活跃 | 代码组织、重构优先级、AI 协作、Godot 排障 |

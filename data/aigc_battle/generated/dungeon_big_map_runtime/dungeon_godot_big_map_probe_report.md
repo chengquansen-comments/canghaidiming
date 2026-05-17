@@ -25,4 +25,4 @@
 - initial_current_node_id: `node_start`
 - initial_selected_node_id: `node_prologue_001`
 - after_choice_current_node_id: `node_prologue_001`
-- after_choice_selected_node_id: `node_wuju_001`
+- after_choice_selected_node_id: `node_bigmap_07_00`

@@ -1,7 +1,9 @@
 extends RefCounted
 
 const StrategicNetworkMapRuntime := preload("res://scripts/strategic_network_map_runtime.gd")
+const StrategicMapState := preload("res://scripts/strategic_map_state.gd")
 const AigcDungeonRouteBranchEvaluator := preload("res://scripts/aigc_dungeon_route_branch_evaluator.gd")
+const StrategicMapWukeGuard := preload("res://scripts/strategic_map_wuke_guard.gd")
 
 const BIG_MAP_COMPATIBLE_PATH := "res://data/aigc_battle/generated/dungeon_maps/big_map_compatible_seed_1001.json"
 const ROUTE_STATE_PATH := "res://data/aigc_battle/generated/dungeon_maps/route_state_seed_1001_initial.json"
@@ -115,6 +117,7 @@ static func apply_bundle_to_state(strategic_state: Dictionary, bundle: Dictionar
 	strategic_state["clean_reputation"] = int(route_state.get("clean_reputation", strategic_state.get("clean_reputation", 0)))
 	strategic_state["case_clues"] = int(route_state.get("case_clues", strategic_state.get("case_clues", 0)))
 	strategic_state["martial_level"] = int(route_state.get("martial_realm", strategic_state.get("martial_level", 1)))
+	_apply_story_state_fields(strategic_state, graph, route_state)
 	return true
 
 
@@ -141,7 +144,11 @@ static func apply_route_state_to_graph(graph: Dictionary, route_state: Dictionar
 	graph["route_flags"] = (route_state.get("route_flags", graph.get("route_flags", {})) as Dictionary).duplicate(true)
 	graph["lightness_level"] = int(route_state.get("lightness_level", graph.get("lightness_level", 1)))
 	graph["old_case_progress"] = int(route_state.get("old_case_progress", graph.get("old_case_progress", 0)))
+	_apply_story_fields_to_graph(graph, route_state)
 	graph["aigc_dungeon_runtime"] = true
+	var removed_count := StrategicMapWukeGuard.sanitize_network_graph(graph)
+	if removed_count > 0:
+		push_warning("AIGC dungeon big map removed %d Wuke nodes before world-map runtime." % removed_count)
 	AigcDungeonRouteBranchEvaluator.refresh_route_presentation(graph, route_state)
 	StrategicNetworkMapRuntime.ensure_selected_node(graph)
 	StrategicNetworkMapRuntime.refresh_node_states(graph)
@@ -176,6 +183,26 @@ static func _validate_graph(graph: Dictionary) -> Array[String]:
 			if not node.has(field):
 				errors.append("missing_node_field:%s:%s" % [str(node.get("map_graph_id", "")), field])
 	return errors
+
+
+static func _apply_story_state_fields(strategic_state: Dictionary, graph: Dictionary, route_state: Dictionary) -> void:
+	for key in StrategicMapState.STORY_NUMERIC_FIELDS:
+		strategic_state[key] = int(route_state.get(key, graph.get(key, strategic_state.get(key, 0))))
+	for key in StrategicMapState.STORY_BOOLEAN_FIELDS:
+		strategic_state[key] = bool(route_state.get(key, graph.get(key, strategic_state.get(key, false))))
+	strategic_state["triggered_story_beat_ids"] = (route_state.get("triggered_story_beat_ids", graph.get("triggered_story_beat_ids", strategic_state.get("triggered_story_beat_ids", []))) as Array).duplicate(true)
+	strategic_state["story_exclusive_groups"] = (route_state.get("story_exclusive_groups", graph.get("story_exclusive_groups", strategic_state.get("story_exclusive_groups", []))) as Array).duplicate(true)
+	strategic_state["story_cooldowns"] = (route_state.get("story_cooldowns", graph.get("story_cooldowns", strategic_state.get("story_cooldowns", {}))) as Dictionary).duplicate(true)
+
+
+static func _apply_story_fields_to_graph(graph: Dictionary, route_state: Dictionary) -> void:
+	for key in StrategicMapState.STORY_NUMERIC_FIELDS:
+		graph[key] = int(route_state.get(key, graph.get(key, 0)))
+	for key in StrategicMapState.STORY_BOOLEAN_FIELDS:
+		graph[key] = bool(route_state.get(key, graph.get(key, false)))
+	graph["triggered_story_beat_ids"] = _string_array(route_state.get("triggered_story_beat_ids", graph.get("triggered_story_beat_ids", [])))
+	graph["story_exclusive_groups"] = _string_array(route_state.get("story_exclusive_groups", graph.get("story_exclusive_groups", [])))
+	graph["story_cooldowns"] = (route_state.get("story_cooldowns", graph.get("story_cooldowns", {})) as Dictionary).duplicate(true)
 
 
 static func _enrich_graph_nodes(graph: Dictionary, map_instance: Dictionary, loadout: Dictionary, battle_entry_request: Dictionary) -> void:

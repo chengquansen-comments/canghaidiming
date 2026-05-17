@@ -292,7 +292,55 @@ Web 约束：
 - `build/`、`dist/`、`.godot/` 不作为源文件。
 - Web 构建问题记录在 `docs/web_build_known_issues.md`。
 
-## 12. 验收命令
+## 12. 大地图 Overlay
+
+大地图 UI 目前不另开 scene，继续挂在现有 narrative / strategic overlay 上。当前口径覆盖 `scripts/strategic_network_map_overlay.gd`、`scripts/strategic_network_map_view.gd` 和 `scripts/strategic_network_map_style.gd`。
+
+结构：
+
+```text
+NetworkMapOverlayLayer
+├── dim
+└── panel
+    └── root
+        ├── header_box
+        ├── main_row
+        │   ├── map_panel
+        │   │   └── map_container
+        │   └── preview_panel
+        │       └── preview_container
+        └── footer_panel
+            └── footer_container
+```
+
+视觉口径：
+
+- overlay 主题是“海防舆图”，不是通用科幻流程图，也不是纯调试 wireframe。
+- 主色使用旧纸、海潮青、朱批和深棕边框；避免纯黑面板和默认灰按钮。
+- 左侧地图画布需要持续保留海图感背景：网格、海线、海岸 wash、罗盘和勘合印。
+- 节点类型用单字圆章表达，例如 `卫 / 报 / 汛 / 倭 / 寨 / 首`；节点名在圆下方，不能再把文字挤在圆心偏下。
+- 当前选中节点使用朱圈，可前往节点使用淡朱外晕，当前推进位置用顶部小红点标识。
+
+布局与交互：
+
+- header 使用“海防舆图”标题和一句副标，明确这是武举放榜后启用的军门海防图。
+- 主体固定为左图右批注；左侧用于路线和汛号，右侧用于节点批注、预计得失、发牌按钮和路线存取。
+- footer 保留状态摘要与旧线 fallback 入口，但文案按海防口径表述。
+- 地图默认自动聚焦到 `available_node_ids`；若没有 available，再退到 `selected_node_id`，最后退到 `current_node_id`。
+- 地图允许拖拽平移；scroll 使用 auto，不强制常显滚动条。
+
+编号与展示规则：
+
+- 大地图显示层号使用运行时 `layer`，即武举节点抽离并压缩后的连续层号。
+- 原始生成层保留在 `source_layer` 仅供 debug；UI 文案、图层导引和当前层高亮都不能读 `source_layer`。
+- 节点 ID 可继续保留 `node_bigmap_07_00` 这一类 source 编号，避免破坏存档和 probe；显示汛号不得从节点 ID 推导。
+
+图例与角标：
+
+- 图例面板显示节点类型对照、朱线 / 朱圈 / 外晕含义，以及拖拽、点击说明。
+- 进度角标当前统一使用中文缩写：`战` 表累计接战，`倭` 表累计强敌，`营` 表累计经营。
+
+## 13. 验收命令
 
 基础加载：
 
@@ -318,9 +366,17 @@ Web bundle：
 ./tools/build_web_bundle.sh
 ```
 
+大地图 runtime：
+
+```bash
+godot --headless --quit res://scenes/NarrativeDemo.tscn
+python3 tools/aigc_battle/aigc_dungeon_godot_big_map_probe.py
+python3 tools/aigc_battle/aigc_dungeon_multistep_route_probe.py
+```
+
 Godot headless smoke 退出时可能出现已知 RID/resource leak 提示；只要脚本结果为 OK 且退出码为 0，不作为本 UI 管线的阻塞失败。
 
-## 13. 旧文档归属
+## 14. 旧文档归属
 
 | 文档 | 现在用途 |
 |---|---|

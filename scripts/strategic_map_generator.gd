@@ -9,6 +9,7 @@ const NODE_TYPE_ORDER := [
 	"rest",
 ]
 const StrategicMapState := preload("res://scripts/strategic_map_state.gd")
+const StrategicMapWukeGuard := preload("res://scripts/strategic_map_wuke_guard.gd")
 
 static func load_config(path: String = "res://data/strategic_map.json") -> Dictionary:
 	if not FileAccess.file_exists(path):
@@ -173,6 +174,8 @@ static func _add_weighted_choice(choices: Array, node_pool: Array, state: Dictio
 	return true
 
 static func _is_eligible(node: Dictionary, state: Dictionary, region_number: int, used_groups: Dictionary, used_nodes: Dictionary) -> bool:
+	if StrategicMapWukeGuard.is_wuke_map_node(node):
+		return false
 	if int(node.get("region_min", 1)) > region_number or int(node.get("region_max", 4)) < region_number:
 		return false
 	if int(state.get("military_merit", 0)) < int(node.get("min_military_merit", 0)):

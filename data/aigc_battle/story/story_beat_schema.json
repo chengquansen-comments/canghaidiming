@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "res://data/aigc_battle/story/story_beat_schema.json",
+  "title": "Canghai Diming AIGC Story Beat",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "story_beat_id",
+    "route_line",
+    "npc_focus",
+    "phase",
+    "node_type",
+    "requirements",
+    "effects",
+    "exclusive_group",
+    "cooldown_group",
+    "cooldown_turns",
+    "weight",
+    "preview_text",
+    "result_text",
+    "followup_hooks"
+  ],
+  "properties": {
+    "story_beat_id": {
+      "type": "string",
+      "pattern": "^beat_[a-z0-9_]+$"
+    },
+    "route_line": {
+      "type": "string",
+      "enum": ["military", "reputation", "old_case", "cross"]
+    },
+    "npc_focus": {
+      "type": "string",
+      "enum": ["shen_zhaoye", "gu_chengyue", "qi_heng", "multi", "none"]
+    },
+    "phase": {
+      "type": "string",
+      "enum": ["early", "mid", "late", "finale"]
+    },
+    "node_type": {
+      "type": "string",
+      "enum": ["military", "reputation", "case", "cross", "romance", "ending_setup"]
+    },
+    "requirements": {
+      "type": "object",
+      "additionalProperties": {
+        "type": ["integer", "boolean", "string", "array"]
+      },
+      "propertyNames": {
+        "pattern": "^(military_merit|clean_reputation|case_clues|old_case_progress|route_bias_military|route_bias_reputation|route_bias_old_case|shen_respect|shen_suspicion|gu_trust|gu_affection|gu_identity_public_risk|qi_trust|truth_progress|military_rank_progress|public_reputation|gu_identity_known|martial_level|lightness_level)(_min|_max)?$"
+      }
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "military_merit": {"type": "integer"},
+        "clean_reputation": {"type": "integer"},
+        "case_clues": {"type": "integer"},
+        "old_case_progress": {"type": "integer"},
+        "route_bias_military": {"type": "integer"},
+        "route_bias_reputation": {"type": "integer"},
+        "route_bias_old_case": {"type": "integer"},
+        "shen_respect": {"type": "integer"},
+        "shen_suspicion": {"type": "integer"},
+        "gu_trust": {"type": "integer"},
+        "gu_affection": {"type": "integer"},
+        "gu_identity_known": {"type": "boolean"},
+        "gu_identity_public_risk": {"type": "integer"},
+        "qi_trust": {"type": "integer"},
+        "truth_progress": {"type": "integer"},
+        "military_rank_progress": {"type": "integer"},
+        "public_reputation": {"type": "integer"}
+      }
+    },
+    "exclusive_group": {
+      "type": "string"
+    },
+    "cooldown_group": {
+      "type": "string"
+    },
+    "cooldown_turns": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "weight": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "preview_text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "result_text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "followup_hooks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  }
+}

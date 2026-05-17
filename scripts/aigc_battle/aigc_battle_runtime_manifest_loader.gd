@@ -3,6 +3,10 @@ class_name AigcBattleRuntimeManifestLoader
 
 const ACTIVE_PROFILE_PATH := "res://data/aigc_battle/runtime/active_profile.json"
 const RELEASE_CHANNELS_DIR := "res://data/aigc_battle/release_channels/"
+const DUNGEON_BATTLE_SLOT_POOL_PATH := "res://data/aigc_battle/generated/dungeon_progression_v1_3/packs/dungeon_pool_pack_001/battle_slot_pool.json"
+const DUNGEON_ENEMY_DECK_POOL_PATH := "res://data/aigc_battle/generated/dungeon_progression_v1_3/packs/dungeon_pool_pack_001/enemy_deck_pool.json"
+const DUNGEON_CARD_POOL_PATH := "res://data/aigc_battle/generated/dungeon_progression_v1_3/packs/dungeon_pool_pack_001/card_pool.json"
+const DUNGEON_REWARD_PLAN_POOL_PATH := "res://data/aigc_battle/generated/dungeon_progression_v1_3/packs/dungeon_pool_pack_001/reward_plan_pool.json"
 
 static var _loaded := false
 static var _last_error := ""
@@ -86,13 +90,13 @@ static func get_reward_by_plan_id(reward_plan_id: String) -> Dictionary:
 
 
 static func get_generated_reward(formal_encounter_id: String, formal_battle_id: String = "") -> Dictionary:
-	if not _loaded and not load_active_manifest():
+	var loadout := get_generated_loadout(formal_encounter_id, formal_battle_id)
+	if loadout.is_empty():
 		return {}
-	var mapping := _find_mapping(formal_encounter_id, formal_battle_id)
-	if mapping.is_empty():
-		_last_error = "generated reward mapping not found: %s|%s" % [formal_encounter_id, formal_battle_id]
-		return {}
-	return get_reward_by_plan_id(str(mapping.get("reward_plan_id", "")))
+	var reward = loadout.get("reward", {})
+	if reward is Dictionary:
+		return (reward as Dictionary).duplicate(true)
+	return {}
 
 
 static func get_opening_pressure(formal_encounter_id: String, formal_battle_id: String = "") -> Dictionary:
@@ -138,27 +142,81 @@ static func get_generated_loadout(formal_encounter_id: String, formal_battle_id:
 	if not _loaded and not load_active_manifest():
 		return {}
 	var mapping := _find_mapping(formal_encounter_id, formal_battle_id)
+	var loadout := _build_manifest_loadout(
+		_runtime_manifest,
+		_cards_by_id,
+		_decks_by_id,
+		_slots_by_id,
+		_rewards_by_id,
+		mapping,
+		formal_encounter_id,
+		formal_battle_id,
+		"active_profile"
+	)
+	if not loadout.is_empty():
+		return loadout
+	loadout = _get_dungeon_pool_generated_loadout(formal_encounter_id, formal_battle_id)
+	if not loadout.is_empty():
+		return loadout
+	loadout = _get_release_fallback_generated_loadout(formal_encounter_id, formal_battle_id)
+	if not loadout.is_empty():
+		return loadout
+	_last_error = "generated loadout mapping not found: %s|%s" % [formal_encounter_id, formal_battle_id]
+	return {}
+
+
+static func get_manifest_summary() -> Dictionary:
+	if not _loaded and not load_active_manifest():
+		return {}
+	return {
+		"mechanic_profile_id": str(_runtime_manifest.get("mechanic_profile_id", "")),
+		"content_pack_id": str(_runtime_manifest.get("content_pack_id", "")),
+		"target_sequence_id": str(_runtime_manifest.get("target_sequence_id", "")),
+		"runtime_primitives": (_runtime_manifest.get("runtime_primitives", []) as Array).duplicate(),
+		"runtime_primitive_summary": (_runtime_manifest.get("runtime_primitive_summary", {}) as Dictionary).duplicate(true),
+		"formal_sequence_mapping_count": (_runtime_manifest.get("formal_sequence_mapping", []) as Array).size(),
+		"battle_slot_count": (_runtime_manifest.get("battle_slots", []) as Array).size(),
+		"enemy_deck_count": (_runtime_manifest.get("enemy_decks", []) as Array).size(),
+		"card_count": (_runtime_manifest.get("cards", []) as Array).size(),
+		"reward_count": (_runtime_manifest.get("rewards", []) as Array).size(),
+	}
+
+
+static func get_active_profile_summary() -> Dictionary:
+	if not _loaded and not load_active_manifest():
+		return {}
+	return _active_profile.duplicate(true)
+
+
+static func get_release_channel(channel_id: String) -> Dictionary:
+	if channel_id.is_empty():
+		return {}
+	var path := "%s%s_release.json" % [RELEASE_CHANNELS_DIR, channel_id]
+	return _read_json_dict(path)
+
+
+static func _build_manifest_loadout(manifest: Dictionary, cards_by_id: Dictionary, decks_by_id: Dictionary, slots_by_id: Dictionary, rewards_by_id: Dictionary, mapping: Dictionary, formal_encounter_id: String, formal_battle_id: String, release_channel: String) -> Dictionary:
 	if mapping.is_empty():
-		_last_error = "generated loadout mapping not found: %s|%s" % [formal_encounter_id, formal_battle_id]
 		return {}
 	var slot_id := str(mapping.get("generated_battle_slot_id", ""))
 	var deck_id := str(mapping.get("generated_deck_id", ""))
 	var reward_plan_id := str(mapping.get("reward_plan_id", ""))
-	var slot: Dictionary = _slots_by_id.get(slot_id, {})
-	var deck: Dictionary = _decks_by_id.get(deck_id, {})
-	var reward: Dictionary = get_reward_by_plan_id(reward_plan_id)
+	var slot: Dictionary = slots_by_id.get(slot_id, {}) as Dictionary
+	var deck: Dictionary = decks_by_id.get(deck_id, {}) as Dictionary
+	var reward: Dictionary = rewards_by_id.get(reward_plan_id, {}) as Dictionary
 	if slot.is_empty() or deck.is_empty():
-		_last_error = "generated slot or deck missing for: %s|%s" % [formal_encounter_id, formal_battle_id]
 		return {}
 	var cards: Array = []
 	for card_id_variant in deck.get("card_ids", []):
 		var card_id := str(card_id_variant)
-		if _cards_by_id.has(card_id):
-			cards.append((_cards_by_id.get(card_id, {}) as Dictionary).duplicate(true))
+		if cards_by_id.has(card_id):
+			cards.append((cards_by_id.get(card_id, {}) as Dictionary).duplicate(true))
 	return {
 		"loadout_source": "generated_manifest",
-		"mechanic_profile_id": str(_runtime_manifest.get("mechanic_profile_id", "")),
-		"content_pack_id": str(_runtime_manifest.get("content_pack_id", "")),
+		"generated_content_source": "runtime_manifest",
+		"release_channel": release_channel,
+		"mechanic_profile_id": str(manifest.get("mechanic_profile_id", "")),
+		"content_pack_id": str(manifest.get("content_pack_id", "")),
 		"formal_encounter_id": formal_encounter_id,
 		"formal_battle_id": str(mapping.get("formal_battle_id", formal_battle_id)),
 		"generated_battle_slot_id": slot_id,
@@ -195,34 +253,242 @@ static func get_generated_loadout(formal_encounter_id: String, formal_battle_id:
 	}
 
 
-static func get_manifest_summary() -> Dictionary:
-	if not _loaded and not load_active_manifest():
+static func _get_release_fallback_generated_loadout(formal_encounter_id: String, formal_battle_id: String) -> Dictionary:
+	var current_release := get_release_channel("current")
+	var fallback_path := str(current_release.get("fallback_runtime_manifest_path", ""))
+	var release_channel := "current_fallback"
+	if fallback_path.is_empty():
+		var fallback_release := get_release_channel("fallback")
+		fallback_path = str(fallback_release.get("runtime_manifest_path", ""))
+		release_channel = "fallback"
+	if fallback_path.is_empty():
 		return {}
+	var manifest := _read_json_dict(_normalize_runtime_path(fallback_path))
+	if manifest.is_empty():
+		return {}
+	var indexes := _build_manifest_indexes(manifest)
+	var mapping := _find_mapping_in_indexes(
+		indexes.get("mapping_by_key", {}) as Dictionary,
+		indexes.get("mapping_by_encounter", {}) as Dictionary,
+		formal_encounter_id,
+		formal_battle_id
+	)
+	return _build_manifest_loadout(
+		manifest,
+		indexes.get("cards_by_id", {}) as Dictionary,
+		indexes.get("decks_by_id", {}) as Dictionary,
+		indexes.get("slots_by_id", {}) as Dictionary,
+		indexes.get("rewards_by_id", {}) as Dictionary,
+		mapping,
+		formal_encounter_id,
+		formal_battle_id,
+		release_channel
+	)
+
+
+static func _get_dungeon_pool_generated_loadout(formal_encounter_id: String, formal_battle_id: String) -> Dictionary:
+	var slot_pool := _read_json_dict(DUNGEON_BATTLE_SLOT_POOL_PATH)
+	var deck_pool := _read_json_dict(DUNGEON_ENEMY_DECK_POOL_PATH)
+	var card_pool := _read_json_dict(DUNGEON_CARD_POOL_PATH)
+	var reward_pool := _read_json_dict(DUNGEON_REWARD_PLAN_POOL_PATH)
+	if slot_pool.is_empty() or deck_pool.is_empty() or card_pool.is_empty() or reward_pool.is_empty():
+		return {}
+	var slot := _find_dungeon_slot(slot_pool.get("battle_slots", []), formal_encounter_id, formal_battle_id)
+	if slot.is_empty():
+		return {}
+	var deck := _find_by_id(deck_pool.get("enemy_decks", []), "enemy_deck_id", str(slot.get("enemy_deck_id", "")))
+	if deck.is_empty():
+		return {}
+	var reward := _find_by_id(reward_pool.get("reward_plans", []), "reward_plan_id", str(slot.get("reward_plan_id", "")))
+	var cards_by_id := _index_by_id(card_pool.get("cards", []), "card_id")
+	var cards: Array = []
+	for card_id_variant in deck.get("card_ids", []):
+		var card_id := str(card_id_variant)
+		if cards_by_id.has(card_id):
+			cards.append(_dungeon_card_to_runtime_card(cards_by_id.get(card_id, {}) as Dictionary))
 	return {
-		"mechanic_profile_id": str(_runtime_manifest.get("mechanic_profile_id", "")),
-		"content_pack_id": str(_runtime_manifest.get("content_pack_id", "")),
-		"target_sequence_id": str(_runtime_manifest.get("target_sequence_id", "")),
-		"runtime_primitives": (_runtime_manifest.get("runtime_primitives", []) as Array).duplicate(),
-		"runtime_primitive_summary": (_runtime_manifest.get("runtime_primitive_summary", {}) as Dictionary).duplicate(true),
-		"formal_sequence_mapping_count": (_runtime_manifest.get("formal_sequence_mapping", []) as Array).size(),
-		"battle_slot_count": (_runtime_manifest.get("battle_slots", []) as Array).size(),
-		"enemy_deck_count": (_runtime_manifest.get("enemy_decks", []) as Array).size(),
-		"card_count": (_runtime_manifest.get("cards", []) as Array).size(),
-		"reward_count": (_runtime_manifest.get("rewards", []) as Array).size(),
+		"loadout_source": "generated_manifest",
+		"generated_content_source": "aigc_dungeon_pool",
+		"release_channel": "dungeon_node_materializer",
+		"mechanic_profile_id": "dungeon_progression_v1_3",
+		"content_pack_id": str(slot_pool.get("content_pool_pack_id", "dungeon_pool_pack_001")),
+		"formal_encounter_id": formal_encounter_id,
+		"formal_battle_id": str(slot.get("compatible_battle_id", formal_battle_id)),
+		"generated_battle_slot_id": str(slot.get("battle_slot_id", "")),
+		"generated_deck_id": str(deck.get("enemy_deck_id", "")),
+		"reward_plan_id": str(slot.get("reward_plan_id", "")),
+		"enemy_role": str(slot.get("enemy_archetype", deck.get("enemy_archetype", ""))),
+		"enemy_weapon": _weapon_label_for_cards(cards),
+		"difficulty_tier": str(slot.get("deck_tier", deck.get("deck_tier", ""))),
+		"runtime_primitives": [],
+		"opening_pressure": {},
+		"weapon_followup": {},
+		"clue_pressure": {},
+		"followup_chain_count": 0,
+		"followup_card_count": 0,
+		"followup_density": 0.0,
+		"followup_groups": [],
+		"player_wujing_cap": int(slot.get("expected_player_realm", 0)),
+		"max_enemy_wujing": int(slot.get("expected_player_realm", 0)),
+		"weapon_loadout": [],
+		"dual_weapon_enabled": false,
+		"primary_weapon_style": _primary_weapon_style_for_cards(cards),
+		"secondary_weapon_style": "",
+		"primary_weapon_ratio": 1.0,
+		"secondary_weapon_ratio": 0.0,
+		"generic_ratio": 0.0,
+		"max_required_wujing": int(deck.get("expected_player_realm", slot.get("expected_player_realm", 0))),
+		"max_closing_form_tier": 0,
+		"dual_weapon_synergy_count": 0,
+		"martial_realm_stage": str(slot.get("stage", "")),
+		"realm_pressure_level": str(slot.get("battle_type", "")),
+		"card_ids": (deck.get("card_ids", []) as Array).duplicate(),
+		"cards": cards,
+		"reward_source": "generated_manifest",
+		"reward": reward.duplicate(true),
+		"encounter_tier": str(slot.get("stage", "")),
+		"encounter_kind": str(slot.get("battle_type", "")),
 	}
 
 
-static func get_active_profile_summary() -> Dictionary:
-	if not _loaded and not load_active_manifest():
+static func _find_dungeon_slot(slots_variant, formal_encounter_id: String, formal_battle_id: String) -> Dictionary:
+	if not (slots_variant is Array):
 		return {}
-	return _active_profile.duplicate(true)
+	for item in slots_variant:
+		if not (item is Dictionary):
+			continue
+		var slot := item as Dictionary
+		if str(slot.get("compatible_encounter_id", "")) != formal_encounter_id:
+			continue
+		if not formal_battle_id.is_empty() and str(slot.get("compatible_battle_id", "")) != formal_battle_id:
+			continue
+		return slot.duplicate(true)
+	return {}
 
 
-static func get_release_channel(channel_id: String) -> Dictionary:
-	if channel_id.is_empty():
+static func _dungeon_card_to_runtime_card(card: Dictionary) -> Dictionary:
+	var card_type := str(card.get("card_type", "skill"))
+	var runtime := {
+		"card_id": str(card.get("card_id", "")),
+		"id": str(card.get("card_id", "")),
+		"name": str(card.get("name", card.get("card_id", "招式"))),
+		"card_type": card_type,
+		"weapon_style": str(card.get("weapon_style", "")),
+		"style": str(card.get("weapon_style", "")),
+		"cost": int(card.get("cost", 1)),
+		"min": 1,
+		"max": 3,
+		"role": "guard",
+		"gain": 0,
+		"break": 0,
+		"damage": 0,
+		"guard": 0,
+		"tags": (card.get("tags", []) as Array).duplicate(),
+		"difficulty_tier": str(card.get("difficulty_tier", "")),
+		"required_wujing": int(card.get("realm_requirement", 0)),
+		"effect_summary": str(card.get("effect_summary", "")),
+	}
+	match card_type:
+		"attack":
+			runtime["role"] = "attack"
+			runtime["damage"] = 4
+			runtime["break"] = 1
+		"defense":
+			runtime["role"] = "guard"
+			runtime["guard"] = 4
+			runtime["gain"] = 1
+		"movement":
+			runtime["role"] = "feint"
+			runtime["gain"] = 1
+			runtime["min"] = 0
+			runtime["max"] = 5
+		_:
+			runtime["role"] = "feint"
+			runtime["gain"] = 1
+	return runtime
+
+
+static func _weapon_label_for_cards(cards: Array) -> String:
+	var style := _primary_weapon_style_for_cards(cards)
+	match style:
+		"spear", "spearman":
+			return "长枪"
+		"blade", "blademaster":
+			return "单刀"
+		_:
+			return "兵器"
+
+
+static func _primary_weapon_style_for_cards(cards: Array) -> String:
+	for item in cards:
+		if item is Dictionary:
+			var style := str((item as Dictionary).get("weapon_style", ""))
+			if not style.is_empty() and style != "generic":
+				return style
+	return "generic"
+
+
+static func _build_manifest_indexes(manifest: Dictionary) -> Dictionary:
+	var indexes := {
+		"cards_by_id": {},
+		"decks_by_id": {},
+		"slots_by_id": {},
+		"rewards_by_id": {},
+		"mapping_by_key": {},
+		"mapping_by_encounter": {},
+	}
+	indexes["cards_by_id"] = _index_by_id(manifest.get("cards", []), "card_id", "id")
+	indexes["decks_by_id"] = _index_by_id(manifest.get("enemy_decks", []), "deck_id")
+	indexes["slots_by_id"] = _index_by_id(manifest.get("battle_slots", []), "battle_slot_id")
+	indexes["rewards_by_id"] = _index_by_id(manifest.get("rewards", []), "reward_plan_id")
+	var mapping_by_key: Dictionary = {}
+	var mapping_by_encounter: Dictionary = {}
+	for mapping_variant in manifest.get("formal_sequence_mapping", []):
+		if not (mapping_variant is Dictionary):
+			continue
+		var mapping := mapping_variant as Dictionary
+		var encounter_id := str(mapping.get("formal_encounter_id", ""))
+		var battle_id := str(mapping.get("formal_battle_id", ""))
+		mapping_by_key[_mapping_key(encounter_id, battle_id)] = mapping.duplicate(true)
+		if not mapping_by_encounter.has(encounter_id):
+			mapping_by_encounter[encounter_id] = mapping.duplicate(true)
+	indexes["mapping_by_key"] = mapping_by_key
+	indexes["mapping_by_encounter"] = mapping_by_encounter
+	return indexes
+
+
+static func _index_by_id(items_variant, primary_key: String, fallback_key: String = "") -> Dictionary:
+	var result: Dictionary = {}
+	if not (items_variant is Array):
+		return result
+	for item in items_variant:
+		if not (item is Dictionary):
+			continue
+		var data := item as Dictionary
+		var item_id := str(data.get(primary_key, ""))
+		if item_id.is_empty() and not fallback_key.is_empty():
+			item_id = str(data.get(fallback_key, ""))
+		if not item_id.is_empty():
+			result[item_id] = data.duplicate(true)
+	return result
+
+
+static func _find_by_id(items_variant, id_field: String, id_value: String) -> Dictionary:
+	if id_value.is_empty() or not (items_variant is Array):
 		return {}
-	var path := "%s%s_release.json" % [RELEASE_CHANNELS_DIR, channel_id]
-	return _read_json_dict(path)
+	for item in items_variant:
+		if item is Dictionary and str((item as Dictionary).get(id_field, "")) == id_value:
+			return (item as Dictionary).duplicate(true)
+	return {}
+
+
+static func _find_mapping_in_indexes(mapping_by_key: Dictionary, mapping_by_encounter: Dictionary, formal_encounter_id: String, formal_battle_id: String) -> Dictionary:
+	var key := _mapping_key(formal_encounter_id, formal_battle_id)
+	if mapping_by_key.has(key):
+		return (mapping_by_key.get(key, {}) as Dictionary).duplicate(true)
+	if mapping_by_encounter.has(formal_encounter_id):
+		return (mapping_by_encounter.get(formal_encounter_id, {}) as Dictionary).duplicate(true)
+	return {}
 
 
 static func _build_indexes() -> void:

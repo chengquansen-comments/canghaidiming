@@ -235,11 +235,14 @@ func _apply_battle_loadout_once(loadout: Dictionary) -> void:
 	last_release_content_pack_id = str(active_profile_summary.get("active_content_pack_id", ""))
 	last_release_runtime_manifest_path = str(active_profile_summary.get("runtime_manifest_path", ""))
 	last_release_channel = "active_profile"
-	if last_release_profile_id == str(current_release.get("mechanic_profile_id", "")) and last_release_content_pack_id == str(current_release.get("content_pack_id", "")):
+	var generated_release_channel := str(loadout.get("release_channel", ""))
+	if not generated_release_channel.is_empty():
+		last_release_channel = generated_release_channel
+	elif last_release_profile_id == str(current_release.get("mechanic_profile_id", "")) and last_release_content_pack_id == str(current_release.get("content_pack_id", "")):
 		last_release_channel = "current"
 	elif last_release_profile_id == str(fallback_release.get("mechanic_profile_id", "")) and last_release_content_pack_id == str(fallback_release.get("content_pack_id", "")):
 		last_release_channel = "fallback"
-	last_formal_entry_uses_release_pack = str(loadout.get("loadout_source", "")) == "generated_manifest" and last_release_channel == "current"
+	last_formal_entry_uses_release_pack = str(loadout.get("loadout_source", "")) == "generated_manifest"
 	last_formal_entry_fallback_used = str(loadout.get("loadout_source", "")) != "generated_manifest"
 	last_formal_entry_generated_loadout_count = 1 if str(loadout.get("loadout_source", "")) == "generated_manifest" else 0
 	last_formal_entry_fallback_loadout_count = 0 if str(loadout.get("loadout_source", "")) == "generated_manifest" else 1

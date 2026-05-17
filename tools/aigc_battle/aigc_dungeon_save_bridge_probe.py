@@ -386,7 +386,7 @@ func _run_route_case(bundle: Dictionary, metadata: Dictionary, route_name: Strin
 
 func _advance_to_boss_gate(controller: ProbeController) -> Dictionary:
 	var step := _run_step(controller, "node_prologue_001")
-	for node_id in ["node_wuju_001", "node_wuju_002", "node_wuju_003", "node_wuju_004", "node_wuju_005", "node_bigmap_07_00", "node_bigmap_08_00"]:
+	for node_id in ["node_bigmap_07_00", "node_bigmap_08_00"]:
 		step = _run_step(controller, node_id)
 	while str(controller.strategic_state.get("selected_node_id", "")) != "node_boss_gate":
 		var selected_id := str(controller.strategic_state.get("selected_node_id", ""))

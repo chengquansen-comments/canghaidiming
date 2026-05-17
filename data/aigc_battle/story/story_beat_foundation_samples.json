@@ -1,0 +1,96 @@
+[
+  {
+    "story_beat_id": "beat_reputation_gu_identity_mid_001",
+    "route_line": "reputation",
+    "npc_focus": "gu_chengyue",
+    "phase": "mid",
+    "node_type": "romance",
+    "requirements": {
+      "gu_trust_min": 2,
+      "gu_identity_known": true,
+      "military_rank_progress_max": 3
+    },
+    "effects": {
+      "public_reputation": 1,
+      "gu_affection": 1,
+      "gu_identity_public_risk": 1
+    },
+    "exclusive_group": "gu_identity_reveal_mid",
+    "cooldown_group": "gu_private_scene",
+    "cooldown_turns": 2,
+    "weight": 100,
+    "preview_text": "顾成岳在潮湿驿舍外等你，话里仍用武举旧名，却避开了随军文书的目光。",
+    "result_text": "你没有追问她的旧名，只替她压下旁人的盘查。顾承月记下这份体面。",
+    "followup_hooks": ["gu_identity_pressure", "old_case_implicates_gu"]
+  },
+  {
+    "story_beat_id": "beat_military_shen_promotion_early_001",
+    "route_line": "military",
+    "npc_focus": "shen_zhaoye",
+    "phase": "early",
+    "node_type": "military",
+    "requirements": {
+      "shen_respect_min": 1,
+      "route_bias_military_min": 1
+    },
+    "effects": {
+      "military_rank_progress": 1,
+      "military_merit": 1,
+      "shen_suspicion": 1
+    },
+    "exclusive_group": "shen_first_promotion_offer",
+    "cooldown_group": "military_order_scene",
+    "cooldown_turns": 1,
+    "weight": 90,
+    "preview_text": "沈照夜递来军门札付，升赏与调兵都在纸上，只缺你按下指印。",
+    "result_text": "你接了军令，军中升迁有了门路，但沈照夜也开始留意你查问旧案的去向。",
+    "followup_hooks": ["shen_blocks_old_case", "promotion_pressure"]
+  },
+  {
+    "story_beat_id": "beat_old_case_qi_evidence_early_001",
+    "route_line": "old_case",
+    "npc_focus": "qi_heng",
+    "phase": "early",
+    "node_type": "case",
+    "requirements": {
+      "qi_trust_min": 1,
+      "truth_progress_max": 2
+    },
+    "effects": {
+      "truth_progress": 1,
+      "case_clues": 1,
+      "route_bias_old_case": 1
+    },
+    "exclusive_group": "qi_first_evidence",
+    "cooldown_group": "old_case_evidence_scene",
+    "cooldown_turns": 1,
+    "weight": 90,
+    "preview_text": "齐衡把一枚盐湿的木牌推到桌角，上头的火漆像被人重新烫过。",
+    "result_text": "木牌对上旧案文册里的缺口，齐衡确认你不是只为军功而来。",
+    "followup_hooks": ["truth_points_to_coast_guard", "qi_trust_chain"]
+  },
+  {
+    "story_beat_id": "beat_cross_gu_case_pressure_mid_001",
+    "route_line": "cross",
+    "npc_focus": "multi",
+    "phase": "mid",
+    "node_type": "cross",
+    "requirements": {
+      "gu_trust_min": 1,
+      "truth_progress_min": 2,
+      "public_reputation_min": 1
+    },
+    "effects": {
+      "gu_identity_public_risk": 1,
+      "truth_progress": 1,
+      "shen_suspicion": 1
+    },
+    "exclusive_group": "gu_case_pressure_mid",
+    "cooldown_group": "cross_pressure_scene",
+    "cooldown_turns": 2,
+    "weight": 80,
+    "preview_text": "民间证词指向一名旧年考生，军门却忽然追查顾成岳的户籍。",
+    "result_text": "你把证词暂压一夜，旧案更近，顾承月的身份风险也随之抬高。",
+    "followup_hooks": ["gu_identity_public_risk", "shen_demands_file"]
+  }
+]

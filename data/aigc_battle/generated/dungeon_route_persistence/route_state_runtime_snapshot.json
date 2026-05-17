@@ -8,17 +8,12 @@
 	"available_node_ids": [
 		"node_true_boss_001"
 	],
-	"battle_count_so_far": 21,
+	"battle_count_so_far": 16,
 	"case_clues": 2,
-	"clean_reputation": 2,
+	"clean_reputation": 0,
 	"completed_node_ids": [
 		"node_start",
 		"node_prologue_001",
-		"node_wuju_001",
-		"node_wuju_002",
-		"node_wuju_003",
-		"node_wuju_004",
-		"node_wuju_005",
 		"node_bigmap_07_00",
 		"node_bigmap_08_00",
 		"node_bigmap_09_00",
@@ -47,7 +42,7 @@
 		"node_route_true"
 	],
 	"current_node_id": "node_route_true",
-	"elite_count_so_far": 4,
+	"elite_count_so_far": 3,
 	"lightness_level": 0,
 	"locked_ending_routes": [],
 	"map_instance_id": "dungeon_map_seed_1001",
@@ -79,11 +74,6 @@
 	"visited_node_ids": [
 		"node_start",
 		"node_prologue_001",
-		"node_wuju_001",
-		"node_wuju_002",
-		"node_wuju_003",
-		"node_wuju_004",
-		"node_wuju_005",
 		"node_bigmap_07_00",
 		"node_bigmap_08_00",
 		"node_bigmap_09_00",
@@ -114,11 +104,6 @@
 	"visited_path_order": [
 		"node_start",
 		"node_prologue_001",
-		"node_wuju_001",
-		"node_wuju_002",
-		"node_wuju_003",
-		"node_wuju_004",
-		"node_wuju_005",
 		"node_bigmap_07_00",
 		"node_bigmap_08_00",
 		"node_bigmap_09_00",

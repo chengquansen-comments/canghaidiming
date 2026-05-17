@@ -228,7 +228,7 @@ func _init() -> void:
 	var route_branch_seen := false
 	var step_records: Array = []
 	var step_index := 1
-	for node_id in ["node_prologue_001", "node_wuju_001", "node_wuju_002", "node_wuju_003", "node_wuju_004", "node_wuju_005", "node_bigmap_07_00", "node_bigmap_08_00"]:
+	for node_id in ["node_prologue_001", "node_bigmap_07_00", "node_bigmap_08_00"]:
 		var step_report: Dictionary = _run_step(controller, node_id, step_index)
 		step_records.append(step_report)
 		step_index += 1

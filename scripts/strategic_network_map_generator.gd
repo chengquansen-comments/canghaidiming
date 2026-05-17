@@ -12,6 +12,7 @@ const LEFT_MARGIN := 60.0
 const TOP_MARGIN := 60.0
 const MAX_OUTGOING_PER_NODE := 3
 const MAX_EDGES_PER_LAYER_PAIR := 5
+const StrategicMapWukeGuard := preload("res://scripts/strategic_map_wuke_guard.gd")
 
 static func generate_network_map(config: Dictionary, state: Dictionary, seed: int) -> Dictionary:
 	var rng := RandomNumberGenerator.new()
@@ -105,6 +106,8 @@ static func validate_network_map(graph: Dictionary) -> Array[String]:
 			warnings.append("network_map validate: non-dictionary node")
 			continue
 		var node := item as Dictionary
+		if StrategicMapWukeGuard.is_wuke_map_node(node):
+			warnings.append("network_map validate: Wuke node must not appear in world map: %s" % str(node.get("map_graph_id", node.get("node_id", ""))))
 		var node_id := str(node.get("map_graph_id", ""))
 		if node_id.is_empty():
 			warnings.append("network_map validate: node with empty map_graph_id")
@@ -194,6 +197,8 @@ static func _collect_candidates(pool: Array, state: Dictionary, region: int, use
 		if not (item is Dictionary):
 			continue
 		var node := item as Dictionary
+		if StrategicMapWukeGuard.is_wuke_map_node(node):
+			continue
 		if not relax_region and (int(node.get("region_min", 1)) > region or int(node.get("region_max", 4)) < region):
 			continue
 		if not _passes_numeric_requirements(node, state):
