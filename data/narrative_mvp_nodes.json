@@ -1610,10 +1610,14 @@
       "choices": [
         {
           "label": "应战",
-          "result": "他收兵时，先看了榜，再看你。\n“军门会记得这一场。”",
+          "result": "他收兵时，袖口露出一截细密旧绣，又很快压回去。\n你没有点破。\n“今日的事，我记下。”",
           "effects": {
-            "military_merit": 1,
-            "rival_gu_bond": 1
+            "clean_reputation": 1,
+            "rival_gu_bond": 1,
+            "route_bias_reputation": 1,
+            "gu_trust": 1,
+            "gu_identity_known": true,
+            "public_reputation": 1
           },
           "combat": {
             "enabled": true,
@@ -1647,10 +1651,13 @@
       "choices": [
         {
           "label": "应战",
-          "result": "他输了也笑。\n“你若只认榜，我们还会再打。”",
+          "result": "他输了也笑，仍按军中礼数退到白线外。\n“你若能把这份准头用到海上，军门会认。”",
           "effects": {
-            "clean_reputation": 1,
-            "rival_shen_bond": 1
+            "military_merit": 1,
+            "rival_shen_bond": 1,
+            "route_bias_military": 1,
+            "shen_respect": 1,
+            "military_rank_progress": 1
           },
           "combat": {
             "enabled": true,
@@ -1664,9 +1671,9 @@
     },
     {
       "id": "wuke_elim_qi_heng_battle",
-      "title": "淘汰赛：戚衡",
+      "title": "淘汰赛：齐衡",
       "scene": "终试那日，堂上坐着的人比校场上的人更安静。",
-      "text": "对面的人先报了名。戚衡。他行礼很慢，像在量你的兵器，也像在量你的命。",
+      "text": "对面的人先报了名。齐衡。他行礼很慢，像在量你的兵器，也像在量你的命。",
       "column": "wuke",
       "type": "普通战斗",
       "visual_path": "res://assets/pixel_battle/backgrounds/narrative_ch3_escort_silence.png",
@@ -1687,7 +1694,10 @@
           "result": "他退后半步。\n不是认输。\n是记下了你。\n“下次，不在校场。”",
           "effects": {
             "case_clues": 1,
-            "rival_qi_bond": 1
+            "rival_qi_bond": 1,
+            "route_bias_old_case": 1,
+            "qi_trust": 1,
+            "truth_progress": 1
           },
           "combat": {
             "enabled": true,

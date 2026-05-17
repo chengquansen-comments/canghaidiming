@@ -24,4 +24,4 @@ wuke_blade_student_teach	校场刀生·第二试	wuke_blade_student	blade_front_
 wuke_final_student_duel	终试武生·对决	wuke_final_student	blade_front_cut:2,blade_chase_cut:1,blade_press_break:1,blade_breathe:1	wuke,final,duel	武举终试略高压但低于正式精英
 rival_gu_chengyue_order	顾承岳·军门正势	rival_gu_chengyue	spear_mid_thrust:2,spear_guard_horse:1,spear_line_press:1	wuke,elim,rival	武举淘汰赛第一场：军门规整控距
 rival_shen_zhaoye_roam	沈照夜·游走短刀	rival_shen_zhaoye	blade_front_cut:2,blade_chase_cut:1,blade_breathe:1,blade_hook_pull:1	wuke,elim,rival	武举淘汰赛第二场：民间游走切入
-rival_qi_heng_duel	戚衡·终试对决	rival_qi_heng	blade_front_cut:2,blade_press_break:1,blade_chase_cut:1,blade_breathe:1	wuke,elim,rival	武举淘汰赛第三场：主劲敌压迫但可打
+rival_qi_heng_duel	齐衡·终试对决	rival_qi_heng	blade_front_cut:2,blade_press_break:1,blade_chase_cut:1,blade_breathe:1	wuke,elim,rival	武举淘汰赛第三场：主劲敌压迫但可打

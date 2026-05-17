@@ -2,6 +2,10 @@ extends RefCounted
 
 const StrategicMapState := preload("res://scripts/strategic_map_state.gd")
 
+const MVP_POOL_PATH := "res://data/aigc_battle/story/story_beat_mvp_pool.json"
+const EXPANDED_POOL_PATH := "res://data/aigc_battle/story/story_beat_expanded_pool.json"
+const DEFAULT_POOL_PATH := EXPANDED_POOL_PATH
+
 const REQUIRED_FIELDS := [
 	"story_beat_id",
 	"route_line",
@@ -21,6 +25,18 @@ const REQUIRED_FIELDS := [
 const VALID_ROUTE_LINES := ["military", "reputation", "old_case", "cross"]
 const VALID_PHASES := ["early", "mid", "late", "finale"]
 const VALID_NODE_TYPES := ["military", "reputation", "case", "cross", "romance", "ending_setup"]
+
+
+static func load_pool(path: String = DEFAULT_POOL_PATH) -> Array:
+	if not FileAccess.file_exists(path):
+		return []
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		return []
+	var parsed = JSON.parse_string(file.get_as_text())
+	if parsed is Array:
+		return parsed as Array
+	return []
 
 
 static func validate_beat(beat: Dictionary) -> Array[String]:

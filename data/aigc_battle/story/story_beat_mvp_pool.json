@@ -1,0 +1,1568 @@
+[
+  {
+    "story_beat_id": "beat_military_shen_promotion_early_001",
+    "route_line": "military",
+    "npc_focus": "shen_zhaoye",
+    "phase": "early",
+    "node_type": "military",
+    "requirements": {
+      "shen_respect_min": 1,
+      "route_bias_military_min": 1
+    },
+    "effects": {
+      "military_rank_progress": 1,
+      "military_merit": 1,
+      "shen_suspicion": 1
+    },
+    "exclusive_group": "shen_first_promotion_offer",
+    "cooldown_group": "military_order_scene",
+    "cooldown_turns": 1,
+    "weight": 90,
+    "preview_text": "沈照夜递来军门札付，升赏与调兵都在纸上，只缺你按下指印。",
+    "result_text": "你接了军令，军中升迁有了门路，但沈照夜也开始留意你查问旧案的去向。",
+    "followup_hooks": [
+      "shen_blocks_old_case",
+      "promotion_pressure"
+    ]
+  },
+  {
+    "story_beat_id": "beat_military_watchtower_signal_early_002",
+    "route_line": "military",
+    "npc_focus": "shen_zhaoye",
+    "phase": "early",
+    "node_type": "military",
+    "requirements": {
+      "military_merit_min": 1
+    },
+    "effects": {
+      "military_merit": 1,
+      "shen_respect": 1
+    },
+    "exclusive_group": "shen_watchtower_signal_early",
+    "cooldown_group": "military_order_scene",
+    "cooldown_turns": 1,
+    "weight": 82,
+    "preview_text": "北汛望楼换下旧旗，沈照夜让你先看海面，再看旗脚沾的盐泥。",
+    "result_text": "你按潮向改了哨位，夜里少失一条巡船，沈照夜对你的军务判断多了一分敬重。",
+    "followup_hooks": [
+      "watchtower_chain",
+      "shen_respect_chain"
+    ]
+  },
+  {
+    "story_beat_id": "beat_military_grain_convoy_early_003",
+    "route_line": "military",
+    "npc_focus": "none",
+    "phase": "early",
+    "node_type": "military",
+    "requirements": {
+      "route_bias_military_min": 1
+    },
+    "effects": {
+      "military_merit": 1,
+      "military_rank_progress": 1
+    },
+    "exclusive_group": "grain_convoy_guard_early",
+    "cooldown_group": "military_supply_scene",
+    "cooldown_turns": 1,
+    "weight": 76,
+    "preview_text": "军粮船要借夜过浅港，押运官只给你半队人和一张模糊水图。",
+    "result_text": "你守住了粮船，却也让军门知道你能在缺人缺船时办成差事。",
+    "followup_hooks": [
+      "supply_route_open",
+      "promotion_pressure"
+    ]
+  },
+  {
+    "story_beat_id": "beat_military_coastal_drill_early_004",
+    "route_line": "military",
+    "npc_focus": "shen_zhaoye",
+    "phase": "early",
+    "node_type": "military",
+    "requirements": {
+      "shen_respect_min": 1
+    },
+    "effects": {
+      "military_merit": 1,
+      "shen_respect": 1,
+      "route_bias_military": 1
+    },
+    "exclusive_group": "coastal_drill_early",
+    "cooldown_group": "military_training_scene",
+    "cooldown_turns": 1,
+    "weight": 72,
+    "preview_text": "沈照夜把新兵列在潮沟旁，要你用武举学来的准头教他们看风。",
+    "result_text": "新兵第一次没有把箭射进浪里，你的名字在营里传得更像一个能带兵的人。",
+    "followup_hooks": [
+      "soldier_training",
+      "shen_respect_chain"
+    ]
+  },
+  {
+    "story_beat_id": "beat_military_hidden_order_mid_005",
+    "route_line": "military",
+    "npc_focus": "shen_zhaoye",
+    "phase": "mid",
+    "node_type": "military",
+    "requirements": {
+      "military_rank_progress_min": 1,
+      "shen_suspicion_max": 3
+    },
+    "effects": {
+      "military_rank_progress": 1,
+      "shen_suspicion": 1
+    },
+    "exclusive_group": "shen_hidden_order_mid",
+    "cooldown_group": "military_order_scene",
+    "cooldown_turns": 2,
+    "weight": 78,
+    "preview_text": "沈照夜取出未盖印的调防令，提醒你有些功劳必须先欠在人情上。",
+    "result_text": "你接下这道灰色军令，升迁路更近，军门旧账也离你更近。",
+    "followup_hooks": [
+      "shen_demands_file",
+      "promotion_pressure"
+    ]
+  },
+  {
+    "story_beat_id": "beat_military_pirate_prisoner_mid_006",
+    "route_line": "military",
+    "npc_focus": "none",
+    "phase": "mid",
+    "node_type": "military",
+    "requirements": {
+      "military_merit_min": 2
+    },
+    "effects": {
+      "military_merit": 1,
+      "case_clues": 1,
+      "shen_suspicion": 1
+    },
+    "exclusive_group": "pirate_prisoner_transfer_mid",
+    "cooldown_group": "military_prisoner_scene",
+    "cooldown_turns": 1,
+    "weight": 74,
+    "preview_text": "俘虏被押过营门时忽然叫出旧年船号，押解军士立刻让他闭嘴。",
+    "result_text": "你没有当场追问，只把船号记进袖中；军功簿照记，疑心也照生。",
+    "followup_hooks": [
+      "truth_points_to_coast_guard",
+      "shen_blocks_old_case"
+    ]
+  },
+  {
+    "story_beat_id": "beat_military_firearm_inspection_mid_007",
+    "route_line": "military",
+    "npc_focus": "shen_zhaoye",
+    "phase": "mid",
+    "node_type": "military",
+    "requirements": {
+      "martial_level_min": 2,
+      "route_bias_military_min": 1
+    },
+    "effects": {
+      "military_merit": 1,
+      "old_case_progress": 1
+    },
+    "exclusive_group": "firearm_inspection_mid",
+    "cooldown_group": "military_evidence_scene",
+    "cooldown_turns": 1,
+    "weight": 72,
+    "preview_text": "火器库验收时，你看见一批铳管刻痕与旧案卷宗里的拓印相合。",
+    "result_text": "你照规矩签了验收，也多拓下一枚暗记；军门账册开始露出缝隙。",
+    "followup_hooks": [
+      "firearm_mark_chain",
+      "old_case_military_link"
+    ]
+  },
+  {
+    "story_beat_id": "beat_military_merit_roll_mid_008",
+    "route_line": "military",
+    "npc_focus": "shen_zhaoye",
+    "phase": "mid",
+    "node_type": "military",
+    "requirements": {
+      "military_merit_min": 2,
+      "public_reputation_max": 4
+    },
+    "effects": {
+      "military_rank_progress": 1,
+      "public_reputation": 1
+    },
+    "exclusive_group": "merit_roll_mid",
+    "cooldown_group": "military_order_scene",
+    "cooldown_turns": 2,
+    "weight": 70,
+    "preview_text": "报功册送到县衙前，沈照夜问你要把百姓证词放在前头，还是把军功放在前头。",
+    "result_text": "你把救民一笔写进军功里，官面好看，民间也暂时愿意相信你。",
+    "followup_hooks": [
+      "public_reputation_chain",
+      "promotion_pressure"
+    ]
+  },
+  {
+    "story_beat_id": "beat_military_sealed_harbor_late_009",
+    "route_line": "military",
+    "npc_focus": "shen_zhaoye",
+    "phase": "late",
+    "node_type": "military",
+    "requirements": {
+      "military_rank_progress_min": 2,
+      "shen_respect_min": 2
+    },
+    "effects": {
+      "military_merit": 2,
+      "shen_suspicion": 1
+    },
+    "exclusive_group": "sealed_harbor_late",
+    "cooldown_group": "military_blockade_scene",
+    "cooldown_turns": 2,
+    "weight": 70,
+    "preview_text": "封港令一下，渔火全灭，沈照夜只说这是最快的平倭办法。",
+    "result_text": "你用军令压住了海口，战果来得很快，关于旧案的人证也被困在同一片黑里。",
+    "followup_hooks": [
+      "blockade_consequence",
+      "shen_suspicion_chain"
+    ]
+  },
+  {
+    "story_beat_id": "beat_military_promotion_banquet_late_010",
+    "route_line": "military",
+    "npc_focus": "shen_zhaoye",
+    "phase": "late",
+    "node_type": "military",
+    "requirements": {
+      "military_rank_progress_min": 3
+    },
+    "effects": {
+      "military_rank_progress": 1,
+      "public_reputation": -1,
+      "shen_suspicion": 1
+    },
+    "exclusive_group": "promotion_banquet_late",
+    "cooldown_group": "military_order_scene",
+    "cooldown_turns": 2,
+    "weight": 66,
+    "preview_text": "升赏宴上，军门长官把旧案卷宗压在酒壶下，像压住一张无用旧纸。",
+    "result_text": "你饮了这杯官酒，官阶更近，坊间却开始传你只认军门不认人命。",
+    "followup_hooks": [
+      "high_office_cost",
+      "public_reputation_loss"
+    ]
+  },
+  {
+    "story_beat_id": "beat_military_outer_island_assault_late_011",
+    "route_line": "military",
+    "npc_focus": "none",
+    "phase": "late",
+    "node_type": "military",
+    "requirements": {
+      "military_merit_min": 4,
+      "martial_level_min": 3
+    },
+    "effects": {
+      "military_merit": 2,
+      "truth_progress": 1
+    },
+    "exclusive_group": "outer_island_assault_late",
+    "cooldown_group": "military_assault_scene",
+    "cooldown_turns": 1,
+    "weight": 68,
+    "preview_text": "外岛木寨的潮门只开半刻，军中无人愿担这道先登令。",
+    "result_text": "你抢下潮门，缴获的账绳却指向军内粮船，胜仗背后仍有旧案影子。",
+    "followup_hooks": [
+      "old_case_military_link",
+      "finale_pressure"
+    ]
+  },
+  {
+    "story_beat_id": "beat_military_shen_division_late_012",
+    "route_line": "military",
+    "npc_focus": "shen_zhaoye",
+    "phase": "late",
+    "node_type": "cross",
+    "requirements": {
+      "shen_respect_min": 2,
+      "truth_progress_min": 2
+    },
+    "effects": {
+      "shen_respect": 1,
+      "shen_suspicion": 1,
+      "truth_progress": 1
+    },
+    "exclusive_group": "shen_division_late",
+    "cooldown_group": "cross_pressure_scene",
+    "cooldown_turns": 2,
+    "weight": 64,
+    "preview_text": "沈照夜单独留你看一份阵亡名册，许多名字没有死在战场。",
+    "result_text": "他没有阻你查下去，却要求你先打完眼前这仗；信任和疑心被放在同一张桌上。",
+    "followup_hooks": [
+      "shen_truth_tension",
+      "truth_points_to_coast_guard"
+    ]
+  },
+  {
+    "story_beat_id": "beat_military_high_office_finale_013",
+    "route_line": "military",
+    "npc_focus": "shen_zhaoye",
+    "phase": "finale",
+    "node_type": "ending_setup",
+    "requirements": {
+      "military_rank_progress_min": 4,
+      "truth_progress_max": 4
+    },
+    "effects": {
+      "military_merit": 1,
+      "military_rank_progress": 1
+    },
+    "exclusive_group": "ending_high_office_setup",
+    "cooldown_group": "ending_setup_scene",
+    "cooldown_turns": 0,
+    "weight": 58,
+    "preview_text": "总兵府递来最后一份任命，印泥未干，旧案证词却被排在门外。",
+    "result_text": "你有机会以官身平定海疆，但真相会被写成另一种军功。",
+    "followup_hooks": [
+      "ending_high_office",
+      "truth_suppressed"
+    ]
+  },
+  {
+    "story_beat_id": "beat_military_inner_court_finale_014",
+    "route_line": "military",
+    "npc_focus": "shen_zhaoye",
+    "phase": "finale",
+    "node_type": "ending_setup",
+    "requirements": {
+      "military_rank_progress_min": 3,
+      "truth_progress_min": 4
+    },
+    "effects": {
+      "shen_respect": 1,
+      "truth_progress": 1
+    },
+    "exclusive_group": "ending_military_infighting_setup",
+    "cooldown_group": "ending_setup_scene",
+    "cooldown_turns": 0,
+    "weight": 56,
+    "preview_text": "沈照夜把军门内账推给你，账页上每一笔功劳都能反咬一个人。",
+    "result_text": "你若揭账，就不是查倭寇，而是把整座军门拖进海风里。",
+    "followup_hooks": [
+      "ending_military_infighting",
+      "shen_truth_tension"
+    ]
+  },
+  {
+    "story_beat_id": "beat_reputation_fisher_oath_early_001",
+    "route_line": "reputation",
+    "npc_focus": "none",
+    "phase": "early",
+    "node_type": "reputation",
+    "requirements": {
+      "clean_reputation_min": 1
+    },
+    "effects": {
+      "public_reputation": 1,
+      "clean_reputation": 1
+    },
+    "exclusive_group": "fisher_oath_early",
+    "cooldown_group": "reputation_village_scene",
+    "cooldown_turns": 1,
+    "weight": 84,
+    "preview_text": "渔户在祠前不肯签军门供状，只把一碗冷茶推到你面前。",
+    "result_text": "你按他们的说法重写证词，官面难看些，乡里却第一次愿意开口。",
+    "followup_hooks": [
+      "public_reputation_chain",
+      "village_testimony"
+    ]
+  },
+  {
+    "story_beat_id": "beat_reputation_gu_identity_mid_001",
+    "route_line": "reputation",
+    "npc_focus": "gu_chengyue",
+    "phase": "mid",
+    "node_type": "romance",
+    "requirements": {
+      "gu_trust_min": 2,
+      "gu_identity_known": true,
+      "military_rank_progress_max": 3
+    },
+    "effects": {
+      "public_reputation": 1,
+      "gu_affection": 1,
+      "gu_identity_public_risk": 1
+    },
+    "exclusive_group": "gu_identity_reveal_mid",
+    "cooldown_group": "gu_private_scene",
+    "cooldown_turns": 2,
+    "weight": 100,
+    "preview_text": "顾成岳在潮湿驿舍外等你，话里仍用武举旧名，却避开了随军文书的目光。",
+    "result_text": "你没有追问她的旧名，只替她压下旁人的盘查。顾承月记下这份体面。",
+    "followup_hooks": [
+      "gu_identity_pressure",
+      "old_case_implicates_gu"
+    ]
+  },
+  {
+    "story_beat_id": "beat_reputation_gu_herbal_boat_early_002",
+    "route_line": "reputation",
+    "npc_focus": "gu_chengyue",
+    "phase": "early",
+    "node_type": "romance",
+    "requirements": {
+      "gu_trust_min": 1
+    },
+    "effects": {
+      "gu_trust": 1,
+      "public_reputation": 1
+    },
+    "exclusive_group": "gu_herbal_boat_early",
+    "cooldown_group": "gu_private_scene",
+    "cooldown_turns": 1,
+    "weight": 82,
+    "preview_text": "顾承月借采药船送你过湾，船舱里藏着替伤民登记的小册。",
+    "result_text": "你没有把小册交给军门，顾承月知道你还留着人的余地。",
+    "followup_hooks": [
+      "gu_trust_chain",
+      "public_reputation_chain"
+    ]
+  },
+  {
+    "story_beat_id": "beat_reputation_market_rumor_early_003",
+    "route_line": "reputation",
+    "npc_focus": "none",
+    "phase": "early",
+    "node_type": "reputation",
+    "requirements": {
+      "clean_reputation_min": 1,
+      "public_reputation_max": 2
+    },
+    "effects": {
+      "public_reputation": 1,
+      "route_bias_reputation": 1
+    },
+    "exclusive_group": "market_rumor_early",
+    "cooldown_group": "reputation_market_scene",
+    "cooldown_turns": 1,
+    "weight": 78,
+    "preview_text": "鱼市传言你是军门派来的刀，卖鱼妇把秤砣扣在案上等你解释。",
+    "result_text": "你没有亮腰牌，只替她讨回被扣的税银；传言从此多了另一种说法。",
+    "followup_hooks": [
+      "public_reputation_chain",
+      "market_testimony"
+    ]
+  },
+  {
+    "story_beat_id": "beat_reputation_shrine_names_early_004",
+    "route_line": "reputation",
+    "npc_focus": "none",
+    "phase": "early",
+    "node_type": "case",
+    "requirements": {
+      "case_clues_min": 1
+    },
+    "effects": {
+      "public_reputation": 1,
+      "case_clues": 1
+    },
+    "exclusive_group": "shrine_names_early",
+    "cooldown_group": "reputation_village_scene",
+    "cooldown_turns": 1,
+    "weight": 76,
+    "preview_text": "海神祠墙上刻着失船人的小名，和官册里端正姓名对不上。",
+    "result_text": "你按墙上小名重新寻访，老人们才肯说出那夜谁先点了灯。",
+    "followup_hooks": [
+      "village_testimony",
+      "old_case_people_names"
+    ]
+  },
+  {
+    "story_beat_id": "beat_reputation_gu_name_slip_mid_005",
+    "route_line": "reputation",
+    "npc_focus": "gu_chengyue",
+    "phase": "mid",
+    "node_type": "romance",
+    "requirements": {
+      "gu_trust_min": 2,
+      "gu_identity_known": true
+    },
+    "effects": {
+      "gu_affection": 1,
+      "gu_identity_public_risk": 1
+    },
+    "exclusive_group": "gu_name_slip_mid",
+    "cooldown_group": "gu_private_scene",
+    "cooldown_turns": 2,
+    "weight": 82,
+    "preview_text": "一名书办在茶棚外喊错顾承月旧姓，她握杯的手只顿了一瞬。",
+    "result_text": "你接过话头，把错名改成旧案暗号；她没有谢你，却把杯沿转向你这边。",
+    "followup_hooks": [
+      "gu_identity_pressure",
+      "gu_affection_chain"
+    ]
+  },
+  {
+    "story_beat_id": "beat_reputation_refugee_register_mid_006",
+    "route_line": "reputation",
+    "npc_focus": "gu_chengyue",
+    "phase": "mid",
+    "node_type": "reputation",
+    "requirements": {
+      "public_reputation_min": 2
+    },
+    "effects": {
+      "public_reputation": 1,
+      "gu_trust": 1,
+      "clean_reputation": 1
+    },
+    "exclusive_group": "refugee_register_mid",
+    "cooldown_group": "reputation_village_scene",
+    "cooldown_turns": 1,
+    "weight": 78,
+    "preview_text": "逃海的百姓被拦在汛口外，顾承月问你认军令还是认活人。",
+    "result_text": "你把人名登记成临时役户，让他们能进营避风，也让她看见你会绕过死令。",
+    "followup_hooks": [
+      "gu_trust_chain",
+      "public_reputation_chain"
+    ]
+  },
+  {
+    "story_beat_id": "beat_reputation_gu_moonlit_ferry_mid_008",
+    "route_line": "reputation",
+    "npc_focus": "gu_chengyue",
+    "phase": "mid",
+    "node_type": "romance",
+    "requirements": {
+      "gu_affection_min": 1,
+      "gu_identity_known": true
+    },
+    "effects": {
+      "gu_affection": 1,
+      "gu_trust": 1
+    },
+    "exclusive_group": "gu_moonlit_ferry_mid",
+    "cooldown_group": "gu_private_scene",
+    "cooldown_turns": 2,
+    "weight": 70,
+    "preview_text": "月下渡口只剩一盏篷灯，顾承月说她本不该再用这个名字。",
+    "result_text": "你没有劝她放下，只问她愿不愿意一起查完这桩案；她第一次没有避开你的目光。",
+    "followup_hooks": [
+      "gu_affection_chain",
+      "truth_shared_with_gu"
+    ]
+  },
+  {
+    "story_beat_id": "beat_reputation_identity_warrant_late_009",
+    "route_line": "reputation",
+    "npc_focus": "gu_chengyue",
+    "phase": "late",
+    "node_type": "romance",
+    "requirements": {
+      "gu_identity_public_risk_min": 2,
+      "gu_trust_min": 2
+    },
+    "effects": {
+      "gu_identity_public_risk": 1,
+      "public_reputation": 1,
+      "gu_affection": 1
+    },
+    "exclusive_group": "gu_identity_warrant_late",
+    "cooldown_group": "gu_identity_public_scene",
+    "cooldown_turns": 2,
+    "weight": 70,
+    "preview_text": "通缉榜上没有顾承月的脸，却有一个足以让她沉默的旧名。",
+    "result_text": "你当众撕下榜文，说这是军门钓人的假令；百姓信了，军门也记住了。",
+    "followup_hooks": [
+      "gu_identity_public_risk",
+      "public_reputation_chain"
+    ]
+  },
+  {
+    "story_beat_id": "beat_reputation_people_escort_late_010",
+    "route_line": "reputation",
+    "npc_focus": "none",
+    "phase": "late",
+    "node_type": "reputation",
+    "requirements": {
+      "public_reputation_min": 4
+    },
+    "effects": {
+      "public_reputation": 1,
+      "military_merit": 1
+    },
+    "exclusive_group": "people_escort_late",
+    "cooldown_group": "reputation_village_scene",
+    "cooldown_turns": 1,
+    "weight": 68,
+    "preview_text": "你要过一段无兵可守的滩路，渔民自发点起暗灯替你分辨潮沟。",
+    "result_text": "这一次不是军令调人，而是百姓自己把路让了出来。",
+    "followup_hooks": [
+      "public_reputation_chain",
+      "late_route_support"
+    ]
+  },
+  {
+    "story_beat_id": "beat_reputation_gu_false_betrayal_late_011",
+    "route_line": "reputation",
+    "npc_focus": "gu_chengyue",
+    "phase": "late",
+    "node_type": "cross",
+    "requirements": {
+      "gu_trust_min": 3,
+      "truth_progress_min": 3
+    },
+    "effects": {
+      "gu_trust": 1,
+      "truth_progress": 1,
+      "gu_identity_public_risk": 1
+    },
+    "exclusive_group": "gu_false_betrayal_late",
+    "cooldown_group": "cross_pressure_scene",
+    "cooldown_turns": 2,
+    "weight": 66,
+    "preview_text": "顾承月把一封假供状交给军门，转身却在袖中留给你真正的潮汛表。",
+    "result_text": "你顺着假供状拖住追兵，真正证据被送出海口，她的身份风险也再难压低。",
+    "followup_hooks": [
+      "truth_shared_with_gu",
+      "gu_identity_public_risk"
+    ]
+  },
+  {
+    "story_beat_id": "beat_reputation_clean_name_late_012",
+    "route_line": "reputation",
+    "npc_focus": "gu_chengyue",
+    "phase": "late",
+    "node_type": "romance",
+    "requirements": {
+      "gu_affection_min": 2,
+      "public_reputation_min": 3
+    },
+    "effects": {
+      "gu_affection": 1,
+      "public_reputation": 1
+    },
+    "exclusive_group": "gu_clean_name_late",
+    "cooldown_group": "gu_private_scene",
+    "cooldown_turns": 2,
+    "weight": 64,
+    "preview_text": "祠前老人愿为顾承月作证，却怕一开口就牵出全村藏过她的旧事。",
+    "result_text": "你让证词只写她救人的事，不写她是谁；清名暂存，情分也更重。",
+    "followup_hooks": [
+      "gu_affection_chain",
+      "public_reputation_chain"
+    ]
+  },
+  {
+    "story_beat_id": "beat_reputation_people_ending_finale_013",
+    "route_line": "reputation",
+    "npc_focus": "gu_chengyue",
+    "phase": "finale",
+    "node_type": "ending_setup",
+    "requirements": {
+      "public_reputation_min": 5,
+      "gu_trust_min": 3
+    },
+    "effects": {
+      "public_reputation": 1,
+      "gu_affection": 1
+    },
+    "exclusive_group": "ending_people_support_setup",
+    "cooldown_group": "ending_setup_scene",
+    "cooldown_turns": 0,
+    "weight": 58,
+    "preview_text": "终局前夜，渔户把证词、灯号和逃船名单一并送来，不再问你官阶。",
+    "result_text": "民心可以成为最后的兵，但你必须承担他们一起被清算的风险。",
+    "followup_hooks": [
+      "ending_people_support",
+      "gu_together_possible"
+    ]
+  },
+  {
+    "story_beat_id": "beat_reputation_gu_storm_finale_014",
+    "route_line": "reputation",
+    "npc_focus": "gu_chengyue",
+    "phase": "finale",
+    "node_type": "ending_setup",
+    "requirements": {
+      "gu_identity_public_risk_min": 4,
+      "gu_affection_min": 2
+    },
+    "effects": {
+      "gu_affection": 1,
+      "truth_progress": 1
+    },
+    "exclusive_group": "ending_gu_identity_storm_setup",
+    "cooldown_group": "ending_setup_scene",
+    "cooldown_turns": 0,
+    "weight": 56,
+    "preview_text": "顾承月的旧名终于被写进军门檄文，所有愿意替她说话的人都被点了名。",
+    "result_text": "她没有退，你也退不得；身份风波会把感情线和旧案一起推到明处。",
+    "followup_hooks": [
+      "ending_gu_identity_storm",
+      "truth_shared_with_gu"
+    ]
+  },
+  {
+    "story_beat_id": "beat_old_case_qi_evidence_early_001",
+    "route_line": "old_case",
+    "npc_focus": "qi_heng",
+    "phase": "early",
+    "node_type": "case",
+    "requirements": {
+      "qi_trust_min": 1,
+      "truth_progress_max": 2
+    },
+    "effects": {
+      "truth_progress": 1,
+      "case_clues": 1,
+      "route_bias_old_case": 1
+    },
+    "exclusive_group": "qi_first_evidence",
+    "cooldown_group": "old_case_evidence_scene",
+    "cooldown_turns": 1,
+    "weight": 90,
+    "preview_text": "齐衡把一枚盐湿的木牌推到桌角，上头的火漆像被人重新烫过。",
+    "result_text": "木牌对上旧案文册里的缺口，齐衡确认你不是只为军功而来。",
+    "followup_hooks": [
+      "truth_points_to_coast_guard",
+      "qi_trust_chain"
+    ]
+  },
+  {
+    "story_beat_id": "beat_old_case_tide_mark_early_002",
+    "route_line": "old_case",
+    "npc_focus": "qi_heng",
+    "phase": "early",
+    "node_type": "case",
+    "requirements": {
+      "case_clues_min": 1
+    },
+    "effects": {
+      "case_clues": 1,
+      "truth_progress": 1
+    },
+    "exclusive_group": "tide_mark_early",
+    "cooldown_group": "old_case_evidence_scene",
+    "cooldown_turns": 1,
+    "weight": 82,
+    "preview_text": "齐衡领你去看旧船桩，水线刻痕比官册所记早了半个时辰。",
+    "result_text": "你按潮位重算旧夜航程，失船不是遇风，而是有人等准了潮。",
+    "followup_hooks": [
+      "tide_table_chain",
+      "truth_points_to_coast_guard"
+    ]
+  },
+  {
+    "story_beat_id": "beat_old_case_burnt_manifest_early_003",
+    "route_line": "old_case",
+    "npc_focus": "none",
+    "phase": "early",
+    "node_type": "case",
+    "requirements": {
+      "route_bias_old_case_min": 1
+    },
+    "effects": {
+      "case_clues": 1,
+      "old_case_progress": 1
+    },
+    "exclusive_group": "burnt_manifest_early",
+    "cooldown_group": "old_case_evidence_scene",
+    "cooldown_turns": 1,
+    "weight": 78,
+    "preview_text": "废仓灰烬里剩下一角货单，墨迹被盐水泡开，只留军船编号。",
+    "result_text": "你把编号拓下，旧案进展多了一步，也多了一个不能轻问的军中人。",
+    "followup_hooks": [
+      "old_case_military_link",
+      "manifest_chain"
+    ]
+  },
+  {
+    "story_beat_id": "beat_old_case_qi_testimony_early_004",
+    "route_line": "old_case",
+    "npc_focus": "qi_heng",
+    "phase": "early",
+    "node_type": "case",
+    "requirements": {
+      "qi_trust_min": 1
+    },
+    "effects": {
+      "qi_trust": 1,
+      "truth_progress": 1
+    },
+    "exclusive_group": "qi_testimony_early",
+    "cooldown_group": "old_case_evidence_scene",
+    "cooldown_turns": 1,
+    "weight": 76,
+    "preview_text": "齐衡没有直接给供词，只让你在三份口供里找出同一个错字。",
+    "result_text": "你找到了伪造者留下的笔癖，齐衡这才承认他手里还有下一页。",
+    "followup_hooks": [
+      "qi_trust_chain",
+      "forged_testimony"
+    ]
+  },
+  {
+    "story_beat_id": "beat_old_case_salt_account_mid_005",
+    "route_line": "old_case",
+    "npc_focus": "qi_heng",
+    "phase": "mid",
+    "node_type": "case",
+    "requirements": {
+      "truth_progress_min": 2
+    },
+    "effects": {
+      "truth_progress": 1,
+      "old_case_progress": 1
+    },
+    "exclusive_group": "salt_account_mid",
+    "cooldown_group": "old_case_evidence_scene",
+    "cooldown_turns": 2,
+    "weight": 78,
+    "preview_text": "盐课账房的算盘珠少了一颗，齐衡说旧案那夜也少过同样一笔税银。",
+    "result_text": "两笔账对上后，倭患、盐税和军粮第一次连成一条线。",
+    "followup_hooks": [
+      "tax_account_chain",
+      "truth_points_to_coast_guard"
+    ]
+  },
+  {
+    "story_beat_id": "beat_old_case_dead_messenger_mid_006",
+    "route_line": "old_case",
+    "npc_focus": "none",
+    "phase": "mid",
+    "node_type": "case",
+    "requirements": {
+      "case_clues_min": 3
+    },
+    "effects": {
+      "truth_progress": 1,
+      "shen_suspicion": 1
+    },
+    "exclusive_group": "dead_messenger_mid",
+    "cooldown_group": "old_case_evidence_scene",
+    "cooldown_turns": 2,
+    "weight": 74,
+    "preview_text": "送信脚夫死在潮沟边，怀里没有信，鞋底却沾着军营红土。",
+    "result_text": "你循着红土查到营门外，证据更近，危险也开始有了官面。",
+    "followup_hooks": [
+      "shen_blocks_old_case",
+      "messenger_chain"
+    ]
+  },
+  {
+    "story_beat_id": "beat_old_case_qi_family_name_mid_007",
+    "route_line": "old_case",
+    "npc_focus": "qi_heng",
+    "phase": "mid",
+    "node_type": "case",
+    "requirements": {
+      "qi_trust_min": 2,
+      "truth_progress_min": 2
+    },
+    "effects": {
+      "qi_trust": 1,
+      "truth_progress": 1
+    },
+    "exclusive_group": "qi_family_name_mid",
+    "cooldown_group": "old_case_evidence_scene",
+    "cooldown_turns": 2,
+    "weight": 72,
+    "preview_text": "齐衡终于说出一个旧年家名，那个名字曾在武举榜边被墨重重涂掉。",
+    "result_text": "他把自己的旧怨交给你一半，也把真相的门缝推开一半。",
+    "followup_hooks": [
+      "qi_trust_chain",
+      "old_case_family_name"
+    ]
+  },
+  {
+    "story_beat_id": "beat_old_case_hidden_harbor_mid_008",
+    "route_line": "old_case",
+    "npc_focus": "none",
+    "phase": "mid",
+    "node_type": "case",
+    "requirements": {
+      "truth_progress_min": 2,
+      "lightness_level_min": 1
+    },
+    "effects": {
+      "case_clues": 1,
+      "route_bias_old_case": 1
+    },
+    "exclusive_group": "hidden_harbor_mid",
+    "cooldown_group": "old_case_evidence_scene",
+    "cooldown_turns": 1,
+    "weight": 70,
+    "preview_text": "退潮后露出的暗港比水图多出一岔，石壁上还留着旧年绞索痕。",
+    "result_text": "暗港能解释失船，也能解释为什么有些军船从不进册。",
+    "followup_hooks": [
+      "hidden_harbor_chain",
+      "old_case_military_link"
+    ]
+  },
+  {
+    "story_beat_id": "beat_old_case_qi_break_late_009",
+    "route_line": "old_case",
+    "npc_focus": "qi_heng",
+    "phase": "late",
+    "node_type": "case",
+    "requirements": {
+      "qi_trust_min": 3,
+      "truth_progress_min": 4
+    },
+    "effects": {
+      "truth_progress": 1,
+      "qi_trust": 1
+    },
+    "exclusive_group": "qi_break_late",
+    "cooldown_group": "old_case_evidence_scene",
+    "cooldown_turns": 2,
+    "weight": 70,
+    "preview_text": "齐衡撕开袖中暗袋，旧案最后一份私录竟一直贴身藏着。",
+    "result_text": "他不再试探你，只问你敢不敢让这份私录见天日。",
+    "followup_hooks": [
+      "truth_final_chain",
+      "qi_truth_ally"
+    ]
+  },
+  {
+    "story_beat_id": "beat_old_case_master_hesitation_late_010",
+    "route_line": "old_case",
+    "npc_focus": "none",
+    "phase": "late",
+    "node_type": "case",
+    "requirements": {
+      "truth_progress_min": 4
+    },
+    "effects": {
+      "truth_progress": 1,
+      "old_case_progress": 1
+    },
+    "exclusive_group": "master_hesitation_late",
+    "cooldown_group": "old_case_evidence_scene",
+    "cooldown_turns": 2,
+    "weight": 68,
+    "preview_text": "师父在退潮湿泥前停了很久，像认出了某种多年不肯说的脚印。",
+    "result_text": "他没有解释，只把下一处旧港的位置写给你；沉默本身就是证词。",
+    "followup_hooks": [
+      "master_old_case",
+      "truth_final_chain"
+    ]
+  },
+  {
+    "story_beat_id": "beat_old_case_witness_ship_late_011",
+    "route_line": "old_case",
+    "npc_focus": "qi_heng",
+    "phase": "late",
+    "node_type": "case",
+    "requirements": {
+      "truth_progress_min": 4,
+      "public_reputation_min": 2
+    },
+    "effects": {
+      "truth_progress": 1,
+      "public_reputation": 1
+    },
+    "exclusive_group": "witness_ship_late",
+    "cooldown_group": "old_case_evidence_scene",
+    "cooldown_turns": 1,
+    "weight": 66,
+    "preview_text": "一艘早该沉没的旧船被渔民拖回浅湾，船底暗格还封着火漆。",
+    "result_text": "百姓帮你守住船，齐衡帮你验明火漆，旧案终于有了能摆上堂的物证。",
+    "followup_hooks": [
+      "truth_final_chain",
+      "public_reputation_chain"
+    ]
+  },
+  {
+    "story_beat_id": "beat_old_case_false_confession_late_012",
+    "route_line": "old_case",
+    "npc_focus": "none",
+    "phase": "late",
+    "node_type": "case",
+    "requirements": {
+      "truth_progress_min": 3,
+      "shen_suspicion_min": 2
+    },
+    "effects": {
+      "truth_progress": 1,
+      "public_reputation": -1
+    },
+    "exclusive_group": "false_confession_late",
+    "cooldown_group": "old_case_pressure_scene",
+    "cooldown_turns": 2,
+    "weight": 64,
+    "preview_text": "军门忽然推出一名替死囚，说他愿认下旧案所有罪名。",
+    "result_text": "你拆穿供词漏洞，真相更近，但许多人只听见你推翻了一场现成公道。",
+    "followup_hooks": [
+      "truth_being_smeared",
+      "public_reputation_loss"
+    ]
+  },
+  {
+    "story_beat_id": "beat_old_case_truth_finale_013",
+    "route_line": "old_case",
+    "npc_focus": "qi_heng",
+    "phase": "finale",
+    "node_type": "ending_setup",
+    "requirements": {
+      "truth_progress_min": 6,
+      "qi_trust_min": 3
+    },
+    "effects": {
+      "truth_progress": 1,
+      "old_case_progress": 1
+    },
+    "exclusive_group": "ending_truth_setup",
+    "cooldown_group": "ending_setup_scene",
+    "cooldown_turns": 0,
+    "weight": 58,
+    "preview_text": "齐衡把最后一页旧录放进匣中，匣盖合上时，海风像吹过十年前的夜。",
+    "result_text": "真相已经足够完整，剩下的问题只是你能不能让它活着传出去。",
+    "followup_hooks": [
+      "ending_truth",
+      "qi_truth_ally"
+    ]
+  },
+  {
+    "story_beat_id": "beat_old_case_smeared_truth_finale_014",
+    "route_line": "old_case",
+    "npc_focus": "qi_heng",
+    "phase": "finale",
+    "node_type": "ending_setup",
+    "requirements": {
+      "truth_progress_min": 5,
+      "public_reputation_max": 3
+    },
+    "effects": {
+      "truth_progress": 1,
+      "public_reputation": 1
+    },
+    "exclusive_group": "ending_smeared_truth_setup",
+    "cooldown_group": "ending_setup_scene",
+    "cooldown_turns": 0,
+    "weight": 56,
+    "preview_text": "证据够了，听证的人却不够；军门只需一句私怨，便能污掉整桩旧案。",
+    "result_text": "你必须先替真相找听众，否则真相会被写成另一场诬告。",
+    "followup_hooks": [
+      "ending_smeared_truth",
+      "public_reputation_chain"
+    ]
+  },
+  {
+    "story_beat_id": "beat_cross_gu_case_pressure_mid_001",
+    "route_line": "cross",
+    "npc_focus": "multi",
+    "phase": "mid",
+    "node_type": "cross",
+    "requirements": {
+      "gu_trust_min": 1,
+      "truth_progress_min": 2,
+      "public_reputation_min": 1
+    },
+    "effects": {
+      "gu_identity_public_risk": 1,
+      "truth_progress": 1,
+      "shen_suspicion": 1
+    },
+    "exclusive_group": "gu_case_pressure_mid",
+    "cooldown_group": "cross_pressure_scene",
+    "cooldown_turns": 2,
+    "weight": 80,
+    "preview_text": "民间证词指向一名旧年考生，军门却忽然追查顾成岳的户籍。",
+    "result_text": "你把证词暂压一夜，旧案更近，顾承月的身份风险也随之抬高。",
+    "followup_hooks": [
+      "gu_identity_public_risk",
+      "shen_demands_file"
+    ]
+  },
+  {
+    "story_beat_id": "beat_cross_shen_gu_first_pressure_early_002",
+    "route_line": "cross",
+    "npc_focus": "multi",
+    "phase": "early",
+    "node_type": "cross",
+    "requirements": {
+      "shen_respect_min": 1,
+      "gu_trust_min": 1
+    },
+    "effects": {
+      "shen_suspicion": 1,
+      "gu_trust": 1
+    },
+    "exclusive_group": "shen_gu_first_pressure_early",
+    "cooldown_group": "cross_pressure_scene",
+    "cooldown_turns": 1,
+    "weight": 78,
+    "preview_text": "沈照夜要查顾承月随行文书，顾承月却把目光落在你按刀的手上。",
+    "result_text": "你用军务急报挡过盘查，沈照夜没有追问，但他记下了你的迟疑。",
+    "followup_hooks": [
+      "gu_identity_pressure",
+      "shen_suspicion_chain"
+    ]
+  },
+  {
+    "story_beat_id": "beat_cross_qi_gu_old_name_early_003",
+    "route_line": "cross",
+    "npc_focus": "multi",
+    "phase": "early",
+    "node_type": "cross",
+    "requirements": {
+      "qi_trust_min": 1,
+      "gu_identity_known": true
+    },
+    "effects": {
+      "truth_progress": 1,
+      "gu_identity_public_risk": 1
+    },
+    "exclusive_group": "qi_gu_old_name_early",
+    "cooldown_group": "cross_pressure_scene",
+    "cooldown_turns": 1,
+    "weight": 76,
+    "preview_text": "齐衡听见顾承月旧名时没有惊讶，只问你知不知道这个名字也在旧案旁出现过。",
+    "result_text": "旧案与她的身份第一次互相照见，你们三人都失去了装作不知的余地。",
+    "followup_hooks": [
+      "old_case_implicates_gu",
+      "gu_identity_public_risk"
+    ]
+  },
+  {
+    "story_beat_id": "beat_cross_public_military_tax_early_004",
+    "route_line": "cross",
+    "npc_focus": "multi",
+    "phase": "early",
+    "node_type": "cross",
+    "requirements": {
+      "public_reputation_min": 1,
+      "military_merit_min": 1
+    },
+    "effects": {
+      "case_clues": 1,
+      "shen_suspicion": 1,
+      "public_reputation": 1
+    },
+    "exclusive_group": "public_military_tax_early",
+    "cooldown_group": "cross_pressure_scene",
+    "cooldown_turns": 1,
+    "weight": 74,
+    "preview_text": "百姓控诉军船借税名抢粮，军士却拿出你刚签过的护运令。",
+    "result_text": "你重核税单，替百姓讨回一半粮，也让军门知道你会查自己的令。",
+    "followup_hooks": [
+      "tax_account_chain",
+      "shen_blocks_old_case"
+    ]
+  },
+  {
+    "story_beat_id": "beat_cross_three_rivals_tavern_early_005",
+    "route_line": "cross",
+    "npc_focus": "multi",
+    "phase": "early",
+    "node_type": "cross",
+    "requirements": {
+      "route_bias_military_min": 1,
+      "route_bias_reputation_min": 1,
+      "route_bias_old_case_min": 1
+    },
+    "effects": {
+      "shen_respect": 1,
+      "gu_trust": 1,
+      "qi_trust": 1
+    },
+    "exclusive_group": "three_rivals_tavern_early",
+    "cooldown_group": "cross_anchor_scene",
+    "cooldown_turns": 2,
+    "weight": 70,
+    "preview_text": "雨夜小驿里，沈照夜、顾承月、齐衡各坐一边，谁也没有先提武举。",
+    "result_text": "你把三人的话都听完，才发现武举只是开端，真正的海疆路从这里分岔。",
+    "followup_hooks": [
+      "three_anchor_chain",
+      "replay_route_mix"
+    ]
+  },
+  {
+    "story_beat_id": "beat_cross_shen_qi_file_mid_006",
+    "route_line": "cross",
+    "npc_focus": "multi",
+    "phase": "mid",
+    "node_type": "cross",
+    "requirements": {
+      "shen_respect_min": 1,
+      "qi_trust_min": 2
+    },
+    "effects": {
+      "truth_progress": 1,
+      "shen_suspicion": 1,
+      "qi_trust": 1
+    },
+    "exclusive_group": "shen_qi_file_mid",
+    "cooldown_group": "cross_pressure_scene",
+    "cooldown_turns": 2,
+    "weight": 72,
+    "preview_text": "齐衡要看军门封卷，沈照夜只准你一人进库，灯油只给半盏。",
+    "result_text": "你带出的不是整卷，而是一页足够让两人都无法回头的名册。",
+    "followup_hooks": [
+      "shen_truth_tension",
+      "qi_trust_chain"
+    ]
+  },
+  {
+    "story_beat_id": "beat_cross_gu_identity_public_mid_007",
+    "route_line": "cross",
+    "npc_focus": "gu_chengyue",
+    "phase": "mid",
+    "node_type": "romance",
+    "requirements": {
+      "gu_identity_known": true,
+      "public_reputation_min": 2
+    },
+    "effects": {
+      "gu_identity_public_risk": 2,
+      "gu_affection": 1
+    },
+    "exclusive_group": "gu_identity_public_mid",
+    "cooldown_group": "gu_identity_public_scene",
+    "cooldown_turns": 2,
+    "weight": 70,
+    "preview_text": "鱼市有人当众喊出顾承月旧名，众目之下，她没有再装作听不见。",
+    "result_text": "你替她接下那句旧名，身份风险骤然抬高，感情也从暗处被推向明处。",
+    "followup_hooks": [
+      "gu_identity_public_risk",
+      "gu_affection_chain"
+    ]
+  },
+  {
+    "story_beat_id": "beat_cross_military_truth_bargain_mid_008",
+    "route_line": "cross",
+    "npc_focus": "multi",
+    "phase": "mid",
+    "node_type": "cross",
+    "requirements": {
+      "military_rank_progress_min": 2,
+      "truth_progress_min": 2
+    },
+    "effects": {
+      "military_rank_progress": 1,
+      "truth_progress": 1,
+      "public_reputation": -1
+    },
+    "exclusive_group": "military_truth_bargain_mid",
+    "cooldown_group": "cross_pressure_scene",
+    "cooldown_turns": 2,
+    "weight": 68,
+    "preview_text": "军门愿放你查一处旧港，条件是把一份民间供词改作战报附件。",
+    "result_text": "你换来了旧港入口，也欠下民间一笔难还的清名。",
+    "followup_hooks": [
+      "high_office_cost",
+      "truth_points_to_coast_guard"
+    ]
+  },
+  {
+    "story_beat_id": "beat_cross_gu_qi_hidden_letter_mid_009",
+    "route_line": "cross",
+    "npc_focus": "multi",
+    "phase": "mid",
+    "node_type": "cross",
+    "requirements": {
+      "gu_trust_min": 2,
+      "qi_trust_min": 2
+    },
+    "effects": {
+      "truth_progress": 1,
+      "gu_trust": 1,
+      "qi_trust": 1
+    },
+    "exclusive_group": "gu_qi_hidden_letter_mid",
+    "cooldown_group": "cross_pressure_scene",
+    "cooldown_turns": 2,
+    "weight": 66,
+    "preview_text": "顾承月认出齐衡密信上的绳结，齐衡也认出她袖中同样的旧式折法。",
+    "result_text": "两条本该互相隐瞒的线索并在一起，旧案开始牵动所有人的过去。",
+    "followup_hooks": [
+      "old_case_implicates_gu",
+      "qi_trust_chain"
+    ]
+  },
+  {
+    "story_beat_id": "beat_cross_people_blockade_mid_010",
+    "route_line": "cross",
+    "npc_focus": "multi",
+    "phase": "mid",
+    "node_type": "cross",
+    "requirements": {
+      "public_reputation_min": 3,
+      "military_merit_min": 2
+    },
+    "effects": {
+      "public_reputation": 1,
+      "military_merit": 1,
+      "shen_suspicion": 1
+    },
+    "exclusive_group": "people_blockade_mid",
+    "cooldown_group": "cross_pressure_scene",
+    "cooldown_turns": 2,
+    "weight": 64,
+    "preview_text": "封港前，渔民主动替你清出一条浅道，条件是别让军船烧村。",
+    "result_text": "你借民力完成军令，却也把军令约束在百姓看得见的地方。",
+    "followup_hooks": [
+      "public_reputation_chain",
+      "blockade_consequence"
+    ]
+  },
+  {
+    "story_beat_id": "beat_cross_identity_as_leverage_late_011",
+    "route_line": "cross",
+    "npc_focus": "gu_chengyue",
+    "phase": "late",
+    "node_type": "cross",
+    "requirements": {
+      "gu_identity_public_risk_min": 2,
+      "military_rank_progress_min": 2
+    },
+    "effects": {
+      "military_rank_progress": 1,
+      "gu_trust": -1,
+      "gu_identity_public_risk": 2
+    },
+    "exclusive_group": "gu_identity_as_leverage_late",
+    "cooldown_group": "gu_identity_public_scene",
+    "cooldown_turns": 2,
+    "weight": 62,
+    "preview_text": "军门暗示，只要你交出顾承月旧名，就能换来最后一纸调兵令。",
+    "result_text": "你若借她身份换兵，官路会开，信任会断，身份风波也再无回头路。",
+    "followup_hooks": [
+      "ending_high_office",
+      "gu_identity_public_risk"
+    ]
+  },
+  {
+    "story_beat_id": "beat_cross_truth_for_merit_late_012",
+    "route_line": "cross",
+    "npc_focus": "multi",
+    "phase": "late",
+    "node_type": "cross",
+    "requirements": {
+      "truth_progress_min": 4,
+      "military_merit_min": 4
+    },
+    "effects": {
+      "truth_progress": 1,
+      "military_rank_progress": 1,
+      "shen_suspicion": 1
+    },
+    "exclusive_group": "truth_for_merit_late",
+    "cooldown_group": "cross_pressure_scene",
+    "cooldown_turns": 2,
+    "weight": 62,
+    "preview_text": "一场大捷能盖住旧案，也能把旧案证人安全送出营门。",
+    "result_text": "你把胜仗和证人放进同一套军令里，所有人都知道你在赌两边都赢。",
+    "followup_hooks": [
+      "ending_military_infighting",
+      "truth_final_chain"
+    ]
+  },
+  {
+    "story_beat_id": "beat_cross_gu_shen_confront_late_013",
+    "route_line": "cross",
+    "npc_focus": "multi",
+    "phase": "late",
+    "node_type": "cross",
+    "requirements": {
+      "gu_affection_min": 2,
+      "shen_respect_min": 2
+    },
+    "effects": {
+      "gu_affection": 1,
+      "shen_respect": 1,
+      "shen_suspicion": 1
+    },
+    "exclusive_group": "gu_shen_confront_late",
+    "cooldown_group": "cross_pressure_scene",
+    "cooldown_turns": 2,
+    "weight": 60,
+    "preview_text": "沈照夜当面问顾承月是不是旧案遗名，她没有答，只看你会不会插话。",
+    "result_text": "你把问题转成军务，沈照夜听懂了你的护短，也听懂了你没有放弃旧案。",
+    "followup_hooks": [
+      "gu_together_possible",
+      "shen_truth_tension"
+    ]
+  },
+  {
+    "story_beat_id": "beat_cross_qi_public_hearing_late_014",
+    "route_line": "cross",
+    "npc_focus": "multi",
+    "phase": "late",
+    "node_type": "cross",
+    "requirements": {
+      "qi_trust_min": 3,
+      "public_reputation_min": 4
+    },
+    "effects": {
+      "truth_progress": 1,
+      "public_reputation": 1
+    },
+    "exclusive_group": "qi_public_hearing_late",
+    "cooldown_group": "cross_pressure_scene",
+    "cooldown_turns": 2,
+    "weight": 60,
+    "preview_text": "齐衡愿把证据拿到祠前公议，但只有百姓肯到场，证据才不会被军门夺走。",
+    "result_text": "公议开成了，真相有了听众，也有了会被清算的名字。",
+    "followup_hooks": [
+      "ending_truth",
+      "public_reputation_chain"
+    ]
+  },
+  {
+    "story_beat_id": "beat_cross_three_line_balance_late_015",
+    "route_line": "cross",
+    "npc_focus": "multi",
+    "phase": "late",
+    "node_type": "cross",
+    "requirements": {
+      "military_rank_progress_min": 2,
+      "public_reputation_min": 3,
+      "truth_progress_min": 4
+    },
+    "effects": {
+      "shen_respect": 1,
+      "gu_trust": 1,
+      "qi_trust": 1
+    },
+    "exclusive_group": "three_line_balance_late",
+    "cooldown_group": "cross_anchor_scene",
+    "cooldown_turns": 2,
+    "weight": 58,
+    "preview_text": "军令、民证、旧案同时摆在案上，没有一条线能单独救下海疆。",
+    "result_text": "你把三份东西并排封存，三名武举旧敌第一次像同一边的人。",
+    "followup_hooks": [
+      "true_ending_setup",
+      "three_anchor_chain"
+    ]
+  },
+  {
+    "story_beat_id": "beat_cross_identity_truth_late_016",
+    "route_line": "cross",
+    "npc_focus": "gu_chengyue",
+    "phase": "late",
+    "node_type": "cross",
+    "requirements": {
+      "gu_identity_public_risk_min": 3,
+      "truth_progress_min": 4
+    },
+    "effects": {
+      "truth_progress": 1,
+      "gu_affection": 1,
+      "public_reputation": 1
+    },
+    "exclusive_group": "identity_truth_late",
+    "cooldown_group": "gu_identity_public_scene",
+    "cooldown_turns": 2,
+    "weight": 58,
+    "preview_text": "旧案证据能洗清顾承月，也可能证明她的家名曾被军门故意抹去。",
+    "result_text": "你选择把证据交给她先看，她把自己的危险和真相放到同一边。",
+    "followup_hooks": [
+      "ending_gu_identity_storm",
+      "truth_shared_with_gu"
+    ]
+  },
+  {
+    "story_beat_id": "beat_cross_true_ending_finale_017",
+    "route_line": "cross",
+    "npc_focus": "multi",
+    "phase": "finale",
+    "node_type": "ending_setup",
+    "requirements": {
+      "military_rank_progress_min": 3,
+      "public_reputation_min": 5,
+      "truth_progress_min": 6,
+      "gu_trust_min": 3,
+      "shen_respect_min": 3,
+      "qi_trust_min": 3
+    },
+    "effects": {
+      "truth_progress": 1,
+      "public_reputation": 1
+    },
+    "exclusive_group": "ending_true_route_setup",
+    "cooldown_group": "ending_setup_scene",
+    "cooldown_turns": 0,
+    "weight": 54,
+    "preview_text": "三名武举旧敌各押上一件不能回头的东西：军令、旧名、血证。",
+    "result_text": "你终于有资格同时保住官面、民心和真相；这不是最短的路，却是最完整的路。",
+    "followup_hooks": [
+      "ending_true_route",
+      "three_anchor_chain"
+    ]
+  },
+  {
+    "story_beat_id": "beat_cross_lonely_official_finale_018",
+    "route_line": "cross",
+    "npc_focus": "multi",
+    "phase": "finale",
+    "node_type": "ending_setup",
+    "requirements": {
+      "military_rank_progress_min": 5,
+      "gu_trust_max": 1
+    },
+    "effects": {
+      "military_merit": 1,
+      "public_reputation": -1
+    },
+    "exclusive_group": "ending_lonely_official_setup",
+    "cooldown_group": "ending_setup_scene",
+    "cooldown_turns": 0,
+    "weight": 52,
+    "preview_text": "任命书送来时，顾承月没有到场，齐衡也只留下一页冷硬证词。",
+    "result_text": "官路仍在你脚下，只是海风里少了会与你并肩的人。",
+    "followup_hooks": [
+      "ending_lonely_official",
+      "high_office_cost"
+    ]
+  },
+  {
+    "story_beat_id": "beat_cross_truth_suppressed_finale_019",
+    "route_line": "cross",
+    "npc_focus": "multi",
+    "phase": "finale",
+    "node_type": "ending_setup",
+    "requirements": {
+      "military_rank_progress_min": 4,
+      "truth_progress_min": 4,
+      "public_reputation_max": 3
+    },
+    "effects": {
+      "truth_progress": 1,
+      "shen_suspicion": 1
+    },
+    "exclusive_group": "ending_truth_suppressed_setup",
+    "cooldown_group": "ending_setup_scene",
+    "cooldown_turns": 0,
+    "weight": 52,
+    "preview_text": "你握有足够证据，却没有足够人证，军门已经准备把它们写成战时谣言。",
+    "result_text": "若此刻硬揭，真相会响一声，然后被更大的军功压下去。",
+    "followup_hooks": [
+      "ending_truth_suppressed",
+      "truth_being_smeared"
+    ]
+  },
+  {
+    "story_beat_id": "beat_cross_open_sea_finale_020",
+    "route_line": "cross",
+    "npc_focus": "multi",
+    "phase": "finale",
+    "node_type": "ending_setup",
+    "requirements": {
+      "public_reputation_min": 4,
+      "truth_progress_min": 5,
+      "gu_affection_min": 2
+    },
+    "effects": {
+      "public_reputation": 1,
+      "gu_affection": 1
+    },
+    "exclusive_group": "ending_open_sea_setup",
+    "cooldown_group": "ending_setup_scene",
+    "cooldown_turns": 0,
+    "weight": 50,
+    "preview_text": "终局后路不在官船上，而在百姓点起的暗灯和顾承月备好的小舟里。",
+    "result_text": "你可以把真相送上海风，也可以和她一起承担被追索的余生。",
+    "followup_hooks": [
+      "ending_open_sea",
+      "gu_together_possible"
+    ]
+  }
+]

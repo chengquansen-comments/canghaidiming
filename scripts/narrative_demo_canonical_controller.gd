@@ -68,6 +68,7 @@ var selected_ending_flag: String = ""
 var rival_gu_bond: int = 0
 var rival_shen_bond: int = 0
 var rival_qi_bond: int = 0
+var wuke_story_state: Dictionary = CanonicalEffectsRuntime.strategic_story_state_defaults()
 
 func _active_node_ids() -> Array:
 	if has_method("_flow_node_ids"):
@@ -84,6 +85,8 @@ func _narrative_state_snapshot() -> Dictionary:
 	base_state[VAR_RIVAL_GU_BOND] = rival_gu_bond
 	base_state[VAR_RIVAL_SHEN_BOND] = rival_shen_bond
 	base_state[VAR_RIVAL_QI_BOND] = rival_qi_bond
+	for key in wuke_story_state.keys():
+		base_state[str(key)] = wuke_story_state.get(key)
 	return base_state
 
 func _restore_narrative_state_from_context() -> void:
@@ -94,6 +97,7 @@ func _restore_narrative_state_from_context() -> void:
 	rival_gu_bond = int(state.get(VAR_RIVAL_GU_BOND, rival_gu_bond))
 	rival_shen_bond = int(state.get(VAR_RIVAL_SHEN_BOND, rival_shen_bond))
 	rival_qi_bond = int(state.get(VAR_RIVAL_QI_BOND, rival_qi_bond))
+	_restore_wuke_story_state(state)
 
 func _canonical_state() -> Dictionary:
 	return CanonicalEffectsRuntime.canonical_state(
@@ -102,7 +106,8 @@ func _canonical_state() -> Dictionary:
 		clues,
 		rival_gu_bond,
 		rival_shen_bond,
-		rival_qi_bond
+		rival_qi_bond,
+		wuke_story_state
 	)
 
 func _normalize_effects(raw_effects: Dictionary) -> Dictionary:
@@ -116,7 +121,27 @@ func _apply_canonical_effects(effects: Dictionary) -> void:
 	rival_gu_bond = int(values[CanonicalEffectsRuntime.VAR_RIVAL_GU_BOND])
 	rival_shen_bond = int(values[CanonicalEffectsRuntime.VAR_RIVAL_SHEN_BOND])
 	rival_qi_bond = int(values[CanonicalEffectsRuntime.VAR_RIVAL_QI_BOND])
+	_apply_wuke_story_values(values)
 	_save_narrative_state_to_context()
+
+func _restore_wuke_story_state(state: Dictionary) -> void:
+	for key in CanonicalEffectsRuntime.strategic_story_state_defaults().keys():
+		var field := str(key)
+		if field in CanonicalEffectsRuntime.story_boolean_fields():
+			wuke_story_state[field] = bool(state.get(field, wuke_story_state.get(field, false)))
+		else:
+			wuke_story_state[field] = int(state.get(field, wuke_story_state.get(field, 0)))
+
+func _apply_wuke_story_values(values: Dictionary) -> void:
+	for key in wuke_story_state.keys():
+		var field := str(key)
+		if field in CanonicalEffectsRuntime.story_boolean_fields():
+			wuke_story_state[field] = bool(values.get(field, wuke_story_state.get(field, false)))
+		else:
+			wuke_story_state[field] = int(values.get(field, wuke_story_state.get(field, 0)))
+
+func _story_route_state() -> Dictionary:
+	return wuke_story_state.duplicate(true)
 
 func _record_choice_ending_flag(choice: Dictionary) -> void:
 	var flag := CanonicalEndingRuntime.ending_flag_from_choice(choice)
@@ -456,6 +481,7 @@ func _restart() -> void:
 	rival_gu_bond = 0
 	rival_shen_bond = 0
 	rival_qi_bond = 0
+	wuke_story_state = CanonicalEffectsRuntime.strategic_story_state_defaults()
 	in_prologue = true
 	career_selected = false
 	last_hint = ""

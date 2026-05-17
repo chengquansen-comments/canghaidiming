@@ -184,7 +184,7 @@
       },
       {
         "fighter_template_id": "rival_qi_heng",
-        "display_name": "戚衡",
+        "display_name": "齐衡",
         "weapon_style": "blademaster",
         "default_position": "6",
         "default_facing": "left",
@@ -395,7 +395,7 @@
       },
       {
         "story_deck_id": "rival_qi_heng_duel",
-        "display_name": "戚衡·终试对决",
+        "display_name": "齐衡·终试对决",
         "fighter_template_id": "rival_qi_heng",
         "deck": "blade_front_cut:2,blade_press_break:1,blade_chase_cut:1,blade_breathe:1",
         "tags": "wuke,elim,rival",
@@ -889,7 +889,7 @@
       },
       {
         "encounter_id": "enc_wuke_qi_heng",
-        "display_name": "武举淘汰赛·戚衡",
+        "display_name": "武举淘汰赛·齐衡",
         "player_template_id": "player_blademaster",
         "player_deck_id": "player_blade_start",
         "player_stat_set_id": "player_start",
@@ -1087,7 +1087,7 @@
       },
       "rival_qi_heng": {
         "fighter_template_id": "rival_qi_heng",
-        "display_name": "戚衡",
+        "display_name": "齐衡",
         "weapon_style": "blademaster",
         "default_position": "6",
         "default_facing": "left",
@@ -1298,7 +1298,7 @@
       },
       "rival_qi_heng_duel": {
         "story_deck_id": "rival_qi_heng_duel",
-        "display_name": "戚衡·终试对决",
+        "display_name": "齐衡·终试对决",
         "fighter_template_id": "rival_qi_heng",
         "deck": "blade_front_cut:2,blade_press_break:1,blade_chase_cut:1,blade_breathe:1",
         "tags": "wuke,elim,rival",
@@ -1792,7 +1792,7 @@
       },
       "enc_wuke_qi_heng": {
         "encounter_id": "enc_wuke_qi_heng",
-        "display_name": "武举淘汰赛·戚衡",
+        "display_name": "武举淘汰赛·齐衡",
         "player_template_id": "player_blademaster",
         "player_deck_id": "player_blade_start",
         "player_stat_set_id": "player_start",

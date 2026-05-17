@@ -102,12 +102,14 @@ func _start_strategic_map(hint: String = "") -> void:
 		super._advance_to_node(node_index + 1, last_hint)
 		return
 	var profile := NarrativeBattleContext.get_player_profile()
+	var story_route_state: Dictionary = _story_route_state() if has_method("_story_route_state") else {}
 	strategic_state = StrategicMapSessionRuntime.build_initial_state(
 		strategic_config,
 		profile,
 		jun_gong,
 		qing_wang,
-		clues
+		clues,
+		story_route_state
 	)
 	print(StrategicMapSessionRuntime.summarize_network_map(strategic_state))
 	_sync_world_map_runtime_state()
