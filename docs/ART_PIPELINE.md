@@ -148,18 +148,17 @@ assets/narrative/silhouettes/sil_<subject_id>.png
 |---|---|---|
 | `art_reference/final/pixel_battle/backgrounds/battle_bg_chapter3_escort_clash.png` | `assets/pixel_battle/backgrounds/battle_bg_chapter3_escort_clash.png` | `EXPORTED` |
 
-### 5.4 第一战角色动作
+### 5.4 战斗角色动作
 
 | 正式源图 | 运行素材 | 运行挂接 | 状态 |
 |---|---|---|---|
-| `art_reference/final/pixel_battle/sheets/spearman_frames/idle_guard.png` | `assets/pixel_battle/sheets/spearman_frames/idle_guard.png` | `assets/pixel_battle/actors/spearman/spearman.meta.json` | `EXPORTED` |
-| `art_reference/final/pixel_battle/sheets/spearman_frames/thrust.png` | `assets/pixel_battle/sheets/spearman_frames/thrust.png` | `assets/pixel_battle/actors/spearman/spearman.meta.json` | `EXPORTED` |
-| `art_reference/final/pixel_battle/sheets/spearman_frames/recover.png` | `assets/pixel_battle/sheets/spearman_frames/recover.png` | `assets/pixel_battle/actors/spearman/spearman.meta.json` | `EXPORTED` |
-| `art_reference/final/pixel_battle/sheets/enemy_spearman_frames/idle_guard.png` | `assets/pixel_battle/sheets/enemy_spearman_frames/idle_guard.png` | `assets/pixel_battle/actors/enemy_spearman/enemy_spearman.meta.json` | `EXPORTED` |
-| `art_reference/final/pixel_battle/sheets/enemy_spearman_frames/long_weapon_thrust.png` | `assets/pixel_battle/sheets/enemy_spearman_frames/long_weapon_thrust.png` | `assets/pixel_battle/actors/enemy_spearman/enemy_spearman.meta.json` | `EXPORTED` |
-| `art_reference/final/pixel_battle/sheets/enemy_spearman_frames/recover_guard.png` | `assets/pixel_battle/sheets/enemy_spearman_frames/recover_guard.png` | `assets/pixel_battle/actors/enemy_spearman/enemy_spearman.meta.json` | `EXPORTED` |
-| `art_reference/final/pixel_battle/sheets/enemy_spearman_sheet_source.png` | `assets/pixel_battle/sheets/enemy_spearman_sheet.png` | `assets/pixel_battle/actors/enemy_spearman/enemy_spearman.meta.json` | `EXPORTED` |
-| `art_reference/final/pixel_battle/sheets/enemyspearman_sheet_source.png` | `assets/pixel_battle/sheets/enemy_spearman_sheet.png` | legacy sheet fallback | `SOURCE_READY_LEGACY` |
+| `art_reference/final/pixel_battle/sheets/spearman_sheet.png` | `assets/pixel_battle/sheets/spearman_sheet.png` | `assets/pixel_battle/actors/spearman/spearman.meta.json` | `EXPORTED / FORMAL_MAIN` |
+| `art_reference/final/pixel_battle/sheets/blademaster_sheet.png` | `assets/pixel_battle/sheets/blademaster_sheet.png` | `assets/pixel_battle/actors/blademaster/blademaster.meta.json` | `EXPORTED / FORMAL_MAIN` |
+| `art_reference/final/pixel_battle/sheets/enemy_spearman_sheet.png` | `assets/pixel_battle/sheets/enemy_spearman_sheet.png` | `assets/pixel_battle/actors/enemy_spearman/enemy_spearman.meta.json` | `EXPORTED / FORMAL_MAIN` |
+| `art_reference/final/pixel_battle/sheets/enemy_blademaster_sheet.png` | `assets/pixel_battle/sheets/enemy_blademaster_sheet.png` | `assets/pixel_battle/actors/enemy_blademaster/enemy_blademaster.meta.json` | `EXPORTED / FORMAL_MAIN` |
+| `art_reference/final/pixel_battle/sheets/master_veteran_sheet.png` | `assets/pixel_battle/sheets/master_veteran_sheet.png` | `assets/pixel_battle/actors/master_veteran/master_veteran.meta.json` | `EXPORTED / FORMAL_MAIN` |
+| `art_reference/final/pixel_battle/sheets/*_frames/*.png` | `assets/pixel_battle/sheets/*_frames/*.png` | actor `hit` / `break` fallback | `EXPORTED / FALLBACK_FRAME` |
+| `art_reference/final/pixel_battle/sheets/*_source.png` | legacy `assets/pixel_battle/sheets/*.png` | legacy sheet fallback | `SOURCE_READY_LEGACY` |
 
 ### 5.5 师父角色
 
@@ -170,27 +169,24 @@ assets/narrative/silhouettes/sil_<subject_id>.png
 
 ## 6. 当前缺口
 
-师父运行素材已接入：
+正式战斗动作运行素材已接入：
 
 ```text
+assets/pixel_battle/sheets/spearman_sheet.png
+assets/pixel_battle/sheets/blademaster_sheet.png
+assets/pixel_battle/sheets/enemy_spearman_sheet.png
+assets/pixel_battle/sheets/enemy_blademaster_sheet.png
 assets/pixel_battle/sheets/master_veteran_sheet.png
 assets/pixel_battle/portraits/master_veteran_bust.png
 assets/pixel_battle/portraits/performance_master_veteran.png
 ```
 
-正式源图已归档，并通过 `tools/promote_final_art_assets.py` 导出到运行素材。当前源图：
+正式源图已归档，并通过 `tools/run_art_asset_flow.py` 或 `tools/promote_final_art_assets.py` 导出到运行素材。当前仍需要收口的是：
 
 ```text
-art_reference/final/pixel_battle/sheets/master_sheets_source.png
-art_reference/final/pixel_battle/portraits/master_portraits_source.png
-```
-
-后续如要统一命名，可在不改变运行路径的前提下规范为：
-
-```text
-art_reference/final/pixel_battle/sheets/master_veteran_sheet_source.png
-art_reference/final/pixel_battle/portraits/master_veteran_bust_source.png
-art_reference/final/pixel_battle/portraits/performance_master_veteran_source.png
+1. 用 Web 实机截图把角色 / 肖像 / 背景从 GODOT_IMPORTED 推进到 IN_GAME_ACCEPTED。
+2. 将旧 frames / legacy source 只保留为 fallback 或归档说明，不再作为正式生产主路径。
+3. 清理不再引用的 anchored sheet 和旧临时背景，避免审计噪音。
 ```
 
 运行素材不要手工二次抠图或去边；如需重导，回到 `art_reference/final/` 源图并重新执行导出脚本。
@@ -242,11 +238,9 @@ art_reference/final/pixel_battle/sheets/spearman_sheet.png
 → ActorAnimationRuntime 按 frame_size / foot_anchor / sheet_layout=vertical 渲染
 ```
 
-### 7.1 Spearman 最低动作包
+### 7.1 后续精细动作包
 
-当前运行素材仍可回退到旧 3 帧 sheet；下一步 spearman 动作包只替换 `spearman`，不同时动 `enemy_spearman` / `blademaster`。
-
-目标目录：
+当前正式主路径是 3 帧竖向三叠 sheet。下一阶段若要提高动作精细度，再从 3 帧 sheet 升级到按动作拆分的多帧动作包：
 
 ```text
 assets/pixel_battle/actors/spearman/

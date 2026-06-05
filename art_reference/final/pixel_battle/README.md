@@ -43,10 +43,14 @@ First battle source pack:
 ```text
 art_reference/final/pixel_battle/backgrounds/battle_bg_coast_ambush.png
 art_reference/final/pixel_battle/backgrounds/narrative_beach_ambush.png
-art_reference/final/pixel_battle/sheets/enemy_spearman_frames/*.png
-art_reference/final/pixel_battle/sheets/enemy_spearman_sheet_source.png
-art_reference/final/pixel_battle/sheets/spearman_frames/*.png
+art_reference/final/pixel_battle/sheets/spearman_sheet.png
+art_reference/final/pixel_battle/sheets/blademaster_sheet.png
+art_reference/final/pixel_battle/sheets/enemy_spearman_sheet.png
+art_reference/final/pixel_battle/sheets/enemy_blademaster_sheet.png
+art_reference/final/pixel_battle/sheets/master_veteran_sheet.png
 ```
+
+`*_frames/*.png` and `*_source.png` files are fallback or legacy inputs, not the formal production path.
 
 Expected near-term master veteran sources:
 

@@ -21,6 +21,7 @@ assets/fonts/cjk_font.ttc
 
 # macOS
 .DS_Store
+*.textClipping
 
 # Windows
 Thumbs.db
